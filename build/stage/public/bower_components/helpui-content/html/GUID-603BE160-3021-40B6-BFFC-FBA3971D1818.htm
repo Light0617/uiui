@@ -1,0 +1,539 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-759264BE-E6B0-4316-AACC-0402DFA9349A"><a name="GUID-759264BE-E6B0-4316-AACC-0402DFA9349A"><!-- --></a>[API] 
+	 </span>Creating a parity group</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can create a parity group with the requested RAID configuration by using the specified disks. Additionally, you can also create and format the logical device (LDEV) on the parity group, so that the parity group is ready for pool creation. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-D1A128D7-6FD4-4427-9488-DB91EEBBB96D"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-D1A128D7-6FD4-4427-9488-DB91EEBBB96D"><!-- --></a>POST <span class="ph" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-BBD8F81A-6453-4D28-B612-EEAB798D1ED1"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-BBD8F81A-6453-4D28-B612-EEAB798D1ED1"><!-- --></a>https://<var class="keyword varname">ipAddress</var>/v1</span>/storage-system/<var class="keyword varname">storageSystemId</var>/parity-groups</pre>
+ 
+		<p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-6548469A-67AC-4625-A075-59C886B345D3"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-6548469A-67AC-4625-A075-59C886B345D3"><!-- --></a> Use the storage system ID as the 
+		  <var class="keyword varname">storageSystemId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_4E7E02FB2CF842AE85B38A4EE0428E31"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_4E7E02FB2CF842AE85B38A4EE0428E31"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-6CB316EE-BB98-4A1B-B1CB-8CA1042C5CC7"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-6CB316EE-BB98-4A1B-B1CB-8CA1042C5CC7"><!-- --></a> The request body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+    "diskIds":[""],
+    "raidLevel":"",
+    "raidLayout":""
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__TABLE_665D019C0C1F4090A032289E1B082866"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__TABLE_665D019C0C1F4090A032289E1B082866" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" align="center" valign="top" width="NaN%" id="d104800e79"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-B575B326-A818-4ACE-91F8-531E438CB09B"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-B575B326-A818-4ACE-91F8-531E438CB09B"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" align="center" valign="top" width="NaN%" id="d104800e85"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-FD6A30BB-CF23-4FAC-B46F-C63995FF508D"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-FD6A30BB-CF23-4FAC-B46F-C63995FF508D"><!-- --></a>Required 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" align="center" valign="top" width="NaN%" id="d104800e91"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-BC966443-7350-4A1C-A9E2-B7BD79EAAC5A"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-BC966443-7350-4A1C-A9E2-B7BD79EAAC5A"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" align="center" valign="top" width="NaN%" id="d104800e97"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-219347CA-66F5-4A98-8FFC-0AFFC0832C81"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-219347CA-66F5-4A98-8FFC-0AFFC0832C81"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e79 ">diskIds 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e85 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e91 ">List of integers 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e97 ">List of diskIDs that is used to create the parity group. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e79 ">raidLevel 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e85 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e91 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e97 ">The required RAID level for the parity group to be created. Valid values are: RAID 0, RAID 5, RAID 6. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e79 ">raidLayout 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e85 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e91 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e97 ">The layout used to create the parity group. This RAID layout should be of the specified RAID level. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_5336DA6E158B43B79A116076D1FBDAB3"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_5336DA6E158B43B79A116076D1FBDAB3"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-F4E13248-FCE7-4C80-B6E4-6F0E9D76D862"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-F4E13248-FCE7-4C80-B6E4-6F0E9D76D862"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "jobId": "",
+  "title":
+  {
+      "text": "",
+      "messageCode": "",
+      "parameters":
+      {
+      }
+  },
+ "user": "",
+ "status": "",
+ "startDate": ,
+ "endDate": ,
+ "parentJobId": ,
+ "reports":
+ [
+     {
+          "reportMessage":
+     {
+             "text": "",
+             "messageCode": "",
+             "parameters":
+             {
+                 "fileSystemId": ""
+             }
+         },
+         "severity": "",
+         "creationDate": 
+    }
+ ],
+ "links":
+ [
+      {
+        "rel": "_self",
+        "href": "/v1/jobs/"
+ } 
+ ],
+ "tags":
+ [
+ ],
+ "isSystem": 
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__TABLE_51B2489700BC424698E692D9A31E6010"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__TABLE_51B2489700BC424698E692D9A31E6010" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d104800e176"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e28"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d104800e182"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e34"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d104800e188"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e40"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">jobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">The ID of the job that is created to carry out the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">The title of the job in progress. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">text 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">Text of the message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">parameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">Name of the user who started the job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 "> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1846"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1846"><!-- --></a>Job status. Valid values: 
+					 </p>
+ 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1849"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1849"><!-- --></a>• In Progress 
+					 </p>
+ 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1852"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1852"><!-- --></a>• Failed 
+					 </p>
+ 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1855"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1855"><!-- --></a>• Success 
+					 </p>
+ 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1858"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d43e1858"><!-- --></a>• Success With Errors 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 "> The date and time this job started. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">Date and time when this job ended. If the job is still in progress, this parameter does not return a value. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">The ID of the job that spawned this job. If not applicable, the value null is returned. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">reports 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">Messages associated with this job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">links 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">Displays related resources. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">self 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">URI that includes the resource ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">tags 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 ">List of user-defined identifiers. Each identifier (tag) must be a minimum of three characters in length. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e176 ">isSystem 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e182 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e188 "> Whether or not a system has created a job. A job is triggered by a system or users. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_7419D7F925DA4F1582F124FEF1B9D676"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_7419D7F925DA4F1582F124FEF1B9D676"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__TABLE_32DDD15290AD41148050B1FD27779A26"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__TABLE_32DDD15290AD41148050B1FD27779A26" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d104800e413"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d244e46"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d104800e419"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d244e52"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d104800e425"> 
+					 <p class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d244e58"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d104800e413 ">201 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e419 ">Created 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e425 ">The server has started the operation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d104800e413 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e419 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e425 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d104800e413 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e419 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e425 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d104800e413 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e419 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e425 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d104800e413 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e419 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d104800e425 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+
+	 <div class="example" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_7CA321ED2E2F4EF69809AD02580D592D"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__SECTION_7CA321ED2E2F4EF69809AD02580D592D"><!-- --></a><h2 class="title sectiontitle">Example request</h2> 
+		 
+		<div class="p" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-5ED8AC29-1A2B-435D-93EF-42BC0224ABF2"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__GUID-5ED8AC29-1A2B-435D-93EF-42BC0224ABF2"><!-- --></a>The request with JSON command: 
+		  <pre class="pre codeblock">{"diskIds": [ "PVKEAR6B", "PVKB5TLB", "PVK075SB", "S0M1MR870000B422JRR6" ],
+    "raidLevel": "RAID5","raidLayout": "3D+1P"}</pre>
+ 
+		</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__EXAMPLE_F433116D8C5D478BA5FD0F9F933CD649"><a name="GUID-603BE160-3021-40B6-BFFC-FBA3971D1818__EXAMPLE_F433116D8C5D478BA5FD0F9F933CD649"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">
+{
+        "jobId": "cb01b71a-36f0-41ae-9060-2d82517eb858",
+        "title":
+        {
+            "text": "Creating parity group",
+            "messageCode": "CreateParityGroupJobTitleMessage",
+            "parameters":
+            {
+            }
+        },
+        "user": "sysadmin",
+        "status": "IN_PROGRESS",
+        "startDate": 1455837568839,
+        "endDate": null,
+        "parentJobId": null,
+        "reports":
+        [
+        ],
+        "links":
+        [
+            {
+                "rel": "_self",
+                "href": "/v1/jobs/cb01b71a-36f0-41ae-9060-2d82517eb858"
+            }
+        ],
+        "tags":
+        [
+        ],
+        "isSystem": false
+    }
+</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

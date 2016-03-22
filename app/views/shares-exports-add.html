@@ -1,0 +1,63 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <form name="dataModel.validationForm" role="form" class="validation-form" ng-submit="dataModel.submit()">
+        <wizard-header ng-title="'shares-exports-add'| translate" icon-class="icon-share"></wizard-header>
+        <div class="wizard-body">
+            <div class="header-row">
+                <h2>{{'shares-exports-fill-fields' | translate }}</h2>
+            </div>
+
+            <div class="scroll-wizard-container single-pane">
+
+                <div role="form" class="solo">
+                    <div class="form-group form-group-lg">
+                        <label>{{'shares-exports-storage-system' | translate }}</label>
+                        <input type="text" class="form-control" placeholder="{{'shares-type-label' | translate}}" ng-model="dataModel.storageSystemId" disabled>
+                    </div>
+                </div>
+                <div role="form" class="solo">
+                    <div class="form-group form-group-lg">
+                        <label>{{'shares-exports-file-system-path' | translate }}</label>
+                        <input type="text" name="fileSystemPath" class="form-control" placeholder="{{'shares-type-path' | translate}}"
+                               ng-minlength="1" ng-maxlength="255" ng-model="dataModel.fileSystemPath" required>
+                        <p ng-show="dataModel.validationForm.fileSystemPath.$invalid && !dataModel.validationForm.fileSystemPath.$pristine"
+                           class="validation-text">{{'shares-invalid-file-path' | translate }}</p>
+                    </div>
+                </div>
+                <div role="form" class="solo">
+                    <div class="form-group form-group-lg">
+                        <label>{{'shares-exports-label' | translate }}</label>
+                        <input type="text" name="label" class="form-control" placeholder="{{'shares-type-label' | translate}}"
+                               ng-minlength="1" ng-maxlength="80" ng-model="dataModel.label" required>
+                        <p ng-show="dataModel.validationForm.label.$invalid && !dataModel.validationForm.label.$pristine"
+                           class="validation-text">{{'shares-invalid-label' | translate }}</p>
+                    </div>
+                </div>
+                <div role="form" class="solo">
+                    <div class="form-group form-group-lg">
+                        <label>{{'shares-exports-select-file-system' | translate }}</label>
+                        <select class="form-control" ng-model="dataModel.fileSystem" ng-disabled="!dataModel.fileSystemSelectable"
+                                ng-options="fileSystem.label for fileSystem in dataModel.fileSystems">
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-group btn-group-toggle btn-group-justified solo">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default refine" ng-model="dataModel.windows"
+                                btn-radio="true">{{ 'windows' | translate }}
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default refine" ng-model="dataModel.windows"
+                                btn-radio="false">{{ 'linux' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <wizard-footer ng-model="dataModel" ng-if="dataModel">
+
+        </wizard-footer>
+    </form>
+</wizard-page>
+

@@ -1,0 +1,579 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-8DF6B611-5FF2-46FC-BBBB-E5F48F0CA0B0"><a name="GUID-8DF6B611-5FF2-46FC-BBBB-E5F48F0CA0B0"><!-- --></a>[API] 
+	 </span>Creating, attaching, and protecting volumes</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can create multiple volumes of different sizes, attach them to multiple servers, and configure data protection in a single operation. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock">POST <span class="ph" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__GUID-67415F07-FD42-4DB9-A6D9-37328E2A7D09"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__GUID-67415F07-FD42-4DB9-A6D9-37328E2A7D09"><!-- --></a>https://<var class="keyword varname">ipAddress</var>/v1</span>/volume-manager/create-attach-protect</pre>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__SECTION_98F55DF200C349AA87411CD8456C6D20"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__SECTION_98F55DF200C349AA87411CD8456C6D20"><!-- --></a><h2 class="title sectiontitle">Request Structure</h2> 
+		 
+		<p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__GUID-F5245FFA-B4D9-44C2-A6F8-5395891B06FD"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__GUID-F5245FFA-B4D9-44C2-A6F8-5395891B06FD"><!-- --></a> The request body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+	"storageSystemId": "410395",
+	"hostModeOptions": [],
+	"ports": [{
+		"serverId": 1,
+		"serverWwns": ["1000000000000000"],
+		"portIds": ["CL1-A"]
+	}],
+	"enableZoning": false,
+	"enableLunUnification": false,
+	"volumes": [{
+		"poolType": "Platinum",
+		"numberOfVolumes": 1,
+		"label": "john",
+		"suffix": 0,
+		"capacity": "1073741824",
+		"poolId": 0
+	}],
+	"skipProtection": false,
+	"replicationGroup": {
+		"replicationType": "SNAPSHOT",
+		"consistencyGroupNeeded": false,
+		"replicationGroupName": "my-snapshot",
+		"replicationGroupId": null,
+		"schedule": {
+			"hour": 0,
+			"minute": 0,
+			"recurringUnit": "DAILY",
+			"recurringUnitInterval": null,
+			"dayOfWeek": null,
+			"dayOfMonth": null
+		},
+		"numberOfBackups": 1
+	}
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__TABLE_8D5AF309AD2648D693D2B45962E302EC"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__TABLE_8D5AF309AD2648D693D2B45962E302EC" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e68"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e41"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e41"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e74"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e47"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e47"><!-- --></a>Required 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e80"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e53"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e53"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e86"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e59"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d31e59"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">storageSystemId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Storage system ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">intendedImageType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Operating System available on the server. If an OS is not specified, then all the servers must have the same OS. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">hostModeOptions 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Additional host settings for the volume. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">serverId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Server ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">serverWwns 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">The WWNs for a server. If a WWN is not specified, then all WWNs associated with the server are used. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">portIds 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Storage ports where the volume will be attached. If ports are not specified, it will be automatically selected. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">enableZoning 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Whether or not zones are created on the SAN fabric. If enableZoning = false, then zoning is disabled. Defaults to false. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">enableLunUnification 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Whether or not Lun (logical unit number) assignments for volumes that span multiple servers are consistent. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">poolType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">The pool type can be HDT or the name of a tier that is available in the system. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">numberOfVolumes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Number of volumes. Must be greater than zero. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">label 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Name of the volume. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">suffix 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Suffix number appended to the end of the volume name. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 "> capacity 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> The file system size limit in bytes. Min = 1, max = 1099511627776. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">poolId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">ID of the storage pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">skipProtection 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> Whether to use or skip data protection. When skipProtection is true, all replication parameters listed will be ignored. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">consistencyGroupNeeded 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> Whether a consistency group is needed or not. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">replicationGroupName 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> Name of the replication group. Enter up to 28 alphanumeric characters, hyphens, and underscores in the name, but it must not start with a hyphen. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">numberOfBackups 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> Number of backup copies that needs to be created. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">replicationType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 ">Type of replication technology to use, such as THIN_IMAGE. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 "> schedule 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> Interval at which the snapshots are taken. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e68 ">replicationGroupId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e74 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e80 ">Long 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e86 "> ID for the replication group 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__SECTION_7419D7F925DA4F1582F124FEF1B9D676"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__SECTION_7419D7F925DA4F1582F124FEF1B9D676"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__TABLE_32DDD15290AD41148050B1FD27779A26"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__TABLE_32DDD15290AD41148050B1FD27779A26" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e432"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d244e46"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e438"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d244e52"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d224534e444"> 
+					 <p class="p" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d244e58"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d224534e432 ">201 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e438 ">Created 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e444 ">The server has started the operation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d224534e432 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e438 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e444 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d224534e432 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e438 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e444 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d224534e432 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e438 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e444 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d224534e432 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e438 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d224534e444 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__EXAMPLE_403630F583E2443C9B036EBCBF0FDD86"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__EXAMPLE_403630F583E2443C9B036EBCBF0FDD86"><!-- --></a><h2 class="title sectiontitle">Example request</h2> 
+		 
+		<pre class="pre codeblock">{
+	"storageSystemId": "410395",
+	"hostModeOptions": [],
+	"ports": [{
+		"serverId": 1,
+		"serverWwns": ["1000000000000000"],
+		"portIds": ["CL1-A"]
+	}],
+	"enableZoning": false,
+	"enableLunUnification": false,
+	"volumes": [{
+		"poolType": "Platinum",
+		"numberOfVolumes": 1,
+		"label": "john",
+		"suffix": 0,
+		"capacity": "1073741824",
+		"poolId": 0
+	}],
+	"skipProtection": false,
+	"replicationGroup": {
+		"replicationType": "SNAPSHOT",
+		"consistencyGroupNeeded": false,
+		"replicationGroupName": "my-snapshot",
+		"replicationGroupId": null,
+		"schedule": {
+			"hour": 0,
+			"minute": 0,
+			"recurringUnit": "DAILY",
+			"recurringUnitInterval": null,
+			"dayOfWeek": null,
+			"dayOfMonth": null
+		},
+		"numberOfBackups": 1
+	}
+}</pre>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__EXAMPLE_82A3A269F2A2447AB0421C3FF3E8F9A1"><a name="GUID-E159C9E7-2F85-4707-B6AB-4A9BAB05EFCB__EXAMPLE_82A3A269F2A2447AB0421C3FF3E8F9A1"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">{
+  "jobId": "001a3f5a-88c1-4b66-a14c-ebd1ab7d8ee3",
+  "title": {
+    "text": "Create volumes, attach to servers and set up data protection",
+    "messageCode": "CreateAttachAndProtectVolumesJobTitleMessage",
+    "parameters": {}
+  },
+  "user": "sysadmin",
+  "status": "IN_PROGRESS",
+  "startDate": 1456782462679,
+  "endDate": null,
+  "parentJobId": null,
+  "reports": [],
+  "links": [
+    {
+      "rel": "_self",
+      "href": "/v1/jobs/001a3f5a-88c1-4b66-a14c-ebd1ab7d8ee3"
+    }
+  ],
+  "tags": [],
+  "isSystem": false
+}</pre>
+ 
+	 </div>
+
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

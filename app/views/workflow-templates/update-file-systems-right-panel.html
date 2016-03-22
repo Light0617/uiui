@@ -1,0 +1,56 @@
+<div>
+    <h2 class="col-lg-12 col-md-12 col-sm-12 fix">{{'file-systems-modify-fields' | translate}}</h2>
+
+    <div>
+        <form name="dataModel.validationForm" role="form" class="validation-form">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <select class="form-control" ng-model="dataModel.virtualFileServer" disabled>
+                    <option ng-repeat="option in dataModel.virtualFileServers" value="{{option.id}}">{{option.name}}</option>
+                </select>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 margin-T-B-L">
+                <input type="text" class="form-control fixed-line-height" placeholder="{{'file-systems-add-type-label' | translate}}"
+                       name="label" ng-minlength="1" ng-maxlength="255" ng-model="dataModel.label" ng-class="{'ng-invalid ng-dirty': dataModel.whiteSpace || (!dataModel.label && !dataModel.validationForm.label.$pristine)}" required>
+                <p ng-show="dataModel.validationForm.label.$invalid && !dataModel.validationForm.label.$pristine"
+                   class="validation-text">{{'file-systems-invalid-label' | translate }}</p>
+                <p ng-show="dataModel.whiteSpace"
+                   class="validation-text">{{'file-systems-space' | translate }}</p>
+
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <select class="form-control" ng-model="dataModel.format"
+                        name="format" ng-options="format for format in dataModel.formats" disabled>
+                    <option value="">{{'file-systems-add-format' | translate}}</option>
+                </select>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 margin-T-B-L">
+                <input type="number" class="form-control fixed-line-height" placeholder="{{'file-systems-add-capacity' | translate}}"
+                       name="capacity" ng-min="1" ng-max="1023" ng-model="dataModel.capacity" required>
+                <p ng-show="dataModel.validationForm.capacity.$invalid && !dataModel.validationForm.capacity.$pristine"
+                   class="validation-text">{{'file-systems-invalid-capacity' | translate }}</p>
+                <p ng-show="!dataModel.validCapacity"
+                   class="validation-text">{{'file-systems-limit-capacity' | translate }}</p>
+                <p ng-show="dataModel.maxCapacity"
+                   class="validation-text">{{'file-systems-expand-max-capacity' | translate }}</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 margin-T-B-L">
+                <select class="form-control" ng-model="dataModel.unit"
+                        ng-options="unit for unit in dataModel.units">
+                </select>
+            </div>
+            <!-- TODO: EL Will integrate once tiers are done
+            <div class="col-lg-7 col-md-7 col-sm-7 cell control">
+                <select class="form-control" ng-model="dataModel.poolTier"
+                        ng-options="tier for tier in dataModel.poolTiers" ng-click="updatePoolsDropdown()">
+                    <option value="">{{'file-systems-add-new-pool-tier' | translate}}</option>
+                </select>
+            </div> -->
+            <div class="col-lg-12 col-md-12 col-sm-12 cell control">
+                <select class="form-control" ng-model="dataModel.filePool" ng-options="filePool.label + ' - ' + filePool.usedCapacityInBytes.size + filePool.usedCapacityInBytes.unit +
+                 '/' + filePool.capacityInBytes.size + filePool.capacityInBytes.unit for filePool in dataModel.filePools track by filePool.id" disabled>
+                    <option value="">{{'file-systems-add-new-pool' | translate}}</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>

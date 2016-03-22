@@ -1,0 +1,195 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-0861028D-C6A8-4E37-AF90-F6151A9DBF9F"><a name="GUID-0861028D-C6A8-4E37-AF90-F6151A9DBF9F"><!-- --></a>[API] 
+	 </span>Listing the total number of capacity alerts for a storage system</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display the total number of capacity alert notifications that were issued in the specified storage system. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__SECTION_A9BD355ABB4E4A688A272DA87BA57D91"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__SECTION_A9BD355ABB4E4A688A272DA87BA57D91"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-5FE08073-5E41-4C7E-9CF3-518A559CD64E"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-5FE08073-5E41-4C7E-9CF3-518A559CD64E"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/monitoring/status/<var class="keyword varname">storageArrayId</var>/capacity</pre>
+ 
+		<p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-06941F7E-87D9-4360-A3C7-19A8D8536DCF"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-06941F7E-87D9-4360-A3C7-19A8D8536DCF"><!-- --></a>Use the storage array ID as the 
+		  <var class="keyword varname">storageArrayId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__SECTION_07E34869A2114B6EAECFB95504BA0789"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__SECTION_07E34869A2114B6EAECFB95504BA0789"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-72504D6F-2AE9-48C3-B941-E5A8B53C2244"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-72504D6F-2AE9-48C3-B941-E5A8B53C2244"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-2B7A91B2-2B83-423E-B136-57BAFF22C495"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__GUID-2B7A91B2-2B83-423E-B136-57BAFF22C495"><!-- --></a>The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+  "totalComponentWiseCapacityAlerts": ,
+  "capacityComponents": {
+    "poolAlerts": 
+  }
+}
+
+
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__TABLE_2EBB776CED3849F4BC33A035D30A298B"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__TABLE_2EBB776CED3849F4BC33A035D30A298B" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d21315e96"> 
+					 <p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d43e28"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d21315e102"> 
+					 <p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d43e34"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d21315e108"> 
+					 <p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d43e40"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e96 "> totalComponentWiseCapacityAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e102 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e108 "> Total number of capacity components with alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e96 "> poolAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e102 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e108 "> Whether a pool in the storage system issued an alert notification. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d21315e164"> 
+					 <p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d244e46"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d21315e170"> 
+					 <p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d244e52"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d21315e176"> 
+					 <p class="p" id="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d244e58"><a name="GUID-17F3AF96-7396-44E9-9AE3-B6CFC9C66297__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d21315e164 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e170 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e176 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d21315e164 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e170 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e176 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d21315e164 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e170 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e176 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d21315e164 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e170 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d21315e176 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

@@ -1,0 +1,42 @@
+<div class="inline" ng-if="action.type  === 'dropdown'"
+     ng-repeat-start="action in  dataModel.getActions()" ng-disabled="!action.enabled()" dropdown>
+        <button type="button" class="btn icon-btn icon-sm nopadding" dropdown-toggle ng-attr-title="{{action.tooltip | translate }}">
+            <span ng-attr-class="{{action.icon}}"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="ma in action.items">
+                <a ng-if="ma.type === 'link'" ng-click="ma.onClick(dataModel.orchestratorService, true)"
+                   ng-disabled="ma.enabled && !ma.enabled()" >{{ma.title | translate }}</a>
+                <a ng-if="ma.type === 'hyperlink'" ng-attr-href="{{ma.href}}" target="_blank">{{ma.title | translate
+                    }}</a>
+            </li>
+        </ul>
+</div>
+<div class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'link'"
+     ng-click="!action.enabled() || action.onClick(dataModel.orchestratorService, true)" ng-disabled="!action.enabled()">
+    <div ng-attr-class="{{action.icon}}"></div>
+</div>
+<div class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'confirmation-modal'" data-toggle="modal"
+     ng-attr-data-target="#{{action.dialogSettings.id}}" ng-click="!action.enabled() || action.onClick(dataModel.orchestratorService, true)" ng-disabled="!action.enabled()">
+    <div ng-attr-class="{{action.icon}}"></div>
+
+</div>
+<div ng-repeat-end class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'confirm'"
+     ng-click="!action.enabled() || action.onClick(dataModel.orchestratorService, true)" confirm
+     confirm-title="{{ action.confirmTitle | translate}}"
+     confirm-message="{{ action.confirmMessage | translate:dataModel }}" ng-disabled="!action.enabled()">
+    <div ng-attr-class="{{action.icon}}"></div>
+</div>
+
+<confirmation-modal ng-if="action.enabled()"
+                    title="{{ action.dialogSettings.title | translate}}"
+                    content="{{ action.dialogSettings.content  | translate:dataModel}}"
+                    true-text="{{ action.dialogSettings.trueText  | translate:dataModel}}"
+                    false-text="{{ action.dialogSettings.falseText  | translate:dataModel}}"
+                    click-ok="action.onClick(dataModel.orchestratorService, true)"
+                    confirm-click="action.confirmClick()"
+                    switch-enabled="action.dialogSettings.switchEnabled"
+                    modal-id="{{action.dialogSettings.id}}"
+                    require-selection="action.dialogSettings.requireSelection"
+                    ng-repeat="action in dataModel.getActions() | filter:{ type :'confirmation-modal'}"></confirmation-modal>
+

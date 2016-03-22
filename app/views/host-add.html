@@ -1,0 +1,12 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <!--Wizard header-->
+    <wizard-header ng-title="'common-host-add'| translate" icon-class="icon-host"></wizard-header>
+    <div class="row wizard-body" >
+        <div class="scroll-wizard-container single-pane" ng-include="'views/workflow-templates/add-hosts-panel.html'">
+        </div>
+    </div>
+    <wizard-footer ng-model="dataModel">
+
+    </wizard-footer>
+</wizard-page>

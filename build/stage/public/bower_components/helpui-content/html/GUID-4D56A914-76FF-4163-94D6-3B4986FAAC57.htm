@@ -1,0 +1,438 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-44AA7DBF-D54E-475D-BDA3-3FA5FA24B42E"><a name="GUID-44AA7DBF-D54E-475D-BDA3-3FA5FA24B42E"><!-- --></a>[API] 
+	 </span>Deleting a file system</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can delete a file system. Unmount the file system before deleting it. When a file system is deleted all associated shares (Windows OS) and exports (Linux OS) are deleted. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-5E21E37C-E928-4C14-B82B-AD77CBC3A9B1"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-5E21E37C-E928-4C14-B82B-AD77CBC3A9B1"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">DELETE <span class="ph" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-0BB6DBCC-6834-43E7-AB8D-2A03D4F821DD"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-0BB6DBCC-6834-43E7-AB8D-2A03D4F821DD"><!-- --></a>https://<var class="keyword varname">ipAddress</var>/v1</span>/file/storage-systems/<var class="keyword varname">storageSystemId/</var>file-systems/<var class="keyword varname">fileSystemId</var></pre>
+ 
+		<p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-BB7B7FBB-A807-4D68-8A2C-B80A72830911"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-BB7B7FBB-A807-4D68-8A2C-B80A72830911"><!-- --></a> Use the ID of the storage system as the 
+		  <var class="keyword varname">storageSystemId.</var> 
+		</p>
+ 
+		<p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-DAEAB2DC-BEAF-4DB8-B126-C03A58E0E8F7"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-DAEAB2DC-BEAF-4DB8-B126-C03A58E0E8F7"><!-- --></a> Use the ID of the file system as the 
+		  <var class="keyword varname">fileSystemId.</var> 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_A32FD160C7CF4AA4ADFA56DA04908663"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_A32FD160C7CF4AA4ADFA56DA04908663"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		
+		<p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-40696D36-335C-4B98-8E3C-2B2437812C5F"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-40696D36-335C-4B98-8E3C-2B2437812C5F"><!-- --></a>The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "jobId": "",
+  "title":
+   {
+     "text": "",
+     "messageCode": "",
+     "parameters":
+      {
+      }
+   },
+   "user": "",
+   "status": "",
+   "startDate": ,
+   "endDate": ,
+   "parentJobId": ,
+   "reports":
+   [
+   ],
+   "links":
+   [
+      {
+         "rel": "_self",
+         "href": "/v1/jobs/"
+      }
+   ],
+   "tags":
+   [
+   ],
+   "isSystem": 
+}</pre>
+ 
+	 </div>
+
+	 
+<div class="tablenoborder"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__TABLE_51B2489700BC424698E692D9A31E6010"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__TABLE_51B2489700BC424698E692D9A31E6010" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+			 <tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d86745e96"> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e28"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d86745e102"> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e34"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d86745e108"> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e40"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+		  <tbody class="tbody"> 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">jobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">The ID of the job that is created to carry out the request. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">The title of the job in progress. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">text 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">Text of the message. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">parameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">Name of the user who started the job. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 "> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1846"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1846"><!-- --></a>Job status. Valid values: 
+					 </p>
+ 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1849"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1849"><!-- --></a>• In Progress 
+					 </p>
+ 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1852"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1852"><!-- --></a>• Failed 
+					 </p>
+ 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1855"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1855"><!-- --></a>• Success 
+					 </p>
+ 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1858"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d43e1858"><!-- --></a>• Success With Errors 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 "> The date and time this job started. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">Date and time when this job ended. If the job is still in progress, this parameter does not return a value. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">The ID of the job that spawned this job. If not applicable, the value null is returned. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">reports 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">Messages associated with this job. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">links 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">Displays related resources. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">self 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">URI that includes the resource ID. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">tags 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 ">List of user-defined identifiers. Each identifier (tag) must be a minimum of three characters in length. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e96 ">isSystem 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e102 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e108 "> Whether or not a system has created a job. A job is triggered by a system or users. 
+				  </td>
+ 
+				</tr>
+ 
+		  </tbody>
+ 
+		</table>
+</div>
+
+	 <div class="section" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_E48FA832FA6A47EC90F169BE31946320"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_E48FA832FA6A47EC90F169BE31946320"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-F4A4555E-5081-4A91-B712-FB3EEB65A21A"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-F4A4555E-5081-4A91-B712-FB3EEB65A21A"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__TABLE_BFE903BE1E2D496CA639101D5B25D9D9"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__TABLE_BFE903BE1E2D496CA639101D5B25D9D9" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d86745e334"> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d244e46"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d86745e340"> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d244e52"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d86745e346"> 
+					 <p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d244e58"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d86745e334 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e340 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e346 ">Success. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d86745e334 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e340 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e346 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d86745e334 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e340 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e346 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d86745e334 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e340 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e346 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d86745e334 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e340 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d86745e346 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><!-- --></a><h2 class="title sectiontitle">Example code </h2> 
+		 
+		<div class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-1AF8A09E-298F-4E9B-A036-CA58C0992149"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-1AF8A09E-298F-4E9B-A036-CA58C0992149"><!-- --></a>Request with JSON command: 
+		  <pre class="pre codeblock">https://172.17.64.109:8183/v1/file/storage-systems/21000/file-systems/ebc4b9b8-529e-11d1-9003-040100050000
+ 
+</pre>
+ 
+		</div>
+ 
+		<p class="p" id="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-CE7A8033-9889-424F-926E-243C60F60BAB"><a name="GUID-4D56A914-76FF-4163-94D6-3B4986FAAC57__GUID-CE7A8033-9889-424F-926E-243C60F60BAB"><!-- --></a>JSON Response: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "jobId": "e10b1e6c-6985-4a1d-9161-68cfa3c96b29",
+  "title": {
+    "text": "Deleting File System",
+    "messageCode": "DeleteFileSystemJobPreTitleMessage",
+    "parameters": {}
+  },
+  "user": "sysadmin",
+  "status": "IN_PROGRESS",
+  "startDate": 1453254388625,
+  "endDate": null,
+  "parentJobId": null,
+  "reports": [],
+  "links": [
+    {
+      "rel": "_self",
+      "href": "/v1/jobs/e10b1e6c-6985-4a1d-9161-68cfa3c96b29"
+    }
+  ],
+  "tags": [],
+  "isSystem": false
+}
+</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

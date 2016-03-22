@@ -1,0 +1,217 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-AAF23F2C-E9E6-4F93-A82C-48964FBEE046"><a name="GUID-AAF23F2C-E9E6-4F93-A82C-48964FBEE046"><!-- --></a>[API] 
+	 </span>Getting a group mappings</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display role mappings in a particular user group. 
+  </p></p>
+ 
+	 <div class="section refsyn" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-B1601F91-2F6E-428D-8C39-113C471686B6"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-B1601F91-2F6E-428D-8C39-113C471686B6"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/security/account-domains/<var class="keyword varname">id</var>/group-mappings/<var class="keyword varname">mappingId</var></pre>
+ 
+		<p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-D3367347-56F8-4320-8663-98D5D7938FAE"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-D3367347-56F8-4320-8663-98D5D7938FAE"><!-- --></a> Use the domain ID as the 
+		  <var class="keyword varname">id</var>. 
+		</p>
+ 
+		<p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-7F7D8062-C50E-40CD-82E0-FA653BDD95A8"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-7F7D8062-C50E-40CD-82E0-FA653BDD95A8"><!-- --></a>Use the group mapping ID for the 
+		  <var class="keyword varname">mappingId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-7DD37EB9-AA86-4B2D-8AAC-2CE56D92FE3E"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-7DD37EB9-AA86-4B2D-8AAC-2CE56D92FE3E"><!-- --></a> Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__SECTION_9D487B7C390748A584E08CED5CC5E56F"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__SECTION_9D487B7C390748A584E08CED5CC5E56F"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<pre class="pre codeblock">{
+  "mappings": [
+    {
+      "groupName": "",
+      "userRole": "",
+      "accountDomainId": ,
+      "id": 
+    }
+  ]
+}
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__TABLE_050CD0C67114487D8314346139EA96F1"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__TABLE_050CD0C67114487D8314346139EA96F1" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d258213e93"> 
+					 <p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__d43e28"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d258213e99"> 
+					 <p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__d43e34"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d258213e105"> 
+					 <p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__d43e40"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e93 ">groupName 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e99 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e105 ">Name of the domain. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e93 ">userRole 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e99 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e105 ">Role to be assigned to the user group. Values include the System Administrator, Storage Administrator, and Security Administrator. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e93 ">accountDomainId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e99 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e105 "> ID of the domain. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e93 ">id 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e99 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e105 ">ID 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__SECTION_C5281C897E804C7C8F47E2790511DF71"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__SECTION_C5281C897E804C7C8F47E2790511DF71"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-AA776A92-DA7D-41EC-831B-D77EDBEFB859"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-AA776A92-DA7D-41EC-831B-D77EDBEFB859"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__TABLE_D109586915B04AAD9D8D0FB3E03C42C6"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__TABLE_D109586915B04AAD9D8D0FB3E03C42C6" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d258213e183"> 
+					 <p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d258213e189"> 
+					 <p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d258213e195"> 
+					 <p class="p" id="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-FDF64328-B187-4E0A-9EF2-6FC10862DE73__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d258213e183 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e189 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e195 ">Success 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d258213e183 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e189 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e195 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d258213e183 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e189 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e195 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d258213e183 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e189 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d258213e195 ">The specified resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

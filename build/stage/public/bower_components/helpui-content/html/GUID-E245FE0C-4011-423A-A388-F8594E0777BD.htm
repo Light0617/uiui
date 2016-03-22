@@ -1,0 +1,519 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-C813DBD6-CA22-4490-8E3D-660167A9851B"><a name="GUID-C813DBD6-CA22-4490-8E3D-660167A9851B"><!-- --></a>[API] 
+	 </span>Getting Virtual File Servers</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display all Virtual File Servers in a specified storage system.
+  </p></p>
+ 
+	 <div class="section" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-5E21E37C-E928-4C14-B82B-AD77CBC3A9B1"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-5E21E37C-E928-4C14-B82B-AD77CBC3A9B1"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-EA73ADEB-3A4C-4E47-B5DC-DC9584C6DED4"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-EA73ADEB-3A4C-4E47-B5DC-DC9584C6DED4"><!-- --></a>https://<var class="keyword varname">ipAddress</var>/v1</span>/file/storage-systems/<var class="keyword varname">storageSystemId</var>/vfs</pre>
+ 
+		<p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-A0591EF6-E4C0-483B-86CC-C6EB6B3E4840"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-A0591EF6-E4C0-483B-86CC-C6EB6B3E4840"><!-- --></a> Use the ID of the storage system as the 
+		  <var class="keyword varname">storageSystemId.</var> 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_3FE40D3D2B014A858B5A8CB2F31CBB44"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_3FE40D3D2B014A858B5A8CB2F31CBB44"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-13F6580F-F1B1-4C4F-B5D2-E89F00B20A66"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-13F6580F-F1B1-4C4F-B5D2-E89F00B20A66"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "evses":
+  [
+    {
+	      "clusterNodeId": ,
+	      "enabled": ,
+	      "id": ,
+	      "interfaceAddresses":
+	      [
+	          {
+	             "clusterNodeId": ,
+	             "evs": ,
+	             "evsId": ,
+	             "ip": "",
+	             "ipv6": true|false,
+	             "locationName": "",
+	             "mask": "",
+	             "port": "",
+	             "prefixLength": 
+	           },
+	      ],
+	      "ipAddresses":
+	      [
+	          {
+	            		"ipAddress": "",
+	              "mask": "",
+	              "port": ""
+	          }
+	      ],
+	      "links":
+	      [
+	          {
+	             "rel": "_self",
+	             "href": "/v1/file/storage-systems/410500/vfs"
+	          },
+	          {
+	             "rel": "_filesystems",
+	             "href": "/v1/file/storage-systems/410500/vfs/cd0f6090-4a29-11d1-901c-040100050000/file-systems"
+	          }
+	      ],
+	      "name": "",
+	      "status": "",
+	      "type": "",
+	      "uuid": ""
+    }
+  ]
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__TABLE_06AB47B46D834A84A1E1AF558F81887D"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__TABLE_06AB47B46D834A84A1E1AF558F81887D" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d228577e87"> 
+					 <p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d43e28"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d228577e93"> 
+					 <p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d43e34"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d228577e99"> 
+					 <p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d43e40"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">clusterNodeId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">ID of the cluster or ID of one of the cluster nodes. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">enabled 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Whether or not the Virtual File Server is enabled. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">id 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">ID of the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">interfaceAddresses 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">List of interface addresses for the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">evs 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Whether or not the Virtual File Server is present. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">evsId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">ID of the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">ip 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">IP address of the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">ipv6 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Whether or not the IPv6 address is used. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">locationName 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Location of the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">mask 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Subnet mask of the IP address. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">port 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Port number. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">prefixLength 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">The number of bits set in the subnet mask. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">ipAddresses 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">List of ip addresses for the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">ipAddress 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">IP address of the cluster node. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">links 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Displays related resources. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">self 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">URI that includes the resource ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">name 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Name of the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 "> Online, if the Virtual File Server is enabled and offline if the Virtual File Server is disabled. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">type 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Type of the Virtual File Server. Valid values: 1 - admin, 2 - file server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e87 ">uuid 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e93 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e99 ">Universal unique identifier of the Virtual File Server. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_E812C695F1D64F92978A17A3506C1619"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_E812C695F1D64F92978A17A3506C1619"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-23BFF7F4-58B0-4B23-B370-3339D0DC0956"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-23BFF7F4-58B0-4B23-B370-3339D0DC0956"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__TABLE_7FB1E7E79482400193517B8C8B5BCB8C"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__TABLE_7FB1E7E79482400193517B8C8B5BCB8C" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d228577e372"> 
+					 <p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d244e46"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d228577e378"> 
+					 <p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d244e52"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d228577e384"> 
+					 <p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d244e58"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d228577e372 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e378 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e384 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d228577e372 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e378 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e384 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d228577e372 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e378 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e384 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d228577e372 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e378 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d228577e384 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><!-- --></a><h2 class="title sectiontitle">Example code </h2> 
+		 
+		<div class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-1AF8A09E-298F-4E9B-A036-CA58C0992149"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-1AF8A09E-298F-4E9B-A036-CA58C0992149"><!-- --></a>Request with JSON command: 
+		  <pre class="pre codeblock">https://172.17.64.111/v1/file/vfs
+ 
+</pre>
+ 
+		</div>
+ 
+		<p class="p" id="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-CE7A8033-9889-424F-926E-243C60F60BAB"><a name="GUID-E245FE0C-4011-423A-A388-F8594E0777BD__GUID-CE7A8033-9889-424F-926E-243C60F60BAB"><!-- --></a>JSON Response: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "evses":
+  [
+    {
+	      "clusterNodeId": 2,
+	      "enabled": true,
+	      "id": 0,
+	      "interfaceAddresses":
+	      [
+	          {
+	             "clusterNodeId": 2,
+	             "evs": true,
+	             "evsId": 0,
+	             "ip": "126.255.48.2",
+	             "ipv6": false,
+	             "locationName": "G800-410500-a",
+	             "mask": "255.255.0.0",
+	             "port": "eth1",
+	             "prefixLength": 16
+	           },
+											{
+	             "clusterNodeId": 2,
+	             "evs": true,
+	             "evsId": 0,
+	             "ip": "202:7eff:3002",
+	             "ipv6": true,
+	             "locationName": "G800-410500-a",
+	             "mask": "ffff:ffff:ffff:ffff::",
+	             "port": "eth1",
+	             "prefixLength": 64
+	           }
+	      ],
+	      "ipAddresses":
+	      [
+	          {
+	            		"ipAddress": "126.255.48.2",
+	              "mask": "255.255.0.0",
+	              "port": "eth1"
+	          }
+	      ],
+	      "links":
+	      [
+	          {
+	             "rel": "_self",
+	             "href": "/v1/file/storage-systems/410500/vfs"
+	          },
+	          {
+	             "rel": "_filesystems",
+	             "href": "/v1/file/storage-systems/410500/vfs/cd0f6090-4a29-11d1-901c-040100050000/file-systems"
+	          }
+	      ],
+	      "name": "G800-410500-a",
+	      "status": "On line",
+	      "type": "admin",
+	      "uuid": "cd0f6090-4a29-11d1-901c-040100050000"
+    }
+  ]
+}</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

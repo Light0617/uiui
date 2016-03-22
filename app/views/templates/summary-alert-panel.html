@@ -1,0 +1,147 @@
+<div class="summary-container-default stage bg-panel summary-panel flex-row expand quarters">
+    <!-- First-tile-->
+    <div class="alert-tile capacity" ng-class="capacityPanelState.state">
+        <div class="status-and-detail-flex">
+            <div class="tile alert capacity alert-tile-capacity-bkg flex-column" ng-class="model.alerts.capacity.level"
+                 id="capacity">
+                <h2>Capacity</h2>
+
+                <div class="alert-icon" ng-click="toggleAction(CAPACITY_ID)">
+                    <svg class="radial-svg alert-count resource-icon alert-panel-alert" viewBox="0 0 60 60"
+                         preserveAspectRatio="xMidYMid meet">
+                        <g class="healthy-alert" transform="scale(1, 1)">
+                            <circle fill="none" cx="30" cy="30" r="30"/>
+                            <path class="healthy"
+                                  d="M30,5C16.2,5,5,16.2,5,30s11.2,25,25,25s25-11.2,25-25S43.8,5,30,5z M23.9,42.1L12.2,30.3l1.2-1.2l10.6,10.6l21.2-21.2  l1.2,1.2L23.9,42.1z"/>
+                        </g>
+                        <g class="error-alert" cursor="pointer">
+                            <defs>
+                                <filter id="shadow" x="-.1" y="-.1" width="140%" height="140%">
+                                    <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0"/>
+                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3"/>
+                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+                                </filter>
+                            </defs>
+                            <circle class="alert" cx="30" cy="30" r="24" filter="url(#shadow)" opacity="1"/>
+                            <text class="alert-label" text-anchor="middle" y="36" x="30" width="100">
+                                {{model.alerts.capacity.count}}
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="tile-details" ng-controller="MonitoringCapacityCarouselCtrl">
+                <carousel class="row row-centered" interval="interval">
+                    <slide ng-repeat="slide in slides" active="slide.active">
+                        <div class="carousel-inner">
+                            <div class="col-md-4 col-centered" ng-repeat="item in slide.items">
+                                <multi-carousel-item ng-model="item"></multi-carousel-item>
+                            </div>
+                        </div>
+                    </slide>
+                </carousel>
+            </div>
+        </div>
+        <div class="icon-toolbar footer">
+            <ul class="icon-row">
+                <li class="alert"><span class="icon icon-sm icon-small-square"></span> {{model.alerts.capacity.count}}
+                </li>
+            </ul>
+            <button class="btn icon-btn icon-sm" ng-class="capacityPanelState.arrow"
+                    title="{{capacityPanelState.title}}" ng-click="toggleAction(CAPACITY_ID)"></button>
+        </div>
+    </div>
+    <!-- Second-tile-->
+    <div class="alert-tile data-protection" ng-class="dpPanelState.state" ng-click="launchMonitoringPage(model.alerts.dp.count)">
+        <div class="status-and-detail-flex">
+            <div class="tile alert data-protection alert-tile-data-protection-bkg flex-column" ng-class="model.alerts.dp.level" id="data-protection">
+                <h2>Data Protection</h2>
+
+                <div class="alert-icon">
+                    <svg class="radial-svg alert-count resource-icon alert-panel-alert" viewBox="0 0 60 60"
+                         preserveAspectRatio="xMidYMid meet">
+                        <g class="healthy-alert" transform="scale(1, 1)">
+                            <circle fill="none" cx="30" cy="30" r="30"/>
+                            <path class="healthy"
+                                  d="M30,5C16.2,5,5,16.2,5,30s11.2,25,25,25s25-11.2,25-25S43.8,5,30,5z M23.9,42.1L12.2,30.3l1.2-1.2l10.6,10.6l21.2-21.2  l1.2,1.2L23.9,42.1z"/>
+                        </g>
+                        <g class="error-alert" cursor="pointer">
+                            <defs>
+                                <filter id="shadow" x="-.1" y="-.1" width="140%" height="140%">
+                                    <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0"/>
+                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3"/>
+                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+                                </filter>
+                            </defs>
+                            <circle class="alert" cx="30" cy="30" r="24" filter="url(#shadow)" opacity="1"/>
+                            <text class="alert-label" text-anchor="middle" y="36" x="30" width="100">
+                                {{model.alerts.dp.count}}
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="icon-toolbar footer">
+            <ul class="icon-row">
+                <li class="alert"><span class="icon icon-sm icon-small-square"></span> {{model.alerts.dp.count}}</li>
+            </ul>
+            <button class="btn icon-btn icon-sm" ng-class="dpPanelState.arrow" title="{{dpPanelState.title}}"></button>
+        </div>
+    </div>
+    <!-- Third-tile-->
+    <div class="alert-tile hardware" ng-class="hardwarePanelState.state">
+        <div class="status-and-detail-flex">
+            <div class="tile alert hardware alert-tile-hardware-bkg flex-column" ng-class="model.alerts.hardware.level"
+                 id="hardware">
+                <h2>Hardware</h2>
+
+                <div class="alert-icon" ng-click="toggleAction(HARDWARE_ID)">
+                    <svg class="radial-svg alert-count resource-icon alert-panel-alert" viewBox="0 0 60 60"
+                         preserveAspectRatio="xMidYMid meet">
+                        <g class="healthy-alert" transform="scale(1, 1)">
+                            <circle fill="none" cx="30" cy="30" r="30"/>
+                            <path class="healthy"
+                                  d="M30,5C16.2,5,5,16.2,5,30s11.2,25,25,25s25-11.2,25-25S43.8,5,30,5z M23.9,42.1L12.2,30.3l1.2-1.2l10.6,10.6l21.2-21.2  l1.2,1.2L23.9,42.1z"/>
+                        </g>
+                        <g class="error-alert" cursor="pointer">
+                            <defs>
+                                <filter id="shadow" x="-.1" y="-.1" width="140%" height="140%">
+                                    <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0"/>
+                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3"/>
+                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+                                </filter>
+                            </defs>
+                            <circle class="alert" cx="30" cy="30" r="24" filter="url(#shadow)" opacity="1"/>
+                            <text class="alert-label" text-anchor="middle" y="36" x="30" width="100">
+                                {{model.alerts.hardware.count}}
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="tile-details">
+                <div class="tile-details" ng-controller="MonitoringHardwareCarouselCtrl">
+                    <carousel class="row row-centered" interval="interval">
+                        <slide ng-repeat="slide in slides" active="slide.active">
+                            <div class="carousel-inner">
+                                <div class="col-md-3 col-centered" ng-repeat="item in slide.items">
+                                    <multi-carousel-item style="text-align: center;"
+                                                         ng-model="item"></multi-carousel-item>
+                                </div>
+                            </div>
+                        </slide>
+                    </carousel>
+                </div>
+            </div>
+        </div>
+        <div class="icon-toolbar footer">
+            <ul class="icon-row">
+                <li class="alert"><span class="icon icon-sm icon-small-square"></span>{{model.alerts.hardware.count}}
+                </li>
+            </ul>
+            <button class="btn icon-btn icon-sm" ng-class="hardwarePanelState.arrow"
+                    ng-click="toggleAction(HARDWARE_ID)" title="{{hardwarePanelState.title}}"></button>
+        </div>
+    </div>
+</div>

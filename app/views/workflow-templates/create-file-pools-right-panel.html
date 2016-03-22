@@ -1,0 +1,29 @@
+<div class="row-tile fix">
+<p class="pull-left" title="{{ 'file-pools-tooltip' | translate }}">{{'file-pool-select-capacity' | translate}}</p>
+<a class="text-link pull-right nomargin-top" href="" ng-click="dataModel.tierManagement()">{{ 'storage-systems-tier-management' | translate }}</a>
+</div>
+<div class="scroll-wizard-container bottom-3em fix">
+        <div class="accordion-panel">
+            <file-pool-tier-list ng-model="dataModel"></file-pool-tier-list>
+        </div>
+        <p ng-if="!dataModel.expand">{{dataModel.diskSizesByTier[0].name}}{{ 'file-pool-create-note' | translate }}</p>
+</div>
+<div class="thresholds fixed-control fixed-bottom zeroLeftPadding">
+    <div class="input-group flex-row">
+        <div class="bg-grey col-lg-6 col-md-6 col-sm-6">
+            <label>{{'storage-pool-utilization-threshold-low' | translate}}</label>
+            <input  type="text" class="slider-input" ng-model="dataModel.template.utilizationThreshold1" required="true" min="0" max="100">
+            <div class="input-combined fix">
+                <input  type="range" class="slider-range range-slider-control" ng-model="dataModel.template.utilizationThreshold1" required="true" min="0" max="100"
+                        data-show-value="true" title="{{dataModel.template.utilizationThreshold1}}">
+            </div>
+        </div>
+        <div class="bg-grey col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <label>{{'storage-pool-utilization-threshold-high' | translate}}</label>
+            <input type="text" class="slider-input" ng-model="dataModel.template.utilizationThreshold2" required="true" min="0" max="100">
+            <div class="input-combined fix">
+                <input type="range" class="slider-range range-slider-control" ng-model="dataModel.template.utilizationThreshold2" required="true" min="0" max="100">
+            </div>
+        </div>
+    </div>
+</div>

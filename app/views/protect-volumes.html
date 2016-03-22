@@ -1,0 +1,279 @@
+<common-page-header></common-page-header>
+<wizard-page>
+        <wizard-header ng-title="'workflow-title-protect-volumes' | translate" icon-class="icon-data-protection"></wizard-header>
+
+        <div class="wizard-body">
+            <!--Wizard column left-->
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify" ng-switch="allUseExisting">
+
+                <form name="validationForm.leftPanel" class="validation-form" novalidate>
+                    <div class="form-group">
+                        <label for="storage-system">Replication Type</label>
+                        <select class="form-control" id="storage-system"
+                                ng-disabled="true"
+                                ng-options="Local Replication">
+                            <option value="">Local Replication</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-lg btn-block btn-dark"
+                                ng-model="dataModel.replicationTechnology"
+                                ng-click="dataModel.replicationTechnology = 'SNAPSHOT'"
+                                ng-attr-title="{{'snapshot-tooltip' | translate}}"
+                                btn-radio="'SNAPSHOT'">Snapshot
+                        </button>
+
+                        <button type="button" class="btn btn-lg btn-block btn-dark"
+                                ng-model="dataModel.replicationTechnology"
+                                ng-click="dataModel.replicationTechnology = 'CLONE'"
+                                ng-attr-title="{{'clone-now-tooltip' | translate}}"
+                                btn-radio="'CLONE'">Clone Now
+                        </button>
+                    </div>
+
+                    <div class="form-group" ng-if="dataModel.replicationTechnology ==='SNAPSHOT'" ng-switch-when="false">
+                        <label>Number of Snapshots (Max 1024)</label>
+                        <input type="number" ng-min="1" ng-max="1024" ng-pattern="decimalNumberRegexp" ng-class="{'ng-invalid ng-dirty': numberOfSnapshotsValidation}"
+                               ng-model="dataModel.numberOfSnapshots" class="form-control number light-text" ng-change="changeSubmitButtonStatus() ; filterCopyGroups()"
+                               name="numberOfSnapshots" title="Number of Snapshots" placeholder="{{'valid-number-of-snapshots' | translate }}" required>
+                        <p ng-show="(validationForm.leftPanel.numberOfSnapshots.$invalid && !validationForm.leftPanel.numberOfSnapshots.$pristine)
+                        || (numberOfSnapshotsValidation && validationForm.leftPanel.numberOfSnapshots.$pristine)" class="validation-text">{{'invalid-protect-volume-snapshot-number-message' | translate }}</p>
+                    </div>
+
+                    <div class="form-group" ng-if="dataModel.replicationTechnology ==='SNAPSHOT'" ng-switch-when="true">
+                        <label>Number of Snapshots (Max 1024)</label>
+                        <input type="number" class="form-control number light-text" name="numberOfSnapshots"
+                               title="Number of Snapshots" placeholder="{{'invalid-number-of-snapshots' | translate }}" ng-disabled="true">
+                    </div>
+                </form>
+
+                <div class="form-group toggle-control" ng-switch-when="false">
+                    <label>{{'replication-group-label-consistency' | translate}}</label>
+
+                    <div class="btn-group btn-group-justified btn-group-toggle-black" role="toggle">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-dark"
+                                    ng-class="{'active': dataModel.consistencyGroupNeeded === true}"
+                                    ng-click="dataModel.consistencyGroupNeeded = true">{{'yes-button' | translate}}
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-dark"
+                                    ng-class="{'active': dataModel.consistencyGroupNeeded === false }"
+                                    ng-click="dataModel.consistencyGroupNeeded = false">{{'no-button' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group toggle-control" ng-switch-when="true">
+                    <label>{{'replication-group-label-consistency' | translate}}</label>
+
+                    <div class="btn-group btn-group-justified btn-group-toggle-black"
+                         role="toggle">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-dark" ng-class="{'disabled': dataModel.consistencyGroupNeeded === false,
+                                    'active': dataModel.consistencyGroupNeeded === true}">{{'yes-button' | translate}}
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-dark " ng-class="{'active': dataModel.consistencyGroupNeeded === false,
+                                    'disabled': dataModel.consistencyGroupNeeded === true}">{{'no-button' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Wizard column left ends-->
+
+            <div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 wizard-right" ng-if="!volumesSelected">
+                   <div class="alert alert-warning" role="alert">
+                       <h1>Warning</h1>
+                       <p>No Volumes Selected</p>
+                   </div>
+            </div>
+
+
+            <!--Right column-->
+            <div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 wizard-right" ng-if="volumesSelected">
+                <div class="header-row">
+                    <h2 ng-if="dataModel.replicationTechnology ==='SNAPSHOT'">Snapshot</h2>
+                    <h2 ng-if="dataModel.replicationTechnology ==='CLONE'">Clone Now</h2>
+                </div>
+                <div class="scroll-wizard-container">
+                    <div ng-if="dataModel.replicationTechnology ==='SNAPSHOT'" class="control-row">
+                        <div class="btn-group btn-group-toggle btn-group-justified">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule"
+                                        btn-radio="'HOURLY'" ng-disabled="allUseExisting">Hourly
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule"
+                                        btn-radio="'DAILY'" ng-disabled="allUseExisting">Daily
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule"
+                                        btn-radio="'WEEKLY'" ng-disabled="allUseExisting">Weekly
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule"
+                                        btn-radio="'MONTHLY'" ng-disabled="allUseExisting">Monthly
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group checkbox-btn-array clearfix sevenths control-row" ng-if="dataModel.replicationTechnology ==='SNAPSHOT' && (dataModel.schedule === 'WEEKLY')">
+                        <!--Days checkboxes start  -->
+                        <div class="btn-group-justified">
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Sun.isChecked" btn-checkbox ng-disabled="allUseExisting">SUN</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Mon.isChecked" btn-checkbox ng-disabled="allUseExisting">MON</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Tue.isChecked" btn-checkbox ng-disabled="allUseExisting">TUE</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Wed.isChecked" btn-checkbox ng-disabled="allUseExisting">WED</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Thu.isChecked" btn-checkbox ng-disabled="allUseExisting">THU</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Fri.isChecked" btn-checkbox ng-disabled="allUseExisting">FRI</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.Days.Sat.isChecked" btn-checkbox ng-disabled="allUseExisting">SAT</label>
+                        </div>
+                    </div>
+
+                    <div class="row control-row" ng-if="dataModel.replicationTechnology ==='SNAPSHOT'">
+                        <form name="validationForm.timePicker" class="validation-form" novalidate>
+                                <div class="form-group form-group-lg col-md-2 form-horizontal" ng-if="dataModel.schedule === 'HOURLY'">
+                                    <label>Start Minute </label>
+                                    <input type="number" class="time-input form-control" name="minute"
+                                           ng-min="0" ng-max="59" value="1" ng-class="{'ng-invalid ng-dirty': minuteValidation}"
+                                           ng-change="changeSubmitButtonStatus()" ng-model="dataModel.scheduleMinute"
+                                           placeholder="0 - 59" required ng-disabled="allUseExisting">
+                                </div>
+                                <div class="form-group form-group-lg col-md-2 form-horizontal" ng-if="!(dataModel.schedule === 'HOURLY')">
+                                    <label>Start Time </label>
+                                    <input type="text" class="form-control time-input input-restricted" ng-model="dataModel.scheduleTime"
+                                           bs-timepicker placeholder="12:00 AM" ng-readonly="true" ng-disabled="allUseExisting">
+                                </div>
+                                <div class="form-group form-group-lg col-md-2 form-horizontal"
+                                     ng-if="dataModel.schedule === 'MONTHLY'">
+                                    <label>Day </label>
+                                    <input type="number" class="time-input form-control" name="date"
+                                           ng-min="1" ng-max="31" value="1" ng-class="{'ng-invalid ng-dirty': dateValidation}"
+                                           ng-change="changeSubmitButtonStatus()" ng-model="dataModel.scheduleDate"
+                                           placeholder="1 - 31" required ng-disabled="allUseExisting">
+                                </div>
+
+                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                                 ng-if="dataModel.schedule === 'HOURLY'">
+                                <label>Every </label>
+                                <input type="number" class="time-input form-control" name="hourInterval"
+                                       ng-min="1" ng-max="23" value="1" ng-class="{'ng-invalid ng-dirty': hourIntervalValidation}"
+                                       ng-change="changeSubmitButtonStatus()" ng-model="dataModel.hourInterval"
+                                       placeholder="1 - 23" required ng-disabled="allUseExisting">
+                            </div>
+                            <div class="form-horizontal" ng-if="dataModel.schedule === 'HOURLY'">
+                                <label>&nbsp;</label>
+                                <p>Hours</p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div role="form" class="row control-row" ng-switch="allUseExisting">
+                            <form name="validationForm.rightPanel" class="validation-form" novalidate>
+
+                                    <div class="form-group form-group-lg col-md-4 form-horizontal" ng-switch-when="false">
+                                        <label>{{'valid-copy-group-name' | translate }}</label>
+                                        <input type="text" name="copyGroupName" class="form-control"
+                                               ng-change="changeSubmitButtonStatus()"
+                                               ng-class="{'ng-invalid ng-dirty': copyGroupNameValidation}"
+                                               ng-model="dataModel.copyGroupName" required tabindex="1"
+                                               placeholder="{{'valid-copy-group-name' | translate }}" ng-maxlength="26"
+                                               ng-pattern="copyGroupNameRegexp" maxlength="26">
+
+                                        <p ng-show="(validationForm.rightPanel.copyGroupName.$invalid && !validationForm.rightPanel.copyGroupName.$pristine)
+                                    || (copyGroupNameValidation && validationForm.rightPanel.copyGroupName.$pristine)"
+                                           class="validation-text">{{'invalid-protect-volume-copy-group-message' | translate }}</p>
+                                    </div>
+
+                                    <div class="form-group form-group-lg col-md-4 form-horizontal" ng-switch-when="true">
+                                        <label>Copy Group Name</label>
+                                        <input type="text" name="copyGroupName" class="form-control" tabindex="1"
+                                               placeholder="{{'invalid-copy-group-name' | translate }}" ng-disabled="true">
+                                    </div>
+
+                                    <div class="form-group form-group-lg col-md-8 form-horizontal" ng-switch-when="false">
+                                        <label>Comments</label>
+                                        <input type="text" name="comments" class="form-control"
+                                               placeholder="Comments (optional)"
+                                               ng-model="dataModel.comments" tabindex="2"
+                                               maxlength="1024">
+                                    </div>
+
+                                    <div class="form-group form-group-lg col-md-8 form-horizontal" ng-switch-when="true">
+                                        <label>Comments</label>
+                                        <input type="text" name="comments" class="form-control"
+                                               placeholder="Comments (optional)" tabindex="2" ng-disabled="true">
+                                    </div>
+                                </form>
+                    </div>
+
+
+                    <!--End fixed rows -->
+                    <div class="list-view">
+                        <div class="row-tile column-headers">
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell col-margin" ng-click="orderByField='volumeId'; reverseSort = !reverseSort">
+                                <a class="sort-column-header">ID <span class="caret" ng-show="orderByField == 'volumeId'"></span></a>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell col-margin" ng-click="orderByField='label'; reverseSort = !reverseSort">
+                                <a class="sort-column-header">Label <span class="caret" ng-show="orderByField == 'label'"></span></a>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin" ng-click="orderByField='poolId'; reverseSort = !reverseSort">
+                                <a class="sort-column-header">Pool ID <span class="caret" ng-show="orderByField == 'poolId'"></span></a>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell col-margin" ng-click="orderByField='storageSystemId'; reverseSort = !reverseSort">
+                                <a class="sort-column-header">Storage System ID <span class="caret" ng-show="orderByField == 'storageSystemId'"></span></a>
+                            </div>
+                        </div>
+                        <div class="row-grey" ng-repeat="volumeRow in dataModel.volumeRows | orderBy:orderByField:reverseSort" track by volumeRow.volumeId>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell smallMarginTop">
+                                <input type="text" ng-disabled=true class="form-control text inline" name="volumeId"
+                                       title="{{'storage-volume-id' | translate}}" ng-model="volumeRow.volumeId" value="volumeRow.volumeId">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell smallMarginTop">
+                                <input type="text" ng-model ="volumeRow.label" ng-disabled=true class="form-control text inline"
+                                       name="volumeLabel" title="{{'storage-volume-label' | translate}}" value="volumeRow.label">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell smallMarginTop">
+                                <input type="text" ng-model ="volumeRow.poolId" ng-disabled=true class="form-control text inline"
+                                       name="poolId" title="{{'storage-pool-label' | translate}}" value="volumeRow.poolId">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell smallMarginTop">
+                                <input type="text" ng-model ="volumeRow.storageSystemId" ng-disabled=true class="form-control text inline"
+                                       name="storageSystemId" title="{{'storage-system-id' | translate}}" value="volumeRow.storageSystemId">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell smallMarginTop" ng-if="dataModel.showDropDownColumn">
+                                <select id="select" class="dropdown inline cell" id="copyGroupName"
+                                        ng-model="volumeRow.CGSelection" ng-options="o.name for o in volumeRow.copyGroupNames" ng-change="CGChanged()">
+                                    <option value="" selected>Use New</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Right Column ends-->
+    <!--Fixed footer-->
+    <div class="row navbar-fixed-bottom footer-container">
+        <div class="wizard-footer">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                    <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>Cancel</button>
+                    <button type="button" class="btn btn-default active" id="submit" title="submit"
+                            ng-click="submitProtectVolumes()">Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</wizard-page>
+

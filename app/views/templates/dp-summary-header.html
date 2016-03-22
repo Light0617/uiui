@@ -1,0 +1,29 @@
+<div class="row" id="top-info" ng-if="model">
+    <div class="col-lg-12 col-md-12 alert-panel alert-panel-md">
+
+        <!--Alerts Panel-->
+        <div class="row alert-panel" id="alert-panel">
+            <div class="col-md-2 col-sm-3 col-xs-3">
+                <capacity-alert ng-model="model.alerts.capacity.count"
+                                alert-level="model.alerts.capacity.level"></capacity-alert>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-3">
+                <dp-alert ng-model="model.alerts.dp.count" alert-level="model.alerts.dp.level"></dp-alert>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2">
+                <dp-host-alert ng-model="model.alerts.dp" alert-level="model.alerts.dp.level"></dp-host-alert>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2">
+                <dp-volume-alert ng-model="model.alerts.dp" alert-level="model.alerts.dp.level"></dp-volume-alert>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-3">
+                <jobs-alert ng-model="model.alerts.jobs"></jobs-alert>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-3">
+                <hardware-alert ng-model="model.alerts.hardware.count"
+                                alert-level="model.alerts.hardware.level"></hardware-alert>
+            </div>
+        </div>
+
+    </div>
+</div>

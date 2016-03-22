@@ -1,0 +1,143 @@
+<div class="container-fluid stage">
+
+  <div class="row page-title with-tools">
+        <h1>{{ pageTitle }}</h1>
+        <div class="btn-group icon-toolbar">
+        </div>
+    </div>
+    <div class="ivSummary ng-scope"  ng-if="showSummary"></div>
+  <div ng-if="resources" class="inventory tiles-view">
+    <div class="row page-title">
+      <div class="btn-toolbar horizontal with-dividers btn-group pull-left">
+        <div class="checkbox" ng-if="inventory.multiSelect">
+          <label>
+            <input type="checkbox" ng-checked="inventory.isAllSelected()" ng-click="inventory.toggleSelectAll()"> {{ 'inventoryview-select-all' | translate }}
+          </label>
+        </div>
+
+        <!--Inventory operations-->
+        <div
+          class="btn icon-btn icon-sm" ng-repeat="actionButton in inventory.actionButtons"
+          ng-click="operation.handleInventoryOperation(actionButton)"
+          confirm="{{ behavior.confirm.needConfirm(actionButton) }}"
+          confirm-title="{{ behavior.confirm.getConfirmTile(actionButton) | translate }}"
+          confirm-message="{{ behavior.confirm.getConfirmMessage(actionButton) | translate }}"
+          title="{{ behavior.getOperationTooltip(actionButton) | translate }}"
+          ng-class="{ disabled: !behavior.isInventoryOperationEnabled(actionButton)}">
+          <span ng-class="behavior.style.inventoryOperationStyle(actionButton)"></span>
+        </div>
+      </div>
+
+      <!--Toggle tile/list view-->
+      <div class="btn-toolbar horizontal pull-right">
+        <div class="btn-group icon-btn-group-toggle">
+          <span type="button" class="btn icon-btn icon-sm icon-tile-view" ng-if="!onlyList" ng-class="{active: isTileView()}" title="{{ 'inventoryview-type-tile' | translate }}" ng-click="switchView(false)"></span>
+          <span type="button" class="btn icon-btn icon-sm icon-list-view" ng-class="{active: isListView()}" title="{{ 'inventoryview-type-list' | translate }}" ng-click="switchView(true)"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- List view -->
+    <div class="col-lg-9 col-md-8 col-sm-12 tile-container list-view list-view-flex expanding" ng-if="!isTileView()" infinite-scroll='inventory.loadMore()' infinite-scroll-disabled='inventory.busy'>
+      <div class="tile row-tile column-headers">
+        <div class="cell" ng-repeat="header in listHeaderColumns" ng-class="header.styles">
+          <a class="sort-column-header" ng-if="header.sort || false" ng-click="inventory.sortProperty(header.sortProperty)" ng-class="{dropup: queryService.getSortReverse()}">
+            {{header.titleKey | translate}}
+            <span class="caret"></span>
+          </a>
+          <span ng-if="!header.sort" class="not-sortable-column-header">{{ headerCol.titleKey | translate }}</span>
+        </div>
+      </div>
+
+      <div class="tile row-tile ivRow" ng-repeat="resource in inventory.filteredResources" id="{{behavior.identity.getRowId(resource)}}">
+        <!-- list row template goes here -->
+      </div>
+    </div>
+
+    <!--Tile view-->
+    <div class="col-lg-9 col-md-8 col-sm-12 tile-container flex-grid expanding" ng-if="isTileView()" infinite-scroll='inventory.loadMore()' infinite-scroll-disabled='inventory.busy'>
+      <div ng-if="showAdd" class="tile expand-tile">
+        <div class="tile resource-tile">
+          <a href="{{ addHref }}">
+            <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
+              <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 " />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="tile expand-tile"
+           ng-class="{expand: behavior.unfolding.hasUnfoldingDetail(resource) && !behavior.unfolding.isUnfolded(resource),
+                            expanded: behavior.unfolding.hasUnfoldingDetail(resource) && behavior.unfolding.isUnfolded(resource)}"
+           ng-repeat="(id, resource) in inventory.filteredResources">
+
+        <div class="tile resource-tile" >
+          <!--Tile checkbox & operation-->
+          <div class="tile-row status-bar">
+            <!--Tile checkbox-->
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn icon-btn checkbox" ng-click="inventory.toggleSelect(resource)" ng-class="{active: resource._selected}">
+                <input type="checkbox">
+              </label>
+            </div>
+
+            <!--Tile operations-->
+            <div class="btn-group icon-toolbar pull-right">
+              <div ng-repeat="actionButton in inventory.actionButtons"
+                   ng-if="behavior.isTileOperation(actionButton)"
+                   ng-click="operation.handleTileOperation(actionButton, resource)"
+                   confirm="{{ behavior.confirm.needConfirm(actionButton, resource) }}"
+                   confirm-title="{{ behavior.confirm.getConfirmTile(actionButton, resource) | translate }}"
+                   confirm-message="{{ behavior.confirm.getConfirmMessage(actionButton, resource) | translate }}"
+                   title="{{ behavior.getOperationTooltip(actionButton, resource) | translate }}">
+                <span ng-class="behavior.style.tileOperationStyle(actionButton, resource)" class="btn icon-btn icon-sm"></span>
+              </div>
+            </div>
+          </div>
+          <div class="tile-row resource-info ivTileBody">
+            <!-- Tile body template goes here -->
+          </div>
+
+          <!-- Tile footer -->
+          <div class="tile-row controls-row">
+            <button ng-if="behavior.unfolding.hasUnfoldingDetail(resource)" class="shape" type="button" data-toggle="collapse"
+                    data-target="#{{behavior.unfolding.getResourceUnfoldingId(resource)}}" aria-expanded="{{behavior.unfolding.isUnfolded(resource)}}"
+                    aria-controls="#{{behavior.unfolding.getResourceUnfoldingId(resource)}}"
+                    ng-class="{collapsed: !behavior.unfolding.isUnfolded(resource)}"
+                    ng-click="behavior.unfolding.toggleUnfoldAndFetchDetail(resource)">
+              <div class="wedge-shape shape-button"></div>
+            </button>
+
+          </div>
+        </div>
+
+        <div class="shape box-connector" ng-if="behavior.unfolding.hasUnfoldingDetail(resource)">
+          <div class="arrow triangle-up">&nbsp;</div>
+        </div>
+
+        <!--Unfolding detail template goes here -->
+        <div id="{{behavior.unfolding.getResourceUnfoldingId(resource)}}" class="nested-row collapse ivTileUnfoldDetail" ng-class="{in: behavior.unfolding.isUnfolded(resource)}"
+             ng-if="behavior.unfolding.hasUnfoldingDetail(resource)"
+             aria-expanded="{{behavior.unfolding.isUnfolded(resource)}}">
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <!--this should be updated to handle more than one inventoryview on a page by having an id suffix-->
+    <div class="col-lg-3 col-md-4 hidden-sm hidden-xs controls-column ivFilter">
+      <form role="search controls-column-row" ng-submit="inventory.filter()">
+        <div class="form-group search">
+          <tags-input ng-if="autocompleteFunction" id="searchTags" ng-model="inventory.tags" replace-spaces-with-dashes="false" max-tags="5" text="inventory.searchText" placeholder="{{ 'inventoryview-placeholder-search' | translate }}" add-from-autocomplete-only="true">
+            <auto-complete source="inventory.autocomplete($query)"></auto-complete>
+          </tags-input>
+          <input ng-if="!autocompleteFunction" type="text" placeholder="{{ 'inventoryview-placeholder-search' | translate }}" class="form-control" ng-model="inventory.searchText">
+          <button type="submit" class="icon icon-btn icon-search pull-right"></button>
+        </div>
+      </form>
+      <!--<h3>{{ 'inventoryview-results-header' | translate: inventory.pageCounts() }}</h3> update with ability to show or hide depending on page -->
+    </div>
+  </div>
+</div>

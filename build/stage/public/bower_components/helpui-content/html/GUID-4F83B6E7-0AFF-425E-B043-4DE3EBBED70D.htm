@@ -1,0 +1,347 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-6A1B5BE2-77A1-4E73-A490-DAE0C790BAA6"><a name="GUID-6A1B5BE2-77A1-4E73-A490-DAE0C790BAA6"><!-- --></a>[API] 
+	 </span>Getting disk details</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display details about a specific disk in the storage system. 
+  </p></p>
+ 
+	 <div class="section refsyn" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-3339D1D4-13C5-4875-AFCA-A6EC3F2E32DE"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-3339D1D4-13C5-4875-AFCA-A6EC3F2E32DE"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/storage-systems/<var class="keyword varname">storageSystemId</var>/disks/<var class="keyword varname">diskId</var></pre>
+ 
+		<p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-FE737C8A-9232-4AF6-88D7-E0F6315FCD8A"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-FE737C8A-9232-4AF6-88D7-E0F6315FCD8A"><!-- --></a> Use the storage system serial 
+		  number as the 
+		  <var class="keyword varname">storageSystemId</var>. 
+		</p>
+ 
+		<p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-2D8C0084-116D-44E5-AF8B-7818B7ED838C"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-2D8C0084-116D-44E5-AF8B-7818B7ED838C"><!-- --></a>Use the ID of the disk as the 
+		  <var class="keyword varname">diskId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-89CA60DF-F826-466C-AF1E-F3A9002B1433"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-89CA60DF-F826-466C-AF1E-F3A9002B1433"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__SECTION_9D487B7C390748A584E08CED5CC5E56F"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__SECTION_9D487B7C390748A584E08CED5CC5E56F"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-A52C87CB-414B-4A11-99A7-2A513923BF17"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-A52C87CB-414B-4A11-99A7-2A513923BF17"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+  "storageSystemId": "",
+  "speed": ,
+  "capacityInBytes": "",
+  "diskId": "",
+  "parityGroupId": "",
+  "purpose": "",
+  "model": "",
+  "serialNumber": "",
+  "version": "",
+  "location": "",
+  "type": ""
+}
+</pre>
+ 
+	 </div>
+ 
+	 
+<div class="tablenoborder"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__TABLE_1046AFF20DF34ABF993DC8F184C83351"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__TABLE_1046AFF20DF34ABF993DC8F184C83351" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+			 <tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d88544e102"> 
+					 <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__d43e28"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d88544e108"> 
+					 <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__d43e34"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d88544e114"> 
+					 <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__d43e40"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+		  <tbody class="tbody"> 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> storageSystemId 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> The ID of the storage system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> speed 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> The speed of the disk. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> capacityInBytes 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> The capacity of disk. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> diskId 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> ID of the disk. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> parityGroupId 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> ID of the parity group that the disk belongs to. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> purpose 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> 
+				  <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-F1C84C95-53B0-47EE-A90B-0AB526678164"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-F1C84C95-53B0-47EE-A90B-0AB526678164"><!-- --></a> Disk utility: one of the following values: 
+				  </p>
+ 
+				  <a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__UL_E5A112C2F48B4433AA5FDEB9C38C1E91"><!-- --></a><ul class="ul" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__UL_E5A112C2F48B4433AA5FDEB9C38C1E91"> 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_6038EA6F9F89493A811C2155324BFC7B"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_6038EA6F9F89493A811C2155324BFC7B"><!-- --></a><p>DATA - disk is used in a parity group. 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_467E39C0538044E98A841175198BCD4F"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_467E39C0538044E98A841175198BCD4F"><!-- --></a><p>SPARE - hot spare disk. 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_ADB1F7D732E546099051D05F30B13DB3"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_ADB1F7D732E546099051D05F30B13DB3"><!-- --></a><p>DATA_SWAPPED - data disk which is switched from hot spare. 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_9A97FCBC6E464E96B963E565F88BFCFD"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_9A97FCBC6E464E96B963E565F88BFCFD"><!-- --></a><p> RESERVED - reserved, will not be used for parity group creation. 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_9BEF414F4A674A9D9487B8325B1E8DD2"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_9BEF414F4A674A9D9487B8325B1E8DD2"><!-- --></a><p> FREE - the disk is available for parity group creation. 
+					 </p></li>
+ 
+				  </ul>
+ 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> model 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> Model of the disk. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> serialNumber 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> Serial number of the disk. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> version 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> Version of the disk. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> location 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> The location of the disk in the array. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e102 "> type 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e108 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d88544e114 "> 
+				  <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-91923E4F-9182-43FA-BE7C-9E0188E7DCD4"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-91923E4F-9182-43FA-BE7C-9E0188E7DCD4"><!-- --></a> Disk type: one of the following values: 
+				  </p>
+ 
+				  <a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__UL_0EDEAD8A1947441F83C06E95D4F850CA"><!-- --></a><ul class="ul" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__UL_0EDEAD8A1947441F83C06E95D4F850CA"> 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_CE8F5F65592F4CB09ADE7BC788E7D997"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_CE8F5F65592F4CB09ADE7BC788E7D997"><!-- --></a><p>FMC - Flash Module with compression support 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_A4F1D47950704032ABB5DB9241DE5679"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_A4F1D47950704032ABB5DB9241DE5679"><!-- --></a><p>FMD - Flash Module Drive 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_6672FD544CC04BE0B34D2301C4ACFC58"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_6672FD544CC04BE0B34D2301C4ACFC58"><!-- --></a><p>SAS - Serial Attached SCSI 
+					 </p></li>
+ 
+					 <li class="li" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_B7852A5BE03E49A788E722DC84F68832"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__LI_B7852A5BE03E49A788E722DC84F68832"><!-- --></a><p> SSD - Solid State Drive 
+					 </p></li>
+ 
+				  </ul>
+ 
+				</td>
+ 
+			 </tr>
+ 
+		  </tbody>
+ 
+		</table>
+</div>
+ 
+	 <div class="section" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__SECTION_C5281C897E804C7C8F47E2790511DF71"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__SECTION_C5281C897E804C7C8F47E2790511DF71"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-AA776A92-DA7D-41EC-831B-D77EDBEFB859"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-AA776A92-DA7D-41EC-831B-D77EDBEFB859"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__TABLE_D109586915B04AAD9D8D0FB3E03C42C6"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__TABLE_D109586915B04AAD9D8D0FB3E03C42C6" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d88544e315"> 
+					 <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d88544e321"> 
+					 <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d88544e327"> 
+					 <p class="p" id="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-4F83B6E7-0AFF-425E-B043-4DE3EBBED70D__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d88544e315 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e321 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e327 ">Success 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d88544e315 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e321 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e327 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d88544e315 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e321 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e327 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d88544e315 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e321 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d88544e327 ">The specified resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

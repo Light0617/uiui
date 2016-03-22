@@ -1,0 +1,61 @@
+<common-page-header></common-page-header>
+<application-stage>
+    <div class="wizard container-fluid" ng-if="dataModel">
+        <!--NOTE: This page loads a class of "container-fluid" twice. The first is addded in the div ng-class element. It must be removed.-->
+        <div class="wizard-header">
+            <div class="col-lg-1 col-md-1 hidden-sm">
+                <button type="button" class="btn icon-btn icon-thin-left-bracket icon-lg" back-button></button>
+            </div>
+            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <span class="icon icon-parity-group icon-xlg"></span>
+
+                <h1 class="wizard-title">{{'disk-manage' | translate }}</h1>
+            </div>
+        </div>
+
+        <div class="wizard-body">
+            <div class="header-row">
+                <h2>Storage System <em>{{dataModel.selectedStorageSystemId}}</em></h2>
+
+                <div class="btn-group btn-group-toggle pull-right" role="toggle">
+                    <button type="button" class="btn btn-default btn-lg" ng-model="dataModel.search.purpose"
+                            btn-radio="'SPARE'">Disks to Set to Free
+                    </button>
+                    <button type="button" class="btn btn-lg btn-default nomargin" ng-model="dataModel.search.purpose"
+                            btn-radio="'FREE'">Disks to Set to Spare
+                    </button>
+                </div>
+            </div>
+
+            <div class="header-row">
+                <h2 class="pull-left">Select Disks</h2>
+            </div>
+
+            <div class="scroll-wizard-container single-pane marginTopMedianPixel nopadding">
+                <!--disk tiles-->
+                <disk-manage-tiles ng-model="dataModel" class="nomargin"></disk-manage-tiles>
+                <!--Right Select Column-->
+                <disk-manage-right-filter ng-model="dataModel"></disk-manage-right-filter>
+            </div>
+        </div>
+        <!--Fixed footer-->
+        <div class="row navbar-fixed-bottom footer-container">
+            <div class="wizard-footer">
+                <div class="btn-toolbar" role="toolbar">
+
+                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                        <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>Cancel
+                        </button>
+
+                        <button type="button" class="btn btn-default active" id="submit"
+                                ng-click="updateDiskPurpose()"
+                                ng-disabled="dataModel.checkSubmitDisable()">Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</application-stage>
+
+

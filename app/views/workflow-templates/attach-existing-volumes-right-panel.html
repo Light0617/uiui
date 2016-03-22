@@ -1,0 +1,72 @@
+<div class="tile-view list-view">
+    <div class="tile row row-tile column-headers">
+        <div class="col-md-3 col-sm-3 col-xs-3 cell"><p>Label</p></div>
+        <div class="col-md-3 col-sm-3 col-xs-3 cell"><p>ID</p></div>
+        <div class="col-md-3 col-sm-3 col-xs-3 cell"><p>Size</p></div>
+        <div class="col-md-3 col-sm-3 col-xs-3 cell"><p>LUN</p></div>
+    </div>
+    <form name="validationForm.rightPanel" novalidate>
+        <div class="tile row row-tile removable disabled" ng-repeat="v in dataModel.attachModel.selectedVolumes">
+            <div class="col-md-3 col-sm-3 col-xs-3 cell control">
+                <input type="text" disabled="disabled" class="form-control" ng-model="v.label">
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 cell control">
+                <input type="text" disabled="disabled" class="form-control" ng-model="v.volumeId">
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 cell control">
+                <p class="form-control">
+                    <disk-size ng-model="v.availableCapacity" wrapped-in="p"></disk-size>
+                </p>
+
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 cell control validation-form">
+                <input type="number" ng-class="{'ng-invalid': v.hasDuplicatedLun}" min="0" ng-min="0" ng-max="2047" ng-pattern="v.decimalNumberRegexp"
+                       class="form-valid" name="lun" ng-model="v.lun" placeholder="LUN (optional)" title="{{v.validationTooltip}}">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="header-row">
+    <h2>Selected Servers {{dataModel.attachModel.serverPortMapperModel.servers.length}}</h2>
+</div>
+<div class="accordion-panel">
+    <accordion>
+        <accordion-group close-others="oneAtATime" ng-repeat="server in dataModel.attachModel.serverPortMapperModel.servers" is-open="server.open" is-disabled="server.disabled">
+            <accordion-heading>
+                <div class="col-lg-1 col-md-1 col-sm-1 expander-button" ng-class="{'collapsed' : !server.open }">
+                    <button class="btn btn-clean icon-btn icon-xsm" ng-class="{
+                                        'icon-caret-collapsed' :!server.open ,
+                                        'icon-caret-expanded' : server.open }" role="button"></button>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 accordion-header-column2">
+                    <p class="v-centered">{{server.serverName}}</p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 vertical-centered">
+                    <p class="v-centered">{{server.osType}}</p>
+                </div>
+            </accordion-heading>
+            <div class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="col-md-8 col-sm-12">
+                        <h4 ng-attr-title="{{'select-port-wwn-tooltip' | translate}}">Select Storage Ports (optional)</h4>
+
+                        <div class="btn-group checkbox-btn-array grid">
+                               <label class="flex-btn btn" ng-class="{'active': p.selected }"  ng-repeat="p in  server.selectablePorts" ng-click="p.selected = !p.selected">
+                                {{p.storagePortId}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <h4 ng-attr-title="{{'select-port-wwn-tooltip' | translate}}">Select Server WWNs (optional)</h4>
+
+                        <div class="btn-group checkbox-btn-array list">
+                            <label class="flex-btn btn" ng-class="{'active': wwn.selected }" ng-click="wwn.selected = !wwn.selected"  ng-repeat="wwn in server.selectableWWNs">
+                                {{wwn.name}}</label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </accordion-group>
+        <!--Wizard list tile option-->
+    </accordion>
+</div>

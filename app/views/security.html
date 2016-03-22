@@ -1,0 +1,133 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <div class="row wizard-header">
+        <div class="col-lg-1 col-md-1 hidden-sm">
+            <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
+        </div>
+        <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <span class="icon icon-disk-status icon-xlg"></span>
+            <h1 class="wizard-title">{{'security-security' | translate }}</h1>
+        </div>
+    </div>
+
+    <div class="wizard-body">
+        <div class="header-row">
+            <h2>{{'security-active-directory' | translate }}</h2>
+        </div>
+        <!--Full-width-->
+        <div class="scroll-wizard-container single-pane" >
+            <div class="row section">
+                <div class="solo" role="form">
+                    <div class="form-group form-group-lg">
+                        <label>{{'security-account-domain' | translate }}</label>
+                        <input type="text" name="accountDomain" class="form-control"
+                               ng-model="dataModel.accountDomain.domain" required>
+                    </div>
+                </div>
+
+                <div class="form-horizontal top clearfix">
+                    <div class="form-group form-group-lg col-md-6 col-sm-6 col-xs-12 form-horizontal">
+                        <label>{{'security-username' | translate }}</label>
+                        <input type="text" name="username" class="form-control"
+                               ng-model="dataModel.accountDomain.username"
+                               required>
+                    </div>
+                    <div class="form-group form-group-lg col-md-6 col-sm-6 col-xs-12 form-horizontal">
+                        <label>{{'security-password' | translate }}</label>
+                        <input type="password" name="password" class="form-control"
+                               ng-model="dataModel.accountDomain.password" required>
+                    </div>
+                </div>
+
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-xs" type="button"
+                                confirm
+                                confirm-title="{{ 'security-delete-one-confirmation' | translate}}"
+                                confirm-message="{{ 'security-delete-current-content' | translate}}"
+                                ng-if="dataModel.accountDomain.id"
+                                ng-click="dataModel.remove()"
+                                ng-disabled="dataModel.cannotDelete" ng-if="dataModel.accountDomain.id"
+                                back-button>
+                            <h3>{{'security-remove' | translate }}</h3>
+                        </button>
+                        <button type="button" class="btn btn-xs" type="button"
+                                ng-disabled="!dataModel.canSave()"
+                                ng-click="dataModel.save()"
+                                back-button>
+                            <h3>{{'security-submit' | translate }}</h3>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row section" ng-if="dataModel.accountDomain.id">
+                <div class="tile-view list-view">
+                    <div class="tile row row-tile column-headers">
+                        <div class=" col-md-6 col-sm-6 col-xs-6 cell"><p>{{'security-group-name' | translate }}</p></div>
+                        <div class=" col-md-6 col-sm-6 col-xs-6 cell"><p>{{'security-user-role' | translate }}</p></div>
+                    </div>
+                    <div class="tile row row-tile"
+                         ng-repeat="mapping in dataModel.groupMappingModel.mappings | filter:{deleted : false}">
+                        <div class=" col-md-6 col-sm-6 col-xs-6 cell control">
+                            <div class="form-group form-group-lg">
+                                <input type="text" ng-model="mapping.groupName" placeholder="Group Name"
+                                       ng-disabled="mapping.readOnly"
+                                       typeahead-append-to-body="false"
+                                       typeahead="group for group in dataModel.groupMappingModel.getUserGroups($viewValue)"
+                                       typeahead-wait-ms="500"
+                                       typeahead-loading="mapping.loadingUserGroups"
+                                       class="bootstrap-select form-control"/>
+                            </div>
+                            <i ng-show="mapping.loadingUserGroups" class="glyphicon glyphicon-refresh"></i>
+
+                        </div>
+                        <div class=" col-md-5 col-sm-5 col-xs-5 cell control">
+                            <div class="form-group">
+                                <select class="form-control" ng-disabled="mapping.readOnly"
+                                        ng-model="mapping.userRole"
+                                        ng-options="r for r in mapping.roles">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="!$first">
+                            <button class="btn icon-btn icon-sm icon-delete-item"
+                                    ng-click="mapping.delete()"></button>
+
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="$first">
+                            <button class="btn icon-btn icon-sm icon-add"
+                                    ng-click="dataModel.groupMappingModel.addMapping()"></button>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-xs"
+                                ng-click="dataModel.groupMappingModel.submit()"
+                                ng-disabled="!dataModel.groupMappingModel.canSubmit"
+                                >
+                            <h3>{{'security-submit' | translate }}</h3>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row navbar-fixed-bottom footer-container">
+        <div class="wizard-footer">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-confirm pull-right">
+                    <button type="button" class="btn btn-default"
+                            back-button>
+                        {{'security-cancel' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</wizard-page>

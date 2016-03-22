@@ -1,0 +1,25 @@
+<div class="tile">
+    <div class="row linear-values">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <p class="icon icon-ports"></p>
+        </div>
+        <div class="td col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <h3>{{model.storagePortId }}</h3>
+        </div>
+        <div class="td col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <h2>{{model.type}}</h2>
+        </div>
+        <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1 used-value">
+            <p>{{model.speed}}</p>
+        </div>
+        <div class="td col-lg-2 col-md-2 col-sm-2 col-xs-2 used-value">
+            <p>{{model.topology}}</p>
+        </div>
+        <div class="td col-lg-2 col-md-2 col-sm-2 col-xs-2 used-value">
+            <p>{{model.securitySwitchEnabled ? 'Enabled' : 'Disabled'}}</p>
+        </div>
+        <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1 percentage">
+            <input type="checkbox" ng-model="model.selected" ng-change="select()">
+        </div>
+    </div>
+</div>

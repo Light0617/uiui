@@ -1,0 +1,52 @@
+<!-- Modal confirming detaching selected dialog -->
+<confirmation-modal title="{{ 'storage-volume-detach-confirmation' | translate}}"
+                    content="{{ 'storage-volume-detach-selected-content' | translate:dataModel}}"
+                    text="{{ 'storage-volume-detach-confirmation' | translate}}"
+                    true-text="{{ 'storage-volume-detach-remove-zone' | translate}}"
+                    false-text="{{ 'storage-volume-detach-not-remove-zone' | translate}}"
+                    click-ok="dataModel.detachSelectedConfirmOk()"
+                    switch-enabled="dataModel.removeConnection"
+                    data-model="dataModel"
+                    modal-id="detachConfirmation"></confirmation-modal>
+
+<div class="btn-toolbar horizontal with-dividers btn-group pull-left">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="dataModel.allItemsSelected" ng-change="selectAll()">Select All
+        </label>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Delete" ng-if="dataModel.hasDelete" confirm confirm-title="{{ 'storage-volume-delete-confirmation' | translate}}" confirm-message="{{ dataModel.getSelectedVolumeCount() === 0 ? ('storage-volume-delete-zero-selected' | translate) :  ('storage-volume-delete-selected-content' | translate:dataModel) }}" ng-click="deleteSelectedConfirmOk()">
+        <span class="icon icon-delete"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Attach Volumes" ng-click="attachVolumes()">
+        <span class="icon-host"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Detach"
+         data-toggle="modal"
+         data-target="#detachConfirmation"
+         ng-disabled="dataModel.getSelectedVolumeCount()===0"
+         ng-if="dataModel.hasDetach">
+        <span class="icon icon-detach-volume"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Protect" ng-click="protectSelectedVolumes()" ng-disabled="dataModel.getSelectedVolumeCount()===0">
+        <span class="icon icon-data-protection"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Unprotect" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-delete-unprotected-selected' | translate) :  ('volume-actions-delete-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+        <span class="icon icon-remove-volume"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Suspend" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-suspend-unprotected-selected' | translate) :  ('volume-actions-suspend-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+        <span class="icon-pause"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Resume" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-resume-unprotected-selected' | translate) :  ('volume-actions-resume-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+        <span class="icon-play"></span>
+    </div>
+    <div class="btn icon-btn icon-sm" title="Restore" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-restore-unprotected-selected' | translate) :  ('volume-actions-restore-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+        <span class="icon icon-refresh"></span>
+    </div>
+</div>
+<div class="btn-toolbar horizontal pull-right">
+    <div class="btn-group icon-btn-group-toggle">
+        <span type="button" class="btn icon-btn icon-sm icon-tile-view" ng-class="{active : dataModel.view === 'tile'}" title="Tile View" ng-click="dataModel.view ='tile'"></span>
+        <span type="button" class="btn icon-btn icon-sm icon-list-view" ng-class="{active : dataModel.view === 'list'}" ng-click="dataModel.view ='list'" title="List View"></span>
+    </div>
+</div>

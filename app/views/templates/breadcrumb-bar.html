@@ -1,0 +1,17 @@
+<div class="container-fluid dark">
+    <ol class="breadcrumb">
+        <li class="dropdown" ng-repeat="breadcrumb in breadcrumbs track by breadcrumb.path"
+            ng-class="{ active: $last}"><a
+                                                                               ng-href="#{{ breadcrumb.path }}" ng>{{
+            breadcrumb.label |
+            translate }}</a><span class="caret" ng-attr-id="bc-{{$index}}" class="dropdown-toggle"
+                                  data-toggle="dropdown" ng-if="breadcrumb.isDropdown()"></span>
+            <ul ng-if="breadcrumb.isDropdown()" ng-attr-id="bc-{{$index}}-dropdown" class="dropdown-menu" role="menu">
+                <li ng-repeat="peer in breadcrumb.peers">
+                    <a role="menuitem" href="#{{ peer.path }}">{{ peer.label | translate }}</a>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+</div>

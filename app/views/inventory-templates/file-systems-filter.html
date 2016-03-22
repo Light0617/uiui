@@ -1,0 +1,62 @@
+<!--Control group: Free Space Input-->
+<div class="control-group">
+    <h3>Free Space<span
+            class="read-only">{{dataModel.search.freeCapacity.min}} - {{dataModel.search.freeCapacity.max}}</span>
+    </h3>
+
+    <div id="free-space-range" class="slider-range range-slider-control" two-knob-slider=""
+         slider-min="dataModel.search.freeCapacity.min" slider-max="dataModel.search.freeCapacity.max"
+         ng-model-min="dataModel.search.freeCapacity.min" ng-model-max="dataModel.search.freeCapacity.max">
+    </div>
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit"
+                    btn-radio="'GB'">GB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit"
+                    btn-radio="'TB'">TB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit"
+                    btn-radio="'PB'">PB
+            </button>
+        </div>
+    </div>
+</div>
+<!--Control group: Size of File System-->
+<div class="control-group">
+    <h3>File Systems Size<span class="read-only">{{dataModel.search.totalCapacity.min}} - {{dataModel.search.totalCapacity.max}}</span>
+    </h3>
+
+    <div id="array-size-range" class="slider-range range-slider-control" two-knob-slider=""
+         slider-min="dataModel.search.totalCapacity.min" slider-max="dataModel.search.totalCapacity.max"
+         ng-model-min="dataModel.search.totalCapacity.min" ng-model-max="dataModel.search.totalCapacity.max">
+    </div>
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit"
+                    btn-radio="'GB'">GB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit"
+                    btn-radio="'TB'">TB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit"
+                    btn-radio="'PB'">PB
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="control-group" ng-if="!dataModel.evsPage">
+    <select id="select" class="inline btn-group-justified" id="rgGroup" ng-model="dataModel.search.fileServer"  ng-options="o.name for o in dataModel.fileServer">
+        <option value="" selected>{{'virtual-file-server-filter' | translate}}</option>
+    </select>
+</div>
+

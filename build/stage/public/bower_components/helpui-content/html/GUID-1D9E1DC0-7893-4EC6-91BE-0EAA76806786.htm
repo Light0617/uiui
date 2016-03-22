@@ -1,0 +1,87 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1">Creating parity groups </h1>
+ 
+   
+   
+  <div class="body conbody"><p class="shortdesc"> 
+	 Parity groups are the basic units of storage capacity. Creating parity groups converts the raw disk capacity in your storage system into usable capacity. 
+  </p>
+ 
+	 <div class="section" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__SECTION_48E8B43445AC4B7884E8E4DB85D10A24"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__SECTION_48E8B43445AC4B7884E8E4DB85D10A24"><!-- --></a><h2 class="title sectiontitle"><span class="keyword">Storage Advisor</span> parity group concepts</h2> 
+		 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-60B7A40F-0054-46CF-898A-26B053075B9F"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-60B7A40F-0054-46CF-898A-26B053075B9F"><!-- --></a><span class="keyword">Storage Advisor</span> provides a simple one-click method of parity group creation that is based on best practices applicable to the disks in the storage system. 
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-96D1A139-3655-4B9F-BB30-F19EEBCE6E8E"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-96D1A139-3655-4B9F-BB30-F19EEBCE6E8E"><!-- --></a>An advanced method of parity group creation is also available. You can choose to use the advanced method if there is not a need to rely on best practices. 
+		   
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-6312061C-B76E-47D0-9F7A-DE02C94D2F4A"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-6312061C-B76E-47D0-9F7A-DE02C94D2F4A"><!-- --></a>Creating parity groups in 
+		  <span class="keyword">Storage Advisor</span> also creates LDEVs that can be consumed for pool creation. 
+		</p>
+ 
+		<div class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-82E2AB6B-23B3-44B0-8DFC-7743ACBB6188"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-82E2AB6B-23B3-44B0-8DFC-7743ACBB6188"><!-- --></a>Normal practice is to use all available disk capacity when creating parity groups to ensure that all of the storage system capacity is usable. There can be exceptions to this practice; for example: 
+		<a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__UL_B573F0B979D84287BD0B2DBB3B8426B6"><!-- --></a><ul class="ul" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__UL_B573F0B979D84287BD0B2DBB3B8426B6"> 
+		  <li class="li" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_C9399FCA120C4C9783027A3CD2380123"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_C9399FCA120C4C9783027A3CD2380123"><!-- --></a><p>If the entire capacity of the storage system is not needed. 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_6F12A78E5C0C4BF2B5F544D60F696A2D"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_6F12A78E5C0C4BF2B5F544D60F696A2D"><!-- --></a><p>If there is a need to create fewer parity groups in order to reserve more disks as spares. 
+		  </p></li>
+ 
+		</ul>
+ 
+		</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__SECTION_E02A496F8F4F43AD805891D5944AB534"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__SECTION_E02A496F8F4F43AD805891D5944AB534"><!-- --></a><h2 class="title sectiontitle">Viewing parity groups</h2> 
+		 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-A8975702-D3C8-464C-B5B9-71DCF4541725"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-A8975702-D3C8-464C-B5B9-71DCF4541725"><!-- --></a>Access the Parity Groups page by clicking <span class="ph emphasis-term" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-F95B5E8A-091B-4F8E-89FD-8E36BE971E72"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-F95B5E8A-091B-4F8E-89FD-8E36BE971E72"><!-- --></a>Storage Systems</span> on the dashboard and then clicking a storage system tile. Click the <span class="ph emphasis-term" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-5B3F9EBE-7F06-4F1A-96A8-A506CD9325CA"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-5B3F9EBE-7F06-4F1A-96A8-A506CD9325CA"><!-- --></a>Parity Groups</span> tile. 
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-243B9652-BD02-4818-8447-185E0B98AA83"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-243B9652-BD02-4818-8447-185E0B98AA83"><!-- --></a>A summary of parity groups includes disk type, number of parity groups, capacity, and available spares, all sorted by disk type. 
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-F1A97E71-1FC4-4D48-B3E1-1D2F38EA74C8"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-F1A97E71-1FC4-4D48-B3E1-1D2F38EA74C8"><!-- --></a> 
+		  You can click <span class="ph emphasis-term" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-E7DDC9BE-1D5F-463B-9250-0F2AAEAAD891"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-E7DDC9BE-1D5F-463B-9250-0F2AAEAAD891"><!-- --></a>Manage Spare Disk</span> to open the Disk Management page and set free disks as spare disks, or spares as free disks. 
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-764FF77B-9091-4C78-A0DB-B2834719B462"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-764FF77B-9091-4C78-A0DB-B2834719B462"><!-- --></a>Click any parity group tile to view its details. 
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-66A8A381-1443-4DCC-8B89-004811AE4524"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-66A8A381-1443-4DCC-8B89-004811AE4524"><!-- --></a>Click the plus sign (+) to open the 
+		  <span class="keyword wintitle">Create Parity Groups</span> page. 
+		</p>
+ 
+		<p class="p" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-4B00A88F-FC77-48FE-AB91-55835502117C"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__GUID-4B00A88F-FC77-48FE-AB91-55835502117C"><!-- --></a> When you open the 
+		  <span class="keyword wintitle">Create Parity Groups</span> page, the basic method is selected by default. 
+		</p>
+ 
+		<a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__UL_5D199C85668F44C98FA61384D5F93450"><!-- --></a><ul class="ul" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__UL_5D199C85668F44C98FA61384D5F93450"> 
+		  <li class="li" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_F763A9DBD2B24ECA94D61AD3823731FD"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_F763A9DBD2B24ECA94D61AD3823731FD"><!-- --></a><p>Basic option: Creating a parity group using the basic option requires no input, 
+			 but you can change the RAID type or the number of parity groups. 
+			 <span class="keyword">Storage Advisor</span> applies recommended best practices for creating these parity groups. 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_E86B841DD2D04B7B9AD1AC146F0C9FC1"><a name="GUID-1D9E1DC0-7893-4EC6-91BE-0EAA76806786__LI_E86B841DD2D04B7B9AD1AC146F0C9FC1"><!-- --></a><p>Advanced option: The advanced option allows the user to fully configure the RAID layout of the parity group by selecting the specific disks and hot spares to assign for parity group creation. 
+		  </p></li>
+ 
+		</ul>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<ul class="ullinks">
+<li class="link ulchildlink"><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-E11541C1-1AE8-4052-A58E-AD5E5A0E23BE.htm')" >Creating parity groups, basic method</span><br/>
+<div class="short_desc"/></li><li class="link ulchildlink"><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-BF11F8D1-FA68-4472-8F8C-96C38B5EB031.htm')" >Creating parity groups or hot spares, advanced method</span><br/>
+<div class="short_desc"/></li><li class="link ulchildlink"><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-BC3697E0-A5B7-4155-930C-1838E03A46A7.htm')" >Managing free and spare disks</span><br/>
+<div class="short_desc"/></li><li class="link ulchildlink"><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-B94B1F00-13A6-42FA-9FEC-5249F9D2D2CE.htm')" >Parity groups inventory</span><br/>
+<div class="short_desc"/></li></ul>
+
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

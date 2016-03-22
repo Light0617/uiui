@@ -1,0 +1,78 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <wizard-header ng-title="'fabric-add'| translate" icon-class="icon-fabric-switch"></wizard-header>
+    <div class="wizard-body">
+        <div class="header-row">
+            <h2>{{'fabric-add-enter-data' | translate}}</h2>
+        </div>
+
+        <div class="scroll-wizard-container single-pane">
+            <div class="tile-view list-view">
+                <div class="tile row row-tile column-headers">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <p>{{'fabric-add-virtual-id' | translate }}</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <p>{{'fabric-add-switch-type' | translate }}</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <p>{{'fabric-add-switch-ip' | translate }}</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
+                        <p>{{'fabric-add-switch-port-number' | translate }}</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <p>{{'fabric-add-switch-username' | translate }}</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <p>{{'fabric-add-switch-password' | translate }}</p>
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-sm-1 col-xs-1 cell">
+                        &nbsp;
+                    </div>
+                </div>
+                <!--Repeating Rows-->
+                <div class="tile row row-tile" ng-repeat="pendingFabricSwitch in dataModel.fabricSwitches">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <input type="text" class="form-control text inline" ng-model="pendingFabricSwitch.virtualFabricId"
+                               name="virtualFabricId" title="Virtual Fabric Id"
+                               placeholder="{{'fabric-add-virtual-id' | translate }}">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell control">
+                        <select class="dropdown inline" id="switchType" title="Fabric Switch Type"
+                                ng-model="pendingFabricSwitch.switchType"
+                                placeholder="{{'fabric-add-switch-type' | translate }}"
+                                ng-options="mode | translate for mode in dataModel.switchTypes">
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <input type="text" class="form-control text inline" ng-model="pendingFabricSwitch.principalSwitchAddress"
+                               name="principalSwitchAddress" title="Fabric Switch IP Address" placeholder="{{'fabric-add-switch-ip' | translate }}">
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
+                        <input type="text" class="form-control text inline" ng-model="pendingFabricSwitch.principalSwitchPortNumber "
+                               name="principalSwitchPortNumber" title="Fabric Switch Port Number"
+                               placeholder="{{'fabric-add-switch-port-number' | translate }}">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <input type="text" class="form-control text inline" ng-model="pendingFabricSwitch.principalSwitchUsername"
+                               name="principalSwitchUsername" title="Username" placeholder="{{'fabric-add-switch-username' | translate }}">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <input type="password" class="form-control text inline" ng-model="pendingFabricSwitch.principalSwitchPassword"
+                               name="principalSwitchPassword" title="Password" placeholder="*******">
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell control" ng-if="$first">
+                        <button class="btn icon-btn icon-sm icon-add" ng-click="dataModel.add()"></button>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell control" ng-if="!$first">
+                        <button class="btn icon-btn icon-sm icon-delete-item"
+                                ng-click="pendingFabricSwitch.delete()"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <wizard-footer ng-model="dataModel">
+    </wizard-footer>
+</wizard-page>

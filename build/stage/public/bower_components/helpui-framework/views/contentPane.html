@@ -1,0 +1,108 @@
+<div class='animate-show'
+     id="helpui-contentPane"
+     ng-hide='!(showContentPane())'
+        >
+    <div id="helpui-contextBar" class="helpui-contextBar helpui-crumbs">
+       <span id="#helpui-crumbs" ng-show="helpui.recentPages.length > 0">
+           <span class="helpui-recentTopicsLabel">Recent Topics:</span>
+           <span ng-repeat="page in helpui.recentPages | limitTo: -4" class="helpui-recentTopic">
+               <!-- add vertical bar, except for last one -->
+               <span ng-click="helpCtl.showTopic(page.filename)">
+                   <span class='helpui-crumbs-separator' ng-hide="$first"></span>
+                   {{page.title}}
+               </span>
+           </span>
+      </span>
+    </div>
+
+    <!-- Navigation Panel on Left -->
+    <div class="helpui-navPane-spacer01"></div>
+    <div id="helpui-navPane">
+        <ul class="helpui-navPane-itemList">
+            <li ng-repeat='item in categories'>
+                <div class='helpui-navPane-categories' ng-click='helpCtl.showTopic(item.href)'
+                     ng-class="{helpuiActiveTopic: helpui.helpTopic.url.indexOf(item.href) > 0}">
+                    <span>{{item.title}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content Pane for Help -->
+    <div id="helpui-mainPane" style="overflow-x: auto">
+        <!-- Main Pane Content Views -->
+        <!-- Topic Listing -->
+        <div ng-switch='helpui.mainTopicView'>
+            <div ng-switch-when='topicList' class='helpui-Topic'>
+                <div class='helpui-Topic'>
+                    <h2 class="helpui-topicTitle">{{ helpui.currentTopic.title }} </h2>
+                    <ul class="helpui-topicList">
+                        <li ng-repeat='topic in helpui.currentTopic.topics'>
+                            <div class="helpui-topicTitle" ng-click="helpCtl.getHelpTopic(topic.href)">{{topic.title}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Context Help Listing Content -->
+            <div ng-switch-when='pickTopicContext' class='helpui-Topic'>>
+                <div class='helpui-Topic'>
+                    <h2 class="helpui-topicTitle">Relevant Topics:</h2>
+                    <ul class="helpui-topicList">
+                        <li ng-repeat="topic in helpui.contextList[helpui.context]">
+                        <span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic(helpui.topics[topic].filename)">
+                        {{helpui.topics[topic].title}}
+                         </span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <!-- Topic Content -->
+            <div ng-switch-when='topicContent'>
+                <!-- BEFORE: <div id="helpui-topicContents" ng-include='helpui.helpTopic.url' -->
+                <!-- NOTWORKING <div id="helpui-topicContents" ng-include='helpCtl.helpTopic.url' -->
+                <div id="helpui-topicContents" ng-include='helpui.helpTopic.url'
+                     class='helpui-Topic'>
+                    <!-- This gets the HTML help content -->
+                    abc
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div ng-switch-when='searchResults' class='helpui-Topic'>
+                <div class='helpui-Topic'>
+                    <h2 class="helpui-topicTitle">Search Results:</h2>
+
+                    <p>Searching for: {{helpui.search.searchedText}}</p>
+
+                    <div class="helpui-search-no-results" ng-if="helpui.search.results.length ===0">
+                        <h3 class="helpui-topicTitle">No matching topics found.</h3>
+                    </div>
+                    <ul class="helpui-topicList">
+                        <li ng-repeat="result in helpui.search.results">
+                        <span class='helpui-topicLink'
+                              ng-click="helpCtl.getHelpTopic(result.name)"
+                                >
+                        {{result.title}}
+                         </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Default Content -->
+            <div ng-switch-default class='helpui-Topic'>
+                <div ng-include="helpCtl.buildUrl(helpui.categories[0].href)" class='helpui-Topic'>
+                    <!-- show the first topic in the list -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Resize Bar -->
+    <div id="helpui-resizeBar" class="helpui-resizeBar">
+        <span class="helpui-resizeHandle" ng-click="helpCtl.toggleContentPane()" title="Drag to resize window">
+        <span class="icon icon-menu" ></span>
+        </span>
+    </div>
+
+</div>

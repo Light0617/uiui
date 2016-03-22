@@ -1,0 +1,102 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1">Monitoring hardware</h1>
+ 
+   
+  <div class="body taskbody"> 
+	 <div class="section context" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-4DF01CFF-5DF8-42DC-A9F8-2AED2F9E1D38"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-4DF01CFF-5DF8-42DC-A9F8-2AED2F9E1D38"><!-- --></a> 
+		<p class="p" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-4B00A88F-FC77-48FE-AB91-55835502117C"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-4B00A88F-FC77-48FE-AB91-55835502117C"><!-- --></a><span class="keyword">Storage Advisor</span> monitors components in your storage systems and displays alerts on resource and storage system pages. You can also see how many components are in normal status. 
+		</p>
+ 
+		<p class="p" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-D0311635-7C14-4DF6-83B9-F5777C040378"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-D0311635-7C14-4DF6-83B9-F5777C040378"><!-- --></a>Alerts are represented by a number in the 
+		  <span class="ph" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-82E08676-B510-4581-90B0-1A60C501B385"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-82E08676-B510-4581-90B0-1A60C501B385"><!-- --></a>Hardware</span> tile or the 
+		  <span class="ph" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-C5908F1D-89D8-4B80-8F46-FCE755905625"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-C5908F1D-89D8-4B80-8F46-FCE755905625"><!-- --></a>Hardware Alerts</span> tile. A red circle represents a critical alert and a yellow triangle represents a warning. Only critical alerts are shown unless there are no critical alerts, in which case warning alerts are displayed. 
+		</p>
+ 
+		<p class="p" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-9E363AF8-95DE-41C6-846A-DF621181CC94"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-9E363AF8-95DE-41C6-846A-DF621181CC94"><!-- --></a> 
+		  The alerts are received from the storage array. There is one alert per component type, for a maximum of eight. 
+		</p>
+ 
+		<p class="p" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-A1709C69-5357-48CB-9CD5-FB5A9131BCA0"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-A1709C69-5357-48CB-9CD5-FB5A9131BCA0"><!-- --></a> The alert clearance process runs every 20 minutes for each storage system that has components with errors. Alerts are only cleared when all components of a given type with errors in the storage system return to normal state. The exception is disks, each of which can have alerts cleared, even if other disks remain in error. Alerts for ports and processors are cleared together, so alerts are cleared only when all ports and all processors are normal. 
+		</p>
+ 
+		<p class="p" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-34A3A34C-A074-4577-A157-43FCC2C7ADAF"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-34A3A34C-A074-4577-A157-43FCC2C7ADAF"><!-- --></a> 
+		  For example, if there are five fans with alerts in one storage system, they will be cleared only when each and every fan alert is cleared. However, for disks, each alert is cleared as and when disk alert clearance is available. 
+		</p>
+ 
+		<p class="p" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-56749C99-2B40-4D75-B362-4FD661158CEC"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-56749C99-2B40-4D75-B362-4FD661158CEC"><!-- --></a><span class="keyword">Storage Advisor</span> monitors the following components: 
+		</p>
+ 
+		<a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__UL_350F9B5ECB154FDB9F59538D4BE20A35"><!-- --></a><ul class="ul" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__UL_350F9B5ECB154FDB9F59538D4BE20A35"> 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_54EBEDDD1FBD4D41B7F83EA1084694B9"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_54EBEDDD1FBD4D41B7F83EA1084694B9"><!-- --></a><p>Disks 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_5ED11B4D82BF4FDA932FB101B0BA6198"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_5ED11B4D82BF4FDA932FB101B0BA6198"><!-- --></a><p>Fans 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_4C2707BAB403436A8961E98C53DC658C"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_4C2707BAB403436A8961E98C53DC658C"><!-- --></a><p>Batteries 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_966FC89203CB4FD88B15724BA9094F06"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_966FC89203CB4FD88B15724BA9094F06"><!-- --></a><p>Cache 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_A840AEDDD8814C8BBD29916B28A795F7"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_A840AEDDD8814C8BBD29916B28A795F7"><!-- --></a><p>Processors 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_0F5EB5835A5647A5917DD49BD6F46D29"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_0F5EB5835A5647A5917DD49BD6F46D29"><!-- --></a><p>Power supplies 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_E740C3D94B2549718633710698DFCD54"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_E740C3D94B2549718633710698DFCD54"><!-- --></a><p>Ports 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_E941513DAFF84D708930FF1B5BEB060B"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_E941513DAFF84D708930FF1B5BEB060B"><!-- --></a><p>Shared memory 
+		  </p></li>
+ 
+		</ul>
+ 
+	 </div>
+ 
+	 <div class="tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__STEPS_4C1106C1FE734923A705768AF5288159"><!-- --></a><ol class="ol steps" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__STEPS_4C1106C1FE734923A705768AF5288159"><li class="li step" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__STEP_768EC5B649C84251BF5E9C994272D5AE"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__STEP_768EC5B649C84251BF5E9C994272D5AE"><!-- --></a> 
+		  <span class="ph cmd" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-1255AD51-3885-4B08-917A-C4407DE23024"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-1255AD51-3885-4B08-917A-C4407DE23024"><!-- --></a>Hardware alerts display in the following pages. Alerts are displayed by type of component. 
+		  </span> 
+		    
+			 <a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__UL_553FEE8995E0454992B12C45C5B70CF8"><!-- --></a><ul class="ul" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__UL_553FEE8995E0454992B12C45C5B70CF8"> 
+				<li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_27A843DD3E684C70A6559D6C251A67A9"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_27A843DD3E684C70A6559D6C251A67A9"><!-- --></a><p>Dashboard: Click the 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-9DED9EC6-E97F-46AC-9166-8F9BD837EADB"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-9DED9EC6-E97F-46AC-9166-8F9BD837EADB"><!-- --></a>Hardware Alerts</span> tile or the 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-E666F8C8-6595-41B4-BF4E-46152AB9B6EC"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-E666F8C8-6595-41B4-BF4E-46152AB9B6EC"><!-- --></a>Monitoring</span> tab and click the 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-4249DF18-04AA-4C39-A806-D411D309D87C"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-4249DF18-04AA-4C39-A806-D411D309D87C"><!-- --></a>Hardware</span> tile to display the types of components. 
+				</p></li>
+ 
+				<li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_B2E19913672749EE86B7D6301664B2A7"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_B2E19913672749EE86B7D6301664B2A7"><!-- --></a><p>Storage system inventory: Includes all hardware alerts. 
+				</p></li>
+ 
+				<li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_B3AEA42C2E8D4D4698524D20C759D909"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_B3AEA42C2E8D4D4698524D20C759D909"><!-- --></a><p>Storage system detail: Click a storage system tile and click the 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-6BF8EBCB-E252-4079-B809-7A3AAC756EBE"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-6BF8EBCB-E252-4079-B809-7A3AAC756EBE"><!-- --></a>Hardware Alerts</span> tile to view hardware alerts for the selected storage system in the 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-C9555AC9-7333-467E-A248-6614039D01F6"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-C9555AC9-7333-467E-A248-6614039D01F6"><!-- --></a>Monitoring</span> tab. 
+				</p></li>
+ 
+				<li class="li" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_530CF0393B774C389B9FD359656103C8"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__LI_530CF0393B774C389B9FD359656103C8"><!-- --></a><p>Parity Group inventory: Click a storage system tile and then click 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-D34B9066-45C5-4DD7-ACDF-6FDFA5FADCE5"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-D34B9066-45C5-4DD7-ACDF-6FDFA5FADCE5"><!-- --></a>Parity Groups</span> to open the inventory. Click the 
+				  <span class="ph uicontrol" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-905704A6-1759-47E6-A178-A97695247CD7"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-905704A6-1759-47E6-A178-A97695247CD7"><!-- --></a>Hardware Alerts</span> tile to view alerts for disks where parity groups are located. 
+				</p></li>
+ 
+			 </ul>
+ 
+			 <div class="note note" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-62BEC6B7-21C1-4EFF-B5C4-C79097F4E652"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-62BEC6B7-21C1-4EFF-B5C4-C79097F4E652"><!-- --></a><p><span class="admonition">Note:</span>  Ref Code mapping to trap descriptions is available in a file included with the ISO image. 
+			 </p></div>
+ 
+		   
+		</li>
+<li class="li step" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__STEP_C7B63FA6D5FD4244B228BABB021C67F5"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__STEP_C7B63FA6D5FD4244B228BABB021C67F5"><!-- --></a> 
+		  <span class="ph cmd" id="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-AE19B89E-BEA3-408C-BA43-5FBED3A0D700"><a name="GUID-ECDBC16B-85DF-42FD-8711-F46E42CF310C__GUID-AE19B89E-BEA3-408C-BA43-5FBED3A0D700"><!-- --></a>Click a component type to display details in the table. Review the details in order to resolve the issue. 
+		  </span> 
+		</li>
+</ol>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

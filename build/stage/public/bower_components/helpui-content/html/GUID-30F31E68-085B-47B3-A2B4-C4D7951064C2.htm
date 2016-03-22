@@ -1,0 +1,421 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-B721B404-7A7C-4191-BEA4-0367F5B74F03"><a name="GUID-B721B404-7A7C-4191-BEA4-0367F5B74F03"><!-- --></a>[API] 
+	 </span>Getting storage system details</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display detailed information for a specific storage system. 
+  </p></p>
+ 
+	 <div class="section refsyn" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-9B2653D9-D601-46A6-8A72-8415C05DA7BC"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-9B2653D9-D601-46A6-8A72-8415C05DA7BC"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/storage-systems/<var class="keyword varname">storageSystemId</var></pre>
+ 
+		<p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-CB1DB4C2-7F95-4C9D-9102-1AE9556CBA37"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-CB1DB4C2-7F95-4C9D-9102-1AE9556CBA37"><!-- --></a>Use the storage system ID as the 
+		  <var class="keyword varname">storageSystemId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-13285FC1-2F6E-47C7-8289-F5D80C383601"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-13285FC1-2F6E-47C7-8289-F5D80C383601"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_9D487B7C390748A584E08CED5CC5E56F"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_9D487B7C390748A584E08CED5CC5E56F"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-41642E32-C37B-4F12-A50B-38DB30A54F50"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-41642E32-C37B-4F12-A50B-38DB30A54F50"><!-- --></a>The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+            "storageSystemId": "",
+            "accessible": ,
+            "model": "",
+            "svpIpAddress": "",
+            "gum1IpAddress": "",
+            "gum2IpAddress": "",
+            "firmwareVersion": "",
+            "horcmVersion": "",
+            "cacheCapacity": "",
+            "totalUsableCapacity": "",
+            "allocatedToPool": "",
+            "unallocatedToPool": "",
+            "usedCapacity": "",
+            "availableCapacity": "",
+            "subscribedCapacity": "",
+            "unusedDisks": ,
+            "unusedDisksCapacity": ""
+        }
+  
+</pre>
+ 
+	 </div>
+ 
+	 
+<div class="tablenoborder"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__TABLE_E10F5A93B7584ABB8DA4018223780368"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__TABLE_E10F5A93B7584ABB8DA4018223780368" frame="border" border="1" rules="all"> 
+		   
+		   
+		   
+		  <thead class="thead" align="left"> 
+			 <tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d44836e94"> 
+					 <p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__d43e28"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d44836e100"> 
+					 <p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__d43e34"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d44836e106"> 
+					 <p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__d43e40"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+		  <tbody class="tbody"> 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> storageSystemId 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The ID of the storage system (serial number). 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> accessible 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> Boolean 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The status of the storage system indicating whether the storage system is available with 
+				  <span class="keyword">Storage Advisor</span>. If accessible = TRUE, the storage system can be managed with 
+				  <span class="keyword">Storage Advisor</span>. If accessible = FALSE, storage system cannot be managed with 
+				  <span class="keyword">Storage Advisor</span>. This happens when the storage system is first onboarded and the system is initializing the cache details. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> model 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The storage system model. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> svpIpAddress 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The IP address of the service processor (SVP) of the storage system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> gum1IpAddress 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The IP address of the maintenance utility controller 1. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> gum2IpAddress 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The IP address of the maintenance utility controller 2. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> firmwareVersion 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The firmware version of the storage system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> horcmVersion 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The HORCM version of the storage system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 ">cacheCapacity 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 ">String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 ">The cache capacity in the storage system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> totalUsableCapacity 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The total usable capacity in the storage system. This is the sum of all parity group capacities in the system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> allocatedToPool 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The sum of all the pool capacities in the system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> unallocatedToPool 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The capacity available to create pools in the system. This is the difference between totalUsableCapacity and allocatedToPool. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 ">unusedDisksCapacity 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 ">String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 ">The unused disk capacity in the storage system. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> availableCapacity 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The available capacity in all pools in the system. This is the difference between totalUsableCapacity and usedCapacity. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> subscribedCapacity 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> This is the overall capacity of all created volumes that are available in the storage pools of the storage system.
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> unusedDisks 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The number of disks unused in the storage system, such as disks that are not allocated as hot spare disk and not used for parity group creation. 
+				</td>
+ 
+			 </tr>
+ 
+			 <tr class="row"> 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e94 "> usedDiskCapacity 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e100 "> String 
+				</td>
+ 
+				<td class="entry" valign="top" width="NaN%" headers="d44836e106 "> The sum of all used capacities in all the pools in the system. 
+				</td>
+ 
+			 </tr>
+ 
+		  </tbody>
+ 
+		</table>
+</div>
+ 
+	 <div class="section" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_C5281C897E804C7C8F47E2790511DF71"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_C5281C897E804C7C8F47E2790511DF71"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-5EAB5BFC-15EA-431C-8D7F-561D702D67AD"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-5EAB5BFC-15EA-431C-8D7F-561D702D67AD"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__TABLE_D109586915B04AAD9D8D0FB3E03C42C6"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__TABLE_D109586915B04AAD9D8D0FB3E03C42C6" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d44836e350"> 
+					 <p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d44836e356"> 
+					 <p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d44836e362"> 
+					 <p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d44836e350 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e356 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e362 ">Success 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d44836e350 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e356 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e362 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d44836e350 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e356 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e362 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d44836e350 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e356 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d44836e362 ">The specified resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_7527064F8797485C9DE116C3C2EA38B2"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__SECTION_7527064F8797485C9DE116C3C2EA38B2"><!-- --></a><h2 class="title sectiontitle">Example</h2> 
+		 
+		<p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-17C5C984-35BB-4658-B504-613CB52A9335"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-17C5C984-35BB-4658-B504-613CB52A9335"><!-- --></a>Request with JSON command: 
+		</p>
+ 
+		<pre class="pre codeblock">https://172.17.64.108:443/v1/ storage-systems/410117</pre>
+ 
+		<p class="p" id="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-CE7A8033-9889-424F-926E-243C60F60BAB"><a name="GUID-30F31E68-085B-47B3-A2B4-C4D7951064C2__GUID-CE7A8033-9889-424F-926E-243C60F60BAB"><!-- --></a>JSON Response: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+    "storageSystemId": "410117",
+    "accessible": true,
+    "model": "VSP G400",
+    "svpIpAddress": "172.17.41.139",
+    "gum1IpAddress": "172.17.41.137",
+    "gum2IpAddress": "172.17.41.138",
+    "firmwareVersion": "83-01-03/00",
+    "horcmVersion": "01-33-03/06",
+    "cacheCapacity": "229512314880",
+    "totalUsableCapacity": "108753275742208",
+    "allocatedToPool": "98905110872064",
+    "unallocatedToPool": "9848164870144",
+    "usedCapacity": "372139622400",
+    "availableCapacity": "108381136119808",
+    "subscribedCapacity": "4967217758208",
+    "unusedDisks": 25,
+    "unusedDisksCapacity": "19433958408192"
+}</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

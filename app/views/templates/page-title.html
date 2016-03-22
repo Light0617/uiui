@@ -1,0 +1,6 @@
+<div class="row page-title with-tools">
+        <h1 title="{{model.titleTooltip || dataModel.titleTooltip || summaryModel.titleTooltip}}">{{model.title || dataModel.title || summaryModel.title || ''}}</h1>
+        <div class="btn-group icon-toolbar">
+            <ng-transclude ng-if="model || dataModel || summaryModel"></ng-transclude>
+        </div>   
+</div>

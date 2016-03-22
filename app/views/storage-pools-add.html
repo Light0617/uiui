@@ -1,0 +1,126 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <div ng-if="model">
+    <form novalidate ng-submit="payload.submit()">
+        <div class="row wizard-header">
+            <div class="col-lg-1 col-md-1 hidden-sm">
+                <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
+            </div>
+            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <span class="icon icon-pools icon-xlg"></span>
+
+                <h1 class="wizard-title">{{'storage-pools-add'| translate}}</h1>
+            </div>
+        </div>
+        <div class="row wizard-body">
+            <!--Wizard column left-->
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify">
+                <div class="flex-tile-group">
+                    <div class="form-group">
+                        <label for="pool-name">{{'storage-pools-pool-label' | translate}}</label>
+                        <input type="name" class="form-control form-lg" id="pool-name" ng-model="model.label"
+                               placeholder="Pool Label">
+                    </div>
+                    <div class="form-group">
+                        <label for="storage-system">{{'storage-pools-storage-system' | translate}}</label>
+                        <select class="form-control" id="storage-system" ng-model="model.storageSystem"
+                                ng-options="ss.storageSystemId for ss in model.storageSystems"
+                                ng-disabled="!model.storageSystemSelectable">
+                        </select>
+                    </div>
+                    <div class="form-group" ng-if="model.wizardType === 'advanced'">
+                        <label for="storage-pool-type">{{'storage-pool-type' | translate}}</label>
+                        <select class="form-control" id="storage-pool-type" ng-model="model.poolType"
+                                ng-options="pt | translate for pt in model.availablePoolTypes"
+                                ng-disabled="model.availablePoolTypes.length === 0">
+                            <option value="">Pool Type</option>
+                        </select>
+                    </div>
+                    <div class="form-group" ng-if="model.wizardType === 'basic'">
+                        <label for="pool-type">{{ 'storage-pools-basic-question' | translate}}</label>
+    
+                        <div id="pool-type" class="btn-group btn-group-toggle-black btn-group-justified">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg btn-default" ng-model="model.htiPool"
+                                        btn-radio="true" ng-disabled="!model.hasHtiLicense">Yes
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg btn-default" ng-model="model.htiPool"
+                                        btn-radio="false" ng-disabled="!model.hasHtiLicense">No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="model.wizardType === 'advanced'">
+                        <label for="pool-active-flash">{{ 'storage-pools-question-active-flash' | translate}}</label>
+
+                        <div id="pool-active-flash" class="btn-group btn-group-toggle-black btn-group-justified">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg btn-default" ng-model="model.activeFlashEnabled"
+                                        btn-radio="true" ng-disabled="!model.hasActiveFlashLicense">Yes
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg btn-default" ng-model="model.activeFlashEnabled"
+                                        btn-radio="false" ng-disabled="!model.hasActiveFlashLicense">No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pvd">
+                    <pool-data-viz ng-model="model" data="dataVizModel"></pool-data-viz>
+                </div>
+            </div>
+            <!--Right column-->
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
+                <div class="header-row">
+                    <h2 ng-if="model.wizardType === 'basic'" class="pull-left col-lg-9 col-md-9 col-sm 12">{{ 'storage-pools-basic' | translate}}</h2>
+                    <h2 ng-if="model.wizardType === 'advanced'" class="pull-left col-lg-9 col-md-9 col-sm 12">{{ 'storage-pools-advance' | translate}}</h2>
+                    <a id="review-pool-categories" href="#/tier-management" class="text-link pull-right col-lg-3 col-md-3 col-sm-12">{{ 'storage-pools-review-pool' | translate}}</a>
+                </div>
+
+                <!--Create Pool basic-->
+                <div class="scroll-wizard-container bottom-extra"  ng-if="model.wizardType === 'basic'">
+                    <div class="accordion-panel">
+                        <pool-tier-list ng-model="model"></pool-tier-list>
+                    </div>
+                </div>
+
+                <!--Create Pool Advanced-->     
+                <div class="scroll-wizard-container bottom-extra" ng-if="model.wizardType === 'advanced'">
+                    <pool-parity-group-list ng-model="model" data="diskSpec"></pool-parity-group-list>
+                    <pool-parity-group-search ng-model="model"></pool-parity-group-search>
+                </div>      
+
+                <!--Thresholds-->
+                <pool-thresholds ng-model="model"></pool-thresholds>
+            </div>
+        </div>
+        <!--Fixed footer-->
+        <div class="row navbar-fixed-bottom footer-container">
+            <div class="wizard-footer">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group btn-group-toggle" role="toggle">
+                        <button type="button" class="btn btn-default btn-lg" title="basic" ng-model="model.wizardType"
+                                btn-radio="'basic'">Basic
+                        </button>
+                        <button type="button" class="btn btn-lg btn-default" title="advanced"
+                                ng-model="model.wizardType" btn-radio="'advanced'">Advanced
+                        </button>
+                    </div>
+
+                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                        <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-default active" id="submit" title="submit"
+                                ng-disabled="payload.isInvalid()">Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</wizard-page>

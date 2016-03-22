@@ -1,0 +1,6 @@
+<svg class="capacity-indicator line" transform="scale(1, 1)" preserveAspectRatio="xMinYMid meet" viewBox="0 0 100 4" data-trigger="hover" placement="bottom" data-title="{{tooltip.title}}" bs-tooltip>
+    <g class="first-bar">
+        <line x1="2" y1="2" x2="98" y2="2" class="base"></line>
+        <line x1="2" y1="2" ng-attr-x2="{{model.usage}}" y2="2" ng-attr-class="{{'value '+ model.usageClass }}" ng-if="model.usage !== '0%'"></line>
+    </g>
+</svg>

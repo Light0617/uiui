@@ -1,0 +1,313 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-7BEE2080-66F6-401E-8557-5773D8F14D7A"><a name="GUID-7BEE2080-66F6-401E-8557-5773D8F14D7A"><!-- --></a>[API] 
+	 </span>Listing disk information for all storage systems</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display the disk information for all storage systems. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__SECTION_1D54AF7A54494E969F6BC61180FDE6E7"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__SECTION_1D54AF7A54494E969F6BC61180FDE6E7"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-6E56E540-0412-45ED-ABE7-887FD9C810DE"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-6E56E540-0412-45ED-ABE7-887FD9C810DE"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/monitoring/status/hardware/disk</pre>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__SECTION_E1D9F63FF57F443C8D1EDDC9AC90ACFF"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__SECTION_E1D9F63FF57F443C8D1EDDC9AC90ACFF"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-7D88E852-CFC5-4D82-B45D-AD678A95BE4F"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-7D88E852-CFC5-4D82-B45D-AD678A95BE4F"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-2B7A91B2-2B83-423E-B136-57BAFF22C495"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-2B7A91B2-2B83-423E-B136-57BAFF22C495"><!-- --></a>The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+  "diskAlertInformationList": [
+    {
+      "storageSerialNumber": "",
+      "storageNickname": "",
+      "refCode": "",
+      "resourceType": "",
+      "timestamp": "",
+      "description": "",
+      "alertLevel": "",
+      "resourceLocation": "",
+      "diskSpec": {
+        "diskType": "",
+        "speed": 0,
+        "capacity": {
+          "bytes": 0
+        }
+      }
+    }
+  ]
+}
+
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__TABLE_2EBB776CED3849F4BC33A035D30A298B"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__TABLE_2EBB776CED3849F4BC33A035D30A298B" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d120530e85"> 
+					 <p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-08841BF4-29B6-45CC-B280-D9E9F128A2F4"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-08841BF4-29B6-45CC-B280-D9E9F128A2F4"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d120530e91"> 
+					 <p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-B818A0FC-6D1B-4823-8DD5-6C28C97E100F"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-B818A0FC-6D1B-4823-8DD5-6C28C97E100F"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d120530e97"> 
+					 <p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-DCB8BC15-2590-4E5E-9FD1-8C32415F1407"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-DCB8BC15-2590-4E5E-9FD1-8C32415F1407"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> storageSerialNumber 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Storage serial number.
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> storageNickname 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Storage system name. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> refCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Alert reference code. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> resourceType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Type of resource. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> timestamp 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Timestamp of the alert. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> description 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Description of the alert. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> alertLevel 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Alert level: Warning or Critical. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> resourceId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Resource ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> diskType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Disk Type. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> speed 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Disk speed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e85 "> bytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e91 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e97 "> Disk capacity. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d120530e262"> 
+					 <p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d120530e268"> 
+					 <p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d120530e274"> 
+					 <p class="p" id="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-6E32DCF3-E45D-4181-80EE-7A05D698F056__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d120530e262 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e268 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e274 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d120530e262 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e268 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e274 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d120530e262 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e268 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e274 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d120530e262 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e268 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d120530e274 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

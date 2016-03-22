@@ -1,0 +1,86 @@
+<div class="panel-collapse nested-row-container" infinite-scroll='dataModel.loadMoreChildren(item)'
+     infinite-scroll-distance='0' infinite-scroll-disabled="!item.opened || dataModel.busyLoadingMoreChildren">
+    <div class="tile nested-row-tile column-headers">
+        <div class="twelfth cell">&nbsp;</div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-pvolid' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-pvolid' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-pvol-label' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-pvol-label' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-pvol-status' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-pvol-status' | translate}}</p>
+        </div>
+
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-svolid' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-svolid' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-svol-label' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-svol-label' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-svol-status' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-svol-status' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-consistency-id' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-consistency-id' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-split-time' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-split-time' | translate}}</p>
+        </div>
+        <div class="sixth cell text-resize ellipsis"
+             title="{{'repliaction-group-volume-list-copy-group-name' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-copy-group-name' | translate}}</p>
+        </div>
+    </div>
+    <!--Nested List Tile-->
+    <div ng-if="item.volumePairs" class="tile row-tile nested-row-tile panel-body" ng-repeat="vp in item.volumePairs">
+        <div class="twelfth cell control-cell">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn icon-btn checkbox"
+                       ng-click="vp.selected = !vp.selected ; dataModel.restoreCheck()"
+                       ng-class="{'active' : vp.selected}">
+                </label>
+            </div>
+            <div class="btn icon-btn icon-xsm">&nbsp;</div>
+        </div>
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchPvol()"
+           title="{{vp.primaryVolume.id}}"><p>{{vp.primaryVolume.id}}</p>
+        </a>
+
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.primaryVolume.label}}">
+            <p>{{vp.primaryVolume.label}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.primaryVolume.status}}">
+            <p>{{vp.primaryVolume.status}}</p>
+        </div>
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSvol()"
+           ng-if="vp.secondaryVolume.id !== 'N/A'" title="{{vp.secondaryVolume.id}}">
+            <p>{{vp.secondaryVolume.id}}</p>
+        </a>
+
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.id}}"
+             ng-if="vp.secondaryVolume.id === 'N/A'"><p>{{vp.secondaryVolume.id}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.label}}">
+            <p>{{vp.secondaryVolume.label}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.status}}">
+            <p>{{vp.secondaryVolume.status}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.consistencyId}}"><p>{{vp.consistencyId}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.splitTime}}"><p>{{vp.splitTime}}</p></div>
+        <div class="sixth cell text-resize ellipsis" title="{{vp.volumePairGroup}}">
+            <p>{{vp.volumePairGroup}}</p>
+        </div>
+    </div>
+
+</div>

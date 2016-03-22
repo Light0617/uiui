@@ -1,0 +1,400 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-FB24C69D-937F-4988-B399-9D5C358BEB6F"><a name="GUID-FB24C69D-937F-4988-B399-9D5C358BEB6F"><!-- --></a>[API] 
+	 </span>Getting parity group template </h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p> You can display a list of the possible methods for creating parity groups on the storage system, based on best practices. Use one or more methods from this list to configure parity groups. Alternative, you can configure parity groups by selecting disks yourself and allocating them to parity groups. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_A02E5D4E424D419BB874A94B88D91B7B"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_A02E5D4E424D419BB874A94B88D91B7B"><!-- --></a> 
+		<p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-ACEEC754-27F6-46A7-93CF-6C79FCD76196"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-ACEEC754-27F6-46A7-93CF-6C79FCD76196"><!-- --></a>For each disk type, this API returns the various RAID options for creating parity groups. For each RAID option, it shows how many parity groups can be created and the usable capacity that will be available. It also identifies the recommended RAID configuration for every disk type and the number of spare disk that must be assigned based on best practices. 
+		</p>
+ 
+		<p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-B7D2F988-5CD2-4A64-981C-BD04FE3F5D9E"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-B7D2F988-5CD2-4A64-981C-BD04FE3F5D9E"><!-- --></a>Additionally, this API returns the number of total disk for a given disk type that are available and how many spare disks are already allocated. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-D1A128D7-6FD4-4427-9488-DB91EEBBB96D"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-D1A128D7-6FD4-4427-9488-DB91EEBBB96D"><!-- --></a>GET <span class="ph" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-839665D9-8130-4CEC-B8B0-553E7F95402A"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-839665D9-8130-4CEC-B8B0-553E7F95402A"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/storage-system/<var class="keyword varname">storageSystemId</var>/templates/parity-group 
+		  </pre>
+ 
+		<p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-BA6E8D4C-5B5F-42B7-9E19-B9167E78A689"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-BA6E8D4C-5B5F-42B7-9E19-B9167E78A689"><!-- --></a> Use the storage system ID as the 
+		  <var class="keyword varname">storageSystemId.</var> 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_849C8AD00B17427D9B46FEE36AA8C540"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_849C8AD00B17427D9B46FEE36AA8C540"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-CEF47C16-560B-4361-B476-5782BDB580B0"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__GUID-CEF47C16-560B-4361-B476-5782BDB580B0"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+    "parityGroupTemplateItems":
+    [
+        {
+            "diskType": "",
+            "speed": ,
+            "size": "",
+            "totalNumberOfDisks": ,
+            "numberOfAvailableDisks": ,
+            "numberOfNewHotSpares": ,
+            "numberOfExistingHotSpares": ,
+            "raidOptions":
+            [
+                {
+                    "raidLayout": "",
+                    "raidLevel": "",
+                    "numberOfDisksForRaidLayout": ,
+                    "numberOfParityGroups": ,
+                    "usableCapacity": "",
+                    "isDefault": false,
+                    "numberOfUnusedDisks": 
+                },
+                {
+                    "raidLayout": "",
+                    "raidLevel": "",
+                    "numberOfDisksForRaidLayout": ,
+                    "numberOfParityGroups": ,
+                    "usableCapacity": "",
+                    "isDefault": ,
+                    "numberOfUnusedDisks": 
+                },
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__TABLE_A234C6265B05498C85C043AC798CE5B7"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__TABLE_A234C6265B05498C85C043AC798CE5B7" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d171867e103">Parameter 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d171867e106">Type 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d171867e109">Description 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> diskType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> Type of disk. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 ">speed 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 ">The speed of the disk. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> raidLevel 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The RAID level for parity group creation, such as RAID5. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> raidLayout 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The RAID layout for parity group creation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> numberOfParityGroups 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The maximum number of parity groups that can be created for the RAID layout. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> numberOfDisksForRaidLayout 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The number of disks that will be used to create parity group with the RAID layout. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> usableCapacity : bytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> Usable capacity of parity group. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> isDefault 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> True if RAID layout is the recommended RAID layout for the disk type. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> numberOfUnusedDisks 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The number of disks that will be left unused after creating parity groups with this RAID layout. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> totalNumberOfDisks 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> Total number of disks of the disk type. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> numberOfAvailableDisks 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The number of available disks for parity group creation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> numberOfNewHotSpares 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> Based on best practice, the number of additional hot spare disks needed for the disk type. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> numberOfExistingHotSpares 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> The number of existing hot spare disks of the disk type. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e103 "> size: bytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e106 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e109 "> Size of the disk. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_C74383162BEC40958135073E8CBF9163"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_C74383162BEC40958135073E8CBF9163"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__TABLE_17ADA283FC2740D294E7C3B03593A49A"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__TABLE_17ADA283FC2740D294E7C3B03593A49A" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d171867e304"> 
+					 <p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__d244e46"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d171867e310"> 
+					 <p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__d244e52"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d171867e316"> 
+					 <p class="p" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__d244e58"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d171867e304 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e310 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e316 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d171867e304 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e310 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e316 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d171867e304 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e310 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e316 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d171867e304 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e310 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d171867e316 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_7CA321ED2E2F4EF69809AD02580D592D"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__SECTION_7CA321ED2E2F4EF69809AD02580D592D"><!-- --></a><h2 class="title sectiontitle">Example request</h2> 
+		 
+		<pre class="pre codeblock">https://172.17.64.109/v1/storage-systems/410209/templates/parity-group</pre>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__EXAMPLE_E2E83BC92A0847C0B84E2C59D432AEDC"><a name="GUID-A2A39C7F-91FD-477A-B26A-A500725B77AF__EXAMPLE_E2E83BC92A0847C0B84E2C59D432AEDC"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">
+{
+    "parityGroupTemplateItems":
+    [
+        {
+            "diskType": "SAS",
+            "speed": 7200,
+            "size": "3916143603200",
+            "totalNumberOfDisks": 24,
+            "numberOfAvailableDisks": 3,
+            "numberOfNewHotSpares": 0,
+            "numberOfExistingHotSpares": 1,
+            "raidOptions":
+            [
+                {
+                    "raidLayout": "6D+1P",
+                    "raidLevel": "RAID5",
+                    "numberOfDisksForRaidLayout": 7,
+                    "numberOfParityGroups": 0,
+                    "usableCapacity": "0",
+                    "isDefault": false,
+                    "numberOfUnusedDisks": 3
+                },
+                {
+                    "raidLayout": "7D+1P",
+                    "raidLevel": "RAID5",
+                    "numberOfDisksForRaidLayout": 8,
+                    "numberOfParityGroups": 0,
+                    "usableCapacity": "0",
+                    "isDefault": false,
+                    "numberOfUnusedDisks": 3
+                },
+}</pre>
+ 
+	 </div>
+
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

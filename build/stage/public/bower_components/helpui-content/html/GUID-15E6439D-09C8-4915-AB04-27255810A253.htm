@@ -1,0 +1,469 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-0CCCC186-47B1-46AF-B1C7-2933C20EBDEF"><a name="GUID-0CCCC186-47B1-46AF-B1C7-2933C20EBDEF"><!-- --></a>[API] 
+	 </span>Initializing a parity group</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can create and initialize pool volumes on a parity group if the pool volumes have not been created. You can also format any pool volumes that are in the blocked state. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_7F966B4405FC4D05806E5ACBAFECA0E4"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_7F966B4405FC4D05806E5ACBAFECA0E4"><!-- --></a> 
+		<p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-AA0CABE4-2A19-4E08-8820-1AEEC71BB716"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-AA0CABE4-2A19-4E08-8820-1AEEC71BB716"><!-- --></a>Use this API for the following operations: 
+		</p>
+ 
+		<a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__UL_805806EBC28F47DDA49506C87BA5472E"><!-- --></a><ul class="ul" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__UL_805806EBC28F47DDA49506C87BA5472E"> 
+		  <li class="li" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__LI_B110599A45D9466E9BD45540D9E772CA"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__LI_B110599A45D9466E9BD45540D9E772CA"><!-- --></a><p>The parity group status is Uninitialized. This occurs when the parity group has no volumes, at least one of the pool volumes is in Blocked state, or one or more partitions is uninitialized and has a size greater than 16,787,456 blocks. 
+		  </p></li>
+ 
+		  <li class="li" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__LI_72F9B80E17DF426DB9F02FA1895E6179"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__LI_72F9B80E17DF426DB9F02FA1895E6179"><!-- --></a><p>The parity group status is Available but the available capacity is much less than the total capacity. This occurs when the pool volumes on the parity group do not account for the entire parity group capacity and there are unused partitions on the parity group. 
+		  </p></li>
+ 
+		</ul>
+ 
+		<p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-5625299B-7E2A-45DC-82C2-7DCBDF419D3D"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-5625299B-7E2A-45DC-82C2-7DCBDF419D3D"><!-- --></a>This API is supported only when the parity group status is available or uninitialized. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_7347B06DCA624B18A92683AD6A8C1705"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_7347B06DCA624B18A92683AD6A8C1705"><!-- --></a><h2 class="title sectiontitle"> 
+		<strong class="ph b" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-F959F1D0-A014-4E5F-A07D-DDEC2D8E0259"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-F959F1D0-A014-4E5F-A07D-DDEC2D8E0259"><!-- --></a> HTTP request syntax (URI)</strong> </h2> 
+		 
+		<pre class="pre codeblock syntaxblock" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-D1A128D7-6FD4-4427-9488-DB91EEBBB96D"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-D1A128D7-6FD4-4427-9488-DB91EEBBB96D"><!-- --></a>POST <span class="ph" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-FACA4757-46F8-4CAC-A972-89387E301D2B"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-FACA4757-46F8-4CAC-A972-89387E301D2B"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/storage-system/<var class="keyword varname">storageSystemId</var>/parity-groups/<var class="keyword varname">parityGroupId</var>
+		  </pre>
+ 
+		<p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-523E5C28-1737-4E2F-B5C0-85E533B30936"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-523E5C28-1737-4E2F-B5C0-85E533B30936"><!-- --></a>Use the storage system ID as the 
+		  <var class="keyword varname">storageSystemId</var>. 
+		</p>
+ 
+		<p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-67CFFF23-28AB-4780-8C8D-487D87D7413A"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-67CFFF23-28AB-4780-8C8D-487D87D7413A"><!-- --></a>Use the parity group ID as the 
+		  <var class="keyword varname">parityGroupId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_F002B5DD206B4E2EA954517C6A663196"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_F002B5DD206B4E2EA954517C6A663196"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-1DCBE521-CF63-4C30-AF52-56E920121B92"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-1DCBE521-CF63-4C30-AF52-56E920121B92"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_5336DA6E158B43B79A116076D1FBDAB3"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_5336DA6E158B43B79A116076D1FBDAB3"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-F4E13248-FCE7-4C80-B6E4-6F0E9D76D862"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-F4E13248-FCE7-4C80-B6E4-6F0E9D76D862"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "jobId": "",
+  "title":
+  {
+      "text": "",
+      "messageCode": "",
+      "parameters":
+      {
+      }
+  },
+ "user": "",
+ "status": "",
+ "startDate": ,
+ "endDate": ,
+ "parentJobId": ,
+ "reports":
+ [
+     {
+          "reportMessage":
+     {
+             "text": "",
+             "messageCode": "",
+             "parameters":
+             {
+                 "fileSystemId": ""
+             }
+         },
+         "severity": "",
+         "creationDate": 
+    }
+ ],
+ "links":
+ [
+      {
+        "rel": "_self",
+        "href": "/v1/jobs/"
+ } 
+ ],
+ "tags":
+ [
+ ],
+ "isSystem": 
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__TABLE_51B2489700BC424698E692D9A31E6010"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__TABLE_51B2489700BC424698E692D9A31E6010" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d19441e118"> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e28"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d19441e124"> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e34"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d19441e130"> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e40"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">jobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">The ID of the job that is created to carry out the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">The title of the job in progress. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">text 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">Text of the message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">parameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">Name of the user who started the job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 "> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1846"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1846"><!-- --></a>Job status. Valid values: 
+					 </p>
+ 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1849"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1849"><!-- --></a>• In Progress 
+					 </p>
+ 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1852"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1852"><!-- --></a>• Failed 
+					 </p>
+ 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1855"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1855"><!-- --></a>• Success 
+					 </p>
+ 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1858"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__d43e1858"><!-- --></a>• Success With Errors 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 "> The date and time this job started. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">Date and time when this job ended. If the job is still in progress, this parameter does not return a value. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">The ID of the job that spawned this job. If not applicable, the value null is returned. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">reports 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">Messages associated with this job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">links 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">Displays related resources. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">self 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">URI that includes the resource ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">tags 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 ">List of user-defined identifiers. Each identifier (tag) must be a minimum of three characters in length. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e118 ">isSystem 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e124 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e130 "> Whether or not a system has created a job. A job is triggered by a system or users. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_C5281C897E804C7C8F47E2790511DF71"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_C5281C897E804C7C8F47E2790511DF71"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-AA776A92-DA7D-41EC-831B-D77EDBEFB859"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-AA776A92-DA7D-41EC-831B-D77EDBEFB859"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__TABLE_D109586915B04AAD9D8D0FB3E03C42C6"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__TABLE_D109586915B04AAD9D8D0FB3E03C42C6" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d19441e357"> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d19441e363"> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d19441e369"> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d19441e357 ">201 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e363 ">Created 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e369 "> 
+					 <p class="p" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-0A4E4DF3-FC72-495D-9353-E4019336FB3F"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__GUID-0A4E4DF3-FC72-495D-9353-E4019336FB3F"><!-- --></a>The server has started the operation 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d19441e357 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e363 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e369 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d19441e357 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e363 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e369 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d19441e357 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e363 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e369 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d19441e357 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e363 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d19441e369 ">The specified resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><!-- --></a><h2 class="title sectiontitle">Example request</h2> 
+		 
+		<pre class="pre codeblock">https://172.17.64.108/v1/storage-systems/450439/parity-groups/1-2</pre>
+ 
+	 </div>
+
+	 <div class="example" id="GUID-15E6439D-09C8-4915-AB04-27255810A253__EXAMPLE_8C097F21777F45DF89EB48FF097EFEAA"><a name="GUID-15E6439D-09C8-4915-AB04-27255810A253__EXAMPLE_8C097F21777F45DF89EB48FF097EFEAA"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">
+{
+ "jobId": "a88bd309-fe36-4d68-b3b3-342d1edf20e8",
+  "title": {
+     "text": "Initialize parity group",
+     "messageCode": "InitializeParityGroupSystemJobPreTitleMessage",
+     "parameters": {}
+    },
+  "user": "sysadmin",
+  "status": "IN_PROGRESS",
+  "startDate": 1452129643172,
+  "endDate": null,
+  "parentJobId": null,
+  "reports": [],
+  "links": [
+      {
+          "rel": "_self",
+          "href": "/v1/jobs/a88bd309-fe36-4d68-b3b3-342d1edf20e8"
+        }
+    ],
+   "tags": [],
+   "isSystem": false
+}</pre>
+ 
+	 </div>
+
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

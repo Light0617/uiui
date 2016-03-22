@@ -1,0 +1,35 @@
+<a href="" ng-click="alertModel.launchDpMonitoring()">
+    <div class="tile alert {{alertModel.alertLevel}} data-protection alert-tile-data-protection-bkg flex-column" id="data-protection">
+        <h2 ng-attr-title="{{'dp-alerts-tooltip' | translate}}">{{ 'dp-alerts-title' | translate}}</h2>
+
+        <!--End new DP icon-->
+        <!--Alert label-->
+        <div class="alert-icon">
+            <svg class="radial-svg alert-count resource-icon alert-panel-alert" width="100%" height="100%" viewBox="0 0 60 60" preserveAspectRatio="xMidYMid meet">
+                <g class="healthy-alert" transform="scale(1, 1)">
+                    <circle fill="none" cx="30" cy="30" r="30"/>
+                    <path class="healthy" d="M30,5C16.2,5,5,16.2,5,30s11.2,25,25,25s25-11.2,25-25S43.8,5,30,5z M23.9,42.1L12.2,30.3l1.2-1.2l10.6,10.6l21.2-21.2  l1.2,1.2L23.9,42.1z"/>
+                </g>
+
+                <g class="error-alert" cursor="pointer">
+                    <defs>
+                        <filter id="shadow" x="-.1" y="-.1" width="140%" height="140%">
+                            <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0"/>
+                            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3"/>
+                            <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+                        </filter>
+                    </defs>
+                    <circle class="alert" cx="30" cy="30" r="24" filter="url(#shadow)" opacity="1"/>
+                    <text class="alert-label" text-anchor="middle" y="36" x="30" width="100">{{alertModel.alertCount}}</text>
+                </g>
+            </svg>
+        </div>
+        <!--End Alert sybmol-->
+        <!--Added footer indicator-->
+        <div class="icon-toolbar footer">
+            <ul class="icon-row">
+                <li class="alert"><span class="icon icon-sm icon-information"></span> {{alertModel.alertCount}}</li>
+            </ul>
+        </div>
+    </div>
+</a>

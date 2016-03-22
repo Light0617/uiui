@@ -1,0 +1,50 @@
+    <div class="col-lg-9 col-md-8 col-sm-7 tile-container flex-grid">
+        <!--Tile-->
+        <div class="tile resource-tile"
+             ng-repeat="pg in model.parityGroups  | createPoolParityGroupsFilter:model.search |  orderBy:'diskSpec.capacityInBytes' ">
+            <div class="tile-row status-bar">
+                <div class="btn-group">
+                    <label class="btn icon-btn checkbox icon" ng-value="pg" type="checkbox"
+                           ng-class="{'icon-step-confirmed': pg.selected, 'icon-step-disabled': !pg.selected}"
+                           ng-model="pg.selected" btn-checkbox>
+                    </label>
+                </div>
+                <div class="btn-group icon-toolbar pull-right hidden">
+                    <button class="btn icon-btn icon icon-expand icon-sm" type="button" title="launch"></button>
+                    <button class="btn icon-btn icon icon-lock icon-sm" type="button" title="protect"></button>
+                    <button class="btn icon-btn icon icon-small-triangle warning" type="button" title="warning"></button>
+                </div>
+            </div>
+            <div class="tile-row identity">
+                <div class="meta-left">
+                    <h2>{{ pg.parityGroupId}} ({{pg.status}})</h2>
+                    <div class="horizontal-stack">
+                        <p>{{pg.raidLayout}}</p>
+                        <p>{{pg.raidLevel}}</p>
+                    </div>
+                </div>
+                <div class="meta-right">
+                    <div class="horizontal-stack">
+                        <p>{{pg.diskSpec.type}}</p>
+                        <p>{{pg.diskSpec.speed}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="tile-row resource-info">
+                <div class="icon icon-parity-group icon-lg"></div>
+                <div class="resource-data">
+                    <disk-size ng-model="pg.availableCapacityInBytes" wrapped-in="p" post-fix="free"></disk-size>
+                    <div class="data-viz bar">
+                        <svg class="capacity-indicator" transform="scale(1, 1)">
+                            <rect width="100%" height="100%" class="base"></rect>
+                            <rect width="50%" height="100%" ng-attr-class="{{'value '+ model.usageClass }}" width="52%" class="value normal"></rect>
+                        </svg>
+                    </div>
+                    <disk-size ng-model="pg.totalCapacityInBytes" wrapped-in="p" post-fix="total"></disk-size>
+                </div>
+            </div>
+            <div class="tile-row carousel-indicator hidden">
+            </div>
+        </div>
+    </div>
+

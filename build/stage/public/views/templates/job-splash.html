@@ -1,0 +1,5 @@
+<div class="alert alert-success job-splash" role="alert" id="job-splash-container"><div class="icon icon-md" ng-attr-title="{{splashJob.status}}" ng-class="{
+               'icon-jobs': splashJob.status === 'IN_PROGRESS',
+               'icon-completed': splashJob.status === 'SUCCESS',
+               'icon-small-triangle warning-state': splashJob.status === 'SUCCESS_WITH_ERRORS',
+               'icon-small-diamond danger-state': splashJob.status === 'FAILED' }"></div><h3>{{'job-started-title' | translate}}</h3><a href="#/jobs" class="alert-link">{{splashJob.title.text}}</a> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>

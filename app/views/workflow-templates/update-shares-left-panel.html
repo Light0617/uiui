@@ -1,0 +1,19 @@
+<div class="form-group">
+    <form name="dataModel.validationForm" role="form" class="validation-form select">
+        <label>{{'share-directory' | translate}}</label>
+        <input class="form-control form-lg" name="label" ng-model="dataModel.share.name" disabled>
+        </input>
+        <label class="smallMarginTop">{{'shares-exports-modify-file-system-path' | translate}}</label>
+        <input class="form-control form-lg" name="fileSystemPath" ng-model="dataModel.share.fileSystemPath">
+        </input>
+    </form>
+    <form name="dataModel.accessConfigurationForm" role="form" class="validation-form select">
+        <label class="smallMarginTop">{{'export-access-configuration' | translate }}</label>
+        <div class="form-group form-group-lg text-resize zeroLeftPadding zeroRightPadding">
+            <!-- Alena Please make styling a class here -->
+                        <textarea name="accessConfiguration" class="form-control form-lg" placeholder="{{'export-access-configuration' | translate}}"
+                                  ng-minlength="1" ng-maxlength="5957" ng-model="dataModel.accessConfiguration"/>
+        </div>
+    </form>
+</div>
+

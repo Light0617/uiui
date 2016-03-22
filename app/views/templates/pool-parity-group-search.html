@@ -1,0 +1,34 @@
+<div class="controls-column col-lg-3 col-md-4 col-sm-5">
+     <form role="search">
+        <div class="form-group search">
+            <input type="text" class="form-control" placeholder="Search"
+                   ng-model="model.search.freeText">
+            <button type="submit" class="icon icon-btn icon-search pull-right"></button>
+        </div>
+    </form>
+    <div class="column-control">
+        <select ng-model="model.search.diskSpec.type"
+                ng-options="dt for dt in model.diskTypes">
+            <option value="">Disk Type</option>
+        </select>
+    </div>
+    <div class="column-control">
+        <select ng-model="model.search.diskSpec.speed"
+                ng-options="ds for ds in model.diskSpeeds">
+            <option value="">Speed</option>
+        </select>
+    </div>
+    <div class="column-control">
+        <select ng-model="model.search.raidLayout"
+                ng-options="rlo for rlo in model.raidLayouts">
+            <option value="">Layout</option>
+        </select>
+    </div>
+    <div class="column-control">
+        <select ng-model="model.search.raidLevel"
+                ng-options="rl for rl in model.raidLevels">
+            <option value="">Level</option>
+        </select>
+    </div>
+
+</div>

@@ -1,0 +1,239 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <div ng-if="dataModel!==undefined">
+        <div class="row wizard-header">
+            <div class="col-lg-1 col-md-1 hidden-sm">
+                <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
+            </div>
+            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <span class="icon icon-replication-group icon-xlg"></span>
+
+                <h1 class="wizard-title">{{'action-tooltip-edit-replication-groups'| translate}}</h1>
+            </div>
+        </div>
+        <div class="row wizard-body">
+            <!--Wizard column left-->
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify">
+                <div class="form-group">
+                    <form name="validationForm.leftPanel" role="form" class="validation-form">
+                        <div class="form-group">
+                            <label>{{'common-replication-group' | translate}}</label>
+                            <input type="name" name="replicationName" class="form-control form-lg"
+                                   ng-model="dataModel.replicationName" maxlength="26" required>
+                        </div>
+                    </form>
+                    <div class="form-group">
+                        <label>{{'replication-group-label-technology' | translate}}</label>
+                        <span class="form-control form-lg disabled"> {{ dataModel.replicationType }}</span>
+                    </div>
+
+                    <div class="form-group toggle-control">
+                        <label>{{'replication-group-label-consistency' | translate}}</label>
+
+                        <div class="btn-group btn-group-justified btn-group-toggle-black"
+                             role="toggle">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-dark" ng-class="{'disabled': dataModel.replicationConsistency === 'Off',
+                                    'active': dataModel.replicationConsistency === 'On'}">{{'yes-button' | translate}}
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-dark " ng-class="{'active': dataModel.replicationConsistency === 'Off',
+                                    'disabled': dataModel.replicationConsistency === 'On'}">{{'no-button' | translate}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Right column-->
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
+                <div class="header-row" ng-if="!dataModel.noPrimaryVolume">
+                    <h2 class="pull-left col-lg-9 col-md-9 col-sm 12" ng-if="dataModel.replicationType === 'Snapshot'">
+                        {{'replication-group-edit-snapshot-message' | translate}}</h2>
+
+                    <h2 class="pull-left col-lg-9 col-md-9 col-sm 12" ng-if="dataModel.replicationType === 'Clone'">
+                        {{'replication-group-edit-clone-message' | translate}}</h2>
+                </div>
+
+                <div class="scroll-wizard-container">
+
+                    <div class="control-row">
+                        <form name="validationForm.rightPanel" role="form"
+                              ng-class=" dataModel.replicationType === 'Snapshot' ? 'validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal' : 'validation-form col-lg-12 col-md-12 col-sm-12 col-xs-12 form-horizontal'">
+                            <div class="form-group-lg form-group">
+                                <label>{{'replication-group-label-comments' | translate}}</label>
+                                <input class="form-control" id="comments" ng-model="dataModel.comments"
+                                       name="comments" title="{{'replication-group-label-comments' | translate}}"
+                                       placeholder="{{'replication-group-label-comments' | translate}}" maxlength="256">
+                            </div>
+                        </form>
+
+                        <form name="validationForm.rightPanel" role="form"
+                              class="validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal"
+                              ng-if="dataModel.replicationType === 'Snapshot'">
+                            <div class="form-group form-group-lg">
+                                <label>{{'number-of-snapshots' | translate }}</label>
+                                <input type="number" ng-min="1" ng-max="1024"
+                                       ng-model="dataModel.numberOfSnapshots" class="form-control"
+                                       name="numberOfSnapshots" title="{{'valid-number-of-snapshots' | translate }}"
+                                       placeholder="{{'valid-number-of-snapshots' | translate }}" required>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="control-row" ng-if="dataModel.replicationType === 'Snapshot'">
+                        <div class="btn-group btn-group-toggle btn-group-justified">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule.type"
+                                        btn-radio="'HOURLY'">Hourly
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule.type"
+                                        btn-radio="'DAILY'">Daily
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule.type"
+                                        btn-radio="'WEEKLY'">Weekly
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule.type"
+                                        btn-radio="'MONTHLY'">Monthly
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group checkbox-btn-array clearfix sevenths control-row"
+                         ng-if="dataModel.replicationType === 'Snapshot' && dataModel.schedule.type === 'WEEKLY'">
+                        <!--Days checkboxes start  -->
+                        <div class="btn-group-justified">
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Sun"
+                                   btn-checkbox>SUN</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Mon"
+                                   btn-checkbox>MON</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Tue"
+                                   btn-checkbox>TUE</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Wed"
+                                   btn-checkbox>WED</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Thu"
+                                   btn-checkbox>THU</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Fri"
+                                   btn-checkbox>FRI</label>
+                            <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Sat"
+                                   btn-checkbox>SAT</label>
+                        </div>
+                    </div>
+
+                    <div class="row control-row" ng-if="dataModel.replicationType === 'Snapshot'">
+                        <form name="validationForm.timePicker" class="validation-form" novalidate>
+                            <div class="form-group form-group-lg col-md-2 form-horizontal" ng-if="!(dataModel.schedule.type === 'HOURLY')">
+                                <label>Start Time </label>
+                                <input type="text" class="form-control time-input input-restricted"
+                                       ng-model="dataModel.schedule.time"
+                                       bs-timepicker placeholder="12:00 AM" ng-readonly="true">
+                            </div>
+                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                                 ng-if="dataModel.schedule.type === 'HOURLY'">
+                                <label>Start Minute </label>
+                                <input type="number" class="time-input form-control" name="hourStartMinute"
+                                       ng-min="0" ng-max="59" value="1" ng-model="dataModel.schedule.hourStartMinute"
+                                       placeholder="0 - 59" required>
+                            </div>
+                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                                 ng-if="dataModel.schedule.type === 'HOURLY'">
+                                <label>Every </label>
+                                <input type="number" class="time-input form-control" name="hourInterval"
+                                       ng-min="1" ng-max="23" value="1" ng-model="dataModel.schedule.hourInterval"
+                                       placeholder="1 - 23" required>
+                            </div>
+                            <div class="form-horizontal" ng-if="dataModel.schedule.type === 'HOURLY'">
+                                <label>&nbsp;</label>
+                                <p>Hours</p>
+                            </div>
+                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                                 ng-if="dataModel.schedule.type === 'MONTHLY'">
+                                <label>Day </label>
+                                <input type="number" class="time-input form-control" name="date"
+                                       ng-min="1" ng-max="31" value="1" ng-model="dataModel.schedule.date"
+                                       placeholder="1-31" required>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--TODO:CDUAN & Jurgen-->
+                    <div class="control-row">
+                        <div class="header-row">
+                            <h3 title="{{'replication-group-edit-remove-pvol-message' | translate}}">{{'replication-group-edit-remove-pvol-message' | translate}}</h3>
+                        </div>
+
+                        <div data-toggle="buttons" class="btn-group">
+                            <label class="btn icon-btn checkbox" ng-click="dataModel.removeSecondaryVolume = !dataModel.removeSecondaryVolume"
+                                   ng-class="{'active' : dataModel.removeSecondaryVolume}">
+                                <input type="checkbox">{{'replication-group-edit-remove-svol-message' | translate}}
+                            </label>
+                        </div>
+
+                        <div class="tile-container list-view">
+                            <div class="tile row row-tile column-headers">
+                                <div class="col-md-1 cell control-cell">
+                                    &nbsp;
+                                </div>
+                                <div class="col-md-3 cell">
+                                    <sort-column-header field="id" label="{{'replication-group-edit-pvol-id' | translate}}"
+                                                        ng-model="dataModel.sort" title="{{'replication-group-edit-pvol-id' | translate}}"></sort-column-header>
+                                </div>
+                                <div class="col-md-3 cell">
+                                    <sort-column-header field="label" label="{{'replication-group-edit-pvol-label' | translate}}"
+                                                        ng-model="dataModel.sort" title="{{'replication-group-edit-pvol-label' | translate}}"></sort-column-header>
+                                </div>
+                                <div class="col-md-3 cell">
+                                    <sort-column-header field="numberOfSecondaryVolume" label="{{'replication-group-edit-number-of-svol' | translate}}"
+                                                        ng-model="dataModel.sort" title="{{'replication-group-edit-number-of-svol' | translate}}"></sort-column-header>
+                                </div>
+                            </div>
+
+                            <div class="tile row-tile row" ng-repeat="pv in dataModel.primaryVolumes">
+                                <div class="col-md-1 cell control-cell">
+                                    <div data-toggle="buttons" class="btn-group">
+                                        <label id="pv.id" class="btn icon-btn checkbox" ng-click="pv.selected = !pv.selected">
+                                            <input type="checkbox">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div title="{{pv.id}}" class="col-md-3 cell">
+                                    <p>{{pv.id}}</p>
+                                </div>
+                                <div title="{{pv.label}}" class="col-md-3 cell">
+                                    <p>{{pv.label}}</p>
+                                </div>
+                                <div title="{{pv.numberOfSecondaryVolume}}" class="col-md-3 cell">
+                                    <p>{{pv.numberOfSecondaryVolume}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fixed footer-->
+        <div class="row navbar-fixed-bottom footer-container">
+            <div class="wizard-footer">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                        <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-default active" id="submit" title="submit"
+                                ng-click="submitActions()"
+                                ng-disabled="canSubmit && !canSubmit()"> {{'common-label-submit' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</wizard-page>

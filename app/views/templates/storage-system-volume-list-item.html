@@ -1,0 +1,51 @@
+<div class="row linear-values">
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <div class="alert-status">
+            <a href="" ng-class="'icon-small-diamond'" ng-show="model.dpStatus" ng-click="launchDpMonitoringFromVolumeTile()"></a>
+            <p class="icon icon-volume icon-lg"></p>
+        </div>
+    </div>
+    <a ng-attr-href="#/storage-systems/{{model.storageSystemId}}/volumes/{{model.volumeId}}">
+        <div class="td col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <h3>{{ model.label }}</h3>
+        </div>
+    </a>
+    <a ng-attr-href="#/storage-systems/{{model.storageSystemId}}">
+        <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <h3>{{ model.storageSystemId }}</h3>
+        </div>
+    </a>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <h3>{{ model.poolId }}</h3>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <h3 title="{{ model.toolTipDpType }}" data-toggle="tooltip" data-position="top" tooltip>{{model.displayedDpType}}</h3>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <h3>{{ model.dpMonitoringStatus }}</h3>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1 used-value">
+        <p>
+            <disk-size ng-model="model.usedCapacity" wrapped-in="p"></disk-size>
+        </p>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1 free-value">
+        <p>
+            <disk-size ng-model="model.availableCapacity" wrapped-in="p"></disk-size>
+        </p>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1 total-value">
+        <p>
+            <disk-size ng-model="model.totalCapacity" wrapped-in="p"></disk-size>
+        </p>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <h3>{{model.usage}}</h3>
+    </div>
+    <div class="td col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <input type="checkbox" ng-model="model.selected">
+    </div>
+</div>
+<div class="data-viz bar">
+    <usage-indicator-bar ng-model="model"></usage-indicator-bar>
+</div>

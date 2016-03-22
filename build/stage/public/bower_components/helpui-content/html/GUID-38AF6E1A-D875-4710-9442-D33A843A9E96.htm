@@ -1,0 +1,297 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-C8CF36FF-5189-4DC9-B07C-5AD16E139A93"><a name="GUID-C8CF36FF-5189-4DC9-B07C-5AD16E139A93"><!-- --></a>[API] 
+	 </span>Listing the hardware alerts for a storage system</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display alert notifications for different hardware components, such as the power supply, battery, fan, port, cache, memory, and processors. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_F8500AF5B83F43C892767FDBE8529F17"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_F8500AF5B83F43C892767FDBE8529F17"><!-- --></a> 
+		<p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-327F686F-B91C-46CB-8B87-45744D94688A"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-327F686F-B91C-46CB-8B87-45744D94688A"><!-- --></a>The alerts are received from the storage system. There is one alert per component type, for a maximum of eight. 
+		</p>
+ 
+		<p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-B15BC6D7-EC99-4100-A807-13ABBD78241A"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-B15BC6D7-EC99-4100-A807-13ABBD78241A"><!-- --></a> The alert clearance process runs every 20 minutes for each storage system that has components with errors. Alerts are only cleared when all components of a given type with errors in the storage system return to normal state. The exception is disks, each of which can have alerts cleared, even if other disks remain in error. Alerts for ports and processors are cleared together, so alerts are cleared only when all ports and all processors are normal.
+		</p>
+
+		<p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-B05DBAED-5850-4C89-B3F3-0CF256FF7830"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-B05DBAED-5850-4C89-B3F3-0CF256FF7830"><!-- --></a> For example, if there are five fans with alerts in one storage system, they will be cleared only when each and every fan alert is cleared. However, for disks, each alert is cleared as and when disk alert clearance is available.
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_18904AEF690D4649877F5E8B665F4B1A"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_18904AEF690D4649877F5E8B665F4B1A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-11F10899-83FF-49DD-A198-ED927ECC7624"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-11F10899-83FF-49DD-A198-ED927ECC7624"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/monitoring/status/<var class="keyword varname">storageArrayId</var>/hardware</pre>
+ 
+		<p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-06941F7E-87D9-4360-A3C7-19A8D8536DCF"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-06941F7E-87D9-4360-A3C7-19A8D8536DCF"><!-- --></a>Use the storage array ID as the 
+		  <var class="keyword varname">storageArrayId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_E1D9F63FF57F443C8D1EDDC9AC90ACFF"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_E1D9F63FF57F443C8D1EDDC9AC90ACFF"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-7D88E852-CFC5-4D82-B45D-AD678A95BE4F"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-7D88E852-CFC5-4D82-B45D-AD678A95BE4F"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-2B7A91B2-2B83-423E-B136-57BAFF22C495"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-2B7A91B2-2B83-423E-B136-57BAFF22C495"><!-- --></a>The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+  "totalComponentWiseHardwareAlerts": ,
+  "hardwareComponents": {
+    "diskAlerts": ,
+    "powerSupplyAlerts": ,
+    "batteryAlerts": ,
+    "fanAlerts": ,
+    "portAlerts": ,
+    "cacheAlerts": ,
+    "memoryAlerts": ,
+    "processorAlerts": 
+  }
+}
+
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__TABLE_2EBB776CED3849F4BC33A035D30A298B"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__TABLE_2EBB776CED3849F4BC33A035D30A298B" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d58180e114"> 
+					 <p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-08841BF4-29B6-45CC-B280-D9E9F128A2F4"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-08841BF4-29B6-45CC-B280-D9E9F128A2F4"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d58180e120"> 
+					 <p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-B818A0FC-6D1B-4823-8DD5-6C28C97E100F"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-B818A0FC-6D1B-4823-8DD5-6C28C97E100F"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d58180e126"> 
+					 <p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-DCB8BC15-2590-4E5E-9FD1-8C32415F1407"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-DCB8BC15-2590-4E5E-9FD1-8C32415F1407"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> totalComponentWiseHardwareAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Total number of hardware components with alerts notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> diskAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any disk alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> powerSupplyAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any power supply alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> batteryAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any battery alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> fanAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any fan alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> portAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any port alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> cacheAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any cache alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> memoryAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any shared memory alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e114 "> processorAlerts 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e120 "> boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e126 "> Whether there are any processor alert notifications. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d58180e267"> 
+					 <p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d58180e273"> 
+					 <p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d58180e279"> 
+					 <p class="p" id="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-38AF6E1A-D875-4710-9442-D33A843A9E96__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d58180e267 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e273 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e279 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d58180e267 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e273 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e279 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d58180e267 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e273 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e279 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d58180e267 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e273 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d58180e279 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

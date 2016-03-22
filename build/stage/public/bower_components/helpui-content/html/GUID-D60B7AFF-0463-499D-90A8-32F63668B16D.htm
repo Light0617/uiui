@@ -1,0 +1,676 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-1DB09985-5714-498A-AEBC-3BB0D33A817E"><a name="GUID-1DB09985-5714-498A-AEBC-3BB0D33A817E"><!-- --></a>[API] 
+	 </span>Attaching volumes</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can attach one or more volumes to servers registered in 
+	 <span class="keyword">Storage Advisor</span>. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock">POST <span class="ph" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-04AB7580-F80E-4E87-9F5E-971D6CD6C89B"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-04AB7580-F80E-4E87-9F5E-971D6CD6C89B"><!-- --></a>https://<var class="keyword varname">ipAddress</var>/v1</span>/volume-manager/attach</pre>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__SECTION_9610E9DF712D485FAB6B2A01721E99C8"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__SECTION_9610E9DF712D485FAB6B2A01721E99C8"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-F3A20B14-5195-40B6-B312-B4DD05D69514"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-F3A20B14-5195-40B6-B312-B4DD05D69514"><!-- --></a> The request body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+	"storageSystemId": "",
+	"hostModeOptions": [],
+	"volumes": [{
+		"volumeId": ,
+		"lun": 
+	}],
+	"ports": [{
+		"serverId": 1,
+		"serverWwns": [""],
+		"portIds": [""]
+	}],
+	"enableZoning": ,
+	"enableLunUnification": 
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__TABLE_2CAE85300D4E43ADB750857607F26499"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__TABLE_2CAE85300D4E43ADB750857607F26499" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e71"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e41"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e41"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e77"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e47"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e47"><!-- --></a>Required 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e83"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e53"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e53"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e89"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e59"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d31e59"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" id="d31e1333">storageSystemId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Storage system ID. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">hostModeOptions 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Additional host settings for the volume. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">volumes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Collection of volume items. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">volumeId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Volume ID. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">lun 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Logical unit number. Enter a number from 0 to 2047. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">enableLunUnification 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Whether or not Lun (logical unit number) assignments for volumes that span multiple servers are consistent. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">ports 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Collection of port items. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">serverId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Server ID. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">serverWwns 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">The WWNs for a server. If a WWN is not specified, then all WWNs associated with the server are used. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">portIds 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Port IDs. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">enableZoning 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Whether or not zones are created on the SAN fabric. If enableZoning = false, then zoning is disabled. Defaults to false. 
+				  </td>
+ 
+				</tr>
+
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e71 ">enableLunUnification 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e77 ">No 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e83 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e89 ">Whether or not Lun (logical unit number) assignments for volumes that span multiple servers are consistent. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__SECTION_ABC4D9D56CE944AF9FD989E613BCE94A"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__SECTION_ABC4D9D56CE944AF9FD989E613BCE94A"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-0B8D79AE-3724-4388-9BBB-7BAE74899A03"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__GUID-0B8D79AE-3724-4388-9BBB-7BAE74899A03"><!-- --></a>The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+    {
+        "jobId": "",
+        "title":
+        {
+            "text": "",
+            "messageCode": "",
+            "parameters":
+            {
+            }
+        },
+        "user": "",
+        "status": "",
+        "startDate": ,
+        "endDate": ,
+        "parentJobId": ,
+        "reports":
+        [
+        ],
+        "links":
+        [
+            {
+                "rel": "",
+                "href": ""
+            }
+        ],
+        "tags":
+        [
+        ],
+        "isSystem": 
+    }
+</pre>
+ 
+	 </div>
+ 
+	 
+<div class="tablenoborder"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__TABLE_51B2489700BC424698E692D9A31E6010"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__TABLE_51B2489700BC424698E692D9A31E6010" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+			 <tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e306"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e28"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e312"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e34"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e318"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e40"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+		  <tbody class="tbody"> 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">jobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">The ID of the job that is created to carry out the request. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">The title of the job in progress. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">text 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">Text of the message. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">parameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">Name of the user who started the job. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 "> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1846"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1846"><!-- --></a>Job status. Valid values: 
+					 </p>
+ 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1849"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1849"><!-- --></a>• In Progress 
+					 </p>
+ 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1852"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1852"><!-- --></a>• Failed 
+					 </p>
+ 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1855"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1855"><!-- --></a>• Success 
+					 </p>
+ 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1858"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d43e1858"><!-- --></a>• Success With Errors 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 "> The date and time this job started. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">Date and time when this job ended. If the job is still in progress, this parameter does not return a value. Format is the Unix epoch (number of seconds since 1 January 1970). 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">The ID of the job that spawned this job. If not applicable, the value null is returned. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">reports 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">Messages associated with this job. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">links 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">Displays related resources. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">self 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">URI that includes the resource ID. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">tags 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 ">List of user-defined identifiers. Each identifier (tag) must be a minimum of three characters in length. 
+				  </td>
+ 
+				</tr>
+ 
+			 <tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e306 ">isSystem 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e312 ">Boolean 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e318 "> Whether or not a system has created a job. A job is triggered by a system or users. 
+				  </td>
+ 
+				</tr>
+ 
+		  </tbody>
+ 
+		</table>
+</div>
+ 
+	 <div class="section" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__SECTION_7419D7F925DA4F1582F124FEF1B9D676"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__SECTION_7419D7F925DA4F1582F124FEF1B9D676"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__TABLE_32DDD15290AD41148050B1FD27779A26"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__TABLE_32DDD15290AD41148050B1FD27779A26" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e542"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d244e46"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e548"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d244e52"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d213409e554"> 
+					 <p class="p" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d244e58"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d213409e542 ">201 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e548 ">Created 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e554 ">The server has started the operation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d213409e542 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e548 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e554 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d213409e542 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e548 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e554 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d213409e542 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e548 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e554 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d213409e542 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e548 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d213409e554 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__EXAMPLE_54854E3E279148E9BE99A15B812B9808"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__EXAMPLE_54854E3E279148E9BE99A15B812B9808"><!-- --></a><h2 class="title sectiontitle">Example request</h2> 
+		 
+		<pre class="pre codeblock">{
+	"storageSystemId": "410395",
+	"hostModeOptions": [],
+	"volumes": [{
+		"volumeId": 1,
+		"lun": null
+	}],
+	"ports": [{
+		"serverId": 1,
+		"serverWwns": ["1000000000000000"],
+		"portIds": ["CL1-A"]
+	}],
+	"enableZoning": false,
+	"enableLunUnification": false
+}</pre>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__EXAMPLE_9F366D25872547A99C254EA46C6B55CD"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__EXAMPLE_9F366D25872547A99C254EA46C6B55CD"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">POST https://172.17.64.118/v1/volume-manager/attach</pre>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__EXAMPLE_23227F38104A4F8394C6F361622B28BB"><a name="GUID-D60B7AFF-0463-499D-90A8-32F63668B16D__EXAMPLE_23227F38104A4F8394C6F361622B28BB"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">{
+  "jobId": "68fb2d84-7387-459d-961d-84c11cc085b1",
+  "title": {
+    "text": "Attach volumes to servers.",
+    "messageCode": "AttachVolumesToServersJobTitleMessage",
+    "parameters": {}
+  },
+  "user": "sysadmin",
+  "status": "IN_PROGRESS",
+  "startDate": 1456782179370,
+  "endDate": null,
+  "parentJobId": null,
+  "reports": [],
+  "links": [
+    {
+      "rel": "_self",
+      "href": "/v1/jobs/68fb2d84-7387-459d-961d-84c11cc085b1"
+    }
+  ],
+  "tags": [],
+  "isSystem": false
+}</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

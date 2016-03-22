@@ -1,0 +1,126 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <div class="container-fluid wizard">
+        <div class="row wizard-header">
+            <div class="col-lg-1 col-md-1 hidden-sm">
+                <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
+            </div>
+            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <span class="icon icon-replication-group icon-xlg"></span>
+
+                <h1 class="wizard-title">{{'common-affected-volume-pairs' | translate}}</h1>
+            </div>
+        </div>
+        <div class="wizard-body">
+            <div class="header-row" ng-switch="dataModel.pageAction">
+                <h2 ng-switch-when="suspend">{{'replication-group-actions-suspend-confirmation-message' | translate}}</h2>
+                <h2 ng-switch-when="resume">{{'replication-group-actions-resume-confirmation-message' | translate}}</h2>
+                <h2 ng-switch-default>{{'replication-group-actions-delete-confirmation-message' | translate}}</h2>
+            </div>
+            <div class="scroll-wizard-container single-pane">
+                <div class="tile-view list-view" infinite-scroll='loadMore()' infinite-scroll-distance='1'
+                     infinite-scroll-container='".scroll-wizard-container"'>
+                    <!--Header Row-->
+                    <div class="tile row row-tile column-headers">
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">&nbsp;</div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="primaryVolume.id" label="{{'repliaction-group-volume-list-pvolid' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-pvolid' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="primaryVolume.status" label="{{'repliaction-group-volume-list-pvol-label' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-pvol-label' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="primaryVolume.status" label="{{'repliaction-group-volume-list-pvol-status' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-pvol-status' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="secondaryVolume.id" label="{{'repliaction-group-volume-list-svolid' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-svolid' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="primaryVolume.status" label="{{'repliaction-group-volume-list-svol-label' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-svol-label' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="secondaryVolume.status" label="{{'repliaction-group-volume-list-svol-status' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-svol-status' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell ellipsis">
+                                <sort-column-header field="consistencyId" label="{{'repliaction-group-volume-list-consistency-id' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-consistency-id' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
+                                <sort-column-header field="splitTime" label="{{'repliaction-group-volume-list-split-time' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-split-time' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell ellipsis">
+                                <sort-column-header field="volumePairGroup" label="{{'repliaction-group-volume-list-copy-group-name' | translate}}"
+                                                    title="{{'repliaction-group-volume-list-copy-group-name' | translate}}"
+                                                    ng-model="dataModel.sort"></sort-column-header>
+                            </div>
+                    </div>
+                    <!--Standard Row-->
+                    <div class="tile row row-tile" ng-repeat="vp in dataModel.displayList">
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">&nbsp;</div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.id}}">
+                                <p>{{vp.primaryVolume.id}}</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.label}}">
+                                <p>{{vp.primaryVolume.label}}</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.status}}">
+                                <p>{{vp.primaryVolume.status}}</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.id}}">
+                                <p>{{vp.secondaryVolume.id}}</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.label}}">
+                                <p>{{vp.secondaryVolume.label}}</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.status}}">
+                                <p>{{vp.secondaryVolume.status}}</p>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell ellipsis" title="{{vp.consistencyId}}">
+                                <p>{{vp.consistencyId}}</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.splitTime}}">
+                                <p>{{vp.splitTime}}</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell ellipsis" title="{{vp.volumePairGroup}}">
+                                <p>{{vp.volumePairGroup}}</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fixed footer-->
+        <div class="row navbar-fixed-bottom footer-container">
+            <div class="wizard-footer">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                        <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>
+                            {{'no-button' | translate}}
+                        </button>
+                        <button type="button" class="btn btn-default active" id="submit" title="submit"
+                                ng-click="submitActions()">{{'yes-button' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</wizard-page>

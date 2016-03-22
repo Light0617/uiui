@@ -1,0 +1,475 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-BD92AB22-6134-4AA8-A5BA-8E2DB5BA4F57"><a name="GUID-BD92AB22-6134-4AA8-A5BA-8E2DB5BA4F57"><!-- --></a>[API] 
+	 </span>Getting pool details</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display detailed information about a specific pool. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-EA724FD0-917D-4122-9365-3C4D637E02D2"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-EA724FD0-917D-4122-9365-3C4D637E02D2"><!-- --></a>GET <span class="ph" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-905CDA48-3C23-4F75-BC51-775FEBF02439"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-905CDA48-3C23-4F75-BC51-775FEBF02439"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/storage-systems/<var class="keyword varname">storageSystemId</var>/storage-pools/<var class="keyword varname">storagePoolId</var> 
+	   </pre>
+ 
+		<p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-11257EF8-955D-47FC-879D-57411F86DBAF"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-11257EF8-955D-47FC-879D-57411F86DBAF"><!-- --></a> Use the storage system ID as the 
+		  <var class="keyword varname">storageSystemId</var>. 
+		</p>
+ 
+		<p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-42678B31-E8E4-45EC-B020-2A4A44DF1210"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-42678B31-E8E4-45EC-B020-2A4A44DF1210"><!-- --></a>Use the storage pool ID as the 
+		  <var class="keyword varname">storagePoolId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_849C8AD00B17427D9B46FEE36AA8C540"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_849C8AD00B17427D9B46FEE36AA8C540"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-EA9AE3A4-E3CB-4AC5-BF72-DD6E8EB0E60E"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-EA9AE3A4-E3CB-4AC5-BF72-DD6E8EB0E60E"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+{
+  "usedCapacityInBytes": "",
+  "availableCapacityInBytes": "",
+  "usedSubscribedCapacityInBytes": "",
+  "usedSubscription": ,
+  "availableSubscription": {
+    "unlimited": false,
+    "value": 
+  },
+  "status": "",
+  "subscriptionLimit": {
+    "unlimited": false,
+    "value": 
+  },
+  "label": "",
+  "utilizationThreshold1": ,
+  "utilizationThreshold2": ,
+  "parityGroupIds": [
+    ""
+  ],
+  "tiers": "",
+  "storageSystemId": "",
+  "storagePoolId": ,
+  "capacityInBytes": "",
+  "type": ""
+}</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__TABLE_05CBC3C62E7541AB9F61D9CCA2140FEC"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__TABLE_05CBC3C62E7541AB9F61D9CCA2140FEC" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d262717e99"> 
+					 <p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d43e28"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d262717e105"> 
+					 <p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d43e34"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d262717e111"> 
+					 <p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d43e40"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">Label 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Name of the storage pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">utilizationThreshold1 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">The pool capacity utilization threshold at which first warning is issued. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">utilizationThreshold2 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">The pool capacity utilization threshold at which second warning is issued. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">parityGroupIds 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">List of parity groups that belong to this pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">subscriptionLimit 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 "> Maximum subscription of volume capacity allowed on this pool. If there is unlimited subscription limit, set unlimited to true. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">storageSystemId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">ID of the storage system that the resource belongs to. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">tiers 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Collection of tiers that belong in the pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">capacity 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Capacity of the tier in bytes. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">tier 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Tier type that is available in the pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">capacityInBytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Total pool capacity. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">usedCapacityInBytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Current used capacity in the pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">availableCapacityInBytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Unused capacity of the volume that is attached to the host. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">usedSubscribedCapacityInBytes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 "> Used subscribed capacity for this pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">usedSubscription 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Current subscribed capacity in this pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">availableSubscription 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 "> Available capacity of this pool. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">storagePoolId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Pool identifier. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">The status of the pool: Normal, Full, Suspended, or Failed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e99 ">type 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e105 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e111 ">Pool Type: 
+					 <div class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-35786D4A-9D87-459A-A367-274F49AAF4F0"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-35786D4A-9D87-459A-A367-274F49AAF4F0"><!-- --></a> 
+					 <a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__UL_345351DA5AD340CF9E81944990519E3A"><!-- --></a><ul class="ul" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__UL_345351DA5AD340CF9E81944990519E3A"> 
+						<li class="li" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__LI_5CC2D9B286EB4579802FFADFE490FBCF"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__LI_5CC2D9B286EB4579802FFADFE490FBCF"><!-- --></a><p>HDP 
+						</p></li>
+ 
+						<li class="li" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__LI_B7F59C1211A64BEE8631CB60C3A786DB"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__LI_B7F59C1211A64BEE8631CB60C3A786DB"><!-- --></a><p>HDT 
+						</p></li>
+ 
+						<li class="li" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__LI_5EE4A777F3CE48DE930E5DBDDB92D7FF"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__LI_5EE4A777F3CE48DE930E5DBDDB92D7FF"><!-- --></a><p>HTI 
+						</p></li>
+ 
+					 </ul>
+ 
+					 </div>
+ 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_C74383162BEC40958135073E8CBF9163"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_C74383162BEC40958135073E8CBF9163"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__TABLE_5D0168BFF53D45919384EFB9A67FC45D"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__TABLE_5D0168BFF53D45919384EFB9A67FC45D" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d262717e373"> 
+					 <p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d244e46"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d262717e379"> 
+					 <p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d244e52"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d262717e385"> 
+					 <p class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d244e58"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d262717e373 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e379 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e385 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d262717e373 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e379 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e385 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d262717e373 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e379 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e385 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d262717e373 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e379 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d262717e385 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__SECTION_405455D05465422F9ADB3EDD95DF0B4E"><!-- --></a><h2 class="title sectiontitle">Example code </h2> 
+		 
+		<div class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-8E7D976D-E593-44A8-AD45-F718F1519F6B"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-8E7D976D-E593-44A8-AD45-F718F1519F6B"><!-- --></a>Request with JSON command: 
+		  <pre class="pre codeblock">https://172.17.64.109/v1/file/storage-systems/410209/storage-pools/1</pre>
+ 
+		</div>
+ 
+		<div class="p" id="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-1AF8A09E-298F-4E9B-A036-CA58C0992149"><a name="GUID-FFB157A8-C0CB-44D7-9C55-95B3FC8D9209__GUID-1AF8A09E-298F-4E9B-A036-CA58C0992149"><!-- --></a>JSON response: 
+		  <pre class="pre codeblock">
+
+    {
+        "storagePoolId": 1,
+        "storageSystemId": "410209",
+        "label": "HSA-reserved-20160203224831463-0",
+        "capacityInBytes": "46988947095552",
+        "usedCapacityInBytes": "352321536",
+        "availableCapacityInBytes": "46988594774016",
+        "usedSubscribedCapacityInBytes": "105560162697216",
+        "type": "HDP",
+        "utilizationThreshold1": 70,
+        "utilizationThreshold2": 80,
+        "subscriptionLimit":
+        {
+            "unlimited": true,
+            "value": null
+        },
+        "usedSubscription": 224,
+        "availableSubscription":
+        {
+            "unlimited": true,
+            "value": null
+        },
+        "status": "NORMAL",
+        "parityGroupIds":
+        [
+            "1-1",
+            "1-7",
+            "1-8",
+            "1-10"
+        ],
+        "externalParityGroupIds":
+        [
+        ],
+        "tiers":
+        [
+            {
+                "tier": "Bronze",
+                "capacity": "46993718599680"
+            }
+        ],
+        "activeFlashEnabled": false
+    }
+</pre>
+ 
+		</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

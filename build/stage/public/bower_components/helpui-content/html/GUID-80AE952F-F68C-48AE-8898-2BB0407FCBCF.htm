@@ -1,0 +1,292 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-6FDEAEDA-024C-4EED-9932-14E3CD8D7BC1"><a name="GUID-6FDEAEDA-024C-4EED-9932-14E3CD8D7BC1"><!-- --></a>[API] 
+	 </span>Edit a fabric switch</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can edit the details of a specific fabric switch. 
+  </p></p>
+ 
+	 <div class="section refsyn" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">POST <span class="ph" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-8329E2F9-0721-47FF-8545-DDA5DBCB0A2F"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-8329E2F9-0721-47FF-8545-DDA5DBCB0A2F"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/san-fabrics/sanFabricId</pre>
+ 
+		<p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-AD88E0B0-DBF2-4410-81D0-50806DAE1C4D"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-AD88E0B0-DBF2-4410-81D0-50806DAE1C4D"><!-- --></a>Use the identifer for the switch that you want to update as the 
+		  <var class="keyword varname">sanFabricId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<pre class="pre codeblock">{
+            "virtualFabricId": "",
+            "principalSwitchAddress": "",
+            "principalSwitchUsername": "",
+            "principalSwitchPassword": "",
+            "principalSwitchPortNumber": 
+        }
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__TABLE_CA027DEF2C31423CB102779D4A1AFEA5"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__TABLE_CA027DEF2C31423CB102779D4A1AFEA5" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e79"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-2319BB37-9A3C-4684-A87B-AFCD6D5A7512"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-2319BB37-9A3C-4684-A87B-AFCD6D5A7512"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e85"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-0DD7DCDF-4CF6-475F-B413-4CA072EF4924"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-0DD7DCDF-4CF6-475F-B413-4CA072EF4924"><!-- --></a>Required 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e91"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-9078E80E-6F20-4C84-9488-BA0B0DC2CE2A"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-9078E80E-6F20-4C84-9488-BA0B0DC2CE2A"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e97"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-B2861EBA-A80E-428B-ABB7-AE384FB48BD1"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__GUID-B2861EBA-A80E-428B-ABB7-AE384FB48BD1"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+ 
+			 </thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e79 ">virtualFabricId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e85 "> Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e91 "> Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e97 ">Virtual fabric identifier. For Cisco switches, this is the user-defined virtual storage area network identifier (VSAN ID). For Brocade switches, this is null. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e79 ">principalSwitchAddress 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e85 "> Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e97 ">Fabric switch IP address. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e79 ">principalSwitchUsername 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e85 "> Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e91 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e97 ">Fabric switch user name. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e79 ">principalSwitchPassword 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e85 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e91 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e97 ">Fabric switch password 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e79 ">principalSwitchPortNumber 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e85 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e91 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e97 ">Fabric switch port. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_9D487B7C390748A584E08CED5CC5E56F"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_9D487B7C390748A584E08CED5CC5E56F"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<pre class="pre codeblock">{
+  "parentJobId": "",
+  "startDate": "",
+  "endDate": "",
+  "title": "",
+  "reports": [
+    {
+      "message": "",
+      "severity": "",
+      "messageCode": "",
+      "messageParameters": "object",
+      "creationDate": ""
+    }
+  ],
+  "status": "",
+  "subTenant": "",
+  "tenant": "",
+  "user": "",
+  "id": ""
+}
+</pre>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_F5715075E2784EF19D64DD58F6173DC2"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_F5715075E2784EF19D64DD58F6173DC2"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__TABLE_1BC5BEADBF0D4EE48B1C0241866E2D32"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__TABLE_1BC5BEADBF0D4EE48B1C0241866E2D32" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e211"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__d244e46"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e217"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__d244e52"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d139277e223"> 
+					 <p class="p" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__d244e58"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d139277e211 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e217 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e223 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d139277e211 ">201 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e217 ">Created 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e223 ">The server has started the operation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d139277e211 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e217 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e223 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d139277e211 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e217 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e223 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d139277e211 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e217 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d139277e223 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_7527064F8797485C9DE116C3C2EA38B2"><a name="GUID-80AE952F-F68C-48AE-8898-2BB0407FCBCF__SECTION_7527064F8797485C9DE116C3C2EA38B2"><!-- --></a><h2 class="title sectiontitle">Example</h2> 
+		 
+		<pre class="pre codeblock">https://10.20.88.225:443/v1/san-fabrics/2__1
+
+{
+"principalSwitchAddress": "10.20.91.79",
+"principalSwitchUsername": "updatedUserName",
+"principalSwitchPassword": "updatedPassword",
+"principalSwitchPortNumber": 22,
+"virtualFabricId": null
+}
+</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

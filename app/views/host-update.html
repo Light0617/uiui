@@ -1,0 +1,84 @@
+<common-page-header></common-page-header>
+<wizard-page>
+        <div class="row wizard-header">
+            <div class="col-lg-1 col-md-1 hidden-sm">
+                <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
+            </div>
+            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <span class="icon icon-pools icon-xlg"></span>
+
+                <h1 class="wizard-title">{{'common-host-update'| translate}}</h1>
+            </div>
+        </div>
+
+        <div class="wizard-body">
+            <!--full-width wizard-->
+            <div class="header-row">
+                <h2>{{'common-host-update'| translate}}</h2>
+            </div>
+            <div class="scroll-wizard-container single-pane">
+                <div class="tile-view list-view">
+                    <!--Header Row-->
+                    <div class="tile row row-tile column-headers">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+                            <p>Server Name</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                            <p>Description</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                            <p>IP Address</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+                            <p>OS Type</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 cell">
+                            <p>WWN</p>
+                        </div>
+                    </div>
+                    <!--Standard Row-->
+                    <div class="tile row row-tile">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+                            <input type="text" ng-model="dataModel.updatedHostName"
+                                   class="form-control text inline" name="name"
+                                   title="name" placeholder="Host Name">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                            <input type="text" ng-model="dataModel.updatedDescription"
+                                   class="form-control text inline" name="description"
+                                   title="description" placeholder="Description">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                            <input type="text" ng-model="dataModel.updatedIpAddress"
+                                   class="form-control text inline" name="ipAddress"
+                                   title="ipAddress" placeholder="IP Address">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+    
+                            <select class="dropdown inline" name="osType" title="osType"
+                                    ng-model="dataModel.updatedOsType"
+                                    ng-options="'host-mode-' + mode | translate for mode in dataModel.osTypes">
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 cell">
+                            <input type="text" ng-model="dataModel.updatedWwns"
+                                   class="form-control text inline" name="wwn"
+                                   title="wwn" placeholder="50:00:00:00:00:00:00:00, 50:00:00:00:00:00:00:01">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fixed footer-->
+        <div class="row navbar-fixed-bottom footer-container">
+            <div class="wizard-footer">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                        <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>{{ 'cancel-button' | translate}}</button>
+                        <button type="button" class="btn btn-default active" id="submit" title="submit"
+                                ng-click="updateHost()" ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+</wizard-page>

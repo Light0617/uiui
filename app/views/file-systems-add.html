@@ -1,0 +1,15 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <!--Wizard header-->
+    <wizard-header ng-title="'file-systems-add'| translate" icon-class="icon-filesystem"></wizard-header>
+    <div class="row wizard-body control-white">
+        <single-step-wizard-body
+                left-panel-template="views/workflow-templates/create-file-systems-left-panel.html"
+                right-panel-template="views/workflow-templates/create-file-systems-right-panel.html"
+                ng-model="dataModel"></single-step-wizard-body>
+    </div>
+
+    <wizard-footer ng-model="dataModel" ng-if="dataModel">
+
+    </wizard-footer>
+</wizard-page>

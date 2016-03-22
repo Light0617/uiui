@@ -1,0 +1,29 @@
+<div class="summary-container-default clearfix">
+    <div class="tiles-view nopadding">
+        <div class="meta-tile-short single">
+            <div class="tile-row lower-top-4 margin-tile">
+                <div class="header-data ellipsis">
+                    <h2 title="{{dataModel.share.label}}">{{dataModel.share.name}}</h2>
+                </div>
+                <div class="header-data pull-left lower-top-4">
+                    <p class="header-label">{{ 'share-internal-path' | translate}} <span class="header-value">{{dataModel.share.fileSystemPath}}</span></p>
+                    <p class="header-label">{{ 'share-external-path' | translate}} <span class="header-value">\\{{dataModel.evsIp}}\{{dataModel.share.name}}</span></p>
+                </div>
+                <div class="header-data pull-left">
+                    <p class="header-label">{{ 'share-user-groups' | translate}} <span class="header-value">{{dataModel.userGroups}}</span></p>
+                    <p class="header-label">{{ 'export-access-configuration' | translate}} <span class="header-value">{{dataModel.share.accessConfiguration}}</span></p>
+                </div>
+            </div>
+            <div class="footer-row margin-tile">
+                <div class="center-content btn-group-justified" role="group">
+                    <a ng-repeat="link in dataModel.share.displayLinks" class="nomargin btn btn-default" ng-href="{{link.href}}" title="{{link.label}}"><span class="icon icon-md {{link.icon}}"></span> {{link.label}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,16 @@
+<!--Control group: Auth protocol Input-->
+<div class="control-group">
+    <h3>Auth Protocol<span class="read-only" type="text">{{ dataModel.search.authProtocol || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group-toggle" role="group">
+    <label class="btn btn-primary btn-block" ng-repeat="protocol in dataModel.authProtocols" ng-model="dataModel.search.authProtocol" btn-radio="'{{protocol}}'" uncheckable> {{protocol}}
+    </label>
+</div>
+<!--Control group: Privacy protocol Input-->
+<div class="control-group">
+    <h3>Privacy Protocol<span class="read-only" type="text">{{ dataModel.search.privacyProtocol || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group-toggle" role="group">
+    <label class="btn btn-primary btn-block" ng-repeat="protocol in dataModel.privacyProtocols" ng-model="dataModel.search.privacyProtocol" btn-radio="'{{protocol}}'" uncheckable> {{protocol}}
+    </label>
+</div>

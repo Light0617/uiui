@@ -1,0 +1,53 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1">Protecting volumes by creating snapshots</h1>
+ 
+   
+   
+  <div class="body taskbody"><p class="shortdesc"><p>After creating and attaching volumes, you can implement data protection by creating incremental snapshots. 
+  </p></p>
+ 
+	 <div class="section context" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__CONTEXT_92D0A13BBABF4E22AB188AEDED3BB559"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__CONTEXT_92D0A13BBABF4E22AB188AEDED3BB559"><!-- --></a>You can use the Snapshot method if you don't need continuous copying but want to schedule the copy depending on expected changes in the data. 
+	 </div>
+ 
+	 <div class="tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEPS_355DA446D02D41C68CE4F734F6355B1C"><!-- --></a><ol class="ol steps" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEPS_355DA446D02D41C68CE4F734F6355B1C"><li class="li step" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_7BC21A47488246E9A1304A8884BD56F1"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_7BC21A47488246E9A1304A8884BD56F1"><!-- --></a> 
+		  <span class="ph cmd" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-5D52AF83-EA55-4CE2-9538-599BA6A8FBA1"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-5D52AF83-EA55-4CE2-9538-599BA6A8FBA1"><!-- --></a>In the 
+			 <span class="keyword wintitle">Protect Volumes</span> page, select the volumes you want to protect and click 
+			 <span class="ph uicontrol" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-E281007D-42E4-4449-9E57-D8990F9FEBE0"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-E281007D-42E4-4449-9E57-D8990F9FEBE0"><!-- --></a>Snapshot</span>. 
+		  </span> 
+		</li>
+<li class="li step" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_ECEE9EE4379D4A3A8646956F039E056E"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_ECEE9EE4379D4A3A8646956F039E056E"><!-- --></a> 
+		  <span class="ph cmd" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-3EA9CBD6-0A71-4377-A635-2F2A4352C512"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-3EA9CBD6-0A71-4377-A635-2F2A4352C512"><!-- --></a> 
+			 You can enable 
+			 <span class="ph uicontrol" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-E251BD58-36FE-46DC-9BE6-D4C20787A44F"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-E251BD58-36FE-46DC-9BE6-D4C20787A44F"><!-- --></a>Consistency</span> to perform data protection on all pairs in the group simultaneously. 
+		  </span><br/> 
+		   
+			 Consistency acts a filter for replication groups, so your choice may affect the availability of replication groups.
+		  
+		</li>
+<li class="li step" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_4CEF9D1948E6442A83A6BE566DFA0492"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_4CEF9D1948E6442A83A6BE566DFA0492"><!-- --></a> 
+		  <span class="ph cmd" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-5F16DC95-D011-4BAF-8EED-2A8B4F8A350B"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-5F16DC95-D011-4BAF-8EED-2A8B4F8A350B"><!-- --></a> Select a 
+			 <span class="ph uicontrol" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-5A07260C-F5FF-413C-8BF7-AE447087083D"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-5A07260C-F5FF-413C-8BF7-AE447087083D"><!-- --></a>Replication Group</span> for each volume or enter a new 
+			 <span class="ph uicontrol" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-0ECA6868-5577-4971-8511-B268C1FDBA7C"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-0ECA6868-5577-4971-8511-B268C1FDBA7C"><!-- --></a>Replication Group</span> name. Up to 28 alphanumeric characters, also hyphens (-) and underscores (_), are allowed. Spaces are not allowed. 
+		  </span> 
+		</li>
+<li class="li step" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_62F98298E6AC4D7895EA6CC10D3A74A5"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__STEP_62F98298E6AC4D7895EA6CC10D3A74A5"><!-- --></a> 
+		  <span class="ph cmd" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-8D9E7901-B162-4C04-ACEA-FDB37CB7078E"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-8D9E7901-B162-4C04-ACEA-FDB37CB7078E"><!-- --></a>ISet a daily, weekly, or monthly schedule and click 
+			 <span class="ph uicontrol" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-7C50C858-6931-4A4A-BCE0-074CA67EC9F3"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__GUID-7C50C858-6931-4A4A-BCE0-074CA67EC9F3"><!-- --></a>Submit</span>. 
+		  </span> 
+		    
+			 A volume cannot have more than one schedule. 
+		   
+		</li>
+</ol>
+ 
+	 <div class="section result" id="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__RESULT_F11C9CB5FA4B4A6A8A1B743A50BFE99D"><a name="GUID-6EE8C39F-3F87-4251-828A-1434D07A2E2B__RESULT_F11C9CB5FA4B4A6A8A1B743A50BFE99D"><!-- --></a><div class="tasklabel"><h2 class="sectiontitle tasklabel">Results</h2></div> A summary message is displayed and snapshots are created according to the schedule. 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

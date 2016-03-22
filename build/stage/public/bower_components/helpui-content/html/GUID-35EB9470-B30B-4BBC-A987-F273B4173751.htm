@@ -1,0 +1,416 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-8E3DFCF9-4B98-4045-B952-03EF3036EE85"><a name="GUID-8E3DFCF9-4B98-4045-B952-03EF3036EE85"><!-- --></a>[API] 
+	 </span>Adding world wide port names</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can add world wide port names to storage system. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock">POST <span class="ph" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-AC731056-0CF1-4B75-BD48-9ECB834577B2"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-AC731056-0CF1-4B75-BD48-9ECB834577B2"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/compute/servers/<var class="keyword varname">serverId</var>/add-wpn</pre>
+ 
+		<p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-27668E5B-A4E1-4D70-AB9E-CC36120798CC"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-27668E5B-A4E1-4D70-AB9E-CC36120798CC"><!-- --></a> Use the ID of the server as the 
+		  <var class="keyword varname">serverId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_3219182BC81C45E6AF79AE885F000056"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_3219182BC81C45E6AF79AE885F000056"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-CFB19633-765D-421F-8F45-D60FE0831264"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__GUID-CFB19633-765D-421F-8F45-D60FE0831264"><!-- --></a> The request body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+  "wwpns": [
+    ""
+  ]
+}
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__TABLE_01500E947C3C4590BD4ED885176F7818"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__TABLE_01500E947C3C4590BD4ED885176F7818" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e80"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e41"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e41"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e86"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e47"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e47"><!-- --></a>Required 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e92"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e53"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e53"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e98"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e59"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d31e59"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e80 ">wwpns 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e86 ">Yes 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e92 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e98 ">List of World Wide Port Numbers formatted as a 16 digit hexadecimal number. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_D81DD3A9DFDA469CBFAFECA413DEAE39"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_D81DD3A9DFDA469CBFAFECA413DEAE39"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d691e27"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d691e27"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+    {
+      "tenant": "",
+      "subTenant": "",
+      "status": "",
+      "user": "",
+      "parentJobId": "",
+      "startDate": "",
+      "endDate": "",
+      "title": "",
+      "reports": [
+        {
+          "message": "",
+          "severity": "",
+          "messageCode": "",
+          "messageParameters": "",
+          "creationDate": ""
+        }
+      ],
+      "id": ""
+    }
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d691e33"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d691e33" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e147">Parameter 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e150">Type 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e153">Description 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> id 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> ID of the job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Status of the job: In progress, Success, Success_With_Errors, or Failed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> User who initiated the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> ID of the job that spawned this job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Start date and time of the job (in Epoch time format). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> End date and time of the job (in Epoch time format). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Title of the task that is in progress. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> tenant 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Tenant of the submitted job. It is always 0. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> subTenant 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Subtenant of the submitted job. It is always 0. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> message 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Job message with details. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> severity 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 ">One of the following types of message: Information, Warning, Error. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> messageParameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e147 "> creationDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e150 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e153 "> Date and time that the message was generated. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_75147B4288C84D7C8BA35ACEBE1C9DEF"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_75147B4288C84D7C8BA35ACEBE1C9DEF"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__TABLE_12B8F29DE1D84AA7B30AA937D763E3E0"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__TABLE_12B8F29DE1D84AA7B30AA937D763E3E0" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e348"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d244e46"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e354"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d244e52"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d53378e360"> 
+					 <p class="p" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d244e58"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d53378e348 ">201 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e354 ">Created 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e360 ">The server has started the operation. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d53378e348 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e354 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e360 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d53378e348 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e354 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e360 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d53378e348 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e354 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e360 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d53378e348 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e354 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d53378e360 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_BD2B94BFF9694857B1348F5454A6C98E"><a name="GUID-35EB9470-B30B-4BBC-A987-F273B4173751__SECTION_BD2B94BFF9694857B1348F5454A6C98E"><!-- --></a><h2 class="title sectiontitle">Example request</h2> 
+		 
+		<pre class="pre codeblock">{
+    "wwpns": [
+            "1000001234567890",
+            "394AC9283EE92A22"
+    ]
+}</pre>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

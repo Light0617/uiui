@@ -1,0 +1,300 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-32129C3B-5359-4F37-ABA7-076BE5ED6E1E"><a name="GUID-32129C3B-5359-4F37-ABA7-076BE5ED6E1E"><!-- --></a>[API] 
+	 </span>Getting a server</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can display details on a specific server. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_1806EB7EBCFE4CECA852407DDA7D2917"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_1806EB7EBCFE4CECA852407DDA7D2917"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock">GET <span class="ph" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__GUID-9A17EC9C-4B43-4D0C-BBD2-F653E8B78ED8"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__GUID-9A17EC9C-4B43-4D0C-BBD2-F653E8B78ED8"><!-- --></a>https://<var class="keyword varname">ipAddress</var>/v1</span>/v1/compute/servers/<var class="keyword varname">serverId</var></pre>
+ 
+		<p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__GUID-97CD39C3-2042-4BFD-8F6A-F0A41F11B3F0"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__GUID-97CD39C3-2042-4BFD-8F6A-F0A41F11B3F0"><!-- --></a>User the ID of the server as the 
+		  <var class="keyword varname">serverId</var>. 
+		</p>
+
+	 </div>
+ 
+	 <div class="section" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_86B7AD18E10C486EB59651F9D10B2FE4"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__GUID-D8B7E3FE-FA02-4A17-8A00-B6B0A0A2A14A"><!-- --></a>Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_883F86883BE5490F930E652DBB5A60AA"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_883F86883BE5490F930E652DBB5A60AA"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<pre class="pre codeblock">{
+                "serverId": 2,
+                "serverName": "ESX-6425",
+                "description": "ESX-6425",
+                "ipAddress": "172.17.64.25",
+                "wwpns":
+                [
+                    "5000087000536424"
+                ],
+                "osType": "VMWARE_EX",
+                "attachedVolumeCount": 0,
+                "dataProtectionSummary":
+                {
+                    "replicationType":
+                    [
+                    ],
+                    "protection": "UNPROTECTED",
+                    "hasFailures": false
+                },
+                "dpStatus": "Success",
+                "dpType":
+                [
+                ]
+            }</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__TABLE_9D8C5D8AF7CC40FAB1F89DEE49C5B32B"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__TABLE_9D8C5D8AF7CC40FAB1F89DEE49C5B32B" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d113060e83"> 
+					 <p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d43e28"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d43e28"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d113060e89"> 
+					 <p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d43e34"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d43e34"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d113060e95"> 
+					 <p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d43e40"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d43e40"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">dpStatus 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">Data protection status on the server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">dpType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">Type of data protection on the server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">description 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">string 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">Brief description of the server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">ipAddress 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">IP address of the cluster node. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">wwpns 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">Array 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">List of World Wide Port Numbers formatted as a 16-digit hexadecimal number. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">osType 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">List of supported operating systems on the server. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">serverName 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">Server name. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e83 ">serverId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e89 ">Integer 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e95 ">Server ID. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_E5762590590944F381FB9E6466DF8FC3"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__SECTION_E5762590590944F381FB9E6466DF8FC3"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__TABLE_F531502059C14116BA3AF8DAF5FACFAB"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__TABLE_F531502059C14116BA3AF8DAF5FACFAB" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d113060e220"> 
+					 <p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d244e46"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d244e46"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d113060e226"> 
+					 <p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d244e52"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d244e52"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d113060e232"> 
+					 <p class="p" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d244e58"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__d244e58"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d113060e220 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e226 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e232 ">Success. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d113060e220 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e226 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e232 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d113060e220 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e226 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e232 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d113060e220 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e226 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d113060e232 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="example" id="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__EXAMPLE_82A3A269F2A2447AB0421C3FF3E8F9A1"><a name="GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19__EXAMPLE_82A3A269F2A2447AB0421C3FF3E8F9A1"><!-- --></a><h2 class="title sectiontitle">Example response</h2> 
+		 
+		<pre class="pre codeblock">{
+                "serverId": 2,
+                "serverName": "ESX-6425",
+                "description": "ESX-6425",
+                "ipAddress": "172.17.64.25",
+                "wwpns":
+                [
+                    "5000087000536424"
+                ],
+                "osType": "VMWARE_EX",
+                "attachedVolumeCount": 0,
+                "dataProtectionSummary":
+                {
+                    "replicationType":
+                    [
+                    ],
+                    "protection": "UNPROTECTED",
+                    "hasFailures": false
+                },
+                "dpStatus": "Success",
+                "dpType":
+                [
+                ]
+            }</pre>
+ 
+	 </div>
+
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

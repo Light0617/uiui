@@ -1,0 +1,31 @@
+<div class="summary-container-default">
+        <div class="meta-tile-short half">
+            <div class="tile-row lower-top-4 header-data margin-tile">
+                <div class="data-short pull-left smallMarginTop">
+                    <p class="header-label">{{ 'windows' | translate}} <span class="header-value">{{dataModel.windows}}</span> </p>
+                    <p class="header-label">{{ 'linux' | translate}} <span class="header-value">{{dataModel.linux}}</span></p>
+                </div>
+                <div class="data-short pull-left smallMarginTop">
+                    <p class="header-label">{{ 'format' | translate}} <span class="header-value">{{dataModel.format}}</span></p>
+                    <p class="header-label">{{ 'file-expansion-limit' | translate}} <span class="header-value">{{dataModel.expansionLimit.size}} {{dataModel.expansionLimit.unit}}</span></p>
+                </div>
+            </div>
+            <div class="footer-row margin-tile">
+                <div class="center-content btn-group-justified nopadding" role="group">
+                        <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[0].href}}" title="{{dataModel.fileSystem.displayLinks[0].label}}"
+                           ng-if="dataModel.fileSystem.displayLinks[0]">
+                            <span class="icon icon-md {{dataModel.fileSystem.displayLinks[0].icon}}"></span> {{dataModel.fileSystem.displayLinks[0].label}}</a>
+
+                        <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[1].href}}" title="{{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}"
+                           ng-if="dataModel.fileSystem.displayLinks[1]">
+                            <span class="icon icon-md {{dataModel.fileSystem.displayLinks[1].icon}}" ></span> {{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="full-width margin-percent-L-R-10">
+            <bar-data-visualization ng-model="dataModel.fileSystem"></bar-data-visualization>
+        </div>
+</div>
+
+
+

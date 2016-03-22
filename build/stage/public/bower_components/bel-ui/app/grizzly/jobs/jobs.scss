@@ -1,0 +1,134 @@
+.oval {
+  height: 33px;
+  -moz-border-radius: 300px;
+  -webkit-border-radius: 300px;
+  border-radius: 300px;
+  float: left;
+}
+
+.square {
+  width: 15px;
+  height: 15px;
+  float: left;
+  margin: 11px 8px 0 0;
+}
+
+.oval.failed, .square.failed {
+  background: orangered;
+}
+
+.oval.successwitherrors, .square.successwitherrors {
+  background: yellow;
+}
+
+.oval.inprogress, .square.inprogress {
+  background: white;
+}
+
+.oval.success, .square.success {
+  background: green;
+}
+
+.job-status-text {
+  float: left;
+  margin: 11px 0 0 0;
+}
+
+.job-status-inprogress, .job-status-in_progress {
+  text-align: center;
+}
+
+.tile.alert {
+  height: 226px;
+  h2 {
+    white-space: normal;
+  }
+}
+
+.striped {
+  font-weight: lighter;
+  .row {
+    line-height: 24pt;
+    border: 0px;
+  }
+  .row:nth-last-child(odd) {
+    background-color: #F2F2F2;
+  }
+  h3 {
+    line-height: 20pt;
+    font-weight: bold;
+    color: $info
+  }
+  @media (max-width: $screen-sm-min) {
+    font-size: 80%;
+  }
+  .text-link {
+    color: $gray;
+    &:hover {color: $black;}
+  }
+}
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tile.jobs.compact {
+  h2 {
+    height: 226px;
+    span {
+      padding-bottom: 40px;
+      position: absolute;
+      display: inline-block;
+      width: 226px;
+      bottom: 110px;
+      left: -80px;
+      -webkit-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+    }
+  }
+}
+.recent-jobs {
+  @media (max-width: 570px) {
+    .alert-panel{
+      width: 80px;
+    }
+  }
+}
+.padding-left-15 {
+  padding-left: 15px;
+}
+
+.row.tile-row-record {
+  padding: 2em 1em .1em 3em;
+  font-size: larger;
+}
+
+.row.job-tile-content {
+  padding: 2em 3.5em;
+}
+
+.tile-tile.tile-content-records {
+  padding: 1.5em;
+  line-height: 2em;
+}
+
+.row.tile-content-highlight {
+  font-size: large;
+  margin: 1em;
+}
+
+.job-refresh-time {
+  float: right;
+  padding-right: 20px;
+}
+
+tags-input {
+  display: block;
+}
+
+tags-input.ng-invalid .tags {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}

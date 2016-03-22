@@ -1,0 +1,211 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1">Server management resources</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>This module describes the server management operations. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__TABLE_1F560775944E47CD9D1E11884A000C6B"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__TABLE_1F560775944E47CD9D1E11884A000C6B" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" align="center" valign="top" width="33.33333333333333%" id="d131057e46">Request 
+				  </th>
+ 
+				  <th class="entry" align="center" valign="top" width="16.666666666666664%" id="d131057e49">Method 
+				  </th>
+ 
+				  <th class="entry" align="center" valign="top" width="33.33333333333333%" id="d131057e52">URI 
+				  </th>
+ 
+				  <th class="entry" align="center" valign="top" width="16.666666666666664%" id="d131057e55">Role 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-F0D877A9-06D7-4996-8195-7C9B5A4449C1.htm#GUID-F0D877A9-06D7-4996-8195-7C9B5A4449C1')" title="You can display a list of servers and the details on the server."  >Getting a list of servers</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">GET 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 ">/v1/compute/servers 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-A9C2432D-C5BD-4BDB-8505-A67150A00F28"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-A9C2432D-C5BD-4BDB-8505-A67150A00F28"><!-- --></a> Storage administrator 
+					 </p>
+ 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-0CB6D247-80AD-4C0C-909E-080FB1AA106A"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-0CB6D247-80AD-4C0C-909E-080FB1AA106A"><!-- --></a> System administrator 
+					 </p>
+ 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-450519FE-24EB-4A21-AB5D-CFD3D4916F1C"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-450519FE-24EB-4A21-AB5D-CFD3D4916F1C"><!-- --></a> Security administrator 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19.htm#GUID-6ACBB770-5D14-49B3-9126-6F634BAB5D19')" title="You can display details on a specific server."  >Getting information about a specific server</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">GET 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-BCF4FE08-47E5-4397-B8A9-DB0420ACC7D4"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-BCF4FE08-47E5-4397-B8A9-DB0420ACC7D4"><!-- --></a>/v1/compute/servers/<var class="keyword varname">serverId</var> 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-E8484FB5-0860-4075-A721-EFB4849ED2B4"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-E8484FB5-0860-4075-A721-EFB4849ED2B4"><!-- --></a> Storage administrator 
+					 </p>
+ 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-A16F2820-1997-4142-8343-D1F3A388ABF6"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-A16F2820-1997-4142-8343-D1F3A388ABF6"><!-- --></a> System administrator 
+					 </p>
+ 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-A8AA06C2-C862-40A0-8643-CBAE8343FE59"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-A8AA06C2-C862-40A0-8643-CBAE8343FE59"><!-- --></a> Security administrator 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-023FE26E-DB05-4E23-BA11-F6881CD31AF1.htm#GUID-023FE26E-DB05-4E23-BA11-F6881CD31AF1')" title="You can create a list of servers with information about the server name, IP address, short description, World Wide Port Name (WWN), and the supported OS types."  >Creating a server</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">POST 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 ">/v1/compute/servers 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 ">System administrator 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-6DE0C716-AD8E-43EB-84E4-70C18D5B4912.htm#GUID-6DE0C716-AD8E-43EB-84E4-70C18D5B4912')" title="You can update the server name, IP address, short description, or supported OS types."  >Updating a server</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">POST 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-F184DD81-72A4-4F1E-8A4C-E56E0620399C"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-F184DD81-72A4-4F1E-8A4C-E56E0620399C"><!-- --></a>/v1/compute/servers/<var class="keyword varname">serverId</var> 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 ">System administrator 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-431BB222-75D6-425E-86B9-E56AAFA983D9.htm#GUID-431BB222-75D6-425E-86B9-E56AAFA983D9')" title="You can delete a server if there are no volumes attached to the server. You should verify that no volumes are attached to the server before you delete the server."  >Deleting a server</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">DELETE 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-BE9B506E-28FD-4832-AD6A-47D85FA46BBF"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-BE9B506E-28FD-4832-AD6A-47D85FA46BBF"><!-- --></a>/v1/compute/servers/<var class="keyword varname">serverId</var> 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 ">System administrator 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-35EB9470-B30B-4BBC-A987-F273B4173751.htm#GUID-35EB9470-B30B-4BBC-A987-F273B4173751')" title="You can add world wide port names to storage system."  >Adding world wide port names</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">POST 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-E03B629F-30F6-4FEB-B8FE-B422FF6F7D34"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-E03B629F-30F6-4FEB-B8FE-B422FF6F7D34"><!-- --></a>/v1/compute/servers/<var class="keyword varname">serverId</var>/add-wpn 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 ">System administrator 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-39E08353-B672-40A0-916F-F7F21C5BFA9E.htm#GUID-39E08353-B672-40A0-916F-F7F21C5BFA9E')" title="You can remove a list of world wide port numbers from a server if there are no volumes attached to the server. Verify that there are no volumes attached to the server via the WWN before you remove the WWN."  >Removing world wide port names</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">POST 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-D53508FB-AD45-4817-ACF3-33B2E0C130AE"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-D53508FB-AD45-4817-ACF3-33B2E0C130AE"><!-- --></a>/v1/compute/servers/<var class="keyword varname">serverId</var>/remove-wwpn 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 ">System administrator 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e46 "><span class='helpui-topicLink' ng-click="helpCtl.getHelpTopic('GUID-F6C2F1A5-D2D5-44D2-8529-03706DFE7360.htm#GUID-F6C2F1A5-D2D5-44D2-8529-03706DFE7360')" title="You can display a list of all attached volumes from a specific storage system and the path to the attached volume."  >Getting a list of attached volumes for a specific server on the storage system</span> 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e49 ">GET 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="33.33333333333333%" headers="d131057e52 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-39D6573D-D78D-4A2E-9F94-A39E60A61B1C"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-39D6573D-D78D-4A2E-9F94-A39E60A61B1C"><!-- --></a>/v1/compute/servers/<var class="keyword varname">serverId</var>/volumes 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="16.666666666666664%" headers="d131057e55 "> 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-15FA88EB-90F2-4194-B8D7-A265A51E5059"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-15FA88EB-90F2-4194-B8D7-A265A51E5059"><!-- --></a> Storage administrator 
+					 </p>
+ 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-5FEF7FE1-BD40-4C2E-9B54-1A092287247A"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-5FEF7FE1-BD40-4C2E-9B54-1A092287247A"><!-- --></a> System administrator 
+					 </p>
+ 
+					 <p class="p" id="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-59BCEFE5-B7A9-4D61-8734-4B5C349B1D56"><a name="GUID-7B4E3E4B-D745-473B-8FB4-6AE7C2395B5F__GUID-59BCEFE5-B7A9-4D61-8734-4B5C349B1D56"><!-- --></a> Security administrator 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<ul class="ullinks">
+</ul>
+
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

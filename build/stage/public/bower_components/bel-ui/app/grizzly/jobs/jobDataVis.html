@@ -1,0 +1,32 @@
+<div class="job-refresh-time">{{ 'common-last-refresh' | translate }} {{lastRefreshTime}}</div>
+<div class="job-widget nopadding">
+    <div class="job-status-text small" style="font-size: large; padding-left: 55px"><strong>{{stats.totalJobs}}</strong> {{ 'jobs-total' | translate }}</div>
+    <div class="row col-md-12">
+        <div class="col-md-4">
+            <div style="width: 100%; border-radius: 300px; border: 2px solid black; height: 37px; background-color: black; float: left; margin: 0 0 0 40px">
+                <a title="{{stats.failedJobs.count}} {{ 'jobs-status-failed' | translate }}" ng-click="queryService.toggleQueryMapEntry('status', 'FAILED')"><div class="oval failed" ng-style="{'width':stats.failedJobs.width + '%'}"></div></a>
+                <a title="{{stats.successfulWithErrorsJobs.count}} {{ 'jobs-status-succeeded-with-errors' | translate }}" ng-click="queryService.toggleQueryMapEntry('status', 'SUCCESS_WITH_ERRORS')"><div class="oval successwitherrors" ng-style="{'width':stats.successfulWithErrorsJobs.width + '%'}"></div></a>
+                <a title="{{stats.inProgressJobs.count}} {{ 'jobs-status-in-progress' | translate }}" ng-click="queryService.toggleQueryMapEntry('status', 'IN_PROGRESS')"><div class="oval inprogress" ng-style="{'width':stats.inProgressJobs.width + '%'}"></div></a>
+                <a title="{{stats.successfulJobs.count}} {{ 'jobs-status-succeeded' | translate }}" ng-click="queryService.toggleQueryMapEntry('status', 'SUCCESS')"><div class="oval success" ng-style="{'width':stats.successfulJobs.width + '%'}"></div></a>
+            </div>
+        </div>
+        <div class="col-md-8" style="float: left; padding-left: 80px">
+            <div class="col-md-3">
+                <div class="square failed"></div>
+                <div class="job-status-text small"><strong>{{stats.failedJobs.count}}</strong> {{ 'jobs-status-failed' | translate }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="square successwitherrors"></div>
+                <div class="job-status-text small"><strong>{{stats.successfulWithErrorsJobs.count}}</strong> {{ 'jobs-status-succeeded-with-errors' | translate }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="square inprogress"></div>
+                <div class="job-status-text small"><strong>{{stats.inProgressJobs.count}}</strong> {{ 'jobs-status-in-progress' | translate }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="square success"></div>
+                <div class="job-status-text small"><strong>{{stats.successfulJobs.count}}</strong> {{ 'jobs-status-succeeded' | translate }}</div>
+            </div>
+        </div>
+    </div>
+</div>

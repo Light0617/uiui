@@ -1,0 +1,118 @@
+<common-page-header></common-page-header>
+<application-stage>
+    <page-title>
+        <div class="btn icon-btn" ng-click="attachToHost()" title="Attach" ng-if="!model.disabledCheckBox">
+            <span class="icon-attach-volume icon-sm"></span>
+        </div>
+
+        <a class="btn icon-btn" ng-if="!model.disabledCheckBox"
+           ng-attr-href="#/storage-systems/{{model.storageSystemId}}/volumes/{{model.volumeId}}/update" title="Update" >
+            <span class="icon-edit icon-sm"></span>
+        </a>
+
+        <a class="btn icon-btn icon-sm" title="Delete" ng-if="!model.disabledCheckBox"
+           confirm
+           confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"
+           confirm-message="{{ 'storage-volume-delete-current-content' | translate}}"
+           ng-click="model.disabledCheckBox || deleteConfirmOk()">
+            <span class="icon-delete icon-sm"></span>
+        </a>
+
+        <div class="btn icon-btn" ng-click="protectCurrentVolume()" title="Protect" ng-if="!model.disabledCheckBox">
+            <span class="icon-protected-volume icon-sm"></span>
+        </div>
+
+        <div class="btn icon-btn" ng-click="model.disabledCheckBox || unprotectCurrentVolume()" title="Unprotect" ng-if="protected || !model.disabledCheckBox">
+            <span class="icon-unprotected-volume icon-sm"></span>
+        </div>
+    </page-title>
+
+    <div class="summary-container-default stage clearfix" id="top-info" ng-if="summaryModel">
+        <div class="tile alert-panel">
+            <dp-alert-secondary-volumes></dp-alert-secondary-volumes>
+        </div>
+
+        <div class="tile meta-tile">
+            <div class="label-value-container">
+                <p class="label">{{ 'storage-volume-label' | translate}}</p>
+                <p class="value">{{model.label}}</p>
+                <p class="label">{{ 'storage-pool-id' | translate}}</p>
+                <p class="value">{{model.poolId}}</p>
+                <p class="label">{{ 'storage-pool-type' | translate}}</p>
+                <p class="value">{{model.storagePool.displayType}}</p>
+                <p class="label">{{ 'storage-pool-tier' | translate}}</p>
+                <p class="value">{{model.storagePool.tierNames}}</p>
+                <p class="label">{{ 'storage-volume-protected' | translate}}</p>
+                <div ng-if="protected" class="icon icon-solo icon-checkmark-fill icon-sm centered-content"></div>
+                <div ng-if="!protected" class="icon icon-solo icon-checkmark-no-fill icon-sm centered-content"></div>
+            </div>
+        </div>
+
+        <div class="tile data-viz">
+                <array-polar-data-visualization class="utilization med-pdv"
+                                                ng-model="summaryModel.arrayDataVisualizationModel" no-break-down="true"></array-polar-data-visualization>
+        </div>
+    </div>
+
+    <div class="container-fluid resource-detail tiles-view clearfix">
+        <storage-system-volume-data-visualization ng-if="!noDataVisualization"></storage-system-volume-data-visualization>
+    </div>
+
+
+    <div class="inventory tiles-view clearfix" ng-if="dataModel && !noRgWithVolumeIdAsPvol">
+        <div class="row page-title">
+            <div class="btn-toolbar horizontal btn-group pull-left">
+                <inventory-actions ng-model="dataModel"></inventory-actions>
+            </div>
+        </div>
+
+
+        <div class="col-lg-9 col-md-8 col-sm-12 panel-group tile-container list-view list-view-flex"
+             role="tablist" aria-multiselectable="true" infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='2'>
+            <div class="tile row row-tile column-headers">
+                <div class="cell text-resize twelfth">
+                    &nbsp;
+                </div>
+                <div ng-attr-class="{{settings.sizeClass}} cell text-resize" ng-repeat="settings in dataModel.gridSettings">
+                    <sort-column-header field="{{settings.sortField}}" label="{{ settings.title  | translate }}"
+                                        ng-model="dataModel.sort" title="{{ settings.title  | translate }}"></sort-column-header>
+                </div>
+            </div>
+            <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList">
+                <div id="{{item.id}}" class="cell twelfth panel-title">
+                    <a role="button" data-toggle="collapse"
+                       ng-click="item.opened = !item.opened ; changeReplicationGroupBackground(item)"
+                       aria-expanded="{{item.opened}}" class="btn icon-btn icon-caret-collapsed icon-xsm"></a>
+
+                    <div class="btn-group" data-toggle="buttons" ng-if="!item.noSelection">
+                        <label class="btn icon-btn checkbox" ng-click="item.selected = !item.selected ; dataModel.restoreCheck()">
+                            <input type="checkbox">
+                        </label>
+                    </div>
+                    <div class="btn-group" data-toggle="buttons" ng-if="item.noSelection">
+                        <label class="btn icon-btn">&nbsp;</label>
+                    </div>
+                </div>
+                <div ng-attr-class="td {{settings.sizeClass}} cell" ng-repeat="settings in dataModel.gridSettings"
+                     ng-switch="settings.type" ng-click="item.onClick()">
+                    <a class="text-resize ellipsis" ng-switch-when="id" title="{{settings.getDisplayValue(item)}}">{{settings.getDisplayValue(item)}}</a>
+                    <p class="text-resize ellipsis" ng-switch-default="" title="{{settings.getDisplayValue(item)}}">
+                        {{settings.getDisplayValue(item)}}</p>
+                </div>
+            </div>
+            <ng-include src="'views/inventory-templates/storage-system-volume-list-details.html'" ng-show="item.opened" ng-repeat-end></ng-include>
+        </div>
+
+
+        <div class="col-lg-3 col-md-4 hidden-sm hidden-xs controls-column" ng-if="dataModel.search">
+            <div class="form-group search">
+                <input type="text" class="form-control" placeholder="Search" ng-model="dataModel.search.freeText">
+                <button type="submit" class="icon icon-btn icon-search"></button>
+            </div>
+            <h3>{{ 'replication-groups-showing-x-of-y' | translate:dataModel.itemCounts}}</h3>
+            <ng-include src="'views/inventory-templates/storage-system-volume-filter.html'"></ng-include>
+        </div>
+    </div>
+
+
+</application-stage>

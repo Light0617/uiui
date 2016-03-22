@@ -1,0 +1,54 @@
+<div id='helpui-searchbar' class='helpui-searchbar' ng-show='getHelpPaneVisible()'>
+    <!-- search icon -->
+    <i class="helpui-icon-search"></i>
+    <span class="icon icon-search"></span>
+    <!-- This should be 'flexboxed' -->
+        <span id="helpui-search-input-block">
+            <form id="helpui-search-form"
+                  class="form form-inline"
+                  ng-submit="helpCtl.searchTopics(helpui.search.searchText)"
+                    >
+                <!-- SEARCH INPUT -->
+                <input
+                        class="helpui-search-term"
+                        ng-model="helpui.search.searchText"
+                        type="text"
+                        placeholder="Search Help Content"
+                        ng-keydown="helpCtl.watchKeys($event)"
+                        ng-model-options="{debounce: 100}"
+                        autocomplete="off"
+                        >
+
+                <!-- SEARCH SUGGESTIONS -->
+                <div id="helpui-search-suggestions-wrapper" ng-show="helpui.search.suggestions.length > 0">
+                    <ul id="helpui-search-suggestions">
+                        <li
+                                ng-click="helpCtl.suggestionSelected(item.term)"
+                                ng-class="{selectedSuggestion: $index === helpui.search.suggestedItemIndex}"
+                                ng-repeat="item in helpui.search.suggestions track by $index">
+                            {{item.term}}
+                        </li>
+                    </ul>
+                </div>
+
+            </form>
+        </span>
+    <!-- Show Content Pane: --->
+    <!-- TODO: remove local styling here and set in CSS instead (.helpContentPaneToggleButton) -->
+    <span class="helpContenPaneToggleButton icon icon-menu"
+          ng-click="helpCtl.toggleContentPane()"
+          ng-show="!(getContentPaneVisible())"
+          style="margin-left: auto; margin-right: auto;"></span>
+        <span class="helpui-searchbar-right">
+            <!-- feedback icon -->
+            <a href="mailto:doc.comments@hds.com?subject=Infrastructure%20Director%20help%20content%20feedback">
+                <span class="helpui-icon-feedback"></span>
+                <span class="icon icon-email"></span>
+            </a>
+            <!-- print-topic icon -->
+            <span ng-click="helpCtl.printTopic()">
+                <span class="helpui-icon-print" ng-click="helpCtl.printTopic()"></span>
+                <span class="icon icon-print"></span>
+            </span>
+        </span>
+</div>

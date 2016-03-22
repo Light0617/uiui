@@ -1,0 +1,342 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-2C30B777-73BD-4EC7-8754-DC397D009177"><a name="GUID-2C30B777-73BD-4EC7-8754-DC397D009177"><!-- --></a>[API] 
+	 </span>Deleting group mappings</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can remove a role that was assigned to a user group. 
+  </p></p>
+ 
+	 <div class="section refsyn" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__REFSYN_F5E5ECA4C8DC4BA099C7579AC3EE9B63"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI) </h2> 
+		 
+		<pre class="pre codeblock syntaxblock">DELETE <span class="ph" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-155665AA-CCD9-4BB2-83B6-0003D19E6DE6"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-155665AA-CCD9-4BB2-83B6-0003D19E6DE6"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/security/account-domains/<var class="keyword varname">id</var>/group-mappings/<var class="keyword varname">mappingId</var></pre>
+ 
+		<p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-D600809C-0B56-4707-BAEF-4DF27D854A44"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-D600809C-0B56-4707-BAEF-4DF27D854A44"><!-- --></a> Use the domain ID as the 
+		  <var class="keyword varname">id</var>. 
+		</p>
+ 
+		<p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-33EBACF0-D15F-441C-9036-0E92F5C761D9"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-33EBACF0-D15F-441C-9036-0E92F5C761D9"><!-- --></a> Use the group mapping ID for the 
+		  <var class="keyword varname">mappingId</var>. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__SECTION_C409206C2F1F454BAC11BF546DDC07F7"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-F169E285-9F5E-42EF-B219-A19234A76576"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-F169E285-9F5E-42EF-B219-A19234A76576"><!-- --></a> Not applicable. 
+		</p>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__SECTION_A32FD160C7CF4AA4ADFA56DA04908663"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__SECTION_A32FD160C7CF4AA4ADFA56DA04908663"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__d691e27"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__d691e27"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+    {
+      "tenant": "",
+      "subTenant": "",
+      "status": "",
+      "user": "",
+      "parentJobId": "",
+      "startDate": "",
+      "endDate": "",
+      "title": "",
+      "reports": [
+        {
+          "message": "",
+          "severity": "",
+          "messageCode": "",
+          "messageParameters": "",
+          "creationDate": ""
+        }
+      ],
+      "id": ""
+    }
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__d691e33"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__d691e33" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d34105e96">Parameter 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d34105e99">Type 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d34105e102">Description 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> id 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> ID of the job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Status of the job: In progress, Success, Success_With_Errors, or Failed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> User who initiated the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> ID of the job that spawned this job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Start date and time of the job (in Epoch time format). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> End date and time of the job (in Epoch time format). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Title of the task that is in progress. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> tenant 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Tenant of the submitted job. It is always 0. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> subTenant 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Subtenant of the submitted job. It is always 0. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> message 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Job message with details. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> severity 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 ">One of the following types of message: Information, Warning, Error. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> messageParameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e96 "> creationDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e99 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e102 "> Date and time that the message was generated. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__SECTION_C5281C897E804C7C8F47E2790511DF71"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__SECTION_C5281C897E804C7C8F47E2790511DF71"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		<div class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-5EAB5BFC-15EA-431C-8D7F-561D702D67AD"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-5EAB5BFC-15EA-431C-8D7F-561D702D67AD"><!-- --></a> 
+		
+<div class="tablenoborder"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__TABLE_D109586915B04AAD9D8D0FB3E03C42C6"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__TABLE_D109586915B04AAD9D8D0FB3E03C42C6" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d34105e299"> 
+					 <p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d34105e305"> 
+					 <p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d34105e311"> 
+					 <p class="p" id="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-214B15F9-F169-4128-8F86-973CD44897EB__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d34105e299 ">200 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e305 ">OK 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e311 ">Success 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d34105e299 ">204 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e305 ">No content 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e311 ">The request was successful, but if the response to be returned does not exist, return this code instead of 200. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d34105e299 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e305 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e311 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d34105e299 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e305 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d34105e311 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+		</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

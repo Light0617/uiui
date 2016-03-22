@@ -1,0 +1,192 @@
+<svg version="1.1" id="polar-dataviz-sm-placeholder" x="0px" y="0px" viewBox="0 0 1000 333" transform="scale(1,1)" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink">
+<symbol  id="concentric-base" viewBox="-255 -255 511 510.9">
+	<path d="M-255,0.5C-255,141.6-140.6,256,0.5,256S256,141.6,256,0.5S141.6-255,0.5-255S-255-140.6-255,0.5z"/>
+	<path fill="none" stroke="#5B7B37" stroke-width="40" stroke-miterlimit="10" d="M-135.4,0.5c0,75,60.8,135.9,135.9,135.9
+		S136.4,75.5,136.4,0.5S75.5-135.4,0.5-135.4S-135.4-74.5-135.4,0.5z"/>
+	<path fill="none" stroke="#555655" stroke-width="40" stroke-miterlimit="10" d="M-184.7,0.5c0,102.3,82.9,185.2,185.2,185.2
+		S185.7,102.8,185.7,0.5S102.8-184.7,0.5-184.7S-184.7-101.8-184.7,0.5z"/>
+	<path fill="none" stroke="#2C2C2C" stroke-width="40" stroke-miterlimit="10" d="M-234.1,0.5c0,129.5,105,234.6,234.6,234.6
+		S235.1,130,235.1,0.5S130-234.1,0.5-234.1S-234.1-129-234.1,0.5z"/>
+	<line fill="none" x1="-189" y1="0" x2="188" y2="0"/>
+	<line fill="none" x1="-1" y1="-229" x2="-1" y2="228"/>
+	<polygon display="none" fill="none" points="-255,255 256,255 256,-254 -255,-254 	"/>
+</symbol>
+<symbol  id="concentric-green-round" viewBox="-156 -155.8 312 311.6">
+	<g>
+		<g id="concentric-light-square_1_">
+			<path fill="none" d="M-135.9-0.1c0,75,60.8,135.9,135.9,135.9S135.8,75,135.8-0.1c0-75-60.8-135.9-135.9-135.9
+				S-135.9-75.1-135.9-0.1z"/>
+		</g>
+		<path fill="none" d="M-135.9-0.1c0,75,60.8,135.9,135.9,135.9S135.8,75,135.8-0.1c0-75-60.8-135.9-135.9-135.9
+			S-135.9-75.1-135.9-0.1z"/>
+		<path fill="none" d="M-155.8-0.1c0,86,69.7,155.8,155.8,155.8S155.7,86,155.7-0.1c0-86-69.7-155.8-155.8-155.8
+			S-155.8-86.1-155.8-0.1z"/>
+		<path fill="none" stroke="#AAD155" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" d="M-0.1,135.8
+			c75,0,135.9-60.8,135.9-135.9"/>
+	</g>
+	<polygon display="none" fill="none" points="-156,155 156,155 156,-155 -156,-155 	"/>
+</symbol>
+<symbol  id="concentric-green-square" viewBox="-156 -155.8 312 311.6">
+	<g id="concentric-light-square_2_">
+		<path fill="none" d="M-135.9-0.1c0,75,60.8,135.9,135.9,135.9S135.8,75,135.8-0.1S75-135.9-0.1-135.9S-135.9-75.1-135.9-0.1z"/>
+		<path fill="none" stroke="#AAD155" stroke-width="40" stroke-miterlimit="10" d="M-0.1,135.8c75,0,135.9-60.8,135.9-135.9
+			c0-20.9-4.7-40.7-13.1-58.4"/>
+	</g>
+	<path fill="none" d="M-135.9-0.1c0,75,60.8,135.9,135.9,135.9S135.8,75,135.8-0.1S75-135.9-0.1-135.9S-135.9-75.1-135.9-0.1z"/>
+	<path fill="none" d="M-155.8-0.1c0,86,69.7,155.8,155.8,155.8S155.7,86,155.7-0.1S86-155.8-0.1-155.8S-155.8-86.1-155.8-0.1z"/>
+	<path fill="none" stroke="#AAD155" stroke-width="40" stroke-miterlimit="10" d="M-0.1,135.8c75,0,135.9-60.8,135.9-135.9
+		c0-20.9-4.7-40.7-13.1-58.4"/>
+	<polygon display="none" fill="none" points="-156,155 156,155 156,-155 -156,-155 	"/>
+</symbol>
+<symbol  id="grey-rounded-circle" viewBox="-256 -255.9 512 511.7">
+	<path fill="none" d="M-234.6,0c0,129.5,105,234.6,234.6,234.6S234.6,129.5,234.6,0S129.5-234.6,0-234.6S-234.6-129.5-234.6,0z"/>
+	<path fill="none" d="M-255.9,0c0,141.3,114.6,255.9,255.9,255.9S255.9,141.3,255.9,0S141.3-255.9,0-255.9S-255.9-141.3-255.9,0z"/>
+	<path fill="none" stroke="#7F7F7F" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" d="M0,234.6
+		c129.5,0,234.6-105,234.6-234.6c0-30.9-6-60.3-16.8-87.3"/>
+	<polygon display="none" fill="none" points="-256,255 256,255 256,-255 -256,-255 	"/>
+</symbol>
+<symbol  id="grey-square-circle" viewBox="-256 -255.9 512 511.7">
+	<path fill="none" d="M-234.6,0c0,129.5,105,234.6,234.6,234.6S234.6,129.5,234.6,0S129.5-234.6,0-234.6S-234.6-129.5-234.6,0z"/>
+	<path fill="none" d="M-255.9,0c0,141.3,114.6,255.9,255.9,255.9S255.9,141.3,255.9,0S141.3-255.9,0-255.9S-255.9-141.3-255.9,0z"/>
+	<path fill="none" stroke="#7F7F7F" stroke-width="40" stroke-miterlimit="10" d="M0,234.6c129.5,0,234.6-105,234.6-234.6
+		c0-30.9-6-60.3-16.8-87.3"/>
+	<polygon display="none" fill="none" points="-256,255 256,255 256,-255 -256,-255 	"/>
+</symbol>
+<symbol  id="subscribed_2" viewBox="-345 -256.6 691 513.6">
+	
+		<line fill="none" stroke="#2C2C2C" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" x1="-88" y1="235" x2="324" y2="235"/>
+	<g id="grey-rounded-circle_2_">
+		<path fill="none" stroke="#000000" stroke-width="44" stroke-miterlimit="10" d="M-322.6,0c0,129.5,105,234.6,234.6,234.6
+			S146.5,129.5,146.5,0S41.5-234.6-88.1-234.6S-322.6-129.5-322.6,0z"/>
+		
+			<line fill="none" stroke="#000000" stroke-width="44" stroke-linecap="round" stroke-miterlimit="10" x1="-88" y1="235" x2="324" y2="235"/>
+		
+			<line fill="none" stroke="#2C2C2C" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" x1="-88" y1="235" x2="324" y2="235"/>
+		<path fill="none" stroke="#2C2C2C" stroke-width="40" stroke-miterlimit="10" d="M-322.6,0c0,129.5,105,234.6,234.6,234.6
+			S146.5,129.5,146.5,0S41.5-234.6-88.1-234.6S-322.6-129.5-322.6,0z"/>
+		<path fill="none" d="M-343.9,0c0,141.3,114.6,255.9,255.9,255.9S167.8,141.3,167.8,0S53.2-255.9-88.1-255.9S-343.9-141.3-343.9,0z
+			"/>
+	</g>
+	<polygon display="none" fill="none" points="-345,257 346,257 346,-256 -345,-256 	"/>
+</symbol>
+<symbol  id="white-rounded-circle" viewBox="-206 -205.4 412 411">
+	<path fill="none" d="M-205.6-0.2c0,113.3,91.9,205.2,205.2,205.2S204.8,113.1,204.8-0.2S112.9-205.4-0.4-205.4
+		S-205.6-113.5-205.6-0.2z"/>
+	<path fill="none" d="M-185.6-0.2c0,102.3,82.9,185.2,185.2,185.2S184.8,102.1,184.8-0.2S101.9-185.4-0.4-185.4
+		S-185.6-102.5-185.6-0.2z"/>
+	<g id="concentric-white-round_2_">
+		<path fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" d="M0.4,185.6
+			c102.3,0,185.2-82.9,185.2-185.2"/>
+	</g>
+	<polygon display="none" fill="none" points="-206,205 206,205 206,-205 -206,-205 	"/>
+</symbol>
+<symbol  id="white-square-circle" viewBox="-206 -205.4 412 411">
+	<path fill="none" d="M-205.6-0.2c0,113.3,91.9,205.2,205.2,205.2S204.8,113.1,204.8-0.2S112.9-205.4-0.4-205.4
+		S-205.6-113.5-205.6-0.2z"/>
+	<path fill="none" d="M-185.6-0.2c0,102.3,82.9,185.2,185.2,185.2S184.8,102.1,184.8-0.2S101.9-185.4-0.4-185.4
+		S-185.6-102.5-185.6-0.2z"/>
+	<g id="concentric-white-square_3_">
+		<path fill="none" stroke="#FFFFFF" stroke-width="40" stroke-miterlimit="10" d="M0.4,185.6c102.3,0,185.2-82.9,185.2-185.2"/>
+	</g>
+	<polygon display="none" fill="none" points="-206,205 206,205 206,-205 -206,-205 	"/>
+</symbol>
+<g>
+	<path opacity="0.8" fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" d="M787.7,244.2c0,5.3-4.3,9.7-9.7,9.7H308.6
+		c-5.3,0-9.7-4.3-9.7-9.7V85.7c0-5.3,4.3-9.7,9.7-9.7H778c5.3,0,9.7,4.3,9.7,9.7V244.2z"/>
+	<path fill="#FFFFFF" d="M787.7,230.1H299v-94.2c0-5.3,4.3-9.7,9.7-9.7h478.5c0,0,0.5,4.3,0.5,9.7V230.1z"/>
+	<path opacity="0.8" fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" d="M206.5,122.9c0,5.3-4.3,9.7-9.7,9.7H9.7
+		c-5.3,0-9.7-4.3-9.7-9.7V85.7C0,80.4,4.3,76,9.7,76h187.1c5.3,0,9.7,4.3,9.7,9.7V122.9z"/>
+	<path opacity="0.8" fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" d="M206.5,244.1c0,5.3-4.3,9.7-9.7,9.7H9.7
+		c-5.3,0-9.7-4.3-9.7-9.7v-37.2c0-5.3,4.3-9.7,9.7-9.7h187.1c5.3,0,9.7,4.3,9.7,9.7V244.1z"/>
+	<path opacity="0.8" fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" d="M206.5,183.5c0,5.3-4.3,9.7-9.7,9.7H9.7
+		c-5.3,0-9.7-4.3-9.7-9.7v-37.2c0-5.3,4.3-9.7,9.7-9.7h187.1c5.3,0,9.7,4.3,9.7,9.7V183.5z"/>
+	<circle fill="#20201F" cx="279.3" cy="166.9" r="125.2"/>
+	<text transform="matrix(1 0 0 1 429.032 54.2388)" fill="#626363" font-family="'HelveticaNeue'" font-size="10.7351">125%</text>
+	
+		<radialGradient id="SVGID_1_" cx="4505.0269" cy="-5203.8555" r="36.1767" gradientTransform="matrix(2.958 0 0 0.1315 -13045.8721 989.9279)" gradientUnits="userSpaceOnUse">
+		<stop  offset="0" style="stop-color:#000000;stop-opacity:0.5"/>
+		<stop  offset="0.4616" style="stop-color:#020202;stop-opacity:0.2692"/>
+		<stop  offset="0.7032" style="stop-color:#0A0909;stop-opacity:0.1484"/>
+		<stop  offset="0.8932" style="stop-color:#181515;stop-opacity:5.342340e-02"/>
+		<stop  offset="1" style="stop-color:#231F20;stop-opacity:0"/>
+	</radialGradient>
+	<path opacity="0.2" fill="url(#SVGID_1_)" d="M165.8,302.3c50.7-2.5,142.8-3.1,205.9-1.3c63.1,1.8,73.1,5.3,22.5,7.9
+		c-50.7,2.5-142.8,3.1-205.9,1.3C125.2,308.3,115.2,304.8,165.8,302.3z M211,309"/>
+	<g id="XMLID_32_">
+		<text transform="matrix(1 0 0 1 493.6233 56.6279)" fill="#2C2C2C" font-family="Helvetica, Arial, sans-serif" font-size="12.1927">125%</text>
+		
+			<use xlink:href="#concentric-base"  width="511" height="510.9" id="XMLID_86_" x="-255" y="-255" transform="matrix(0.4877 0 0 -0.4877 279.5097 166.9326)" overflow="visible"/>
+		<g id="concetrix-three_10_">
+			
+				<use xlink:href="#grey-rounded-circle"  width="512" height="511.7" x="-256" y="-255.9" transform="matrix(0.2116 0.4394 0.4394 -0.2116 280.0439 166.4444)" overflow="visible"/>
+			
+				<use xlink:href="#grey-square-circle"  width="512" height="511.7" x="-256" y="-255.9" transform="matrix(0.4877 0 0 -0.4877 279.997 166.9326)" overflow="visible"/>
+			<g id="concentrics-green_12_">
+				
+					<use xlink:href="#concentric-green-square"  width="312" height="311.6" id="XMLID_85_" x="-156" y="-155.8" transform="matrix(0.4877 0 0 -0.4877 279.5097 166.9326)" overflow="visible"/>
+				
+					<use xlink:href="#concentric-green-round"  width="312" height="311.6" x="-156" y="-155.8" transform="matrix(0.3259 0.3628 0.3628 -0.3259 279.7187 166.5322)" overflow="visible"/>
+			</g>
+			<g id="concentric-white_12_">
+				
+					<use xlink:href="#white-rounded-circle"  width="412" height="411" x="-206" y="-205.4" transform="matrix(-0.3127 0.3743 0.3743 0.3127 279.7187 166.5322)" overflow="visible"/>
+				
+					<use xlink:href="#white-square-circle"  width="412" height="411" x="-206" y="-205.4" transform="matrix(0.4877 0 0 -0.4877 279.5097 166.4444)" overflow="visible"/>
+				
+					<use xlink:href="#white-square-circle"  width="412" height="411" x="-206" y="-205.4" transform="matrix(1.660000e-02 0.4874 0.4874 -1.660000e-02 279.7187 166.5322)" overflow="visible"/>
+			</g>
+			
+				<use xlink:href="#subscribed_2"  width="691" height="513.6" id="XMLID_84_" x="-345" y="-256.6" transform="matrix(0.4877 0 0 -0.4877 322.4287 166.9326)" overflow="visible"/>
+		</g>
+		<g>
+			<text transform="matrix(1 0 0 1 232.9822 174.4951)" fill="#FFFFFF" font-family="'HelveticaNeue-Thin'" font-size="40.9676">500</text>
+			<text transform="matrix(1 0 0 1 304.7927 173.7012)" fill="#FFFFFF" font-family="'HelveticaNeue-Thin'" font-size="18.533">PB</text>
+		</g>
+		<polygon points="278.4,63.4 348.1,63.3 347.6,62.1 278.3,62.3 		"/>
+	</g>
+	<text transform="matrix(1 0 0 1 430.6296 246.3154)" fill="#2C2C2C" font-family="'HelveticaNeue'" font-size="13">0</text>
+	<text transform="matrix(1 0 0 1 489.7927 246.3154)" fill="#2C2C2C" font-family="'HelveticaNeue'" font-size="13">20</text>
+	<text transform="matrix(1 0 0 1 552.5701 246.3154)" fill="#2C2C2C" font-family="'HelveticaNeue'" font-size="13">40</text>
+	<text transform="matrix(1 0 0 1 615.3469 246.3154)" fill="#2C2C2C" font-family="'HelveticaNeue'" font-size="13">60</text>
+	<text transform="matrix(1 0 0 1 678.1238 246.3154)" fill="#2C2C2C" font-family="'HelveticaNeue'" font-size="13">80</text>
+	<text transform="matrix(1 0 0 1 730.7869 246.3154)" fill="#2C2C2C" font-family="'HelveticaNeue'" font-size="13">100%</text>
+	<line fill="none" stroke="#2C2C2C" stroke-width="0.25" stroke-miterlimit="10" x1="384.7" y1="230.1" x2="787.7" y2="230.1"/>
+	<path fill="#545554" d="M498.4,140.5h-53.5c-1.4,0-2.5,1.1-2.5,2.5v25.2c0,1.4,1.1,2.5,2.5,2.5h23l3.6,5l3.4-5h23.5
+		c1.4,0,2.5-1.1,2.5-2.5V143C500.9,141.6,499.8,140.5,498.4,140.5z"/>
+	<text transform="matrix(1 0 0 1 456.6296 152.4336)"><tspan x="0" y="0" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="10.6438">20 PB</tspan><tspan x="-9.6" y="11.5" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="10.6438">Protected</tspan></text>
+	<path fill="#545554" d="M708,140h-54.4c-1.4,0-2.5,1.1-2.5,2.5v25.2c0,1.4,1.1,2.5,2.5,2.5h23.9l3.6,5l3.4-5H708
+		c1.4,0,2.5-1.1,2.5-2.5v-25.2C710.5,141.1,709.3,140,708,140z"/>
+	<g>
+		<text transform="matrix(1 0 0 1 666.1804 152.9648)"><tspan x="0" y="0" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="10.6438">50 PB</tspan><tspan x="-11.7" y="11.5" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="10.6438">Secondary</tspan></text>
+	</g>
+	<path fill="#545554" d="M528.9,170.2h27.4l3.6,5l3.4-5h27.9c1.4,0,2.5-1.1,2.5-2.5v-25.2c0-1.4-1.1-2.5-2.5-2.5h-62.4
+		c-1.4,0-2.5,1.1-2.5,2.5v25.2C526.4,169.1,527.5,170.2,528.9,170.2z"/>
+	<g>
+		<text transform="matrix(1 0 0 1 542.5681 152.7041)"><tspan x="0" y="0" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="10.6438">130 PB</tspan><tspan x="-13.2" y="11.5" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="10.6438">Unprotected</tspan></text>
+	</g>
+	<rect x="612.7" y="186.2" fill="#A8CF55" width="136.1" height="28.9"/>
+	<rect x="511.1" y="186.2" fill="#A8CF55" width="98" height="28.9"/>
+	<rect x="435.5" y="186.2" fill="#A8CF55" width="72.3" height="28.9"/>
+	<text transform="matrix(1 0 0 1 443.3523 106.3291)" fill="#2C2C2C" font-family="Helvetica, Arial, sans-serif" font-size="18">Breakdown of Used Data</text>
+	<line fill="none" stroke="#95C548" stroke-width="2" stroke-miterlimit="10" x1="397.7" y1="126.2" x2="787.1" y2="126.2"/>
+</g>
+<text transform="matrix(1 0 0 1 43.8679 224.29)"><tspan x="0" y="0" fill="#231F20" font-family="'HelveticaNeue-Bold'" font-size="13.1221">625 PB</tspan><tspan x="43.5" y="0" fill="#3A4147" font-family="Helvetica, Arial, sans-serif" font-size="13.6174"> </tspan><tspan x="0" y="12.2" fill="#231F20" font-family="Helvetica, Arial, sans-serif" font-size="10.2056">Subscribed</tspan></text>
+<g>
+	<text transform="matrix(1 0 0 1 43.8679 100.9248)"><tspan x="0" y="0" fill="#231F20" font-family="'HelveticaNeue-Bold'" font-size="13.1221">200 PB </tspan><tspan x="47.2" y="0" fill="#231F20" font-family="Helvetica, Arial, sans-serif" font-size="10.2056">Used</tspan></text>
+	<path fill="#A8CF55" d="M31.7,99.5c0,1-0.8,1.8-1.8,1.8h-9.2c-1,0-1.8-0.8-1.8-1.8v-9.2c0-1,0.8-1.8,1.8-1.8h9.2
+		c1,0,1.8,0.8,1.8,1.8V99.5z"/>
+</g>
+<g>
+	<text transform="matrix(1 0 0 1 43.8679 118.9346)"><tspan x="0" y="0" fill="#231F20" font-family="'HelveticaNeue-Bold'" font-size="13.1221">300 PB </tspan><tspan x="47.2" y="0" fill="#231F20" font-family="Helvetica, Arial, sans-serif" font-size="10.2056">Free</tspan></text>
+	<path fill="#5C7B37" d="M31.7,117.1c0,1-0.8,1.8-1.8,1.8h-9.2c-1,0-1.8-0.8-1.8-1.8v-9.2c0-1,0.8-1.8,1.8-1.8h9.2
+		c1,0,1.8,0.8,1.8,1.8V117.1z"/>
+</g>
+<text transform="matrix(1 0 0 1 43.8679 161.7529)"><tspan x="0" y="0" fill="#231F20" font-family="'HelveticaNeue-Bold'" font-size="13.1221">400 PB </tspan><tspan x="47.2" y="0" fill="#231F20" font-family="Helvetica, Arial, sans-serif" font-size="10.2056">All</tspan></text>
+<path fill="#FFFFFF" stroke="#C9C8C8" stroke-miterlimit="10" d="M31.7,160.3c0,1-0.8,1.8-1.8,1.8h-9.2c-1,0-1.8-0.8-1.8-1.8v-9.2
+	c0-1,0.8-1.8,1.8-1.8h9.2c1,0,1.8,0.8,1.8,1.8V160.3z"/>
+<text transform="matrix(1 0 0 1 43.8679 179.7617)"><tspan x="0" y="0" fill="#231F20" font-family="'HelveticaNeue-Bold'" font-size="13.1221">500 PB </tspan><tspan x="47.2" y="0" fill="#231F20" font-family="Helvetica, Arial, sans-serif" font-size="10.2056">UnAll</tspan></text>
+<path fill="#565757" d="M31.7,177.9c0,1-0.8,1.8-1.8,1.8h-9.2c-1,0-1.8-0.8-1.8-1.8v-9.2c0-1,0.8-1.8,1.8-1.8h9.2
+	c1,0,1.8,0.8,1.8,1.8V177.9z"/>
+<path fill="#2C2C2C" d="M31.7,230.1c0,1-0.8,1.8-1.8,1.8h-9.2c-1,0-1.8-0.8-1.8-1.8v-9.2c0-1,0.8-1.8,1.8-1.8h9.2
+	c1,0,1.8,0.8,1.8,1.8V230.1z"/>
+</svg>

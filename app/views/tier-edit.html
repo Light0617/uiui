@@ -1,0 +1,101 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <div ng-if="model">
+    <form novalidate ng-submit="payload.submit()">
+        <div class="row wizard-header">
+            <div class="col-lg-1 col-md-1 hidden-sm">
+                <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
+            </div>
+            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <span class="icon icon-pools icon-xlg"></span>
+
+                <h1 class="wizard-title">{{'tier-management'| translate}}</h1>
+            </div>
+        </div>
+        <div class="row wizard-body">
+                <div class="header-row">
+                    <h2>Edit Names</h2>
+                </div>
+                <div class="scroll-wizard-container single-pane">
+                        
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <label>Tier Name</label>
+                                    <input type="text" class="form-control" id="tier-name-1" ng-model="updatedModel.tiers[0].tier">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <label>Definition</label>
+                                    <input type="text" class="form-control" id="sub-tier-1" ng-disabled="true" ng-model="model.tiers[0].subTierNames">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="tier-name-2" ng-model="updatedModel.tiers[1].tier">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="sub-tier-2" ng-disabled="true" ng-model="model.tiers[1].subTierNames">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="tier-name-3" ng-model="updatedModel.tiers[2].tier">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="sub-tier-3" ng-disabled="true" ng-model="model.tiers[2].subTierNames">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="tier-name-4" ng-model="updatedModel.tiers[3].tier">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="sub-tier-4" ng-disabled="true" ng-model="model.tiers[3].subTierNames">
+                                </div>
+                            </div>
+                        </div>
+			<div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="tier-name-5" ng-model="updatedModel.tiers[4].tier">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                                <div class="form-group form-group-lg">
+                                    <input type="text" class="form-control" id="sub-tier-5" ng-disabled="true" ng-model="model.tiers[4].subTierNames">
+                                </div>
+                            </div>
+                        </div>                        
+                </div>
+        </div>
+        <!--Fixed footer-->
+        <div class="row navbar-fixed-bottom footer-container">
+            <div class="wizard-footer">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
+                        <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>
+                            {{ 'cancel-button' | translate}}</button>
+                        <button type="submit" class="btn btn-default active" id="submit" title="submit"
+                                ng-disabled="disableButton()" ng-click="updateTierNames()">
+                            {{ 'submit-button' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</wizard-page>

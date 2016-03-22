@@ -1,0 +1,496 @@
+<div class="body" id="topic_wrapper"><div id="topic_content"> 
+  <h1 class="title topictitle1"><span class="ph" id="GUID-91928299-2003-4F7D-AB93-1EABD3BE2129"><a name="GUID-91928299-2003-4F7D-AB93-1EABD3BE2129"><!-- --></a>[API] 
+	 </span>Adding SNMP managers</h1>
+ 
+   
+   
+  <div class="body refbody"><p class="shortdesc"><p>You can add SNMP managers so they can receive SNMP traps related to the monitored components of the registered storage system. 
+  </p></p>
+ 
+	 <div class="section" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__SECTION_B92D7E55105E4390B63BEFB330B9FDF2"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__SECTION_B92D7E55105E4390B63BEFB330B9FDF2"><!-- --></a><h2 class="title sectiontitle">HTTP request syntax (URI)</h2> 
+		 
+		<pre class="pre codeblock syntaxblock">POST <span class="ph" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-C5DAB175-4227-4842-90C4-FA3B74D430C2"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-C5DAB175-4227-4842-90C4-FA3B74D430C2"><!-- --></a>https://<var class="keyword varname">ipAddress</var>:<var class="keyword varname">port</var>/v1</span>/snmp-managers</pre>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-2DEB606F-CAE5-40EC-A604-EF074B14B10A"><!-- --></a><h2 class="title sectiontitle">Request structure</h2> 
+		 
+		<p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-D6177962-7038-41AE-AC7C-ED2622AEEA15"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-D6177962-7038-41AE-AC7C-ED2622AEEA15"><!-- --></a> The request body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">{
+  "snmpManagers": [
+    {
+      "name": "",
+      "ipAddress": "",
+      "communityString": "",
+      "port": 
+    }
+  ]
+}
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__TABLE_2EBB776CED3849F4BC33A035D30A298B"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__TABLE_2EBB776CED3849F4BC33A035D30A298B" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e78"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F78EC1CE-450E-4475-8D24-CA493C02CF02"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F78EC1CE-450E-4475-8D24-CA493C02CF02"><!-- --></a>Parameter 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e84"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-1E889C62-6F60-4CBF-B226-38D8378EC1DA"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-1E889C62-6F60-4CBF-B226-38D8378EC1DA"><!-- --></a>Required (Y/N) 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e90"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F5A7B815-A373-4505-BEB8-0C2C07684BBB"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F5A7B815-A373-4505-BEB8-0C2C07684BBB"><!-- --></a>Type 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e96"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-0795E34C-9BDB-42BB-951A-EDE35E38DD07"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-0795E34C-9BDB-42BB-951A-EDE35E38DD07"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e78 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-172DA924-DC4D-415F-B7BA-56F9B752AC11"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-172DA924-DC4D-415F-B7BA-56F9B752AC11"><!-- --></a>name 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e84 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-E9C9E7F0-B8F3-4B3B-9CFE-E3DC87DC05C4"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-E9C9E7F0-B8F3-4B3B-9CFE-E3DC87DC05C4"><!-- --></a>Yes 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e90 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-6D81019C-56BD-425F-8365-ABEB3A9958F9"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-6D81019C-56BD-425F-8365-ABEB3A9958F9"><!-- --></a>String 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e96 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-9161291E-D3E0-4482-91D0-05953E4D83FF"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-9161291E-D3E0-4482-91D0-05953E4D83FF"><!-- --></a>Name of the SNMP manager. 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e78 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-30FCA783-622F-4AEF-AABA-A73858445343"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-30FCA783-622F-4AEF-AABA-A73858445343"><!-- --></a>ipAddress 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e84 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-E6C7D5ED-4BF3-47A2-A3AA-5996BF7E727F"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-E6C7D5ED-4BF3-47A2-A3AA-5996BF7E727F"><!-- --></a>Yes 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e90 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-ACED2A23-AF25-4A84-9A5E-23B984377948"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-ACED2A23-AF25-4A84-9A5E-23B984377948"><!-- --></a>String 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e96 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-A4445831-4CD8-4C8D-A142-B33A92197320"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-A4445831-4CD8-4C8D-A142-B33A92197320"><!-- --></a>IP address of the SNMP manager.
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e78 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-2158311C-9339-4906-8295-41A9C7BD7A7D"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-2158311C-9339-4906-8295-41A9C7BD7A7D"><!-- --></a>communityString 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e84 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-4D52BBD3-5E39-489E-9D75-9AB2E1F962AE"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-4D52BBD3-5E39-489E-9D75-9AB2E1F962AE"><!-- --></a>Yes 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e90 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-EFD9AA2B-A373-4A2B-8224-B1B21BA4AF26"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-EFD9AA2B-A373-4A2B-8224-B1B21BA4AF26"><!-- --></a>String 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e96 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-72C3AF23-FE55-4F32-B45D-EF30321EFE86"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-72C3AF23-FE55-4F32-B45D-EF30321EFE86"><!-- --></a>Community string. Enter up to 180 characters. Characters not allowed are: \ , / ; : * ? " &lt; &gt; | 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e78 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-13BB8C3E-D9A1-4FB1-B378-790F043012FC"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-13BB8C3E-D9A1-4FB1-B378-790F043012FC"><!-- --></a>port 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e84 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-7B1B0C8A-F587-4383-AA02-C6C389163137"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-7B1B0C8A-F587-4383-AA02-C6C389163137"><!-- --></a>Yes 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e90 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-932C68F8-FA3E-4F64-A891-A468ADA341E1"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-932C68F8-FA3E-4F64-A891-A468ADA341E1"><!-- --></a>Integer 
+					 </p>
+ 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e96 "> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F280FEBC-020D-41E6-BFC2-5C7338E33A6E"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F280FEBC-020D-41E6-BFC2-5C7338E33A6E"><!-- --></a>SNMP port. The valid port number is in the range between 0 to 32000. 
+					 </p>
+ 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__SECTION_6B5C056C7AC34ACEA35A8D034F2003D7"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__SECTION_6B5C056C7AC34ACEA35A8D034F2003D7"><!-- --></a><h2 class="title sectiontitle">Response structure</h2> 
+		 
+		<p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__d691e27"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__d691e27"><!-- --></a> The response body structure is shown below: 
+		</p>
+ 
+		<pre class="pre codeblock">
+    {
+      "tenant": "",
+      "subTenant": "",
+      "status": "",
+      "user": "",
+      "parentJobId": "",
+      "startDate": "",
+      "endDate": "",
+      "title": "",
+      "reports": [
+        {
+          "message": "",
+          "severity": "",
+          "messageCode": "",
+          "messageParameters": "",
+          "creationDate": ""
+        }
+      ],
+      "id": ""
+    }
+</pre>
+ 
+		
+<div class="tablenoborder"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__d691e33"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__d691e33" frame="border" border="1" rules="all"><thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e239">Parameter 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e242">Type 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e245">Description 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> id 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> ID of the job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> status 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Status of the job: In progress, Success, Success_With_Errors, or Failed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> user 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> User who initiated the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> parentJobId 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> ID of the job that spawned this job. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> startDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Start date and time of the job (in Epoch time format). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> endDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> End date and time of the job (in Epoch time format). 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> title 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Title of the task that is in progress. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> tenant 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Tenant of the submitted job. It is always 0. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> subTenant 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Subtenant of the submitted job. It is always 0. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> message 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Job message with details. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> severity 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 ">One of the following types of message: Information, Warning, Error. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> messageCode 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 ">ID of the message. This maps to the message description. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> messageParameters 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> List of parameters and the values, as captured in the job message. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e239 "> creationDate 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e242 "> String 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e245 "> Date and time that the message was generated. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+	 <div class="section" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__SECTION_6E1485EE1A4A4E3583D7528A020AFB61"><!-- --></a><h2 class="title sectiontitle">Return codes</h2> 
+		 
+		
+<div class="tablenoborder"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62"><!-- --></a><table cellpadding="4" cellspacing="0" summary="" class="table" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__TABLE_CA477E6A1F2C4CA99D77AEE18C78BE62" frame="border" border="1" rules="all"> 
+			  
+			  
+			  
+			 <thead class="thead" align="left"> 
+				<tr class="row"> 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e444"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-967C3F06-570E-4020-B5AB-4B6311700F8D"><!-- --></a>Status code 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e450"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-27C05C54-BB99-4AF0-BA01-26336FEDCB78"><!-- --></a>HTTP name 
+					 </p>
+ 
+				  </th>
+ 
+				  <th class="entry" valign="top" width="NaN%" id="d22154e456"> 
+					 <p class="p" id="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><a name="GUID-184FCF85-38A9-402B-AB23-4B5AA039E56D__GUID-F578944F-90D0-44E3-A332-134B01C366EA"><!-- --></a>Description 
+					 </p>
+ 
+				  </th>
+ 
+				</tr>
+</thead>
+ 
+			 <tbody class="tbody"> 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d22154e444 ">202 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e450 ">Accepted 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e456 ">The request has been accepted for processing, but the processing has not been completed. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d22154e444 ">401 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e450 ">Unauthorized 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e456 ">The operation is not authorized. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d22154e444 "> 403 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e450 ">Forbidden 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e456 ">The server failed to authenticate the request. 
+				  </td>
+ 
+				</tr>
+ 
+				<tr class="row"> 
+				  <td class="entry" align="left" valign="top" width="NaN%" headers="d22154e444 "> 404 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e450 ">Not found 
+				  </td>
+ 
+				  <td class="entry" valign="top" width="NaN%" headers="d22154e456 ">The specified file system ID is not valid or the resource does not exist. 
+				  </td>
+ 
+				</tr>
+ 
+			 </tbody>
+ 
+		  </table>
+</div>
+ 
+	 </div>
+ 
+  </div>
+ 
+<div class="related-links">
+<div class="familylinks">
+</div>
+</div>
+<br/>
+</div></div>

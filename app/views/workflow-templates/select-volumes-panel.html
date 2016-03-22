@@ -1,0 +1,23 @@
+<div class="header-row">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 view" ng-if="dataModel.storageSystems.length">
+        <h2>Select Volume(s) that you want to Attach to the Server(s)</h2>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right margin-L-R view-side" ng-if="dataModel.storageSystems.length">
+        <select class="form-control smallEmMarginLeft" ng-model="dataModel.selectedStorageSystem"
+                ng-options="ss.storageSystemId for ss in dataModel.storageSystems">
+        </select>
+    </div>
+</div>
+<div class="scroll-wizard-container col-lg-11 col-md-11 col-sm-11 col-xs-11" >
+    <div ng-if="dataModel.storageSystems.length">
+        <attach-volume-list ng-model="dataModel"></attach-volume-list>
+    </div>
+    <div class="alert alert-warning" role="alert" ng-if="!dataModel.storageSystems.length">
+        <h1>{{'no-accessible-storage-system' | translate}}</h1>
+    </div>
+    <div ng-if="dataModel.storageSystems.length">
+        <volume-search ng-model="dataModel"
+                       filter-model="filterModel">
+        </volume-search>
+    </div>
+</div>

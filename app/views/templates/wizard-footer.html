@@ -1,0 +1,10 @@
+<div class="row navbar-fixed-bottom footer-container">
+    <div class="wizard-footer">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-toggle" role="toggle" ng-include="leftButtonTemplate" ng-if="leftButtonTemplate">
+            </div>
+            <ng-include src="rightButtonTemplate || 'views/templates/workflow-right-buttons.html'"></ng-include>
+
+        </div>
+    </div>
+</div>

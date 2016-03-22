@@ -1,0 +1,12 @@
+<div class="summary-container-default stage flex-row" id="top-info" ng-if="summaryModel">
+    <div class="col-lg-5 col-md-5 hidden-sm hidden-xs alert-panel alert-panel-md">
+        <!--Alerts Panel-->
+        <div class="tile alert-panel" id="alert-panel">
+            <hardware-alert ng-model="summaryModel.alerts.hardware.count"
+                            alert-level="summaryModel.alerts.hardware.level"></hardware-alert>
+        </div>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+            <donut-dynamic-chart ng-model="summaryModel"></donut-dynamic-chart>
+    </div>
+</div>

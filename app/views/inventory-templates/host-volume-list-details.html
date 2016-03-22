@@ -1,0 +1,44 @@
+<div class="nested-row-container expanded" >
+    <div class="nested-row-tile column-headers">
+        <div class="col-md-1 cell">&nbsp;</div>
+        <div class="col-md-2 cell text-resize ellipsis"
+             title="{{'host-volume-list-port' | translate}}">
+            <p class="sort-column-header">{{'host-volume-list-port' | translate}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis"
+             title="{{'host-volume-list-wwns' | translate}}">
+            <p class="sort-column-header">{{'host-volume-list-wwns' | translate}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis"
+             title="{{'host-volume-list-lun-id' | translate}}">
+            <p class="sort-column-header">{{'host-volume-list-lun-id' | translate}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis"
+             title="{{'host-volume-list-host-mode' | translate}}">
+            <p class="sort-column-header">{{'host-volume-list-host-mode' | translate}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis"
+             title="{{'host-volume-list-host-mode-options' | translate}}">
+            <p class="sort-column-header">{{'host-volume-list-host-mode-options' | translate}}</p>
+        </div>
+    </div>
+    <div class="nested-row-tile" ng-repeat="path in item.paths">
+        <div class="col-md-1 cell">
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.storagePortId}}">
+            <p>{{path.storagePortId}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.wwns.join(',')}}">
+            <p>{{path.wwns.join(',')}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.lun}}">
+            <p>{{path.lun}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostMode}}">
+            <p>{{path.hostMode}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostModeOptions.join(' ')}}">
+            <p>{{path.hostModeOptions.join(' ')}}</p>
+        </div>
+    </div>
+</div>
