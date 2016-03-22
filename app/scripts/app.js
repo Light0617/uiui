@@ -9,7 +9,8 @@
  * Main module of the application.
  */
 angular
-  .module('rainierApp', [
+
+    .module('rainierApp', [
         'ngResource',
         'ngRoute',
         'bel-services',
@@ -656,6 +657,14 @@ angular
                 controller: 'SharesUpdateCtrl',
                 breadcrumbOptions: {
                     labelKey: 'share-update'
+                },
+                helpContext: 'T_UPDATE_SHARE'
+            })
+            .when('/storage-systems/:storageSystemId/file-systems/:fileSystemId/shares/:shareId/groups/add', {
+                templateUrl: 'views/groups-add.html',
+                controller: 'GroupsAddCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'groups-add'
                 },
                 helpContext: 'T_UPDATE_SHARE'
             })

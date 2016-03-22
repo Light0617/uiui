@@ -79,6 +79,10 @@ angular.module('rainierApp')
                 return summaryModelActions;
             };
 
+            dataModel.addAction = function () {
+                $location.path(['storage-systems', storageSystemId, 'file-systems', fileSystemId, 'shares', shareId,'groups', 'add'].join('/'));
+            };
+
             dataModel.gridSettings = [
                 {
                     title: 'Group Name',

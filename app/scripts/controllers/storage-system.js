@@ -133,6 +133,7 @@ angular.module('rainierApp')
             }
             else {
                 var summaryModel = objectTransformService.transformToStorageSummaryModel(result, false, dataProtection);
+                objectTransformService.transformTierSummary(tiers, tierSummary, summaryModel);
                 summaryModel.title = title;
                 $scope.summaryModel = summaryModel;
             }
