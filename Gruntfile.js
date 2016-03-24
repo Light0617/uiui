@@ -17,6 +17,8 @@ module.exports = function(grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
+    require('./branding-switch.js')(grunt);
+
     grunt.loadNpmTasks('grunt-pseudolocalize');
 
     grunt.loadNpmTasks('grunt-include-source');
@@ -26,7 +28,8 @@ module.exports = function(grunt) {
     // Configurable paths for the application
     var appConfig = {
         app: 'app',
-        dist: 'build/stage/public'
+        dist: 'build/stage/public',
+        brand: 'hitachi'
     };
 
     // Define the configuration for all the tasks
@@ -448,44 +451,44 @@ module.exports = function(grunt) {
                     src: 'bower_components/bel-ui/app/images/{,*/}*.*',
                     dest: '<%= yeoman.dist %>'
                 },
-                    {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/bel-ui/app/fonts/*',
-                        dest: '<%= yeoman.dist %>'
-                    },
-                    {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/bel-ui/app/grizzly/**/*',
-                        dest: '<%= yeoman.dist %>'
-                    },
-                    {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/bel-ui/app/templates/serversideinventoryview.html',
-                        dest: '<%= yeoman.dist %>'
-                    }, {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/helpui-framework/views/*',
-                        dest: '<%= yeoman.dist %>'
-                    }, {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/helpui-content/metadata/*',
-                        dest: '<%= yeoman.dist %>'
-                    }, {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/helpui-content/html/*',
-                        dest: '<%= yeoman.dist %>'
-                    }, {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
-                        dest: '<%= yeoman.dist %>'
-                    }]
+                {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/bel-ui/app/fonts/*',
+                    dest: '<%= yeoman.dist %>'
+                },
+                {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/bel-ui/app/grizzly/**/*',
+                    dest: '<%= yeoman.dist %>'
+                },
+                {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/bel-ui/app/templates/serversideinventoryview.html',
+                    dest: '<%= yeoman.dist %>'
+                }, {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/helpui-framework/views/*',
+                    dest: '<%= yeoman.dist %>'
+                }, {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/helpui-content/metadata/*',
+                    dest: '<%= yeoman.dist %>'
+                }, {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/helpui-content/html/*',
+                    dest: '<%= yeoman.dist %>'
+                }, {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+                    dest: '<%= yeoman.dist %>'
+                }]
             },
             styles: {
                 expand: true,
@@ -494,17 +497,41 @@ module.exports = function(grunt) {
                 src: '{,*/}*.css'
             },
             index: {
-                src: '<%= yeoman.app %>/index.template',
-                dest: '<%= yeoman.app %>/index.html',
-                options: {
-                    process: function(content) {
-                        return content.replace('<!-- include mock scripts -->', '');
-                    }
-                }
+                //src: '<%= yeoman.app %>/index.template',
+                //dest: '<%= yeoman.app %>/index.html',
+                //options: {
+                //    process: function(content) {
+                //        return content.replace('<!-- include mock scripts -->', '');
+                //    }
+                //}
+                files: [
+                    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html',
+                        options: {
+                            process: function(content) {
+                                return content.replace('<!-- include mock scripts -->', '');
+                            }
+                        }
+                    },
+                    { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
+                ]
             },
             mocks: {
-                src: '<%= yeoman.app %>/index.template',
-                dest: '<%= yeoman.app %>/index.html',
+                //src: '<%= yeoman.app %>/index.template',
+                //dest: '<%= yeoman.app %>/index.html',
+                //options: {
+                //    process: function(content) {
+                //        return content
+                //            .replace('rainierApp', 'rainierAppMock')
+                //            .replace('<!-- include mock scripts -->',
+                //                '<script src="bower_components/angular-mocks/angular-mocks.js"></script>' +
+                //                String.fromCharCode(13) +
+                //                '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
+                //    }
+                //}
+                files: [
+                    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html'},
+                    { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
+                ],
                 options: {
                     process: function(content) {
                         return content
@@ -539,8 +566,24 @@ module.exports = function(grunt) {
                 configFile: 'test/karma.conf.js',
                 singleRun: true
             }
+        },
+
+        branding: {
+            src: '<%= yeoman.app %>/branding/*'
         }
+
     });
+
+    grunt.registerTask('brand','branding', function() {
+        var counter = 0;
+        var files = grunt.config.get('branding.src');
+        grunt.file.expand(files).forEach(function(file){
+            var filePathSegments = file.split('/');
+            grunt.log.writeln((++counter) + '. ' + filePathSegments[filePathSegments.length - 1]);
+        });
+
+    });
+
 
     var setProxy = function() {
         if (grunt.option('proxy-host')) {
@@ -570,8 +613,20 @@ module.exports = function(grunt) {
     };
 
 
-    grunt.registerTask('serve', 'start the server and preview your app, --allow-remote=true for remote access, --proxy-host=[API host], --proxy-use-https=true for https to proxy', function(target) {
+    var setBranding = function() {
+        var defaultBrand = 'hitachi';
+        var brand = grunt.option('brand');
 
+        if (!brand) {
+            brand = defaultBrand;
+        }
+
+        grunt.config.set('yeoman.brand', brand);
+    };
+
+    grunt.registerTask('serve', 'start the server and preview your app, --allow-remote=true for remote access, --proxy-host=[API host], --proxy-use-https=true for https to proxy, --brand=provide a valid branch from [grunt list-brand]', function(target) {
+
+        setBranding();
         setProxy();
 
         if (grunt.option('allow-remote')) {
@@ -597,6 +652,7 @@ module.exports = function(grunt) {
         ]);
     });
 
+
     grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
         grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
         grunt.task.run(['serve:' + target]);
@@ -621,6 +677,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('servemock', 'start the server and preview shasta app with mock backend, --allow-remote=true for remote access', function() {
+        setBranding();
         grunt.log.writeln('mocking backend REST APIs');
 
         if (grunt.option('allow-remote')) {
