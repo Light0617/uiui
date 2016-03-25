@@ -92,6 +92,11 @@
   margin: 0 0 0 .4em;
 }
 
+.partner-brand-login-dcds {
+  background-image: url(../images/dcds-32.png);
+  margin-left: 80px !important;
+}
+
 .pdv.default .polar-Viz-legend-container .legend-box rect.bg, {
   opacity: 0.5;
   fill: #fff;
@@ -747,10 +752,6 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .navbar .partner-brand {
   @include brand-bkg;
   h3 { margin-top: 12px;}
-  &.changhong {
-    background-image:url(../images/changhong-22.png);
-    padding-left: 192px;
-  }
   &.dcds {
     background-image: url(../images/dcds-22.png);
     padding-left: 86px;

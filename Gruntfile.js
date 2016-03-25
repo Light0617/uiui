@@ -430,7 +430,7 @@ module.exports = function(grunt) {
                         '.htaccess',
                         '*.html',
                         'views/{,*/}*.html',
-                        'images/{,*/}*.*',
+                        'images/{,*/}*.{png,jpg,svg}',
                         'fonts/{,*/}*.*',
                         'i18n/{,*/}*.*',
                         'swagger-scripts/{,*/}*.*'
@@ -497,37 +497,18 @@ module.exports = function(grunt) {
                 src: '{,*/}*.css'
             },
             index: {
-                //src: '<%= yeoman.app %>/index.template',
-                //dest: '<%= yeoman.app %>/index.html',
-                //options: {
-                //    process: function(content) {
-                //        return content.replace('<!-- include mock scripts -->', '');
-                //    }
-                //}
                 files: [
-                    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html',
-                        options: {
-                            process: function(content) {
-                                return content.replace('<!-- include mock scripts -->', '');
-                            }
-                        }
-                    },
+                    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html'},
                     { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
-                ]
+                ],
+                options: {
+                    process: function(content) {
+                        return content.replace('<!-- include mock scripts -->', '');
+                    },
+                    processContentExclude: ['**/*.{png,gif,jpg,ico,psd}']
+                }
             },
             mocks: {
-                //src: '<%= yeoman.app %>/index.template',
-                //dest: '<%= yeoman.app %>/index.html',
-                //options: {
-                //    process: function(content) {
-                //        return content
-                //            .replace('rainierApp', 'rainierAppMock')
-                //            .replace('<!-- include mock scripts -->',
-                //                '<script src="bower_components/angular-mocks/angular-mocks.js"></script>' +
-                //                String.fromCharCode(13) +
-                //                '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
-                //    }
-                //}
                 files: [
                     { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html'},
                     { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
@@ -540,7 +521,8 @@ module.exports = function(grunt) {
                                 '<script src="bower_components/angular-mocks/angular-mocks.js"></script>' +
                                 String.fromCharCode(13) +
                                 '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
-                    }
+                    },
+                    processContentExclude: ['**/*.{png,gif,jpg,ico,psd}']
                 }
             }
         },
