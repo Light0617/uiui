@@ -559,10 +559,17 @@ module.exports = function(grunt) {
     grunt.registerTask('brand','branding', function() {
         var counter = 0;
         var files = grunt.config.get('branding.src');
+        var brands = [];
+
         grunt.file.expand(files).forEach(function(file){
             var filePathSegments = file.split('/');
-            grunt.log.writeln((++counter) + '. ' + filePathSegments[filePathSegments.length - 1]);
+            var brand = filePathSegments[filePathSegments.length - 1];
+
+            brands.push(brand);
+            grunt.log.writeln((++counter) + '. ' + brand);
         });
+
+        grunt.file.write('brand.txt', brands.join('\n'));
 
     });
 
