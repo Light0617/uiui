@@ -36,7 +36,7 @@ angular
             prefix: '/i18n/',
             suffix: '.json'
         });
-        $translateProvider.preferredLanguage('en-US');
+        $translateProvider.preferredLanguage('translation');
 
         RestangularProvider.setBaseUrl('/v1');
         RestangularProvider.setDefaultHttpFields({timeout: 30 * 1000});

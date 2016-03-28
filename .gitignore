@@ -5,3 +5,9 @@
 /bower_components
 /build
 /.idea
+
+.idea
+.idea/
+.idea/*
+
+brand.txt
