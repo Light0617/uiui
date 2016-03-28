@@ -430,7 +430,7 @@ module.exports = function(grunt) {
                         '.htaccess',
                         '*.html',
                         'views/{,*/}*.html',
-                        'images/{,*/}*.*',
+                        'images/{,*/}*.{png,jpg,svg}',
                         'fonts/{,*/}*.*',
                         'i18n/{,*/}*.*',
                         'swagger-scripts/{,*/}*.*'
@@ -526,7 +526,8 @@ module.exports = function(grunt) {
                                 '<script src="bower_components/angular-mocks/angular-mocks.js"></script>' +
                                 String.fromCharCode(13) +
                                 '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
-                    }
+                    },
+                    processContentExclude: ['**/*.{png,gif,jpg,ico,psd}']
                 }
                 //files: [
                 //    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html'},
@@ -591,7 +592,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('brand','branding', function() {
-        var counter = 0;
         var files = grunt.config.get('branding.src');
         var brands = [];
 

@@ -1,6 +1,9 @@
 <div class="container-fluid authenticate">
     <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12 col-lg-offset-8 col-md-offset-6 col-sm-offset-4">
         <div class="brand clearfix">
+            <div class="logo-container partner-logo">
+                <div class="partner-brand-login-changhong" title="ChangHong" style="height: 32px; width: 270px;"/>
+            </div>
             <h1>{{ 'brand-rainier' | translate}}</h1>
         </div>
         <form class="authenticate-panel" ng-submit="model.login()">
@@ -31,17 +34,5 @@
                 <div ng-if="model.unauthorized" class="pull-left error">{{ 'login-unauthorized-error' | translate}}</span></div>
             </div>
         </form>
-    </div>
-    <div class="navbar-fixed-bottom credentials">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 col-med-6 col-sm-6 col-xs-12 pull-left">
-                    <p>All rights reserved. &copy; {{model.date| date:'yyyy'}} Hitachi, Ltd.</p>
-                </div>
-                <div class="col-lg-6 col-med-6 col-sm-6 col-xs-12 pull-right">
-                    <p class="align-right">Powered by Hitachi Data Systems</p>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
