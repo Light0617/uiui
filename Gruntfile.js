@@ -497,41 +497,27 @@ module.exports = function(grunt) {
                 src: '{,*/}*.css'
             },
             index: {
-                //src: '<%= yeoman.app %>/index.template',
-                //dest: '<%= yeoman.app %>/index.html',
-                //options: {
-                //    process: function(content) {
-                //        return content.replace('<!-- include mock scripts -->', '');
-                //    }
-                //}
-                files: [
-                    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html',
-                        options: {
-                            process: function(content) {
-                                return content.replace('<!-- include mock scripts -->', '');
-                            }
-                        }
-                    },
-                    { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
-                ]
+                src: '<%= yeoman.app %>/index.template',
+                dest: '<%= yeoman.app %>/index.html',
+                options: {
+                    process: function(content) {
+                        return content.replace('<!-- include mock scripts -->', '');
+                    }
+                }
+                //files: [
+                //    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html',
+                //        options: {
+                //            process: function(content) {
+                //                return content.replace('<!-- include mock scripts -->', '');
+                //            }
+                //        }
+                //    },
+                //    { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
+                //]
             },
             mocks: {
-                //src: '<%= yeoman.app %>/index.template',
-                //dest: '<%= yeoman.app %>/index.html',
-                //options: {
-                //    process: function(content) {
-                //        return content
-                //            .replace('rainierApp', 'rainierAppMock')
-                //            .replace('<!-- include mock scripts -->',
-                //                '<script src="bower_components/angular-mocks/angular-mocks.js"></script>' +
-                //                String.fromCharCode(13) +
-                //                '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
-                //    }
-                //}
-                files: [
-                    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html'},
-                    { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
-                ],
+                src: '<%= yeoman.app %>/index.template',
+                dest: '<%= yeoman.app %>/index.html',
                 options: {
                     process: function(content) {
                         return content
@@ -542,6 +528,20 @@ module.exports = function(grunt) {
                                 '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
                     }
                 }
+                //files: [
+                //    { src: '<%= yeoman.app %>/index.template', dest: '<%= yeoman.app %>/index.html'},
+                //    { expand: true, cwd: '<%= yeoman.app %>/branding/<%= yeoman.brand %>',src: '**/*', dest: '<%= yeoman.app %>/'}
+                //],
+                //options: {
+                //    process: function(content) {
+                //        return content
+                //            .replace('rainierApp', 'rainierAppMock')
+                //            .replace('<!-- include mock scripts -->',
+                //                '<script src="bower_components/angular-mocks/angular-mocks.js"></script>' +
+                //                String.fromCharCode(13) +
+                //                '    <!-- include: "type": "js", "files": "mocks/**/*.js" -->');
+                //    }
+                //}
             }
         },
 
@@ -569,9 +569,25 @@ module.exports = function(grunt) {
         },
 
         branding: {
-            src: '<%= yeoman.app %>/branding/*'
+            src: '<%= yeoman.app %>/branding/*',
+            options: {
+                app: '<%= yeoman.app %>'
+            }
+
         }
 
+    });
+
+
+    grunt.registerTask('switch-brand', 'branding', function(){
+        var brand = grunt.option('brand');
+
+        grunt.log.writeln('brand: ' + brand);
+        grunt.config.set('branding.options.brand', brand);
+
+        grunt.task.run([
+           'branding'
+        ]);
     });
 
     grunt.registerTask('brand','branding', function() {
@@ -584,11 +600,8 @@ module.exports = function(grunt) {
             var brand = filePathSegments[filePathSegments.length - 1];
 
             brands.push(brand);
-            grunt.log.writeln((++counter) + '. ' + brand);
+            grunt.log.writeln(brand);
         });
-
-        grunt.file.write('brand.txt', brands.join('\n'));
-
     });
 
 
@@ -620,20 +633,18 @@ module.exports = function(grunt) {
     };
 
 
-    var setBranding = function() {
-        var defaultBrand = 'hitachi';
-        var brand = grunt.option('brand');
-
-        if (!brand) {
-            brand = defaultBrand;
-        }
-
-        grunt.config.set('yeoman.brand', brand);
-    };
+    //var setBranding = function() {
+    //    var defaultBrand = 'hitachi';
+    //    var brand = grunt.option('brand');
+    //
+    //    if (!brand) {
+    //        brand = defaultBrand;
+    //    }
+    //
+    //    grunt.config.set('yeoman.brand', brand);
+    //};
 
     grunt.registerTask('serve', 'start the server and preview your app, --allow-remote=true for remote access, --proxy-host=[API host], --proxy-use-https=true for https to proxy, --brand=provide a valid branch from [grunt list-brand]', function(target) {
-
-        setBranding();
         setProxy();
 
         if (grunt.option('allow-remote')) {
@@ -684,7 +695,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('servemock', 'start the server and preview shasta app with mock backend, --allow-remote=true for remote access', function() {
-        setBranding();
         grunt.log.writeln('mocking backend REST APIs');
 
         if (grunt.option('allow-remote')) {
