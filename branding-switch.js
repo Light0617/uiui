@@ -47,7 +47,6 @@ module.exports = function(grunt) {
         if (isFunction(destFilePath)){
             destFilePath = destFilePath(srcFilePath);
         }
-
         grunt.file.copy(srcFilePath, destFilePath);
     };
 
@@ -82,7 +81,10 @@ module.exports = function(grunt) {
      * @returns {*}
      */
     var constructPath = function(rootPath, filePath){
-        if (!endsWith(rootPath, '/')){
+        if(rootPath === undefined){
+            rootPath = '';
+        }
+        else if (!endsWith(rootPath, '/')){
             rootPath = rootPath + '/';
         }
 
@@ -218,9 +220,15 @@ module.exports = function(grunt) {
             }
         };
 
+        var printObj = function(obj){
+            for (var prop in obj){
+                grunt.log.writeln(prop);
+            }
+        };
+
+
         var switchBrand = function(files, requestedBrand){
             files.forEach(function(filePair) {
-
                 filePair.src.forEach(function(brandPath){
                     var brand = extractBrand(brandPath);
 
@@ -228,7 +236,6 @@ module.exports = function(grunt) {
                     if (requestedBrand !== brand){
                         return;
                     }
-
                     //first, restore all files to default (clean up any branding files and restore other files)
                     restoreDefaultFiles(backupDataFolder, app, trackedCopiedFilePath);
 

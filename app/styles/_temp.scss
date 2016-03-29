@@ -744,18 +744,6 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   margin-bottom: 0px !important;
 }
 
-.navbar .partner-brand {
-  @include brand-bkg;
-  h3 { margin-top: 12px;}
-  &.changhong {
-    background-image:url(../images/changhong-22.png);
-    padding-left: 192px;
-  }
-  &.dcds {
-    background-image: url(../images/dcds-22.png);
-    padding-left: 86px;
-  }
-}
 
 /*
 .popover{

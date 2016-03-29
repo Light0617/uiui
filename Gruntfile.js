@@ -27,6 +27,7 @@ module.exports = function(grunt) {
 
     // Configurable paths for the application
     var appConfig = {
+        root: '/',
         app: 'app',
         dist: 'build/stage/public',
         brand: 'hitachi'
@@ -570,9 +571,10 @@ module.exports = function(grunt) {
         },
 
         branding: {
-            src: '<%= yeoman.app %>/branding/*',
+            //src: '<%= yeoman.app %>/branding/*',
+            src: './branding/*',
             options: {
-                app: '<%= yeoman.app %>'
+                app: '.'
             }
 
         }
