@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     var appConfig = {
         root: '/',
         app: 'app',
-        dist: 'build/stage/public',
+        dist: 'dist',
         brand: 'hitachi'
     };
 
@@ -70,6 +70,25 @@ module.exports = function(grunt) {
                     },
                     BEL_UI_PATH: 'bower_components/bel-ui'
                 }
+            }
+        },
+
+        // Build a WAR (web archive) without Maven or the JVM installed
+        war: {
+            target: {
+                /*jshint camelcase: false */
+                options: {
+                    war_dist_folder: '<%= yeoman.dist %>',
+                    war_name: 'rainier-ui',
+                    webxml_welcome: 'index.html',
+                    webxml_display_name: 'HSA'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.dist %>',
+                    src: ['**'],
+                    dest: ''
+                }]
             }
         },
 
@@ -735,7 +754,8 @@ module.exports = function(grunt) {
         'filerev',
         'usemin',
         'ngconstant:production',
-        'htmlmin'
+        'htmlmin',
+        'war'
     ]);
 
     grunt.registerTask('default', [
