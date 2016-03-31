@@ -27,8 +27,6 @@
 <div ng-view="">
 </div>
 
-<script src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script> <!-- including this directly because it is not properly published by the repo -->
-
 
 <!-- build:js(.) scripts/oldieshim.js -->
 <!--[if lt IE 9]>
