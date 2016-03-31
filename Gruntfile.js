@@ -742,6 +742,8 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('build', [
+        'newer:jshint',
+        'test',
         'clean:dist',
         'wiredep',
         'copy:index',
@@ -762,8 +764,6 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('default', [
-        'newer:jshint',
-        'test',
         'build'
     ]);
 
