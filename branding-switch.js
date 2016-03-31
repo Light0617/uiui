@@ -271,7 +271,7 @@ module.exports = function(grunt) {
 
 
 
-        if (!selectedBrand){
+        if (!selectedBrand || selectedBrand === 'default'){
             restore();
         }else {
             switchBrand(this.files, selectedBrand);

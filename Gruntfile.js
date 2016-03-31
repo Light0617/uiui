@@ -616,6 +616,9 @@ module.exports = function(grunt) {
         var files = grunt.config.get('branding.src');
         var brands = [];
 
+        brands.push('default');
+        grunt.log.writeln('default');
+
         grunt.file.expand(files).forEach(function(file){
             var filePathSegments = file.split('/');
             var brand = filePathSegments[filePathSegments.length - 1];
