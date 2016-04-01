@@ -65,7 +65,7 @@ angular.module('rainierApp')
                 {
                     title: 'replication-group-label-comments',
                     sizeClass: 'sixth',
-                    sortField: 'comments',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.comments;
                     }
@@ -78,7 +78,7 @@ angular.module('rainierApp')
             scope.replicationGroupSuspendResumeDelete = function (replicationGroupAction, selectedReplicationGroup) {
                 ShareDataService.replicationGroupAction = replicationGroupAction;
                 ShareDataService.selectedReplicationGroup = selectedReplicationGroup;
-                $location.path(['/storage-systems/', storageSystemId, '/replication-groups/replication-group-actions-confirmation'].join(''));
+                $location.path(['/storage-systems/', storageSystemId, '/replication-groups/replication-group-action-confirmation'].join(''));
             };
 
             scope.replicationGroupRestore = function () {

@@ -8,9 +8,12 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StoragePoolUpdateCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService, storagePoolService) {
+    .controller('StoragePoolUpdateCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService, storagePoolService, paginationService, objectTransformService) {
         var storageSystemId = $routeParams.storageSystemId;
         var poolId = $routeParams.storagePoolId;
+        var GET_PARITY_GROUPS_PATH = 'parity-groups';
+        var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
+        var parityGroups;
 
         orchestratorService.storagePool(storageSystemId, poolId)
             .then(function (pool) {
@@ -35,88 +38,100 @@ angular.module('rainierApp')
                 $scope.model.hasHtiLicense = false;
                 $scope.model.hasActiveFlashLicense = pool.activeFlashEnabled;
                 $scope.model.originalActiveFlashEnabled = false;
-                orchestratorService.parityGroups(storageSystemId).then(function (result) {
-                    $scope.model.parityGroups = storagePoolService.filterParityGroups(result.parityGroups);
-                    var c = _.chain($scope.model.parityGroups);
-                    $scope.model.diskTypes = c.pluck(function (pg) {
-                        return pg.diskSpec.type;
-                    }).uniq().value();
-                    $scope.model.raidLayouts = c.pluck('raidLayout').uniq().value();
-                    $scope.model.raidLevels = c.pluck('raidLevel').uniq().value();
-                    $scope.model.diskSpeeds = c.pluck(function (pg) {
-                        return pg.diskSpec.speed;
-                    }).uniq().value();
-                    $scope.model.diskSpeeds = _.map($scope.model.diskSpeeds, function (ds) {
-                        if (ds === '') {
-                            ds = '0';
-                        }
-                        return ds;
-                    });
-                    $scope.model.diskSpeeds.sort();
+                paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId,
+                    objectTransformService.transformParityGroup).then(function(result) {
+                        parityGroups = result;
+                        orchestratorService.tiers().then(function (result) {
+                            var diskTypeSpeedToTier = {};
+                            $scope.tierKeys = _.pluck(result.tiers, 'tier');
+                            _.forEach(result.tiers, function (tier) {
+                                _.forEach(tier.subTiers, function (subTier) {
+                                    diskTypeSpeedToTier[subTier.diskType + ' ' + diskSizeService.getDisplaySpeed(subTier.speed)] = tier.tier;
+                                });
+                            });
+                            $scope.diskTypeSpeedToTier = diskTypeSpeedToTier;
+                            $scope.model.parityGroups = storagePoolService.filterParityGroups(parityGroups, diskTypeSpeedToTier, pool);
+                            var c = _.chain($scope.model.parityGroups);
+                            $scope.model.diskTypes = c.pluck(function (pg) {
+                                return pg.diskSpec.type;
+                            }).uniq().value();
+                            $scope.model.raidLayouts = c.pluck('raidLayout').uniq().value();
+                            $scope.model.raidLevels = c.pluck('raidLevel').uniq().value();
+                            $scope.model.diskSpeeds = c.pluck(function (pg) {
+                                return pg.diskSpec.speed;
+                            }).uniq().value();
+                            $scope.model.diskSpeeds = _.map($scope.model.diskSpeeds, function (ds) {
+                                if (ds === '') {
+                                    ds = '0';
+                                }
+                                return ds;
+                            });
+                            $scope.model.diskSpeeds.sort();
 
-                    var diskType = null;
-                    var raidLayout = null;
-                    var raidLevel = null;
-                    var diskSpeed = null;
+                            var diskType = null;
+                            var raidLayout = null;
+                            var raidLevel = null;
+                            var diskSpeed = null;
 
-                    // true if the current pool have the same disk type, raid layout, raid level, disk speed
-                    var isUnified = false;
+                            // true if the current pool have the same disk type, raid layout, raid level, disk speed
+                            var isUnified = false;
 
-                    var usableParityGroups = [];
-                    var inUseParityGroups = [];
+                            var usableParityGroups = [];
+                            var inUseParityGroups = [];
 
-                    // When the parity groups for the current pool have the same disk type, raid layout,
-                    // raid level, disk speed, we set the initial filter as them for the parity groups
-                    // to be selected.
-                    _.forEach($scope.model.parityGroups, function (pg) {
-                        if (_.contains(pool.parityGroupIds, pg.parityGroupId)) {
-                            if (!diskType && !raidLayout && !raidLevel && !diskSpeed) {
-                                diskType = pg.diskSpec.type;
-                                raidLayout = pg.raidLayout;
-                                raidLevel = pg.raidLevel;
-                                diskSpeed = pg.diskSpec.speed;
-                                isUnified = true;
-                            } else if (diskType !== pg.diskSpec.type ||
-                                raidLayout !== pg.raidLayout ||
-                                raidLevel !== pg.raidLevel ||
-                                diskSpeed !== pg.diskSpec.speed) {
-                                isUnified = false;
+                            // When the parity groups for the current pool have the same disk type, raid layout,
+                            // raid level, disk speed, we set the initial filter as them for the parity groups
+                            // to be selected.
+                            _.forEach($scope.model.parityGroups, function (pg) {
+                                if (_.contains(pool.parityGroupIds, pg.parityGroupId)) {
+                                    if (!diskType && !raidLayout && !raidLevel && !diskSpeed) {
+                                        diskType = pg.diskSpec.type;
+                                        raidLayout = pg.raidLayout;
+                                        raidLevel = pg.raidLevel;
+                                        diskSpeed = pg.diskSpec.speed;
+                                        isUnified = true;
+                                    } else if (diskType !== pg.diskSpec.type ||
+                                        raidLayout !== pg.raidLayout ||
+                                        raidLevel !== pg.raidLevel ||
+                                        diskSpeed !== pg.diskSpec.speed) {
+                                        isUnified = false;
+                                    }
+
+                                    pg.selected = true;
+                                    pg.inuse = true;
+                                    inUseParityGroups.push(pg);
+                                } else if (pg.status === 'AVAILABLE' || pg.status === 'FORMATTING' || pg.status === 'QUICK_FORMATTING') {
+                                    pg.selected = false;
+                                    pg.inuse = false;
+                                    usableParityGroups.push(pg);
+                                }
+
+                            });
+                            $scope.model.inUseParityGroups = inUseParityGroups;
+                            $scope.model.parityGroups = usableParityGroups;
+
+                            $scope.model.search = isUnified ?
+                            {
+                                freeText: '',
+                                diskSpec: {
+                                    type: diskType,
+                                    speed: diskSpeed
+                                },
+                                raidLayout: raidLayout,
+                                raidLevel: raidLevel
                             }
-
-                            pg.selected = true;
-                            pg.inuse = true;
-                            inUseParityGroups.push(pg);
-                        } else if (pg.status === 'AVAILABLE' || pg.status === 'FORMATTING') {
-                            pg.selected = false;
-                            pg.inuse = false;
-                            usableParityGroups.push(pg);
-                        }
-
+                                :
+                            {
+                                freeText: '',
+                                diskSpec: {
+                                    type: null,
+                                    speed: null
+                                },
+                                raidLayout: null,
+                                raidLevel: null
+                            };
+                        });
                     });
-                    $scope.model.inUseParityGroups = inUseParityGroups;
-                    $scope.model.parityGroups = usableParityGroups;
-
-                    $scope.model.search = isUnified ?
-                    {
-                        freeText: '',
-                        diskSpec: {
-                            type: diskType,
-                            speed: diskSpeed
-                        },
-                        raidLayout: raidLayout,
-                        raidLevel: raidLevel
-                    }
-                        :
-                    {
-                        freeText: '',
-                        diskSpec: {
-                            type: null,
-                            speed: null
-                        },
-                        raidLayout: null,
-                        raidLevel: null
-                    };
-                });
 
                 orchestratorService.tiers().then(function (result) {
                     $scope.tierKeys = _.pluck(result.tiers, 'tier');

@@ -31,7 +31,7 @@
                                 ng-disabled="!model.hasHdtLicense">
                         </select>
                     </div>
-                    <div class="form-group" ng-if="model.wizardType === 'advanced'">
+                    <div class="form-group" ng-if="model.wizardType === 'advanced'" title="{{ 'storage-pools-active-flash-license-info' | translate}}">
                         <label for="pool-active-flash">{{ 'storage-pools-question-active-flash' | translate}}</label>
 
                         <div id="pool-active-flash" class="btn-group btn-group-toggle-black btn-group-justified">

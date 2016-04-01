@@ -1,24 +1,28 @@
-<div class="summary-container-default">
+<div class="summary-container-condensed">
         <div class="meta-tile-short half">
-            <div class="tile-row margin-tile lower-top-4">
-                <div class="header-data pull-left">
-                    <label class="pull-right" type="button"
-                           ng-repeat="icon in dataModel.filePool.getIcons()">
-            <span ng-click="icon.onClick()" ng-attr-title="{{icon.title | translate }}"
-                  ng-attr-class="btn icon-btn icon icon-sm {{icon.icon}}"></span>
-                    </label>
-                    <p class="smallMarginTop header-value">{{ dataModel.filePool.metaData[1].title }}</p>
-                    <p class="header-label">{{ 'file-pool-number-file-systems' | translate}} <span class="header-value">{{dataModel.numOfFileSystems}}</span></p>
-                    <p class="header-label">{{ 'file-pool-chunk-size' | translate}} <span class="header-value">{{dataModel.filePool.chunkSize.size}} {{dataModel.filePool.chunkSize.unit}}</span> </p>
+            <div class="tile-row resource-info">
+                <div class="resource-icon icon icon-pools icon-lg-md">
+                    <a role="button" ng-repeat="icon in dataModel.filePool.getIcons()" ng-click="icon.onClick()" ng-attr-title="{{icon.title | translate }}" ng-attr-class="btn icon-btn icon icon-tiny {{icon.icon}}"></a>
                 </div>
+                
+                <div class="label-value-container resource-data">
+                    <h2>{{ dataModel.filePool.metaData[1].title }}</h2>
+                    <p class="label">{{ 'file-pool-number-file-systems' | translate}}</p>
+                    <p class="value">{{dataModel.numOfFileSystems}}</p>
+                    <p class="label">{{ 'file-pool-chunk-size' | translate}}</p>
+                    <p class="value">{{dataModel.filePool.chunkSize.size}} <span>{{dataModel.filePool.chunkSize.unit}}</span></p>
+                </div>                 
             </div>
-            <div class="footer-row margin-tile">
-                <div class="center-content btn-group-justified" role="group">
-                    <a ng-repeat="link in dataModel.filePool.displayLinks" class="btn btn-default" ng-href="{{link.href}}" title="{{link.label}}"><span class="icon icon-md icon-pools success"></span> {{link.label}}</a>
+            <div class="tile-row related-resources">
+                <div class="btn-group btn-group-justified" role="group">
+                    <div ng-repeat="link in dataModel.filePool.displayLinks" class="btn-group" role="group">
+                        <a class="btn btn-light btn-default include-icon pool" data-toggle="button" aria-pressed="false" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}}</a>
+                    </div>
+                    
                 </div>
             </div>
         </div>
-        <div class="full-width margin-percent-L-R-10">
+        <div class="bdv two-thirds">
             <bar-data-visualization ng-model="dataModel.filePool"></bar-data-visualization>
         </div>
 </div>

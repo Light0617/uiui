@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('StorageSystemCtrl', function ($scope, $routeParams, $window, orchestratorService,
                                                objectTransformService, diskSizeService, synchronousTranslateService,
-                                               paginationService) {
+                                               paginationService, replicationGroupsService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -139,13 +139,25 @@ angular.module('rainierApp')
             }
         });
 
-        orchestratorService.replicationGroupSummary(storageSystemId).then(function (result) {
+        var externalVolumePairExist = {};
+        replicationGroupsService.cloneExternalVolumePairExists(storageSystemId).then(function (result) {
+            externalVolumePairExist.clone = result === 0 ? false : true;
+            return replicationGroupsService.snapshotExternalVolumePairExists(storageSystemId);
+        }).then(function (result) {
+            externalVolumePairExist.snapshot = result === 0 ? false : true;
+            return orchestratorService.replicationGroupSummary(storageSystemId);
+        }).then(function (result) {
             var replicationGroupCountByTypes = result.replicationGroupCountByType;
             var total = 0;
             var replicationGroupsByType = [];
 
             if (!_.isUndefined(replicationGroupCountByTypes) && !_.isEmpty(replicationGroupCountByTypes)) {
                 _.forEach(replicationGroupCountByTypes, function(replicationGroupCountByType) {
+                    if (replicationGroupCountByType.replicationType === 'CLONE' && externalVolumePairExist.clone) {
+                        replicationGroupCountByType.count++;
+                    } else if (replicationGroupCountByType.replicationType === 'SNAPSHOT' && externalVolumePairExist.snapshot) {
+                        replicationGroupCountByType.count++;
+                    }
                     var replicationGroupType = {
                         type: replicationGroupCountByType.replicationType,
                         count: replicationGroupCountByType.count

@@ -23,7 +23,7 @@ angular.module('rainierApp')
             $scope.dataModel = {
                 affectedVolumePairs: result.volumePairs,
                 view: 'list',
-                pageAction: action,
+                pageAction: action.charAt(0).toUpperCase() + action.slice(1, action.length),
                 sort: {
                     field: 'primaryVolume.id',
                     reverse: false,

@@ -365,7 +365,7 @@ angular.module('rainierApp')
                     },
                 },
                 {
-                    icon: 'icon-delete-item',
+                    icon: 'icon-delete',
                     tooltip: 'action-tooltip-delete-replication-groups',
                     type: 'link',
                     enabled: function () {

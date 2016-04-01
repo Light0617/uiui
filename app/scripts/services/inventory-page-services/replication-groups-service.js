@@ -111,9 +111,23 @@ angular.module('rainierApp')
                         return result;
                     }));
             },
-            getSortedAndFilteredReplicationGroups: function (storageSystemId) {
+            getSortedAndFilteredReplicationGroups: function (storageSystemId, externalReplicationGroups) {
                 var queryParams = queryService.getQueryParameters(true);
                 queryParams.nextToken = null;
+                var currentSortBy = queryService.getSortBy();
+                var currentReplicationGroupType = queryService.getQuery('type');
+                var currentReplicationGroupTextSearch = queryService.getQuery('replicationGroupTextSearch');
+                if (currentReplicationGroupType !== undefined) {
+                    externalReplicationGroups = _.filter(externalReplicationGroups, function (rg) {
+                        return rg.type.toString().toUpperCase() === currentReplicationGroupType.queryText.toUpperCase();
+                    });
+                }
+                if (currentReplicationGroupTextSearch !=undefined) {
+                    externalReplicationGroups = _.filter(externalReplicationGroups, function (rg) {
+                        return rg.name.toString().toUpperCase() === currentReplicationGroupTextSearch.queryText.freeText
+                                .toUpperCase();
+                    });
+                }
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular
                     .one('storage-systems', storageSystemId)
                     .one('replication-groups')
@@ -122,7 +136,15 @@ angular.module('rainierApp')
                         _.forEach(result.resources, function (item) {
                             objectTransformService.transformReplicationGroup(item);
                         });
-                        return result;
+                        if (currentSortBy !== undefined) {
+                            result.resources = _.sortBy(result.resources.concat(externalReplicationGroups), currentSortBy
+                                .toString());
+                            return result;
+
+                        } else {
+                            result.resources = result.resources.concat(externalReplicationGroups);
+                            return result;
+                        }
                     }));
             },
             setTypeSearch: function (filterModel) {
@@ -135,9 +157,9 @@ angular.module('rainierApp')
             },
             setTextSearch: function (filterModel) {
                 if (_.isEmpty(filterModel.freeText)) {
-                    queryService.removeQueryMapEntry('textSearch');
+                    queryService.removeQueryMapEntry('replicationGroupTextSearch');
                 } else {
-                    var queryObject = queryService.getQueryObjectInstance('textSearch', filterModel);
+                    var queryObject = queryService.getQueryObjectInstance('replicationGroupTextSearch', filterModel);
                     queryObject.queryStringFunction = function() {
                         return 'name:' + filterModel.freeText;
                     };

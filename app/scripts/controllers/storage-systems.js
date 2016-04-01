@@ -8,21 +8,20 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StorageSystemsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
-                                                $location, diskSizeService, paginationService, queryService) {
+    .controller('StorageSystemsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService,
+                                                $location, diskSizeService, paginationService) {
 
         var dataProtection;
-        var getStorageSystemsPath = 'storage-systems';
+        var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var tiers;
+        var unified;
 
         function transformService(fileSummary) {
             orchestratorService.tiers().then(function (result) {
                 tiers = result;
                 return orchestratorService.storageSystemsSummary();
             }).then(function (result) {
-                if(fileSummary) {
-                    result.unified = true;
-                }
+                result.unified = unified ? true : false;
                 var summaryModel = objectTransformService.transformToStorageSummaryModel(result, fileSummary, dataProtection);
                 objectTransformService.transformTierSummary(tiers, result.tierSummaryItems, summaryModel);
                 summaryModel.title = synchronousTranslateService.translate('common-storage-systems');
@@ -48,47 +47,27 @@ angular.module('rainierApp')
                 }
             });
         }
-        paginationService.get(null, getStorageSystemsPath, objectTransformService.transformStorageSystem, true).then(function (result) {
-            var storageSystems = result.resources;
+        paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
+            unified = _.find(result, function (storageSystem) { return storageSystem.unified && storageSystem.accessible; });
+            var storageSystems = result;
             var hasFileUsageBar = false;
             updateUnifiedTiles(storageSystems);
             orchestratorService.dataProtectionSummary().then(function(result) {
                 dataProtection = result;
-                orchestratorService.filePoolsSummary().then(function (result) {
-                    transformService(result);
-                }, function() { transformService(null); });
+                if(unified) {
+                    orchestratorService.filePoolsSummary().then(function (result) {
+                        transformService(result);
+                    });
+                }
+                else {
+                    transformService();
+                }
             });
             var dataModel = {
                 view: 'tile',
                 hasFileUsageBar: hasFileUsageBar,
-                nextToken: result.nextToken,
-                total: result.total,
-                currentPageCount: 0,
                 displayList: result.resources,
-
-                sort: {
-                    field: 'storageSystemId',
-                    reverse: false,
-                    setSort: function (f) {
-                        $timeout(function () {
-                            if ($scope.dataModel.sort.field === f) {
-                                queryService.setSort(f, !$scope.dataModel.sort.reverse);
-                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            } else {
-                                $scope.dataModel.sort.field = f;
-                                queryService.setSort(f, false);
-                                $scope.dataModel.sort.reverse = false;
-                            }
-                            paginationService.getQuery(getStorageSystemsPath, objectTransformService.transformStorageSystem).then(function(result) {
-                                updateResultTotalCounts(result);
-                            });
-                        });
-                    }
-                }
-            };
-
-            $scope.filterModel = {
-                filter: {
+                search: {
                     freeText: '',
                     freeCapacity: {
                         min: 0,
@@ -101,28 +80,22 @@ angular.module('rainierApp')
                         unit: 'PB'
                     }
                 },
-                filterQuery: function (key, value, type, arrayClearKey) {
-                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                    paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(getStorageSystemsPath, objectTransformService.transformStorageSystem).then(function(result) {
-                        updateResultTotalCounts(result);
-                    });
-                },
-                sliderQuery: function(key, start, end, unit) {
-                    paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(getStorageSystemsPath, objectTransformService.transformStorageSystem).then(function(result) {
-                        updateResultTotalCounts(result);
-                    });
-                },
-                searchQuery: function (value) {
-                    var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject('storageSystemId', new paginationService.SearchType().INT, value));
-                    paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStorageSystemsPath, objectTransformService.transformStorageSystem).then(function(result) {
-                        updateResultTotalCounts(result);
-                    });
+                sort: {
+                    field: 'storageSystemId',
+                    reverse: false,
+                    setSort: function (f) {
+                        $timeout(function () {
+                            if ($scope.dataModel.sort.field === f) {
+                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
+                            } else {
+                                $scope.dataModel.sort.field = f;
+                                $scope.dataModel.sort.reverse = false;
+                            }
+                        });
+                    }
                 }
             };
+
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -215,24 +188,9 @@ angular.module('rainierApp')
                 }
             ];
 
-            dataModel.getResources = function(){
-                return paginationService.get($scope.dataModel.nextToken, getStorageSystemsPath, objectTransformService.transformStorageSystem, false);
-            };
-
-            var updateResultTotalCounts = function(result) {
-                $scope.dataModel.nextToken = result.nextToken;
-                $scope.dataModel.displayList = result.resources;
-                $scope.dataModel.itemCounts = {
-                    filtered: $scope.dataModel.displayList.length,
-                    total: $scope.dataModel.total
-                };
-                updateUnifiedTiles(result.resources);
-            };
-
-            dataModel.displayList = storageSystems;
             $scope.dataModel = dataModel;
 
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
+            scrollDataSourceBuilderService.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
 
 
         });

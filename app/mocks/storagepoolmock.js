@@ -51,7 +51,13 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             return (storagePool) ? mockUtils.response.ok(storagePool) : mockUtils.response.notFound('Unable to find endpoint with matching Id.');
         }
 
-        return mockUtils.response.ok(mockUtils.collectionResponse(storagePools, 'storagePools'));
+        var paginatedPools = {
+            resources: storagePools,
+            nextToken: null,
+            total: storagePools.length
+        };
+
+        return mockUtils.response.ok(paginatedPools);
     };
 
     return {

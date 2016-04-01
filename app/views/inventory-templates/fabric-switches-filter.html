@@ -4,11 +4,11 @@
     </h3>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.switchType" btn-radio="'BROCADE'" title="BROCADE" uncheckable>{{'fabric-search-brocade' | translate}}
+            <label class="btn btn-default" ng-model="dataModel.search.switchType" btn-radio="'BROCADE'" title="BROCADE" uncheckable ng-click="filterModel.filterQuery('switchType', 'BROCADE')">{{'fabric-search-brocade' | translate}}
             </label>
         </div>
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.switchType" btn-radio="'CISCO'" title="CISCO" uncheckable>{{'fabric-search-cisco' | translate}}
+            <label class="btn btn-default" ng-model="dataModel.search.switchType" btn-radio="'CISCO'" title="CISCO" uncheckable ng-click="filterModel.filterQuery('switchType', 'CISCO')">{{'fabric-search-cisco' | translate}}
             </label>
         </div>
     </div>

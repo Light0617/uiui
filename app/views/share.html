@@ -1,7 +1,18 @@
 <common-page-header>
 </common-page-header>
-<inventory-page ng-model="dataModel" summary-model="summaryModel" usage-graphs="usageGraphs"
-                summary-template="views/inventory-templates/share-summary.html"
-                list-count-summary-title="permissions-showing-x-of-y"
-                filter-template="views/inventory-templates/permissions-filter.html">
-</inventory-page>
+<div ng-if="dataModel.share.name !== 'C$'">
+    <inventory-page ng-model="dataModel" summary-model="summaryModel" usage-graphs="usageGraphs"
+                    summary-template="views/inventory-templates/share-summary.html"
+                    list-count-summary-title="permissions-showing-x-of-y"
+                    filter-template="views/inventory-templates/permissions-filter.html">
+    </inventory-page>
+</div>
+<div ng-if="dataModel.share.name === 'C$'">
+    <application-stage>
+        <div class="above-the-fold">
+            <page-title>
+            </page-title>
+            <ng-include src="'views/inventory-templates/share-summary.html'"></ng-include>
+        </div>
+    </application-stage>
+</div>

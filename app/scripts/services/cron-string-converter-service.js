@@ -53,11 +53,10 @@ angular.module('rainierApp')
         }
 
         return {
-            fromDatePickerToObjectModel: function (type, time, date, days, hourInterval, hourStartMinute) {
+            fromDatePickerToObjectModel: function (type, time, date, days, hourInterval) {
                 var objectModel = {};
                 if (type === 'HOURLY' || type === 'hour' || type === 'Hourly') {
                     objectModel.hour = null;
-                    objectModel.minute = parseInt(hourStartMinute);
                 } else if (time) {
                     objectModel.hour = parseInt(time.getHours());
                     objectModel.minute = parseInt(time.getMinutes());
@@ -154,8 +153,7 @@ angular.module('rainierApp')
                 var result = true;
                 switch (uiSchedule.recurringUnit) {
                     case 'HOURLY':
-                        result = parseInt(uiSchedule.minute) === parseInt(backendSchedule.minute) &&
-                            parseInt(uiSchedule.recurringUnitInterval) === parseInt(backendSchedule.recurringUnitInterval);
+                        result = parseInt(uiSchedule.recurringUnitInterval) === parseInt(backendSchedule.recurringUnitInterval);
                         break;
                     case 'DAILY':
                         result = parseInt(uiSchedule.minute) === parseInt(backendSchedule.minute) &&

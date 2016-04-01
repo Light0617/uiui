@@ -510,7 +510,7 @@ angular.module('rainierApp')
                     if(cdata.subscribed) {
                         legendSize = 3;
                     }
-                    else if(!cdata.free.label) {
+                    else if(cdata.free && !cdata.free.label) {
                         noFreeLabel = legendIndicatorSize * 2;
                     }
                     var lg = legend.append('g')
@@ -1330,7 +1330,6 @@ angular.module('rainierApp')
                     }, function () {
                         scope.render(scope.data);
                     },true);
-
                     scope.render = function (data) {
                         // remove all previous items before render
                         svg.selectAll('*').remove();

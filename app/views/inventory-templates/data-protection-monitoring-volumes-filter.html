@@ -1,0 +1,121 @@
+<div class="control-group">
+    <h3>Free Space<span class="read-only">{{dataModel.search.freeCapacity.min}} - {{dataModel.search.freeCapacity.max}} {{dataModel.search.freeCapacity.unit}}</span>
+    </h3>
+
+    <div id="free-space-range" class="slider-range range-slider-control" two-knob-slider=""
+         slider-min="dataModel.search.freeCapacity.min" slider-max="dataModel.search.freeCapacity.max"
+         ng-model-min="dataModel.search.freeCapacity.min" ng-model-max="dataModel.search.freeCapacity.max">
+    </div>
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit"
+                    btn-radio="'GB'">GB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit"
+                    btn-radio="'TB'">TB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit"
+                    btn-radio="'PB'">PB
+            </button>
+        </div>
+    </div>
+</div>
+<!--Control group: Size of Volume Input-->
+<div class="control-group">
+    <h3>Size of Volume<span class="read-only">{{dataModel.search.totalCapacity.min}} - {{dataModel.search.totalCapacity.max}} {{dataModel.search.totalCapacity.unit}}</span>
+    </h3>
+
+    <div id="array-size-range" class="slider-range range-slider-control" two-knob-slider=""
+         slider-min="dataModel.search.totalCapacity.min" slider-max="dataModel.search.totalCapacity.max"
+         ng-model-min="dataModel.search.totalCapacity.min" ng-model-max="dataModel.search.totalCapacity.max">
+    </div>
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit"
+                    btn-radio="'GB'">GB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit"
+                    btn-radio="'TB'">TB
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit"
+                    btn-radio="'PB'">PB
+            </button>
+        </div>
+    </div>
+</div>
+<!--Control group: Utilization of Volume Input-->
+<div class="control-group">
+    <h3>Utilization (%)<span class="read-only">{{dataModel.search.utilization.min}} - {{dataModel.search.utilization.max}}</span>
+    </h3>
+
+    <div id="array-utilization-range" class="slider-range range-slider-control" two-knob-slider=""
+         slider-min="dataModel.search.utilization.min" slider-max="dataModel.search.utilization.max"
+         ng-model-min="dataModel.search.utilization.min" ng-model-max="dataModel.search.utilization.max">
+    </div>
+</div>
+<div class="control-group">
+    <h3>Volume Type<span class="read-only" type="text">{{ dataModel.search.type || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group btn-group-toggle btn-group-justified">
+    <div class="btn-group">
+        <label class="btn btn-default" ng-model="dataModel.search.type" btn-radio="'HDP'" title="Thin (HDP)"
+               uncheckable>{{'storage-volume-filter-thin' | translate}}
+        </label>
+    </div>
+    <div class="btn-group">
+        <label class="btn btn-default" ng-model="dataModel.search.type" btn-radio="'HDT'" title="Tiered (HDT)"
+               uncheckable>{{'storage-volume-filter-tiered' | translate}}
+        </label>
+    </div>
+    <div class="btn-group">
+        <label class="btn btn-default" ng-model="dataModel.search.type" btn-radio="'HTI'" title="Snap (HTI)"
+               uncheckable>{{'storage-volume-filter-snap' | translate}}
+        </label>
+    </div>
+</div>
+<div class="control-group">
+    <p>Protection Type</p>
+
+    <div class="checkbox pull-bottom">
+        <label>
+            <input type="checkbox" ng-model="dataModel.snapshot" ng-init="dataModel.snapshot=false"
+                   ng-change="filterModel.filterDpType()">{{'storage-volume-filter-snapshot' | translate}}
+        </label>
+    </div>
+    <div class="checkbox pull-bottom">
+        <label>
+            <input type="checkbox" ng-model="dataModel.cloneNow" ng-init="dataModel.cloneNow=false"
+                   ng-change="filterModel.filterDpType()">{{'storage-volume-filter-clone' | translate}}
+        </label>
+    </div>
+</div>
+<div class="control-group" ng-show="!dataModel.isDPMonitoring">
+    <p>Data Protection</p>
+
+    <div class="checkbox pull-bottom">
+        <label>
+            <input type="checkbox" ng-model="dataModel.protected" ng-init="dataModel.protected=false"
+                   ng-change="filterModel.filterProtectionStatus()">{{'storage-volume-filter-protected' | translate}}
+        </label>
+    </div>
+    <div class="checkbox pull-bottom">
+        <label>
+            <input type="checkbox" ng-model="dataModel.unprotected" ng-init="dataModel.unprotected=false"
+                   ng-change="filterModel.filterProtectionStatus()">{{'storage-volume-filter-unprotected' | translate}}
+        </label>
+    </div>
+    <div class="checkbox pull-bottom">
+        <label>
+            <input type="checkbox" ng-model="dataModel.secondary" ng-init="dataModel.secondary=false"
+                   ng-change="filterModel.filterProtectionStatus()">{{'storage-volume-filter-secondary' | translate}}
+        </label>
+    </div>
+</div>

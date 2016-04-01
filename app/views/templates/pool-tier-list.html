@@ -1,6 +1,6 @@
 <accordion>
     <accordion-group close-others="oneAtATime"
-                     ng-repeat="option in model.diskSizesByTier" is-open="option.open"
+                     ng-repeat="option in model.diskSizesByTier | filter:removeExcludedTiers" is-open="option.open"
                      is-disabled="option.disabled">
         <accordion-heading>
             <div class="col-lg-1 col-md-1 col-sm-1 expander-button">

@@ -1,15 +1,11 @@
-<div class="summary-container-default stage flex-row" id="top-info" ng-if="dataModel">
-    <div class="col-md-2 hidden-sm hidden-xs alert-panel alert-panel-md">
+<div class="summary-container-default" id="top-info" ng-if="dataModel">
+    <div class="alert-panel third">
         <!--Alerts Panel-->
-        <div class="tile alert-panel" id="alert-panel">
-            <div>
-                <hardware-alert ng-model="dataModel.alerts.hardware.count"
-                                alert-level="dataModel.alerts.hardware.level"></hardware-alert>
-            </div>
-        </div>
+        <hardware-alert ng-model="dataModel.alerts.hardware.count" class="tile alert"
+                        alert-level="dataModel.alerts.hardware.level"></hardware-alert>
     </div>
     <!--PG Summary-->
-    <div class="col-md-10 table-responsive summary-table">
+    <div class="table-responsive two-thirds">
             <table class="table table-bordered" data-sort-name="totalCapacity">
                 <thead>
                 <tr>
@@ -18,7 +14,7 @@
                     <th data-field="totalCapacity" data-sortable="true">{{'parity-groups-summary-manage-total-capacity' | translate}}<span class="caret" ng-show=""></span></th>
                     <th data-field="numberOfAvailableDisks" data-sortable="true">{{'parity-groups-summary-available-disks' | translate}}</th>
                     <th data-field="availableSpareCount" data-sortable="true">{{'parity-groups-summary-manage-available-spares' | translate}}<span class="caret" ng-show=""></span>
-                        <div class="btn-group icon-btn-group-toggle pull-right">
+                        <div class="btn-group icon-btn-group-toggle pull-right" ng-if="!dataModel.hideAddTile">
                             <a href="#/storage-systems/{{dataModel.storageSystemId}}/parity-groups/disk-manage" id="manage-spare-disk"
                    class="btn icon-btn icon-sm icon-settings" title="{{'parity-groups-summary-manage-spare-disk' | translate}}"></a>
                         </div>

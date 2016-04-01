@@ -426,7 +426,7 @@ angular.module('rainierApp')
             },
             fabrics: function () {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('san-fabrics').get()).then(function (result) {
-                    _.forEach(result.fabrics, function (item) {
+                    _.forEach(result.resources, function (item) {
                         objectTransformService.transformFabricSwitch(item);
                     });
                     return result;

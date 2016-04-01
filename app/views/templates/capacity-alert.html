@@ -1,5 +1,5 @@
-<a href="" ng-click="launchMonitoring('capacity', alertCount)">
-    <div class="tile alert {{alertLevel}} capacity alert-tile-capacity-bkg flex-column" id="capacity">
+<a href="" class="tile alert {{alertLevel}} capacity alert-tile-capacity-bkg" id="capacity" ng-click="launchMonitoring('capacity', alertCount)">
+    
         <h2 ng-attr-title="{{'capacity-alerts-tooltip' | translate}}">{{ 'capacity-alerts-title' | translate}}</h2>
 
         <div class="alert-icon">
@@ -34,5 +34,5 @@
                 <li class="alert"><span class="icon icon-sm icon-information"></span> {{alertCount}}</li>
             </ul>
         </div>
-    </div>
+    
 </a>

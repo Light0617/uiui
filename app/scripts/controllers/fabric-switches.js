@@ -8,34 +8,38 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('FabricSwitchesCtrl', function ($scope, $timeout, $window, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, ShareDataService) {
+    .controller('FabricSwitchesCtrl', function ($scope, $timeout, $window, orchestratorService, objectTransformService, synchronousTranslateService, paginationService, scrollDataSourceBuilderServiceNew, ShareDataService, queryService) {
 
-        orchestratorService.fabrics().then(function (result) {
+        var GET_FABRICS_PATH = 'san-fabrics';
+
+        paginationService.get(null, GET_FABRICS_PATH, objectTransformService.transformFabricSwitch, true).then(function (result) {
             initView(result);
         });
 
         function initView(result) {
-            var fabrics = result.fabrics ? result.fabrics : [];
+            var fabrics = result.resources ? result.resources : [];
 
             $scope.dataModel = {
                 title: 'Fabric Switches',
                 view: 'tile',
-                search: {
-                    freeText: '',
-                    switchType: ''
-                },
+                nextToken: result.nextToken,
+                total: result.total,
                 sort: {
                     field: 'sanFabricId',
                     reverse: false,
                     setSort: function (f) {
                         $timeout(function () {
                             if ($scope.dataModel.sort.field === f) {
+                                queryService.setSort(f, !$scope.dataModel.sort.reverse);
                                 $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            }
-                            else {
+                            } else {
                                 $scope.dataModel.sort.field = f;
+                                queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
+                            paginationService.getQuery(GET_FABRICS_PATH, objectTransformService.transformFabricSwitch).then(function(result) {
+                                updateResultTotalCounts(result);
+                            });
                         });
                     }
                 },
@@ -51,7 +55,7 @@ angular.module('rainierApp')
                     {
                         title: synchronousTranslateService.translate('fabric-tile-virtual-fabric-id'),
                         sizeClass: 'sixth',
-                        sortField: 'virtualFabricIdDisplay',
+                        sortField: 'virtualFabricId',
                         getDisplayValue: function (item) {
                             return item.virtualFabricIdDisplay;
                         }
@@ -85,6 +89,43 @@ angular.module('rainierApp')
                     }
                 ]
             };
+
+            var updateResultTotalCounts = function(result) {
+                $scope.dataModel.nextToken = result.nextToken;
+                $scope.dataModel.displayList = result.resources;
+                $scope.dataModel.itemCounts = {
+                    filtered: $scope.dataModel.displayList.length,
+                    total: $scope.dataModel.total
+                };
+            };
+
+            $scope.dataModel.getResources = function(){
+                return paginationService.get($scope.dataModel.nextToken, GET_FABRICS_PATH, objectTransformService.transformFabricSwitch, false);
+            };
+            $scope.dataModel.displayList = fabrics;
+
+            $scope.filterModel = {
+                filter: {
+                    freeText: '',
+                    switchType: ''
+                },
+                filterQuery: function (key, value, type, arrayClearKey) {
+                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                    paginationService.setFilterSearch(queryObject);
+                    paginationService.getQuery(GET_FABRICS_PATH, objectTransformService.transformFabricSwitch).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                searchQuery: function (value) {
+                    var queryObjects = [];
+                    queryObjects.push(new paginationService.QueryObject('sanFabricId', new paginationService.SearchType().INT, value));
+                    paginationService.setTextSearch(queryObjects);
+                    paginationService.getQuery(GET_FABRICS_PATH, objectTransformService.transformFabricSwitch).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                }
+            };
+
 
             var actions = [
                 {
@@ -121,7 +162,7 @@ angular.module('rainierApp')
                 $window.location.href = '#/fabric-switches/add';
             };
 
-            scrollDataSourceBuilderService.setupDataLoader($scope, fabrics, 'fabricSwitchSearch');
+            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, fabrics, 'fabricSwitchSearch');
         }
 
         $scope.deleteSelectedConfirmOk = function () {

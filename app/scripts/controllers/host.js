@@ -153,7 +153,7 @@ angular.module('rainierApp')
                     enabled: function () {
                         return dataModel.anySelected();
                     },
-                    onClick: function () {
+                    confirmClick: function () {
                         $('#' + this.dialogSettings.id).modal('hide');
                         var enabled = this.dialogSettings.switchEnabled;
                         _.forEach(dataModel.getSelectedItems(), function (volume) {

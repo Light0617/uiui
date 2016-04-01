@@ -28,7 +28,7 @@
         </div>
         <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 tile-container flex-grid" ng-if="dataModel.view=== 'tile'"
              infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='1'>
-            <div class="tile resource-tile control-tile" ng-hide="dataModel.hideAddTile" ng-if="dataModel.addAction" ng-click="dataModel.addAction()" title="{{dataModel.actionTitle}}">
+            <div class="tile resource-tile control-tile" ng-if="dataModel.addAction" ng-click="dataModel.addAction()" title="{{dataModel.actionTitle}}">
                 <div class="tile-button">
                     <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
                         <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 "></polygon>
@@ -48,7 +48,7 @@
                     &nbsp;
                 </div>
                 <div class="twelfth cell text-resize" ng-if="!dataModel.noAlerts">
-                    <sort-column-header field="alerts" label="Alerts"
+                    <sort-column-header field="" label="Alerts"
                                         ng-model="dataModel.sort" ng-if="!dataModel.file"></sort-column-header>
                 </div>
                 <div ng-attr-class="{{settings.sizeClass}} cell text-resize" ng-repeat="settings in dataModel.gridSettings">
@@ -66,13 +66,13 @@
             <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList">
                 <div class="cell twelfth panel-title">
                     <a id="{{item.id}}" role="button" data-toggle="collapse" aria-expanded="false" ng-if="listDetailsTemplate"
-                       ng-click="toggleExpandButton(item) ; item.opened = !item.opened ; dataModel.fetchFirstPageChildren(item)" class="btn icon-btn icon-caret-collapsed icon-xsm"></a>
+                       ng-click="toggleExpandButton(item) ; item.opened = !item.opened ; dataModel.fetchFirstPageChildren(item) ; dataModel.restoreCheck()"
+                       class="btn icon-btn icon-caret-collapsed icon-xsm"></a>
                     <a role="button" data-toggle="collapse" aria-expanded="false" ng-if="!listDetailsTemplate" class="btn icon-btn icon-xsm">&nbsp;</a>
 
                     <div class="btn-group" data-toggle="buttons" ng-if="!item.noSelection && !item.disabledCheckBox">
-                        <label class="btn icon-btn checkbox" ng-click="item.selected = !item.selected ; dataModel.restoreCheck()">
-                            <input type="checkbox">
-                        </label>
+                        <label class="btn icon-btn checkbox" ng-click="item.selected = !item.selected; dataModel.restoreCheck()"
+                               ng-class="{'active' : item.selected, 'disabled' : item.disabledCheckBox}"> </label>
                     </div>
                     <div class="btn-group" data-toggle="buttons" ng-if="item.noSelection">
                         <label class="btn icon-btn">&nbsp;</label>

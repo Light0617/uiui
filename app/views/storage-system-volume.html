@@ -1,16 +1,17 @@
 <common-page-header></common-page-header>
 <application-stage>
     <page-title>
-        <div class="btn icon-btn" ng-click="attachToHost()" title="Attach" ng-if="!model.disabledCheckBox">
-            <span class="icon-attach-volume icon-sm"></span>
+        <div class="btn icon-btn" ng-click="attachToHost()" title="{{ 'action-tooltip-attach-volumes' | translate}}"
+             ng-if="!model.disabledCheckBox"> <span class="icon-attach-volume icon-sm"></span>
         </div>
 
         <a class="btn icon-btn" ng-if="!model.disabledCheckBox"
-           ng-attr-href="#/storage-systems/{{model.storageSystemId}}/volumes/{{model.volumeId}}/update" title="Update" >
-            <span class="icon-edit icon-sm"></span>
+           ng-attr-href="#/storage-systems/{{model.storageSystemId}}/volumes/{{model.volumeId}}/update"
+           title="{{ 'action-tooltip-update-volumes' | translate}}" > <span class="icon-edit icon-sm"></span>
         </a>
 
-        <a class="btn icon-btn icon-sm" title="Delete" ng-if="!model.disabledCheckBox"
+        <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-delete-volumes' | translate}}"
+           ng-if="!model.disabledCheckBox"
            confirm
            confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"
            confirm-message="{{ 'storage-volume-delete-current-content' | translate}}"
@@ -18,21 +19,23 @@
             <span class="icon-delete icon-sm"></span>
         </a>
 
-        <div class="btn icon-btn" ng-click="protectCurrentVolume()" title="Protect" ng-if="!model.disabledCheckBox">
-            <span class="icon-protected-volume icon-sm"></span>
+        <div class="btn icon-btn" ng-click="protectCurrentVolume()" title="{{ 'action-tooltip-protect-volumes' | translate}}"
+             ng-if="!model.disabledCheckBox"> <span class="icon-protected-volume icon-sm"></span>
         </div>
 
-        <div class="btn icon-btn" ng-click="model.disabledCheckBox || unprotectCurrentVolume()" title="Unprotect" ng-if="protected || !model.disabledCheckBox">
+        <div class="btn icon-btn" ng-click="model.disabledCheckBox || unprotectCurrentVolume()"
+             title="{{ 'action-tooltip-unprotect-volumes' | translate}}"
+             ng-if="protected || !model.disabledCheckBox">
             <span class="icon-unprotected-volume icon-sm"></span>
         </div>
     </page-title>
 
-    <div class="summary-container-default stage clearfix" id="top-info" ng-if="summaryModel">
-        <div class="tile alert-panel">
+    <div class="summary-container-default" id="top-info" ng-if="summaryModel">
+        <div class="alert-panel third">
             <dp-alert-secondary-volumes></dp-alert-secondary-volumes>
         </div>
 
-        <div class="tile meta-tile">
+        <div class="tile meta-tile third">
             <div class="label-value-container">
                 <p class="label">{{ 'storage-volume-label' | translate}}</p>
                 <p class="value">{{model.label}}</p>
@@ -48,11 +51,13 @@
             </div>
         </div>
 
-        <div class="tile data-viz">
-                <array-polar-data-visualization class="utilization med-pdv"
-                                                ng-model="summaryModel.arrayDataVisualizationModel" no-break-down="true"></array-polar-data-visualization>
+            <div class="tile data-viz-container third">
+               
+                    <array-polar-data-visualization class="utilization" ng-model="summaryModel.arrayDataVisualizationModel"
+                                                    no-break-down="true"></array-polar-data-visualization>
+                
+            </div>
         </div>
-    </div>
 
     <div class="container-fluid resource-detail tiles-view clearfix">
         <storage-system-volume-data-visualization ng-if="!noDataVisualization"></storage-system-volume-data-visualization>
@@ -81,7 +86,7 @@
             <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList">
                 <div id="{{item.id}}" class="cell twelfth panel-title">
                     <a role="button" data-toggle="collapse"
-                       ng-click="item.opened = !item.opened ; changeReplicationGroupBackground(item)"
+                       ng-click="item.opened = !item.opened ; changeReplicationGroupBackground(item) ; dataModel.restoreCheck()"
                        aria-expanded="{{item.opened}}" class="btn icon-btn icon-caret-collapsed icon-xsm"></a>
 
                     <div class="btn-group" data-toggle="buttons" ng-if="!item.noSelection">

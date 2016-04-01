@@ -39,13 +39,39 @@ angular.module('rainierApp')
                     $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
                     $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
                     $scope.model.templateSubscriptionLimit = result.subscriptionLimit;
-                    $scope.model.htiPool = false;
-                    $scope.model.hasHdpLicense = false;
-                    $scope.model.hasHdtLicense = false;
-                    $scope.model.hasHtiLicense = false;
-                    $scope.model.hasActiveFlashLicense = false;
-                    $scope.model.activeFlashEnabled = false;
                 });
+            
+            orchestratorService.licenses(val.storageSystemId).then(function (result) {
+                $scope.model.htiPool = false;
+                $scope.model.hasHdpLicense = false;
+                $scope.model.hasHdtLicense = false;
+                $scope.model.hasHtiLicense = false;
+                $scope.model.hasActiveFlashLicense = false;
+                $scope.model.activeFlashEnabled = false;
+                _.forEach(result.licenseSettings, function(license){
+                        if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true){
+                            $scope.model.hasActiveFlashLicense = true;
+                        } else if (license.productName.toUpperCase() === 'THIN IMAGE' && license.installed === true) {
+                            if ($scope.model.hasHtiLicense === false){
+                                $scope.model.availablePoolTypes.push('HTI');
+                            }
+                            $scope.model.hasHtiLicense = true;
+                        }
+                        else if (license.productName.toUpperCase() === 'DYNAMIC PROVISIONING' && license.installed === true) {
+                            if ($scope.model.hasHdpLicense === false){
+                                $scope.model.availablePoolTypes.push('HDP');
+                            }
+                            $scope.model.hasHdpLicense = true;
+                        }
+                        else if (license.productName.toUpperCase() === 'DYNAMIC TIERING' && license.installed === true) {
+                            if ($scope.model.hasHdtLicense === false){
+                                $scope.model.availablePoolTypes.push('HDT');
+                            }
+                            $scope.model.hasHdtLicense = true;
+                        }
+                    }
+                );
+            });
 
             paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, val.storageSystemId,
                 objectTransformService.transformParityGroup).then(function(result) {
@@ -72,32 +98,6 @@ angular.module('rainierApp')
                     return ds;
                 });
                 $scope.model.diskSpeeds.sort();
-            });
-
-            orchestratorService.licenses(val.storageSystemId).then(function (result) {
-                _.forEach(result.licenseSettings, function(license){
-                        if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true){
-                            $scope.model.hasActiveFlashLicense = true;
-                        } else if (license.productName.toUpperCase() === 'THIN IMAGE' && license.installed === true) {
-                            if ($scope.model.hasHtiLicense === false){
-                                $scope.model.availablePoolTypes.push('HTI');
-                            }
-                            $scope.model.hasHtiLicense = true;
-                        }
-                        else if (license.productName.toUpperCase() === 'DYNAMIC PROVISIONING' && license.installed === true) {
-                            if ($scope.model.hasHdpLicense === false){
-                                $scope.model.availablePoolTypes.push('HDP');
-                            }
-                            $scope.model.hasHdpLicense = true;
-                        }
-                        else if (license.productName.toUpperCase() === 'DYNAMIC TIERING' && license.installed === true) {
-                            if ($scope.model.hasHdtLicense === false){
-                                $scope.model.availablePoolTypes.push('HDT');
-                            }
-                            $scope.model.hasHdtLicense = true;
-                        }
-                    }
-                );
             });
         });
 

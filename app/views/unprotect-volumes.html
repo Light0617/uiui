@@ -92,8 +92,8 @@
             <div class="wizard-footer">
                 <div class="btn-toolbar" role="toolbar">
                     <div data-toggle="buttons" class="checkbox-label">
-                        <label class="btn icon-btn checkbox" ng-click="dataModel.deleteSecondaryVolume = !dataModel.deleteSecondaryVolume"
-                               ng-class="{'active' : dataModel.deleteSecondaryVolume}">
+                        <label class="btn icon-btn checkbox active" ng-click="dataModel.deleteSecondaryVolume = !dataModel.deleteSecondaryVolume"
+                               ng-class="{'active' : !dataModel.deleteSecondaryVolume}">
                                 <input type="checkbox">
                         </label>
                         <p>Delete the associated secondary volumes</p>
