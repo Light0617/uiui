@@ -18,11 +18,11 @@ angular.module('rainierApp')
             },
             templateUrl: 'views/templates/pool-tier-list.html',
             restrict: 'E',
-            link: function(scope, element, attributes){
+            link: function(scope){
 
-                scope.removeExcludedTiers = function (value, index, array){
+                scope.removeExcludedTiers = function (value){
                     if(scope.excludeTiers !== undefined){
-                        var tierNamesToBeExcluded = scope.excludeTiers.split(";");
+                        var tierNamesToBeExcluded = scope.excludeTiers.split(';');
                         return (tierNamesToBeExcluded.indexOf(value.name) === -1);
                     }
                     return true;
