@@ -236,6 +236,9 @@ angular.module('rainierApp')
                     $location.path(['storage-systems', storageSystemId, 'parity-groups', 'add'].join('/'));
                 };
             }
+            else {
+                dataModel.hideAddTile = true;
+            }
 
             dataModel.gridSettings = [
                 {
