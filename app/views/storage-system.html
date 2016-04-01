@@ -4,38 +4,26 @@
     <inventory-actions ng-model="dataModel"></inventory-actions>
 </page-title>
 <ng-include src="'views/inventory-templates/storage-systems-summary.html'"></ng-include>
-<div ng-if="dataModel" class="container-fluid resource-detail tiles-view">
-    <div class="row page-title row-disabled">
-    </div>
-</div>
-
-<div class="visible-lg visible-md">
-    &nbsp;
-</div>
-</application-stage>
 
 <div class="container-fluid stage">
-    <div class="container-fluid resource-detail tiles-view">
-        <div ng-if="dataModel.unified">
+    <div class="container-fluid resource-detail tiles-view" ng-if="dataModel.unified">
         <div class="resource-row">
             <div class="tile meta-tile-short single black-tile">
                 <div class="header-row">
                     <h3>Cluster</h3>
                 </div>
                 <div class="tile-row resource-info">
-                    <div>
-                        <div class="icon icon-cluster icon-xlg icon-white"></div>
-                    </div>
-                    <div class="resource-data shift-left ">
+                    <div class="resource-icon icon icon-cluster icon-lg-md icon-white"></div>
+                    <div class="resource-data-columns">
                         <div class="label-value-container">
                             <p class="label">{{'health' |translate }}</p>
                             <p class="value">{{clusterSummary.health}}</p>
                         </div>
-                    </div>
-                    <div class="resource-data">
                         <div class="label-value-container" ng-repeat="node in clusterSummary.clusterNodes">
-                            <h4 class="label"> {{'blade' | translate}} {{node.id}} {{node.name}} {{'status' |translate }} </h4>
+                            <p class="label"> {{'blade' | translate}} {{node.id}} {{node.name}} {{'status' |translate }} </p>
                             <p class="value">{{node.displayStatus}}</p>
+                        </div>
+                        <div class="label-value-container" ng-repeat="node in clusterSummary.clusterNodes">
                             <p class="label">{{'common-storage-system-fw-version' |translate }}</p>
                             <p class="value">{{node.firmware}}</p>
                         </div>
@@ -149,38 +137,48 @@
             </div>
         </div>
         </div>
-        <div class="resource-row"></div>
+      <div class="container-fluid resource-detail tiles-view">  
         <div class="resource-row">
             <div class="tile meta-tile-short single black-tile">
                 <div class="header-row">
                     <h3>{{'storage-systems-model' |translate }} {{dataModel.model}}</h3>
                 </div>
                 <div class="tile-row resource-info">
-                    <div>
-                        <div class="icon icon-storage-system icon-xlg icon-white"></div>
-                    </div>
-                    <div class="resource-data shift-left">
+                    <div class="icon resource-icon icon-storage-system icon-lg-md icon-white"></div>
+                    <div class="resource-data-columns">
                         <div class="label-value-container">
                             <p class="label">{{'storage-systems-serial-number' |translate }}</p>
                             <p class="value">{{dataModel.storageSystemId}}</p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">FW Version</p>
                             <p class="value">{{dataModel.firmwareVersion}}</p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">HORCM Version</p>
                             <p class="value">{{dataModel.horcmVersion}}</p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">Cache</p>
                             <p class="value"><disk-size wrapped-in="span" ng-model="dataModel.cacheCapacity"></disk-size></p>
                         </div>
-                    </div>
-                    <div class="resource-data">
                         <div class="label-value-container">
                             <p class="label">Unused Disks</p>
                             <p class="value">{{dataModel.unusedDisks}}</p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">Unused Disk Capacity</p>
                             <p class="value"><disk-size wrapped-in="span" ng-model="dataModel.unusedDisksCapacity"></disk-size></p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">{{'storage-systems-svp-ip-address' |translate }}</p>
                             <p class="value">{{dataModel.svpIpAddress}}</p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">{{'storage-systems-gum-1-ip-address' | translate }}</p>
                             <p class="value">{{dataModel.gum1IpAddress}}</p>
+                        </div>
+                        <div class="label-value-container">
                             <p class="label">{{'storage-systems-gum-2-ip-address' | translate }}</p>
                             <p class="value">{{dataModel.gum2IpAddress}}</p>
                         </div>
@@ -341,4 +339,4 @@
         </div>
     </div>
 </div>
-
+</application-stage>
