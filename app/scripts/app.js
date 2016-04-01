@@ -701,7 +701,7 @@ angular
                         'vfs'
                     ]
                 },
-                helpContext: 'R_FILE_SYS_DETAILS'
+                helpContext: 'R_FILE_SYS_INV'
             })
             .when('/storage-systems/:storageSystemId/file-systems/add',{
                 templateUrl: 'views/file-systems-add.html',
