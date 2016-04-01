@@ -246,6 +246,10 @@ angular.module('rainierApp')
                     };
                 }
 
+                if(item.primaryVolume.status.indexOf('SMPL') === 0) {
+                    item.disabledCheckBox = true;
+                 }
+
                 if (!item.secondaryVolume) {
                     item.secondaryVolume =  {
                         id: 'N/A',
@@ -476,6 +480,11 @@ angular.module('rainierApp')
                         left: false,
                         title: synchronousTranslateService.translate(item.type),
                         details: [item.tierNames]
+                    },
+                    {
+                        left: false,
+                        title: synchronousTranslateService.translate('storage-pool-compression') + ': ' + synchronousTranslateService.translate(item.compressed),
+                        details: []
                     }
                 ];
                 item.getIcons = function () {

@@ -211,6 +211,8 @@
     "storage-pool-external-parity-group-ids": "External Parity Group Ids",
     "storage-pool-encryption": "Encryption",
     "storage-pool-compression": "Compression",
+    "storage-pool-encrypted": "Encrypted",
+    "storage-pool-compressed-parity-group-ids": "Compressed Parity Group Ids",
     "storage-pool-expansion-rate": "Expansion Rate",
     "storage-pool-compression-rate": "Compression Rate",
     "storage-pool-physical-capacity": "Physical Capacity",

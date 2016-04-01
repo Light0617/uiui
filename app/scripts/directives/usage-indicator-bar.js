@@ -25,7 +25,7 @@ angular.module('rainierApp')
                     var percentage = parseInt(scope.model.usage.toString().replace('%', ''));
 
                     var cssClass = 'normal';
-                    if (scope.model.compression || scope.model.compressed === 'YES') {
+                    if (scope.model.compression || scope.model.compressed !== 'NO') {
                         // TODO: Change css class to represent normal with compression.
                         cssClass = 'compressed-normal';
                     }
@@ -34,13 +34,13 @@ angular.module('rainierApp')
                     }
                     if (percentage > 80) {
                         cssClass = 'full';
-                        if (scope.model.compression || scope.model.compressed === 'YES') {
+                        if (scope.model.compression || scope.model.compressed !== 'NO') {
                             // TODO: Change css class to represent full with compression.
                             cssClass = 'compressed-full';
                         }
                     } else if (percentage >= 70) {
                         cssClass = 'medium';
-                        if (scope.model.compression || scope.model.compressed === 'YES') {
+                        if (scope.model.compression || scope.model.compressed !== 'NO') {
                             // TODO: Change css class to represent medium with compression.
                             cssClass = 'compressed-medium';
                         }

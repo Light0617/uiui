@@ -20,6 +20,8 @@ angular.module('rainierApp')
             $scope.summaryModel = summaryModel;
             result.orchestratorService = orchestratorService;
 
+            result.compressedParityGroups = _.filter(result.parityGroups, function(pg) { return pg.compression; });
+            result.parityGroups = _.filter(result.parityGroups, function(pg) { return !pg.compression; });
             result.actionsList = _.map(result.actions);
             result.utilizationThreshold1 = addPercentageSign(result.utilizationThreshold1);
             result.utilizationThreshold2 = addPercentageSign(result.utilizationThreshold2);

@@ -12,7 +12,6 @@ angular.module('rainierApp')
         var storageSystemId = $routeParams.storageSystemId;
         var poolId = $routeParams.storagePoolId;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
-        var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
         var parityGroups;
 
         orchestratorService.storagePool(storageSystemId, poolId)

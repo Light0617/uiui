@@ -46,7 +46,7 @@
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn icon-btn checkbox"
                        ng-click="vp.selected = !vp.selected ; dataModel.restoreCheck()"
-                       ng-class="{'active' : vp.selected}">
+                       ng-class="{'active' : vp.selected}" ng-if="!vp.disabledCheckBox">
                 </label>
             </div>
             <div class="btn icon-btn icon-xsm">&nbsp;</div>
