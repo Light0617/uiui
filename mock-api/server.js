@@ -594,11 +594,27 @@ app.get('/v1/storage-systems/:storageSystemId/replication-groups', jsonParser, f
             return clone;
         })
         return res.json({
-            replicationGroups: rgs
+            resources: rgs,
+            nextToken: null,
+            total: rgs.total
         });
     }
     return res.sendStatus(404)
-})
+});
+
+app.get('/v1/storage-systems/:storageSystemId/replication-groups/summary', jsonParser, function (req, res) {
+    if (!loginUser) return res.sendStatus(401);
+    res.json({
+            "replicationGroupCountByType": [
+                {
+                    "replicationType": "CLONE", "count": 2
+                }, {
+                    "replicationType": "SNAPSHOT", "count": 2
+                }
+            ]
+        }
+    );
+});
 
 app.get('/v1/storage-systems/:storageSystemId/volume-pairs', jsonParser, function (req, res) {
 
@@ -719,7 +735,9 @@ app.get('/v1/compute/servers', jsonParser, function (req, res) {
     if (!loginUser) return res.sendStatus(401)
 
     res.json({
-        servers: hosts
+        resources: hosts,
+        nextToken: null,
+        total: hosts.total
     })
 });
 
@@ -807,8 +825,8 @@ app.get('/v1/server/:hostId/volumes', jsonParser, function (req, res) {
     return res.sendStatus(404)
 });
 
-app.get('/v1/servers/summary', jsonParser, function (req, res) {
-    if (!loginUser) return res.sendStatus(401)
+app.get('/v1/compute/servers/summary', jsonParser, function (req, res) {
+    if (!loginUser) return res.sendStatus(401);
 
     res.json({
         osTypeCount: getOsTypeCount(),
@@ -951,7 +969,9 @@ app.get('/v1/storage-systems', jsonParser, function (req, res) {
     if (!loginUser) return res.sendStatus(401)
 
     res.json({
-        storageSystems: storageSystems
+        resources: storageSystems,
+        nextToken: null,
+        total: storageSystems.length
     })
 });
 app.get('/v1/storage-systems/:storageSystemId/templates/pool/:storagePoolId', jsonParser, function (req, res) {
@@ -1022,7 +1042,7 @@ app.get('/v1/storage-systems/:storageSystemId/volumes', jsonParser, function (re
 
     var ss = _.find(storageSystems, function (s) {
         return s.storageSystemId == req.params.storageSystemId;
-    })
+    });
 
     if (ss) {
 
@@ -1030,12 +1050,26 @@ app.get('/v1/storage-systems/:storageSystemId/volumes', jsonParser, function (re
             var clone = _.cloneDeep(v);
             clone.storageSystemId = ss.storageSystemId;
             return clone;
-        })
+        });
         return res.json({
-            volumes: vols
+            resources: vols,
+            nextToken: null,
+            total: vols.length
         });
     }
     return res.sendStatus(404)
+});
+
+app.get('/v1/storage-systems/:storageSystemId/volumes/summary', jsonParser, function (req, res) {
+    if (!loginUser) return res.sendStatus(401);
+    res.json({
+            "volumeCountByType":
+            {
+                "HTI":3,"HDP":11,"HDT":11
+            },
+            "numberOfVolumes":25
+        }
+    );
 });
 
 app.get('/v1/storage-systems/:storageSystemId/volumes/:volumeId', jsonParser, function (req, res) {
@@ -1076,7 +1110,9 @@ app.get('/v1/storage-systems/:storageSystemId/storage-pools', jsonParser, functi
     if (!loginUser) return res.sendStatus(401)
 
     res.json({
-        storagePools: storagePools
+        resources: storagePools,
+        nextToken: null,
+        total: storagePools.length
     })
 });
 
@@ -1219,7 +1255,9 @@ app.get('/v1/storage-systems/:storageSystemId/storage-ports', jsonParser, functi
     if (!loginUser) return res.sendStatus(401);
 
     return res.json({
-        storagePorts: storagePorts
+        resources: storagePorts,
+        nextToken: null,
+        total: storagePorts.length
     });
 });
 
@@ -1240,16 +1278,32 @@ app.get('/v1/storage-systems/:storageSystemId/parity-groups', jsonParser, functi
     if (!loginUser) return res.sendStatus(401)
 
     res.json({
-        parityGroups: parityGroups
+        resources: parityGroups,
+        nextToken: null,
+        total: parityGroups.total
     })
 });
 
-app.get('/v1/storage-systems/:storageSystemId/external-parity-groups', jsonParser, function (req, res) {
+app.get('/v1/storage-systems/:storageSystemId/external-parity-groups/summary', jsonParser, function (req, res) {
     if (!loginUser) return res.sendStatus(401)
 
     res.json({
-        externalParityGroups: externalParityGroups
+        "totalCapacity":"0",
+        "totalFreeCapacity":"0",
+        "numberOfExternalParityGroups":0
     })
+});
+
+app.get('/v1/storage-systems/:storageSystemId/volumes/summary', jsonParser, function (req, res) {
+    if (!loginUser) return res.sendStatus(401);
+    res.json({
+            "volumeCountByType":
+            {
+                "HTI":3,"HDP":11,"HDT":11
+            },
+            "numberOfVolumes":25
+        }
+    );
 });
 
 app.delete('/v1/storage-systems/:storageSystemId/parity-groups/:parityGroupId', jsonParser, function (req, res) {
@@ -2305,6 +2359,21 @@ app.get('/v1/templates/tiers', jsonParser, function (req, res) {
 
 
     res.json(tiers);
+});
+
+app.get('/v1/storage-systems/:storageSystemId/tiers/summary', jsonParser, function (req, res) {
+    if (!loginUser) return res.sendStatus(401);
+    res.json({
+            "tierSummaryItems":
+                [
+                    {
+                        "tierName":"Platinum",
+                        "totalCapacity":"40461983285248",
+                        "freeCapacity":"5277647634432"
+                    }
+                ]
+        }
+    );
 });
 
 app.post('/v1/templates/tiers/:tierId', jsonParser, function (req, res) {

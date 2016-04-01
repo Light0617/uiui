@@ -13,26 +13,26 @@
         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 col-lg-offset-2 col-md-offset-3 col-sm-offset-3 dashboard-right"
              ng-if="model.summary.storageArraysCount > 0">
             <!--Alerts Panel-->
-            <div class="row alert-panel alert-panel-lg" id="alert-panel">
-                <div class="col-md-3 col-sm-3 col-xs-6">
+            <div class="alert-panel" id="alert-panel">
+                
                     <capacity-alert ng-model="model.alerts.capacity.count"
                                     alert-level="model.alerts.capacity.level"></capacity-alert>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-6">
+                
+                
                     <dp-alert ng-model="model.alerts.dp.count" alert-level="model.alerts.dp.level"></dp-alert>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-6">
+                
+               
 
                     <jobs-alert ng-model="model.alerts.jobs"></jobs-alert>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-6">
+                
+                
                     <hardware-alert ng-model="model.alerts.hardware.count"
                                     alert-level="model.alerts.hardware.level"></hardware-alert>
-                </div>
+                
             </div>
             <!--Polar Data Viz-->
-            <div class="data-viz polar-data-viz-size-fix">
-                <array-polar-data-visualization
+            <div class="data-viz">
+                <array-polar-data-visualization class="dashboard-data-viz"
                         ng-model="model.arrayDataVisualizationModel"></array-polar-data-visualization>
             </div>
         </div>

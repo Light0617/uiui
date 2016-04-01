@@ -4,7 +4,7 @@
             <div class="brand-logo-sm">
                 <rainier-brand-logo></rainier-brand-logo>
             </div>
-            <h3 class="sans"><em>{{ 'brand-company' | translate}}</em> {{ 'brand-rainier' | translate}}</h3> &nbsp;&nbsp;&nbsp;&nbsp;
+            <h3 class="sans"><em>{{ 'brand-hitachi' | translate}}</em> {{ 'brand-rainier' | translate}}</h3> &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
     <div id="navbar" class="nav navbar-nav">
@@ -19,7 +19,7 @@
     </div>
     <div class="btn-toolbar icon-toolbar clean-btns" role="toolbar">
         <div class="dropdown right" ng-if="pageErrors.length > 0">
-            <button id="warning" class="btn icon-btn icon icon-warning warning-state icon-sm" title="Username" data-toggle="dropdown" role="button" aria-expanded="true"></button>
+            <button id="warning" class="btn icon-btn icon icon-warning warning-state icon-sm" data-toggle="dropdown" role="button" aria-expanded="true"></button>
             <ul class="dropdown-menu" aria-labelledby="user">
                 <li class="row" >
                     <div class="col-md-12 ">
@@ -31,7 +31,7 @@
             </ul>
         </div>
         <div class="dropdown right">
-            <button id="user" class="btn icon-btn icon icon-user icon-sm" title="Username" data-toggle="dropdown" role="button" aria-expanded="true"></button>
+            <button id="user" class="btn icon-btn icon icon-user icon-sm" title="{{username}}" data-toggle="dropdown" role="button" aria-expanded="true"></button>
             <ul class="dropdown-menu" aria-labelledby="user">
                 <li>
                     <a href="" ng-click="authModel.logout()">{{ 'nav-bar-header-username-logout' | translate }}</a>

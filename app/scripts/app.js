@@ -206,11 +206,11 @@ angular
                 },
                 helpContext: 'R_REPLICATION_GROUP_INV'
             })
-            .when('/storage-systems/:storageSystemId/replication-groups/replication-group-actions-confirmation', {
+            .when('/storage-systems/:storageSystemId/replication-groups/replication-group-action-confirmation', {
                 templateUrl: 'views/replication-group-actions-confirmation.html',
                 controller: 'replicationGroupActionsConfirmationCtrl',
                 breadcrumbOptions: {
-                    labelKey: 'common-affected-volume-pairs'
+                    labelKey: 'common-replication-group-action-confirmation'
                 }
                 //TODO:Help context
             })
@@ -596,7 +596,7 @@ angular
                         'vfs'
                     ]
                 },
-                helpContext: 'INDEX'  //TODO: Context
+                helpContext: 'R_FILE_POOL_INV'
             })
             .when('/storage-systems/:storageSystemId/vfs', {
                 templateUrl: 'views/enterprise-virtual-servers.html',

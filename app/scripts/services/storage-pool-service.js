@@ -253,7 +253,12 @@ angular.module('rainierApp')
                 };
 
             },
-            filterParityGroups: function (parityGroups) {
+            filterParityGroups: function (parityGroups, diskSpeedToTier, pool) {
+                if(pool && pool.type === 'HDP') {
+                    return _.filter(parityGroups, function(pg) {
+                       return (pg.status !== 'IN_USE' && pool.tierNames === diskSpeedToTier[pg.diskType])
+                    });
+                }
                 return _.filter(parityGroups, function(pg){
                     return (pg.status !== 'IN_USE');
                 });

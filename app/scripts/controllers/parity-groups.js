@@ -33,7 +33,7 @@ angular.module('rainierApp')
                     }
                     tempRecord.pgCount = pgSummaryItems[i].numberOfParityGroups;
 
-                    var temp = pgSummaryItems[i].totalPgCapacityInBytes;
+                    var temp = pgSummaryItems[i].totalPgCapacity;
                     tempRecord.pgCapacity = diskSizeService.getDisplaySize(temp);
 
                     tempRecord.numberOfAvailableDisks = pgSummaryItems[i].numberOfAvailableDisks;
@@ -230,11 +230,12 @@ angular.module('rainierApp')
                 return hm800Actions;
             };
 
-            dataModel.addAction = function () {
-                $location.path(['storage-systems', storageSystemId, 'parity-groups', 'add'].join('/'));
-            };
 
-            dataModel.hideAddTile = $scope.storageSystemModel === 'VSP G1000';
+            if ($scope.storageSystemModel !== 'VSP G1000') {
+                dataModel.addAction = function () {
+                    $location.path(['storage-systems', storageSystemId, 'parity-groups', 'add'].join('/'));
+                };
+            }
 
             dataModel.gridSettings = [
                 {

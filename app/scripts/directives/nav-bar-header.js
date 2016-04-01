@@ -20,6 +20,8 @@ angular.module('rainierApp')
                     }
                 };
 
+                scope.username = authService.getUser().name;
+
                 var currentPath = $location.path();
                 var jobsSelected = currentPath.indexOf('/jobs') === 0;
                 var monitoringSelected = currentPath.indexOf('/monitoring') === 0;

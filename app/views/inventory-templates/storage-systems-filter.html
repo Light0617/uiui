@@ -1,50 +1,50 @@
 <div class="control-group">
-    <h3>Free Space<span class="read-only">{{filterModel.filter.freeCapacity.min}} - {{filterModel.filter.freeCapacity.max}}  {{filterModel.filter.freeCapacity.unit}}</span>
+    <h3>Free Space<span class="read-only">{{dataModel.search.freeCapacity.min}} - {{dataModel.search.freeCapacity.max}}  {{dataModel.search.freeCapacity.unit}}</span>
                 </h3>
-    <div id="free-space-range" class="slider-range range-slider-control" two-knob-slider="" slider-min="filterModel.filter.freeCapacity.min" slider-max="filterModel.filter.freeCapacity.max"
-         ng-model-min="filterModel.filter.freeCapacity.min" ng-model-max="filterModel.filter.freeCapacity.max"
-         stop-event-fn="filterModel.sliderQuery('availableCapacity', filterModel.filter.freeCapacity.min, filterModel.filter.freeCapacity.max, filterModel.filter.freeCapacity.unit)">
+    <div id="free-space-range" class="slider-range range-slider-control" two-knob-slider="" slider-min="dataModel.search.freeCapacity.min" slider-max="dataModel.search.freeCapacity.max"
+         ng-model-min="dataModel.search.freeCapacity.min" ng-model-max="dataModel.search.freeCapacity.max"
+         stop-event-fn="filterModel.sliderQuery('availableCapacity', dataModel.search.freeCapacity.min, dataModel.search.freeCapacity.max, dataModel.search.freeCapacity.unit)">
     </div>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="filterModel.filter.freeCapacity.unit" btn-radio="'GB'"
-                    ng-click="filterModel.sliderQuery('availableCapacity', filterModel.filter.freeCapacity.min, filterModel.filter.freeCapacity.max, filterModel.filter.freeCapacity.unit)">GB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit" btn-radio="'GB'"
+                    ng-click="filterModel.sliderQuery('availableCapacity', dataModel.search.freeCapacity.min, dataModel.search.freeCapacity.max, dataModel.search.freeCapacity.unit)">GB
             </button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="filterModel.filter.freeCapacity.unit" btn-radio="'TB'"
-                    ng-click="filterModel.sliderQuery('availableCapacity', filterModel.filter.freeCapacity.min, filterModel.filter.freeCapacity.max, filterModel.filter.freeCapacity.unit)">TB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit" btn-radio="'TB'"
+                    ng-click="filterModel.sliderQuery('availableCapacity', dataModel.search.freeCapacity.min, dataModel.search.freeCapacity.max, dataModel.search.freeCapacity.unit)">TB
             </button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="filterModel.filter.freeCapacity.unit" btn-radio="'PB'"
-                    ng-click="filterModel.sliderQuery('availableCapacity', filterModel.filter.freeCapacity.min, filterModel.filter.freeCapacity.max, filterModel.filter.freeCapacity.unit)">PB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.freeCapacity.unit" btn-radio="'PB'"
+                    ng-click="filterModel.sliderQuery('availableCapacity', dataModel.search.freeCapacity.min, dataModel.search.freeCapacity.max, dataModel.search.freeCapacity.unit)">PB
             </button>
         </div>
     </div>
 </div>
 <!--Control group: Size of Array Input-->
 <div class="control-group">
-    <h3>Size of Array<span class="read-only">{{filterModel.filter.totalCapacity.min}} - {{filterModel.filter.totalCapacity.max}}  {{filterModel.filter.totalCapacity.unit}}</span>
+    <h3>Size of Array<span class="read-only">{{dataModel.search.totalCapacity.min}} - {{dataModel.search.totalCapacity.max}}  {{dataModel.search.totalCapacity.unit}}</span>
                 </h3>
-    <div id="array-size-range" class="slider-range range-slider-control" two-knob-slider="" slider-min="filterModel.filter.totalCapacity.min" slider-max="filterModel.filter.totalCapacity.max"
-         ng-model-min="filterModel.filter.totalCapacity.min" ng-model-max="filterModel.filter.totalCapacity.max"
-         stop-event-fn="filterModel.sliderQuery('usedCapacity', filterModel.filter.totalCapacity.min, filterModel.filter.totalCapacity.max, filterModel.filter.totalCapacity.unit)">
+    <div id="array-size-range" class="slider-range range-slider-control" two-knob-slider="" slider-min="dataModel.search.totalCapacity.min" slider-max="dataModel.search.totalCapacity.max"
+         ng-model-min="dataModel.search.totalCapacity.min" ng-model-max="dataModel.search.totalCapacity.max"
+         stop-event-fn="filterModel.sliderQuery('usedCapacity', dataModel.search.totalCapacity.min, dataModel.search.totalCapacity.max, dataModel.search.totalCapacity.unit)">
     </div>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="filterModel.filter.totalCapacity.unit" btn-radio="'GB'"
-                    ng-click="filterModel.sliderQuery('usedCapacity', filterModel.filter.totalCapacity.min, filterModel.filter.totalCapacity.max, filterModel.filter.totalCapacity.unit)">GB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'GB'"
+                    ng-click="filterModel.sliderQuery('usedCapacity', dataModel.search.totalCapacity.min, dataModel.search.totalCapacity.max, dataModel.search.totalCapacity.unit)">GB
             </button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="filterModel.filter.totalCapacity.unit" btn-radio="'TB'"
-                    ng-click="filterModel.sliderQuery('usedCapacity', filterModel.filter.totalCapacity.min, filterModel.filter.totalCapacity.max, filterModel.filter.totalCapacity.unit)">TB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'TB'"
+                    ng-click="filterModel.sliderQuery('usedCapacity', dataModel.search.totalCapacity.min, dataModel.search.totalCapacity.max, dataModel.search.totalCapacity.unit)">TB
             </button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="filterModel.filter.totalCapacity.unit" btn-radio="'PB'"
-                    ng-click="filterModel.sliderQuery('usedCapacity', filterModel.filter.totalCapacity.min, filterModel.filter.totalCapacity.max, filterModel.filter.totalCapacity.unit)">PB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'PB'"
+                    ng-click="filterModel.sliderQuery('usedCapacity', dataModel.search.totalCapacity.min, dataModel.search.totalCapacity.max, dataModel.search.totalCapacity.unit)">PB
             </button>
         </div>
     </div>

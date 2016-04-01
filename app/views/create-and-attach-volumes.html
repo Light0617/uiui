@@ -7,7 +7,7 @@
             <wizard-advanced-stepper-button ng-title="'workflow-title-create-volumes' | translate"
                                             step-completed="dataModel.isStepCompleted('create')"
                                             step-active="dataModel.isStepActive('create')"></wizard-advanced-stepper-button>
-            <wizard-advanced-stepper-button ng-title="'storage-attach-volumes' | translate"
+            <wizard-advanced-stepper-button ng-title="'storage-attach-new-volumes' | translate"
                                             step-completed="dataModel.isStepCompleted('attach')"
                                             step-active="dataModel.isStepActive('attach')"></wizard-advanced-stepper-button>
             <wizard-advanced-stepper-button ng-title="'workflow-title-protect-volumes' | translate"
@@ -24,7 +24,7 @@
                                    ng-model="dataModel"></wizard-left-right-content>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('attach')"
-                                   ng-title="'storage-attach-volumes' | translate"
+                                   ng-title="'storage-attach-new-volumes' | translate"
                                    left-panel-template="views/workflow-templates/attach-volumes-left-panel.html"
                                    right-panel-template="views/workflow-templates/attach-volumes-right-panel.html"
                                    ng-model="dataModel"></wizard-left-right-content>

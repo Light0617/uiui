@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('scrollDataSourceBuilderService', function ($filter, $timeout) {
+    .factory('scrollDataSourceBuilderService', function ($filter, $timeout, synchronousTranslateService) {
         var pageSize = 16;
 
         var expandChildren = function(scope, length) {
@@ -134,6 +134,13 @@ angular.module('rainierApp')
                     return _.where(this.filteredList, 'selected');
                 };
 
+                scope.dataModel.deleteFileSystemWarning = function () {
+                    var mounted = _.find(_.where(this.filteredList, 'selected'), function(item) { return item.status === 'Mounted'; });
+                    if(mounted) {
+                        return synchronousTranslateService.translate('file-system-delete-mounted-content');
+                    }
+                    return '';
+                };
 
                 scope.$watch(function () {
                     return _.size(scope.dataModel.getSelectedItems());

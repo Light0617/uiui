@@ -39,18 +39,6 @@ angular.module('rainierApp')
             };
         };
 
-        var subscribedCapacity = function (usedSubscription, usedSubscribedCapacityInBytes, capacityInBytes) {
-            return {
-                used: {
-                    percentage: usedSubscription || Math.round(parseInt(usedSubscribedCapacityInBytes) *
-                        100.0 / parseInt(capacityInBytes)),
-                    label: (function (key) {
-                        return synchronousTranslateService.translate(key);
-                    })('common-label-subscription')
-                }
-            };
-        };
-
         var replicationNameMap = {
             CLONE: 'Clone',
             SNAPSHOT: 'Snapshot'
@@ -469,7 +457,7 @@ angular.module('rainierApp')
                     return this.externalParityGroupIds && this.externalParityGroupIds.length > 0;
                 };
 
-                if(item.label.indexOf('HSA-reserved-') === 0) {
+                if(item.label.indexOf('HSA-reserved-') === 0 || item.isUsingExternalStorage()) {
                     item.disabledCheckBox = true;
                 }
 
@@ -556,7 +544,7 @@ angular.module('rainierApp')
                 item.usage = number + '%';
                 item.capacity = diskSizeService.getDisplaySize(item.capacity);
                 item.selected = false;
-		        item.noSelection = true;
+                item.noSelection = true;
                 if(item.externalStorageVendor===null){
                     item.externalStorageVendor = '';
                 }
@@ -951,6 +939,8 @@ angular.module('rainierApp')
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('allocated-capacity-tooltip'),
+                            percentage: item.poolCapacity.value === 0 && item.unallocatedToPoolsCapacity.value === 0 ?
+                                0 : parseInt((item.poolCapacity.value / (item.poolCapacity.value + item.unallocatedToPoolsCapacity.value)) * 100),
                             capacity: item.poolCapacity,
                             color: allocatedColor
                         },
@@ -1140,12 +1130,11 @@ angular.module('rainierApp')
                 };
 
                 item.serverLabel = 'Host' + item.serverId;
-                item.attachedVolumeCount = '';
                 item.onClick = function () {
                     $location.path(['hosts', item.serverId].join('/'));
                 };
 
-                if (_.isEmpty(item.attachedVolumeCount)) {
+                if (_.isUndefined(item.attachedVolumeCount) || _.isNaN(item.attachedVolumeCount)) {
                     item.attachedVolumeCount = 0;
                 }
                 item.status = item.attachedVolumeCount > 0 ? 'Provisioned' : 'Not Provisioned';
@@ -1226,7 +1215,7 @@ angular.module('rainierApp')
                 };
 
                 item.osTypeDisplayValue = synchronousTranslateService.translate('host-mode-' + item
-                        .osType);
+                    .osType);
 
                 item.metaData = [{
                     left: true,
@@ -1399,7 +1388,7 @@ angular.module('rainierApp')
                     items.push({
                         used: {
                             percentage: (item.totalCapacity.value === 0) ? 0 : Math.round(
-                                item.usedSubscribedCapacity * 100 / item.totalCapacity.value
+                                    item.usedSubscribedCapacity * 100 / item.totalCapacity.value
                             ),
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
@@ -1422,13 +1411,30 @@ angular.module('rainierApp')
 
             },
             transformToPoolSummaryModel: function (item) {
+                item.totalCapacity = diskSizeService.getDisplaySize(item.totalCapacity);
+                item.usedCapacity = diskSizeService.getDisplaySize(item.usedCapacity);
+                item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
+
                 var items = [];
                 items.push(capacity(item.usedCapacityInBytes, item.availableCapacityInBytes));
 
                 if (item.type !== 'HTI') {
-                    items.push(subscribedCapacity(item.usedSubscription, item.usedSubscribedCapacityInBytes, item.capacityInBytes.value));
+                    items.push({
+                        used: {
+                            percentage: (item.totalCapacity.value === 0) ? 0 : Math.round(
+                                    item.usedSubscribedCapacity * 100 / item.totalCapacity.value
+                            ),
+                            label: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('common-label-subscription'),
+                            color: allocatedColor
+                        },
+                        free: {
+                            percentage: 100,
+                            color: unallocatedColor
+                        }
+                    });
                 }
-
                 return {
                     arrayDataVisualizationModel: {
                         total: {
@@ -1564,14 +1570,14 @@ angular.module('rainierApp')
                 var tierInfo = synchronousTranslateService.translate(item.tiered ? 'tiered' : 'untiered');
 
                 _.each(item.links, function(link){
-                   if(link.rel.indexOf('poolId') !== -1){
-                       var storagePoolId = _.last(link.href.split('/'));
-                       item.displayLinks.push({
-                           href: link.href.replace('/file', '').replace('v1', '#'),
-                           icon: 'icon-pools',
-                           label: synchronousTranslateService.translate('hdp-pool') + ' ' + storagePoolId
-                       });
-                   }
+                    if(link.rel.indexOf('poolId') !== -1){
+                        var storagePoolId = _.last(link.href.split('/'));
+                        item.displayLinks.push({
+                            href: link.href.replace('/file', '').replace('v1', '#'),
+                            icon: 'icon-pools',
+                            label: synchronousTranslateService.translate('hdp-pool') + ' ' + storagePoolId
+                        });
+                    }
                 });
                 item.metaData = [
                     {
@@ -1882,7 +1888,7 @@ angular.module('rainierApp')
             transformCluster: function (item) {
                 var nodeStatus = ['Invalid', 'Unknown', 'Up', 'Online', 'Not Up', 'Dead', 'Dormant'];
                 _.each(item.clusterNodes, function(node) {
-                   node.displayStatus = nodeStatus[node.status];
+                    node.displayStatus = nodeStatus[node.status];
                 });
             },
             transformShare: function (item, updateShare) {
@@ -1901,6 +1907,10 @@ angular.module('rainierApp')
                         detailsNoSlash: [synchronousTranslateService.translate('share-path') + ' ' + item.fileSystemPath]
                     }
                 ];
+
+                if(item.name === 'C$') {
+                    item.disabledCheckBox = true;
+                }
 
                 if(item.links) {
                     _.each(item.links, function (link) {

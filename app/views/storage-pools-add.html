@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" ng-if="model.wizardType === 'advanced'">
+                    <div class="form-group" ng-if="model.wizardType === 'advanced'" title="{{ 'storage-pools-active-flash-license-info' | translate}}">
                         <label for="pool-active-flash">{{ 'storage-pools-question-active-flash' | translate}}</label>
 
                         <div id="pool-active-flash" class="btn-group btn-group-toggle-black btn-group-justified">
@@ -84,7 +84,7 @@
                 <!--Create Pool basic-->
                 <div class="scroll-wizard-container bottom-extra"  ng-if="model.wizardType === 'basic'">
                     <div class="accordion-panel">
-                        <pool-tier-list ng-model="model"></pool-tier-list>
+                        <pool-tier-list ng-model="model" exclude-tiers="External"></pool-tier-list>
                     </div>
                 </div>
 

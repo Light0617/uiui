@@ -183,8 +183,7 @@ angular.module('rainierApp')
                     var currentScheduleString = $scope.dataModel.schedule ?
                         cronStringConverterService.fromDatePickerToObjectModel($scope.dataModel.schedule.type,
                         $scope.dataModel.schedule.time, $scope.dataModel.schedule.date, $scope.dataModel.schedule.days,
-                            $scope.dataModel.schedule.hourInterval,
-                        $scope.dataModel.schedule.hourStartMinute) : null;
+                            $scope.dataModel.schedule.hourInterval): null;
                     if (currentScheduleString !== null &&
                         !cronStringConverterService.isEqualForObjectModel(currentScheduleString,
                             replicationGroup.schedule)) {
@@ -227,13 +226,7 @@ angular.module('rainierApp')
                         if (!$scope.dataModel.schedule.hourInterval || !$scope.validationForm.timePicker.hourInterval) {
                             return false;
                         }
-                        if ($scope.dataModel.schedule.hourStartMinute === undefined ||
-                            $scope.dataModel.schedule.hourStartMinute === null ||
-                            !$scope.validationForm.timePicker.hourStartMinute) {
-                            return false;
-                        }
-                        return !($scope.validationForm.timePicker.hourInterval.$invalid) &&
-                            !($scope.validationForm.timePicker.hourStartMinute.$invalid);
+                        return !($scope.validationForm.timePicker.hourInterval.$invalid);
 
                     case 'DAILY':
                         return $scope.dataModel.schedule.time ? true : false;
@@ -261,10 +254,8 @@ angular.module('rainierApp')
                 }
                 if ($scope.dataModel.schedule && $scope.dataModel.schedule.type &&
                     $scope.dataModel.schedule.type === 'HOURLY' &&
-                    (($scope.validationForm.timePicker.hourStartMinute &&
-                    $scope.validationForm.timePicker.hourStartMinute.$invalid) ||
                     ($scope.validationForm.timePicker.hourInterval &&
-                    $scope.validationForm.timePicker.hourInterval.$invalid))) {
+                    $scope.validationForm.timePicker.hourInterval.$invalid)) {
                     return false;
                 }
                 if ($scope.dataModel.schedule && $scope.dataModel.schedule.type &&

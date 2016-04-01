@@ -5,10 +5,10 @@
 </div>
 <div class="dataviz-container pvd">
     <h3 ng-repeat="item in dataModel.summaryModel.arrayDataVisualizationModel.items">{{item.used.label}} <em>
-        {{item.used.percentage}} % ({{item.used.percentageCapacity.size}} {{item.used.percentageCapacity.unit}})</em>
+        {{item.used.percentage}} % ({{item.used.capacity.size}} {{item.used.capacity.unit}})</em>
     </h3>
 
-    <div class="data-viz polar-data-viz-concentric" ng-if="dataModel.summaryModel">
+    <div class="polar-data-viz-concentric" ng-if="dataModel.summaryModel">
         <array-polar-data-visualization class="utilization"
                                         ng-model="dataModel.summaryModel.arrayDataVisualizationModel" no-break-down="dataModel.summaryModel.noMoreInfo" no-legend-box="dataModel.summaryModel.noMoreInfo"  ></array-polar-data-visualization>
     </div>

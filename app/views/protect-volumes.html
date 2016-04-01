@@ -141,13 +141,6 @@
 
                     <div class="row control-row" ng-if="dataModel.replicationTechnology ==='SNAPSHOT'">
                         <form name="validationForm.timePicker" class="validation-form" novalidate>
-                                <div class="form-group form-group-lg col-md-2 form-horizontal" ng-if="dataModel.schedule === 'HOURLY'">
-                                    <label>Start Minute </label>
-                                    <input type="number" class="time-input form-control" name="minute"
-                                           ng-min="0" ng-max="59" value="1" ng-class="{'ng-invalid ng-dirty': minuteValidation}"
-                                           ng-change="changeSubmitButtonStatus()" ng-model="dataModel.scheduleMinute"
-                                           placeholder="0 - 59" required ng-disabled="allUseExisting">
-                                </div>
                                 <div class="form-group form-group-lg col-md-2 form-horizontal" ng-if="!(dataModel.schedule === 'HOURLY')">
                                     <label>Start Time </label>
                                     <input type="text" class="form-control time-input input-restricted" ng-model="dataModel.scheduleTime"

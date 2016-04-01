@@ -1,15 +1,11 @@
 <div class="summary-container-default stage flex-row" id="top-info" ng-if="dataModel">
-    <div class="col-lg-3 col-md-3 hidden-sm hidden-xs alert-panel alert-panel-md">
         <!--Alerts Panel-->
-        <div class="tile alert-panel" id="alert-panel">
-            <capacity-alert ng-model="dataModel.alerts.capacity.count"
+        <div class="alert-panel quarter">
+            <capacity-alert ng-model="dataModel.alerts.capacity.count" class="tile alert"
                             alert-level="dataModel.alerts.capacity.level"></capacity-alert>
         </div>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" ng-repeat="usageGraph in dataModel.usageGraphs">
-        <div class="data-viz pools-polar-data-viz-size-fix">
+    <div class="tile data-viz-container fifth" ng-repeat="usageGraph in dataModel.usageGraphs">
             <array-polar-data-visualization class="utilization" ng-model="usageGraph"
-                                            no-break-down="true"></array-polar-data-visualization>
-        </div>
+                                            no-break-down="true"></array-polar-data-visualization>        
     </div>
 </div>

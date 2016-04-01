@@ -217,7 +217,7 @@ angular.module('rainierApp')
 
                 if ($scope.dataModel.replicationTechnology === SNAPSHOT && $scope.dataModel.schedule === HOURLY_KEY) {
                     if (!$scope.dataModel.numberOfSnapshots || !$scope.dataModel.copyGroupName ||
-                        !$scope.dataModel.hourInterval || $scope.dataModel.scheduleMinute === null) {
+                        !$scope.dataModel.hourInterval) {
                         return false;
                     } else {
                         return true;
@@ -384,12 +384,6 @@ angular.module('rainierApp')
 
                 if ($scope.dataModel.replicationTechnology === SNAPSHOT &&
                     $scope.dataModel.schedule === 'HOURLY' &&
-                    $scope.validationForm.timePicker.minute.$invalid) {
-                    $scope.minuteValidation = true;
-                }
-
-                if ($scope.dataModel.replicationTechnology === SNAPSHOT &&
-                    $scope.dataModel.schedule === 'HOURLY' &&
                     $scope.validationForm.timePicker.hourInterval.$invalid) {
                     $scope.hourIntervalValidation = true;
                 }
@@ -409,8 +403,7 @@ angular.module('rainierApp')
                         $scope.validationForm.timePicker.date.$invalid) ||
                     ($scope.dataModel.replicationTechnology === SNAPSHOT &&
                     $scope.dataModel.schedule === 'HOURLY' &&
-                    ($scope.validationForm.timePicker.minute.$invalid ||
-                    $scope.validationForm.timePicker.hourInterval.$invalid))) {
+                    $scope.validationForm.timePicker.hourInterval.$invalid)) {
                     return;
                 }
 
