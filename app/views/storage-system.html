@@ -6,7 +6,7 @@
 <ng-include src="'views/inventory-templates/storage-systems-summary.html'"></ng-include>
 
 <div class="container-fluid stage">
-    <div class="container-fluid resource-detail tiles-view" ng-if="dataModel.unified">
+    <div class="container-fluid resource-detail tiles-view file-data" ng-if="dataModel.unified">
         <div class="resource-row">
             <div class="tile meta-tile-short single black-tile">
                 <div class="header-row">
@@ -32,113 +32,106 @@
             </div>
         </div>
         <div class="resource-row">
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile" title="{{ 'file-pools-tooltip' | translate }}">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/file-pools'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>{{ 'common-storage-system-file-pools' | translate }}</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{filePoolSummary.total}}</h3>
-                                <div class="icon icon-pools icon-xlg file-icon"></div>
-                            </div>
-                            <div class="tile-row center-content">
-                                <div class="tile-tile-tile col-md-6">
-                                    <p class="label">{{ 'tiered' | translate }}</p>
-                                    <p class="value">{{filePoolSummary.tiered}}</p>
-                                </div>
-                                <div class="tile-tile-tile col-md-6">
-                                    <p class="label">{{ 'untiered' | translate }}</p>
-                                    <p class="value">{{filePoolSummary.untiered}}</p>
-                                </div>
-                            </div>
+            <!--Meta-tile formatted-->
+            <div class="tile meta-tile quarter">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/file-pools'}}" class="control-tile" title="{{ 'file-pools-tooltip' | translate }}">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-pools icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-storage-system-file-pools' | translate }}</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{filePoolSummary.total}}</h1>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile">
+                                <p class="label">{{ 'tiered' | translate }}</p>
+                                <p class="value">{{filePoolSummary.tiered}}</p>
+                            </li>
+                            <li class="micro-tile">
+                                <p class="label">{{ 'untiered' | translate }}</p>
+                                <p class="value">{{filePoolSummary.untiered}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
             </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile" title="{{ 'evs-tooltip' | translate }}">
-                    <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/vfs'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>{{ 'common-storage-system-file-servers' | translate}}</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{evsesSummary.total}}</h3>
-                                <div class="icon icon-virtual-file-server icon-xlg file-icon"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-6" ng-repeat="evs in evsesSummary.evsesByType">
-                                    <p class="label">{{evs.type | translate}}</p>
-                                    <p class="value">{{evs.count}}</p>
-                                </div>
-                            </div>
+            
+            
+            <!--Meta-tile: Virtual File Servers-->
+            <div class="tile meta-tile quarter">    
+                <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/vfs'}}" class="control-tile" title="{{ 'evs-tooltip' | translate }}">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-virtual-file-server icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-storage-system-file-servers' | translate}}</p>
+                            <p class="labe" ng-if="!dataModel.accessible">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{evsesSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="evs in evsesSummary.evsesByType">
+                                <p class="label">{{evs.type | translate}}</p>
+                                <p class="value">{{evs.count}}</p>
+                            </li>
 
-                        </div>
-                    </a>
-                </div>
+                        </ul>
+                    </div>
+                </a>
             </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/file-systems'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>{{ 'common-storage-system-file-systems' | translate }}</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{fileSystemsSummary.total}}</h3>
+            
+            <!--Meta-tile: Virtual File Systems formatted-->
+            <div class="tile meta-tile quarter">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/file-systems'}}" class="control-tile" title="{{ 'fs-tooltip' | translate }}">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-filesystem icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-storage-system-file-systems' | translate }}</p>
+                            <p class="labe" ng-if="!dataModel.accessible">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{fileSystemsSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="fs in fileSystemsSummary.fileSystemsByType">
+                                <p class="label">{{fs.type | translate}}</p>
+                                <p class="value">{{fs.count}}</p>
+                            </li>
 
-                                <div class="icon icon-filesystem icon-xlg file-icon"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-6" ng-repeat="fs in fileSystemsSummary.fileSystemsByType">
-                                    <p class="label">{{fs.type | translate}}</p>
-                                    <p class="value">{{fs.count}}</p>
-                                </div>
-                            </div>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            
+            <!--Meta-tile: Virtual Shares-Exports formatted-->
+            <div class="tile meta-tile quarter">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/shares-exports'}}" class="control-tile" title="{{ 's-tooltip' | translate }}">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-share icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-storage-system-shares-exports' | translate }}</p>
+                            <p class="labe" ng-if="!dataModel.accessible">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{shares.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="s in sharesSummary">
+                                <p class="label">{{s.type | translate}}</p>
+                                <p class="value">{{s.count}}</p>
+                            </li>
 
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/shares-exports'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>{{ 'common-storage-system-shares-exports' | translate }}</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{shares.total}}</h3>
-                                <div class="icon icon-share icon-xlg file-icon"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-6" ng-repeat="s in sharesSummary">
-                                    <p class="label">{{s.type | translate}}</p>
-                                    <p class="value">{{s.count}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+                        </ul>
+                    </div>
+                </a>
+            </div>     
         </div>
-        </div>
-      <div class="container-fluid resource-detail tiles-view">  
+    </div>
+      <div class="container-fluid resource-detail tiles-view block-data">  
         <div class="resource-row">
+            <!--Main meta-tile for this model -->
             <div class="tile meta-tile-short single black-tile">
                 <div class="header-row">
                     <h3>{{'storage-systems-model' |translate }} {{dataModel.model}}</h3>
@@ -187,155 +180,142 @@
             </div>
         </div>
         <div class="resource-row">
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/parity-groups'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>Parity Groups</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{parityGroupsSummary.total}}</h3>
-                                <div class="icon icon-parity-group icon-xlg"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-4" ng-repeat="g in parityGroupsSummary.parityGroupsByType">
-                                    <p class="label">{{g.type}}</p>
-                                    <p class="value">{{g.count}}</p>
-                                </div>
-                            </div>
-
+            
+            <!--Meta-tile Parity Groups formatted-->
+            <div class="tile meta-tile sixth">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/parity-groups'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-parity-group icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">Parity Groups</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{parityGroupsSummary.total}}</h1>
                         </div>
-                    </a>
-                </div>
-            </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/storage-pools'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>Pools</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{poolsSummary.total}}</h3>
-
-                                <div class="icon icon-pools icon-xlg"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-4" ng-repeat="sbt in poolsSummary.summariesByType">
-                                    <p class="label">{{sbt.poolType | translate}}</p>
-
-                                    <p class="value">{{sbt.poolCount}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/volumes'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>Volumes</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{volumesSummary.total}}</h3>
-                                <div class="icon icon-volume icon-xlg"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-4" ng-repeat="g in volumesSummary.volumesByType">
-                                    <p class="label">{{g.type | translate}}</p>
-                                    <p class="value">{{g.count}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/storage-ports'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>Ports</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{portsSummary.total}}</h3>
-                                <div class="icon icon-ports icon-xlg"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-4" ng-repeat="g in portsSummary.portsByType">
-                                    <p class="label">{{g.type}}</p>
-                                    <p class="value">{{g.count}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="tile meta-tile fifth detail">
-                <div class="resource-detail-tile">
-                    <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/replication-groups'}}">
-                        <div class="tile-tile">
-                            <div ng-if="dataModel.accessible">
-                                <h2>{{ 'common-replication-groups' | translate}}</h2>
-                            </div>
-                            <div ng-if="!dataModel.accessible">
-                                <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                            </div>
-                            <div class="tile-row full-row-icon">
-                                <h3 class="resource-count">{{replicationGroupSummary.total}}</h3>
-                                <div class="icon icon-replication-group icon-xlg"></div>
-                            </div>
-                            <div class="tile-row">
-                                <div class="tile-tile-tile col-md-6" ng-repeat="rg in replicationGroupSummary.replicationGroupsByType">
-                                    <p class="label">{{rg.type | translate}}</p>
-                                    <p class="value">{{rg.count}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="tile meta-tile fifth detail" ng-if="externalParityGroupsSummary && externalParityGroupsSummary.count > 0">
-                <div id="externalParityGroups" class="flex-tile fifth">
-                    <div class="resource-detail-tile">
-                        <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/external-parity-groups'}}">
-                            <div class="tile-tile">
-                                <div ng-if="dataModel.accessible">
-                                    <h2>{{ 'common-external-parity-groups' | translate}}</h2>
-                                </div>
-                                <div ng-if="!dataModel.accessible">
-                                    <h2>{{'storage-systems-not-accessible' | translate }}</h2>
-                                </div>
-                                <div class="tile-row full-row-icon">
-                                    <h3 class="resource-count">{{externalParityGroupsSummary.count}}</h3>
-                                    <div class="icon icon-external-parity-group icon-xlg"></div>
-                                </div>
-                                <div class="tile-row flex-center">
-                                    <div class="tile-tile-tile sevenths">
-                                        <p class="label">{{ 'common-external-parity-groups' | translate}}</p>
-                                        <p class="value">{{externalParityGroupsSummary.count}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
                     </div>
-                </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="g in parityGroupsSummary.parityGroupsByType">
+                                <p class="label">{{g.type}}</p>
+                                <p class="value">{{g.count}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
             </div>
+            
+            <!--Meta-tile Pools formatted-->
+            <div class="tile meta-tile sixth">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/storage-pools'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-pools icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">Pools</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{poolsSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="sbt in poolsSummary.summariesByType">
+                                <p class="label">{{sbt.poolType | translate}}</p>
+                                <p class="value">{{sbt.poolCount}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            
+            
+            <!--Meta-tile Volumes formatted-->
+            <div class="tile meta-tile sixth">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/volumes'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-volume icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">Volumes</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{volumesSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="g in volumesSummary.volumesByType">
+                                <p class="label">{{g.type | translate}}</p>
+                                <p class="value">{{g.count}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            
+            
+            <!--Meta-tile Ports formatted-->
+            <div class="tile meta-tile sixth">    
+                <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/storage-ports'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-ports icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">Ports</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{portsSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="g in portsSummary.portsByType">
+                                <p class="label">{{g.type}}</p>
+                                <p class="value">{{g.count}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            
+            <!--Meta-tile Replication-groups formatted-->
+            <div class="tile meta-tile sixth">    
+                <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/replication-groups'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-replication-group icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-replication-groups' | translate}}</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{replicationGroupSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile" ng-repeat="rg in replicationGroupSummary.replicationGroupsByType">
+                                <p class="label">{{rg.type | translate}}</p>
+                                <p class="value">{{rg.count}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            
+            
+            <!--Meta-tile External-Parity Groups formatted-->
+            <div class="tile meta-tile sixth" ng-if="externalParityGroupsSummary && externalParityGroupsSummary.count > 0">    
+                <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/external-parity-groups'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-external-parity-group icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-external-parity-groups' | translate}}</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{externalParityGroupsSummary.count}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles"> 
+                            <li class="micro-tile">
+                                <p class="label">{{ 'common-external-parity-groups' | translate}}</p>
+                                <p class="value">{{externalParityGroupsSummary.count}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            
         </div>
     </div>
 </div>
