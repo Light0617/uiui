@@ -6,103 +6,99 @@ rainierAppMock.factory('filePoolExpandTemplateMock', function(mockUtils) {
     var generateMockFilePoolExpandTemplate = function() {
         filePoolExpandTemplate =
         {
-            'filePoolExpandTemplateItems': [
+            'label': 'Test Label',
+            'overCommitRatio': '200',
+            'tiers': [
                 {
-                    'label': 'Test Label',
-                    'overCommitRatio': '200',
-                    'tiers': [
+                    'name': 'Platinum',
+                    'templateSubTiers': [
                         {
-                            'name': 'Platinum',
-                            'templateSubTiers': [
+                            'diskType': 'FMD',
+                            'speed': '15000',
+                            'capacity': mockUtils.getCapacity(50, 300),
+                            'raidOptions': [
                                 {
-                                    'diskType': 'FMD',
-                                    'speed': '15000',
-                                    'capacity': mockUtils.getCapacity(50, 300),
-                                    'raidOptions': [
+                                    'raidLayout': '14D+2P',
+                                    'raidLevel': 'RAID6',
+                                    'usableCapacities': [
                                         {
-                                            'raidLayout': '14D+2P',
-                                            'raidLevel': 'RAID6',
-                                            'usableCapacities': [
-                                                {
-                                                    '0': mockUtils.getCapacity(50, 300),
-                                                    '1': mockUtils.getCapacity(50, 300),
-                                                    '2': mockUtils.getCapacity(50, 300)
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            'raidLayout': '6D+2P',
-                                            'raidLevel': 'RAID6',
-                                            'usableCapacities': [
-                                                {
-                                                    '0': mockUtils.getCapacity(50, 300),
-                                                    '1': mockUtils.getCapacity(50, 300),
-                                                    '2': mockUtils.getCapacity(50, 300)
-                                                }
-                                            ]
+                                            '0': mockUtils.getCapacity(50, 300),
+                                            '1': mockUtils.getCapacity(50, 300),
+                                            '2': mockUtils.getCapacity(50, 300)
                                         }
                                     ]
                                 },
                                 {
-                                    'diskType': 'SSD',
-                                    'speed': '15000',
-                                    'capacity': mockUtils.getCapacity(50, 300),
-                                    'raidOptions': [
+                                    'raidLayout': '6D+2P',
+                                    'raidLevel': 'RAID6',
+                                    'usableCapacities': [
                                         {
-                                            'raidLayout': '14D+2P',
-                                            'raidLevel': 'RAID6',
-                                            'usableCapacities': [
-                                                {
-                                                    '0': mockUtils.getCapacity(50, 300),
-                                                    '1': mockUtils.getCapacity(50, 300),
-                                                    '2': mockUtils.getCapacity(50, 300)
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            'raidLayout': '6D+2P',
-                                            'raidLevel': 'RAID6',
-                                            'usableCapacities': [
-                                                {
-                                                    '0': mockUtils.getCapacity(50, 300),
-                                                    '1': mockUtils.getCapacity(50, 300),
-                                                    '2': mockUtils.getCapacity(50, 300)
-                                                }
-                                            ]
+                                            '0': mockUtils.getCapacity(50, 300),
+                                            '1': mockUtils.getCapacity(50, 300),
+                                            '2': mockUtils.getCapacity(50, 300)
                                         }
                                     ]
                                 }
                             ]
                         },
                         {
-                            'name': 'Bronze',
-                            'templateSubTiers': [
+                            'diskType': 'SSD',
+                            'speed': '15000',
+                            'capacity': mockUtils.getCapacity(50, 300),
+                            'raidOptions': [
                                 {
-                                    'diskType': 'SAS',
-                                    'speed': '7200',
-                                    'capacity': mockUtils.getCapacity(50, 300),
-                                    'raidOptions': [
+                                    'raidLayout': '14D+2P',
+                                    'raidLevel': 'RAID6',
+                                    'usableCapacities': [
                                         {
-                                            'raidLayout': '14D+2P',
-                                            'raidLevel': 'RAID6',
-                                            'usableCapacities': [
-                                                {
-                                                    '0': mockUtils.getCapacity(50, 300),
-                                                    '1': mockUtils.getCapacity(50, 300),
-                                                    '2': mockUtils.getCapacity(50, 300)
-                                                }
-                                            ]
-                                        },
+                                            '0': mockUtils.getCapacity(50, 300),
+                                            '1': mockUtils.getCapacity(50, 300),
+                                            '2': mockUtils.getCapacity(50, 300)
+                                        }
+                                    ]
+                                },
+                                {
+                                    'raidLayout': '6D+2P',
+                                    'raidLevel': 'RAID6',
+                                    'usableCapacities': [
                                         {
-                                            'raidLayout': '6D+2P',
-                                            'raidLevel': 'RAID6',
-                                            'usableCapacities': [
-                                                {
-                                                    '0': mockUtils.getCapacity(50, 300),
-                                                    '1': mockUtils.getCapacity(50, 300),
-                                                    '2': mockUtils.getCapacity(50, 300)
-                                                }
-                                            ]
+                                            '0': mockUtils.getCapacity(50, 300),
+                                            '1': mockUtils.getCapacity(50, 300),
+                                            '2': mockUtils.getCapacity(50, 300)
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    'name': 'Bronze',
+                    'templateSubTiers': [
+                        {
+                            'diskType': 'SAS',
+                            'speed': '7200',
+                            'capacity': mockUtils.getCapacity(50, 300),
+                            'raidOptions': [
+                                {
+                                    'raidLayout': '14D+2P',
+                                    'raidLevel': 'RAID6',
+                                    'usableCapacities': [
+                                        {
+                                            '0': mockUtils.getCapacity(50, 300),
+                                            '1': mockUtils.getCapacity(50, 300),
+                                            '2': mockUtils.getCapacity(50, 300)
+                                        }
+                                    ]
+                                },
+                                {
+                                    'raidLayout': '6D+2P',
+                                    'raidLevel': 'RAID6',
+                                    'usableCapacities': [
+                                        {
+                                            '0': mockUtils.getCapacity(50, 300),
+                                            '1': mockUtils.getCapacity(50, 300),
+                                            '2': mockUtils.getCapacity(50, 300)
                                         }
                                     ]
                                 }

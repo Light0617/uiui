@@ -100,8 +100,8 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    icon: 'icon-expand',
-                    tooltip: 'action-tooltip-expand',
+                    icon: 'icon-edit',
+                    tooltip: 'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
                         return true;

@@ -8,22 +8,24 @@
         </div>
         <p ng-if="!dataModel.expand">{{dataModel.diskSizesByTier[0].name}}{{ 'file-pool-create-note' | translate }}</p>
 </div>
+<form name="dataModel.validationFormRight" role="form" class="validation-form">
 <div class="thresholds fixed-control fixed-bottom zeroLeftPadding">
     <div class="input-group flex-row">
         <div class="bg-grey col-lg-6 col-md-6 col-sm-6">
             <label>{{'storage-pool-utilization-threshold-low' | translate}}</label>
-            <input  type="text" class="slider-input" ng-model="dataModel.template.utilizationThreshold1" required="true" min="0" max="100">
+            <input  type="text" class="slider-input" ng-model="dataModel.template.utilizationThreshold1" name="utilizationThreshold1" required="true" min="0" max="100">
             <div class="input-combined fix">
-                <input  type="range" class="slider-range range-slider-control" ng-model="dataModel.template.utilizationThreshold1" required="true" min="0" max="100"
+                <input  type="range" class="slider-range range-slider-control" ng-model="dataModel.template.utilizationThreshold1" name="utilizationSlider1" required="true" min="0" max="100"
                         data-show-value="true" title="{{dataModel.template.utilizationThreshold1}}">
             </div>
         </div>
         <div class="bg-grey col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <label>{{'storage-pool-utilization-threshold-high' | translate}}</label>
-            <input type="text" class="slider-input" ng-model="dataModel.template.utilizationThreshold2" required="true" min="0" max="100">
+            <input type="text" class="slider-input" ng-model="dataModel.template.utilizationThreshold2" name="utilizationThreshold2" required="true" min="0" max="100">
             <div class="input-combined fix">
-                <input type="range" class="slider-range range-slider-control" ng-model="dataModel.template.utilizationThreshold2" required="true" min="0" max="100">
+                <input type="range" class="slider-range range-slider-control" ng-model="dataModel.template.utilizationThreshold2" name="utilizationSlider2" required="true" min="0" max="100">
             </div>
         </div>
     </div>
 </div>
+</form>

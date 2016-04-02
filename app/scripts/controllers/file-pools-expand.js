@@ -20,6 +20,12 @@ angular.module('rainierApp')
                 validationForm: {
                     label: ''
                 },
+                validationFormRight: {
+                    utilizationThreshold1: '',
+                    utilizationThreshold2: '',
+                    utilizationSlider1: '',
+                    utilizationSlider2: ''
+                },
                 tierManagement: function() {
                     $location.path('/tier-management');
                 },
@@ -78,7 +84,15 @@ angular.module('rainierApp')
 
             $scope.dataModel.canSubmit = function () {
                 return $scope.dataModel.validationForm.label.$valid && $scope.dataModel.validationForm.label.$dirty ||
-                    $scope.dataModel.selectedCapacity || $scope.dataModel.selectedPlatinumCapacity;
+                    $scope.dataModel.selectedCapacity || $scope.dataModel.selectedPlatinumCapacity ||
+                    ($scope.dataModel.validationFormRight.utilizationThreshold1.$valid &&
+                    $scope.dataModel.validationFormRight.utilizationThreshold1.$dirty && $scope.dataModel.expand) ||
+                    ($scope.dataModel.validationFormRight.utilizationThreshold2.$valid &&
+                    $scope.dataModel.validationFormRight.utilizationThreshold2.$dirty && $scope.dataModel.expand) ||
+                    ($scope.dataModel.validationFormRight.utilizationSlider1.$valid &&
+                    $scope.dataModel.validationFormRight.utilizationSlider1.$dirty && $scope.dataModel.expand) ||
+                    ($scope.dataModel.validationFormRight.utilizationSlider2.$valid &&
+                    $scope.dataModel.validationFormRight.utilizationSlider2.$dirty && $scope.dataModel.expand);
             };
 
             $scope.$watch('dataModel.template', function (val) {

@@ -665,7 +665,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('file/storage-systems', storageSystemId).all('templates/file-pool').post(payload));
             },
             expandFilePool: function (storageSystemId, filePoolId, payload) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.one('file/storage-systems', storageSystemId).all('templates/file-pool/' + filePoolId).post(payload));
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('file/storage-systems', storageSystemId).all('templates/file-pool/' + filePoolId).patch(payload));
             },
             deleteFilePool: function (storageSystemId, filePoolId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('file/storage-systems', storageSystemId).one('file-pools', filePoolId).remove());
