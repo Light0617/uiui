@@ -25,7 +25,7 @@ angular.module('rainierApp')
                         var tierNamesToBeExcluded = scope.excludeTiers.split(';');
                         return (tierNamesToBeExcluded.indexOf(value.name) === -1);
                     }
-                    return true;
+                    return value.name !== 'External';
                 };
 
             }
