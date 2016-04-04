@@ -26,6 +26,9 @@ angular.module('rainierApp')
                     label: (function (key) {
                         return synchronousTranslateService.translate(key);
                     })('common-label-used'),
+                    tooltip: (function (key) {
+                        return synchronousTranslateService.translate(key);
+                    })('used-capacity-tooltip'),
                     capacity: usedCapacity,
                     color: thinUsedColor
                 },
@@ -33,6 +36,9 @@ angular.module('rainierApp')
                     label: (function (key) {
                         return synchronousTranslateService.translate(key);
                     })('common-label-free'),
+                    tooltip: (function (key) {
+                        return synchronousTranslateService.translate(key);
+                    })('free-capacity-tooltip'),
                     capacity: freeCapacity,
                     color: thinFreeColor
                 }
@@ -1402,7 +1408,10 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
-                            color: allocatedColor
+                            color: allocatedColor,
+                            tooltip: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('subscription-capacity-tooltip')
                         },
                         free: {
                             percentage: 100,
@@ -1436,6 +1445,9 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
+                            tooltip: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('subscription-capacity-tooltip'),
                             color: allocatedColor
                         },
                         free: {
