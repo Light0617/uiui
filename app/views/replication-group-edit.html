@@ -138,6 +138,13 @@
                             </div>
                             <div class="form-group form-group-lg col-md-2 form-horizontal"
                                  ng-if="dataModel.schedule.type === 'HOURLY'">
+                                <label>Start Minute </label>
+                                <input type="number" class="time-input form-control" name="hourStartMinute"
+                                       ng-min="0" ng-max="59" value="1" ng-model="dataModel.schedule.hourStartMinute"
+                                       placeholder="0 - 59" required>
+                            </div>
+                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                                 ng-if="dataModel.schedule.type === 'HOURLY'">
                                 <label>Every </label>
                                 <input type="number" class="time-input form-control" name="hourInterval"
                                        ng-min="1" ng-max="23" value="1" ng-model="dataModel.schedule.hourInterval"

@@ -60,7 +60,7 @@ angular.module('rainierApp')
             var WEEKLY_KEY = 'WEEKLY';
             var SNAPSHOT = 'SNAPSHOT';
             var CLONE = 'CLONE';
-            
+
             $scope.dataModel = {
                 replicationTechnology: SNAPSHOT,
                 filterDD: false,
@@ -217,7 +217,7 @@ angular.module('rainierApp')
 
                 if ($scope.dataModel.replicationTechnology === SNAPSHOT && $scope.dataModel.schedule === HOURLY_KEY) {
                     if (!$scope.dataModel.numberOfSnapshots || !$scope.dataModel.copyGroupName ||
-                        !$scope.dataModel.hourInterval) {
+                        !$scope.dataModel.hourInterval || $scope.dataModel.scheduleMinute === null) {
                         return false;
                     } else {
                         return true;
@@ -384,6 +384,12 @@ angular.module('rainierApp')
 
                 if ($scope.dataModel.replicationTechnology === SNAPSHOT &&
                     $scope.dataModel.schedule === 'HOURLY' &&
+                    $scope.validationForm.timePicker.minute.$invalid) {
+                    $scope.minuteValidation = true;
+                }
+
+                if ($scope.dataModel.replicationTechnology === SNAPSHOT &&
+                    $scope.dataModel.schedule === 'HOURLY' &&
                     $scope.validationForm.timePicker.hourInterval.$invalid) {
                     $scope.hourIntervalValidation = true;
                 }
@@ -400,10 +406,11 @@ angular.module('rainierApp')
                     $scope.validationForm.rightPanel.copyGroupName.$invalid) ||
                     ($scope.dataModel.replicationTechnology === SNAPSHOT &&
                     $scope.dataModel.schedule === 'MONTHLY' &&
-                        $scope.validationForm.timePicker.date.$invalid) ||
+                    $scope.validationForm.timePicker.date.$invalid) ||
                     ($scope.dataModel.replicationTechnology === SNAPSHOT &&
                     $scope.dataModel.schedule === 'HOURLY' &&
-                    $scope.validationForm.timePicker.hourInterval.$invalid)) {
+                    ($scope.validationForm.timePicker.minute.$invalid ||
+                    $scope.validationForm.timePicker.hourInterval.$invalid))) {
                     return;
                 }
 

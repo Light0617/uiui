@@ -31,6 +31,14 @@
 <div class="clearfix" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
     <form name="validationForm.rightPanel" role="form" class="validation-form col-lg-3 form-horizontal" ng-if="dataModel.protectModel.schedule.type === 'hour'" novalidate>
         <div class="form-group form-group-lg form-horizontal">
+            <label>Start Minute </label>
+            <input type="number" class="time-input form-control" name="minute"
+                   ng-min="0" ng-max="59" value="1" ng-model="dataModel.protectModel.schedule.hourStartMinute"
+                   placeholder="0 - 59" ng-disabled="!dataModel.protectModel.copyGroup.useNew" required>
+        </div>
+    </form>
+    <form name="validationForm.rightPanel" role="form" class="validation-form col-lg-3 form-horizontal" ng-if="dataModel.protectModel.schedule.type === 'hour'" novalidate>
+        <div class="form-group form-group-lg form-horizontal">
             <label>Every </label>
             <input type="number" class="time-input form-control" name="hourInterval"
                    ng-min="1" ng-max="23" value="1" ng-model="dataModel.protectModel.schedule.hourInterval" placeholder="1 - 23" ng-disabled="!dataModel.protectModel.copyGroup.useNew" required>
@@ -44,12 +52,12 @@
     </form>
 </div>
 <div class="clearfix" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.schedule.type !== 'hour'">
-   <form role="form" class="col-lg-3 form-horizontal" name="inputTimeForm">
-       <div class="form-group form-group-lg form-horizontal">
-           <label>Start Time </label>
-           <input type="text" class="form-control time-input" ng-model="dataModel.protectModel.schedule.time"
-                  bs-timepicker placeholder="12:00 AM" ng-disabled="!dataModel.protectModel.copyGroup.useNew">
-       </div>
+    <form role="form" class="col-lg-3 form-horizontal" name="inputTimeForm">
+        <div class="form-group form-group-lg form-horizontal">
+            <label>Start Time </label>
+            <input type="text" class="form-control time-input" ng-model="dataModel.protectModel.schedule.time"
+                   bs-timepicker placeholder="12:00 AM" ng-disabled="!dataModel.protectModel.copyGroup.useNew">
+        </div>
     </form>
     <form name="validationForm.rightPanel" role="form" class="validation-form col-lg-3 form-horizontal" ng-if="dataModel.protectModel.schedule.type === 'month'" novalidate>
         <div class="form-group form-group-lg form-horizontal">
