@@ -68,7 +68,10 @@
             <select class="form-control" ng-model="volumeGroup.tier"
                     ng-options="tier for tier in dataModel.createModel.volumesGroupsModel.tiers"
                     ng-change="volumeGroup.pool = null"
-                    ng-disabled="volumeGroup.shouldDisableTier()">
+                    ng-if="!volumeGroup.shouldDisableTier()">
+            </select>
+            <select class="form-control" ng-if="volumeGroup.shouldDisableTier()" disabled>
+                <option>-</option>
             </select>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 cell control">
