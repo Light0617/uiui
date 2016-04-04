@@ -5,6 +5,10 @@
 /bower_components
 /build
 /.idea
+.gradle/
+gradle/
+gradlew
+gradlew.bat
 
 .idea
 .idea/
