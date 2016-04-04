@@ -174,7 +174,7 @@ angular.module('rainierApp')
             dataModel.gridSettings = [
                 {
                     title: 'ID',
-                    sizeClass: 'sixth',
+                    sizeClass: 'twelfth',
                     sortField: 'storagePortId',
                     getDisplayValue: function (item) {
                         return item.storagePortId;
@@ -183,8 +183,17 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'Type',
+                    title: 'WWN',
                     sizeClass: 'sixth',
+                    sortField: 'wwn',
+                    getDisplayValue: function (item) {
+                        return item.wwn;
+                    }
+
+                },
+                {
+                    title: 'Type',
+                    sizeClass: 'twelfth',
                     sortField: 'type',
                     getDisplayValue: function (item) {
                         return item.type;

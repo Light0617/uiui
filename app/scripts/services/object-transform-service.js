@@ -611,7 +611,7 @@ angular.module('rainierApp')
                     {
                         left: false,
                         title: item.type,
-                        details: []
+                        details: [item.wwn]
                     }
                 ];
 
