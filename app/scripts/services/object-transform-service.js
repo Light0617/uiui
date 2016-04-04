@@ -1246,6 +1246,41 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-host';
                 item.alerts = 0;
             },
+            transformToCreateVolumeSummaryModel: function (storageSystem) {
+                return {
+                    arrayDataVisualizationModel: {
+                        total: {
+                            label: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('common-label-total'),
+                            capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity)
+                        },
+                        items: [{
+                            used: {
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-subscription'),
+                                tooltip: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('subscription-capacity-tooltip'),
+                                percentage: storageSystem.subscribedCapacityPercentage,
+                                capacity: diskSizeService.getDisplaySize(storageSystem.subscribedCapacity),
+                                color: overCommitColor
+                            },
+                            free: {
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-unallocated'),
+                                tooltip: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('unallocated-capacity-tooltip'),
+                                capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity),
+                                color: unallocatedColor
+                            }
+                        }]
+                    }
+                };
+            },
             transformToHostSummaryModel: function (totalVolumesCapacity, usedVolumesCapacity, availableVolumesCapacity) {
                 var items = [];
                 var totalCapacity = diskSizeService.getDisplaySize(totalVolumesCapacity),

@@ -442,12 +442,9 @@ angular.module('rainierApp')
                 return new ServerPortMapperModel(ports, servers);
             },
             buildSummaryModel: function (selectedStorageSystem) {
-                var summaryModel = objectTransformService.transformToStorageSummaryModel(selectedStorageSystem);
+                var summaryModel = objectTransformService.transformToCreateVolumeSummaryModel(selectedStorageSystem);
 
                 summaryModel.noMoreInfo = true;
-                var item = summaryModel.arrayDataVisualizationModel.items[0];
-                item.index = 1;
-                summaryModel.arrayDataVisualizationModel.items = [item];
                 return summaryModel;
             },
 
