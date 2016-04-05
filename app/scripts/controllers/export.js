@@ -20,7 +20,7 @@ angular.module('rainierApp')
             var summaryModel = {};
 
             var dataModel = {
-                title: synchronousTranslateService.translate('export') + ' ' + exportId,
+                title: synchronousTranslateService.translate('export') + ' ' + exports.name,
                 storageSystemId: storageSystemId,
                 view: 'tile',
                 export: exports,

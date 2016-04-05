@@ -20,7 +20,7 @@ angular.module('rainierApp')
             var summaryModel = {};
             var dataModel = {
                 file: true,
-                title: synchronousTranslateService.translate('share') + ' ' + shareId,
+                title: synchronousTranslateService.translate('share') + ' ' + share.name,
                 storageSystemId: storageSystemId,
                 view: 'tile',
                 allItemsSelected: false,
