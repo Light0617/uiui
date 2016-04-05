@@ -1,4 +1,3 @@
-
 #svg-tooltip-block{
   padding: .2em;
   background-color: beige;
@@ -19,6 +18,7 @@
   overflow: visible;
 } */
 
+
 .icon-encryption-off:before {
   content: "\e024";
   color: $disabled-color;
@@ -31,9 +31,6 @@
   visibility: visible;
 }
 
-.nomargin-bottom {
-  margin-bottom: 0;
-}
 
 .list-view .cell.data {
   flex-wrap: wrap;
@@ -127,31 +124,6 @@
 
 .bg-grey {
   background-color: #E3E4E7;
-}
-
-.wizard .wizard-right .row-grey .btn.dropdown-toggle.selectpicker.btn-default {
-  background-color: transparent !important;
-  border: 0px;
-}
-
-.wizard .wizard-right .btn.dropdown-toggle.selectpicker.btn-default {
-  background-color: white;
-  border: 1px solid lightgrey;
-  line-height: 1.3em;
-  font-size: 1em;
-  .dropdown {
-    width: auto;
-  }
-}
-
-.wizard .btn.dropdown-toggle.selectpicker.btn-default {
-  background-color: white;
-  border: 1px solid lightgrey;
-  line-height: 1.3em;
-  font-size: 1em;
-  .dropdown {
-    width: auto;
-  }
 }
 
 .fixed-line-height {
