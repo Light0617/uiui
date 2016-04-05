@@ -1,9 +1,12 @@
+
 #svg-tooltip-block{
   padding: .2em;
   background-color: beige;
   visibility: hidden;
 }
 
+/* this breaks the truncating UX of row tiles.
+>>>>>>> NEWRAIN-4788: broken alignment of header and inventory columns on the list view
 .list-view .cell {
   overflow: visible;
 }
@@ -14,7 +17,7 @@
 
 .bootstrap-select.btn-group .btn .filter-option {
   overflow: visible;
-}
+} */
 
 .icon-encryption-off:before {
   content: "\e024";
