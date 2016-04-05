@@ -1,6 +1,8 @@
 # DOCKER-VERSION 1.2.0
 FROM rdocker.mcp.com:6000/hid-base-centos-7.1
 
+EXPOSE 8080
+
 ENV http_proxy http://rproxy.mcp.com:3128
 ENV https_proxy http://rproxy.mcp.com:3128
 
