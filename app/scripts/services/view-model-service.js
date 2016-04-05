@@ -52,6 +52,7 @@ angular.module('rainierApp')
             };
 
             var poolLabelFunction = function (pool) {
+
                 return [
                     pool.label, '(',
                     pool.capacityInBytes.size, ' ',
@@ -189,7 +190,7 @@ angular.module('rainierApp')
                 var tierDisabled = template.shouldDisableTier();
                 return _.where(validPools, function (p) {
 
-                    return (p.type === template.poolType) && (tierDisabled || _.some(p.tiers, function (t) {
+                    return (p.label.indexOf('HSA-reserved-')===-1) && (p.type === template.poolType) && (tierDisabled || _.some(p.tiers, function (t) {
                         return t.tier === template.tier;
                     }));
                 });
