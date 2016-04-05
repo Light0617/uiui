@@ -570,7 +570,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.externalParityGroupId,
-                        details: [item.externalStorageVendor + ' ' + item.externalStorageProduct]
+                        details: [item.externalStorageSystemId, item.externalStorageVendor + ' ' + item.externalStorageProduct]
                     }
                 ];
                 item.getIcons = function () {
