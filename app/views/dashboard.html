@@ -4,7 +4,7 @@
         <div class="dark-panel col-lg-2 col-md-3 col-sm-3 hidden-xs flex-column start" id="resource-counts-panel"
              fill-height="">
             <!--Storage System icon tile-->
-            <storage-arrays-icon-tile ng-model="model.summary.storageArraysCount"></storage-arrays-icon-tile>
+            <storage-arrays-icon-tile ng-model="model.summary.storageSystemsInCacheCount"></storage-arrays-icon-tile>
             <hosts-icon-tile ng-model="model.summary.hostsCount"></hosts-icon-tile>
             <fabric-switches-icon-tile ng-model="dataModel.fabricsCount"></fabric-switches-icon-tile>
             <evs-icon-tile ng-model="dataModel.evsCount" ng-if="dataModel.unified" title="{{ 'evs-tooltip' | translate }}"></evs-icon-tile>

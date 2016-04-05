@@ -14,6 +14,7 @@ angular.module('rainierApp')
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var GET_FABRICS_PATH = 'san-fabrics';
         var tiers;
+        var storageSystemsInCacheCount = 0;
 
         function transformService(fileSummary) {
             orchestratorService.tiers().then(function (result) {
@@ -36,6 +37,7 @@ angular.module('rainierApp')
                 objectTransformService.transformTierSummary(tiers, result.tierSummaryItems, model);
 
                 $scope.model = model;
+                $scope.model.summary.storageSystemsInCacheCount = storageSystemsInCacheCount;
                 orchestratorService.hostsSummary().then(function (result) {
                     $scope.model.summary.hostsCount = result.totalHost;
                 });
@@ -48,6 +50,7 @@ angular.module('rainierApp')
 
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
             unified = _.find(result, function (storageSystem) { return storageSystem.unified && storageSystem.accessible; });
+            storageSystemsInCacheCount = result.length;
             return orchestratorService.dataProtectionSummary();
         }).then(function (result) {
             dataProtection = result;
