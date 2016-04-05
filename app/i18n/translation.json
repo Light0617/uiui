@@ -699,6 +699,7 @@
     "file-pool-free": "Free",
     "file-pool-total": "Total",
     "percent-usage": "% Usage",
+    "usage": "Usage",
     "file-server-online": "Online",
     "file-server-offline": "Offline",
     "blade": "Blade",
