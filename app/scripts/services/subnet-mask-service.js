@@ -11,8 +11,7 @@ angular.module('rainierApp')
     .factory('subnetMaskService', function () {
         return {
             getSubnetMasks: function () {
-                return ['255.255.255.254',
-                    '255.255.255.252',
+                return ['255.255.255.252',
                     '255.255.255.248',
                     '255.255.255.240',
                     '255.255.255.224',
