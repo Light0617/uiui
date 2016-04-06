@@ -19,7 +19,8 @@ angular.module('rainierApp')
 
                 var pass = _.isEmpty(search.freeText) ||
                     item.uuid.toString().indexOf(search.freeText) > -1 ||
-                    item.name.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1;
+                    item.name.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1 ||
+                    _.first(item.interfaceAddresses).ip.toString().indexOf(search.freeText) > -1;
 
                 pass = pass && (search.isOnline === null || item.isOnline === search.isOnline);
 
