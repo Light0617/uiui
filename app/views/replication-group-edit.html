@@ -171,8 +171,8 @@
                         </div>
 
                         <div data-toggle="buttons" class="btn-group">
-                            <label class="btn icon-btn checkbox" ng-click="dataModel.removeSecondaryVolume = !dataModel.removeSecondaryVolume"
-                                   ng-class="{'active' : dataModel.removeSecondaryVolume}">
+                            <label class="btn icon-btn checkbox active" ng-click="dataModel.removeSecondaryVolume = !dataModel.removeSecondaryVolume"
+                                   ng-class="{'active' : !dataModel.removeSecondaryVolume}">
                                 <input type="checkbox">{{'replication-group-edit-remove-svol-message' | translate}}
                             </label>
                         </div>

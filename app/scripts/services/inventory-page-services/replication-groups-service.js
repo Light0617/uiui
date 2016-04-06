@@ -115,6 +115,7 @@ angular.module('rainierApp')
                 var queryParams = queryService.getQueryParameters(true);
                 queryParams.nextToken = null;
                 var currentSortBy = queryService.getSortBy();
+                var currentSortOrder = queryService.getSortReverse();
                 var currentReplicationGroupType = queryService.getQuery('type');
                 var currentReplicationGroupTextSearch = queryService.getQuery('replicationGroupTextSearch');
                 if (currentReplicationGroupType !== undefined) {
@@ -137,8 +138,13 @@ angular.module('rainierApp')
                             objectTransformService.transformReplicationGroup(item);
                         });
                         if (currentSortBy !== undefined) {
-                            result.resources = _.sortBy(result.resources.concat(externalReplicationGroups), currentSortBy
-                                .toString());
+                            if (currentSortOrder) {
+                                result.resources = _.sortBy(result.resources.concat(externalReplicationGroups),
+                                    currentSortBy.toString()).reverse();
+                            } else {
+                                result.resources = _.sortBy(result.resources.concat(externalReplicationGroups),
+                                    currentSortBy.toString());
+                            }
                             return result;
 
                         } else {

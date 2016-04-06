@@ -12,28 +12,21 @@ angular.module('rainierApp')
             scope: false,
             templateUrl: 'views/templates/storage-system-volume-data-visualization.html',
             restrict: 'E',
-            link: function(){
-
+            link: function() {
                 $('text.value, text.header').on('mouseover', function(event){
-                    var title = this.innerHTML;
-                    $('.tooltip-inner').show();
+                    var title = this.getAttribute('title');
                     var tooltipBlock = $('#svg-tooltip-block');
                     tooltipBlock.css('position', 'absolute');
-
                     tooltipBlock.css('left', event.pageX);
                     tooltipBlock.css('top', event.pageY);
                     tooltipBlock.css('z-index', 10000);
-                    tooltipBlock.show();
-
-
-                    var tooltipTextDisplayer = $('#svg-tooltip-text');
-                    tooltipTextDisplayer.text(title);
+                    tooltipBlock.css('visibility', 'visible');
+                    tooltipBlock.text(title);
                 });
 
                 $('text.value, text.header').on('mouseleave', function(){
                     var tooltipBlock = $('#svg-tooltip-block');
-                    tooltipBlock.hide();
-                    $('.tooltip-inner').hide();
+                    tooltipBlock.css('visibility', 'hidden');
                 });
             }
         };

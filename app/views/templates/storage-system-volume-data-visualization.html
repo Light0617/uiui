@@ -532,9 +532,11 @@
 <!----Text for Primary Volume---->
     <symbol id="primary-volume-text-block" title="primary-volume-text-block" >
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.name : null}}">
+                {{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.displayedName : null}}</text>
             <text class="value" x="0" y="38">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.type : null}}</text>
-            <text class="value" x="0" y="62">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="62" title="{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="86">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.numberOfCopies : null}}</text>
             <text class="value" x="0" y="110">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.consistent : null}}</text>
         </g>
@@ -543,17 +545,20 @@
 <!--Text for Long Primary Volume-->
 
 <symbol id="primary-volume-long-text-block" title="primary-volume-text-block" >
-        <text class="header" x="0" y="20">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.name : null}}</text>
+        <text class="header" x="0" y="20" title="{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.name : null}}">
+            {{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.displayedName : null}}</text>
         <g class="label-value-container column1">
             <text class="value" x="0" y="62">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.type : null}}</text>
-            <text class="value" x="0" y="86">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="86" title="{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.displayedNaturalLanguageSchedule : null}}</text>
         </g>
         <g class="label-value-container column2">
             <text class="value" x="140" y="62">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.numberOfCopies : null}}</text>
             <text class="value" x="140" y="86">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.consistent : null}}</text>
         </g>
         <g class="label-value-container column3">
-            <text class="value" x="280" y="62">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.comments : null}}</text>
+            <text class="value" x="280" y="62" title="{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.comments : null}}">
+                {{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.displayedComments : null}}</text>
         </g>
     </symbol>
 
@@ -561,7 +566,7 @@
     <symbol id="volume-icon-primary-text" contextmenu="volume-icon-primary-text">
         <g class="label-value-container volume-icon-text label-centered">
             <text class="value" x="57" y="21">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].primaryVolume.id : null}}</text>
-            <text class="header" x="57" y="75">Placeholder</text><!--TODO JC data bind real volume label-->
+            <text class="header" x="57" y="75">{{model.primaryVolumeLabel}}</text>
             <text class="label" x="57" y="123">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].primaryVolume.status : null}}</text>
         </g>
     </symbol>
@@ -569,7 +574,7 @@
     <symbol id="volume-icon-secondary-text">
         <g class="label-value-container volume-icon-text label-centered">
             <text class="value" x="57" y="21">{{volumeId}}</text>
-            <text class="header" x="57" y="75">Placeholder</text><!--TODO JC & CDUAN data bind real volume label-->
+            <text class="header" x="57" y="75">{{model.label}}</text>
             <text class="label" x="57" y="123">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].secondaryVolume.status : null}}</text>
         </g>
     </symbol>
@@ -588,26 +593,31 @@
 
 <!--Text for Single Tile-->
     <symbol id="tile-single-text" title="text for single tile">
-        <text class="header" x="34" y="20">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+        <text class="header" x="34" y="20" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+            {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
         <g class="label-value-container column1">
             <text class="value" x="34" y="62">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="34" y="86">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="34" y="86" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
         </g>
         <g class="label-value-container column2">
             <text class="value" x="140" y="62">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
             <text class="value" x="140" y="86">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].consistent : null}}</text>
         </g>
         <g class="label-value-container column3">
-            <text class="value" x="246" y="62">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].comments : null}}</text>
+            <text class="value" x="246" y="62" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].comments : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedComments : null}}</text>
         </g>
     </symbol>
 
 <!--Text for Two-tiles-->
     <symbol id="tile-half-01-text">
         <g class="label-value-container column1">
-            <text class="header" x="34" y="14">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+            <text class="header" x="34" y="14" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
             <text class="value" x="34" y="40">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="34" y="64">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="34" y="64" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="34" y="88">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
         </g>
         <g class="label-value-container column2">
@@ -616,9 +626,11 @@
     </symbol>
     <symbol id="tile-half-02-text">
         <g class="label-value-container column1">
-            <text class="header" x="34" y="14">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}</text>
+            <text class="header" x="34" y="14" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedName : null}}</text>
             <text class="value" x="34" y="40">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].type : null}}</text>
-            <text class="value" x="34" y="64">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="34" y="64" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="34" y="88">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].numberOfCopies : null}}</text>
         </g>
         <g class="label-value-container column2">
@@ -629,27 +641,33 @@
 <!--Text for Thirds-->
     <symbol id="tile-third-01-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
             <text class="value" x="0" y="45" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="0" y="69" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="69" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="93" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
             <text class="value" x="0" y="116" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].consistent : null}}</text>
         </g>
     </symbol>
     <symbol id="tile-third-02-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedName : null}}</text>
             <text class="value" x="0" y="45" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].type : null}}</text>
-            <text class="value" x="0" y="69" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="69" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="93" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].numberOfCopies : null}}</text>
             <text class="value" x="0" y="116" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].consistent : null}}</text>
         </g>
     </symbol>
     <symbol id="tile-third-03-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedName : null}}</text>
             <text class="value" x="0" y="45" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].type : null}}</text>
-            <text class="value" x="0" y="69" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="69" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="93" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].numberOfCopies : null}}</text>
             <text class="value" x="0" y="116" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].consistent : null}}</text>
         </g>
@@ -658,9 +676,11 @@
 <!--Text for Quarters-->
     <symbol id="tile-quarter-01-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
             <text class="value" x="0" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="0" y="48" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="48" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="90" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[0].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
             <text class="value" x="90" y="48" transform="scale(.88)">Consistency {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].consistent : null}}</text>
         </g>
@@ -668,9 +688,11 @@
 
     <symbol id="tile-quarter-02-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedName : null}}</text>
             <text class="value" x="0" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].type : null}}</text>
-            <text class="value" x="0" y="48" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule: null}}</text>
+            <text class="value" x="0" y="48" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedNaturalLanguageSchedule: null}}</text>
             <text class="value" x="90" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[1].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[1].numberOfCopies : null}}</text>
             <text class="value" x="90" y="48" transform="scale(.88)">Consistency {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].consistent : null}}</text>
         </g>
@@ -678,9 +700,11 @@
 
     <symbol id="tile-quarter-03-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedName : null}}</text>
             <text class="value" x="0" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].type : null}}</text>
-            <text class="value" x="0" y="48" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="48" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="90" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[2].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[2].numberOfCopies : null}}</text>
             <text class="value" x="90" y="48" transform="scale(.88)">Consistency {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].consistent : null}}</text>
         </g>
@@ -688,9 +712,11 @@
 
     <symbol id="tile-quarter-04-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="14">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}</text>
+            <text class="header" x="0" y="14" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedName : null}}</text>
             <text class="value" x="0" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].type : null}}</text>
-            <text class="value" x="0" y="48" transform="scale(.88)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="48" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="90" y="32" transform="scale(.88)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[3].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[3].numberOfCopies : null}}</text>
             <text class="value" x="90" y="48" transform="scale(.88)">Consistency {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].consistent : null}}</text>
         </g>
@@ -699,9 +725,11 @@
 <!--Text for Fifths-->
     <symbol id="tile-fifth-01-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="16" transform="scale(.83)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+            <text class="header" x="0" y="16" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
             <text class="value" x="0" y="34" transform="scale(.83)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="0" y="52" transform="scale(.83)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="52" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="70" transform="scale(.83)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[0].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
             <text class="value" x="0" y="88" transform="scale(.83)">Consistency {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].consistent : null}}</text>
         </g>
@@ -709,9 +737,11 @@
 
     <symbol id="tile-fifth-02-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="16" transform="scale(.83)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}</text>
+            <text class="header" x="0" y="16" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedName : null}}</text>
             <text class="value" x="0" y="34" transform="scale(.83)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].type : null}}</text>
-            <text class="value" x="0" y="52" transform="scale(.83)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="52" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="70" transform="scale(.83)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[1].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[1].numberOfCopies : null}}</text>
             <text class="value" x="0" y="88" transform="scale(.83)">Consistency {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].consistent : null}}</text>
         </g>
@@ -719,9 +749,11 @@
 
     <symbol id="tile-fifth-03-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="16" transform="scale(.83)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}</text>
+            <text class="header" x="0" y="16" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedName : null}}</text>
             <text class="value" x="0" y="34" transform="scale(.83)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].type : null}}</text>
-            <text class="value" x="0" y="52" transform="scale(.83)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="52" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="70" transform="scale(.83)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[2].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[2].numberOfCopies : null}}</text>
             <text class="value" x="0" y="88" transform="scale(.83)">Consistency {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].consistent : null}}</text>
         </g>
@@ -729,9 +761,11 @@
 
     <symbol id="tile-fifth-04-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="16" transform="scale(.83)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}</text>
+            <text class="header" x="0" y="16" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedName : null}}</text>
             <text class="value" x="0" y="34" transform="scale(.83)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].type : null}}</text>
-            <text class="value" x="0" y="52" transform="scale(.83)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="52" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="70" transform="scale(.83)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[3].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[3].numberOfCopies : null}}</text>
             <text class="value" x="0" y="88" transform="scale(.83)">Consistency {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].consistent : null}}</text>
         </g>
@@ -739,9 +773,11 @@
 
     <symbol id="tile-fifth-05-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="16" transform="scale(.83)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].name : null}}</text>
+            <text class="header" x="0" y="16" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].name : null}}">
+                {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].displayedName : null}}</text>
             <text class="value" x="0" y="34" transform="scale(.83)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].type : null}}</text>
-            <text class="value" x="0" y="52" transform="scale(.83)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="52" transform="scale(.83)" title="{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="0" y="70" transform="scale(.83)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[4].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[4].numberOfCopies : null}}</text>
             <text class="value" x="0" y="88" transform="scale(.83)">Consistency {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].consistent : null}}</text>
         </g>
@@ -750,9 +786,11 @@
 
 <symbol id="tile-sixth-01-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="13" transform="scale(.75)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+            <text class="header" x="0" y="13" transform="scale(.75)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
             <text class="value" x="0" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="0" y="38" transform="scale(.7)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="38" transform="scale(.7)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="122" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[0].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
             <text class="value" x="122" y="38" transform="scale(.7)">Consistency {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].consistent : null}}</text>
         </g>
@@ -760,9 +798,11 @@
 
     <symbol id="tile-sixth-02-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="13" transform="scale(.75)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}</text>
+            <text class="header" x="0" y="13" transform="scale(.75)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedName : null}}</text>
             <text class="value" x="0" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].type : null}}</text>
-            <text class="value" x="0" y="38" transform="scale(.7)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="38" transform="scale(.7)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="122" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[1].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[1].numberOfCopies : null}}</text>
             <text class="value" x="122" y="38" transform="scale(.7)">Consistency {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].consistent : null}}</text>
         </g>
@@ -770,9 +810,11 @@
 
     <symbol id="tile-sixth-03-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="13" transform="scale(.75)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}</text>
+            <text class="header" x="0" y="13" transform="scale(.75)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedName : null}}</text>
             <text class="value" x="0" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].type : null}}</text>
-            <text class="value" x="0" y="38" transform="scale(.7)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="38" transform="scale(.7)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="122" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[2].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[2].numberOfCopies : null}}</text>
             <text class="value" x="122" y="38" transform="scale(.7)">Consistency {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].consistent : null}}</text>
         </g>
@@ -780,9 +822,11 @@
 
     <symbol id="tile-sixth-04-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="13" transform="scale(.75)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}</text>
+            <text class="header" x="0" y="13" transform="scale(.75)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedName : null}}</text>
             <text class="value" x="0" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].type : null}}</text>
-            <text class="value" x="0" y="38" transform="scale(.7)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="38" transform="scale(.7)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="122" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[3].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[3].numberOfCopies : null}}</text>
             <text class="value" x="122" y="38" transform="scale(.7)">Consistency {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].consistent : null}}</text>
         </g>
@@ -790,9 +834,11 @@
 
     <symbol id="tile-sixth-05-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="13" transform="scale(.75)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].name : null}}</text>
+            <text class="header" x="0" y="13" transform="scale(.75)" title="{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].name : null}}">
+                {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].displayedName : null}}</text>
             <text class="value" x="0" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].type : null}}</text>
-            <text class="value" x="0" y="38" transform="scale(.7)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="38" transform="scale(.7)" title="{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="122" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[4].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[4].numberOfCopies : null}}</text>
             <text class="value" x="122" y="38" transform="scale(.7)">Consistency {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].consistent : null}}</text>
         </g>
@@ -800,9 +846,11 @@
 
     <symbol id="tile-sixth-06-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="13" transform="scale(.75)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].name : null}}</text>
+            <text class="header" x="0" y="13" transform="scale(.75)" title="{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].name : null}}">
+                {{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].displayedName : null}}</text>
             <text class="value" x="0" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].type : null}}</text>
-            <text class="value" x="0" y="38" transform="scale(.7)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="38" transform="scale(.7)" title="{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="122" y="26" transform="scale(.7)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[5].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[5].numberOfCopies : null}}</text>
             <text class="value" x="122" y="38" transform="scale(.7)">Consistency {{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].consistent : null}}</text>
         </g>
@@ -812,9 +860,11 @@
 
 <symbol id="tile-sixth-long-01-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="10" transform="scale(.88)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}</text>
+            <text class="header" x="0" y="10" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].name : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedName : null}}</text>
             <text class="value" x="0" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].type : null}}</text>
-            <text class="value" x="0" y="44" transform="scale(.8)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="44" transform="scale(.8)" title="{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="92" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[0].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[0].numberOfCopies : null}}</text>
             <text class="value" x="92" y="44" transform="scale(.8)">Consistency {{rgWithVolumeIdAsPvol[0] ? rgWithVolumeIdAsPvol[0].consistent : null}}</text>
         </g>
@@ -822,9 +872,11 @@
 
     <symbol id="tile-sixth-long-02-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="10" transform="scale(.88)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}</text>
+            <text class="header" x="0" y="10" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].name : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedName : null}}</text>
             <text class="value" x="0" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].type : null}}</text>
-            <text class="value" x="0" y="44" transform="scale(.8)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="44" transform="scale(.8)" title="{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="92" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[1].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[1].numberOfCopies : null}}</text>
             <text class="value" x="92" y="44" transform="scale(.8)">Consistency {{rgWithVolumeIdAsPvol[1] ? rgWithVolumeIdAsPvol[1].consistent : null}}</text>
         </g>
@@ -832,9 +884,11 @@
 
     <symbol id="tile-sixth-long-03-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="10" transform="scale(.88)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}</text>
+            <text class="header" x="0" y="10" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].name : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedName : null}}</text>
             <text class="value" x="0" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].type : null}}</text>
-            <text class="value" x="0" y="44" transform="scale(.8)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="44" transform="scale(.8)" title="{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="92" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[2].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[2].numberOfCopies : null}}</text>
             <text class="value" x="92" y="44" transform="scale(.8)">Consistency {{rgWithVolumeIdAsPvol[2] ? rgWithVolumeIdAsPvol[2].consistent : null}}</text>
         </g>
@@ -842,9 +896,11 @@
 
     <symbol id="tile-sixth-long-04-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="10" transform="scale(.88)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}</text>
+            <text class="header" x="0" y="10" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].name : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedName : null}}</text>
             <text class="value" x="0" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].type : null}}</text>
-            <text class="value" x="0" y="44" transform="scale(.8)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="44" transform="scale(.8)" title="{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="92" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[3].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[3].numberOfCopies : null}}</text>
             <text class="value" x="92" y="44" transform="scale(.8)">Consistency {{rgWithVolumeIdAsPvol[3] ? rgWithVolumeIdAsPvol[3].consistent : null}}</text>
         </g>
@@ -852,9 +908,11 @@
 
     <symbol id="tile-sixth-long-05-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="10" transform="scale(.88)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].name : null}}</text>
+            <text class="header" x="0" y="10" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].name : null}}">
+                {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].displayedName : null}}</text>
             <text class="value" x="0" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].type : null}}</text>
-            <text class="value" x="0" y="44" transform="scale(.8)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].naturalLanguageSchedule : null}}</text>
+            <text class="value" x="0" y="44" transform="scale(.8)" title="{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].displayedNaturalLanguageSchedule : null}}</text>
             <text class="value" x="92" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[4].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[4].numberOfCopies : null}}</text>
             <text class="value" x="92" y="44" transform="scale(.8)">Consistency {{rgWithVolumeIdAsPvol[4] ? rgWithVolumeIdAsPvol[4].consistent : null}}</text>
         </g>
@@ -862,9 +920,11 @@
 
     <symbol id="tile-sixth-long-06-text">
         <g class="label-value-container">
-            <text class="header" x="0" y="10" transform="scale(.88)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].name : null}}</text>
+            <text class="header" x="0" y="10" transform="scale(.88)" title="{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].name : null}}">
+                {{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].displayedName : null}}</text>
             <text class="value" x="0" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].type : null}}</text>
-            <text class="value text-resize ellipsis" x="0" y="44" transform="scale(.8)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].naturalLanguageSchedule : null}}</textPath></text>
+            <text class="value text-resize ellipsis" x="0" y="44" transform="scale(.8)" title="{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].naturalLanguageSchedule : null}}">
+                {{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].displayedNaturalLanguageSchedule : null}}</textPath></text>
             <text class="value" x="92" y="28" transform="scale(.8)">{{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].numberOfCopies !== 'N/A' ? rgWithVolumeIdAsPvol[5].numberOfCopies + ' Backups' : rgWithVolumeIdAsPvol[5].numberOfCopies : null}}</text>
             <text class="value" x="92" y="44" transform="scale(.8)">Consistency {{rgWithVolumeIdAsPvol[5] ? rgWithVolumeIdAsPvol[5].consistent : null}}</text>
         </g>
@@ -872,8 +932,11 @@
 
 <!--Large S-Volume Label-->
 <symbol id="s-vol-label">
-    <text class="huge-header" x="0" y="66">{{numberOfVPWithVolumeIdAsPvol}}</text>
-    <text class="large-label" x="116" y="38">S-Volumes</text>
+    <text class="huge-header" x="0" y="56">{{numberOfVPWithVolumeIdAsPvol}}</text>
+    <text class="large-label" x="45" y="38" ng-if="numberOfVPWithVolumeIdAsPvol > 0 && numberOfVPWithVolumeIdAsPvol < 10">S-Volumes</text>
+    <text class="large-label" x="75" y="38" ng-if="numberOfVPWithVolumeIdAsPvol > 9 && numberOfVPWithVolumeIdAsPvol < 100">S-Volumes</text>
+    <text class="large-label" x="105" y="38" ng-if="numberOfVPWithVolumeIdAsPvol > 99 && numberOfVPWithVolumeIdAsPvol < 1000">S-Volumes</text>
+    <text class="large-label" x="135" y="38" ng-if="numberOfVPWithVolumeIdAsPvol > 999">S-Volumes</text>
 </symbol>
 
 <!----- End Building Blocks------>
@@ -1169,10 +1232,7 @@
 
     </g>
 
-    <div id="svg-tooltip-block" role="tooltip" class="svg-tooltip">
-        <div class="tooltip-arrow"></div>
-        <div class="tooltip-inner" id="svg-tooltip-text"></div>
-    </div>
+<div id="svg-tooltip-block"></div>
 
 
  <!----------------End Display Diagram---------------->

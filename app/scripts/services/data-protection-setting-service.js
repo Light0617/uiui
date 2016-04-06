@@ -10,6 +10,111 @@
 angular.module('rainierApp')
     .factory('dataProtectionSettingsService', function(ShareDataService, orchestratorService, $location, $q) {
 
+        // Can't use css to truncate metadata if you reference a pre-defined SVG symbol using <use>. Talked with Jurgen
+        // and Tuan, don't have time to refactor the whole thing, use javascript to do it.
+        var truncateMessageOnISRDiagram = function (rgWithVolumeIdAsPvol, rgWithVolumeIdAsSvol, secondaryVolumeLabel,
+                                                    primaryVolumeLabel, copyGroupName) {
+            var numberOfRgWithVolumeIdAsPvol = rgWithVolumeIdAsPvol.length;
+            _.forEach(rgWithVolumeIdAsPvol, function (rgap) {
+                rgap = truncateMessage(rgap, numberOfRgWithVolumeIdAsPvol);
+            });
+            if (rgWithVolumeIdAsSvol !== {}) {
+                if (rgWithVolumeIdAsPvol !== 0) {
+                    rgWithVolumeIdAsSvol = truncateMessage(rgWithVolumeIdAsSvol, 0);
+                } else {
+                    rgWithVolumeIdAsSvol = truncateMessage(rgWithVolumeIdAsSvol, 1);
+                }
+            }
+            if (secondaryVolumeLabel !== undefined) {
+                truncateMessage(secondaryVolumeLabel);
+            }
+            if (primaryVolumeLabel !== undefined && copyGroupName !== undefined) {
+                truncateMessage(primaryVolumeLabel);
+                truncateMessage(copyGroupName);
+            }
+        };
+
+
+        var  truncateMessage = function (originalMessage, numberOfRgWithVolumeIdAsPvol) {
+            var messageLength = originalMessage.length;
+            var appendedMessage = '...';
+            if (originalMessage instanceof  Object) {
+                if (originalMessage.hasOwnProperty('name')) {
+                    originalMessage.displayedName = generateTruncatedMessage(originalMessage.name, numberOfRgWithVolumeIdAsPvol, 'name');
+                }
+                if (originalMessage.hasOwnProperty('naturalLanguageSchedule')) {
+                    originalMessage.displayedNaturalLanguageSchedule =
+                        generateTruncatedMessage(originalMessage.naturalLanguageSchedule, numberOfRgWithVolumeIdAsPvol, 'schedule');
+                }
+                if (numberOfRgWithVolumeIdAsPvol === 1 && originalMessage.hasOwnProperty('comments')) {
+                    originalMessage.displayedComments = (originalMessage.comments, numberOfRgWithVolumeIdAsPvol, 'comments');
+                }
+            } else if (originalMessage instanceof  String && messageLength > 13) {
+                originalMessage = originalMessage.slice(0, messageLength) + appendedMessage;
+            }
+            return originalMessage;
+        };
+
+        var generateTruncatedMessage = function (message, size, type) {
+            var messageLength = message.length;
+            var appendedMessage = '...';
+            switch (size) {
+                case 0:
+                    if (type === 'name' && messageLength > 14) {
+                        message = message.slice(0, 15) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 16) {
+                        message = message.slice(0, 17) + appendedMessage;
+                    }
+                    break;
+                case 1:
+                    if (type === 'name' && messageLength > 45) {
+                        message = message.slice(0, 46) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 16) {
+                        message = message.slice(0, 17) + appendedMessage;
+                    } else if (type === 'comments' && messageLength > 24) {
+                        message = message.slice(0, 25) + appendedMessage;
+                    }
+                    break;
+                case 2:
+                    if (type === 'name' && messageLength > 24) {
+                        message = message.slice(0, 25) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 28) {
+                        message = message.slice(0, 29) + appendedMessage;
+                    }
+                    break;
+                case 3:
+                    if (type === 'name' && messageLength > 14) {
+                        console.log(message.slice(0, 15));
+                        message = message.slice(0, 15) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 18) {
+                        message = message.slice(0, 19) + appendedMessage;
+                    }
+                    break;
+                case 4:
+                    if (type === 'name' && messageLength > 24) {
+                        message = message.slice(0, 25) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 13) {
+                        message = message.slice(0, 14) + appendedMessage;
+                    }
+                    break;
+                case 5:
+                    if (type === 'name' && messageLength > 12) {
+                        message = message.slice(0, 13) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 13) {
+                        message = message.slice(0, 14) + appendedMessage;
+                    }
+                    break;
+                case 6:
+                    if (type === 'name' && messageLength > 24) {
+                        message = message.slice(0, 25) + appendedMessage;
+                    } else if (type === 'schedule' && messageLength > 14) {
+                        message = message.slice(0, 15) + appendedMessage;
+                    }
+                    break;
+            }
+            return message;
+        };
+
         var replicationGroupGridSettings = function(dataModel) {
 
             dataModel.gridSettings  = [
@@ -146,6 +251,7 @@ angular.module('rainierApp')
         return {
             setReplicationGroupGridSettings: replicationGroupGridSettings,
             setReplicationGroupActions: replicationGroupActions,
-            setDataModelFunctions: setDataModelFunctions
+            setDataModelFunctions: setDataModelFunctions,
+            truncateMessageOnISRDiagram: truncateMessageOnISRDiagram
         };
     });

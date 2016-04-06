@@ -82,6 +82,9 @@ angular.module('rainierApp')
             if (result.total) {
                 $scope.volumePairsAsSvol = result.resources;
                 $scope.noRgWithVolumeIdAsSvol = false;
+                orchestratorService.volume(storageSystemId, _.first($scope.volumePairsAsSvol).primaryVolume.id).then(function (result) {
+                    $scope.model.primaryVolumeLabel = result.label;
+                });
                 var replicationGroupAsSVolName = _.first($scope.volumePairsAsSvol).replicationGroup;
                 if (replicationGroupAsSVolName === 'N/A') {
                     $scope.rgWithVolumeIdAsSvol = new replicationGroupsService.ExternalReplicationGroup(_.first($scope.volumePairsAsSvol).type);
@@ -111,20 +114,17 @@ angular.module('rainierApp')
                         cloneRGNames.push(vp.replicationGroup);
                     }
                 });
-                if (!generateExternalCloneRG) {
-                    return storageSystemVolumeService.getMultipleReplicationGroupsByName(cloneRGNames, storageSystemId).then(function (result) {
-                        $scope.rgWithVolumeIdAsPvol = $scope.rgWithVolumeIdAsPvol.concat(result.resources);
-                        return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotAndRGNameExisting(volumeId, storageSystemId);
-                    });
-                } else {
+                if (generateExternalCloneRG) {
                     $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('CLONE'));
-                    return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotAndRGNameExisting(volumeId, storageSystemId);
                 }
+                return storageSystemVolumeService.getMultipleReplicationGroupsByName(cloneRGNames, storageSystemId).then(function (result) {
+                    $scope.rgWithVolumeIdAsPvol = $scope.rgWithVolumeIdAsPvol.concat(result.resources);
+                    return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotAndRGNameExisting(volumeId, storageSystemId);
+                });
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndClone = true;
                 return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotAndRGNameExisting(volumeId, storageSystemId);
             }
-
         }).then(function (result) {
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
@@ -146,6 +146,14 @@ angular.module('rainierApp')
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = true;
             }
+
+            if ($scope.noRgWithVolumeIdAsSvol) {
+                dataProtectionSettingsService.truncateMessageOnISRDiagram($scope.rgWithVolumeIdAsPvol, $scope.rgWithVolumeIdAsSvol, $scope.model.label);
+            } else {
+                dataProtectionSettingsService.truncateMessageOnISRDiagram($scope.rgWithVolumeIdAsPvol, $scope.rgWithVolumeIdAsSvol, $scope.model.label,
+                    $scope.model.primaryVolumeLabel, $scope.rgWithVolumeIdAsSvol.volumePairsAsSvol[0].volumePairGroup);
+            }
+
             $scope.noRgWithVolumeIdAsPvol = $scope.noRgWithVolumeIdAsPvolAndClone && $scope.noRgWithVolumeIdAsPvolAndSnaphot &&
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot;
 
