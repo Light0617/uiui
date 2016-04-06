@@ -23,7 +23,7 @@
         </button>
     </div>
     <div class="form-group margin-T-B-L" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.copyGroup.useNew">
-        <label>Number of Snapshots (Max 1024)</label>
+        <label>{{ 'number-of-snapshots' | translate }}</label>
         <input class="form-control number light-text" name="numberOfSnapshots" type="number" ng-min="1" ng-max="1024"
                ng-pattern="dataModel.decimalNumberRegexp" ng-model="dataModel.protectModel.noOfSnapshots" title="Number of Snapshots"
                placeholder="{{'valid-number-of-snapshots' | translate }}" required>

@@ -656,7 +656,7 @@
     "invalid-copy-group-name": "No Replication Group Name Needed",
     "valid-number-of-copies": "Number of Copies",
     "invalid-number-of-copies": "No Number of Copies Needed",
-    "number-of-snapshots": "Number of Snapshots (Max 1024)",
+    "number-of-snapshots": "Snapshot Retention Policy (Max 1024)",
     "valid-number-of-snapshots": "Number of Snapshots",
     "invalid-number-of-snapshots": "No Number of Snapshots Needed",
     "invalid-protect-volume-snapshot-number-message": "Enter a number between 1 to 1024.",
