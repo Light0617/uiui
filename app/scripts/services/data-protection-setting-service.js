@@ -143,7 +143,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'replication-group-label-backups',
+                    title: 'valid-number-of-snapshots',
                     sizeClass: 'twelfth',
 
                     sortField: 'numberOfCopies',
