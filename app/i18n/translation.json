@@ -857,6 +857,8 @@
     "repliaction-group-volume-list-copy-group-name": "Copy Group",
     "replication-group-actions-suspend-confirmation-message": "The selected replication group will be suspended, the following volume pair(s) will be affected. Do you want to continue?",
     "replication-group-actions-resume-confirmation-message": "The selected replication group will be resumed, the following volume pair(s) will be affected. Do you want to continue?",
+    "replication-group-actions-suspend-snapshot-confirmation-message": "The selected replication group will be suspended. No pair(s) will be affected. Do you want to continue?",
+    "replication-group-actions-resume-snapshot-confirmation-message": "The selected replication group will be resumed. No pair(s) will be affected. Do you want to continue?",
     "replication-group-actions-delete-confirmation-message": "The selected replication group will be deleted, the following volume pair(s) will be affected. Do you want to continue?",
     "replication-group-actions-restore-confirmation-title": "Restore Volume Pairs Confirmation",
     "replication-group-actions-restore-confirmation-message": "The selected primary volume(s) will be restored by using corresponding secondary volume(s). Do you want to continue?",

@@ -855,7 +855,13 @@ app.delete('/v1/compute/servers/:serverId', jsonParser, function (req, res) {
 });
 
 app.post('/v1/security/tokens', jsonParser, function (req, res) {
-    loginUser = {username: 'sysadmin'};
+    loginUser = {
+        'token': {
+            user: {
+                name: 'sysadmin'
+            }
+        }
+    };
     res.set('X-Auth-Token', '449d72b0-0f12-43c8-9dba-c528cc0585b9')
     res.json()
 })

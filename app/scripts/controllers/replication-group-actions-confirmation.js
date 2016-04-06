@@ -16,31 +16,39 @@ angular.module('rainierApp')
             window.history.back();
         }
 
-        orchestratorService.affectedVolumePairsByReplicationGroup(storageSystemId, _.first(replicationGroup).id).then(function (result) {
-            _.forEach (result.volumePairs, function (vp) {
-                objectTransformService.transformVolumePairs(vp);
-            });
-            $scope.dataModel = {
-                affectedVolumePairs: result.volumePairs,
-                view: 'list',
-                pageAction: action.charAt(0).toUpperCase() + action.slice(1, action.length),
-                sort: {
-                    field: 'primaryVolume.id',
-                    reverse: false,
-                    setSort: function (f) {
-                        $timeout(function () {
-                            if ($scope.dataModel.sort.field === f) {
-                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            } else {
-                                $scope.dataModel.sort.field = f;
-                                $scope.dataModel.sort.reverse = false;
-                            }
-                        });
+        if(_.first(replicationGroup).type !== 'Snapshot' || action === 'delete') {
+            orchestratorService.affectedVolumePairsByReplicationGroup(storageSystemId, _.first(replicationGroup).id).then(function (result) {
+                _.forEach(result.volumePairs, function (vp) {
+                    objectTransformService.transformVolumePairs(vp);
+                });
+                $scope.dataModel = {
+                    affectedVolumePairs: result.volumePairs,
+                    view: 'list',
+                    pageAction: action.charAt(0).toUpperCase() + action.slice(1, action.length),
+                    sort: {
+                        field: 'primaryVolume.id',
+                        reverse: false,
+                        setSort: function (f) {
+                            $timeout(function () {
+                                if ($scope.dataModel.sort.field === f) {
+                                    $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
+                                } else {
+                                    $scope.dataModel.sort.field = f;
+                                    $scope.dataModel.sort.reverse = false;
+                                }
+                            });
+                        }
                     }
-                }
+                };
+                scrollDataSourceBuilderService.setupDataLoader($scope, $scope.dataModel.affectedVolumePairs);
+            });
+        }
+        else {
+            $scope.dataModel = {
+                pageAction: action.charAt(0).toUpperCase() + action.slice(1, action.length),
+                snapshot: true
             };
-            scrollDataSourceBuilderService.setupDataLoader($scope, $scope.dataModel.affectedVolumePairs);
-        });
+        }
 
         $scope.submitActions = function () {
             var selectedReplicationGroup = _.first(replicationGroup);
