@@ -17,6 +17,7 @@ angular.module('rainierApp')
         orchestratorService.storagePool(storageSystemId, poolId)
             .then(function (pool) {
                 $scope.model = pool;
+                $scope.model.originalActiveFlash = pool.activeFlashEnabled;
                 $scope.model.originalLabel = pool.label;
                 $scope.model.originalPoolType = pool.type;
                 $scope.model.poolType = pool.type;
@@ -35,6 +36,7 @@ angular.module('rainierApp')
                 $scope.model.hasHdpLicense = false;
                 $scope.model.hasHdtLicense = false;
                 $scope.model.hasHtiLicense = false;
+                $scope.model.activeFlashAllowed = false;
                 $scope.model.hasActiveFlashLicense = pool.activeFlashEnabled;
                 $scope.model.originalActiveFlashEnabled = false;
                 paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId,
@@ -208,7 +210,8 @@ angular.module('rainierApp')
                                 $scope.model.templateSubscriptionLimit.unlimited !== $scope.model.originalTemplateSubscriptionLimit.unlimited ||
                                 $scope.model.templateSubscriptionLimit.value !== $scope.model.originalTemplateSubscriptionLimit.value;
                         } else {
-                            return ($scope.model.originalLabel !== $scope.model.label) || $scope.model.selectedParityGroups.length > 0 ||
+                            return ($scope.model.originalLabel !== $scope.model.label) || ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
+                                $scope.model.selectedParityGroups.length > 0 ||
                                 $scope.model.originalPoolType !== $scope.model.poolType ||
                                 $scope.model.utilizationThreshold1 !== $scope.model.originalUtilizationThreshold1 ||
                                 $scope.model.utilizationThreshold2 !== $scope.model.originalUtilizationThreshold2 ||
@@ -294,6 +297,11 @@ angular.module('rainierApp')
 
         function dataVizModelForAdvanced(pgs) {
             $scope.dataVizModel = storagePoolService.dataVizModelForAdvanced($scope.model, pgs, diskSizeService);
+            _.each($scope.model.tiers, function(tier) {
+                if(tier.tier === _.first($scope.tierKeys)) {
+                    $scope.model.activeFlashAllowed = true;
+                }
+            });
         }
 
         $scope.$watch('model.parityGroups', dataVizModelForAdvanced, true);
