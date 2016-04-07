@@ -12,25 +12,25 @@ angular.module('rainierApp')
 
         // Can't use css to truncate metadata if you reference a pre-defined SVG symbol using <use>. Talked with Jurgen
         // and Tuan, don't have time to refactor the whole thing, use javascript to do it.
-        var truncateMessageOnISRDiagram = function (rgWithVolumeIdAsPvol, rgWithVolumeIdAsSvol, secondaryVolumeLabel,
-                                                    primaryVolumeLabel, copyGroupName) {
+        var truncateMessageOnISRDiagram = function (rgWithVolumeIdAsPvol, rgWithVolumeIdAsSvol, scope,
+                                                    secondaryVolumeLabel, primaryVolumeLabel, copyGroupName) {
             var numberOfRgWithVolumeIdAsPvol = rgWithVolumeIdAsPvol.length;
             _.forEach(rgWithVolumeIdAsPvol, function (rgap) {
                 rgap = truncateMessage(rgap, numberOfRgWithVolumeIdAsPvol);
             });
             if (rgWithVolumeIdAsSvol !== {}) {
-                if (rgWithVolumeIdAsPvol !== 0) {
+                if (numberOfRgWithVolumeIdAsPvol !== 0) {
                     rgWithVolumeIdAsSvol = truncateMessage(rgWithVolumeIdAsSvol, 0);
                 } else {
                     rgWithVolumeIdAsSvol = truncateMessage(rgWithVolumeIdAsSvol, 1);
                 }
             }
             if (secondaryVolumeLabel !== undefined) {
-                truncateMessage(secondaryVolumeLabel);
+                scope.displayedSecondaryVolumeLabel = truncateMessage(secondaryVolumeLabel);
             }
             if (primaryVolumeLabel !== undefined && copyGroupName !== undefined) {
-                truncateMessage(primaryVolumeLabel);
-                truncateMessage(copyGroupName);
+                scope.displayedPrimaryVolumeLabel = truncateMessage(primaryVolumeLabel);
+                scope.displayedCopyGroupName = truncateMessage(copyGroupName);
             }
         };
 
@@ -49,8 +49,8 @@ angular.module('rainierApp')
                 if (numberOfRgWithVolumeIdAsPvol === 1 && originalMessage.hasOwnProperty('comments')) {
                     originalMessage.displayedComments = (originalMessage.comments, numberOfRgWithVolumeIdAsPvol, 'comments');
                 }
-            } else if (originalMessage instanceof  String && messageLength > 13) {
-                originalMessage = originalMessage.slice(0, messageLength) + appendedMessage;
+            } else if ((typeof originalMessage === 'string' || originalMessage instanceof String) && messageLength > 13) {
+                originalMessage = originalMessage.slice(0, 14) + appendedMessage;
             }
             return originalMessage;
         };
@@ -179,7 +179,6 @@ angular.module('rainierApp')
         };
 
         var replicationGroupActions = function (scope, storageSystemId) {
-
             scope.replicationGroupSuspendResumeDelete = function (replicationGroupAction, selectedReplicationGroup) {
                 ShareDataService.replicationGroupAction = replicationGroupAction;
                 ShareDataService.selectedReplicationGroup = selectedReplicationGroup;
@@ -214,8 +213,6 @@ angular.module('rainierApp')
         };
 
         var setDataModelFunctions = function (scope) {
-
-            //TODO: Display list? Check with David
             scope.dataModel.restoreCheck = function () {
                 var result = true;
                 var anyReplicationGroupSelected = false;
