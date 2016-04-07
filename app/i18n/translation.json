@@ -822,7 +822,7 @@
     "export-delete-selected-content": "The current Export will be deleted. Do you want to proceed?",
 
 
-    "no-available-replication-group": "Selected volume is not in any replication group(s).",
+    "no-available-replication-group": "Selected volume is in an external replication group or not in any HSA replication group(s).",
     "replication-groups-filter-snapshot": "Snapshot",
     "replication-groups-filter-clone": "Clone",
     "replication-group-edit-remove-pvol-message": "Select the Primary volume(s)you want to remove:",
@@ -855,11 +855,9 @@
     "repliaction-group-volume-list-split-time": "Split Time",
     "repliaction-group-volume-list-consistency-id": "Consistency ID",
     "repliaction-group-volume-list-copy-group-name": "Copy Group",
-    "replication-group-actions-suspend-confirmation-message": "The selected replication group will be suspended, the following volume pair(s) will be affected. Do you want to continue?",
-    "replication-group-actions-resume-confirmation-message": "The selected replication group will be resumed, the following volume pair(s) will be affected. Do you want to continue?",
-    "replication-group-actions-suspend-snapshot-confirmation-message": "The selected replication group will be suspended. No pair(s) will be affected. Do you want to continue?",
-    "replication-group-actions-resume-snapshot-confirmation-message": "The selected replication group will be resumed. No pair(s) will be affected. Do you want to continue?",
-    "replication-group-actions-delete-confirmation-message": "The selected replication group will be deleted, the following volume pair(s) will be affected. Do you want to continue?",
+    "replication-group-actions-confirmation-message": "The following volume pair(s) and other volume pair(s) in same consistency group will be affected. Do you want to continue?",
+    "replication-group-actions-suspend-snapshot-confirmation-message": "The selected replication group will be suspended. No volume pair(s) will be affected. Do you want to continue?",
+    "replication-group-actions-resume-snapshot-confirmation-message": "The selected replication group will be resumed. No volume pair(s) will be affected. Do you want to continue?",
     "replication-group-actions-restore-confirmation-title": "Restore Volume Pairs Confirmation",
     "replication-group-actions-restore-confirmation-message": "The selected primary volume(s) will be restored by using corresponding secondary volume(s). Do you want to continue?",
     "restore-confirmation-message": "Select from the following secondary volume(s) to restore current primary volume:",

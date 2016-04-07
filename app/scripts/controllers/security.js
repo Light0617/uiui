@@ -9,6 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('SecurityCtrl', function ($scope, $q, $timeout, orchestratorService) {
+
         $scope.$watch('dataModel.accountDomain.id', function (id) {
             onAccountDomainIdChanged(id);
         });
@@ -52,9 +53,7 @@ angular.module('rainierApp')
                         username: dataModel.accountDomain.username,
                         password: dataModel.accountDomain.password
                     };
-                    orchestratorService.updateAccountDomain(dataModel.accountDomain.id, updateAccountDomainPayload).then(function () {
-                        window.history.back();
-                    });
+                    orchestratorService.updateAccountDomain(dataModel.accountDomain.id, updateAccountDomainPayload);
                 }
                 else {
                     var addAccountDomainPayload = {
@@ -62,16 +61,12 @@ angular.module('rainierApp')
                         username: dataModel.accountDomain.username,
                         password: dataModel.accountDomain.password
                     };
-                    orchestratorService.addAccountDomain(addAccountDomainPayload).then(function () {
-                        window.history.back();
-                    });
+                    orchestratorService.addAccountDomain(addAccountDomainPayload);
                 }
             };
 
             dataModel.remove = function () {
-                orchestratorService.deleteAccountDomain(dataModel.accountDomain.id).then(function () {
-                    window.history.back();
-                });
+                orchestratorService.deleteAccountDomain(dataModel.accountDomain.id);
             };
 
             dataModel.canSave = function () {
@@ -104,7 +99,6 @@ angular.module('rainierApp')
         }
 
         intiView();
-
 
         var onAccountDomainIdChanged = function (id) {
             if (!id) {

@@ -40,13 +40,16 @@ angular.module('rainierApp')
                         }
                     }
                 };
+                if (!result.volumePairs || _.isEmpty(result.volumePairs)) {
+                    $scope.dataModel.noVolumePairAffected = true;
+                }
                 scrollDataSourceBuilderService.setupDataLoader($scope, $scope.dataModel.affectedVolumePairs);
             });
         }
         else {
             $scope.dataModel = {
                 pageAction: action.charAt(0).toUpperCase() + action.slice(1, action.length),
-                snapshot: true
+                noVolumePairAffected: true
             };
         }
 

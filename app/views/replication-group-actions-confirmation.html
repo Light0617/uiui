@@ -12,20 +12,18 @@
             </div>
         </div>
         <div class="wizard-body">
-            <div class="header-row" ng-switch="dataModel.pageAction" ng-if="!dataModel.snapshot">
-                <h2 ng-switch-when="Suspend">{{'replication-group-actions-suspend-confirmation-message' | translate}}</h2>
-                <h2 ng-switch-when="Resume">{{'replication-group-actions-resume-confirmation-message' | translate}}</h2>
-                <h2 ng-switch-default>{{'replication-group-actions-delete-confirmation-message' | translate}}</h2>
+            <div class="header-row" ng-if="!dataModel.noVolumePairAffected">
+                <h2>{{'replication-group-actions-confirmation-message' | translate}}</h2>
             </div>
             <div class="scroll-wizard-container single-pane">
-                <div class="tile-view list-view" ng-if="dataModel.snapshot">
+                <div class="tile-view list-view" ng-if="dataModel.noVolumePairAffected">
                     <div class="alert alert-warning" role="alert">
                         <h1 ng-if="dataModel.pageAction === 'Suspend'">{{'replication-group-actions-suspend-snapshot-confirmation-message' | translate}}</h1>
                         <h1 ng-if="dataModel.pageAction === 'Resume'">{{'replication-group-actions-resume-snapshot-confirmation-message' | translate}}</h1>
                     </div>
                 </div>
                 <div class="tile-view list-view" infinite-scroll='loadMore()' infinite-scroll-distance='1'
-                     infinite-scroll-container='".scroll-wizard-container"' ng-if="!dataModel.snapshot">
+                     infinite-scroll-container='".scroll-wizard-container"' ng-if="!dataModel.noVolumePairAffected">
                     <!--Header Row-->
                     <div class="tile row row-tile column-headers">
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">&nbsp;</div>

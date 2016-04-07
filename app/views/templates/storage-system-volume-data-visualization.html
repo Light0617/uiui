@@ -566,7 +566,7 @@
     <symbol id="volume-icon-primary-text" contextmenu="volume-icon-primary-text">
         <g class="label-value-container volume-icon-text label-centered">
             <text class="value" x="57" y="21">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].primaryVolume.id : null}}</text>
-            <text class="header" x="57" y="75">{{model.primaryVolumeLabel}}</text>
+            <text class="header" x="57" y="75" title="{{model.primaryVolumeLabel}}">{{displayedSecondaryVolumeLabel}}</text>
             <text class="label" x="57" y="123">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].primaryVolume.status : null}}</text>
         </g>
     </symbol>
@@ -574,7 +574,7 @@
     <symbol id="volume-icon-secondary-text">
         <g class="label-value-container volume-icon-text label-centered">
             <text class="value" x="57" y="21">{{volumeId}}</text>
-            <text class="header" x="57" y="75">{{model.label}}</text>
+            <text class="header" x="57" y="75" title="{{model.label}}">{{displayedPrimaryVolumeLabel}}</text>
             <text class="label" x="57" y="123">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].secondaryVolume.status : null}}</text>
         </g>
     </symbol>
@@ -582,7 +582,8 @@
     <symbol id="copy-group-text">
         <g class="label-value-container">
             <use xlink:href="#label-copy-group" x="0" y="6" />
-            <text class="value" x="0" y="24">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].volumePairGroup : null}}</text>
+            <text class="value" x="0" y="24" title="{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].volumePairGroup : null}}">
+                {{displayedCopyGroupName}}</text>
             <use xlink:href="#label-date-time" x="0" y="40" />
             <text class="value" x="0" y="58">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].splitTime : null}}</text>
             <text class="value" x="0" y="70"></text>
