@@ -186,11 +186,15 @@ angular.module('rainierApp')
                 var keys = [];
                 var selectedPGs = [];
                 var selectedPGObjects = [];
+                model.activeFlashAllow = false;
                 // [NEWRAIN-1392]--The following parity groups are too many. Need to find a way just pass in the needed
                 // parity groups by the caller.
                 _.forEach(_.union(pgs, model.inUseParityGroups), function (pg) {
                     var diskType = pg.diskSpec.type;
                     if (pg.selected) {
+                        if(pg.diskSpec.type !== 'SAS') {
+                            model.activeFlashAllowed = true;
+                        }
                         var size;
                         if (!pg.inuse) {
                             selectedPGObjects.push(pg);

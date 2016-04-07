@@ -48,6 +48,7 @@ angular.module('rainierApp')
                 $scope.model.hasHtiLicense = false;
                 $scope.model.hasActiveFlashLicense = false;
                 $scope.model.activeFlashEnabled = false;
+                $scope.model.activeFlashAllowed = false;
                 _.forEach(result.licenseSettings, function(license){
                         if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true){
                             $scope.model.hasActiveFlashLicense = true;
