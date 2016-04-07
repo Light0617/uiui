@@ -1,7 +1,10 @@
 <div class="row">
     <csv-file-upload ng-model="dataModel.importedHosts" ng-title="Drop CSV here!!" ng-attr-title="{{'add-host-tool-tip' | translate}}"></csv-file-upload>
 </div>
-<div class="tile-view list-view">
+<div class="tile-view list-view" infinite-scroll='dataModel.loadMore()'
+     infinite-scroll-distance='1'
+     infinite-scroll-disabled='dataModel.hostsModel.displayHosts.length==dataModel.hostsModel.hosts.length'
+     infinite-scroll-container="'.scroll-wizard-container'">
     <!--Header Row-->
     <div class="tile row row-tile column-headers">
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
@@ -24,7 +27,7 @@
         </div>
     </div>
     <!--Standard Row-->
-    <div class="tile row row-tile" ng-repeat="host in dataModel.hostsModel.hosts">
+    <div class="tile row row-tile" ng-repeat="host in dataModel.hostsModel.displayHosts">
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
             <input type="text" ng-model="host.name"
                    class="form-control text inline" name="name"
@@ -54,12 +57,12 @@
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="!$first">
             <button class="btn icon-btn icon-sm icon-delete-item"
-                    ng-click="host.delete()"></button>
+                    ng-click="host.delete($index)"></button>
 
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="$first">
             <button class="btn icon-btn icon-sm icon-add"
-                    ng-click="dataModel.hostsModel.addHost()"></button>
+                    ng-click="dataModel.addNewHost()"></button>
 
 
         </div>

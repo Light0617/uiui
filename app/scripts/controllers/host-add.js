@@ -11,10 +11,12 @@ angular.module('rainierApp')
     .controller('HostAddCtrl', function ($scope, $filter, orchestratorService, $timeout) {
 
         var osTypes = orchestratorService.osType();
+        var pageSize = 25;
         var dataModel = {
             hostsModel: {
-                hosts: [],
-                addHost: function (h) {
+                hosts: [], // All the hosts
+                displayHosts: [], // Paginated hosts
+                addHost: function (hosts, h, insertIndex) {
                     var self = this;
                     var host = {
                         name: '',
@@ -29,32 +31,35 @@ angular.module('rainierApp')
                     host.isValid = function () {
                         return !_.isEmpty(host.name) && !_.isEmpty(host.osType) && !_.isEmpty(host.wwns);
                     };
-                    host.delete = function () {
+                    host.delete = function (hostIndex) {
                         $timeout(function () {
-                            _.remove(self.hosts, function (h) {
-                                return h === host;
-                            });
+                            self.hosts.splice(hostIndex, 1);
+                            self.displayHosts.splice(hostIndex, 1);
                         });
                     };
 
-                    self.hosts.splice(0, 0, host);
+                    hosts.splice(insertIndex, 0, host);
                 }
             },
             osTypes: osTypes
         };
 
-        dataModel.hostsModel.addHost();
+        dataModel.addNewHost = function() {
+            dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, 0);
+            dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, 0);
+        };
+        dataModel.addNewHost();
 
         dataModel.canSubmit = function () {
             var iHost;
-            var cHosts = dataModel.hostsModel.hosts.length;
+            var cHosts = dataModel.hostsModel.displayHosts.length;
             var h;
             if (cHosts <= 1) {
                 return false;
             }
             // Skip the first row when validating the submit button
             for (iHost = 1; iHost < cHosts; ++iHost) {
-                h = dataModel.hostsModel.hosts[iHost];
+                h = dataModel.hostsModel.displayHosts[iHost];
                 if( !h.isValid()){
                     return false;
                 }
@@ -68,9 +73,18 @@ angular.module('rainierApp')
                 servers: []
             };
             var iHost;
+
+            if (dataModel.hostsModel.hosts.length > dataModel.hostsModel.displayHosts.length){
+                _.chain(dataModel.hostsModel.hosts)
+                    .rest(dataModel.hostsModel.displayHosts.length)
+                    .forEach(function (item) {
+                        dataModel.hostsModel.displayHosts.push(item);
+                    });
+            }
+
             // Skip the first row. Otherwise, we need to always fill some values in it.
-            for (iHost = 1; iHost < dataModel.hostsModel.hosts.length; ++iHost) {
-                var h = dataModel.hostsModel.hosts[iHost];
+            for (iHost = 1; iHost < dataModel.hostsModel.displayHosts.length; ++iHost) {
+                var h = dataModel.hostsModel.displayHosts[iHost];
                 hostsPayload.servers.push(buildPayload(h.name, h.description, h.ipAddress, h.osType, h.wwns));
             }
 
@@ -81,7 +95,9 @@ angular.module('rainierApp')
 
         dataModel.reset = function () {
             dataModel.hostsModel.hosts = [];
-            dataModel.hostsModel.addHost();
+            dataModel.hostsModel.displayHosts = [];
+
+            dataModel.addNewHost();
         };
 
         function buildPayload(name, description, ipAddress, osType, wwns) {
@@ -108,15 +124,25 @@ angular.module('rainierApp')
             wwns: 'wwns'
         };
 
+        dataModel.loadMore = function () {
+            _.chain(dataModel.hostsModel.hosts)
+                .rest(dataModel.hostsModel.displayHosts.length)
+                .first(pageSize)
+                .forEach(function (item) {
+                    dataModel.hostsModel.displayHosts.push(item);
+                });
+        };
+
         $scope.$watch('dataModel.importedHosts', function (hosts) {
             if (!hosts) {
                 return;
             }
             if (hosts.length > 0) {
-                dataModel.hostsModel.hosts = [];
+                dataModel.reset();
             }
 
-            _.forEach(hosts, function (h) {
+            for(var iHost = 0; iHost < hosts.length; iHost++) {
+                var h = hosts[iHost];
                 var mappedHost = {};
                 var hasAnyProperties = false;
                 for (var property in h) {
@@ -131,13 +157,13 @@ angular.module('rainierApp')
                         hasAnyProperties = true;
                     }
                 }
-                if (hasAnyProperties) {
-                    dataModel.hostsModel.addHost(mappedHost);
+                if (hasAnyProperties && !_.isEmpty(mappedHost.name)) {
+                    dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, mappedHost, dataModel.hostsModel.hosts.length);
+                    if (iHost < pageSize){
+                        dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, mappedHost, dataModel.hostsModel.displayHosts.length);
+                    }
                 }
 
-            });
-            if (dataModel.hostsModel.hosts.length === 0) {
-                dataModel.hostsModel.addHost();
             }
 
         });
