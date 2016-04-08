@@ -155,6 +155,7 @@ angular.module('rainierApp')
                 {
                     icon: 'icon-edit',
                     type: 'link',
+                    tooltip :'action-tooltip-toggle-security',
                     enabled: function () {
                         return dataModel.onlyOneSelected();
                     },
