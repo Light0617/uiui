@@ -308,6 +308,7 @@ angular.module('rainierApp')
                 item.toolTipDpType = dpTypeInfo.dpTypeInfo;
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
+                item.dpMonitoringStatus = item.dataProtectionSummary.replicationType.length === 0 ? '' : item.dpMonitoringStatus;
 
                 if (item.dpStatus) {
                     item.alertType = 'alert-link';
