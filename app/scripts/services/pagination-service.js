@@ -53,6 +53,11 @@ angular.module('rainierApp')
                 return '[' + minValue + ' TO ' + maxValue + ']';
             }
         }
+        function getPartialSearchQueryString(value) {
+            var tokens = value.split(" ");
+            value = '*' + tokens.join('* *') + '*';
+            return value;
+        }
         function getQueryStringForList(listModel) {
             if (!_.isEmpty(listModel)) {
                 var listItems = listModel.join(' OR ');
@@ -190,8 +195,10 @@ angular.module('rainierApp')
                     queryObject.queryStringFunction = function() {
                         var listOfSearch = [];
                         _.each(queryObjects, function(qo) {
-                            if (qo.type === type.STRING || (parseInt(qo.value) && qo.type === type.INT)) {
-                                listOfSearch.push(qo.key + ':' + qo.value);
+                            if ((parseInt(qo.value) && qo.type === type.INT ) || qo.value === '0') {
+                                listOfSearch.push(qo.key + ':' + parseInt(qo.value));
+                            } else if (qo.type === type.STRING) {
+                                listOfSearch.push(qo.key + ':' + getPartialSearchQueryString(qo.value));
                             }
                         });
                         return listOfSearch.join(' OR ');

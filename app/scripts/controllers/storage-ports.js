@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('StoragePortsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
                                               objectTransformService, synchronousTranslateService,
-                                              scrollDataSourceBuilderServiceNew, ShareDataService, paginationService, queryService) {
+                                              scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
+                                              queryService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePortsPath = 'storage-ports';
 
