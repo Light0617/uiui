@@ -566,7 +566,7 @@
     <symbol id="volume-icon-primary-text" contextmenu="volume-icon-primary-text">
         <g class="label-value-container volume-icon-text label-centered">
             <text class="value" x="57" y="21">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].primaryVolume.id : null}}</text>
-            <text class="header" x="57" y="75" title="{{model.primaryVolumeLabel}}">{{displayedSecondaryVolumeLabel}}</text>
+            <text class="header" x="57" y="75" title="{{model.primaryVolumeLabel}}">{{displayedPrimaryVolumeLabel}}</text>
             <text class="label" x="57" y="123">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].primaryVolume.status : null}}</text>
         </g>
     </symbol>
@@ -574,7 +574,7 @@
     <symbol id="volume-icon-secondary-text">
         <g class="label-value-container volume-icon-text label-centered">
             <text class="value" x="57" y="21">{{volumeId}}</text>
-            <text class="header" x="57" y="75" title="{{model.label}}">{{displayedPrimaryVolumeLabel}}</text>
+            <text class="header" x="57" y="75" title="{{model.label}}">{{displayedSecondaryVolumeLabel}}</text>
             <text class="label" x="57" y="123">{{rgWithVolumeIdAsSvol ? rgWithVolumeIdAsSvol.volumePairsAsSvol[0].secondaryVolume.status : null}}</text>
         </g>
     </symbol>

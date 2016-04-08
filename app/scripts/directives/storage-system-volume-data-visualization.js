@@ -15,13 +15,15 @@ angular.module('rainierApp')
             link: function() {
                 $('text.value, text.header').on('mouseover', function(event){
                     var title = this.getAttribute('title');
-                    var tooltipBlock = $('#svg-tooltip-block');
-                    tooltipBlock.css('position', 'absolute');
-                    tooltipBlock.css('left', event.pageX);
-                    tooltipBlock.css('top', event.pageY);
-                    tooltipBlock.css('z-index', 10000);
-                    tooltipBlock.css('visibility', 'visible');
-                    tooltipBlock.text(title);
+                    if (title) {
+                        var tooltipBlock = $('#svg-tooltip-block');
+                        tooltipBlock.css('position', 'absolute');
+                        tooltipBlock.css('left', event.pageX);
+                        tooltipBlock.css('top', event.pageY);
+                        tooltipBlock.css('z-index', 10000);
+                        tooltipBlock.css('visibility', 'visible');
+                        tooltipBlock.text(title);
+                    }
                 });
 
                 $('text.value, text.header').on('mouseleave', function(){
