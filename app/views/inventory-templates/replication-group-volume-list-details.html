@@ -7,10 +7,6 @@
             <p class="sort-column-header">{{'repliaction-group-volume-list-pvolid' | translate}}</p>
         </div>
         <div class="twelfth cell text-resize ellipsis"
-             title="{{'repliaction-group-volume-list-pvol-label' | translate}}">
-            <p class="sort-column-header">{{'repliaction-group-volume-list-pvol-label' | translate}}</p>
-        </div>
-        <div class="twelfth cell text-resize ellipsis"
              title="{{'repliaction-group-volume-list-pvol-status' | translate}}">
             <p class="sort-column-header">{{'repliaction-group-volume-list-pvol-status' | translate}}</p>
         </div>
@@ -18,10 +14,6 @@
         <div class="twelfth cell text-resize ellipsis"
              title="{{'repliaction-group-volume-list-svolid' | translate}}">
             <p class="sort-column-header">{{'repliaction-group-volume-list-svolid' | translate}}</p>
-        </div>
-        <div class="twelfth cell text-resize ellipsis"
-             title="{{'repliaction-group-volume-list-svol-label' | translate}}">
-            <p class="sort-column-header">{{'repliaction-group-volume-list-svol-label' | translate}}</p>
         </div>
         <div class="twelfth cell text-resize ellipsis"
              title="{{'repliaction-group-volume-list-svol-status' | translate}}">
@@ -55,9 +47,6 @@
            title="{{vp.primaryVolume.id}}"><p>{{vp.primaryVolume.id}}</p>
         </a>
 
-        <div class="twelfth cell text-resize ellipsis" title="{{vp.primaryVolume.label}}">
-            <p>{{vp.primaryVolume.label}}</p>
-        </div>
         <div class="twelfth cell text-resize ellipsis" title="{{vp.primaryVolume.status}}">
             <p>{{vp.primaryVolume.status}}</p>
         </div>
@@ -68,9 +57,6 @@
 
         <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.id}}"
              ng-if="vp.secondaryVolume.id === 'N/A'"><p>{{vp.secondaryVolume.id}}</p>
-        </div>
-        <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.label}}">
-            <p>{{vp.secondaryVolume.label}}</p>
         </div>
         <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.status}}">
             <p>{{vp.secondaryVolume.status}}</p>

@@ -5,9 +5,6 @@
         <div class="col-md-1 cell text-resize ellipsis" title="{{'repliaction-group-volume-list-svolid' | translate}}">
             <p class="sort-column-header">{{'repliaction-group-volume-list-svolid' | translate}}</p>
         </div>
-        <div class="col-md-1 cell text-resize ellipsis" title="{{'repliaction-group-volume-list-svol-label' | translate}}">
-            <p class="sort-column-header">{{'repliaction-group-volume-list-svol-label' | translate}}</p>
-        </div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{'repliaction-group-volume-list-svol-status' | translate}}">
             <p class="sort-column-header">{{'repliaction-group-volume-list-svol-status' | translate}}</p>
         </div>
@@ -38,7 +35,6 @@
         </div>
         <a class="col-md-1 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.secondaryVolume.id !== 'N/A'" title="{{vp.secondaryVolume.id}}"><p>{{vp.secondaryVolume.id}}</p></a>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondaryVolume.id}}" ng-if="vp.secondaryVolume.id === 'N/A'" ><p>{{vp.secondaryVolume.id}}</p></div>
-        <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondaryVolume.status}}"><p>{{vp.secondaryVolume.label}}</p></div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondaryVolume.status}}"><p>{{vp.secondaryVolume.status}}</p></div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.primaryVolume.status}}"><p>{{vp.primaryVolume.status}}</p></div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{vp.consistencyId}}"><p>{{vp.consistencyId}}</p></div>
