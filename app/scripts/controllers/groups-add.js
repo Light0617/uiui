@@ -72,8 +72,10 @@ angular.module('rainierApp')
             $scope.dataModel.submit = function () {
                 var dataModel = $scope.dataModel;
                 var payload = {
+
                     permissions: [
                         {
+                            groupName : dataModel.label,
                             permissionType: {
                                 allowFullControl: dataModel.permission.allow[0],
                                 allowRead: dataModel.permission.allow[2],

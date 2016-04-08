@@ -11,14 +11,14 @@
                 <p>{{ 'share-full-control' | translate }}</p>
                 <div class="btn-group btn-group-justified" data-toggle="buttons">
                     
-                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.allow[0]}">
-                            <input id="share-allow" name="share" type="radio" checked autocomplete="off" ng-model="dataModel.permission.allow[0]" ng-click="dataModel.change(true, 'full')">
+                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.allow[0]}" ng-click="dataModel.change(true, 'full')">
+                            <input name="share" type="radio" checked autocomplete="off" ng-model="dataModel.permission.allow[0]">
                             {{ 'share-allow' | translate }}
                         </label>
                     
                     
-                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.deny[0]}">
-                            <input id="share-deny" name="share" type="radio" checked autocomplete="off"  ng-model="dataModel.permission.deny[0]" ng-click="dataModel.change(false, 'full')">
+                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.deny[0]}" ng-click="dataModel.change(false, 'full')">
+                            <input name="share" type="radio" checked autocomplete="off"  ng-model="dataModel.permission.deny[0]">
                             {{ 'share-deny' | translate }}
                         </label>
                     
@@ -28,14 +28,14 @@
                 <p>{{ 'share-change' | translate }}</p>
                 <div class="btn-group btn-group-justified" data-toggle="buttons">
                     
-                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.allow[1]}" >
-                            <input id="change-allow" name="change" type="radio" checked autocomplete="off" ng-model="dataModel.permission.allow[1]" ng-click="dataModel.change(true, 'change')">
+                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.allow[1]}" ng-click="dataModel.change(true, 'change')">
+                            <input name="change" type="radio" checked autocomplete="off" ng-model="dataModel.permission.allow[1]" >
                             {{ 'share-allow' | translate }}
                         </label>
                     
                     
-                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.deny[1]}" >
-                            <input id="change-deny" name="change" type="radio" checked autocomplete="off" ng-model="dataModel.permission.deny[0]" ng-model="dataModel.permission.deny[1]" ng-click="dataModel.change(false, 'change')">
+                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.deny[1]}" ng-click="dataModel.change(false, 'change')">
+                            <input name="change" type="radio" checked autocomplete="off" ng-model="dataModel.permission.deny[1]">
                             {{ 'share-deny' | translate }}
                         </label>
                    
@@ -45,14 +45,12 @@
                 <p>{{ 'share-read' | translate }}</p>
                 <div class="btn-group btn-group-justified" data-toggle="buttons">
                     
-                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.allow[2]}">
-                         <input id="read-allow" name="read" type="radio" checked autocomplete="off" ng-model="dataModel.permission.allow[2]" ng-click="dataModel.change(true, 'read')">
+                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.allow[2]}" ng-click="dataModel.change(true, 'read')">
+                         <input id="read-allow" name="read" type="radio" checked autocomplete="off" ng-model="dataModel.permission.allow[2]">
                             {{ 'share-allow' | translate }}
                         </label>
-                    
-                    
-                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.deny[2]}">
-                            <input id="share-deny" name="read" type="radio" checked autocomplete="off" ng-model="dataModel.permission.deny[2]" ng-click="dataModel.change(false, 'read')" ng-change="dataModel.change(false, 'change')">
+                        <label class="btn btn-primary btn-light" data-ng-class="{'active' : dataModel.permission.deny[2]}" ng-click="dataModel.change(false, 'read')">
+                            <input name="read" type="radio" checked autocomplete="off" ng-model="dataModel.permission.deny[2]">
                             {{ 'share-deny' | translate }}
                         </label>
                     

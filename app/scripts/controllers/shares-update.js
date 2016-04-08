@@ -62,7 +62,6 @@ angular.module('rainierApp')
                     ($scope.dataModel.validationForm.label.$dirty || $scope.dataModel.validationForm.fileSystemPath.$dirty || $scope.dataModel.accessConfigurationForm.accessConfiguration.$dirty) ||
                     $scope.dataModel.anySelected();
             };
-
             $scope.dataModel.change = function (allow, type) {
                 var actionArray = $scope.dataModel.permission.deny;
                 if(allow) {
@@ -109,7 +108,7 @@ angular.module('rainierApp')
                     item.permissionType.denyRead = dataModel.permission.deny[2];
                     item.permissionType.denyChange = dataModel.permission.deny[1];
                     permissions.push({
-                        groupName: item.name,
+                        groupName: item.groupName,
                         permissionType: item.permissionType
                     });
                 });
