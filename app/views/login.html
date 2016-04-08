@@ -44,8 +44,8 @@
         </svg>
             </button>
             <div class="error-message">
-                <div ng-if="model.loginFailed" class="pull-left error">{{ 'login-common-error' | translate}}</span></div>
-                <div ng-if="model.unauthorized" class="pull-left error">{{ 'login-unauthorized-error' | translate}}</span></div>
+                <div ng-if="model.loginFailed" class="pull-left critical">{{ 'login-common-error' | translate}}</span></div>
+                <div ng-if="model.unauthorized" class="pull-left critical">{{ 'login-unauthorized-error' | translate}}</span></div>
             </div>
         </form>
     </div>
