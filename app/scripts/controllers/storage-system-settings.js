@@ -132,28 +132,28 @@ angular.module('rainierApp')
                 id: 'common',
                 text: 'Common',
                 status: 'active',
-                iconStep: 'icon-step-disabled',
+                iconStep: 'icon-circle-no-fill',
                 content: 'in active'
             },
             {
                 id: 'time-zone',
                 text: 'Time-Zones',
                 status: '',
-                iconStep: 'icon-step-disabled',
+                iconStep: 'icon-circle-no-fill',
                 content: ''
             },
             {
                 id: 'licenses',
                 text: 'Licenses',
                 status: '',
-                iconStep: 'icon-step-disabled',
+                iconStep: 'icon-circle-no-fill',
                 content: ''
             },
             {
                 id: 'notification',
                 text: 'Notification',
                 status: '',
-                iconStep: 'icon-step-disabled',
+                iconStep: 'icon-circle-no-fill',
                 content: ''
             }
         ];
@@ -163,13 +163,13 @@ angular.module('rainierApp')
 
         vm.nextStep = function (currentIndex, isNext) {
             vm.steps[currentIndex].status = 'completed';
-            vm.steps[currentIndex].iconStep = 'icon-step-confirmed';
+            vm.steps[currentIndex].iconStep = 'icon-checkmark-no-fill';
             vm.steps[currentIndex].content = '';
 
             var newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
             vm.steps[newIndex].status = 'active';
             vm.steps[newIndex].content = 'active in';
-            vm.steps[newIndex].iconStep = 'icon-step-disabled';
+            vm.steps[newIndex].iconStep = 'icon-circle-no-fill';
 
             if (vm.currentStep === 0) {
                 vm.prevClass = 'disabled';
@@ -195,12 +195,12 @@ angular.module('rainierApp')
             }
 
             vm.steps[vm.currentStep].status = 'completed';
-            vm.steps[vm.currentStep].iconStep = 'icon-step-confirmed';
+            vm.steps[vm.currentStep].iconStep = 'icon-checkmark-no-fill';
             vm.steps[vm.currentStep].content = '';
 
             vm.steps[step].status = 'active';
             vm.steps[step].content = 'active in';
-            vm.steps[step].iconStep = 'icon-step-disabled';
+            vm.steps[step].iconStep = 'icon-circle-no-fill';
 
             vm.currentStep = step;
             if (vm.currentStep === 0) {
