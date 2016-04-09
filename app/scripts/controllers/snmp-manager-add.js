@@ -12,11 +12,21 @@ angular.module('rainierApp')
 
         var dataModel = {
             snmpManager: {
-                authProtocol: 'NO_AUTH',
-                privacyProtocol: 'NO_PRIV'
+                authProtocol: {value:'NO_AUTH', display:'No Auth'},
+                privacyProtocol: {value:'NO_PRIV', display:'No Privacy'}
             },
-            authProtocols: orchestratorService.authProtocols(),
-            privacyProtocols: orchestratorService.privacyProtocols()
+            authProtocols: _.map(orchestratorService.authProtocols(), function(value) {
+                if(value === 'NO_AUTH') {
+                    return {value:value, display:'No Auth'}
+                }
+                return {value:value, display:value}
+            }),
+            privacyProtocols: _.map(orchestratorService.privacyProtocols(), function(value) {
+                if(value === 'NO_PRIV') {
+                    return {value:value, display:'No Privacy'}
+                }
+                return {value:value, display:value}
+            })
         };
 
         dataModel.canSubmit = function () {
@@ -24,13 +34,13 @@ angular.module('rainierApp')
                 !_.isEmpty(dataModel.snmpManager.name) &&
                 !_.isEmpty(dataModel.snmpManager.username);
             if (isValid) {
-                if (dataModel.snmpManager.privacyProtocol!=='NO_PRIV' && _.isEmpty(dataModel.snmpManager.privacyPassword)){
+                if (dataModel.snmpManager.privacyProtocol.value!=='NO_PRIV' && _.isEmpty(dataModel.snmpManager.privacyPassword)){
                     return false;
                 }
-                if (dataModel.snmpManager.authProtocol!=='NO_AUTH' && _.isEmpty(dataModel.snmpManager.authPassword)){
+                if (dataModel.snmpManager.authProtocol.value!=='NO_AUTH' && _.isEmpty(dataModel.snmpManager.authPassword)){
                     return false;
                 }
-                if (dataModel.snmpManager.privacyProtocol!=='NO_PRIV' && dataModel.snmpManager.authProtocol==='NO_AUTH'){
+                if (dataModel.snmpManager.privacyProtocol.value!=='NO_PRIV' && dataModel.snmpManager.authProtocol.value==='NO_AUTH'){
                     return false;
                 }
             }
@@ -56,10 +66,10 @@ angular.module('rainierApp')
                     name: snmpManager.name,
                     username: snmpManager.username,
                     ipAddress: snmpManager.ipAddress,
-                    authProtocol: snmpManager.authProtocol,
-                    authPassword: snmpManager.authProtocol === 'NO_AUTH' ? null : snmpManager.authPassword,
-                    privacyProtocol: snmpManager.privacyProtocol,
-                    privacyPassword: snmpManager.privacyProtocol === 'NO_PRIV' ? null : snmpManager.privacyPassword,
+                    authProtocol: snmpManager.authProtocol.value,
+                    authPassword: snmpManager.authProtocol.value === 'NO_AUTH' ? null : snmpManager.authPassword,
+                    privacyProtocol: snmpManager.privacyProtocol.value,
+                    privacyPassword: snmpManager.privacyProtocol.value === 'NO_PRIV' ? null : snmpManager.privacyPassword,
                     port: snmpManager.port
 
                 });
