@@ -137,7 +137,7 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'Privary Protocol',
+                    title: 'Privacy Protocol',
                     sizeClass: 'twelfth',
                     sortField: 'privacyProtocol',
                     getDisplayValue: function (item) {
