@@ -1,4 +1,4 @@
-<div class="inline" ng-if="action.type  === 'dropdown'"
+<div class="inline right" ng-if="action.type  === 'dropdown'"
      ng-repeat-start="action in  dataModel.getActions()" ng-disabled="!action.enabled()" dropdown>
         <button type="button" class="btn icon-btn icon-sm nopadding" dropdown-toggle ng-attr-title="{{action.tooltip | translate }}">
             <span ng-attr-class="{{action.icon}}"></span>
