@@ -59,14 +59,15 @@ angular.module('rainierApp')
             var iFabricSwitch;
             var cFabricSwitch = dataModel.fabricSwitches.length;
 
-            if (cFabricSwitch <= 1){
+            if (cFabricSwitch < 1){
                 return false;
             }
 
-            // Skip the first row when validating the submit button
-            for (iFabricSwitch = 1; iFabricSwitch < dataModel.fabricSwitches.length; ++iFabricSwitch) {
+            // Do not skip the first row when validating the submit button
+            for (iFabricSwitch = 0; iFabricSwitch < dataModel.fabricSwitches.length; ++iFabricSwitch) {
                 var fabricSwitch = dataModel.fabricSwitches[iFabricSwitch];
                 if( !fabricSwitch.isValid()){
+
                     return false;
                 }
             }
