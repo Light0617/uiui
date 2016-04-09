@@ -61,25 +61,13 @@ angular.module('rainierApp')
                     $scope.dataModel.virtualFileServers = [evs];
                 }
             }
-            if(!filePoolId && filePools.length > 0) {
-                $scope.dataModel.filePool = _.last(filePools);
-            }
-            //TODO: Will activate once auto selected is supported
-            //var autoSelectedFilePool = fileSystemService.autoSelectFilePool($scope.dataModel.filePools);
-            //autoSelectedFilePool.label = synchronousTranslateService.translate('common-auto-selected');
-            //$scope.dataModel.filePools.unshift(autoSelectedFilePool);
             var formats = fileSystemService.getFormats();
             var units = fileSystemService.getUnits();
-            //var storagePoolMapping = fileSystemService.getStoragePoolMapping(storageSystemId, $scope.dataModel.filePools);
             $scope.dataModel.selectedStorageSystem = storageSystemId;
             $scope.dataModel.storageSystems = storageSystems;
             $scope.dataModel.formats = formats;
             $scope.dataModel.units = units;
             $scope.dataModel.unit = units[0];
-
-            //$scope.dataModel.poolTiers = _.keys(storagePoolMapping);
-            //TODO: EL Remove when poolTier is fixed
-            $scope.dataModel.poolTier = '1';
             $scope.dataModel.ports = ports;
             $scope.dataModel.subnetPattern = /^(255.)((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){2}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/;
             $scope.dataModel.selectedPattern = /(^\s*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$)/;
@@ -123,15 +111,6 @@ angular.module('rainierApp')
                     $scope.dataModel.virtualFileServer && $scope.dataModel.validationForm.capacity.$valid && !$scope.dataModel.whiteSpace &&
                     isVirtualFileServerParamsValid() && $scope.dataModel.validCapacity && !$scope.dataModel.maxCapacity;
             };
-
-            //TODO: EL Need to fix
-            $scope.$watch('dataModel.poolTier', function () {
-                $scope.dataModel.showDropDownColumn = false;
-
-                //$scope.dataModel.filePools = storagePoolMapping[$scope.dataModel.poolTier];
-                $timeout(setDropDownVisibility,500);
-                $scope.dataModel.showDropDownColumn = true;
-            }, true);
 
             $scope.$watch('dataModel.ipAddress', function () {
                 if(ipv4.test($scope.dataModel.ipAddress)){
