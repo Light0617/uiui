@@ -22,7 +22,7 @@ rainierAppMock.factory('sharesMock', function (mockUtils) {
             'fileSystemPath':'/etc',
             'evsId': 1,
             'permissions': mockPermissions,
-            'accessConfiguration':'1.1.1.1',
+            'accessConfiguration':'1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5',
             'cacheOptions':'',
             'snapshotOptions':'',
             'maxConcurrentUsers':'',

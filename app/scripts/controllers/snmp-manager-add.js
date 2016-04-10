@@ -17,15 +17,15 @@ angular.module('rainierApp')
             },
             authProtocols: _.map(orchestratorService.authProtocols(), function(value) {
                 if(value === 'NO_AUTH') {
-                    return {value:value, display:'No Auth'}
+                    return {value:value, display:'No Auth'};
                 }
-                return {value:value, display:value}
+                return {value:value, display:value};
             }),
             privacyProtocols: _.map(orchestratorService.privacyProtocols(), function(value) {
                 if(value === 'NO_PRIV') {
-                    return {value:value, display:'No Privacy'}
+                    return {value:value, display:'No Privacy'};
                 }
-                return {value:value, display:value}
+                return {value:value, display:value};
             })
         };
 

@@ -54,7 +54,7 @@ angular.module('rainierApp')
             }
         }
         function getPartialSearchQueryString(value) {
-            var tokens = value.split(" ");
+            var tokens = value.split(' ');
             value = '*' + tokens.join('* *') + '*';
             return value;
         }

@@ -22,7 +22,7 @@ rainierAppMock.factory('exportsMock', function (mockUtils) {
             'evsId': 1,
             'snapshotOptions':'',
             'transferToReplicationTarget':'',
-            'accessConfiguration': '1.1.1.1',
+            'accessConfiguration': '1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5',
             'links':[
                 {
                     'rel':'_self',
