@@ -89,6 +89,9 @@ angular.module('rainierApp')
                 searchQuery: function (value) {
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject('externalParityGroupId', new paginationService.SearchType().STRING, value));
+                    queryObjects.push(new paginationService.QueryObject('externalStorageVendor', new paginationService.SearchType().STRING, value));
+                    queryObjects.push(new paginationService.QueryObject('externalStorageProduct', new paginationService.SearchType().STRING, value));
+                    queryObjects.push(new paginationService.QueryObject('externalStorageSystemId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(getExternalParityGroupPath, objectTransformService.transformExternalParityGroup, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
