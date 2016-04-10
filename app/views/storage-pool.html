@@ -16,7 +16,7 @@
                                 <p class="label">{{ 'storage-pool-type' | translate}}</p><p class="value">{{dataModel.type | translate}}</p>
                                 <p class="label" title= "{{dataModel.tierNames}}">{{ 'storage-pool-tier' | translate}}</p><p class="value">{{dataModel.tierNames}}</p>
                                 <p class="label">{{ 'storage-pool-encryption' | translate}} </p><p class="value">{{dataModel.encrypted | translate}}</p>
-                                <p class="label">{{ 'pool-active-flash' | translate }} </p><p class="value">{{dataModel.activeFlashEnabled}}</p>
+                                <p class="label" ng-if="dataModel.containsPlatinum">{{ 'pool-active-flash' | translate }} </p><p class="value" ng-if="dataModel.containsPlatinum">{{dataModel.activeFlashEnabled}}</p>
                                 <p class="label">{{ 'storage-pool-utilization-threshold1' | translate}} </p> <p class="value">{{dataModel.utilizationThreshold1}}</p>
                                 <p class="label">{{ 'storage-pool-utilization-threshold2' | translate}} </p><p class="value">{{dataModel.utilizationThreshold2}}</p>
                                 <p class="label">{{ 'storage-pool-subscription-limit' | translate}} </p><p class="value">{{dataModel.subscriptionLimit.unlimited ? ('common-label-unlimited' | translate) : dataModel.subscriptionLimit.value}}</p></p>

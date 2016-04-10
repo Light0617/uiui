@@ -472,6 +472,12 @@ angular.module('rainierApp')
                     item.disabledCheckBox = true;
                 }
 
+                var activeFlashTitle = '';
+                if(_.find(item.tiers, function(tier) { return tier.tier === 'Platinum'; })) {
+                    item.containsPlatinum = true;
+                    activeFlashTitle = 'AFE: ' + item.activeFlashEnabled;
+                }
+
                 item.metaData = [
                     {
                         left: true,
@@ -480,7 +486,7 @@ angular.module('rainierApp')
                     },
                     {
                         left: false,
-                        title: 'AFE: ' + item.activeFlashEnabled,
+                        title: activeFlashTitle,
                         details: []
                     },
                     {
@@ -494,6 +500,7 @@ angular.module('rainierApp')
                         details: []
                     }
                 ];
+
                 item.getIcons = function () {
                     return [];
                 };
