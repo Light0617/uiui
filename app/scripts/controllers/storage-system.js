@@ -106,7 +106,7 @@ angular.module('rainierApp')
             return orchestratorService.tierSummary(storageSystemId);
         }).then(function (result) {
             tierSummary = result.tierSummaryItems;
-            return orchestratorService.dataProtectionSummary();
+            return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
         }).then(function (result) {
             dataProtection = result;
             return orchestratorService.storageSystem(storageSystemId);
