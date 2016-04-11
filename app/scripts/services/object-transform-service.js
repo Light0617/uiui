@@ -459,7 +459,7 @@ angular.module('rainierApp')
                 var activeFlashTitle = '';
                 if(_.find(item.tiers, function(tier) { return tier.tier === 'Platinum'; })) {
                     item.containsPlatinum = true;
-                    activeFlashTitle = 'AFE: ' + item.activeFlashEnabled;
+                    activeFlashTitle = synchronousTranslateService.translate('pool-active-flash') + ': ' + item.activeFlashEnabled;
                 }
 
                 item.metaData = [
