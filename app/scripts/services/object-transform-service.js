@@ -58,25 +58,6 @@ angular.module('rainierApp')
             return dpType;
         };
 
-        var transformDpType = function (dpTypeList) {
-            var result = {};
-
-            if (_.isArray(dpTypeList)) {
-                dpTypeList.sort();
-                var names = [];
-
-                _.forEach (dpTypeList, function(item) {
-                    names.push(friendlyReplicationTypeName(item));
-                });
-                result.displayedDpType = names.length === 0 ? null : names.length === 1 ? names[0] : names[0] + '...';
-                result.toolTipDpType = names.join(',');
-            } else {
-                result.displayedDpType = null;
-                result.toolTipDpType = null;
-            }
-            return result;
-        };
-
         var addZero = function (time) {
             if (time < 10) {
                 time = '0' + time;
@@ -302,9 +283,13 @@ angular.module('rainierApp')
                 item.poolLabel = 'pool' + item.poolId;
                 item.volumeLabel = 'Volume' + item.volumeId;
 
-                var dpTypeInfo = transformDpType(item.dataProtectionSummary.replicationType);
+                var types = [];
+                _.each(item.dataProtectionSummary.replicationType, function (type) {
+                    types.push(type.charAt(0).toUpperCase() + type.toLowerCase().slice(1));
+                });
 
-                item.displayedDpType = dpTypeInfo.displayedDpType;
+                item.displayedDpType = types.join(', ');
+
                 item.toolTipDpType = dpTypeInfo.dpTypeInfo;
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
@@ -1144,9 +1129,12 @@ angular.module('rainierApp')
                 };
             },
             transformHost: function (item) {
-                var dpTypeInfo = transformDpType(item.dpType);
-                item.displayedDpType = dpTypeInfo.displayedDpType;
-                item.toolTipDpType = dpTypeInfo.toolTipDpType;
+                var types = [];
+                _.each(item.dataProtectionSummary.replicationType, function (type) {
+                    types.push(type.charAt(0).toUpperCase() + type.toLowerCase().slice(1));
+                });
+
+                item.displayedDpType = types.join(', ');
 
                 item.getIcons = function () {
                     return [];
