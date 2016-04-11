@@ -30,6 +30,7 @@ angular.module('rainierApp')
             result.availablePhysicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availablePhysicalCapacityInBytes));
             result.expansionRate = addColonSign(1, result.expansionRate);
             result.compressionRate = addColonSign(result.compressionRate, 1);
+            result.savingsPercentage = addPercentageSign(result.savingsPercentage);
             $scope.dataModel = result;
         });
 

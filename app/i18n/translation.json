@@ -215,6 +215,7 @@
     "storage-pool-compressed-parity-group-ids": "Compressed Parity Group Ids",
     "storage-pool-expansion-rate": "Expansion Rate",
     "storage-pool-compression-rate": "Compression Rate",
+    "storage-pool-savings-percentage": "Savings Percentage",
     "storage-pool-physical-capacity": "Physical Capacity",
     "storage-pool-used-physical-capacity": "Used Physical Capacity",
     "storage-pool-available-physical-capacity": "Available Physical Capacity",

@@ -550,7 +550,8 @@ var storagePools = _.map(_.range(1, 100), function (v) {
         "expansionRate": expansionRate,
         "compressionRate": compressionRate,
         "encrypted": encryption,
-        "compressed": compression
+        "compressed": compression,
+        "savingsPercentage": 10
     };
 
 });
