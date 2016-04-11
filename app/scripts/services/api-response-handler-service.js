@@ -52,7 +52,6 @@ angular.module('rainierApp')
                     var modelInstance = $modal.open({
                         templateUrl: 'views/templates/error-modal.html',
                         windowClass: 'modal fade confirmation',
-                        backdrop: true,
                         backdropClass: 'modal-backdrop',
                         controller: function ($scope) {
 
@@ -62,6 +61,10 @@ angular.module('rainierApp')
                                 self.errorDialogOpend = false;
                                 wrapped.reject();
                             };
+
+                            modelInstance.result.finally(function() {
+                                $scope.cancel();
+                            })
                         }
                     });
                     self.errorDialogOpend = true;
