@@ -50,11 +50,7 @@ angular.module('rainierApp')
                 sortField: 'dataProtectionSummary.replicationType',
                 getDisplayValue: function(item) {
                     return item.displayedDpType;
-                },
-                getToolTipValue: function(item) {
-                    return item.toolTipDpType;
-                },
-                type: 'dpType'
+                }
 
             }, {
                 title: 'data-protection-status',
@@ -135,7 +131,6 @@ angular.module('rainierApp')
                 {
                     title: 'hosts-volume-count',
                     sizeClass: 'sixth',
-
                     sortField: 'attachedVolumeCount',
                     getDisplayValue: function (item) {
                         return item.attachedVolumeCount;
@@ -148,11 +143,7 @@ angular.module('rainierApp')
                     sortField: 'displayedDpType',
                     getDisplayValue: function (item) {
                         return item.displayedDpType;
-                    },
-                    getToolTipValue: function(item) {
-                        return item.toolTipDpType;
-                    },
-                    type: 'dpType'
+                    }
 
                 }
             ];

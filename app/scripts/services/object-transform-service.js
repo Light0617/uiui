@@ -290,7 +290,6 @@ angular.module('rainierApp')
 
                 item.displayedDpType = types.join(', ');
 
-                item.toolTipDpType = dpTypeInfo.dpTypeInfo;
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
                 item.dpMonitoringStatus = item.dataProtectionSummary.replicationType.length === 0 ? '' : item.dpMonitoringStatus;
