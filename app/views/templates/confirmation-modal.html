@@ -4,7 +4,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ title }}</h1>
+                <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ title }} {{'storage-port-enable-security' | translate}}</h1>
             </div>
             <div class="modal-body" id="selectionMessage">
                 {{ content }}
@@ -22,15 +22,20 @@
                 </div>
                 <div class="btn-group btn-group-toggle btn-group-justified" id="selection" ng-if="requireSelection">
                     <div class="btn-group">
-                        <label class="btn btn-default" ng-model="switchEnabled"
+                        <label class="btn btn-default" ng-model="switchEnabled.value"
                                btn-radio="true">{{ trueText }}
                         </label>
                     </div>
                     <div class="btn-group">
-                        <label class="btn btn-default" ng-model="switchEnabled"
+                        <label class="btn btn-default" ng-model="switchEnabled.value"
                                btn-radio="false">{{ falseText }}
                         </label>
                     </div>
+                </div>
+                <div class="control-group" ng-if="itemAttribute && itemAttribute.value !== null && itemAttribute.value !== undefined">
+                    <select class="selectpicker inline btn-group-justified" ng-model="itemAttribute.value" ng-options="attribute for attribute in itemAttributes">
+                        <option value="">{{'storage-port-select-port-attribute-filter' | translate}}</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">

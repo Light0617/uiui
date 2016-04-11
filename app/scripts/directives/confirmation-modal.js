@@ -18,7 +18,9 @@ angular.module('rainierApp')
                 switchEnabled: '=',
                 trueText: '@trueText',
                 falseText: '@falseText',
-                requireSelection: '&'
+                requireSelection: '&',
+                itemAttribute: '=',
+                itemAttributes: '='
             },
             templateUrl: 'views/templates/confirmation-modal.html',
             restrict: 'E'

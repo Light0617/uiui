@@ -155,13 +155,53 @@ angular.module('rainierApp')
             var actions = [
                 {
                     icon: 'icon-edit',
-                    type: 'link',
-                    tooltip :'action-tooltip-toggle-security',
-                    enabled: function () {
-                        return dataModel.onlyOneSelected();
+                    type: 'confirmation-modal',
+                    tooltip: 'action-tooltip-toggle-security',
+                    dialogSettings: {
+                        id: 'securityEnableDisableConfirmation',
+                        title: 'storage-port-enable-security-title',
+                        content: 'storage-port-enable-security-content',
+                        trueText: 'storage-port-enable-security',
+                        falseText: 'storage-port-not-enable-security',
+                        switchEnabled: {
+                            value: false
+                        },
+                        itemAttribute: {
+                            value: $scope.storageSystemModel === 'VSP G1000' ? '' : null
+                        },
+                        itemAttributes: ['Target','Initiator','RCU Target','External']
                     },
-                    onClick: function() {
-                        $scope.updateSelected();
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    confirmClick: function () {
+                        $('#' + this.dialogSettings.id).modal('hide');
+                        var enabled = this.dialogSettings.switchEnabled.value;
+                        var attribute = null;
+
+                        if ($scope.storageSystemModel === 'VSP G1000') {
+                            if (this.dialogSettings.itemAttribute.value === 'Target') {
+                                attribute = 'TARGET_PORT';
+                            } else if (this.dialogSettings.itemAttribute.value === 'Initiator') {
+                                attribute = 'MCU_INITIATOR_PORT';
+                            } else if (this.dialogSettings.itemAttribute.value === 'RCU Target') {
+                                attribute = 'RCU_TARGET_PORT';
+                            } else if (this.dialogSettings.itemAttribute.value === 'External') {
+                                attribute = 'EXTERNAL_INITIATOR_PORT';
+                            }
+                        }
+
+                        _.forEach(dataModel.getSelectedItems(), function (storagePort) {
+                            var payload = {
+                                securitySwitchEnabled: enabled,
+                                attribute: attribute
+                            };
+                            orchestratorService.updateStoragePort(storagePort.storageSystemId, storagePort.storagePortId, payload);
+                        });
+
+                        this.dialogSettings.switchEnabled.value = false;
+                        this.dialogSettings.itemAttribute.value = $scope.storageSystemModel === 'VSP G1000' ? '' : null;
+
                     }
                 }
             ];

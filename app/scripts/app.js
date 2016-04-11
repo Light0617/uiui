@@ -435,15 +435,6 @@ angular
                 },
                 helpContext: 'T_ENABLE_PORT_SECURITY'
             })
-            .when('/storage-systems/:storageSystemId/storage-ports/:storagePortId/update', {
-                templateUrl: 'views/storage-port-update.html',
-                controller: 'PortUpdateCtrl',
-                breadcrumbOptions: {
-                    labelKey: 'storage-port-update'
-                },
-                //TODO: Context
-                helpContext: ''
-            })
             .when('/storage-systems/:storageSystemId/parity-groups', {
                 templateUrl: 'views/parity-groups.html',
                 controller: 'ParityGroupsCtrl',

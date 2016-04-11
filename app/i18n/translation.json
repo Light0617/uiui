@@ -158,6 +158,8 @@
     "FICON": "FICON",
     "ISCSI": "iSCSI",
     "SCSI": "SCSI",
+    "storage-port-enable-security-title": "Modify Security",
+    "storage-port-enable-security-content": "Modify security for the {{getSelectedCount()}} selected ports to:",
 
     "storage-port-enable-security": "Enable Security",
     "storage-port-not-enable-security": "Disable Security",

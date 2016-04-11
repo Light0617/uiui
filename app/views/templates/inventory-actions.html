@@ -38,5 +38,7 @@
                     switch-enabled="action.dialogSettings.switchEnabled"
                     modal-id="{{action.dialogSettings.id}}"
                     require-selection="action.dialogSettings.requireSelection"
+                    item-attributes="action.dialogSettings.itemAttributes"
+                    item-attribute="action.dialogSettings.itemAttribute"
                     ng-repeat="action in dataModel.getActions() | filter:{ type :'confirmation-modal'}"></confirmation-modal>
 
