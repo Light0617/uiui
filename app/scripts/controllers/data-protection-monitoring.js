@@ -163,7 +163,7 @@ angular.module('rainierApp')
                     items: [
                         {
                             type: 'link',
-                            title: 'Attach Existing Volume(s)',
+                            title: 'storage-attach-volumes',
                             onClick: function () {
                                 ShareDataService.push('selectedServers', dataModel.getSelectedItems());
                                 $location.path('/hosts/attach-volumes');
@@ -171,7 +171,7 @@ angular.module('rainierApp')
                         },
                         {
                             type: 'link',
-                            title: 'Create and Attach Volume(s)',
+                            title: 'host-create-attach-protect-volumes',
                             onClick: function () {
                                 ShareDataService.push('selectedServers', dataModel.getSelectedItems());
                                 $location.path('hosts/create-and-attach-volumes');

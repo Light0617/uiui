@@ -1194,7 +1194,7 @@ angular.module('rainierApp')
                             },
                             {
                                 type: 'link',
-                                title: 'host-create-attach-volumes',
+                                title: 'host-create-attach-protect-volumes',
                                 onClick: function () {
                                     ShareDataService.push('selectedServers', [item]);
                                     $location.path('hosts/create-and-attach-volumes');

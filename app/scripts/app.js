@@ -77,7 +77,7 @@ angular
                 templateUrl: 'views/create-and-attach-volumes.html',
                 controller: 'CreateAndAttachVolumesCtrl',
                 breadcrumbOptions: {
-                    labelKey: 'host-create-attach-volumes'
+                    labelKey: 'host-create-attach-protect-volumes'
                 },
                 helpContext: 'C_CREATE_ATTACH'
             })
