@@ -30,4 +30,6 @@ ADD server.xml /opt/tomcat7/conf/server.xml
 # Insert ui War into correct location
 ADD dist/*.war /opt/tomcat7/webapps/ROOT.war
 
-CMD /opt/tomcat7/bin/catalina.sh run
+COPY docker-files/start.bash /usr/local/bin/start.bash
+
+CMD ["start.bash"]
