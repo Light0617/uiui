@@ -186,7 +186,7 @@ angular.module('rainierApp')
                         } else {
                             var updatePoolPayload = {
                                 label: updatedLabel,
-                                activeFlashEnabled: ($scope.model.activeFlashEnabled === $scope.model.originalActiveFlashEnabled) ? null : $scope.model.activeFlashEnabled,
+                                activeFlashEnabled: $scope.model.activeFlashEnabled,
                                 poolType: ($scope.model.poolType === $scope.model.originalPoolType) ? null : $scope.model.poolType,
                                 utilizationThreshold1: $scope.model.utilizationThreshold1,
                                 utilizationThreshold2: $scope.model.utilizationThreshold2,
