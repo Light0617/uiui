@@ -1262,36 +1262,41 @@ angular.module('rainierApp')
                         .attr('y', 14)
                         .text(data.total.capacity.unit);
 
-                    var label = labelContainer.append('text')
+                    labelContainer.append('text')
                         .attr('class', 'label')
                         .attr('dy', 30)
                         .text(data.total.label);
 
-                    appendToolTip(label, data.total);
-                    
                     var valuesLabel = sg.append('g')
                     .attr('class', 'label-container')
                     .attr('title', data.total.capacity.size + ' ' + data.total.capacity.unit + ' ' + data.total.label);
-                   
-               
-                valuesLabel.append('circle')
-                    .attr('r', 60);
-                     
-                
-                valuesLabel.append('text')
-                    .attr('class', 'number')
-                    .attr('dy', -6)
-                   .text(data.total.capacity.size);
 
-                valuesLabel.append('text')
-                    .attr('class', 'unit')
-                    .attr('dy', 14)
-                    .text(data.total.capacity.unit);
-                
-                valuesLabel.append('text')
-                    .attr('class', 'label')
-                    .attr('dy', 33)
-                    .text(data.total.label);
+                    var tooltip = data.total && data.total.tooltip ? data.total.tooltip : '';
+                    valuesLabel.append('circle')
+                        .attr('r', 60)
+                        .append('title')
+                        .text(tooltip);
+
+                    valuesLabel.append('text')
+                        .attr('class', 'number')
+                        .attr('dy', -6)
+                        .text(data.total.capacity.size)
+                        .append('title')
+                        .text(tooltip);
+
+                    valuesLabel.append('text')
+                        .attr('class', 'unit')
+                        .attr('dy', 14)
+                        .text(data.total.capacity.unit)
+                        .append('title')
+                        .text(tooltip);
+
+                    valuesLabel.append('text')
+                        .attr('class', 'label')
+                        .attr('dy', 33)
+                        .text(data.total.label)
+                        .append('title')
+                        .text(tooltip);
 
                     _.forEach(circles, function (circle) {
                         circle.container = sg;

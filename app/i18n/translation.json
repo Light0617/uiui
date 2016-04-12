@@ -57,7 +57,7 @@
     "common-expand-all": "Expand All",
     "common-collapse-all": "Collapse All",
     "common-label-total": "Total",
-    "total-usable-capacity-tooltip": "Total Usable Capacity - Sum of capacities of all the parity groups in the system. 0, if there are no parity groups.",
+    "total-usable-capacity-tooltip": "Total Usable Capacity",
 
     "common-label-used": "Thin Used",
     "common-label-file-pool-used": "Used File Pool Capacity",
