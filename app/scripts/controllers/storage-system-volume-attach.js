@@ -84,7 +84,7 @@ angular.module('rainierApp')
                 },
                 getSelectedHostCount: function () {
                     var selectedCount = 0;
-                    _.forEach($scope.dataModel.filteredList, function (host) {
+                    _.forEach($scope.dataModel.displayList, function (host) {
                         if (host.selected === true) {
                             selectedCount++;
                         }
@@ -105,7 +105,7 @@ angular.module('rainierApp')
                     if (dataModel.selectModel.canGoNext && !dataModel.selectModel.canGoNext()) {
                         return;
                     }
-                    var selectedServers = _.where(dataModel.filteredList, 'selected');
+                    var selectedServers = _.where(dataModel.displayList, 'selected');
                     dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
                     dataModel.goNext();
                 },
@@ -211,7 +211,7 @@ angular.module('rainierApp')
                 storageSystemSelectable: false,
 
                 selectedVolumes: selectedVolumes,
-                selectedServers: _.where(dataModel.filteredList, 'selected'),
+                selectedServers: _.where(dataModel.displayList, 'selected'),
                 storagePorts: ports,
                 hostModes: hostModes,
                 hostMode: hostModes[0],
@@ -266,8 +266,8 @@ angular.module('rainierApp')
         });
 
         $scope.$watch(function ($scope) {
-            if ($scope.dataModel && $scope.dataModel.filteredList) {
-                return $scope.dataModel.filteredList.map(function (item) {
+            if ($scope.dataModel && $scope.dataModel.displayList) {
+                return $scope.dataModel.displayList.map(function (item) {
                     return item.selected;
                 });
             }
@@ -276,8 +276,8 @@ angular.module('rainierApp')
                 return;
             }
             var itemSelected = false;
-            for (var i = 0; i < $scope.dataModel.filteredList.length; ++i) {
-                if ($scope.dataModel.filteredList[i].selected) {
+            for (var i = 0; i < $scope.dataModel.displayList.length; ++i) {
+                if ($scope.dataModel.displayList[i].selected) {
                     itemSelected = true;
                     break;
                 }
