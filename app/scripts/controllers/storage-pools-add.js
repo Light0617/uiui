@@ -204,6 +204,14 @@ angular.module('rainierApp')
                 isInvalid: function () {
                     var isInvalid = !$scope.model || !$scope.model.storageSystem ||
                         _.isEmpty($scope.model.label) ||  !$scope.model.availablePoolTypes || $scope.model.availablePoolTypes.length === 0;
+                    
+                    if($scope.model.subscriptionLimit){
+                        var isHtiPool = $scope.model.htiPool;
+                        if($scope.model.poolType){
+                            isHtiPool = ($scope.model.poolType === 'HTI');
+                        }
+                        isInvalid = !storagePoolService.isSubscriptionLimitValid(isHtiPool, $scope.model.subscriptionLimit.unlimited, $scope.model.subscriptionLimit.value);    
+                    }
                     if (!isInvalid) {
                         if ($scope.model.wizardType === 'basic') {
                             if ($scope.model.poolType === 'HDT') {

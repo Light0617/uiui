@@ -266,7 +266,17 @@ angular.module('rainierApp')
                 return _.filter(parityGroups, function(pg){
                     return (pg.status !== 'IN_USE');
                 });
-            }
+            },
+            isSubscriptionLimitValid: function (isHtiPool, unlimited, value){
+                if(isHtiPool !== undefined && isHtiPool !== null && isHtiPool === true){
+                   return true; 
+                }
+                if(unlimited === undefined ||  unlimited === null || unlimited === true){
+                    return unlimited === true;
+                }else{
+                    return value !== undefined && value !== null && isNaN(value) === false && value > 0;
+                }
+            }             
 
         };
     });

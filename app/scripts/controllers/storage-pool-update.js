@@ -203,21 +203,27 @@ angular.module('rainierApp')
                         if (!$scope.model) {
                             return false;
                         }
+                        var subscriptionCheckResult = false;
                         if ($scope.model.wizardType === 'basic') {
-                            return ($scope.model.originalLabel !== $scope.model.label) || getActualSelectedTierSizes().length > 0 ||
+                             subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.htiPool, 
+                                     $scope.model.templateSubscriptionLimit.unlimited, $scope.model.templateSubscriptionLimit.value);
+                            return (($scope.model.originalLabel !== $scope.model.label) || getActualSelectedTierSizes().length > 0 ||
                                 $scope.model.originalHtiPool !== $scope.model.htiPool ||
                                 $scope.model.templateUtilizationThreshold1 !== $scope.model.originalTemplateUtilizationThreshold1 ||
                                 $scope.model.templateUtilizationThreshold2 !== $scope.model.originalTemplateUtilizationThreshold2 ||
                                 $scope.model.templateSubscriptionLimit.unlimited !== $scope.model.originalTemplateSubscriptionLimit.unlimited ||
-                                $scope.model.templateSubscriptionLimit.value !== $scope.model.originalTemplateSubscriptionLimit.value;
+                                $scope.model.templateSubscriptionLimit.value !== $scope.model.originalTemplateSubscriptionLimit.value) && subscriptionCheckResult;
                         } else {
-                            return ($scope.model.originalLabel !== $scope.model.label) || ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
+                             subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.poolType === 'HTI',
+                                    $scope.model.subscriptionLimit.unlimited, $scope.model.subscriptionLimit.value);
+
+                          return (($scope.model.originalLabel !== $scope.model.label) || ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
                                 $scope.model.selectedParityGroups.length > 0 ||
                                 $scope.model.originalPoolType !== $scope.model.poolType ||
                                 $scope.model.utilizationThreshold1 !== $scope.model.originalUtilizationThreshold1 ||
                                 $scope.model.utilizationThreshold2 !== $scope.model.originalUtilizationThreshold2 ||
                                 $scope.model.subscriptionLimit.unlimited !== $scope.model.originalSubscriptionLimit.unlimited ||
-                                $scope.model.subscriptionLimit.value !== $scope.model.originalSubscriptionLimit.value;
+                                $scope.model.subscriptionLimit.value !== $scope.model.originalSubscriptionLimit.value) && subscriptionCheckResult;
                         }
                     }
                 };
