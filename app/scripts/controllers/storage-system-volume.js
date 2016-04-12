@@ -49,10 +49,12 @@ angular.module('rainierApp')
                 $scope.protected = false;
             }
 
-            orchestratorService.storagePool(storageSystemId, result.poolId).then(function (result) {
-                result.displayType = synchronousTranslateService.translate(result.type);
-                $scope.model.storagePool = result;
-            });
+            if (result.poolId !== null && result.poolId !== undefined) {
+                orchestratorService.storagePool(storageSystemId, result.poolId).then(function (result) {
+                    result.displayType = synchronousTranslateService.translate(result.type);
+                    $scope.model.storagePool = result;
+                });
+            }
 
             $scope.protectCurrentVolume = function () {
                 ShareDataService.volumesList = [result];

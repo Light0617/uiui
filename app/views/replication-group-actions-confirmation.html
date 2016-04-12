@@ -33,11 +33,6 @@
                                                     ng-model="dataModel.sort"></sort-column-header>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
-                                <sort-column-header field="primaryVolume.status" label="{{'repliaction-group-volume-list-pvol-label' | translate}}"
-                                                    title="{{'repliaction-group-volume-list-pvol-label' | translate}}"
-                                                    ng-model="dataModel.sort"></sort-column-header>
-                            </div>
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
                                 <sort-column-header field="primaryVolume.status" label="{{'repliaction-group-volume-list-pvol-status' | translate}}"
                                                     title="{{'repliaction-group-volume-list-pvol-status' | translate}}"
                                                     ng-model="dataModel.sort"></sort-column-header>
@@ -46,11 +41,6 @@
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
                                 <sort-column-header field="secondaryVolume.id" label="{{'repliaction-group-volume-list-svolid' | translate}}"
                                                     title="{{'repliaction-group-volume-list-svolid' | translate}}"
-                                                    ng-model="dataModel.sort"></sort-column-header>
-                            </div>
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
-                                <sort-column-header field="primaryVolume.status" label="{{'repliaction-group-volume-list-svol-label' | translate}}"
-                                                    title="{{'repliaction-group-volume-list-svol-label' | translate}}"
                                                     ng-model="dataModel.sort"></sort-column-header>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
@@ -81,18 +71,12 @@
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.id}}">
                                 <p>{{vp.primaryVolume.id}}</p>
                             </div>
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.label}}">
-                                <p>{{vp.primaryVolume.label}}</p>
-                            </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.status}}">
                                 <p>{{vp.primaryVolume.status}}</p>
                             </div>
 
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.id}}">
                                 <p>{{vp.secondaryVolume.id}}</p>
-                            </div>
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.label}}">
-                                <p>{{vp.secondaryVolume.label}}</p>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.status}}">
                                 <p>{{vp.secondaryVolume.status}}</p>

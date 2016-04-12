@@ -21,14 +21,6 @@
                             <span class="caret" ng-show="orderByField == 'secondaryVolume.id'"></span></a>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis"
-                         ng-click="setSort('secondaryVolume.label')"
-                         title="{{'repliaction-group-volume-list-svol-label' | translate}}">
-                        <a class="sort-column-header" ng-class="{dropup: !reverseSort}">{{'repliaction-group-volume-list-svol-label'
-                            | translate}}
-                            <span class="caret" ng-show="orderByField == 'secondaryVolume.label'"></span></a>
-                    </div>
-
-                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis"
                          ng-click="setSort('secondaryVolume.status')"
                          title="{{'repliaction-group-volume-list-svol-status' | translate}}">
                         <a class="sort-column-header" ng-class="{dropup: !reverseSort}">{{'repliaction-group-volume-list-svol-status'
@@ -82,10 +74,6 @@
                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis"
                          title="{{volumeRow.secondaryVolume.id}}">
                         <p>{{volumeRow.secondaryVolume.id}}</p>
-                    </div>
-                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis"
-                         title="{{volumeRow.secondaryVolume.label}}">
-                        <p>{{volumeRow.secondaryVolume.label}}</p>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis"
                          title="{{volumeRow.secondaryVolume.status}}">
