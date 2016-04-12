@@ -296,8 +296,8 @@ angular.module('rainierApp')
 
         $scope.updateSelected = function () {
             var storagePort;
-            for (var i = 0; i < $scope.dataModel.filteredList.length; ++i) {
-                storagePort = $scope.dataModel.filteredList[i];
+            for (var i = 0; i < $scope.dataModel.displayList.length; ++i) {
+                storagePort = $scope.dataModel.displayList[i];
                 if (storagePort.selected) {
                     ShareDataService.editStoragePort = storagePort;
                     ShareDataService.storageSystemModel = $scope.storageSystemModel;
