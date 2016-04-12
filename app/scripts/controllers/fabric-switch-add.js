@@ -88,7 +88,7 @@ angular.module('rainierApp')
             var addFabricPayload = {
                 fabrics: []
             };
-            for(var fs = 1; fs < fabricSwitches.length; ++fs){
+            for(var fs = 0; fs < fabricSwitches.length; ++fs){
                 addFabricPayload.fabrics.push({
                     virtualFabricId: fabricSwitches[fs].virtualFabricId,
                     principalSwitchAddress: fabricSwitches[fs].principalSwitchAddress,
