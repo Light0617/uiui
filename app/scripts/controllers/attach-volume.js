@@ -179,6 +179,15 @@ angular.module('rainierApp')
                     paginationService.getQuery(getVolumesPath, objectTransformService.transformVolume, s.storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
+                },
+                searchQuery: function (value) {
+                    var queryObjects = [];
+                    queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
+                    queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
+                    paginationService.setTextSearch(queryObjects);
+                    paginationService.getQuery(getVolumesPath, objectTransformService.transformVolume, s.storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
                 }
             };
 

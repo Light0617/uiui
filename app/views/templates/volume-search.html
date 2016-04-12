@@ -3,7 +3,7 @@
     <form role="search">
         <div class="form-group search">
             <input type="text" class="form-control" placeholder="Search"
-                   ng-model="filterModel.filter.freeText">
+                   ng-model="filterModel.filter.freeText" ng-change="filterModel.searchQuery(filterModel.filter.freeText)">
             <button type="submit" class="icon icon-btn icon-search pull-right"></button>
         </div>
     </form>
