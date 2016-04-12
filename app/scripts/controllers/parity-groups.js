@@ -12,9 +12,8 @@ angular.module('rainierApp')
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
         var getParityGroupsPath = 'parity-groups';
-        orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            $scope.storageSystemModel= result.model;
-        });
+        var storageSystem;
+
         orchestratorService.parityGroupSummary(storageSystemId).then(function(result){
             var pgSumWithConfCountCap = [];
             if(result && result.parityGroupSummaryItems) {
@@ -123,10 +122,15 @@ angular.module('rainierApp')
             }
         };
 
-        paginationService.getAllPromises(null, getParityGroupsPath, true, storageSystemId, objectTransformService.transformParityGroup).then(function(result) {
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            $scope.storageSystemModel = result.model;
+            storageSystem = result;
+            return paginationService.getAllPromises(null, getParityGroupsPath, true, storageSystemId, objectTransformService.transformParityGroup);
+        }).then(function(result) {
             var parityGroups = result;
             var dataModel = {
                 storageSystemId: storageSystemId,
+                storageSystem: storageSystem,
                 title: title,
                 view: 'tile',
                 parityGroups: parityGroups,

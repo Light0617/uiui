@@ -14,7 +14,7 @@
                     <th data-field="totalCapacity" data-sortable="true">{{'parity-groups-summary-manage-total-capacity' | translate}}<span class="caret" ng-show=""></span></th>
                     <th data-field="numberOfAvailableDisks" data-sortable="true">{{'parity-groups-summary-available-disks' | translate}}</th>
                     <th data-field="availableSpareCount" data-sortable="true">{{'parity-groups-summary-manage-available-spares' | translate}}<span class="caret" ng-show=""></span>
-                        <div class="btn-group icon-btn-group-toggle pull-right" ng-if="!dataModel.hideAddTile">
+                        <div class="btn-group icon-btn-group-toggle pull-right" ng-if="!dataModel.hideAddTile && dataModel.storageSystem.accessible">
                             <a href="#/storage-systems/{{dataModel.storageSystemId}}/parity-groups/disk-manage" id="manage-spare-disk"
                    class="btn icon-btn icon-sm icon-settings" title="{{'parity-groups-summary-manage-spare-disk' | translate}}"></a>
                         </div>
