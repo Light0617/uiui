@@ -140,6 +140,8 @@ angular.module('rainierApp')
                 allItemsSelected: false,
                 search: {
                     freeText: '',
+                    encryption: null,
+                    compression: null,
                     totalCapacity: {
                         min: 0,
                         max: 1000,

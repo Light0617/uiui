@@ -53,7 +53,9 @@ angular.module('rainierApp')
                     item.totalCapacityInBytes <= totalMax.value &&
                     (item.disk === search.disk || !search.disk) &&
                     (item.raid === search.raid || !search.raid ) &&
-                    (item.status === search.status || !search.status);
+                    (item.status === search.status || !search.status) &&
+                    (search.encryption === null || item.encryption === search.encryption) &&
+                    (search.compression === null || item.compression === search.compression);
 
                 pass = item.selected || pass;
                 return pass;
