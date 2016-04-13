@@ -221,6 +221,7 @@
     "storage-pool-physical-capacity": "Physical Capacity",
     "storage-pool-used-physical-capacity": "Used Physical Capacity",
     "storage-pool-available-physical-capacity": "Available Physical Capacity",
+    "storage-pool-disabled-utilization": "Note: Utilization and Subscription Limit cannot be changed for Snap pools.",
     "HDP": "Thin",
     "HDT": "Tiered",
     "HTI": "Snap",

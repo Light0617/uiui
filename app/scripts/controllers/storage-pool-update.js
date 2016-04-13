@@ -24,6 +24,7 @@ angular.module('rainierApp')
                 $scope.model.availablePoolTypes = [pool.type];
                 $scope.model.wizardType = 'basic';
                 $scope.model.originalHtiPool = (pool.type === 'HTI');
+                $scope.model.disableUtilization = pool.type === 'HTI';
                 $scope.model.htiPool = $scope.model.originalHtiPool;
                 $scope.model.originalUtilizationThreshold1 = $scope.model.utilizationThreshold1;
                 $scope.model.originalUtilizationThreshold2 = $scope.model.utilizationThreshold2;
