@@ -544,7 +544,7 @@ var storagePools = _.map(_.range(1, 100), function (v) {
         "usedSubscription": {"unlimited": false, "value": _.random(50, 200)},
         "availableSubscription": {"unlimited": false, "value": 101},
         "status": "Normal",
-        "parityGroupIds": _.sample(_.pluck(parityGroups, 'parityGroupId'), 5),
+        "parityGroups": [{ id: "1-2", encryption: true, compression: false}],
         "externalParityGroupIds": _.sample([['1-50', '1-51', '1-52'],['1-50', '1-51'], []]),
         "tiers": tier,
         "expansionRate": expansionRate,

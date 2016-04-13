@@ -85,7 +85,7 @@ angular.module('rainierApp')
                             // raid level, disk speed, we set the initial filter as them for the parity groups
                             // to be selected.
                             _.forEach($scope.model.parityGroups, function (pg) {
-                                if (_.contains(pool.parityGroupIds, pg.parityGroupId)) {
+                                if (_.find(pool.parityGroups, function(parityGroup) { return parityGroup.id === pg.parityGroupId; })) {
                                     if (!diskType && !raidLayout && !raidLevel && !diskSpeed) {
                                         diskType = pg.diskSpec.type;
                                         raidLayout = pg.raidLayout;
