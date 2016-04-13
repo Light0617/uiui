@@ -45,19 +45,6 @@ angular.module('rainierApp')
             };
         };
 
-        var replicationNameMap = {
-            CLONE: 'Clone',
-            SNAPSHOT: 'Snapshot'
-        };
-
-        var friendlyReplicationTypeName = function (dpType) {
-            var name = replicationNameMap[dpType];
-            if (name) {
-                return name;
-            }
-            return dpType;
-        };
-
         var addZero = function (time) {
             if (time < 10) {
                 time = '0' + time;

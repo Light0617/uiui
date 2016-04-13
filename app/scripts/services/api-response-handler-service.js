@@ -64,7 +64,7 @@ angular.module('rainierApp')
 
                             modelInstance.result.finally(function() {
                                 $scope.cancel();
-                            })
+                            });
                         }
                     });
                     self.errorDialogOpend = true;
