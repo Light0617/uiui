@@ -197,7 +197,8 @@ angular.module('rainierApp')
                 confirmTitle: 'parity-group-compress-confirmation',
                 confirmMessage: 'parity-group-compress-selected-content',
                 enabled: function () {
-                    return dataModel.anySelected();
+                    return dataModel.anySelected() && !_.find(dataModel.getSelectedItems(), function(item) {
+                            return item.encryption || item.diskSpec.type === 'SAS' || item.diskSpec.type === 'SSD' || item.diskSpec.type === 'FMD'; });
                 },
                 onClick: function () {
                     _.forEach(dataModel.getSelectedItems(), function (item) {
