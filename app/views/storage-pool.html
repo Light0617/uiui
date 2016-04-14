@@ -30,7 +30,7 @@
                     <div class="resource-data">
                         <div class="label-value-container">
                             <p class="label">{{ 'storage-pool-parity-group-ids' | translate}}</p>
-                            <span ng-repeat="parityGroup in dataModel.parityGroups track by $index">{{parityGroup.id}}<span class="icon icon-sm icon-password" ng-if="pg.encryption" title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span ng-repeat="parityGroup in dataModel.parityGroups track by $index">{{parityGroup.id}}<span class="icon icon-sm icon-password" ng-if="parityGroup.encryption" title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                             <div class="resource-data">
                                 <div class="label-value-container">
                                     <p class="label">{{ 'storage-pool-compressed-parity-group-ids' | translate}}</p>
-                                    <span ng-repeat="parityGroup in dataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span class="icon icon-sm icon-password" ng-if="pg.encryption" title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span ng-repeat="parityGroup in dataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span class="icon icon-sm icon-password" ng-if="parityGroup.encryption" title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 </div>
                             </div>
                         </div>
