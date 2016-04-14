@@ -30,5 +30,32 @@
             <option value="">Level</option>
         </select>
     </div>
+    <div class="control-group">
+        <h3>{{ 'storage-pool-encryption' | translate }}<span class="read-only" type="text">{{ (model.search.encryption === undefined || model.search.encryption === null) ? 'ALL' :
+                    (model.search.encryption ? 'Yes' : 'No' )}}</span>
+        </h3>
 
+        <div class="btn-group btn-group-toggle btn-group-justified">
+            <div class="btn-group">
+                <label class="btn btn-default" ng-model="model.search.encryption" btn-radio="true" title="Enabled" uncheckable>Yes</label>
+            </div>
+            <div class="btn-group">
+                <label class="btn btn-default" ng-model="model.search.encryption" btn-radio="false" title="Disabled" uncheckable>No</label>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <h3>{{ 'storage-pool-compression' | translate }}<span class="read-only" type="text">{{ (model.search.compression === undefined || model.search.compression === null) ? 'ALL' :
+                    (model.search.compression ? 'Yes' : 'No' )}}</span>
+        </h3>
+
+        <div class="btn-group btn-group-toggle btn-group-justified">
+            <div class="btn-group">
+                <label class="btn btn-default" ng-model="model.search.compression" btn-radio="true" title="Enabled" uncheckable>Yes</label>
+            </div>
+            <div class="btn-group">
+                <label class="btn btn-default" ng-model="model.search.compression" btn-radio="false" title="Disabled" uncheckable>No</label>
+            </div>
+        </div>
+    </div>
 </div>

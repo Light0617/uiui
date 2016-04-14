@@ -29,11 +29,12 @@ angular.module('rainierApp')
             }
 
             var array = _.filter(input, function(item) {
-
                 var pass = (_.isEmpty(search.diskSpec.type) || search.diskSpec.type === item.diskSpec.type) &&
                     (_.isEmpty(search.diskSpec.speed) || diskSpeed === item.diskSpec.speed) &&
                     (_.isEmpty(search.raidLayout) || search.raidLayout === item.raidLayout) &&
-                    (_.isEmpty(search.raidLevel) || search.raidLevel === item.raidLevel);
+                    (_.isEmpty(search.raidLevel) || search.raidLevel === item.raidLevel) &&
+                    (!search.compression || search.compression === item.compression) &&
+                    (!search.encryption || search.encryption === item.encryption);
 
                 pass = item.selected || pass;
 

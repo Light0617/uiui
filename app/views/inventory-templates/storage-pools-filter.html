@@ -127,3 +127,20 @@
         </div>
     </div>
 </div>
+<div class="control-group">
+    <h3>{{ 'storage-pool-compression' | translate }}<span class="read-only" type="text">{{ (dataModel.filter.compression === undefined || dataModel.filter.compression === null) ? 'ALL' :
+                    (dataModel.filter.compression ? 'Yes' : 'No' )}}</span>
+    </h3>
+
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="dataModel.filter.compression" btn-radio="true" title="Enabled" uncheckable
+                   ng-click="filterModel.filterQuery('compressed', 'YES')">Yes</label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="dataModel.filter.compression" btn-radio="false" title="Disabled" uncheckable
+                   ng-click="filterModel.filterQuery('compressed', 'NO')">No</label>
+        </div>
+    </div>
+</div>
+

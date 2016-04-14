@@ -133,7 +133,9 @@ angular.module('rainierApp')
                         speed: null
                     },
                     raidLayout: null,
-                    raidLevel: null
+                    raidLevel: null,
+                    encryption: null,
+                    compression: null
                 };
             }
         });
