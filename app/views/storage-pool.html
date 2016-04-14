@@ -52,7 +52,7 @@
                                             no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
         </div>
     </div>
-    <div ng-if="dataModel.compressed !== 'NO'">
+    <div ng-if="dataModel.compressed === 'YES' || dataModel.compressed === 'PARTIAL'">
         <div class="row page-title with-tools">
             <h1>{{ 'storage-pool-compression' | translate }}</h1>
         </div>
