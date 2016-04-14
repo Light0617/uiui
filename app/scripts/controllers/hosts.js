@@ -219,7 +219,9 @@ angular.module('rainierApp')
                 return paginationService.get($scope.dataModel.nextToken, GET_HOSTS_PATH, handleServer, false);
             };
 
-            dataModel.displayList = result.resources;
+            dataModel.cachedList = result.resources;
+            dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
             $scope.dataModel = dataModel;
 
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, hosts, 'hostSearch');
@@ -227,7 +229,8 @@ angular.module('rainierApp')
 
         var updateResultTotalCounts = function(result) {
             $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.displayList = result.resources;
+            $scope.dataModel.cachedList = result.resources;
+            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel.itemCounts = {
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total

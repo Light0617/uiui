@@ -35,7 +35,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="tile resource-tile" ng-repeat="item in dataModel.displayList">
+            <div class="tile resource-tile" ng-repeat="item in dataModel.displayList track by $index">
                 <ng-include src="tileItemTemplate || 'views/templates/inventory-item-tile.html'" class="repeat-tile-container"></ng-include>
             </div>
         </div>
@@ -63,7 +63,7 @@
                 <span class="btn icon-btn icon-lg icon-add"></span>
             </div>
 
-            <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList">
+            <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList track by $index">
                 <div class="cell twelfth panel-title">
                     <a id="{{item.id}}" role="button" data-toggle="collapse" aria-expanded="false" ng-if="listDetailsTemplate"
                        ng-click="toggleExpandButton(item) ; item.opened = !item.opened ; dataModel.fetchFirstPageChildren(item) ; dataModel.restoreCheck()"

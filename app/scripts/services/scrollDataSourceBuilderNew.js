@@ -10,6 +10,7 @@
 angular.module('rainierApp')
     .factory('scrollDataSourceBuilderServiceNew', function ($filter, $timeout) {
         var pageSize = 16;
+        var showedPageSize = 50;
 
         var expandChildren = function(scope, length) {
             if (scope.dataModel.hasOwnProperty('currentPageCount')) {
@@ -43,6 +44,9 @@ angular.module('rainierApp')
             };
 
             scope.dataModel.filteredList = scope.dataModel.displayList;
+            if (!scope.dataModel.cachedList) {
+                scope.dataModel.cachedList = scope.dataModel.displayList;
+            }
 
             if (!noAdd) {
                 startPageSize = startPageSize - 1;
@@ -52,15 +56,39 @@ angular.module('rainierApp')
             }
 
             scope.dataModel.loadMore = function () {
-                if (scope.dataModel.getResources && _.isFunction(scope.dataModel.getResources) &&
+                // For performance reason, we store all items in cachedList and show partial items in the UI.
+                // When scrolling down, we first add the cached list and then call the backend to get more items.
+                //
+                var itemCount = 0;
+                if (scope.dataModel.cachedList.length > scope.dataModel.displayList.length) {
+                    itemCount = 0;
+                    _.chain(scope.dataModel.cachedList)
+                        .rest(scope.dataModel.displayList.length)
+                        .forEach(function (item) {
+                            scope.dataModel.displayList.push(item);
+                            ++itemCount;
+                            if (itemCount === showedPageSize){
+                                return false;
+                            }
+                        });
+                    scope.dataModel.itemCounts.filtered = scope.dataModel.displayList.length;
+                } else if (scope.dataModel.getResources && _.isFunction(scope.dataModel.getResources) &&
                     scope.dataModel.nextToken !== null && scope.dataModel.nextToken !== undefined &&
                     !scope.dataModel.busy) {
                     scope.dataModel.busy = true;
+
                     scope.dataModel.getResources().then(
                         function (result) {
+
+                            itemCount = 0;
                             _.chain(result.resources)
                                 .forEach(function (item) {
-                                    scope.dataModel.displayList.push(item);
+                                    scope.dataModel.cachedList.push(item);
+                                    if (itemCount < showedPageSize) {
+                                        scope.dataModel.displayList.push(item);
+                                    }
+
+                                    ++itemCount;
                                 });
                             if (scope.dataModel.shouldSelectAll) {
                                 scope.dataModel.toggleSelectAll();
@@ -72,7 +100,7 @@ angular.module('rainierApp')
                             scope.dataModel.nextToken = result.nextToken;
 
                             scope.dataModel.itemCounts.filtered = scope.dataModel.displayList.length;
-                            scope.dataModel.busy =false;
+                            scope.dataModel.busy = false;
                         });
                 }
             };
@@ -82,6 +110,7 @@ angular.module('rainierApp')
             expandChildren: function(scope, length) {
                 expandChildren(scope, length);
             },
+            showedPageSize: showedPageSize,
             setupDataLoader: function (scope, resultItems, filerName, noAdd) {
 
                 var self = this;

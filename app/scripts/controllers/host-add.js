@@ -73,20 +73,24 @@ angular.module('rainierApp')
                 servers: []
             };
             var iHost;
+            var hosts = [];
+            // Skip the first row. Otherwise, we need to always fill some values in it.
+            for (iHost = 1; iHost < dataModel.hostsModel.displayHosts.length; ++iHost) {
+                var h = dataModel.hostsModel.displayHosts[iHost];
+                hosts.push(h);
+            }
 
             if (dataModel.hostsModel.hosts.length > dataModel.hostsModel.displayHosts.length){
                 _.chain(dataModel.hostsModel.hosts)
                     .rest(dataModel.hostsModel.displayHosts.length)
                     .forEach(function (item) {
-                        dataModel.hostsModel.displayHosts.push(item);
+                        hosts.push(item);
                     });
             }
 
-            // Skip the first row. Otherwise, we need to always fill some values in it.
-            for (iHost = 1; iHost < dataModel.hostsModel.displayHosts.length; ++iHost) {
-                var h = dataModel.hostsModel.displayHosts[iHost];
+            _.forEach (hosts, function(h) {
                 hostsPayload.servers.push(buildPayload(h.name, h.description, h.ipAddress, h.osType, h.wwns));
-            }
+            });
 
             orchestratorService.createServers(hostsPayload).then(function () {
                 window.history.back();

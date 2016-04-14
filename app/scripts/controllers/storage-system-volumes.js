@@ -64,7 +64,6 @@ angular.module('rainierApp')
                 nextToken: result.nextToken,
                 total: result.total,
                 currentPageCount: 0,
-                displayList: result.resources,
                 busy: false,
                 sort: {
                     field: 'volumeId',
@@ -180,6 +179,9 @@ angular.module('rainierApp')
                 return actions;
             };
 
+            dataModel.cachedList = result.resources;
+            dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
             dataModel.getResources = function(){
                 return paginationService.get($scope.dataModel.nextToken, GET_VOLUMES_PATH, objectTransformService.transformVolume, false, storageSystemId);
             };
@@ -190,7 +192,8 @@ angular.module('rainierApp')
 
         var updateResultTotalCounts = function(result) {
             $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.displayList = result.resources;
+            $scope.dataModel.cachedList = result.resources;
+            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel.itemCounts = {
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
