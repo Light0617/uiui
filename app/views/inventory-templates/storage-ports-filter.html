@@ -83,29 +83,29 @@
 <!--Control group: Port Attribute-->
 <div class="control-group" ng-show="dataModel.showPortAttributeFilter">
     <h3>{{'storage-port-attribute' | translate}}<span class="read-only"
-                                                   type="text">{{dataModel.search.portAttribute || 'ALL'}}</span>
+                                                   type="text">{{dataModel.search.attributes || 'ALL'}}</span>
     </h3>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.portAttribute" btn-radio="'Target'" uncheckable
-                   ng-click="filterModel.filterQuery('portAttribute', 'TARGET_PORT')">Target
+            <label class="btn btn-default" ng-model="dataModel.search.attributes" btn-radio="'Target'" uncheckable
+                   ng-click="filterModel.filterQuery('attributes', 'TARGET_PORT')">Target
             </label>
         </div>
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.portAttribute" btn-radio="'RCU Target'" uncheckable
-                   ng-click="filterModel.filterQuery('attribute', 'RCU_TARGET_PORT')">RCU Target
+            <label class="btn btn-default" ng-model="dataModel.search.attributes" btn-radio="'RCU Target'" uncheckable
+                   ng-click="filterModel.filterQuery('attributes', 'RCU_TARGET_PORT')">RCU Target
             </label>
         </div>
     </div>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.portAttribute" btn-radio="'Initiator'" uncheckable
-                   ng-click="filterModel.filterQuery('attribute', 'MCU_INITIATOR_PORT')">Initiator
+            <label class="btn btn-default" ng-model="dataModel.search.attributes" btn-radio="'Initiator'" uncheckable
+                   ng-click="filterModel.filterQuery('attributes', 'MCU_INITIATOR_PORT')">Initiator
             </label>
         </div>
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.portAttribute" btn-radio="'External'" uncheckable
-                   ng-click="filterModel.filterQuery('attribute', 'EXTERNAL_INITIATOR_PORT')">External
+            <label class="btn btn-default" ng-model="dataModel.search.attributes" btn-radio="'External'" uncheckable
+                   ng-click="filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT')">External
             </label>
         </div>
     </div>
