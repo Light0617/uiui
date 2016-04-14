@@ -83,14 +83,14 @@ angular.module('rainierApp')
                 confirmTitle: synchronousTranslateService.translate('storage-volume-attach-confirmation'),
                 confirmMessage: synchronousTranslateService.translate('storage-volume-attach-zero-selected'),
                 canGoNext: function () {
-                    return _.some(dataModel.filteredList, 'selected');
+                    return _.some(dataModel.displayList, 'selected');
                 },
                 next: function () {
                     if (dataModel.selectModel.canGoNext && !dataModel.selectModel.canGoNext()) {
                         return;
                     }
                     $timeout(function () {
-                        dataModel.attachModel.selectedVolumes = _.where(dataModel.filteredList, 'selected');
+                        dataModel.attachModel.selectedVolumes = _.where(dataModel.displayList, 'selected');
                         _.forEach(dataModel.attachModel.selectedVolumes, function(volume) {
                             volume.lun = null;
                             volume.decimalNumberRegexp = /^[^.]+$/;
@@ -194,8 +194,8 @@ angular.module('rainierApp')
         });
 
         $scope.$watch(function ($scope) {
-            if ($scope.dataModel && $scope.dataModel.filteredList) {
-                return $scope.dataModel.filteredList.map(function (item) {
+            if ($scope.dataModel && $scope.dataModel.displayList) {
+                return $scope.dataModel.displayList.map(function (item) {
                     return item.selected;
                 });
             }
@@ -204,8 +204,8 @@ angular.module('rainierApp')
                 return;
             }
             var itemSelected = false;
-            for (var i = 0; i < $scope.dataModel.filteredList.length; ++i) {
-                if ($scope.dataModel.filteredList[i].selected) {
+            for (var i = 0; i < $scope.dataModel.displayList.length; ++i) {
+                if ($scope.dataModel.displayList[i].selected) {
                     itemSelected = true;
                     break;
                 }

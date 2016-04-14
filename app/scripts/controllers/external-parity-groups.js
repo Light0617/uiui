@@ -45,7 +45,7 @@ angular.module('rainierApp')
                 },
                 getSelectedExternalParityGroupCount: function () {
                     var selectedCount = 0;
-                    _.forEach($scope.dataModel.filteredList, function (externalParityGroup) {
+                    _.forEach($scope.dataModel.displayList, function (externalParityGroup) {
                         if (externalParityGroup.selected === true) {
                             selectedCount++;
                         }

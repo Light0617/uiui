@@ -192,11 +192,11 @@ angular.module('rainierApp')
 
         $scope.editSelected = function () {
             var fabricSwitch;
-            for (var i = 0; i < $scope.dataModel.filteredList.length; ++i) {
-                fabricSwitch = $scope.dataModel.filteredList[i];
+            for (var i = 0; i < $scope.dataModel.displayList.length; ++i) {
+                fabricSwitch = $scope.dataModel.displayList[i];
                 if (fabricSwitch.selected) {
-                    ShareDataService.editFabricSwitch = $scope.dataModel.filteredList[i];
-                    $window.location.href = '#/fabric-switches/' + $scope.dataModel.filteredList[i].sanFabricId + '/update';
+                    ShareDataService.editFabricSwitch = $scope.dataModel.displayList[i];
+                    $window.location.href = '#/fabric-switches/' + $scope.dataModel.displayList[i].sanFabricId + '/update';
                 }
             }
         };
