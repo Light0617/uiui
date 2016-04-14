@@ -19,6 +19,7 @@ angular.module('rainierApp')
         return {
         	scope: {
                 dataModel: '=ngModel',
+                atTop: '@'
             },
             templateUrl: 'views/templates/inventory-actions.html',
             restrict: 'E'
