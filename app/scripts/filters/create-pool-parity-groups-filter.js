@@ -33,8 +33,8 @@ angular.module('rainierApp')
                     (_.isEmpty(search.diskSpec.speed) || diskSpeed === item.diskSpec.speed) &&
                     (_.isEmpty(search.raidLayout) || search.raidLayout === item.raidLayout) &&
                     (_.isEmpty(search.raidLevel) || search.raidLevel === item.raidLevel) &&
-                    (!search.compression || search.compression === item.compression) &&
-                    (!search.encryption || search.encryption === item.encryption);
+                    (search.compression === null || search.compression === item.compression) &&
+                    (search.encryption === null || search.encryption === item.encryption);
 
                 pass = item.selected || pass;
 

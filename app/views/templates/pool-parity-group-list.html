@@ -33,7 +33,8 @@
                 </div>
             </div>
             <div class="tile-row resource-info">
-                <div class="icon icon-parity-group icon-lg"></div>
+                <div class="icon icon-parity-group icon-lg" ng-if="!pg.encryption"></div>
+                <div class="icon icon-encrypted-parity-group icon-lg" ng-if="pg.encryption"></div>
                 <div class="resource-data">
                     <disk-size ng-model="pg.availableCapacityInBytes" wrapped-in="p" post-fix="free"></disk-size>
                     <div class="data-viz bar">
