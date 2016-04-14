@@ -50,7 +50,7 @@ angular.module('rainierApp')
                     originalMessage.displayedComments = (originalMessage.comments, numberOfRgWithVolumeIdAsPvol, 'comments');
                 }
             } else if ((typeof originalMessage === 'string' || originalMessage instanceof String) && messageLength > 13) {
-                originalMessage = originalMessage.slice(0, 14) + appendedMessage;
+                originalMessage = originalMessage.slice(0, 13) + appendedMessage;
             }
             return originalMessage;
         };
@@ -61,54 +61,53 @@ angular.module('rainierApp')
             switch (size) {
                 case 0:
                     if (type === 'name' && messageLength > 14) {
-                        message = message.slice(0, 15) + appendedMessage;
+                        message = message.slice(0, 14) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 16) {
-                        message = message.slice(0, 17) + appendedMessage;
+                        message = message.slice(0, 16) + appendedMessage;
                     }
                     break;
                 case 1:
                     if (type === 'name' && messageLength > 45) {
-                        message = message.slice(0, 46) + appendedMessage;
+                        message = message.slice(0, 45) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 16) {
-                        message = message.slice(0, 17) + appendedMessage;
+                        message = message.slice(0, 16) + appendedMessage;
                     } else if (type === 'comments' && messageLength > 24) {
-                        message = message.slice(0, 25) + appendedMessage;
+                        message = message.slice(0, 24) + appendedMessage;
                     }
                     break;
                 case 2:
                     if (type === 'name' && messageLength > 24) {
-                        message = message.slice(0, 25) + appendedMessage;
+                        message = message.slice(0, 24) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 28) {
-                        message = message.slice(0, 29) + appendedMessage;
+                        message = message.slice(0, 28) + appendedMessage;
                     }
                     break;
                 case 3:
                     if (type === 'name' && messageLength > 14) {
-                        console.log(message.slice(0, 15));
-                        message = message.slice(0, 15) + appendedMessage;
+                        message = message.slice(0, 14) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 18) {
-                        message = message.slice(0, 19) + appendedMessage;
+                        message = message.slice(0, 18) + appendedMessage;
                     }
                     break;
                 case 4:
                     if (type === 'name' && messageLength > 24) {
-                        message = message.slice(0, 25) + appendedMessage;
+                        message = message.slice(0, 24) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 13) {
-                        message = message.slice(0, 14) + appendedMessage;
+                        message = message.slice(0, 13) + appendedMessage;
                     }
                     break;
                 case 5:
                     if (type === 'name' && messageLength > 12) {
-                        message = message.slice(0, 13) + appendedMessage;
+                        message = message.slice(0, 12) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 13) {
-                        message = message.slice(0, 14) + appendedMessage;
+                        message = message.slice(0, 13) + appendedMessage;
                     }
                     break;
                 case 6:
                     if (type === 'name' && messageLength > 24) {
-                        message = message.slice(0, 25) + appendedMessage;
+                        message = message.slice(0, 24) + appendedMessage;
                     } else if (type === 'schedule' && messageLength > 14) {
-                        message = message.slice(0, 15) + appendedMessage;
+                        message = message.slice(0, 14) + appendedMessage;
                     }
                     break;
             }

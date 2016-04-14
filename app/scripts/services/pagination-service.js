@@ -128,6 +128,7 @@ angular.module('rainierApp')
                 this.arrayClearKey = arrayClearKey;
             },
             SearchType: SearchType,
+            getPartialSearchQueryString: getPartialSearchQueryString,
             get: function (token, path, transform, isFirstCall, storageSystemId) {
                 if (isFirstCall) {
                     clearQuery();

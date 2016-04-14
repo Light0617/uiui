@@ -338,6 +338,9 @@ angular.module('rainierApp')
                         $scope.dataModel.busyLoadingMoreChildren = true;
                         replicationGroupsService.getVolumePairsForOneReplicationGroup($scope.dataModel.childrenToken,
                             storageSystemId, item, volumeId).then(function (result) {
+                                _.forEach (result.resources, function (item) {
+                                    objectTransformService.transformVolumePairs(item);
+                                });
                                 item.volumePairs = item.volumePairs.concat(result.resources);
                                 $scope.dataModel.childrenToken = result.nextToken;
                                 $scope.dataModel.busyLoadingMoreChildren = false;

@@ -20,6 +20,7 @@
                     <div class="alert alert-warning" role="alert">
                         <h1 ng-if="dataModel.pageAction === 'Suspend'">{{'replication-group-actions-suspend-snapshot-confirmation-message' | translate}}</h1>
                         <h1 ng-if="dataModel.pageAction === 'Resume'">{{'replication-group-actions-resume-snapshot-confirmation-message' | translate}}</h1>
+                        <h1 ng-if="dataModel.pageAction === 'Delete'">{{'replication-group-actions-delete-snapshot-confirmation-message' | translate}}</h1>
                     </div>
                 </div>
                 <div class="tile-view list-view" infinite-scroll='loadMore()' infinite-scroll-distance='1'
