@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostAddCtrl', function ($scope, $filter, orchestratorService, $timeout) {
+    .controller('HostAddCtrl', function ($scope, $filter, orchestratorService, $timeout, wwnService) {
 
         var osTypes = orchestratorService.osType();
         var pageSize = 25;
@@ -108,6 +108,7 @@ angular.module('rainierApp')
             var wwnList = [];
             _.forEach(wwns.split(','), function (w) {
                 w = w.trim();
+                w = wwnService.removeSymbol(w);
                 wwnList.push(w);
             });
 

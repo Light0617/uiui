@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StoragePortsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
                                               objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
-                                              queryService) {
+                                              queryService, wwnService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePortsPath = 'storage-ports';
 
@@ -229,7 +229,7 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'wwn',
                     getDisplayValue: function (item) {
-                        return item.wwn;
+                        return wwnService.appendColon(item.wwn);
                     }
 
                 },

@@ -594,7 +594,7 @@ angular.module('rainierApp')
                     {
                         left: false,
                         title: item.type,
-                        details: [item.wwn]
+                        details: [wwnService.appendColon(item.wwn)]
                     }
                 ];
 

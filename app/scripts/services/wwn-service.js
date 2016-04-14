@@ -11,7 +11,7 @@
 angular.module('rainierApp').factory('wwnService', function() {
     var service = {
         appendColon: function (wwn) {
-            if(wwn.match(/[:,;]/)){
+            if(wwn.match(/[:.-]/)){
                 return wwn;
             }
             var result = '';
@@ -26,7 +26,7 @@ angular.module('rainierApp').factory('wwnService', function() {
         },
 
         removeSymbol: function (displayWWN) {
-            return displayWWN.replace(/[:,;]/g, '');
+            return displayWWN.replace(/[:.-]/g, '');
         },
 
         displayWWNs: function (wwns) {
