@@ -478,7 +478,10 @@ angular.module('rainierApp')
                 };
                 item.topTotal = item.capacityInBytes;
                 item.topSize = item.usedCapacityInBytes;
-                if(item.encrypted === 'YES') {
+                if(_.first(item.tiers).tier === "External") {
+                    item.itemIcon = 'icon-external-pool';
+                }
+                else if(item.encrypted === 'YES') {
                     item.itemIcon = 'icon-encrypted-pools';
                 } else {
                     item.itemIcon = 'icon-pools';
