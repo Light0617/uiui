@@ -2,7 +2,7 @@
     <h2 class="col-md-12 fix">{{'file-systems-add-fill-out-fields' | translate}}</h2>
         <form name="dataModel.validationForm" role="form" class="validation-form select nobg">
             <div class="col-md-12">
-                <select class="form-control fixed-line-height" ng-model="dataModel.virtualFileServer" ng-disabled="dataModel.defaultEvs">
+                <select class="inline btn-group-justified" ng-model="dataModel.virtualFileServer" ng-disabled="dataModel.defaultEvs">
                     <option class="select" value="">{{'file-systems--add-select-virtual-file-server' | translate}}</option>
                     <!-- TODO: EL uncomment when supported
                     <option class="" value="new">{{'file-systems-add-new-virtual-file-server' | translate}}</option>-->
@@ -59,7 +59,7 @@
 
             </div>
             <div class="col-md-12">
-                <select class="form-control fixed-line-height" ng-model="dataModel.format"
+                <select class="inline btn-group-justified" ng-model="dataModel.format"
                         name="format" ng-options="format for format in dataModel.formats">
                     <option value="">{{'file-systems-add-format' | translate}}</option>
                 </select>
@@ -84,8 +84,8 @@
                     <option value="">{{'file-systems-add-new-pool-tier' | translate}}</option>
                 </select>
             </div> -->
-            <div class="col-md-12 cell control" ng-if="dataModel.showDropDownColumn">
-                <select class="form-control" ng-model="dataModel.filePool" ng-options="filePool.label + ' - ' + filePool.usedCapacityInBytes.size + filePool.usedCapacityInBytes.unit +
+            <div class="col-md-12" ng-if="dataModel.showDropDownColumn">
+                <select class="inline btn-group-justified" ng-model="dataModel.filePool" ng-options="filePool.label + ' - ' + filePool.usedCapacityInBytes.size + filePool.usedCapacityInBytes.unit +
                  '/' + filePool.capacityInBytes.size + filePool.capacityInBytes.unit for filePool in dataModel.filePools track by filePool.id" ng-disabled="!dataModel.capacity || dataModel.defaultFilePool">
                     <option value="">{{'file-systems-add-new-pool' | translate}}</option>
                 </select>

@@ -6,9 +6,9 @@
 <div class="polar-data-viz-concentric">
     <array-polar-data-visualization class="utilization"
                                     ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
-                                    no-break-down="dataModel.summaryModel.noBreakdown" no-legend-box="true"></array-polar-data-visualization>
+                                    no-break-down="dataModel.summaryModel.noBreakdown" no-legend-box="true" ng-if="dataModel.filePool"></array-polar-data-visualization>
 </div>
-<ul class="legend">
+<ul class="legend" ng-if="dataModel.filePool">
     <li ng-repeat="keyAndColor in dataModel.keyAndColors">
         <p class="number">
             <svg width="10" height="10">

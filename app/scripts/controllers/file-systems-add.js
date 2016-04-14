@@ -152,7 +152,7 @@ angular.module('rainierApp')
                     });
                 }
                 if($scope.dataModel.filePool && selectedCapacity) {
-                    $scope.dataModel.validCapacity = parseInt($scope.dataModel.filePool.freeCapacity) - parseInt($scope.dataModel.filePool.usedCapacity) > selectedCapacity.value;
+                    $scope.dataModel.validCapacity = parseInt($scope.dataModel.filePool.freeCapacity) > selectedCapacity.value;
                     var summaryModel = objectTransformService.transformFilePoolCapacitySummaryModel($scope.dataModel.filePool, $scope.dataModel.capacity, $scope.dataModel.unit);
                     summaryModel.title = synchronousTranslateService.translate('common-storage-systems');
                     summaryModel.noBreakdown = true;
