@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('viewModelService', function ($timeout, diskSizeService, objectTransformService) {
+    .factory('viewModelService', function ($timeout, diskSizeService, objectTransformService, wwnService) {
 
         function WizardViewModel(pages) {
             var completedSteps = {};
@@ -257,9 +257,9 @@ angular.module('rainierApp')
                         return spt;
                     }
                 );
-                s.selectableWWNs = _.map(s.wwpns, function (wwpn) {
+                s.selectableWWNs = _.map(s.displayWWNs, function (wwn) {
                     return {
-                        name: wwpn,
+                        name: wwn,
                         selected: false
                     };
                 });
@@ -301,7 +301,7 @@ angular.module('rainierApp')
 
                     return {
                         serverId: s.serverId,
-                        serverWwns: serverWwns,
+                        serverWwns: wwnService.rawWWNs(serverWwns),
                         portIds: portIds
                     };
                 });

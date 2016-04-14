@@ -12,7 +12,7 @@ angular.module('rainierApp')
         var hostId = $routeParams.hostId;
 
         orchestratorService.host(hostId).then(function(result) {
-            var wwns = result.wwpns.join(', ');
+            var wwns = result.displayWWNs.join(', ');
 
             $scope.dataModel = {
                 originalHost: result,

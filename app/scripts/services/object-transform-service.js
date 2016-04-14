@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
-                                                 ShareDataService, cronStringConverterService) {
+                                                 ShareDataService, cronStringConverterService, wwnService) {
 
         var allocatedColor = 'white';
         var unallocatedColor = '#595B5B';
@@ -1228,6 +1228,8 @@ angular.module('rainierApp')
 
                 item.itemIcon = 'icon-host';
                 item.alerts = 0;
+                
+                item.displayWWNs = wwnService.displayWWNs(item.wwpns);
             },
             transformToCreateVolumeSummaryModel: function (storageSystem) {
                 return {
