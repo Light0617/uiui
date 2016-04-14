@@ -258,6 +258,7 @@ angular.module('rainierApp')
                 item.usage = usePercentage + '%';
                 item.totalCapacity = diskSizeService.getDisplaySize(item.size);
                 item.totalCapacity.intSize = parseInt(item.totalCapacity.size);
+                item.totalCapacity.decimalSize = parseFloat(item.totalCapacity.size);
                 item.usedCapacity = diskSizeService.getDisplaySize(item.usedCapacity);
                 item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
                 item.alerts = 0;

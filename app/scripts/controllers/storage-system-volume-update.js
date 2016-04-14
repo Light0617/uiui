@@ -34,8 +34,8 @@ angular.module('rainierApp')
                 if (dataModel.label && dataModel.label.length > 0 && (updatedModel.label===null || updatedModel.label.length === 0)){
                     return false;
                 }
-                var newSize = diskSizeService.createDisplaySize(updatedModel.totalCapacity.intSize, updatedModel.totalCapacity.unit).value;
-                var oldSize = diskSizeService.createDisplaySize(dataModel.totalCapacity.intSize, dataModel.totalCapacity.unit).value;
+                var newSize = diskSizeService.createDisplaySize(updatedModel.totalCapacity.decimalSize, updatedModel.totalCapacity.unit).value;
+                var oldSize = diskSizeService.createDisplaySize(dataModel.totalCapacity.decimalSize, dataModel.totalCapacity.unit).value;
                 return newSize > oldSize || dataModel.label !== updatedModel.label;
             };
 
@@ -56,8 +56,8 @@ angular.module('rainierApp')
                 label: (oldVolume.label === updatedVolume.label) ? null : updatedVolume.label
             };
 
-            var newSize = diskSizeService.createDisplaySize(updatedVolume.totalCapacity.intSize, updatedVolume.totalCapacity.unit).value;
-            var oldSize = diskSizeService.createDisplaySize(oldVolume.totalCapacity.intSize, oldVolume.totalCapacity.unit).value;
+            var newSize = diskSizeService.createDisplaySize(updatedVolume.totalCapacity.decimalSize, updatedVolume.totalCapacity.unit).value;
+            var oldSize = diskSizeService.createDisplaySize(oldVolume.totalCapacity.decimalSize, oldVolume.totalCapacity.unit).value;
             if (newSize !== oldSize) {
                 payload.capacityInBytes = newSize;
             }
