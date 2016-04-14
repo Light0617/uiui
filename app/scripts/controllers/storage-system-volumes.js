@@ -16,7 +16,19 @@ angular.module('rainierApp')
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
-        $scope.dataModel = {};
+        $scope.dataModel = {
+            view: 'tile',
+            storageSystemId: storageSystemId,
+            currentPageCount: 0,
+            busy: false,
+            sort: {
+                field: 'volumeId',
+                reverse: false
+            }
+        };
+
+        $scope.summaryModel = {};
+        $scope.filterModel = {};
 
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             storageSystem = result;
@@ -83,6 +95,57 @@ angular.module('rainierApp')
                             });
                         });
                     }
+                }
+            };
+
+            $scope.filterModel = {
+                filter: {
+                    freeText: '',
+                    volumeType: '',
+                    replicationType: [],
+                    protectionStatusList: [],
+                    snapshot: false,
+                    clone: false,
+                    protected: false,
+                    unprotected: false,
+                    secondary: false,
+                    freeCapacity: {
+                        min: 0,
+                        max: 1000,
+                        unit: 'PB'
+                    },
+                    totalCapacity: {
+                        min: 0,
+                        max: 1000,
+                        unit: 'PB'
+                    },
+                    utilization: {
+                        min: 0,
+                        max: 100
+                    }
+                },
+                arrayType: (new paginationService.SearchType()).ARRAY,
+                filterQuery: function (key, value, type, arrayClearKey) {
+                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                    paginationService.setFilterSearch(queryObject);
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                sliderQuery: function(key, start, end, unit) {
+                    paginationService.setSliderSearch(key, start, end, unit);
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                searchQuery: function (value) {
+                    var queryObjects = [];
+                    queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
+                    queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
+                    paginationService.setTextSearch(queryObjects);
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
                 }
             };
 
@@ -198,57 +261,6 @@ angular.module('rainierApp')
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
             };
-        };
-
-        $scope.filterModel = {
-            filter: {
-                freeText: '',
-                volumeType: '',
-                replicationType: [],
-                protectionStatusList: [],
-                snapshot: false,
-                clone: false,
-                protected: false,
-                unprotected: false,
-                secondary: false,
-                freeCapacity: {
-                    min: 0,
-                    max: 1000,
-                    unit: 'PB'
-                },
-                totalCapacity: {
-                    min: 0,
-                    max: 1000,
-                    unit: 'PB'
-                },
-                utilization: {
-                    min: 0,
-                    max: 100
-                }
-            },
-            arrayType: (new paginationService.SearchType()).ARRAY,
-            filterQuery: function (key, value, type, arrayClearKey) {
-                var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                paginationService.setFilterSearch(queryObject);
-                paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
-                    updateResultTotalCounts(result);
-                });
-            },
-            sliderQuery: function(key, start, end, unit) {
-                paginationService.setSliderSearch(key, start, end, unit);
-                paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
-                    updateResultTotalCounts(result);
-                });
-            },
-            searchQuery: function (value) {
-                var queryObjects = [];
-                queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
-                queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
-                paginationService.setTextSearch(queryObjects);
-                paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
-                    updateResultTotalCounts(result);
-                });
-            }
         };
 
     });
