@@ -18,7 +18,7 @@
     <div class="btn-group-toggle" role="group" >
         <select class="inline btn-group-justified"
                 ng-model="dataModel.search.filterEvs"
-                ng-options="evs for evs in dataModel.evsIds">
+                ng-options="evs.label for evs in dataModel.evsIds">
             <option value="" selected>{{'common-select-virtual-file-server' | translate}}</option>
         </select>
 

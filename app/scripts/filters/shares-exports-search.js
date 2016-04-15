@@ -22,7 +22,7 @@ angular.module('rainierApp')
                     item.name.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1;
 
                 pass = pass && (search.type === null || item.type === search.type);
-                pass = pass && (!search.evsId || item.evsId === search.filterEvs);
+                pass = pass && (!search.filterEvs || item.evsUuid === search.filterEvs.obj.uuid);
 
                 pass = item.selected || pass;
                 return pass;

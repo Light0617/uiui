@@ -12,6 +12,7 @@ angular.module('rainierApp')
                                                           objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location) {
         var storageSystemId = $routeParams.storageSystemId;
         var shares;
+        var evses;
 
         function transformService(sharesExports) {
             var dataModel = {
@@ -20,9 +21,13 @@ angular.module('rainierApp')
                 storageSystemId: storageSystemId,
                 allEvsPage: true,
                 view: 'tile',
-                evsIds: _.uniq(_.map(sharesExports, function (shareExport) {
-                    return shareExport.evsId;
-                })),
+                evsIds: _.map(_.uniq(_.map(sharesExports, function (shareExport) {
+                    return _.find(evses, function(input) {
+                        return input.uuid === shareExport.evsUuid;
+                    });
+                })), function (item) {
+                    return { 'label' : item.name + ' : ' + item.uuid, 'obj' : item };
+                }),
                 allItemsSelected: false,
                 search: {
                     freeText: '',
@@ -120,6 +125,10 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
             scrollDataSourceBuilderService.setupDataLoader($scope, sharesExports, 'sharesExportsSearch');
         }
+
+        orchestratorService.enterpriseVirtualServers(storageSystemId).then(function(result) {
+            evses = result.evses;
+        });
 
         orchestratorService.allShares(storageSystemId).then(function (result) {
             shares = result.shares;
