@@ -1713,7 +1713,9 @@ angular.module('rainierApp')
 
                 item.detailMetaData = [
                     {
-                        detailData: item.interfaceAddresses[0].ip
+                        detailData: _.map(item.interfaceAddresses, function (address) {
+                            return address.ip;
+                        }).join(',')
                     }
                 ];
 

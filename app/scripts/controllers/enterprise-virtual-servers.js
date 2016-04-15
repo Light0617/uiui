@@ -56,7 +56,7 @@ angular.module('rainierApp')
             var actions = [
                 {
                     icon: 'icon-delete',
-                    tooltip :'action-tooltip-delete',
+                    tooltip: 'action-tooltip-delete',
                     type: 'confirm',
                     confirmTitle: 'file-server-delete-confirmation',
                     confirmMessage: 'file-server-delete-selected-content',
@@ -83,7 +83,7 @@ angular.module('rainierApp')
                 },
                 {
                     icon: 'icon-lock',
-                    tooltip :'action-tooltip-disable',
+                    tooltip: 'action-tooltip-disable',
                     type: 'confirm',
                     confirmTitle: 'file-server-disable-confirmation',
                     confirmMessage: 'file-server-disable-selected-content',
@@ -97,7 +97,7 @@ angular.module('rainierApp')
                 },
                 {
                     icon: 'icon-unlock',
-                    tooltip :'action-tooltip-enable',
+                    tooltip: 'action-tooltip-enable',
                     type: 'confirm',
                     confirmTitle: 'file-server-enable-confirmation',
                     confirmMessage: 'file-server-enable-selected-content',
@@ -117,7 +117,7 @@ angular.module('rainierApp')
 
             dataModel.gridSettings = [
                 {
-                    title: 'Status',
+                    title: synchronousTranslateService.translate('status'),
                     sizeClass: 'twelfth',
                     sortField: 'isOnline',
                     getDisplayValue: function (item) {
@@ -125,7 +125,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Enabled',
+                    title: synchronousTranslateService.translate('enabled'),
                     sizeClass: 'twelfth',
                     sortField: 'isEnabled',
                     getDisplayValue: function (item) {
@@ -133,7 +133,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Blade',
+                    title: synchronousTranslateService.translate('blade'),
                     sizeClass: 'twelfth',
                     sortField: 'clusterNodeId',
                     getDisplayValue: function (item) {
@@ -141,7 +141,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Name',
+                    title: synchronousTranslateService.translate('header-name'),
                     sizeClass: 'sixth',
                     sortField: 'name',
                     getDisplayValue: function (item) {
@@ -150,27 +150,29 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'IP Address',
+                    title: synchronousTranslateService.translate('common-ip-address'),
                     sizeClass: 'sixth',
                     sortField: 'interfaceAddresses[0].ip',
                     getDisplayValue: function (item) {
-                        return _.first(item.interfaceAddresses).ip;
+                        return _.map(item.interfaceAddresses, function (addresses) {
+                            return addresses.ip;
+                        }).join(',');
                     }
                 }
             ];
 
             dataModel.addAction = function () {
-                if(storageSystemId) {
+                if (storageSystemId) {
                     $location.path(['storage-systems', storageSystemId, 'vfs', 'add'].join('/'));
                 }
-                else{
+                else {
                     $location.path(['vfs', 'add'].join('/'));
                 }
             };
 
             if (!storageSystemId) {
                 var storageSystemIds = [];
-                _.each(EVSs, function(evs) {
+                _.each(EVSs, function (evs) {
                     storageSystemIds.push(evs.storageSystemId);
                 });
                 dataModel.storageSystemIds = _.uniq(storageSystemIds);

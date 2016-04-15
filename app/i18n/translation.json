@@ -2,6 +2,7 @@
     "brand-company": "Hitachi",
     "brand-rainier": "Storage Advisor",
     "common-last-refresh": "Last Refresh",
+    "header-name": "Name",
 
     "login-username-placeholder": "Username",
     "login-password-placeholder": "Password",
@@ -706,8 +707,8 @@
     "usage": "Usage",
     "file-server-online": "Online",
     "file-server-offline": "Offline",
-    "blade": "Blade",
-    "big-blade": "BLADE",
+    "blade": "Module",
+    "big-blade": "MODULE",
     "shares": "Shares",
     "exports": "Exports",
     "export-path": "EXPORT PATH",
