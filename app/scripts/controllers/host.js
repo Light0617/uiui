@@ -222,7 +222,7 @@ angular.module('rainierApp')
             };
 
             dataModel.cachedList = result.resources;
-            dataModel.displayList = $scope.dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel = dataModel;
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);
 
