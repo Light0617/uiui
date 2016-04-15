@@ -5,7 +5,8 @@
     <div class="tile meta-tile third">
         <div class="label-value-container">
             <p class="label">{{'hosts-ip-address' | translate}}</p>
-            <p class="value">{{summaryModel.server.ipAddress}}</p>
+            <p class="value" ng-if="summaryModel.server.ipAddress === ''"><i>{{'hosts-ip-address-not-specified' | translate }}</i></p>
+            <p class="value" ng-if="summaryModel.server.ipAddress !== ''">{{summaryModel.server.ipAddress}}</p>
             <p class="label">{{'hosts-name' | translate}}</p>
             <p class="value">{{summaryModel.server.serverName}}</p>
             <p class="label">{{'hosts-wwn' | translate}}</p>
