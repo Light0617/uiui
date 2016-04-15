@@ -174,40 +174,40 @@
                         </div>
                     </div>
                     <div class="control-row">
-                        <div class="tile-container list-view">
+                        <div class="tile-container list-view list-view-flex">
                             <div class="tile row row-tile column-headers">
-                                <div class="col-md-1 cell control-cell">
+                                <div class="tenth cell control-cell">
                                     &nbsp;
                                 </div>
-                                <div class="col-md-3 cell">
+                                <div class="fifth cell">
                                     <sort-column-header field="id" label="{{'replication-group-edit-pvol-id' | translate}}"
                                                         ng-model="dataModel.sort" title="{{'replication-group-edit-pvol-id' | translate}}"></sort-column-header>
                                 </div>
-                                <div class="col-md-3 cell">
+                                <div class="fifth cell">
                                     <sort-column-header field="label" label="{{'replication-group-edit-pvol-label' | translate}}"
                                                         ng-model="dataModel.sort" title="{{'replication-group-edit-pvol-label' | translate}}"></sort-column-header>
                                 </div>
-                                <div class="col-md-3 cell">
+                                <div class="fifth cell">
                                     <sort-column-header field="numberOfSecondaryVolume" label="{{'replication-group-edit-number-of-svol' | translate}}"
                                                         ng-model="dataModel.sort" title="{{'replication-group-edit-number-of-svol' | translate}}"></sort-column-header>
                                 </div>
                             </div>
 
                             <div class="tile row-tile row" ng-repeat="pv in dataModel.primaryVolumes">
-                                <div class="col-md-1 cell control-cell">
+                                <div class="tenth cell control-cell">
                                     <div data-toggle="buttons" class="btn-group">
                                         <label id="pv.id" class="btn icon-btn checkbox" ng-click="pv.selected = !pv.selected">
                                             <input type="checkbox">
                                         </label>
                                     </div>
                                 </div>
-                                <div title="{{pv.id}}" class="col-md-3 cell">
+                                <div title="{{pv.id}}" class="fifth cell">
                                     <p>{{pv.id}}</p>
                                 </div>
-                                <div title="{{pv.label}}" class="col-md-3 cell">
+                                <div title="{{pv.label}}" class="fifth cell">
                                     <p>{{pv.label}}</p>
                                 </div>
-                                <div title="{{pv.numberOfSecondaryVolume}}" class="col-md-3 cell">
+                                <div title="{{pv.numberOfSecondaryVolume}}" class="fifth cell">
                                     <p>{{pv.numberOfSecondaryVolume}}</p>
                                 </div>
                             </div>
