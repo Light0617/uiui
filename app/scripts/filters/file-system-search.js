@@ -19,7 +19,7 @@ angular.module('rainierApp')
 
                 var pass = _.isEmpty(search.freeText) ||
                     item.id.toString().indexOf(search.freeText) > -1 ||
-                    item.label.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1;
+                    item.name.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1;
 
                 pass = pass && (search.type === null || item.type === search.type);
                 pass = item.selected || pass;

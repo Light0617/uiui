@@ -181,6 +181,15 @@ angular.module('rainierApp')
 
                 dataModel.gridSettings = [
                     {
+                        title: 'Name',
+                        sizeClass: 'twelfth',
+                        sortField: 'name',
+                        getDisplayValue: function (item) {
+                            return item.name;
+                        }
+
+                    },
+                    {
                         title: 'Type',
                         sizeClass: 'twelfth',
                         sortField: 'type',
