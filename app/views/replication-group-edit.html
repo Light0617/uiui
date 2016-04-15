@@ -16,8 +16,8 @@
             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify">
                 <div class="form-group">
                     <form name="validationForm.leftPanel" role="form" class="validation-form">
-                        <div class="form-group">
-                            <label>{{'common-replication-group' | translate}}</label>
+                        <div class="form-group label-value-container">
+                            <label class="label">{{'common-replication-group' | translate}}</label>
                             <input type="name" name="replicationName" class="form-control form-lg"
                                    ng-model="dataModel.replicationName" maxlength="26" required>
                         </div>
@@ -27,8 +27,8 @@
                         <p class="value"> {{ dataModel.replicationType }}</p>
                     </div>
 
-                    <div class="form-group toggle-control">
-                        <label>{{'replication-group-label-consistency' | translate}}</label>
+                    <div class="form-group toggle-control label-value-container">
+                        <label class="label">{{'replication-group-label-consistency' | translate}}</label>
 
                         <div class="btn-group btn-group-justified" data-toggle="buttons">
                             <label class="btn btn-primary btn-dark">
@@ -46,7 +46,7 @@
             <!--Right column-->
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
                 <div class="header-row" ng-if="!dataModel.noPrimaryVolume">
-                    <h2 class="pull-left col-lg-9 col-md-9 col-sm 12" ng-if="dataModel.replicationType === 'Snapshot'">
+                    <h2 ng-if="dataModel.replicationType === 'Snapshot'">
                         {{'replication-group-edit-snapshot-message' | translate}}</h2>
 
                     <h2 class="pull-left col-lg-9 col-md-9 col-sm 12" ng-if="dataModel.replicationType === 'Clone'">

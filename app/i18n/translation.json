@@ -836,7 +836,7 @@
     "replication-group-edit-remove-pvol-message": "Select the Primary volume(s)you want to remove",
     "replication-group-edit-remove-svol-message": "Remove corresponding secondary volume(s)",
     "replication-group-edit-snapshot-message": "You can change comment, number of copies, schedule or removing P-Vol(s)",
-    "replication-group-edit-clone-message": "P-Volumes(s)",
+    "replication-group-edit-clone-message": "Primary Volumes(s)",
     "replication-group-edit-pvol-id": "Primary Volume ID",
     "replication-group-edit-pvol-label": "Primary Volume Label",
     "replication-group-edit-number-of-svol": "# of Secondary Volume(s)",
