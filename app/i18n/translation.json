@@ -215,6 +215,7 @@
     "storage-pool-encryption": "Encryption",
     "storage-pool-compression": "Compression",
     "storage-pool-compression-filter": "Select Compression Filter",
+    "storage-pool-encryption-filter": "Select Encryption Filter",
     "storage-pool-encrypted": "Encrypted",
     "storage-pool-compressed-parity-group-ids": "Compressed Parity Group Ids",
     "storage-pool-expansion-rate": "Expansion Rate",

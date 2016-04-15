@@ -110,21 +110,17 @@
     </div>
 </div>
 <div class="control-group">
-    <h3>{{ 'storage-pool-encryption' | translate }}<span class="read-only" type="text">{{ (filterModel.filter.encryption === undefined || filterModel.filter.encryption === null) ? 'ALL' :
-                    (filterModel.filter.encryption ? 'Yes' : 'No' )}}</span>
+    <h3>{{ 'storage-pool-encryption' | translate }}<span class="read-only"
+                                                          type="text">{{dataModel.filter.encryption || 'ALL'}}</span>
     </h3>
-
-    <div class="btn-group btn-group-toggle btn-group-justified">
-        <div class="btn-group">
-            <label class="btn btn-default" ng-model="filterModel.filter.encryption" btn-radio="true" title="Enabled" uncheckable
-                   ng-click="filterModel.filterQuery('encrypted', 'YES')">Yes
-            </label>
-        </div>
-        <div class="btn-group">
-            <label class="btn btn-default" ng-model="filterModel.filter.encryption" btn-radio="false" title="Disabled" uncheckable
-                   ng-click="filterModel.filterQuery('encrypted', 'NO')">No
-            </label>
-        </div>
+    <div class="control-group">
+        <select class="selectpicker inline btn-group-justified" ng-model="dataModel.filter.encryption" ng-change="filterModel.filterQuery('encrypted', dataModel.filter.encryption)">
+            <option value="">{{'storage-pool-encryption-filter' | translate}}</option>
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+            <option value="PARTIAL">PARTIAL</option>
+            <option value="UNKNOWN">UNKNOWN</option>
+        </select>
     </div>
 </div>
 <div class="control-group">
