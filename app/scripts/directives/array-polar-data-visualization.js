@@ -1114,8 +1114,7 @@ angular.module('rainierApp')
                             .attr('height', 20)
                             .attr('width', width)
                             .attr('x', bwItemLeft + 80)
-                            .attr('fill', tierColors[index])
-                            .attr('opacity', '.6')
+                            .attr('fill', 'white')
                             .append('title')
                             .text(tier.toolTip);
 

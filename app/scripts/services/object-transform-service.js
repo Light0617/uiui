@@ -771,10 +771,10 @@ angular.module('rainierApp')
                         var percent = usedCapacity / currentTier.totalCapacity * 100;
                         var total = diskSizeService.getDisplaySize(currentTier.totalCapacity);
                         var used = diskSizeService.getDisplaySize(usedCapacity);
-                        model.arrayDataVisualizationModel.tierBreakdown.push({ name: tier.tier, percent: parseInt(percent), toolTip: used.size + ' ' + used.unit + ' / ' + total.size + ' ' + total.unit });
+                        model.arrayDataVisualizationModel.tierBreakdown.push({ name: tier.tier, percent: parseInt(percent), toolTip: used.size + ' ' + used.unit + ' Used / ' + total.size + ' ' + total.unit + ' Total' });
                     }
                     else {
-                        model.arrayDataVisualizationModel.tierBreakdown.push({ name: tier.tier, percent: 0, toolTip: '0 GB / 0 GB'});
+                        model.arrayDataVisualizationModel.tierBreakdown.push({ name: tier.tier, percent: 0, toolTip: '0 GB Used / 0 GB Total'});
                     }
                 });
             },
