@@ -293,7 +293,9 @@ angular.module('rainierApp')
                         speed: null
                     },
                     raidLayout: null,
-                    raidLevel: null
+                    raidLevel: null,
+                    compression: null,
+                    encryption: null
                 };
 
                 dataVizModelForAdvanced($scope.model.parityGroups);
