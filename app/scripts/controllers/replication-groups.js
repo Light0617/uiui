@@ -53,7 +53,6 @@ angular.module('rainierApp')
                 busy: false,
                 busyLoadingMoreChildren: false,
                 currentPageCount: 0,
-                displayList: $scope.replicationGroups,
                 sort: {
                     field: 'id',
                     reverse: false,
@@ -175,6 +174,8 @@ angular.module('rainierApp')
             };
 
             dataProtectionSettingsService.setReplicationGroupGridSettings(dataModel);
+            dataModel.cachedList = $scope.replicationGroups;
+            dataModel.displayList = $scope.replicationGroups.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel = dataModel;
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, $scope.replicationGroups);
             dataProtectionSettingsService.setDataModelFunctions($scope);
@@ -186,7 +187,8 @@ angular.module('rainierApp')
                 },
                 updateResultAndTokenAndCounts: function (result) {
                     $scope.dataModel.nextToken = result.nextToken;
-                    $scope.dataModel.displayList = result.resources;
+                    $scope.dataModel.cachedList = result.resources;
+                    $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
                     $scope.dataModel.itemCounts = {
                         filtered: $scope.dataModel.displayList.length,
                         total: $scope.dataModel.total

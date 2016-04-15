@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="tile resource-tile" ng-repeat="item in dataModel.displayList track by $index">
-                <ng-include src="tileItemTemplate || 'views/templates/inventory-item-tile.html'" class="repeat-tile-container"></ng-include>
+                <inventory-item-tile item="item" class="repeat-tile-container"></inventory-item-tile>
             </div>
         </div>
 

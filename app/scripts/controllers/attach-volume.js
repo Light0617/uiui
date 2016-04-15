@@ -121,7 +121,8 @@ angular.module('rainierApp')
 
         var updateResultTotalCounts = function(result) {
             $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.displayList = result.resources;
+            $scope.dataModel.cachedList = result.resources;
+            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel.itemCounts = {
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
@@ -371,7 +372,8 @@ angular.module('rainierApp')
             $scope.dataModel.nextToken = result.nextToken;
             $scope.dataModel.total = result.total;
             $scope.dataModel.currentPageCount = 0;
-            $scope.dataModel.displayList = result.resources;
+            $scope.dataModel.cachedList = result.resources;
+            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
             $scope.dataModel.allItemsSelected = false;
         }

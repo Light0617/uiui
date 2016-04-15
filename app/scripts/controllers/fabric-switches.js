@@ -92,7 +92,8 @@ angular.module('rainierApp')
 
             var updateResultTotalCounts = function(result) {
                 $scope.dataModel.nextToken = result.nextToken;
-                $scope.dataModel.displayList = result.resources;
+                $scope.dataModel.cachedList = result.resources;
+                $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
                 $scope.dataModel.itemCounts = {
                     filtered: $scope.dataModel.displayList.length,
                     total: $scope.dataModel.total
@@ -102,7 +103,9 @@ angular.module('rainierApp')
             $scope.dataModel.getResources = function(){
                 return paginationService.get($scope.dataModel.nextToken, GET_FABRICS_PATH, objectTransformService.transformFabricSwitch, false);
             };
-            $scope.dataModel.displayList = fabrics;
+
+            $scope.dataModel.cachedList = fabrics;
+            $scope.dataModel.displayList = fabrics.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
             $scope.filterModel = {
                 filter: {
