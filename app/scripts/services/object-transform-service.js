@@ -1745,7 +1745,7 @@ angular.module('rainierApp')
                 item.usage = item.usageBare + '%';
                 var icons = [];
 
-                if(item.blockSize.size === 4)
+                if(item.blockSize.size === '4.00')
                 {
                     item.blockSizeDisplay = 'Virtual Machines (4K)';
                 }
