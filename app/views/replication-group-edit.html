@@ -163,6 +163,8 @@
                             </div>
                         </form>
                     </div>
+                    <p ng-if="dataModel.schedule.type === 'HOURLY' && dataModel.schedule.hourStartMinute === 0 && dataModel.schedule.hourInterval">{{ 'replication-groups-hourly-note-zero' | translate : dataModel }}</p>
+                    <p ng-if="dataModel.schedule.type === 'HOURLY' && dataModel.schedule.hourStartMinute && dataModel.schedule.hourInterval">{{ 'replication-groups-hourly-note' | translate : dataModel}}</p>
 
                     <!--TODO:CDUAN & Jurgen-->
                     <div class="control-row">

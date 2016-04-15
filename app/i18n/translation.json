@@ -828,6 +828,8 @@
 
 
     "no-available-replication-group": "Selected volume is in an external replication group or not in any HSA replication group(s).",
+    "replication-groups-hourly-note": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hour(s) on the {{minuteDisplay}} minute of the hour.",
+    "replication-groups-hourly-note-zero": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hour(s) on the hour.",
     "replication-groups-filter-snapshot": "Snapshot",
     "replication-groups-filter-clone": "Clone",
     "replication-group-edit-remove-pvol-message": "Select the Primary volume(s)you want to remove:",

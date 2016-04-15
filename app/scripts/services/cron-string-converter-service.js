@@ -53,6 +53,9 @@ angular.module('rainierApp')
         }
 
         return {
+            addSuffix: function (date){
+              return addSuffix(date);
+            },
             fromDatePickerToObjectModel: function (type, time, date, days, hourInterval, hourStartMinute) {
                 var objectModel = {};
                 if (type === 'HOURLY' || type === 'hour' || type === 'Hourly') {

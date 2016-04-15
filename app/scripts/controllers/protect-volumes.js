@@ -271,6 +271,9 @@ angular.module('rainierApp')
                 return false;
             }
 
+            $scope.$watch('dataModel.scheduleMinute', function(value) {
+                $scope.dataModel.minuteDisplay = cronStringConverterService.addSuffix(value);
+            });
 
             $scope.$watch('dataModel.schedule', function () {
                 $scope.allUseExisting = false;

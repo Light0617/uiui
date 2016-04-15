@@ -349,6 +349,10 @@ angular.module('rainierApp')
             $scope.dataModel.protectModel.validCopyGroups = validCopyGroups;
         }
 
+        $scope.$watch('dataModel.protectModel.schedule.hourStartMinute', function(value) {
+            $scope.dataModel.protectModel.minuteDisplay = cronStringConverterService.addSuffix(value);
+        });
+
         $scope.$watchGroup(['dataModel.createModel', 'dataModel.attachModel'], function(vals) {
             if (_.some(vals, function(v) {
                     return !v;

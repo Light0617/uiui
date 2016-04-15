@@ -51,6 +51,10 @@
         </div>
     </form>
 </div>
+<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
+    <p ng-if="dataModel.protectModel.schedule.type === 'hour' && dataModel.protectModel.schedule.hourStartMinute === 0 && dataModel.protectModel.schedule.hourInterval">{{ 'replication-groups-hourly-note-zero' | translate : dataModel.protectModel }}</p>
+    <p ng-if="dataModel.protectModel.schedule.type === 'hour' && dataModel.protectModel.schedule.hourStartMinute && dataModel.protectModel.schedule.hourInterval">{{ 'replication-groups-hourly-note' | translate : dataModel.protectModel}}</p>
+</div>
 <div class="clearfix" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.schedule.type !== 'hour'">
     <form role="form" class="col-lg-3 form-horizontal" name="inputTimeForm">
         <div class="form-group form-group-lg form-horizontal">

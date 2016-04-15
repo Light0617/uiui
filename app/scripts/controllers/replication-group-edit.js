@@ -77,6 +77,10 @@ angular.module('rainierApp')
                 }
             };
 
+            $scope.$watch('dataModel.schedule.hourStartMinute', function(value) {
+                $scope.dataModel.minuteDisplay = cronStringConverterService.addSuffix(value);
+            });
+
             $scope.canSubmit = function () {
                 if ($scope.dataModel.replicationType === 'Clone') {
                     return ($scope.anyPrimaryVolumeSelected && $scope.dataModel.replicationName) ||

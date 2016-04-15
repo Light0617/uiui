@@ -176,6 +176,10 @@
                         </div>
                     </form>
                 </div>
+                <div ng-if="dataModel.replicationTechnology ==='SNAPSHOT'">
+                    <p ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute === 0 && dataModel.hourInterval">{{ 'replication-groups-hourly-note-zero' | translate : dataModel }}</p>
+                    <p ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute && dataModel.hourInterval">{{ 'replication-groups-hourly-note' | translate : dataModel}}</p>
+                </div>
 
                 <div role="form" class="row control-row" ng-switch="allUseExisting">
                     <form name="validationForm.rightPanel" class="validation-form" novalidate>
