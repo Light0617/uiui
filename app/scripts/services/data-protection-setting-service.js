@@ -47,7 +47,7 @@ angular.module('rainierApp')
                         generateTruncatedMessage(originalMessage.naturalLanguageSchedule, numberOfRgWithVolumeIdAsPvol, 'schedule');
                 }
                 if (numberOfRgWithVolumeIdAsPvol === 1 && originalMessage.hasOwnProperty('comments')) {
-                    originalMessage.displayedComments = (originalMessage.comments, numberOfRgWithVolumeIdAsPvol, 'comments');
+                    originalMessage.displayedComments = generateTruncatedMessage(originalMessage.comments, numberOfRgWithVolumeIdAsPvol, 'comments');
                 }
             } else if ((typeof originalMessage === 'string' || originalMessage instanceof String) && messageLength > 13) {
                 originalMessage = originalMessage.slice(0, 13) + appendedMessage;
