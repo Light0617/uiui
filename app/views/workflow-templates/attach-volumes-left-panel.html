@@ -1,6 +1,6 @@
 <div class="form-group">
     <div>
-        <label for="storage-system">Storage System</label>
+        <label>Storage System</label>
         <select class="form-control"
                 ng-model="dataModel.selectedStorageSystem"
                 ng-options="ss.storageSystemId for ss in dataModel.storageSystems"
@@ -8,7 +8,7 @@
         </select>
     </div>
     <div class="margin-T-B-L">    
-        <label for="hm">Host Mode</label>
+        <label>Host Mode</label>
         <select class="form-control"
                 ng-model="dataModel.attachModel.hostMode"
                 ng-options="'host-mode-' + mode | translate for mode in dataModel.attachModel.hostModes">

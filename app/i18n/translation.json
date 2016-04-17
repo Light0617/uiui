@@ -349,6 +349,14 @@
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
     "no-servers-onboarded": "No servers have been added yet.",
 
+    "attach-volumes-number-of-volume": "# of Vol.",
+    "attach-volumes-label": "Label",
+    "attach-volumes-label-suffix": "Label Suffix",
+    "attach-volumes-size": "Size",
+    "attach-volumes-pool-type": "Pool Type",
+    "attach-volumes-Tier": "Tier",
+    "attach-volumes-Pool": "Pool",
+
     "storage-volume-detach-confirmation": "Detach Volumes Confirmation",
     "storage-volume-detach-selected-content": "The selected {{getSelectedCount()}} volumes will be detached. Do you want to proceed?",
     "storage-volume-detach-zero-selected": "Select at least one volume for deletion!",

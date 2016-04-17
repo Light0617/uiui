@@ -18,7 +18,7 @@ angular.module('rainierApp')
 
             return _.filter(input, function (item) {
                 var pass = (_.isEmpty(search.freeText) ||
-                    (item.name.toString().toLocaleLowerCase() === search.freeText.toString().toLocaleLowerCase())) &&
+                    (item.name.toString().toLocaleLowerCase().indexOf(search.freeText.toString().toLocaleLowerCase()) !== -1)) &&
                     (!search.type || item.type.toString().toLocaleLowerCase() === search.type.toString().toLocaleLowerCase());
 
                 pass = item.selected || pass;

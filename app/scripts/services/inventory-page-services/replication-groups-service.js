@@ -120,13 +120,12 @@ angular.module('rainierApp')
                 var currentReplicationGroupTextSearch = queryService.getQuery('replicationGroupTextSearch');
                 if (currentReplicationGroupType !== undefined) {
                     externalReplicationGroups = _.filter(externalReplicationGroups, function (rg) {
-                        return rg.type.toString().toUpperCase() === currentReplicationGroupType.queryText.toUpperCase();
+                        return rg.type.toString().toUpperCase().indexOf(currentReplicationGroupType.queryText.toUpperCase()) !== -1;
                     });
                 }
                 if (currentReplicationGroupTextSearch !=undefined) {
                     externalReplicationGroups = _.filter(externalReplicationGroups, function (rg) {
-                        return rg.name.toString().toUpperCase() === currentReplicationGroupTextSearch.queryText.freeText
-                                .toUpperCase();
+                        return rg.name.toString().toUpperCase().indexOf(currentReplicationGroupTextSearch.queryText.freeText.toUpperCase()) !== -1;
                     });
                 }
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular
@@ -167,7 +166,7 @@ angular.module('rainierApp')
                 } else {
                     var queryObject = queryService.getQueryObjectInstance('replicationGroupTextSearch', filterModel);
                     queryObject.queryStringFunction = function() {
-                        return 'name:' + filterModel.freeText;
+                        return 'name:' + paginationService.getPartialSearchQueryString(filterModel.freeText);
                     };
                     queryService.setQueryObject(queryObject);
                 }

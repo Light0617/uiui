@@ -56,7 +56,7 @@
                                         ng-model="dataModel.sort" title="{{ settings.title  | translate }}"></sort-column-header>
                 </div>
                 <div class="sixth cell text-resize" ng-if="dataModel.displayList[0].usage">
-                    <a class="sort-column-header">{{ 'usage' | translate }}</a>
+                    <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
                 </div>
             </div>
             <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile" ng-if="dataModel.addAction" ng-click="dataModel.addAction()">
