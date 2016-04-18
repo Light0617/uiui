@@ -32,7 +32,7 @@ angular.module('rainierApp')
                     }
                     tempRecord.pgCount = pgSummaryItems[i].numberOfParityGroups;
 
-                    var temp = pgSummaryItems[i].totalPgCapacity;
+                    var temp = pgSummaryItems[i].totalCapacity;
                     tempRecord.pgCapacity = diskSizeService.getDisplaySize(temp);
 
                     tempRecord.numberOfAvailableDisks = pgSummaryItems[i].numberOfAvailableDisks;
