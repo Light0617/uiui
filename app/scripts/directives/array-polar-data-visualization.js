@@ -1091,7 +1091,7 @@ angular.module('rainierApp')
                     var textY = 55;
                     var rectY = 40;
                     var circleY = 50;
-                    var offset = 24;
+                    var offset = 26;
                     var index = 0;
                     _.each(data.tierBreakdown, function(tier) {
                         breakdownView.append('circle')
@@ -1111,18 +1111,27 @@ angular.module('rainierApp')
 
                         breakdownView.append('rect')
                             .attr('y', rectY)
-                            .attr('height', 20)
+                            .attr('rx', 8)
+                            .attr('rx', 8)
+                            .attr('height', 18)
                             .attr('width', width)
                             .attr('x', bwItemLeft + 80)
                             .attr('fill', 'white')
+                            .attr('stroke', tierColors[index])
                             .append('title')
                             .text(tier.toolTip);
 
+                        var fillWidth = parseInt(width * tier.percent / 100);
+                        if(fillWidth !== 0 && fillWidth < 9) {
+                            fillWidth = 9;
+                        }
                         breakdownView.append('rect')
                             .attr('y', rectY)
+                            .attr('rx', 8)
+                            .attr('rx', 8)
                             .attr('title', tier.toolTip)
-                            .attr('height', 20)
-                            .attr('width',  parseInt(width * tier.percent / 100))
+                            .attr('height', 18)
+                            .attr('width',  fillWidth)
                             .attr('x', bwItemLeft + 80)
                             .attr('fill', tierColors[index])
                             .append('title')
