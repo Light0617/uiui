@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>HSA Help Overlay</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+  <span class="unslider-open"></span>
+  <div class="tour-slider">
+    <span class="unslider-close">
+      <span class="icon icon-delete-item"></span>
+    </span>
+    <ul>
+      <li><img src="images/overlay-slider/0.png"></li>
+      <li><img src="images/overlay-slider/1.png"></li>
+      <li><img src="images/overlay-slider/2.png"></li>
+      <li><img src="images/overlay-slider/3.png"></li>
+      <li><img src="images/overlay-slider/4.png"></li>
+      <li><img src="images/overlay-slider/5.png"></li>
+      <li><img src="images/overlay-slider/6.png"></li>
+    </ul>
+  </div>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script type="text/javascript" src="js/unslider.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function($) {
+      $('.tour-slider').unslider({
+        arrows: {
+          //  Unslider default behaviour
+          prev: '<a class="unslider-arrow prev"><span class="icon icon-carousel-left-arrow"></span></a>',
+          next: '<a class="unslider-arrow next"><span class="icon icon-carousel-right-arrow"></span></a>'
+        }
+      });
+
+
+
+      var sliderOpen = $('.unslider-open');
+      var sliderClose = $('.unslider-close, .tour-slider');
+
+
+      sliderOpen.click(function() {
+        $('.unslider').addClass('unslider-on');
+      });
+
+      sliderClose.click(function() {
+        $('.unslider').removeClass('unslider-on');
+      });
+
+    });
+  </script>
+</body>
+
+</html>
