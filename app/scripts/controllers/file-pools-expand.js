@@ -72,11 +72,13 @@ angular.module('rainierApp')
                     });
                 }
                 var payload = {
-                    label: $scope.dataModel.label,
                     templateTiers: tiers,
                     utilizationThreshold1: $scope.dataModel.template.utilizationThreshold1,
                     utilizationThreshold2: $scope.dataModel.template.utilizationThreshold2
                 };
+                if(template.label !== dataModel.label) {
+                    payload['label'] = dataModel.label;
+                }
                 orchestratorService.expandFilePool(storageSystemId, filePoolId, payload).then(function () {
                  window.history.back();
                  });
