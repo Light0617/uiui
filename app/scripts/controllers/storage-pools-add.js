@@ -112,6 +112,10 @@ angular.module('rainierApp')
 
         $scope.$watch('model.diskSizesByTier', dataVizModelForBasic, true);
 
+        $scope.$watch('model.poolType', function (val) {
+            $scope.model.disableUtilization = val === 'HTI';
+        });
+
         function  dataVizModelForAdvanced(pgs) {
             $scope.dataVizModel = storagePoolService.dataVizModelForAdvanced($scope.model, pgs, diskSizeService);
         }
