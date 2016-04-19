@@ -26,22 +26,22 @@
                         <p class="label">{{'replication-group-label-technology' | translate}}</p>
                         <p class="value"> {{ dataModel.replicationType }}</p>
                     </div>
-
+                </div>
                     <div class="form-group toggle-control label-value-container">
                         <label class="label">{{'replication-group-label-consistency' | translate}}</label>
-
-                        <div class="btn-group btn-group-justified" data-toggle="buttons">
-                            <label class="btn btn-primary btn-dark">
-                                <input id="yes-toggle" name="yes-toggle" type="radio" autocomplete="off" checked="" ng-class="{'disabled': dataModel.replicationConsistency === 'Off',
-                                    'active': dataModel.replicationConsistency === 'On'}"/>{{'yes-button' | translate}}
-                            </label>
-                            <label class="btn btn-primary btn-dark">
-                                <input id="no-toggle" name="no-toggle" type="radio" autocomplete="off" checked="" ng-class="{'active': dataModel.replicationConsistency === 'Off',
-                                    'disabled': dataModel.replicationConsistency === 'On'}"/>{{'no-button' | translate}}
-                            </label>
+                        <div class="btn-group btn-group-justified" role="toggle">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-dark" ng-class="{'disabled': dataModel.replicationConsistency === 'Off',
+                                    'active': dataModel.replicationConsistency === 'On'}">{{'yes-button' | translate}}
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-dark " ng-class="{'active': dataModel.replicationConsistency === 'Off',
+                                    'disabled': dataModel.replicationConsistency === 'On'}">{{'no-button' | translate}}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
             <!--Right column-->
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
@@ -62,7 +62,7 @@
                                 <label class="label">{{'replication-group-label-comments' | translate}}</label>
                                 <input class="form-control" id="comments" ng-model="dataModel.comments"
                                        name="comments" title="{{'replication-group-label-comments' | translate}}"
-                                       placeholder="{{'replication-group-comments-placeholder' | translate}}" maxlength="256">
+                                       placeholder="{{'replication-group-label-comments' | translate}}" maxlength="256">
                             </div>
                         </form>
 
@@ -127,20 +127,20 @@
 
                     <div class="row control-row" ng-if="dataModel.replicationType === 'Snapshot'">
                         <form name="validationForm.timePicker" class="validation-form" novalidate>
-                            <div class="form-group form-group-lg col-md-2 form-horizontal" ng-if="!(dataModel.schedule.type === 'HOURLY')">
+                            <div class="form-group form-group-lg col-md-4 form-horizontal" ng-if="!(dataModel.schedule.type === 'HOURLY')">
                                 <label>Start Time </label>
                                 <input type="text" class="form-control time-input input-restricted"
                                        ng-model="dataModel.schedule.time"
                                        bs-timepicker placeholder="12:00 AM" ng-readonly="true">
                             </div>
-                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                            <div class="form-group form-group-lg col-md-4 form-horizontal"
                                  ng-if="dataModel.schedule.type === 'HOURLY'">
                                 <label>Start Minute </label>
                                 <input type="number" class="time-input form-control" name="hourStartMinute"
                                        ng-min="0" ng-max="59" value="1" ng-model="dataModel.schedule.hourStartMinute"
                                        placeholder="0 - 59" required>
                             </div>
-                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                            <div class="form-group form-group-lg col-md-4 form-horizontal"
                                  ng-if="dataModel.schedule.type === 'HOURLY'">
                                 <label>Every </label>
                                 <input type="number" class="time-input form-control" name="hourInterval"
@@ -151,7 +151,7 @@
                                 <label>&nbsp;</label>
                                 <p>Hours</p>
                             </div>
-                            <div class="form-group form-group-lg col-md-2 form-horizontal"
+                            <div class="form-group form-group-lg col-md-4 form-horizontal"
                                  ng-if="dataModel.schedule.type === 'MONTHLY'">
                                 <label>Day </label>
                                 <input type="number" class="time-input form-control" name="date"
@@ -163,13 +163,12 @@
                     <p ng-if="dataModel.schedule.type === 'HOURLY' && dataModel.schedule.hourStartMinute === 0 && dataModel.schedule.hourInterval">{{ 'replication-groups-hourly-note-zero' | translate : dataModel }}</p>
                     <p ng-if="dataModel.schedule.type === 'HOURLY' && dataModel.schedule.hourStartMinute && dataModel.schedule.hourInterval">{{ 'replication-groups-hourly-note' | translate : dataModel}}</p>
 
-                    <!--TODO:CDUAN & Jurgen-->
                     <div class="control-row">
                             <h3 class="header-label" title="{{'replication-group-edit-remove-pvol-message' | translate}}">{{'replication-group-edit-remove-pvol-message' | translate}}</h3>
                         
                         <div data-toggle="buttons" class="btn-group">
-                            <label class="btn btn-primary btn-light" ng-click="dataModel.removeSecondaryVolume = !dataModel.removeSecondaryVolume" ng-class="{'active' : !dataModel.removeSecondaryVolume}">
-                                <input id="remove-replication-group" type="checkbox" checked="checked" name="remove-replication-group"/>{{'replication-group-edit-remove-svol-message' | translate}}
+                            <label class="btn btn-primary btn-light active" ng-click="dataModel.removeSecondaryVolume = !dataModel.removeSecondaryVolume" ng-class="{'active' : !dataModel.removeSecondaryVolume}">
+                                <input id="remove-replication-group" type="checkbox" checked="" name="remove-replication-group"/>{{'replication-group-edit-remove-svol-message' | translate}}
                             </label>
                         </div>
                     </div>

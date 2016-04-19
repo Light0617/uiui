@@ -863,7 +863,6 @@
     "replication-group-label-status": "Status",
     "replication-group-label-schedule": "Schedule",
     "replication-group-label-comments": "Comments",
-    "replication-group-comments-placeholder": "Add comments here",
     "repliaction-group-volume-list-pvolid": "P-Vol ID",
     "repliaction-group-volume-list-svolid": "S-Vol ID",
     "repliaction-group-volume-list-pvol-status": "P-Vol Status",
