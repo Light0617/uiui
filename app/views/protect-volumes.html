@@ -168,8 +168,8 @@
                                    ng-change="changeSubmitButtonStatus()" ng-model="dataModel.scheduleMinute"
                                    placeholder="0 - 59" required ng-disabled="allUseExisting">
                         </div>
-                        <div class="form-group form-group-lg col-md-4 form-horizontal"
-                             ng-if="!(dataModel.schedule === 'HOURLY')">
+                        <div class="form-group form-group-lg form-horizontal" ng-if="dataModel.schedule !== 'HOURLY'"
+                             ng-class="{'col-md-4': dataModel.schedule === 'MONTHLY', 'col-md-8': dataModel.schedule === 'DAILY' || dataModel.schedule === 'WEEKLY'}">
                             <label>Start Time </label>
                             <input type="text" class="form-control time-input input-restricted"
                                    ng-model="dataModel.scheduleTime"
@@ -183,7 +183,6 @@
                                    ng-change="changeSubmitButtonStatus()" ng-model="dataModel.scheduleDate"
                                    placeholder="1 - 31" required ng-disabled="allUseExisting">
                         </div>
-
                         <div class="form-group form-group-lg col-md-4 form-horizontal"
                              ng-if="dataModel.schedule === 'HOURLY'">
                             <label>Every </label>
@@ -195,7 +194,6 @@
                         </div>
                         <div class="form-horizontal" ng-if="dataModel.schedule === 'HOURLY'">
                             <label>&nbsp;</label>
-
                             <p>Hours</p>
                         </div>
                     </form>

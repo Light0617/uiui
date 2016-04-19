@@ -127,7 +127,8 @@
 
                     <div class="row control-row" ng-if="dataModel.replicationType === 'Snapshot'">
                         <form name="validationForm.timePicker" class="validation-form" novalidate>
-                            <div class="form-group form-group-lg col-md-4 form-horizontal" ng-if="!(dataModel.schedule.type === 'HOURLY')">
+                            <div class="form-group form-group-lg form-horizontal" ng-if="dataModel.schedule.type !== 'HOURLY'"
+                                 ng-class="{'col-md-4': dataModel.schedule.type === 'MONTHLY', 'col-md-8': dataModel.schedule.type === 'DAILY' || dataModel.schedule.type === 'WEEKLY'}">
                                 <label>Start Time </label>
                                 <input type="text" class="form-control time-input input-restricted"
                                        ng-model="dataModel.schedule.time"
