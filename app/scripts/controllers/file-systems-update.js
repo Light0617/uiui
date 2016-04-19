@@ -47,7 +47,7 @@ angular.module('rainierApp')
             dataModel.format = fileSystemService.getFormatLabel(fileSystem.blockSize.value);
             dataModel.units = units;
             dataModel.unit = fileSystem.expansionLimitInBytes.unit;
-            dataModel.capacity = parseInt(fileSystem.expansionLimitInBytes.size);
+            dataModel.capacity = Number(fileSystem.expansionLimitInBytes.size);
             dataModel.virtualFileServer = fileSystem.evsId.toString();
             //dataModel.poolTiers = _.keys(storagePoolMapping);
             dataModel.filePool = filePool;
