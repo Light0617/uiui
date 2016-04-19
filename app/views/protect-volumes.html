@@ -278,29 +278,29 @@
                     <div class="row-grey"
                          ng-repeat="volumeRow in dataModel.volumeRows | orderBy:orderByField:reverseSort" track by
                          volumeRow.volumeId>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell smallMarginTop">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
                             <input type="text" ng-disabled=true class="form-control text inline" name="volumeId"
                                    title="{{'storage-volume-id' | translate}}" ng-model="volumeRow.volumeId"
                                    value="volumeRow.volumeId">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell smallMarginTop">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
                             <input type="text" ng-model="volumeRow.label" ng-disabled=true
                                    class="form-control text inline"
                                    name="volumeLabel" title="{{'storage-volume-label' | translate}}"
                                    value="volumeRow.label">
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell smallMarginTop">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
                             <input type="text" ng-model="volumeRow.poolId" ng-disabled=true
                                    class="form-control text inline"
                                    name="poolId" title="{{'storage-pool-label' | translate}}" value="volumeRow.poolId">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell smallMarginTop">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
                             <input type="text" ng-model="volumeRow.storageSystemId" ng-disabled=true
                                    class="form-control text inline"
                                    name="storageSystemId" title="{{'storage-system-id' | translate}}"
                                    value="volumeRow.storageSystemId">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell smallMarginTop"
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell"
                              ng-if="dataModel.showDropDownColumn">
                             <select id="select" class="dropdown inline cell" id="copyGroupName"
                                     ng-model="volumeRow.CGSelection"
