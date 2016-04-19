@@ -974,8 +974,6 @@ angular.module('rainierApp')
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('allocated-capacity-tooltip'),
-                            percentage: item.poolCapacity.value === 0 && item.unallocatedToPoolsCapacity.value === 0 ?
-                                0 : parseInt((item.poolCapacity.value / (item.poolCapacity.value + item.unallocatedToPoolsCapacity.value)) * 100),
                             capacity: item.poolCapacity,
                             color: allocatedColor
                         },
