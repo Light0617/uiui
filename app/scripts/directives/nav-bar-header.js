@@ -20,6 +20,7 @@ angular.module('rainierApp')
                     }
                 };
 
+                scope.hideOverlay = true;
                 scope.username = authService.getUser().name;
 
                 var currentPath = $location.path();
@@ -34,6 +35,11 @@ angular.module('rainierApp')
                     dashboardSelected: !jobsSelected && !monitoringSelected,
                     monitoringSelected: monitoringSelected
                 };
+
+                function toggleOverlayContent() {
+                    $('overlay').height($('html').height());
+                    $('.unslider').addClass('unslider-on');
+                }
 
                 scope.versionModel = {
                     productName: PRODUCT_NAME,
@@ -71,6 +77,14 @@ angular.module('rainierApp')
                     },
                     getCurrentYear: function() {
                         return new Date().getFullYear();
+                    },
+                    toggleOverlayContent: function () {
+                        scope.hideOverlay = false;
+                        $timeout(toggleOverlayContent, 500);
+                    },
+                    closeOverlayContent: function () {
+                        scope.hideOverlay = true;
+                        $('.unslider').removeClass('unslider-on');
                     }
                 };
 
