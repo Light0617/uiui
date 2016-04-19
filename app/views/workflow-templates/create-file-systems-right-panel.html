@@ -66,7 +66,7 @@
             </div>
             <div class="col-lg-10 col-md-10 col-sm-10 col-xs-6 margin-T-B-L">
                     <input type="number" class="form-control fixed-line-height" placeholder="{{'file-systems-add-expansion-limit' | translate}}"
-                           name="capacity" ng-min="1" ng-max="1023" ng-model="dataModel.capacity" required>
+                           name="capacity" ng-min="1" ng-max="1024" ng-model="dataModel.capacity" required>
                     <p ng-show="dataModel.validationForm.capacity.$invalid && !dataModel.validationForm.capacity.$pristine"
                        class="validation-text">{{'file-systems-invalid-capacity' | translate }}</p>
                     <p ng-show="!dataModel.validCapacity"

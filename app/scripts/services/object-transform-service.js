@@ -1769,7 +1769,6 @@ angular.module('rainierApp')
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.fileSystemCapacityDetails.usedCapacity);
                 item.blockSize = diskSizeService.getDisplaySize(item.blockSize);
                 item.expansionLimitInBytes = diskSizeService.getDisplaySize(item.fileSystemCapacityDetails.expansionLimit);
-                item.expansionLimitInBytes.size = parseInt(item.expansionLimitInBytes.size);
                 item.onlyShowTwoBars = true;
                 item.usedLegend = item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-systems-used-capacity');
                 item.allocatedLegend = item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-systems-total-capacity');
