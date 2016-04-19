@@ -551,8 +551,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'snmp-manager-update'
                 },
-                //TODO[NEWRAIN-3534]. Need to inform the writer to create the help content for this page with this key.
-                helpContext: 'T_UPDATE_SNMP_MANAGER'
+                helpContext: 'T_ADD_SNMP_MANAGER'
             })
             .when('/tier-management', {
                 templateUrl: 'views/tier-edit.html',
