@@ -19,6 +19,18 @@ angular.module('rainierApp')
         var thinUsedColor = '#7BC242';
         var thinFreeColor = '#599628';
         var overCommitColor = '#272727';
+        var vspG200 = 'VSP G200';
+        var vspG400 = 'VSP G400';
+        var vspF400 = 'VSP F400';
+        var vspG600 = 'VSP G600';
+        var vspF600 = 'VSP F600';
+        var vspG800 = 'VSP G800';
+        var vspF800 = 'VSP F800';
+        var vspG1000 = 'VSP G1000';
+        var vspX200IdentifierPrefix = '/dev/storage/832000';
+        var vspX400X600IdentifierPrefix = '/dev/storage/834000';
+        var vspX800IdentifierPrefix = '/dev/storage/836000';
+        var vspG1000Identifier = '/sanproject';
 
         var capacity = function (usedCapacity, freeCapacity) {
             return {
@@ -74,10 +86,35 @@ angular.module('rainierApp')
             item.total = diskSizeService.getDisplaySize(item.totalUsableCapacity);
         }
 
+        function transformHdvmSnLaunchUrl(item) {
+            var identifier = '';
+            switch (item.model) {
+                case vspG200:
+                    identifier = vspX200IdentifierPrefix+ item.storageSystemId;
+                    break;
+                case vspG400:
+                case vspF400:
+                case vspG600:
+                case vspF600:
+                    identifier = vspX400X600IdentifierPrefix + item.storageSystemId;
+                    break;
+                case vspG800:
+                case vspF800:
+                    identifier = vspX800IdentifierPrefix + item.storageSystemId;
+                    break;
+                case vspG1000:
+                    identifier = vspG1000Identifier;
+                    break;
+            }
+
+            item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress, identifier, '/emergency.do'].join('');
+        }
+
         var transforms = {
 
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
+                transformHdvmSnLaunchUrl(item);
 
                 item.metaData = [
                     {
@@ -142,7 +179,7 @@ angular.module('rainierApp')
                             {
                                 type: 'hyperlink',
                                 title: 'storage-system-launch-hdvm',
-                                href: ['http://', item.svpIpAddress].join('')
+                                href: item.hdvmSnLaunchUrl
                             }
                             // BLOCKING ISW LINK (NEWRAIN-3236).
                             //,
