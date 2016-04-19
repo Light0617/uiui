@@ -9,9 +9,10 @@
  */
 angular.module('rainierApp')
     .controller('ExportCtrl', function ($scope, $routeParams, $timeout, $filter, diskSizeService, fileSystemService,
-                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location) {
+                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location, linkLabelService) {
         var storageSystemId = $routeParams.storageSystemId;
         var fileSystemId = $routeParams.fileSystemId;
+        var fileSystem;
         var exportId = $routeParams.exportId;
         var exports;
 
@@ -19,6 +20,13 @@ angular.module('rainierApp')
             orchestratorService.enterpriseVirtualServer(storageSystemId, exports.evsUuid).then(function (evs) {
             var summaryModel = {};
 
+                var exportList = [];
+                exportList.push(exports);
+                exports = linkLabelService.replaceFSIdWithLabel(exportList, fileSystem);
+                exports = linkLabelService.replaceEVSUuidWithLabel(exports, evs);
+                if( Array.isArray(exports) ){
+                    exports = exports[0];
+                }
             var dataModel = {
                 title: synchronousTranslateService.translate('export') + ' ' + exports.name,
                 storageSystemId: storageSystemId,
@@ -89,13 +97,18 @@ angular.module('rainierApp')
 
         orchestratorService.export(storageSystemId, fileSystemId, exportId).then(function (result) {
             exports = result;
-            transformService();
+            orchestratorService.fileSystem(storageSystemId, exports.fileSystemId).then(function (fs) {
+                fileSystem = fs;
+                transformService();
+            });
+
         }, function() {
            orchestratorService.allExports(storageSystemId).then(function (result) {
                exports = _.find(result.shares, function (exports) {
                    return exports.fileSystemId === fileSystemId && exports.id === exportId;
                });
                transformService();
+
            });
         });
     });

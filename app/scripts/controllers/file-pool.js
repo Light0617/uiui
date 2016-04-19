@@ -9,7 +9,8 @@
  */
 angular.module('rainierApp')
     .controller('FilePoolCtrl', function ($scope, $routeParams, $timeout, $filter, diskSizeService, fileSystemService,
-                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location) {
+                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location,
+                                linkLabelService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolId = $routeParams.filePoolId;
         var result;
@@ -24,6 +25,8 @@ angular.module('rainierApp')
             return orchestratorService.filePoolFileSystems(storageSystemId, filePoolId);
         }).then(function (fs) {
             fileSystems = fs.fileSystems;
+            fileSystems = linkLabelService.replaceEVSUuidWithLabel(fileSystems, evses);
+            fileSystems = linkLabelService.replacePoolIdWithLabel(fileSystems, [result]);
             var summaryModel = {};
             summaryModel.title = synchronousTranslateService.translate('common-storage-systems');
             summaryModel.noBreakdown = true;

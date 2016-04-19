@@ -1962,11 +1962,13 @@ angular.module('rainierApp')
                     _.each(item.links, function (link) {
                         if (link.rel.indexOf('filesystem') !== -1) {
                             storageSystemId = _.first(link.href.split('storage-systems/')[1].split('/'));
-                            item.displayLinks.push({
-                                href: link.href.replace('/file/', '/').replace('v1', '#'),
-                                icon: 'icon-filesystem',
-                                label: synchronousTranslateService.translate('common-storage-system-file-system') + ' ' + item.fileSystemId
-                            });
+                            if(item.fileSystemId !== '00000000000000000000000000000000') {
+                                item.displayLinks.push({
+                                    href: link.href.replace('/file/', '/').replace('v1', '#'),
+                                    icon: 'icon-filesystem',
+                                    label: synchronousTranslateService.translate('common-storage-system-file-system') + ' ' + item.fileSystemId
+                                });
+                            }
                         }
                         else if (link.rel.indexOf('vfs') !== -1) {
                             item.evsUuid = _.last(link.href.split('/'));
@@ -2044,11 +2046,13 @@ angular.module('rainierApp')
                     _.each(item.links, function (link) {
                         if (link.rel.indexOf('filesystem') !== -1) {
                             storageSystemId = _.first(link.href.split('storage-systems/')[1].split('/'));
-                            item.displayLinks.push({
-                                href: link.href.replace('/file/', '/').replace('v1', '#'),
-                                icon: 'icon-filesystem',
-                                label: synchronousTranslateService.translate('common-storage-system-file-system') + ' ' + item.fileSystemId
-                            });
+                            if(item.fileSystemId !== '00000000000000000000000000000000') {
+                                item.displayLinks.push({
+                                    href: link.href.replace('/file/', '/').replace('v1', '#'),
+                                    icon: 'icon-filesystem',
+                                    label: synchronousTranslateService.translate('common-storage-system-file-system') + ' ' + item.fileSystemId
+                                });
+                            }
                         }
                         else if (link.rel.indexOf('vfs') !== -1) {
                             item.evsUuid = _.last(link.href.split('/'));

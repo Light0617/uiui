@@ -9,10 +9,12 @@
  */
 angular.module('rainierApp')
     .controller('SharesExportsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService,
-                                                          objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location) {
+                                                          objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location,
+                                                linkLabelService) {
         var storageSystemId = $routeParams.storageSystemId;
         var shares;
         var evses;
+        var fileSystems;
 
         function transformService(sharesExports) {
             var dataModel = {
@@ -26,7 +28,7 @@ angular.module('rainierApp')
                         return input.uuid === shareExport.evsUuid;
                     });
                 })), function (item) {
-                    return { 'label' : item.name + ' : ' + item.uuid, 'obj' : item };
+                    return { 'label' : item.name };
                 }),
                 allItemsSelected: false,
                 search: {
@@ -50,6 +52,8 @@ angular.module('rainierApp')
                     }
                 }
             };
+            sharesExports = linkLabelService.replaceEVSUuidWithLabel(sharesExports, evses);
+            sharesExports = linkLabelService.replaceFSIdWithLabel(sharesExports, fileSystems);
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -135,7 +139,14 @@ angular.module('rainierApp')
             return orchestratorService.allExports(storageSystemId);
         }, function() {transformService([]);}).then(function (result) {
             var sharesExports = shares.concat(result.exports);
-            transformService(sharesExports);
+            orchestratorService.fileSystems(storageSystemId).then(function (fs) {
+                fileSystems = fs.fileSystems;
+                transformService(sharesExports);
+            });
+
+
         }, function() {transformService([]);});
+
+
 
     });

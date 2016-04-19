@@ -9,15 +9,26 @@
  */
 angular.module('rainierApp')
     .controller('ShareCtrl', function ($scope, $routeParams, $timeout, $filter, diskSizeService, fileSystemService,
-                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location) {
+                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location,
+    linkLabelService) {
         var storageSystemId = $routeParams.storageSystemId;
         var fileSystemId = $routeParams.fileSystemId;
         var shareId = $routeParams.shareId;
         var share;
+        var fileSystem;
 
         function transformService() {
             orchestratorService.enterpriseVirtualServer(storageSystemId, share.evsUuid).then(function (evs) {
             var summaryModel = {};
+
+                var shareList = [];
+                shareList.push(share);
+                share = linkLabelService.replaceFSIdWithLabel(shareList, fileSystem);
+                share = linkLabelService.replaceEVSUuidWithLabel(share, evs);
+                if( Array.isArray(share) ){
+                    share = share[0];
+                }
+
             var dataModel = {
                 file: true,
                 title: synchronousTranslateService.translate('share') + ' ' + share.name,
@@ -116,7 +127,10 @@ angular.module('rainierApp')
 
         orchestratorService.share(storageSystemId, fileSystemId, shareId).then(function (result) {
             share = result;
-            transformService();
+                orchestratorService.fileSystem(storageSystemId, share.fileSystemId).then(function (fs) {
+                    fileSystem = fs;
+                    transformService();
+                });
         }, function() {
                 orchestratorService.allShares(storageSystemId).then(function (result) {
                 share = _.find(result.shares, function (share) {
