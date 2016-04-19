@@ -58,6 +58,7 @@
         </div>
         <div class="dropdown right">
             <button id="about" class="btn icon-btn icon icon-help icon-sm" title="Help" data-toggle="dropdown" role="button" aria-expanded="true"></button>
+            <button class="btn icon-btn icon icon-information icon-sm" title="Information" role="button" ng-click="versionModel.toggleOverlayContent()"></button>
             <ul class="dropdown-menu" aria-labelledby="user">
                 <li>
                     <a ng-click="versionModel.toggleHelpContent(); versionModel.clickOnHelpOrAbout()">{{ 'nav-bar-header-help' | translate }}</a>
@@ -70,7 +71,6 @@
                     </a>
                 </li>
             </ul>
-            <button class="btn icon-btn icon icon-information icon-sm" title="Information" role="button" ng-click="versionModel.toggleOverlayContent()"></button>
         </div>
     </div>
 </div>

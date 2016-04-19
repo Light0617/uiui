@@ -112,6 +112,7 @@
 <script src="swagger-scripts/swagger-ui.js"></script>
 
 <!-- include: "type": "js", "files": "scripts/**/*.js" -->
+<!-- include: "type": "js", "files": "slider-scripts/**/*.js" -->
 <!-- include mock scripts -->
 <!-- endbuild -->
 
