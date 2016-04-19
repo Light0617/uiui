@@ -2,7 +2,7 @@
 
  angular.module('config', [])
 
-.constant('ENV', {name:'production',debug:false})
+.constant('ENV', {name:'development',debug:true})
 
 .constant('BEL_UI_PATH', 'bower_components/bel-ui')
 

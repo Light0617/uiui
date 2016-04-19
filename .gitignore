@@ -17,3 +17,9 @@ gradlew.bat
 /.backupBranding
 
 *.iml
+
+#mock files
+mock-api/*
+
+#exclude index.html since we generate it during build time
+app/index.html

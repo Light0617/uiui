@@ -122,7 +122,7 @@
             </div>
             <div class="tile-details">
                 <div class="tile-details" ng-controller="MonitoringHardwareCarouselCtrl">
-                    <carousel class="row row-centered" interval="interval">
+                    <carousel class="row row-centered" interval="interval" disable-animation="true">
                         <slide ng-repeat="slide in slides" active="slide.active">
                             <div class="carousel-inner">
                                 <div class="col-md-3 col-centered" ng-repeat="item in slide.items">
