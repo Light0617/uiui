@@ -631,7 +631,7 @@ angular.module('rainierApp')
                     {
                         left: false,
                         title: item.type,
-                        details: [wwnService.appendColon(item.wwn)]
+                        details: [item.wwn ? wwnService.appendColon(item.wwn) : null]
                     }
                 ];
 
