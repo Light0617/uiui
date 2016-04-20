@@ -5,7 +5,7 @@
         </button>
         <ul class="dropdown-menu" role="menu">
             <li ng-repeat="ma in action.items">
-                <a ng-if="ma.type === 'link'" ng-click="ma.onClick(dataModel.orchestratorService, true)"
+                <a ng-if="ma.type === 'link'" ng-click="ma.onClick(orchestratorService, true)"
                    ng-disabled="ma.enabled && !ma.enabled()" >{{ma.title | translate }}</a>
                 <a ng-if="ma.type === 'hyperlink'" ng-attr-href="{{ma.href}}" target="_blank">{{ma.title | translate
                     }}</a>
@@ -13,16 +13,16 @@
         </ul>
 </div>
 <div class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'link'"
-     ng-click="!action.enabled() || action.onClick(dataModel.orchestratorService, true)" ng-disabled="!action.enabled()">
+     ng-click="!action.enabled() || action.onClick(orchestratorService, true)" ng-disabled="!action.enabled()">
     <div ng-attr-class="{{action.icon}}"></div>
 </div>
 <div class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'confirmation-modal'" data-toggle="modal"
-     ng-attr-data-target="#{{action.dialogSettings.id}}" ng-click="!action.enabled() || action.onClick(dataModel.orchestratorService, true)" ng-disabled="!action.enabled()">
+     ng-attr-data-target="#{{action.dialogSettings.id}}" ng-click="!action.enabled() || action.onClick(orchestratorService, true)" ng-disabled="!action.enabled()">
     <div ng-attr-class="{{action.icon}}"></div>
 
 </div>
 <div ng-repeat-end class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'confirm'"
-     ng-click="!action.enabled() || action.onClick(dataModel.orchestratorService, true)" confirm
+     ng-click="!action.enabled() || action.onClick(orchestratorService, true)" confirm
      confirm-title="{{ action.confirmTitle | translate}}"
      confirm-message="{{ action.confirmMessage | translate:dataModel }}" ng-disabled="!action.enabled()">
     <div ng-attr-class="{{action.icon}}"></div>

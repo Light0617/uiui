@@ -15,11 +15,15 @@
  * # inventoryActions
  */
 angular.module('rainierApp')
-    .directive('inventoryActions', function () {
+    .directive('inventoryActions', function (orchestratorService) {
         return {
         	scope: {
                 dataModel: '=ngModel',
                 atTop: '@'
+            },
+            link: function (scope) {
+                scope.orchestratorService = orchestratorService;
+                scope.$apply();
             },
             templateUrl: 'views/templates/inventory-actions.html',
             restrict: 'E'
