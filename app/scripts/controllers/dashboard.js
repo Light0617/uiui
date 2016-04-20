@@ -38,6 +38,7 @@ angular.module('rainierApp')
 
                 $scope.model = model;
                 $scope.model.summary.storageSystemsInCacheCount = storageSystemsInCacheCount;
+                $scope.model.summary.storageArraysCount = storageSystemsInCacheCount;
                 orchestratorService.hostsSummary().then(function (result) {
                     $scope.model.summary.hostsCount = result.totalHost;
                 });
