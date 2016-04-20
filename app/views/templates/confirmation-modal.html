@@ -4,18 +4,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ title }} {{'storage-port-enable-security' | translate}}</h1>
+                <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ title }}</h1>
             </div>
             <div class="modal-body" id="selectionMessage">
                 {{ content }}
                 <div class="btn-group btn-group-toggle btn-group-justified" ng-if="!requireSelection">
                     <div class="btn-group">
-                        <label class="btn btn-default" ng-model="switchEnabled"
+                        <label class="btn btn-default" ng-model="switchEnabled.value"
                                btn-radio="true" uncheckable>{{ trueText }}
                         </label>
                     </div>
                     <div class="btn-group">
-                        <label class="btn btn-default" ng-model="switchEnabled"
+                        <label class="btn btn-default" ng-model="switchEnabled.value"
                                btn-radio="false" uncheckable>{{ falseText }}
                         </label>
                     </div>

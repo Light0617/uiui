@@ -149,7 +149,9 @@ angular.module('rainierApp')
                         content: 'file-system-mount-selected-content',
                         trueText: 'file-systems-virtual-machine',
                         falseText: 'file-systems-database',
-                        switchEnabled: false,
+                        switchEnabled: {
+                            value: false
+                        },
                         requireSelection: true
                     },
                     enabled: function () {
@@ -169,7 +171,7 @@ angular.module('rainierApp')
                     confirmClick: function () {
                         var blockSize = 32;
                         var payload;
-                        if (this.dialogSettings.switchEnabled) {
+                        if (this.dialogSettings.switchEnabled.value) {
                             blockSize = 4;
                         }
                         if ($scope.dataModel.fileSystem.blockSize === 0) {

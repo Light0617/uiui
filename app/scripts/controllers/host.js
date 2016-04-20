@@ -147,14 +147,16 @@ angular.module('rainierApp')
                         content: 'storage-volume-detach-selected-content',
                         trueText: 'storage-volume-detach-remove-zone',
                         falseText: 'storage-volume-detach-not-remove-zone',
-                        switchEnabled: false
+                        switchEnabled: {
+                            value: false
+                        }
                     },
                     enabled: function () {
                         return dataModel.anySelected();
                     },
                     confirmClick: function () {
                         $('#' + this.dialogSettings.id).modal('hide');
-                        var enabled = this.dialogSettings.switchEnabled;
+                        var enabled = this.dialogSettings.switchEnabled.value;
                         _.forEach(dataModel.getSelectedItems(), function (volume) {
 
                             var detachVolumePayload = {
