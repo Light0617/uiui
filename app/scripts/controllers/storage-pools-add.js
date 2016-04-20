@@ -13,6 +13,9 @@ angular.module('rainierApp')
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
+        var defaultLow = 0;
+        var defaultSubscriptionLimitValue = 100;
+        var defaultSubscriptionLimitUnlimited = false;
         $scope.diskTypeSpeedToTier = {};
 
         $scope.$watch('model.storageSystem', function (val) {
@@ -34,8 +37,11 @@ angular.module('rainierApp')
                 .then(function (result) {
                     $scope.model.poolTemplate = result;
                     $scope.model.utilizationThreshold1 = parseInt(result.utilizationThreshold1);
+                    defaultLow = parseInt(result.utilizationThreshold1);
                     $scope.model.utilizationThreshold2 = parseInt(result.utilizationThreshold2);
                     $scope.model.subscriptionLimit = result.subscriptionLimit;
+                    defaultSubscriptionLimitValue = result.subscriptionLimit.value;
+                    defaultSubscriptionLimitUnlimited = result.subscriptionLimit.unlimited;
                     $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
                     $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
                     $scope.model.templateSubscriptionLimit = result.subscriptionLimit;
@@ -113,7 +119,16 @@ angular.module('rainierApp')
         $scope.$watch('model.diskSizesByTier', dataVizModelForBasic, true);
 
         $scope.$watch('model.poolType', function (val) {
-            $scope.model.disableUtilization = val === 'HTI';
+            $scope.model.disableUtilization = val === 'HTI' && $scope.model.wizardType === 'advanced';
+            $scope.model.utilizationThreshold1 = defaultLow;
+            $scope.model.subscriptionLimit.value = defaultSubscriptionLimitValue;
+            $scope.model.subscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
+        });
+
+        $scope.$watch('model.htiPool', function () {
+            $scope.model.templateUtilizationThreshold1 = defaultLow;
+            $scope.model.templateSubscriptionLimit.value = defaultSubscriptionLimitValue;
+            $scope.model.templateSubscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
         });
 
         function  dataVizModelForAdvanced(pgs) {
@@ -129,7 +144,6 @@ angular.module('rainierApp')
 
             if (wizardType === 'advanced') {
                 $scope.model.selectedParityGroup = null;
-
                 $scope.model.search = {
                     freeText : '',
                     diskSpec: {
@@ -180,9 +194,9 @@ angular.module('rainierApp')
                         var deployPayload = {
                             htiPool: $scope.model.htiPool,
                             label: $scope.model.label,
-                            utilizationThreshold1: $scope.model.utilizationThreshold1,
-                            utilizationThreshold2: $scope.model.utilizationThreshold2,
-                            subscriptionLimit: $scope.model.subscriptionLimit,
+                            utilizationThreshold1: $scope.model.templateUtilizationThreshold1,
+                            utilizationThreshold2: $scope.model.templateUtilizationThreshold2,
+                            subscriptionLimit: $scope.model.templateSubscriptionLimit,
                             poolTemplateSubTiers: poolTemplateSubTiers
                         };
                         orchestratorService.deployPoolTemplate($scope.model.storageSystem.storageSystemId, deployPayload).then(function () {

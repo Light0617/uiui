@@ -72,7 +72,7 @@
                 <div class="pvd">
                     <pool-data-viz ng-model="model" data="dataVizModel"></pool-data-viz>
                 </div>
-                <div class="form-group" ng-if="model.disableUtilization">
+                <div class="form-group" ng-if="(model.disableUtilization && model.wizardType === 'advanced') || (model.htiPool && model.wizardType === 'basic')">
                     <label>{{'storage-pool-disabled-utilization' | translate}}</label>
                 </div>
             </div>
