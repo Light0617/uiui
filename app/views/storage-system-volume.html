@@ -20,13 +20,13 @@
         </a>
 
         <div class="btn icon-btn" ng-click="protectCurrentVolume()" title="{{ 'action-tooltip-protect-volumes' | translate}}"
-             ng-if="!model.disabledCheckBox"> <span class="icon-protected-volume icon-sm"></span>
+             ng-if="!model.disabledCheckBox"> <span class="icon-data-protection icon-sm"></span>
         </div>
 
         <div class="btn icon-btn" ng-click="model.disabledCheckBox || unprotectCurrentVolume()"
              title="{{ 'action-tooltip-unprotect-volumes' | translate}}"
              ng-if="protected && !model.disabledCheckBox">
-            <span class="icon-unprotected-volume icon-sm"></span>
+            <span class="icon-remove-volume icon-sm"></span>
         </div>
     </page-title>
 

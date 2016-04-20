@@ -414,7 +414,6 @@ angular.module('rainierApp')
             };
             dataProtectionSettingsService.setReplicationGroupGridSettings(dataModel);
             $scope.dataModel = dataModel;
-            $('.tooltip-inner').hide();
             scrollDataSourceBuilderService.setupDataLoader($scope, $scope.rgWithVolumeIdAsPvol, 'replicationGroupsSearch');
             dataProtectionSettingsService.setDataModelFunctions($scope, $scope.rgWithVolumeIdAsPvol);
             dataProtectionSettingsService.setReplicationGroupActions($scope, storageSystemId);
