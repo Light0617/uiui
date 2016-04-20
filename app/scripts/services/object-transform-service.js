@@ -1783,10 +1783,10 @@ angular.module('rainierApp')
 
                 if(item.blockSize.size === '4.00')
                 {
-                    item.blockSizeDisplay = 'Virtual Machines (4K)';
+                    item.blockSizeDisplay = '4K';
                 }
                 else{
-                    item.blockSizeDisplay = 'Database (32K)';
+                    item.blockSizeDisplay = '32K';
                 }
 
                 item.getIcons = function () {
