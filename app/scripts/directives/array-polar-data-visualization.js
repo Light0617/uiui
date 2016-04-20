@@ -1247,7 +1247,7 @@ angular.module('rainierApp')
                         .attr('viewBox', '0 0 ' + svgWidth + ' ' + (svgHeight + space * 3))
                         .attr('preserveAspectRatio', 'xMinYMin meet')
                         .attr('transform', 'scale(1,1)')
-                        .attr('class', (data.view !== 'file' && !data.file) ? 'pdv default' : 'pdv default file')
+                        .attr('class', (data.view !== 'file' && !data.file) ? 'pdv default scale-with-parent-container' : 'pdv default file')
                         .append('g')
                         .attr('transform', 'translate(' + (calculatedLegendWidth + 6 + finalRadius) + ',' + (finalRadius + 2 * space) + ')');
 

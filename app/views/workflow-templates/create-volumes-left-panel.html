@@ -8,7 +8,7 @@
         {{item.used.percentage}} % ({{item.used.capacity.size}} {{item.used.capacity.unit}})</em>
     </h3>
 
-    <div class="polar-data-viz-concentric" ng-if="dataModel.summaryModel">
+    <div class="wizard-pdv polar-data-viz-concentric" ng-if="dataModel.summaryModel">
         <array-polar-data-visualization class="utilization"
                                         ng-model="dataModel.summaryModel.arrayDataVisualizationModel" no-break-down="dataModel.summaryModel.noMoreInfo" no-legend-box="dataModel.summaryModel.noMoreInfo"  ></array-polar-data-visualization>
     </div>
