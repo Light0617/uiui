@@ -77,7 +77,7 @@ angular.module('rainierApp')
                     utilizationThreshold2: $scope.dataModel.template.utilizationThreshold2
                 };
                 if(template.label !== dataModel.label) {
-                    payload['label'] = dataModel.label;
+                    payload.label = dataModel.label;
                 }
                 orchestratorService.expandFilePool(storageSystemId, filePoolId, payload).then(function () {
                  window.history.back();
