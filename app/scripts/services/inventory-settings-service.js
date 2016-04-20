@@ -46,7 +46,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'data-protection-type',
-                sizeClass: 'sixth',
+                sizeClass: 'twelfth',
                 sortField: 'dataProtectionSummary.replicationType',
                 getDisplayValue: function(item) {
                     return item.displayedDpType;
@@ -54,7 +54,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'data-protection-status',
-                sizeClass: 'sixth',
+                sizeClass: 'twelfth',
                 sortField: 'dataProtectionSummary.hasFailures',
                 getDisplayValue: function(item) {
                     return item.dpMonitoringStatus;

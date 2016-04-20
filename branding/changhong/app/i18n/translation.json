@@ -178,6 +178,7 @@
     "nav-bar-header-username-logout": "Logout",
     "nav-bar-header-settings-snmp": "SNMP Settings",
     "nav-bar-header-help": "Help",
+    "nav-bar-header-help-tooltip": "Click to select and open or close Help",
     "nav-bar-header-security": "Security Settings",
     "nav-bar-header-change-local-password": "Change Local Password",
     "nav-bar-header-about": "About",
