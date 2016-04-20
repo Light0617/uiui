@@ -36,14 +36,13 @@
                 <div class="icon icon-parity-group icon-lg" ng-if="!pg.encryption"></div>
                 <div class="icon icon-encrypted-parity-group icon-lg" ng-if="pg.encryption"></div>
                 <div class="resource-data">
-                    <disk-size ng-model="pg.availableCapacityInBytes" wrapped-in="p" post-fix="free"></disk-size>
-                    <div class="data-viz bar">
-                        <svg class="capacity-indicator" transform="scale(1, 1)">
-                            <rect width="100%" height="100%" class="base"></rect>
-                            <rect width="50%" height="100%" ng-attr-class="{{'value '+ model.usageClass }}" width="52%" class="value normal"></rect>
-                        </svg>
+                    <div class="inline-values" ng-if="item.status !== 'EXTERNALIZED'">
+                        <disk-size ng-model="pg.topSize" post-fix="/" wrapped-in="p"></disk-size>&nbsp;
+                        <disk-size ng-model="pg.topTotal" post-fix="" wrapped-in="p"></disk-size>
                     </div>
-                    <disk-size ng-model="pg.totalCapacityInBytes" wrapped-in="p" post-fix="total"></disk-size>
+                    <div class="data-viz bar">
+                        <usage-indicator-bar class="block data-viz-container" ng-model="pg"></usage-indicator-bar>
+                    </div>
                 </div>
             </div>
             <div class="tile-row carousel-indicator hidden">
