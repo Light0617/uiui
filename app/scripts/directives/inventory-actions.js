@@ -23,7 +23,6 @@ angular.module('rainierApp')
             },
             link: function (scope) {
                 scope.orchestratorService = orchestratorService;
-                scope.$apply();
             },
             templateUrl: 'views/templates/inventory-actions.html',
             restrict: 'E'
