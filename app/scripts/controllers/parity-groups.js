@@ -182,7 +182,8 @@ angular.module('rainierApp')
                 confirmTitle: 'parity-group-initialize-confirmation',
                 confirmMessage: 'parity-group-initialize-selected-content',
                 enabled: function () {
-                    return dataModel.anySelected();
+                    var containsAvailable = _.find(dataModel.getSelectedItems(), function (item) { return item.status === 'AVAILABLE'; });
+                    return dataModel.anySelected() && !containsAvailable;
                 },
                 onClick: function () {
                     _.forEach(dataModel.getSelectedItems(), function (item) {
@@ -198,7 +199,8 @@ angular.module('rainierApp')
                 confirmMessage: 'parity-group-compress-selected-content',
                 enabled: function () {
                     return dataModel.anySelected() && !_.find(dataModel.getSelectedItems(), function(item) {
-                            return item.encryption || item.diskSpec.type === 'SAS' || item.diskSpec.type === 'SSD' || item.diskSpec.type === 'FMD'; });
+                            return item.encryption || item.diskSpec.type === 'SAS' || item.diskSpec.type === 'SSD' || item.diskSpec.type === 'FMD' ||
+                                item.status ==='UNSUPPORTED_ATTACHED' || item.status === 'IN_USE' || item.status === 'UNINITIALIZED'; });
                 },
                 onClick: function () {
                     _.forEach(dataModel.getSelectedItems(), function (item) {
