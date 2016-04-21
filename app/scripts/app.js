@@ -197,11 +197,7 @@ angular
                         'storage-pools',
                         'volumes',
                         'parity-groups',
-                        'external-parity-groups',
-                        'file-pools',
-                        'file-systems',
-                        'shares-exports',
-                        'vfs'
+                        'external-parity-groups'
                     ]
                 },
                 helpContext: 'R_REPLICATION_GROUP_INV'
@@ -282,11 +278,7 @@ angular
                         'storage-pools',
                         'parity-groups',
                         'external-parity-groups',
-                        'replication-groups',
-                        'file-pools',
-                        'file-systems',
-                        'shares-exports',
-                        'vfs'
+                        'replication-groups'
                     ]
                 },
                 helpContext: 'C_VOLUMES_INV'
@@ -386,11 +378,7 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
-                        'replication-groups',
-                        'file-pools',
-                        'file-systems',
-                        'shares-exports',
-                        'vfs'
+                        'replication-groups'
                     ]
                 },
                 helpContext: 'C_POOLS_INV'
@@ -426,11 +414,7 @@ angular
                         'storage-pools',
                         'parity-groups',
                         'external-parity-groups',
-                        'replication-groups',
-                        'file-pools',
-                        'file-systems',
-                        'shares-exports',
-                        'vfs'
+                        'replication-groups'
                     ]
                 },
                 helpContext: 'T_ENABLE_PORT_SECURITY'
@@ -445,11 +429,7 @@ angular
                         'volumes',
                         'storage-pools',
                         'external-parity-groups',
-                        'replication-groups',
-                        'file-pools',
-                        'file-systems',
-                        'shares-exports',
-                        'vfs'
+                        'replication-groups'
                     ]
                 },
                 helpContext: 'C_PARITY_GROUPS_INV'
@@ -464,11 +444,7 @@ angular
                         'storage-pools',
                         'volumes',
                         'parity-groups',
-                        'replication-groups',
-                        'file-pools',
-                        'file-systems',
-                        'shares-exports',
-                        'vfs'
+                        'replication-groups'
                     ]
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'
