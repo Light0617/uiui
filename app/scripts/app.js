@@ -471,7 +471,7 @@ angular
                         'vfs'
                     ]
                 },
-                helpContext: 'C_EXTERNAL_PARITY_GROUPS_INV'
+                helpContext: 'R_EXTERNAL_PG_INV'
             })
             .when('/monitoring', {
                 templateUrl: 'views/monitoring.html',
