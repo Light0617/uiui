@@ -24,7 +24,7 @@
                             <p class="value">{{node.displayStatus}}</p>
                         </div>
                         <div class="label-value-container" ng-repeat="node in clusterSummary.clusterNodes">
-                            <p class="label">{{'common-storage-system-fw-version' |translate }}</p>
+                            <p class="label">{{'blade' | translate}} {{node.id}} {{node.name}} {{'common-storage-system-fw-version' |translate }}</p>
                             <p class="value">{{node.firmware}}</p>
                         </div>
                     </div>
