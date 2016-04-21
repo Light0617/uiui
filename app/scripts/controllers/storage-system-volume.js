@@ -343,7 +343,12 @@ angular.module('rainierApp')
                                 });
                                 item.volumePairs = item.volumePairs.concat(result.resources);
                                 $scope.dataModel.childrenToken = result.nextToken;
-                                $scope.dataModel.busyLoadingMoreChildren = false;
+                                //Add a short time delay to avoid multiple backend calls
+                                setTimeout(function() {
+                                    $scope.dataModel.busyLoadingMoreChildren = false;
+                                    // Need to trigger digest loop manually inside setTimeout
+                                    $scope.$apply();
+                                }, 1000);
                             });
                     }
                 }

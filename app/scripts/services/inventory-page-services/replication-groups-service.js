@@ -112,6 +112,10 @@ angular.module('rainierApp')
                     }));
             },
             getSortedAndFilteredReplicationGroups: function (storageSystemId, externalReplicationGroups) {
+                _.forEach(externalReplicationGroups, function (er) {
+                    er.volumePairs = [];
+                    er.opened = false;
+                });
                 var queryParams = queryService.getQueryParameters(true);
                 queryParams.nextToken = null;
                 var currentSortBy = queryService.getSortBy();
@@ -120,7 +124,7 @@ angular.module('rainierApp')
                 var currentReplicationGroupTextSearch = queryService.getQuery('replicationGroupTextSearch');
                 if (currentReplicationGroupType !== undefined) {
                     externalReplicationGroups = _.filter(externalReplicationGroups, function (rg) {
-                        return rg.type.toString().toUpperCase().indexOf(currentReplicationGroupType.queryText.toUpperCase()) !== -1;
+                        return rg.type.toString().toUpperCase() === currentReplicationGroupType.queryText.toUpperCase();
                     });
                 }
                 if (currentReplicationGroupTextSearch !=undefined) {

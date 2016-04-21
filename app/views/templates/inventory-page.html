@@ -63,7 +63,7 @@
                 <span class="btn icon-btn icon-lg icon-add"></span>
             </div>
 
-            <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList track by $index">
+            <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList">
                 <div class="cell twelfth panel-title">
                     <a id="{{item.id}}" role="button" data-toggle="collapse" aria-expanded="false" ng-if="listDetailsTemplate"
                        ng-click="toggleExpandButton(item) ; item.opened = !item.opened ; dataModel.fetchFirstPageChildren(item) ; dataModel.restoreCheck()"

@@ -35,7 +35,6 @@ angular.module('rainierApp')
                 total++;
             }
             $scope.replicationGroups = result.resources.concat(externalReplicationGroups);
-
             var dataModel = {
                 storageSystemId: storageSystemId,
                 singleView: true,
@@ -99,7 +98,12 @@ angular.module('rainierApp')
                                 });
                                 item.volumePairs = item.volumePairs.concat(result.resources);
                                 $scope.dataModel.childrenToken = result.nextToken;
-                                $scope.dataModel.busyLoadingMoreChildren = false;
+                                //Add a short time delay to avoid multiple backend calls
+                                setTimeout(function() {
+                                    $scope.dataModel.busyLoadingMoreChildren = false;
+                                    // Need to trigger digest loop manually inside setTimeout
+                                    $scope.$apply();
+                                }, 1000);
                             });
                     }
                 }
@@ -189,6 +193,9 @@ angular.module('rainierApp')
                     $scope.dataModel.nextToken = result.nextToken;
                     $scope.dataModel.cachedList = result.resources;
                     $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+                    _.forEach ($scope.dataModel.displayList, function (d) {
+                        $('#' + d.id).attr('aria-expanded', 'false');
+                    });
                     $scope.dataModel.itemCounts = {
                         filtered: $scope.dataModel.displayList.length,
                         total: $scope.dataModel.total

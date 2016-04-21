@@ -46,10 +46,9 @@
                         || (numberOfSnapshotsValidation && validationForm.leftPanel.numberOfSnapshots.$pristine)"
                        class="validation-text">{{'invalid-protect-volume-snapshot-number-message' | translate }}</p>
                 </div>
-
                 <div class="form-group label-value-container" ng-if="dataModel.replicationTechnology ==='SNAPSHOT'"
                      ng-switch-when="true">
-                    <label class="label">Number of Snapshots (Max 1024)</label>
+                    <label class="label">{{ 'number-of-snapshots' | translate }}</label>
                     <input type="number" class="form-control number light-text" name="numberOfSnapshots"
                            title="Number of Snapshots" placeholder="{{'invalid-number-of-snapshots' | translate }}"
                            ng-disabled="true">
@@ -224,8 +223,8 @@
                                class="validation-text">{{'invalid-protect-volume-copy-group-message' | translate }}</p>
                         </div>
 
-                        <div class="form-group form-group-lg col-md-6 form-horizontal" ng-switch-when="true">
-                            <label class="label">Copy Group Name</label>
+                        <div class="form-group label-value-container" ng-switch-when="true">
+                            <label class="label">{{'valid-copy-group-name' | translate }}</label>
                             <input type="text" name="copyGroupName" class="form-control" tabindex="1"
                                    placeholder="{{'invalid-copy-group-name' | translate }}" ng-disabled="true">
                         </div>
@@ -240,7 +239,7 @@
                                    maxlength="1024">
                         </div>
 
-                        <div class="form-group form-group-lg col-md-6 form-horizontal" ng-switch-when="true">
+                        <div class="form-group label-value-container" ng-switch-when="true">
                             <label class="label">Comments</label>
                             <input type="text" name="comments" class="form-control"
                                    placeholder="Comments (optional)" tabindex="2" ng-disabled="true">

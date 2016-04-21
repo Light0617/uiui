@@ -230,6 +230,7 @@ angular.module('rainierApp')
                 }
 
                 item.volumePairs = [];
+                item.opened = false;
 
                 for(var property in item) {
                     if (item.hasOwnProperty(property)) {
