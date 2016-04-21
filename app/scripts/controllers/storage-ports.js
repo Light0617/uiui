@@ -34,9 +34,9 @@ angular.module('rainierApp')
         });
 
         paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId).then(function (result) {
-            // Only support for fibre port for now
+            // Only support for fibre port and iscsi port for now
             var storagePorts = _.filter(result.resources, function(sp) {
-                return sp.type === 'FIBRE';
+                return sp.type === 'FIBRE' || sp.type === 'ISCSI';
             });
 
             angular.forEach(storagePorts, function(item) {
@@ -229,7 +229,7 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'wwn',
                     getDisplayValue: function (item) {
-                        return wwnService.appendColon(item.wwn);
+                        return item.type === 'FIBRE' ? wwnService.appendColon(item.wwn) : '';
                     }
 
                 },

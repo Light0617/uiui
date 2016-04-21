@@ -183,14 +183,13 @@ angular.module('rainierApp')
         });
 
         paginationService.getAllPromises(null, GET_STORAGE_PORTS_PATH, true, storageSystemId, objectTransformService.transformPort).then(function (result) {
-            // Only support for fibre port for now
+            // Only support for fibre port and iscsi port for now
             result.storagePorts = _.filter(result, function(sp) {
-                return sp.type === 'FIBRE';
+                return sp.type === 'FIBRE' || sp.type === 'ISCSI';
             });
-            var storagePorts = result;
             $scope.portsSummary = {
-                total : storagePorts.length,
-                portsByType : _.map(_.groupBy(storagePorts, 'type'), function (g){
+                total : result.storagePorts.length,
+                portsByType : _.map(_.groupBy(result.storagePorts, 'type'), function (g){
                     return {
                         type : _.first(g).type,
                         count : g.length
