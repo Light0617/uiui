@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
                                                            paginationService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
-                                                           ShareDataService, $location, $routeParams, viewModelService) {
+                                                           ShareDataService, $location, $routeParams, viewModelService,
+                                                           attachVolumeService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         $scope.canSubmit = true;
@@ -197,7 +198,6 @@ angular.module('rainierApp')
         };
 
         var autoSelect = 'AUTO';
-        var lastSelectedHostModeOption = [0];
 
         $scope.$watch('dataModel.storagePorts', function (ports) {
             if (!ports) {
@@ -213,6 +213,7 @@ angular.module('rainierApp')
             dataModel.attachModel = {
                 storageSystemSelectable: false,
 
+                lastSelectedHostModeOption: [0],
                 selectedVolumes: selectedVolumes,
                 selectedServers: _.where(dataModel.displayList, 'selected'),
                 storagePorts: ports,
@@ -236,7 +237,7 @@ angular.module('rainierApp')
 
                     var payload = {
                         storageSystemId: storageSystemId,
-                        hostModeOptions: getSelectedHostMode(),
+                        hostModeOptions: attachVolumeService.getSelectedHostMode(dataModel),
                         volumes: volumes,
                         ports: hosts,
                         enableZoning: dataModel.attachModel.enableZoning,
@@ -258,13 +259,7 @@ angular.module('rainierApp')
             };
 
             dataModel.checkSelectedHostModeOptions = function() {
-                var selectedHostModeOptions = $scope.dataModel.attachModel.selectedHostModeOption;
-                var recentlySelected = difference(lastSelectedHostModeOption, selectedHostModeOptions);
-                if (selectedHostModeOptions.length === 0 || recentlySelected === 0) {
-                    updateHostModeOptions([0]);
-                } else {
-                    updateHostModeOptions(_.without(selectedHostModeOptions, 0));
-                }
+                attachVolumeService.checkSelectedHostModeOptions(dataModel);
             };
         });
 
@@ -343,25 +338,4 @@ angular.module('rainierApp')
                 $scope.canSubmit = submit;
             }
         }, true);
-
-        function difference(array1, array2) {
-            if (array1.length > array2) {
-                return _.difference(array1, array2)[0];
-            } else {
-                return _.difference(array2, array1)[0];
-            }
-        }
-
-        function updateHostModeOptions(hostModeOptions) {
-            $scope.dataModel.attachModel.selectedHostModeOption = hostModeOptions;
-            lastSelectedHostModeOption = $scope.dataModel.attachModel.selectedHostModeOption;
-        }
-
-        // Used to set hostModeOption to empty array for backend API to auto select the options
-        function getSelectedHostMode() {
-            var selectedHostModeByUser = $scope.dataModel.attachModel.selectedHostModeOption;
-            return _.where(selectedHostModeByUser, function (mode) {
-                return mode > 0;
-            });
-        }
     });

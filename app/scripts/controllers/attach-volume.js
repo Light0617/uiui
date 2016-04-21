@@ -25,6 +25,7 @@ angular.module('rainierApp')
         paginationService,
         queryService,
         objectTransformService,
+        attachVolumeService,
         $timeout,
         $location) {
 
@@ -271,7 +272,6 @@ angular.module('rainierApp')
         }, true);
 
         var autoSelect = 'AUTO';
-        var lastSelectedHostModeOption = [0];
 
         $scope.$watch('dataModel.storagePorts', function(ports) {
             if (!ports) {
@@ -285,6 +285,7 @@ angular.module('rainierApp')
             var dataModel = $scope.dataModel;
 
             dataModel.attachModel = {
+                lastSelectedHostModeOption: [0],
                 subTitle: 'Selected Volumes',
                 storageSystemSelectable: false,
                 storagePools: ports,
@@ -308,9 +309,7 @@ angular.module('rainierApp')
                     var volumes = viewModelService.buildLunResources(dataModel.attachModel.selectedVolumes);
                     var hosts = dataModel.attachModel.serverPortMapperModel.getPorts();
 
-                    var selectedHostModeOptions = _.where(dataModel.attachModel.selectedHostModeOption, function (mode){
-                        return mode > 0;
-                    });
+                    var selectedHostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
                     var payload = {
                         storageSystemId: dataModel.selectedStorageSystem.storageSystemId,
                         hostModeOptions: selectedHostModeOptions,
@@ -335,28 +334,9 @@ angular.module('rainierApp')
             };
 
             dataModel.checkSelectedHostModeOptions = function() {
-                var selectedHostModeOptions = $scope.dataModel.attachModel.selectedHostModeOption;
-                var recentlySelected = difference(lastSelectedHostModeOption, selectedHostModeOptions);
-                if (selectedHostModeOptions.length === 0 || recentlySelected === 0) {
-                    updateHostModeOptions([0]);
-                } else {
-                    updateHostModeOptions(_.without(selectedHostModeOptions, 0));
-                }
+                attachVolumeService.checkSelectedHostModeOptions(dataModel);
             };
         });
-
-        function difference(array1, array2) {
-            if (array1.length > array2) {
-                return _.difference(array1, array2)[0];
-            } else {
-                return _.difference(array2, array1)[0];
-            }
-        }
-
-        function updateHostModeOptions(hostModeOptions) {
-            $scope.dataModel.attachModel.selectedHostModeOption = hostModeOptions;
-            lastSelectedHostModeOption = $scope.dataModel.attachModel.selectedHostModeOption;
-        }
 
         // call to updated volume list
         function updateVolumes(result) {
@@ -377,5 +357,4 @@ angular.module('rainierApp')
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
             $scope.dataModel.allItemsSelected = false;
         }
-
     });
