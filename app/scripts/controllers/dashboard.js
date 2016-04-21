@@ -25,7 +25,7 @@ angular.module('rainierApp')
                     fabricsCount: 0,
                     evsCount: 0
                 };
-                if (fileSummary) {
+                if (unified) {
                     result.unified = true;
                     $scope.dataModel.evsCount = 0;
                     $scope.dataModel.unified = true;
