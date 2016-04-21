@@ -12,10 +12,17 @@ angular.module('rainierApp')
                                               objectTransformService, filePoolService, diskSizeService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolId = $routeParams.filePoolId;
+        var filePool;
 
         $scope.diskTypeSpeedToTier = {};
 
-        orchestratorService.filePoolExpandTemplate(storageSystemId, filePoolId).then(function (template) {
+        orchestratorService.filePool(storageSystemId, filePoolId).then(function (result) {
+            filePool = result;
+            return orchestratorService.filePoolExpandTemplate(storageSystemId, filePoolId);
+        }).then(function (template) {
+            template.tiers = _.filter(template.tiers, function (tier) {
+                return _.find(filePool.tierNames, function (name) { return name === tier.name; });
+            });
             var dataModel = {
                 validationForm: {
                     label: ''
