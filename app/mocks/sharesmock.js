@@ -18,9 +18,10 @@ rainierAppMock.factory('sharesMock', function (mockUtils) {
         return {
             'id': 'S' + v,
             'name': 'Share ' + v,
-            'fileSystemId': 1,
+            'fileSystemId': 10,
             'fileSystemPath':'/etc',
             'evsId': 1,
+            'evsUuid': '35cfc131-179d-4e62-918e-a5b53332b61d',
             'permissions': mockPermissions,
             'accessConfiguration':'1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5',
             'cacheOptions':'',
@@ -38,11 +39,11 @@ rainierAppMock.factory('sharesMock', function (mockUtils) {
                 },
                 {
                     'rel':'_filesystem',
-                    'href':'/#/storage-systems/22001/file-systems/1'
+                    'href':'/#/storage-systems/22001/file-systems/10'
                 },
                 {
                     'rel': '_vfs',
-                    'href': '/#/storage-systems/22001/vfs/' + mockUtils.uuid()
+                    'href': '/#/storage-systems/22001/vfs/35cfc131-179d-4e62-918e-a5b53332b61d'
                 }
             ]
         };

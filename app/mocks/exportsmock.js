@@ -17,9 +17,10 @@ rainierAppMock.factory('exportsMock', function (mockUtils) {
         return {
             'id': 'E' + v,
             'name': '/Export ' + v,
-            'fileSystemId': 1,
+            'fileSystemId': 10,
             'fileSystemPath':'/etc',
             'evsId': 1,
+            'evsUuid': '35cfc131-179d-4e62-918e-a5b53332b61d',
             'snapshotOptions':'',
             'transferToReplicationTarget':'',
             'accessConfiguration': '1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5',
@@ -34,7 +35,7 @@ rainierAppMock.factory('exportsMock', function (mockUtils) {
                 },
                 {
                     'rel': '_vfs',
-                    'href': '/#/storage-systems/22001/vfs/' + mockUtils.uuid()
+                    'href': '/#/storage-systems/22001/vfs/35cfc131-179d-4e62-918e-a5b53332b61d'
                 }
             ]
         };

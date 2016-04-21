@@ -16,6 +16,9 @@ rainierAppMock.factory('evsMock', function (mockUtils) {
             var mockEVS = generateMockEVS(i);
             mockEVSs.push(mockEVS);
         }
+        var matchingEvs = generateMockEVS(i);
+        matchingEvs.uuid = '35cfc131-179d-4e62-918e-a5b53332b61d';
+        mockEVSs.push(matchingEvs);
 
     };
 
