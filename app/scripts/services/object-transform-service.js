@@ -2006,6 +2006,7 @@ angular.module('rainierApp')
                             }
                         }
                         else if (link.rel.indexOf('vfs') !== -1) {
+                            item.evsUuid = _.last(link.href.split('/'));
                             item.displayLinks.push({
                                 href: link.href.replace('/file', '').replace('v1', '#'),
                                 icon: 'icon-virtual-file-server',
@@ -2089,6 +2090,7 @@ angular.module('rainierApp')
                             }
                         }
                         else if (link.rel.indexOf('vfs') !== -1) {
+                            item.evsUuid = _.last(link.href.split('/'));
                             item.displayLinks.push({
                                 href: link.href.replace('/file', '').replace('v1', '#'),
                                 icon: 'icon-virtual-file-server',

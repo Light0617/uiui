@@ -20,7 +20,6 @@ rainierAppMock.factory('exportsMock', function (mockUtils) {
             'fileSystemId': 10,
             'fileSystemPath':'/etc',
             'evsId': 1,
-            'evsUuid': '35cfc131-179d-4e62-918e-a5b53332b61d',
             'snapshotOptions':'',
             'transferToReplicationTarget':'',
             'accessConfiguration': '1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5',
