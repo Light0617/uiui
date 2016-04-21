@@ -200,7 +200,7 @@ angular.module('rainierApp')
                 enabled: function () {
                     return dataModel.anySelected() && !_.find(dataModel.getSelectedItems(), function(item) {
                             return item.encryption || item.diskSpec.type === 'SAS' || item.diskSpec.type === 'SSD' || item.diskSpec.type === 'FMD' ||
-                                item.status ==='UNSUPPORTED_ATTACHED' || item.status === 'IN_USE' || item.status === 'UNINITIALIZED'; });
+                                item.status ==='UNSUPPORTED_ATTACHED' || item.status === 'IN_USE' || item.status === 'UNINITIALIZED' || item.compression; });
                 },
                 onClick: function () {
                     _.forEach(dataModel.getSelectedItems(), function (item) {
