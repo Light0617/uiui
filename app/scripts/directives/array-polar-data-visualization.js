@@ -203,7 +203,6 @@ angular.module('rainierApp')
                 var unlimitedNumericValue = options.used.percentage;
                 var circleRadius = options.radius;
                 var overflowEnd = options.overflowWidth;
-                var overflowUsed = options.overflowWidth;
                 var angle360 = 2 * Math.PI;
 
                 var endAngle = null;
@@ -351,7 +350,7 @@ angular.module('rainierApp')
                         .attr('x', (-2 * circleWidth / 2) - 10.5)
                         .attr('y', overflowY)
                         .attr('fill', options.used.color)
-                        .attr('height', circleWidth +.5)
+                        .attr('height', circleWidth + 0.5)
                         .attr('width', 0);
 
                     var coverStartAngle = endAngle;
