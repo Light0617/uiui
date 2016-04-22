@@ -53,7 +53,7 @@ angular.module('rainierApp')
                     objectTransformService.transformPort(item);
                 });
 
-                dataModel.storagePorts = dataModel.storagePorts.concat(resources);
+                dataModel.storagePorts = resources;
             };
             $scope.dataModel = dataModel;
         });
