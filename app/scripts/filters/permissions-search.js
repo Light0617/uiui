@@ -16,10 +16,9 @@ angular.module('rainierApp')
             }
 
             var array = _.filter(input, function (item) {
-
                 var pass = _.isEmpty(search.freeText) ||
-                    item.id.toString().indexOf(search.freeText) > -1 ||
-                    item.label.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1;
+                    item.groupName.indexOf(search.freeText) > -1 ||
+                    item.groupName.toLocaleLowerCase().indexOf(search.freeText.toLocaleLowerCase()) > -1;
 
                 pass = pass && (search.permission === null || search.permission === _.first(item.metaData).detailsNoSlash[1]);
 
