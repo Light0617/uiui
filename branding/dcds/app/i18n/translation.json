@@ -1,5 +1,5 @@
 {
-    "brand-company": "Hitachi",
+    "brand-company": "DCDS",
     "brand-rainier": "Storage Advisor",
     "common-last-refresh": "Last Refresh",
     "header-name": "Name",
@@ -880,8 +880,8 @@
     "replication-group-actions-restore-confirmation-title": "Restore Volume Pairs Confirmation",
     "replication-group-actions-restore-confirmation-message": "The selected primary volume(s) will be restored by using corresponding secondary volume(s). Do you want to continue?",
     "restore-confirmation-message": "Select from the following secondary volume(s) to restore current primary volume:",
-    "product-name": "Hitachi Storage Advisor",
-    "product-copy-right": "© {{getCurrentYear()}} Hitachi, Ltd. All rights reserved.",
+    "product-name": "DCDS Storage Advisor",
+    "product-copy-right": "{{getCurrentYear()}}",
     "evs-ip-address": "VFS IP Address",
     "evs-label": "EVS Label",
     "subnet-mask": "Subnet mask",
