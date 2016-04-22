@@ -13,7 +13,7 @@ angular.module('rainierApp')
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
-        var defaultLow = 0;
+        var defaultLow = 1;
         var defaultSubscriptionLimitValue = 100;
         var defaultSubscriptionLimitUnlimited = false;
         $scope.diskTypeSpeedToTier = {};
