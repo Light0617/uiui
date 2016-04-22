@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostUpdateCtrl', function ($scope, $routeParams, orchestratorService) {
+    .controller('HostUpdateCtrl', function ($scope, $routeParams, orchestratorService, wwnService) {
         var hostId = $routeParams.hostId;
 
         orchestratorService.host(hostId).then(function(result) {
@@ -41,6 +41,7 @@ angular.module('rainierApp')
             var updatedWwns = [];
             _.forEach($scope.dataModel.updatedWwns.split(','), function(w) {
                 w = w.trim();
+                w = wwnService.removeSymbol(w);
                 updatedWwns.push(w);
             });
 
