@@ -220,10 +220,10 @@ angular.module('rainierApp')
 
                 },
                 isInvalid: function () {
-                    var isInvalid = !$scope.model || !$scope.model.storageSystem ||
+                    var isInvalid = !$scope.model || !$scope.model.storageSystem || !$scope.model.label ||
                         _.isEmpty($scope.model.label) ||  !$scope.model.availablePoolTypes || $scope.model.availablePoolTypes.length === 0;
                     
-                    if($scope.model.subscriptionLimit){
+                    if(!isInvalid && $scope.model.subscriptionLimit){
                         var isHtiPool = $scope.model.htiPool;
                         if($scope.model.poolType){
                             isHtiPool = ($scope.model.poolType === 'HTI');
