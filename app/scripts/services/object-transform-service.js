@@ -1646,7 +1646,7 @@ angular.module('rainierApp')
                 }
 
                 var tierInfo = synchronousTranslateService.translate(item.tiered ? 'tiered' : 'untiered');
-
+                item.tierNameDisplay = item.tierNames.join(', ');
                 _.each(item.links, function(link){
                     if(link.rel.indexOf('poolId') !== -1){
                         var storagePoolId = _.last(link.href.split('/'));

@@ -6,20 +6,22 @@
                 </div>
                 
                 <div class="label-value-container resource-data">
-                    <h2>{{ dataModel.filePool.metaData[1].title }}</h2>
+                    <p class="label">{{ dataModel.filePool.metaData[1].title }}</p>
+                    <p class="value">{{dataModel.filePool.tierNameDisplay}}</p>
                     <p class="label">{{ 'file-pool-number-file-systems' | translate}}</p>
                     <p class="value">{{dataModel.numOfFileSystems}}</p>
                     <p class="label">{{ 'file-pool-chunk-size' | translate}}</p>
                     <p class="value">{{dataModel.filePool.chunkSize.size}} <span>{{dataModel.filePool.chunkSize.unit}}</span></p>
                 </div>                 
             </div>
-            <div class="tile-row related-resources">
-                <div class="btn-group btn-group-justified" role="group">
-                    <div ng-repeat="link in dataModel.filePool.displayLinks" class="btn-group" role="group">
-                        <a class="btn btn-light btn-default include-icon pool" data-toggle="button" aria-pressed="false" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}}</a>
-                    </div>
-                    
-                </div>
+            <div class="center-content btn-group-justified nopadding" role="group">
+                <a class="btn btn-default" ng-href="{{dataModel.filePool.displayLinks[0].href}}" title="{{dataModel.filePool.displayLinks[0].label}}"
+                   ng-if="dataModel.filePool.displayLinks[0]">
+                    <span class="icon icon-md {{dataModel.filePool.displayLinks[0].icon}}"></span> {{dataModel.filePool.displayLinks[0].label}}</a>
+
+                <a class="btn btn-default" ng-href="{{dataModel.filePool.displayLinks[1].href}}" title="{{dataModel.filePool.displayLinks[1].label}}"
+                   ng-if="dataModel.filePool.displayLinks[1]">
+                    <span class="icon icon-md {{dataModel.filePool.displayLinks[1].icon}}" ></span> {{dataModel.filePool.displayLinks[1].label}}</a>
             </div>
         </div>
         <div class="bdv two-thirds">

@@ -19,6 +19,7 @@ rainierAppMock.factory('filePoolMock', function(mockUtils) {
         var poolId1 = 1;
         var poolId2 = 2;
         var filePoolId = 1;
+        var tiered = mockUtils.trueOrFalse();
         return {
             'id': v.toString(),
             'label':'File Pool ' + v,
@@ -28,7 +29,8 @@ rainierAppMock.factory('filePoolMock', function(mockUtils) {
             'physicalCapacity': capacityInfo.physicalCapacity,
             'healthy': mockUtils.trueOrFalse(),
             'chunkSize': chunkSize,
-            'tiered': mockUtils.trueOrFalse(),
+            'tiered': tiered,
+            'tierNames' : tiered ? ['Platinum', 'Gold'] : ['Platinum'],
             'links':[
                 {
                     'rel':'_self',

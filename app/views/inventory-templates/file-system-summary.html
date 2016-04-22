@@ -1,25 +1,25 @@
-<div class="summary-container-default">
+<div class="summary-container-condensed">
         <div class="meta-tile-short half">
-            <div class="lower-top-4 header-data margin-tile">
-                <div class="data-short pull-left smallMarginTop">
-                    <p class="header-label">{{ 'windows' | translate}} <span class="header-value">{{dataModel.windows}}</span> </p>
-                    <p class="header-label">{{ 'linux' | translate}} <span class="header-value">{{dataModel.linux}}</span></p>
-                </div>
-                <div class=" pull-left smallMarginTop">
-                    <p class="header-label">{{ 'format' | translate}} <span class="header-value">{{dataModel.format}}</span></p>
-                    <p class="header-label">{{ 'file-expansion-limit' | translate}} <span class="header-value">{{dataModel.expansionLimit.size}} {{dataModel.expansionLimit.unit}}</span></p>
+            <div class="tile-row resource-info">
+                <div class="label-value-container resource-data">
+                    <p class="label">{{ 'windows' | translate}}</p>
+                    <p class="value">{{dataModel.windows}}</p>
+                    <p class="label">{{ 'linux' | translate}}</p>
+                    <p class="value">{{dataModel.linux}}</p>
+                    <p class="label">{{ 'format' | translate}}</p>
+                    <p class="value">{{dataModel.format}}</p>
+                    <p class="label">{{ 'file-expansion-limit' | translate}}</p>
+                    <p class="value">{{dataModel.expansionLimit.size}} {{dataModel.expansionLimit.unit}}</p>
                 </div>
             </div>
-            <div class="footer-row margin-tile">
-                <div class="center-content btn-group-justified nopadding" role="group">
-                        <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[0].href}}" title="{{dataModel.fileSystem.displayLinks[0].label}}"
-                           ng-if="dataModel.fileSystem.displayLinks[0]">
-                            <span class="icon icon-md {{dataModel.fileSystem.displayLinks[0].icon}}"></span> {{dataModel.fileSystem.displayLinks[0].label}}</a>
+            <div class="center-content btn-group-justified nopadding" role="group">
+                    <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[0].href}}" title="{{dataModel.fileSystem.displayLinks[0].label}}"
+                       ng-if="dataModel.fileSystem.displayLinks[0]">
+                        <span class="icon icon-md {{dataModel.fileSystem.displayLinks[0].icon}}"></span> {{dataModel.fileSystem.displayLinks[0].label}}</a>
 
-                        <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[1].href}}" title="{{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}"
-                           ng-if="dataModel.fileSystem.displayLinks[1]">
-                            <span class="icon icon-md {{dataModel.fileSystem.displayLinks[1].icon}}" ></span> {{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}</a>
-                </div>
+                    <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[1].href}}" title="{{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}"
+                       ng-if="dataModel.fileSystem.displayLinks[1]">
+                        <span class="icon icon-md {{dataModel.fileSystem.displayLinks[1].icon}}" ></span> {{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}</a>
             </div>
         </div>
         <div class="full-width margin-percent-L-R-10">

@@ -31,7 +31,16 @@ angular.module('rainierApp')
 
                 // 7% is the min for the visual
                 if(used < 7) {
-                    used = 7;
+                    used = 0;
+                    if(scope.model.usedCapacityInBytes.value > 0) {
+                        used = 7;
+                    }
+                }
+                if(allocated < 7) {
+                    allocated = 0;
+                    if(scope.model.physicalCapacityInBytes.value > 0) {
+                        allocated = 7;
+                    }
                 }
                 if(scope.model.onlyShowTwoBars) {
                     allocated = 100;
