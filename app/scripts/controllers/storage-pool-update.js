@@ -102,7 +102,7 @@ angular.module('rainierApp')
                                     pg.selected = true;
                                     pg.inuse = true;
                                     inUseParityGroups.push(pg);
-                                } else if (pg.status === 'AVAILABLE' || pg.status === 'FORMATTING' || pg.status === 'QUICK_FORMATTING') {
+                                } else if (pg.status === 'AVAILABLE' || pg.status === 'QUICK_FORMATTING') {
                                     pg.selected = false;
                                     pg.inuse = false;
                                     usableParityGroups.push(pg);
