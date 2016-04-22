@@ -331,14 +331,15 @@ angular.module('rainierApp')
 
                     var overflowY = -1 * (circleRadius + space / 2 + circleWidth / 2) + 2;
 
+                    var ofXCoordinateShift = 10; // +10 to shift the starting point a bit to the right
                     var of = ofg.append('rect')
                         .attr('class', 'circle-fg-overflow')
                         .attr('rx', (circleWidth + space) / 2)
                         .attr('ry', (circleWidth + space) / 2)
-                        .attr('x', -2 * circleWidth / 2)
-                        .attr('y', overflowY - 1.5)
+                        .attr('x', -circleWidth + ofXCoordinateShift)
+                        .attr('y', overflowY - 2)
                         .attr('fill', options.free.color)
-                        .attr('height', circleWidth + 3)
+                        .attr('height', circleWidth + 3.5)
                         .attr('width', 0)
                         .attr('stroke', 'black')
                         .attr('stroke-width', 3);
@@ -347,10 +348,10 @@ angular.module('rainierApp')
                         .attr('class', 'circle-fg-overflow')
                         .attr('rx', (circleWidth + space + 8) / 2)
                         .attr('ry', (circleWidth + space + 8) / 2)
-                        .attr('x', (-2 * circleWidth / 2) - 10.5)
-                        .attr('y', overflowY)
+                        .attr('x', -circleWidth)
+                        .attr('y', overflowY - 1)
                         .attr('fill', options.used.color)
-                        .attr('height', circleWidth + 0.5)
+                        .attr('height', circleWidth + 1)
                         .attr('width', 0);
 
                     var coverStartAngle = endAngle;
@@ -431,7 +432,7 @@ angular.module('rainierApp')
                         }, angle360);
 
                     of.transition()
-                        .attr('width', overflowEnd + circleWidth)
+                        .attr('width', overflowEnd + circleWidth - ofXCoordinateShift)
                         .duration(overflowDuration)
                         .delay(transitionDuration);
 
