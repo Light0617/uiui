@@ -1498,9 +1498,7 @@ angular.module('rainierApp')
                 if (item.type !== 'HTI') {
                     items.push({
                         used: {
-                            percentage: (item.totalCapacity.value === 0) ? 0 : Math.round(
-                                    item.usedSubscribedCapacity * 100 / item.totalCapacity.value
-                            ),
+                            percentage: item.usedSubscription,
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
@@ -1510,7 +1508,7 @@ angular.module('rainierApp')
                             color: allocatedColor
                         },
                         free: {
-                            percentage: 100,
+                            percentage: item.subscriptionLimit.value,
                             color: unallocatedColor
                         }
                     });

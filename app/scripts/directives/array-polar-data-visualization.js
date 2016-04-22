@@ -203,6 +203,7 @@ angular.module('rainierApp')
                 var unlimitedNumericValue = options.used.percentage;
                 var circleRadius = options.radius;
                 var overflowEnd = options.overflowWidth;
+                var overflowUsed = options.overflowWidth;
                 var angle360 = 2 * Math.PI;
 
                 var endAngle = null;
@@ -214,6 +215,10 @@ angular.module('rainierApp')
                 if(options.used.capacity) {
                     used = options.used.capacity.value;
                     freeValue = options.free.capacity.value;
+                }
+                else if(options.used.percentage) {
+                    used = options.used.percentage;
+                    freeValue = options.free.percentage;
                 }
                 else {
                     used = options.percentage;
@@ -325,25 +330,31 @@ angular.module('rainierApp')
                 if (showOverflow) {
                     var ofg = circlesContainer.append('g');
 
-                    var overflowY = -1 * (circleRadius + space / 2 + circleWidth / 2);
+                    var overflowY = -1 * (circleRadius + space / 2 + circleWidth / 2) + 2;
 
                     var of = ofg.append('rect')
                         .attr('class', 'circle-fg-overflow')
                         .attr('rx', (circleWidth + space) / 2)
                         .attr('ry', (circleWidth + space) / 2)
-                        .attr('x', -1 * circleWidth / 2)
-                        .attr('y', overflowY)
+                        .attr('x', -2 * circleWidth / 2)
+                        .attr('y', overflowY - 1.5)
                         .attr('fill', options.free.color)
-                        .attr('height', circleWidth + space)
+                        .attr('height', circleWidth + 3)
+                        .attr('width', 0)
+                        .attr('stroke', 'black')
+                        .attr('stroke-width', 3);
+
+                    var ofHide = ofg.append('rect')
+                        .attr('class', 'circle-fg-overflow')
+                        .attr('rx', (circleWidth + space + 8) / 2)
+                        .attr('ry', (circleWidth + space + 8) / 2)
+                        .attr('x', (-2 * circleWidth / 2) - 10.5)
+                        .attr('y', overflowY)
+                        .attr('fill', options.used.color)
+                        .attr('height', circleWidth +.5)
                         .attr('width', 0);
 
-                    var ofl = ofg.append('text')
-                        .attr('class', 'circle-fg-overflow-label')
-                        .attr('y', overflowY + circleWidth - space * 2)
-                        .attr('x', overflowEnd + circleWidth + circleWidth)
-                        .attr('height', circleWidth + space);
-
-                    var coverStartAngle = Math.PI;
+                    var coverStartAngle = endAngle;
 
                     var coverArc = d3.svg.arc()
                         .innerRadius(circleRadius)
@@ -425,13 +436,10 @@ angular.module('rainierApp')
                         .duration(overflowDuration)
                         .delay(transitionDuration);
 
-
-
-                    ofl.transition()
-                        .text(( unlimitedNumericValue.value ||  unlimitedNumericValue) + '%')
-                        .duration(0)
-                        .delay(transitionDuration + overflowDuration);
-
+                    ofHide.transition()
+                        .attr('width', overflowEnd)
+                        .duration(overflowDuration)
+                        .delay(transitionDuration);
                 }
                 else {
                     background.transition()
