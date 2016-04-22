@@ -38,7 +38,7 @@ angular.module('rainierApp')
             // Used to set hostModeOption to empty array for backend API to auto select the options
             getSelectedHostMode: function (dataModel) {
                 var selectedHostModeByUser = dataModel.attachModel.selectedHostModeOption;
-                if (selectedHostModeByUser.includes(0)) {
+                if (_.find(selectedHostModeByUser, function (mode) { return mode === 0; })) {
                     return null;
                 } else {
                     return _.where(selectedHostModeByUser, function (mode) {
