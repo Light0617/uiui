@@ -433,6 +433,7 @@
     "isw-common-settings-name": "Name",
     "isw-common-settings-contact": "Contact",
     "isw-common-settings-location": "Location",
+    "unsupported-storage-system-firmware": "Unsupported",
 
     "storage-system-delete-one-confirmation": "Delete Storage System Confirmation",
     "storage-system-delete-current-content": "The current storage system will be deleted. Do you want to proceed?",

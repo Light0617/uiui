@@ -9,7 +9,8 @@
  */
 angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
-                                                 ShareDataService, cronStringConverterService, wwnService) {
+                                                 ShareDataService, cronStringConverterService, wwnService,
+                                                 versionService) {
 
         var allocatedColor = 'white';
         var unallocatedColor = '#595B5B';
@@ -116,6 +117,7 @@ angular.module('rainierApp')
                 transformStorageSystemsSummary(item);
                 transformHdvmSnLaunchUrl(item);
 
+                item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
                 item.metaData = [
                     {
                         left: true,
