@@ -108,7 +108,11 @@ angular.module('rainierApp')
                     break;
             }
 
-            item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress, identifier, '/emergency.do'].join('');
+            if (identifier === '') {
+                item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress].join('');
+            } else {
+                item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress, identifier, '/emergency.do'].join('');
+            }
         }
 
         var transforms = {
