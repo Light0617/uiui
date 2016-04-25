@@ -34,9 +34,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).all('disks/' + diskId).post(payload));
             },
             hostModeOptions: function () {
-//                [TODO]: this option should be reactivated with the backend API supports HMO 100
-//                return [0, 2, 6, 7, 12, 13, 14, 15, 22, 23, 33, 39, 40, 41, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 82, 83, 100];
-                return [0, 2, 6, 7, 12, 13, 14, 15, 22, 23, 33, 39, 40, 41, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 82, 83];
+                return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83, 96, 97, 100, 102];
             },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {

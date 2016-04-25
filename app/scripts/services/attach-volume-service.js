@@ -28,21 +28,21 @@ angular.module('rainierApp')
                 var recentlySelected = difference(dataModel.attachModel.lastSelectedHostModeOption, selectedHostModeOptions);
                 if (selectedHostModeOptions.length === 0) {
                     updateHostModeOptions([], dataModel);
-                } else if (recentlySelected === 0) {
-                    updateHostModeOptions([0], dataModel);
+                } else if (recentlySelected === 999) {
+                    updateHostModeOptions([999], dataModel);
                 } else {
-                    updateHostModeOptions(_.without(selectedHostModeOptions, 0), dataModel);
+                    updateHostModeOptions(_.without(selectedHostModeOptions, 999), dataModel);
                 }
             },
 
             // Used to set hostModeOption to empty array for backend API to auto select the options
             getSelectedHostMode: function (dataModel) {
                 var selectedHostModeByUser = dataModel.attachModel.selectedHostModeOption;
-                if (_.find(selectedHostModeByUser, function (mode) { return mode === 0; })) {
+                if (_.find(selectedHostModeByUser, function (mode) { return mode === 999; })) {
                     return null;
                 } else {
                     return _.where(selectedHostModeByUser, function (mode) {
-                        return mode > 0;
+                        return (mode !== 999);
                     });
                 }
             }
