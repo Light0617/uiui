@@ -359,6 +359,10 @@ function getDpType() {
 var poolTypes = ['HDP', 'HDT', 'HTI'];
 var poolTiers = [
     {
+        "tier": "Platinum",
+        "capacity": "10737418240"
+    },
+    {
         "tier": "Gold",
         "capacity": "10737418240"
     },
@@ -3072,7 +3076,7 @@ app.get('/v1/storage-systems/:storageArrayId/settings/alert-notifications', json
 app.get('/v1/storage-systems/:storageArrayId/settings/licenses', jsonParser, function(req, res) {
     res.json(
         {
-            licenses: [
+            licenseSettings: [
                 {
                     productName: "Data Retention Utility",
                     installed: true,

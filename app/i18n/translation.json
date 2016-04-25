@@ -193,7 +193,7 @@
     "storage-pools-review-pool": "Tier Management",
     "storage-pools-basic-question": "Intend to use for Snap?",
     "storage-pools-question-active-flash": "Intend to enable active flash?",
-    "storage-pools-active-flash-license-info": "Valid license is needed to enable Active Flash for Pool.",
+    "storage-pools-active-flash-license-info": "Platinum tier parity group and valid license is needed to enable Active Flash for Pool.",
 
     "storage-pool-id": "Pool Id",
     "storage-pool-label": "Pool Label",
