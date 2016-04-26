@@ -213,14 +213,14 @@ angular.module('rainierApp')
             dataModel.attachModel = {
                 storageSystemSelectable: false,
 
-                lastSelectedHostModeOption: [0],
+                lastSelectedHostModeOption: [999],
                 selectedVolumes: selectedVolumes,
                 selectedServers: _.where(dataModel.displayList, 'selected'),
                 storagePorts: ports,
                 hostModes: hostModes,
                 hostMode: hostModes[0],
                 hostModeOptions: hostModeOptions,
-                selectedHostModeOption: [0],
+                selectedHostModeOption: [999],
                 enableZoning: false,
                 enableLunUnification: false,
                 canSubmit: function () {

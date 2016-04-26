@@ -111,13 +111,13 @@ angular.module('rainierApp')
             var hostModes = orchestratorService.osType().sort();
             hostModes.splice(0, 0, autoSelect);
             var attachModel = {
-                lastSelectedHostModeOption: [0],
+                lastSelectedHostModeOption: [999],
                 storageSystemSelectable: false,
                 enableZoning: false,
                 enableLunUnification: false,
                 storagePools: ports,
                 selectedServers: selectedServers,
-                selectedHostModeOption: [0],
+                selectedHostModeOption: [999],
                 hostModes: hostModes,
                 hostMode: hostModes[0],
                 hostModeOptions: hostModeOptions,

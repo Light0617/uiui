@@ -285,7 +285,7 @@ angular.module('rainierApp')
             var dataModel = $scope.dataModel;
 
             dataModel.attachModel = {
-                lastSelectedHostModeOption: [0],
+                lastSelectedHostModeOption: [999],
                 subTitle: 'Selected Volumes',
                 storageSystemSelectable: false,
                 storagePools: ports,
@@ -294,7 +294,7 @@ angular.module('rainierApp')
                 hostMode : hostModes[0],
                 hostModeOptions: hostModeOptions,
                 serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
-                selectedHostModeOption: [0],
+                selectedHostModeOption: [999],
                 enableZoning: false,
                 enableLunUnification: false,
                 canSubmit: function () {

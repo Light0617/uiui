@@ -28,7 +28,7 @@ angular.module('rainierApp')
                 var recentlySelected = difference(dataModel.attachModel.lastSelectedHostModeOption, selectedHostModeOptions);
                 if (selectedHostModeOptions.length === 0) {
                     updateHostModeOptions([], dataModel);
-                } else if (recentlySelected === 999) {
+                } else if (recentlySelected === 999 || (!_.isNull(selectedHostModeOptions) && !_.isEmpty(selectedHostModeOptions) && selectedHostModeOptions.length === 1 && selectedHostModeOptions[0] === 999)) {
                     updateHostModeOptions([999], dataModel);
                 } else {
                     updateHostModeOptions(_.without(selectedHostModeOptions, 999), dataModel);
