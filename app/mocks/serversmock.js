@@ -19,7 +19,7 @@ rainierAppMock.factory('serversMock', function (mockUtils) {
             description: 'TEST',
             ipAddress: '10.1.91.' + v,
             wwpns: mockUtils.getWWN(),
-            osType: _.sample(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'HI_UX', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'NETWARE', 'OVMS']),
+            osType: _.sample(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'NETWARE', 'OVMS']),
             dpStatus: _.sample(['Failed', 'Success']),
             dpType: mockUtils.getDpType()
         };
@@ -31,7 +31,6 @@ rainierAppMock.factory('serversMock', function (mockUtils) {
         map.SOLARIS = _.random(1, 20);
         map.AIX = _.random(1, 20);
         map.TRU64 = _.random(1, 20);
-        map.HI_UX = _.random(1, 20);
         map.WIN = _.random(1, 20);
         map.WIN_EX = _.random(1, 20);
         map.LINUX = _.random(1, 20);

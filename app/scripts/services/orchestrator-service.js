@@ -13,7 +13,7 @@ angular.module('rainierApp')
         var service = {
 
             osType: function () {
-                return ['HP_UX', 'SOLARIS', 'AIX', 'WIN', 'LINUX', 'TRU64', 'OVMS', 'NETWARE', 'HI_UX', 'VMWARE', 'VMWARE_EX', 'WIN_EX'];
+                return ['HP_UX', 'SOLARIS', 'AIX', 'WIN', 'LINUX', 'TRU64', 'OVMS', 'NETWARE', 'VMWARE', 'VMWARE_EX', 'WIN_EX'];
             },
             switchTypes: function () {
                 return ['BROCADE', 'CISCO'];

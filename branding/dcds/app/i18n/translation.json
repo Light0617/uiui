@@ -469,7 +469,6 @@
     "host-mode-TRU64": "TRU64",
     "host-mode-OVMS": "OVMS",
     "host-mode-NETWARE": "NETWARE",
-    "host-mode-HI_UX": "HI UX",
     "host-mode-VMWARE": "VMWARE",
     "host-mode-VMWARE_EX": "VMWARE EX",
     "host-mode-WIN_EX": "WIN EX",

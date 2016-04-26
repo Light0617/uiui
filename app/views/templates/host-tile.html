@@ -4,7 +4,7 @@
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 resource-tile-left">
             <h2 ng-attr-title="{{'hosts-label' | translate}}">{{model.serverLabel}}</h2>
                 <p>{{model.osType}}</p>
-            <p class="icon icon-lg pull-bottom" ng-class="{'icon-windows' : model.osType =='HP_UX' || model.osType =='SOLARIS' || model.osType =='AIX' || model.osType =='TRU64' || model.osType =='HI_UX',
+            <p class="icon icon-lg pull-bottom" ng-class="{'icon-windows' : model.osType =='HP_UX' || model.osType =='SOLARIS' || model.osType =='AIX' || model.osType =='TRU64',
             'icon-unix' : model.osType =='WIN' || model.osType =='WIN_EX' || model.osType =='LINUX' || model.osType =='VMWARE' || model.osType =='VMWARE_EX' || model.osType =='NETWARE' || model.osType =='OVMS'}"></p>
             <p>{{model.attachedVolumeCount}}</br>
                     volumes</p>

@@ -21,7 +21,6 @@ angular.module('rainierApp')
             { name: 'SOLARIS', caption: 'Oracle Solaris' },
             { name: 'AIX', caption: 'IBM AIX' },
             { name: 'TRU64', caption: 'Tru64 Unix' },
-            { name: 'HI_UX', caption: 'HI Unix' },
             { name: 'WIN', caption: 'Windows' },
             { name: 'WIN_EX', caption: 'Windows EX' },
             { name: 'LINUX', caption: 'Linux' },
