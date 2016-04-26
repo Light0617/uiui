@@ -162,7 +162,7 @@ angular.module('rainierApp')
                         });
                     }
                 },
-                statuses: ['AVAILABLE', 'FORMATTING', 'QUICK_FORMATTING', 'IN_USE', 'UNINITIALIZED', 'UNSUPPORTED_ATTACHED','UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP', 'UNSUPPORTED_MIXRESOURCEGROUP'],
+                statuses: ['AVAILABLE', 'FORMATTING', 'QUICK_FORMATTING', 'IN_USE', 'UNINITIALIZED', 'UNSUPPORTED_ATTACHED','UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP'],
                 getSelectedParityGroupCount: function () {
                     var selectedCount = 0;
                     _.forEach($scope.dataModel.filteredList, function (parityGroup) {
