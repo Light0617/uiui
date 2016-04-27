@@ -17,6 +17,7 @@
         <div class="margin-T-B-L">     
         <label>Host Mode Option</label>
         <select class="form-control"
+                title="None"
                 ng-model="dataModel.attachModel.selectedHostModeOption"
                 ng-change="dataModel.checkSelectedHostModeOptions()"
                 ng-options="'host-mode-option-' + hmo | translate for hmo in dataModel.attachModel.hostModeOptions"
