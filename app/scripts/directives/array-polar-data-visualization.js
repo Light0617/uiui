@@ -317,8 +317,6 @@ angular.module('rainierApp')
                     }
                     unified = circlesContainer.append('path')
                         .datum({endAngle: 0})
-                        //TODO: EL ask for a unified class from UX team
-                        //.attr('class', 'circle-fg')
                         .attr('stroke', options.unified.color)
                         .attr('d', arc)
                         .attr('stroke-width', circleWidth)
@@ -348,10 +346,10 @@ angular.module('rainierApp')
                         .attr('class', 'circle-fg-overflow')
                         .attr('rx', (circleWidth + space + 8) / 2)
                         .attr('ry', (circleWidth + space + 8) / 2)
-                        .attr('x', -circleWidth)
-                        .attr('y', overflowY - 1)
+                        .attr('x', -circleWidth - 1.5)
+                        .attr('y', overflowY - 0.40)
                         .attr('fill', options.used.color)
-                        .attr('height', circleWidth + 1)
+                        .attr('height', circleWidth + 0.25)
                         .attr('width', 0);
 
                     var coverStartAngle = endAngle;
