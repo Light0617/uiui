@@ -117,7 +117,10 @@ angular.module('rainierApp')
 
             $scope.filterModel = {
                 filter: {
-                    freeText: ''
+                    freeText: '',
+                    portSpeed: '',
+                    securitySwitchEnabled: null,
+                    attributes: ''
                 },
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);

@@ -850,7 +850,7 @@
     "replication-groups-filter-snapshot": "Snapshot",
     "replication-groups-filter-clone": "Clone",
     "replication-group-edit-remove-pvol-message": "Select the Primary volume(s) to remove",
-    "replication-group-edit-remove-svol-message": "Remove corresponding secondary volume(s)",
+    "replication-group-edit-remove-svol-message": "Delete the associated secondary volumes",
     "replication-group-edit-snapshot-message": "Edit Snapshot(s)",
     "replication-group-edit-clone-message": "Primary Volumes(s)",
     "replication-group-edit-pvol-id": "Primary Volume ID",
@@ -895,5 +895,5 @@
     "evs-add": "Create Virtual File Server",
     "evs-update": "Update Virtual File Server",
     "evs-tooltip": "VFS - Enterprise Virtual Server(EVS)",
-    "file-pools-tooltip": "File Pool (HNAS Storage Pool)"
+    "file-pools-tooltip": "File Pool (NAS Storage Pool)"
 }

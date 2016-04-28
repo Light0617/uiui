@@ -121,7 +121,7 @@ angular.module('rainierApp')
                 },
                 searchQuery: function (value) {
                     var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject('sanFabricId', new paginationService.SearchType().INT, value));
+                    queryObjects.push(new paginationService.QueryObject('sanFabricId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(GET_FABRICS_PATH, objectTransformService.transformFabricSwitch).then(function(result) {
                         updateResultTotalCounts(result);
@@ -165,7 +165,7 @@ angular.module('rainierApp')
                 $window.location.href = '#/fabric-switches/add';
             };
 
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, fabrics, 'fabricSwitchSearch');
+            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, fabrics);
         }
 
         $scope.deleteSelectedConfirmOk = function () {
