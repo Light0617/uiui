@@ -82,7 +82,7 @@ angular.module('rainierApp')
 
             paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, val.storageSystemId,
                 objectTransformService.transformParityGroup).then(function(result) {
-                var showAsAvailable = ['AVAILABLE', 'QUICK_FORMATTING'];
+                var showAsAvailable = ['AVAILABLE', 'QUICK_FORMATTING', 'AVAILABLE_PHYSICAL'];
                 var usableParityGroups = _.filter(result,
                     function(parityGroup) {
                         return (showAsAvailable.indexOf(parityGroup.status) > -1);
