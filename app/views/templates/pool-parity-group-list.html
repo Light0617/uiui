@@ -2,45 +2,52 @@
 <div class="tile resource-tile"
      ng-repeat="pg in model.parityGroups  | createPoolParityGroupsFilter:model.search |  orderBy:'diskSpec.capacityInBytes' ">
     <div class="tile-row status-bar">
-        <div class="btn-group">
-            <label class="btn icon-btn checkbox icon" ng-value="pg" type="checkbox"
-                   ng-class="{'icon-checkmark-no-fill': pg.selected, 'icon-circle-no-fill': !pg.selected}"
-                   ng-model="pg.selected" btn-checkbox>
+        <div class="btn-group" ng-if="!pg.noSelection && !pg.disabledCheckBox">
+            <label class="btn icon-btn checkbox" ng-click="pg.selected = !pg.selected"
+                   ng-class="{'active' : pg.selected, 'disabled' : pg.disabledCheckBox}" >
             </label>
         </div>
-        <div class="btn-group icon-toolbar pull-right hidden">
-            <button class="btn icon-btn icon icon-expand icon-sm" type="button" title="launch"></button>
-            <button class="btn icon-btn icon icon-lock icon-sm" type="button" title="protect"></button>
-            <button class="btn icon-btn icon icon-small-triangle warning" type="button" title="warning"></button>
+        <div class="btn-group icon-toolbar pull-right">
+            <a type="button" ng-repeat="icon in pg.getIcons()" ng-click="icon.onClick()" ng-attr-title="{{icon.title | translate }}"
+               ng-attr-class="btn icon-btn icon icon-sm {{icon.icon}}">
+            </a>
+            <a type="button" ng-if="pg.textStatus">
+                {{pg.textStatus}}
+            </a>
         </div>
     </div>
-    <div class="tile-row identity">
-        <div class="meta-left">
-            <h2>{{ pg.parityGroupId}} ({{pg.status}})</h2>
-            <div class="horizontal-stack">
-                <p>{{pg.raidLayout}}</p>
-                <p>{{pg.raidLevel}}</p>
-
-                <p>{{'storage-pool-compression' | translate}}: {{pg.compression ? 'YES' : 'NO'}}</p>
-            </div>
-        </div>
-        <div class="meta-right">
-            <div class="horizontal-stack">
-                <p>{{pg.diskSpec.type}}</p>
-                <p>{{pg.diskSpec.speed}}</p>
-            </div>
+    <div class="tile-row" ng-click="pg.onClick()">
+        <div class="label-value-container" ng-repeat="md in pg.metaData">
+            <h2 ng-if="$first && pg.onClick" ng-attr-title="{{md.title}}">
+                <a ng-if="pg.onClick">{{md.title}}</a>
+            </h2>
+            <h2 ng-if="$first && !pg.onClick" ng-attr-title="{{md.title}}">
+                {{md.title}}
+            </h2>
+            <p class="value" ng-if="!$first" ng-attr-title="{{md.title}}">
+                {{md.title}}
+            </p>
+            <p class="value" ng-repeat="detail in md.details track by $index" ng-attr-title="{{md.detailsToolTips[$index] || detail}}">{{detail}}</p>
+            <p class="value" ng-repeat="detail in md.detailsNoSlash track by $index" ng-attr-title="{{md.detailsToolTips[$index] || detail}}">{{detail}}</p>
         </div>
     </div>
     <div class="tile-row resource-info">
         <div class="icon icon-parity-group icon-lg" ng-if="!pg.encryption"></div>
         <div class="icon icon-encrypted-parity-group icon-lg" ng-if="pg.encryption"></div>
         <div class="resource-data">
-            <div class="inline-values" ng-if="item.status !== 'EXTERNALIZED'">
+            <div class="inline-values" ng-if="pg.status !== 'EXTERNALIZED'">
                 <disk-size ng-model="pg.topSize" post-fix="/" wrapped-in="p"></disk-size>&nbsp;
                 <disk-size ng-model="pg.topTotal" post-fix="" wrapped-in="p"></disk-size>
             </div>
             <div class="data-viz bar">
                 <usage-indicator-bar class="block data-viz-container" ng-model="pg"></usage-indicator-bar>
+            </div>
+            <div class="data-viz bar" ng-if="pg.compression">
+                <usage-indicator-bar class="block data-viz-container" ng-model="pg.compressionUsageBar"></usage-indicator-bar>
+            </div>
+            <div class="inline-values">
+                <disk-size ng-model="pg.physicalCapacity" post-fix="/"  wrapped-in="p" ng-if="pg.compression"></disk-size>&nbsp;
+                <disk-size ng-model="pg.topTotal" wrapped-in="p" ng-if="pg.compression"></disk-size>
             </div>
         </div>
     </div>
