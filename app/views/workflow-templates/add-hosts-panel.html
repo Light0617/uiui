@@ -3,7 +3,7 @@
 </div>
 <div class="tile-view list-view" infinite-scroll='dataModel.loadMore()'
      infinite-scroll-distance='1'
-     infinite-scroll-disabled='dataModel.hostsModel.displayHosts.length==dataModel.hostsModel.hosts.length'
+     infinite-scroll-disabled='dataModel.busy === true || dataModel.hostsModel.displayHosts.length === dataModel.hostsModel.hosts.length'
      infinite-scroll-container="'.scroll-wizard-container'">
     <!--Header Row-->
     <div class="tile row row-tile column-headers">
@@ -27,7 +27,7 @@
         </div>
     </div>
     <!--Standard Row-->
-    <div class="tile row row-tile" ng-repeat="host in dataModel.hostsModel.displayHosts">
+    <div class="tile row row-tile" ng-repeat="host in dataModel.hostsModel.displayHosts track by $index">
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
             <input type="text" ng-model="host.name"
                    class="form-control text inline" name="name"

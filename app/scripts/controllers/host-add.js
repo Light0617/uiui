@@ -51,22 +51,30 @@ angular.module('rainierApp')
         dataModel.addNewHost();
 
         dataModel.canSubmit = function () {
+            if (dataModel.busy === true){
+                return dataModel.currentCanSubmit;
+            }
             var iHost;
             var cHosts = dataModel.hostsModel.displayHosts.length;
             var h;
             if (cHosts <= 1) {
+                dataModel.currentCanSubmit = false;
                 return false;
             }
             // Skip the first row when validating the submit button
             for (iHost = 1; iHost < cHosts; ++iHost) {
                 h = dataModel.hostsModel.displayHosts[iHost];
                 if( !h.isValid()){
+                    dataModel.currentCanSubmit = false;
                     return false;
                 }
             }
 
+            dataModel.currentCanSubmit = true;
             return true;
         };
+        dataModel.busy = false;
+        dataModel.currentCanSubmit = false;
 
         dataModel.submit = function () {
             var hostsPayload = {
@@ -136,6 +144,15 @@ angular.module('rainierApp')
                 .forEach(function (item) {
                     dataModel.hostsModel.displayHosts.push(item);
                 });
+
+            dataModel.busy = true;
+
+            // The ultimate fix should be to defind a callback function where busy is set to false. The callback
+            // function is called after the newly added servers are rendered in this page. Because we can't afford to
+            // investigate how to do that in Aura release, we just add a timeout of 1 second to render the servers.
+            $timeout(function () {
+                $scope.dataModel.busy = false;
+            }, 1000);
         };
 
         $scope.$watch('dataModel.importedHosts', function (hosts) {
