@@ -4,7 +4,6 @@
   visibility: hidden;
 }
 
-
 .icon-encryption-off:before {
   content: "\e024";
   color: $disabled-color;
@@ -341,11 +340,6 @@ input[type=range]:focus::-webkit-slider-runnable-track {
       border: 1px solid #fff;
     }
   }
-}
-
-.partner-brand-login-changhong {
-  background-image: url(../images/changhong-32.png);
-  margin-left: 80px !important;
 }
 
 .col-margin {
@@ -702,11 +696,16 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   margin-bottom: 0px !important;
 }
 
+.partner-brand-login-uit {
+  background-image: url(../images/uit-32.png);
+  margin-left: 80px !important;
+}
+
 .navbar .partner-brand {
   @include brand-bkg;
   h3 { margin-top: 12px;}
-  &.changhong {
-    background-image:url(../images/changhong-22.png);
+  &.uit {
+    background-image:url(../images/uit-22.png);
     padding-left: 192px;
   }
 }

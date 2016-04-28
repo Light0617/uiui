@@ -1,14 +1,9 @@
-.list-view .cell {
-  overflow: visible;
+#svg-tooltip-block{
+  padding: .2em;
+  background-color: beige;
+  visibility: hidden;
 }
 
-.btn .dropdown-toggle .selectpicker {
-  overflow: visible;
-}
-
-.bootstrap-select.btn-group .btn .filter-option {
-  overflow: visible;
-}
 
 .icon-encryption-off:before {
   content: "\e024";
@@ -22,9 +17,6 @@
   visibility: visible;
 }
 
-.nomargin-bottom {
-  margin-bottom: 0;
-}
 
 .list-view .cell.data {
   flex-wrap: wrap;
@@ -62,7 +54,7 @@
 }
 
 .file-icon {
-  color: #66A2FF;
+  color: $accent3-light;
 }
 
 .file-icon:hover {
@@ -73,28 +65,8 @@
   height: 239px !important;
 }
 
-.black-tile {
-  background-color: black;
-  .icon-white {
-    color: white;
-  }
-  .label-value-container .label {
-    color: lightgrey;
-    font-weight: 400;
-  }
-  .label-value-container .value {
-    color: white;
-    font-weight: 100;
-  }
-}
-
 .btn-group-confirm .btn {
   margin: 0 0 0 .4em;
-}
-
-.partner-brand-login-dcds {
-  background-image: url(../images/dcds-32.png);
-  margin-left: 80px !important;
 }
 
 .pdv.default .polar-Viz-legend-container .legend-box rect.bg, {
@@ -134,35 +106,11 @@
 .row-grey {
   height: 50px;
   background-color: #E3E4E7;
+  margin-bottom: .5em;
 }
 
 .bg-grey {
   background-color: #E3E4E7;
-}
-
-.wizard .wizard-right .row-grey .btn.dropdown-toggle.selectpicker.btn-default {
-  background-color: transparent !important;
-  border: 0px;
-}
-
-.wizard .wizard-right .btn.dropdown-toggle.selectpicker.btn-default {
-  background-color: white;
-  border: 1px solid lightgrey;
-  line-height: 1.3em;
-  font-size: 1em;
-  .dropdown {
-    width: auto;
-  }
-}
-
-.wizard .btn.dropdown-toggle.selectpicker.btn-default {
-  background-color: white;
-  border: 1px solid lightgrey;
-  line-height: 1.3em;
-  font-size: 1em;
-  .dropdown {
-    width: auto;
-  }
 }
 
 .fixed-line-height {
@@ -382,8 +330,8 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   &.btn-group-toggle-black {
     .btn-group .btn {
       border: 1px solid #272727;
-  }
-  border-color: #000000;
+    }
+    border-color: #000000;
   }
 }
 
@@ -679,7 +627,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   overflow: auto;
   background-color: transparent !important;
   .table {
-      background-color: transparent;
+    background-color: transparent;
     td, th {
       background-color: transparent;
     }
@@ -747,6 +695,11 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .row-tile.parent {
   margin-bottom: 0px !important;
+}
+
+.partner-brand-login-dcds {
+  background-image: url(../images/dcds-32.png);
+  margin-left: 80px !important;
 }
 
 .navbar .partner-brand {
