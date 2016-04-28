@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <!--Right column-->
-                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right three-rows-wizard">
                     <div class="header-row">
                         <h2 ng-if="model.wizardType === 'basic'" class="pull-left col-lg-9 col-md-9 col-sm 12">Choose
                             Storage from Tier to Allocate to Pool</h2>
@@ -67,7 +67,7 @@
                     </div>
 
                     <!--Update Pool basic-->
-                    <div class="work-panel-alt" ng-if="model.wizardType === 'basic'">
+                    <div class="work-panel-alt body-row" ng-if="model.wizardType === 'basic'">
                         <div class="scroll-tile-container">
                             <div class="accordion-panel" >
                                 <pool-tier-list ng-model="model"></pool-tier-list>
@@ -77,10 +77,10 @@
                     </div>
 
                     <!--Update Pool advanced-->
-                    <div class="work-panel-alt" ng-if="model.wizardType === 'advanced'">
-                        <div class="scroll-wizard-container">
-                            <pool-parity-group-list ng-model="model" data="diskSpec"></pool-parity-group-list>
-                            <pool-parity-group-search ng-model="model"></pool-parity-group-search>
+                    <div class="work-panel-alt body-row" ng-if="model.wizardType === 'advanced'">
+                        <div class="scroll-wizard-container split-pane">
+                            <pool-parity-group-list ng-model="model" data="diskSpec" class="col-lg-9 col-md-8 col-sm-7 tile-container flex-grid"></pool-parity-group-list>
+                            <pool-parity-group-search ng-model="model" class="controls-column col-lg-3 col-md-4 col-sm-5"></pool-parity-group-search>
                         </div>
                     </div>
 
