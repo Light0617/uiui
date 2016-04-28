@@ -432,6 +432,8 @@ var parityGroups = _.map(_.range(1, 121), function (v) {
     var tier = _.sample(tiersWithoutExternal);
     var subTier = _.sample(tier.subTiers);
     var level = _.sample(raidConfigs);
+    var totalCapacity = getCapacity(100, 200);
+    var physicalCapacity = totalCapacity / 8;
 
     return {
         parityGroupId: '1 - ' + v,
@@ -446,7 +448,7 @@ var parityGroups = _.map(_.range(1, 121), function (v) {
         status: _.sample(statuses),
         totalCapacityInBytes: getCapacity(100, 200),
         availableCapacityInBytes: getCapacity(50, 80),
-        virtualizedCapacityInBytes: getCapacity(50, 100),
+        physicalCapacityInBytes: physicalCapacity,
         encryption: _.sample(encryption),
         compression: _.sample(compression)
     };

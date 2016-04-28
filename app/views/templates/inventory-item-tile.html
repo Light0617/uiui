@@ -44,7 +44,12 @@
         <div class="data-viz bar" ng-if="item.fileCapacity">
             <usage-indicator-bar class="file data-viz-container" ng-model="item.fileCapacity"></usage-indicator-bar>
         </div>
+        <div class="data-viz bar" ng-if="item.compression">
+            <usage-indicator-bar class="block data-viz-container" ng-model="item.compressionUsageBar"></usage-indicator-bar>
+        </div>
         <div class="inline-values">
+            <disk-size ng-model="item.physicalCapacity" post-fix="/"  wrapped-in="p" ng-if="item.compression"></disk-size>&nbsp;
+            <disk-size ng-model="item.topTotal" wrapped-in="p" ng-if="item.compression"></disk-size>
             <disk-size ng-model="item.bottomSize" post-fix="/" wrapped-in="p" ng-if="item.fileCapacity"></disk-size>&nbsp;
             <disk-size ng-model="item.bottomTotal" wrapped-in="p" ng-if="item.fileCapacity"></disk-size>
         </div>

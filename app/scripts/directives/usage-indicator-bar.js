@@ -16,9 +16,10 @@ angular.module('rainierApp')
             restrict: 'E',
             replace: false,
             link: function postLink(scope) {
+
                 if(!scope.tooltip) {
                     scope.tooltip = {
-                        'title': scope.model.usage + ' used',
+                        'title': scope.model.usage + ' used'
                     };
                 }
                 if (scope.model && scope.model.usage) {
@@ -44,6 +45,10 @@ angular.module('rainierApp')
                             // TODO: Change css class to represent medium with compression.
                             cssClass = 'compressed-medium';
                         }
+                    }
+                    if(scope.model.tooltip) {
+                        cssClass = 'compression';
+                        scope.tooltip.title = scope.model.tooltip;
                     }
                     scope.model.usageClass = cssClass;
                 }

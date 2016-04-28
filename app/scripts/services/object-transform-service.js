@@ -656,13 +656,20 @@ angular.module('rainierApp')
                 item.usageValue = number;
                 item.free = diskSizeService.getDisplaySize(item.availableCapacityInBytes);
                 item.total = diskSizeService.getDisplaySize(item.totalCapacityInBytes);
-                item.totalVirtualCapacity = diskSizeService.getDisplaySize(item.virtualizedCapacityInBytes);
+                item.physicalCapacity = diskSizeService.getDisplaySize(item.physicalCapacityInBytes);
                 item.used = diskSizeService.getDisplaySize(used);
                 item.usage = number + '%';
                 item.capacity = diskSizeService.getDisplaySize(item.capacity);
                 item.diskSpec.speed = diskSizeService.getDisplaySpeed(item.diskSpec.speed);
                 item.diskType = [item.diskSpec.type, item.diskSpec.speed].join(' ');
                 item.raidType = [item.raidLevel, item.raidLayout].join(' ');
+                var compressionPercent = parseInt(parseInt(item.physicalCapacityInBytes) / parseInt(item.totalCapacityInBytes) * 100);
+                item.compressionUsageBar = {
+                    physicalCapacity: item.physicalCapacity,
+                    total: diskSizeService.getDisplaySize(item.totalCapacityInBytes),
+                    tooltip: compressionPercent +  '% ' + synchronousTranslateService.translate('storage-pool-physical-capacity'),
+                    usage: compressionPercent
+                };
 
                 item.actions = {
                     'delete': {
