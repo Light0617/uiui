@@ -194,6 +194,9 @@ angular.module('rainierApp')
                                 subscriptionLimit: $scope.model.subscriptionLimit,
                                 parityGroupIds: ($scope.model.selectedParityGroups.length === 0) ? null : $scope.model.selectedParityGroups
                             };
+                            if($scope.model.poolType === 'HTI' && $scope.model.utilizationThreshold1 < 1) {
+                                updatePoolPayload.utilizationThreshold1 = 1;
+                            }
                             orchestratorService.updateStoragePool(storageSystemId, poolId, updatePoolPayload).then(function () {
                                 window.history.back();
                             });
