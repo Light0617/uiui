@@ -25,9 +25,9 @@ angular.module('rainierApp')
             result.utilizationThreshold1 = addPercentageSign(result.utilizationThreshold1);
             result.utilizationThreshold2 = addPercentageSign(result.utilizationThreshold2);
             result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
-            result.physicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.physicalCapacityInBytes));
-            result.usedPhysicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.usedPhysicalCapacityInBytes));
-            result.availablePhysicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availablePhysicalCapacityInBytes));
+            result.logicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.logicalCapacityInBytes));
+            result.usedLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes));
+            result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
             result.expansionRate = addColonSign(1, result.expansionRate);
             result.compressionRate = addColonSign(result.compressionRate, 1);
             result.savingsPercentage = addPercentageSign(result.savingsPercentage);
