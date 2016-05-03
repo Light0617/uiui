@@ -542,6 +542,7 @@ angular.module('rainierApp')
                         .attr('y', legendIndicationY + space * 2)
                         .attr('rx', space / 2)
                         .attr('ry', space / 2)
+                        .attr('stroke', 'black')
                         .attr('fill', cdata.used.color);
 
                     var displayText = '';
@@ -589,6 +590,7 @@ angular.module('rainierApp')
                             .attr('y', (legendBoxHeight / legendSize + space + ly) + space * 2)
                             .attr('rx', space / 2)
                             .attr('ry', space / 2)
+                            .attr('stroke', 'black')
                             .attr('fill', cdata.free.color);
 
                         var freeText = lg.append('text')
@@ -608,6 +610,7 @@ angular.module('rainierApp')
                             .attr('y', (legendBoxHeight / legendSize + space + ly) + delta1 + space)
                             .attr('rx', space / 2)
                             .attr('ry', space / 2)
+                            .attr('stroke', 'black')
                             .attr('fill', cdata.subscribed.color);
 
                         displayText = getDisplayForLegend(cdata.subscribed);
@@ -773,6 +776,7 @@ angular.module('rainierApp')
                             .attr('y', ly + space * 3)
                             .attr('rx', space / 2)
                             .attr('ry', space / 2)
+                            .attr('stroke', 'white')
                             .attr('fill', cdata.unified.color);
 
                         displayText = getDisplayForLegend(cdata.unified);
@@ -793,6 +797,7 @@ angular.module('rainierApp')
                          .attr('y', ly + space * 3)
                          .attr('rx', space / 2)
                          .attr('ry', space / 2)
+                        .attr('stroke', 'white')
                          .attr('fill', cdata.used.color);
 
                     displayText = getDisplayForLegend(cdata.used);
@@ -816,6 +821,7 @@ angular.module('rainierApp')
                          .attr('y', ly + space * 3)
                          .attr('rx', space / 2)
                          .attr('ry', space / 2)
+                        .attr('stroke', 'white')
                          .attr('fill', cdata.free.color);
 
                      var freeText =lg.append('text')
@@ -835,6 +841,7 @@ angular.module('rainierApp')
                             .attr('y', ly + space * 3)
                             .attr('rx', space / 2)
                             .attr('ry', space / 2)
+                            .attr('stroke', 'white')
                             .attr('fill', cdata.subscribed.color);
 
                         displayText = getDisplayForLegend(cdata.subscribed);
