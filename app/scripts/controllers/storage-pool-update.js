@@ -181,6 +181,10 @@ angular.module('rainierApp')
                                 subscriptionLimit: $scope.model.templateSubscriptionLimit,
                                 poolTemplateSubTiers: poolTemplateSubTiers
                             };
+                            if($scope.model.htiPool && ($scope.model.templateUtilizationThreshold1 < 1 || $scope.model.templateUtilizationThreshold2 < 1)) {
+                                deployPayload.utilizationThreshold1 = 1;
+                                deployPayload.subscriptionLimit.value = 1;
+                            }
                             orchestratorService.updatePoolTemplate(storageSystemId, poolId, deployPayload).then(function () {
                                 window.history.back();
                             });
