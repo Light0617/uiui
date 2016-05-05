@@ -1648,6 +1648,7 @@ angular.module('rainierApp')
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.usedCapacity);
                 item.physicalCapacityInBytes = diskSizeService.getDisplaySize(item.physicalCapacity);
                 item.chunkSize = diskSizeService.getDisplaySize(item.chunkSize);
+                item.storagePoolIds = [];
                 var icons = [];
 
                 if (!item.healthy) {
@@ -1668,6 +1669,7 @@ angular.module('rainierApp')
                             icon: 'icon-pools',
                             label: synchronousTranslateService.translate('hdp-pool') + ' ' + storagePoolId
                         });
+                        item.storagePoolIds.push(storagePoolId);
                     }
                 });
                 item.metaData = [

@@ -13,16 +13,12 @@ angular.module('rainierApp')
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolId = $routeParams.filePoolId;
         var filePool;
+        var tiersObject;
+        var platinumDiskType;
 
         $scope.diskTypeSpeedToTier = {};
 
-        orchestratorService.filePool(storageSystemId, filePoolId).then(function (result) {
-            filePool = result;
-            return orchestratorService.filePoolExpandTemplate(storageSystemId, filePoolId);
-        }).then(function (template) {
-            template.tiers = _.filter(template.tiers, function (tier) {
-                return _.find(filePool.tierNames, function (name) { return name === tier.name; });
-            });
+        function transformService(template) {
             var dataModel = {
                 validationForm: {
                     label: ''
@@ -87,8 +83,8 @@ angular.module('rainierApp')
                     payload.label = dataModel.label;
                 }
                 orchestratorService.expandFilePool(storageSystemId, filePoolId, payload).then(function () {
-                 window.history.back();
-                 });
+                    window.history.back();
+                });
             };
 
             $scope.dataModel.canSubmit = function () {
@@ -119,6 +115,36 @@ angular.module('rainierApp')
                 $scope.dataModel.keyAndColors = filePoolService.getKeyAndColors(_.first(summaryModel.arrayDataVisualizationModel.items));
                 $scope.dataModel.summaryModel = summaryModel;
             }, true);
+        }
+
+        orchestratorService.tiers(storageSystemId).then(function (result) {
+            tiersObject = result;
+            return orchestratorService.filePool(storageSystemId, filePoolId);
+        }).then(function (result) {
+            filePool = result;
+            return orchestratorService.filePoolExpandTemplate(storageSystemId, filePoolId);
+        }).then(function (template) {
+            var platinumTier = _.find(tiersObject.tiers, function(tier) { return tier.id === '1'; });
+            if(_.find(filePool.tierNames, function(tierName) { return tierName === platinumTier.tier; })) {
+                _.each(filePool.storagePoolIds, function (storagePoolId) {
+                    orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
+                        if(_.find(result.tiers, function (tiers) { return tiers.tier === platinumTier.tier; })) {
+                            orchestratorService.parityGroup(storageSystemId, _.first(result.parityGroups).id).then(function (result) {
+                                template.tiers = _.filter(template.tiers, function (tier) {
+                                    return _.find(filePool.tierNames, function (name) { return name === tier.name; });
+                                });
+                                platinumDiskType = result.diskSpec.type;
+                                var platinumTemplateTier = _.find(template.tiers, function(tier) { return tier.name === platinumTier.tier; });
+                                platinumTemplateTier.templateSubTiers = _.filter(platinumTemplateTier.templateSubTiers, function(subTier) { return subTier.diskType === platinumDiskType; });
+                                transformService(template);
+                            });
+                        }
+                    });
+                });
+            }
+            else {
+                transformService(template);
+            }
         });
 
 
