@@ -14,7 +14,6 @@ angular.module('rainierApp')
         var filePoolId = $routeParams.filePoolId;
         var filePool;
         var tiersObject;
-        var platinumDiskType;
 
         $scope.diskTypeSpeedToTier = {};
 
@@ -124,6 +123,8 @@ angular.module('rainierApp')
             filePool = result;
             return orchestratorService.filePoolExpandTemplate(storageSystemId, filePoolId);
         }).then(function (template) {
+            var platinumDiskType;
+            var platinumRaidType;
             var platinumTier = _.find(tiersObject.tiers, function(tier) { return tier.id === '1'; });
             if(_.find(filePool.tierNames, function(tierName) { return tierName === platinumTier.tier; })) {
                 _.each(filePool.storagePoolIds, function (storagePoolId) {
@@ -134,8 +135,9 @@ angular.module('rainierApp')
                                     return _.find(filePool.tierNames, function (name) { return name === tier.name; });
                                 });
                                 platinumDiskType = result.diskSpec.type;
+                                platinumRaidType = result.raidLayout;
                                 var platinumTemplateTier = _.find(template.tiers, function(tier) { return tier.name === platinumTier.tier; });
-                                platinumTemplateTier.templateSubTiers = _.filter(platinumTemplateTier.templateSubTiers, function(subTier) { return subTier.diskType === platinumDiskType; });
+                                platinumTemplateTier.templateSubTiers = _.filter(platinumTemplateTier.templateSubTiers, function(subTier) { return subTier.diskType === platinumDiskType && subTier.raidLayout === platinumRaidType; });
                                 transformService(template);
                             });
                         }
