@@ -45,8 +45,8 @@ angular.module('rainierApp')
         };
 
         dataModel.addNewHost = function() {
-            dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, 0);
-            dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, 0);
+            dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, {}, 0);
+            dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, {}, 0);
         };
         dataModel.addNewHost();
 
@@ -57,12 +57,8 @@ angular.module('rainierApp')
             var iHost;
             var cHosts = dataModel.hostsModel.displayHosts.length;
             var h;
-            if (cHosts <= 1) {
-                dataModel.currentCanSubmit = false;
-                return false;
-            }
-            // Skip the first row when validating the submit button
-            for (iHost = 1; iHost < cHosts; ++iHost) {
+            // include the first row when validating the submit button
+            for (iHost = 0; iHost < cHosts; ++iHost) {
                 h = dataModel.hostsModel.displayHosts[iHost];
                 if( !h.isValid()){
                     dataModel.currentCanSubmit = false;
@@ -82,8 +78,8 @@ angular.module('rainierApp')
             };
             var iHost;
             var hosts = [];
-            // Skip the first row. Otherwise, we need to always fill some values in it.
-            for (iHost = 1; iHost < dataModel.hostsModel.displayHosts.length; ++iHost) {
+            // including the first row
+            for (iHost = 0; iHost < dataModel.hostsModel.displayHosts.length; ++iHost) {
                 var h = dataModel.hostsModel.displayHosts[iHost];
                 hosts.push(h);
             }
@@ -108,8 +104,6 @@ angular.module('rainierApp')
         dataModel.reset = function () {
             dataModel.hostsModel.hosts = [];
             dataModel.hostsModel.displayHosts = [];
-
-            dataModel.addNewHost();
         };
 
         function buildPayload(name, description, ipAddress, osType, wwns) {
@@ -180,7 +174,7 @@ angular.module('rainierApp')
                     }
                 }
                 if (hasAnyProperties && !_.isEmpty(mappedHost.name)) {
-                    dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, mappedHost, dataModel.hostsModel.hosts.length);
+                    dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, mappedHost, iHost);
                     if (iHost < pageSize){
                         dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, mappedHost, dataModel.hostsModel.displayHosts.length);
                     }
