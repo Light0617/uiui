@@ -59,7 +59,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             return (volume) ? mockUtils.response.ok(volume) : mockUtils.response.notFound('Unable to find volume with matching Id.');
         }
 
-        return mockUtils.response.ok(mockUtils.collectionResponse(volumes, 'volumes'));
+        return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(volumes));
     };
 
 
