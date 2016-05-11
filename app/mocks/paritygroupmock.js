@@ -126,7 +126,9 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
         var statuses = ['AVAILABLE', 'FORMATTING', 'QUICK_FORMATTING', 'IN_USE', 'UNINITIALIZED', 'UNSUPPORTED_ATTACHED', 'UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP'];
         var encryption = [true, false];
         var level = _.sample(raidConfigs);
-        var compression = [true, false];
+        var compression = mockUtils.trueOrFalse();
+        var status = _.sample(statuses);
+        status = (mockUtils.trueOrFalse() && compression) ? 'AVAILABLE_PHYSICAL' : status;
         return {
             parityGroupId: '1 - ' + v,
             storageSystemId: '2200' + v,
@@ -137,12 +139,12 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
                 capacityInBytes: subTier.capacity,
                 speed: subTier.speed
             },
-            status: _.sample(statuses),
+            status: status,
             totalCapacityInBytes: totalCapacity,
             availableCapacityInBytes: mockUtils.getCapacity(50, 80),
             physicalCapacityInBytes: physicalCapacity,
             encryption: _.sample(encryption),
-            compression: _.sample(compression)
+            compression: compression
         };
     };
 
