@@ -52,29 +52,29 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                 'subscribedCapacity': mockUtils.getCapacity(600 * storageSystems.length, 600 * storageSystems.length),
                 'tierSummaryItems': [
                     {
-                        'freeCapacity': '0',
+                        'freeCapacity': mockUtils.getCapacity(1, 50),
                         'tierName': 'Bronze',
-                        'totalCapacity': '3458572746752'
+                        'totalCapacity': mockUtils.getCapacity(50, 100)
                     },
                     {
-                        'freeCapacity': '0',
+                        'freeCapacity': mockUtils.getCapacity(1, 50),
                         'tierName': 'Silver',
-                        'totalCapacity': '3458572746752'
+                        'totalCapacity': mockUtils.getCapacity(50, 100)
                     },
                     {
-                        'freeCapacity': '0',
+                        'freeCapacity': mockUtils.getCapacity(1, 50),
                         'tierName': 'Gold',
-                        'totalCapacity': '3458572746752'
+                        'totalCapacity': mockUtils.getCapacity(50, 100)
                     },
                     {
-                        'freeCapacity': '1181537009664',
+                        'freeCapacity': mockUtils.getCapacity(1, 50),
                         'tierName': 'Platinum',
-                        'totalCapacity': '1181537796096'
+                        'totalCapacity': mockUtils.getCapacity(50, 100)
                     },
                     {
-                        'freeCapacity': '1729179942912',
+                        'freeCapacity': mockUtils.getCapacity(1, 50),
                         'tierName': 'External',
-                        'totalCapacity': '1729179942912'
+                        'totalCapacity': mockUtils.getCapacity(50, 100)
                     }
                 ],
                 'storageSystemCount': storageSystems.length

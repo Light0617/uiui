@@ -11,7 +11,8 @@ window.rainierAppMock = angular.module('rainierAppMock', [
 
 rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSystemMock, dataProtectionMock, storagePoolMock,
                             serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
-                            filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock) {
+                            filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock,
+                            parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock) {
     console.log('!! mocking Rainier backend APIs !!');
 
     // initialize mocks
@@ -33,6 +34,9 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     ethernetInterfaceMock.init();
     tierSummaryMock.init();
     tiersMock.init();
+    parityGroupMock.init();
+    externalParityGroupMock.init();
+    storagePoolTemplateMock.init();
 
     var parseUrl = function(method, url, data, headers) {
         var type = '',
@@ -169,12 +173,18 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
             //Block
             case 'storage-pools':
                 return authMock.authenticateAndCall(urlResult, storagePoolMock.handle);
+            case 'storage-ports':
+                return authMock.authenticateAndCall(urlResult, storagePortsMock.handle);
             case 'volumes':
                 return authMock.authenticateAndCall(urlResult, volumeMock.handle);
             case 'parity-groups':
-                break;
+                return authMock.authenticateAndCall(urlResult, parityGroupMock.handle);
+            case 'external-parity-groups':
+                return authMock.authenticateAndCall(urlResult, externalParityGroupMock.handle);
             case 'replication-groups':
                 break;
+            case 'disks':
+                return authMock.authenticateAndCall(urlResult, diskMock.handle);
             case 'tiers':
                 return authMock.authenticateAndCall(urlResult, tierSummaryMock.handle);
             //File
@@ -193,10 +203,16 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, filePoolMock.handle);
             case 'templates':
                 if(urlResult.subResourceId === 'file-pool'){
-                    if(urlResult.subSubType){
-                        return authMock.authenticateAndCall(urlResult, filePoolExpandTemplateMock.handle);
-                    }
                     return authMock.authenticateAndCall(urlResult, filePoolTemplateMock.handle);
+                }
+                else if(urlResult.subResourceId === 'parity-group') {
+                    return authMock.authenticateAndCall(urlResult, parityGroupTemplateMock.handle);
+                }
+                else if(urlResult.subResourceId === 'pool'){
+                    if(urlResult.subSubType){
+                        return authMock.authenticateAndCall(urlResult, storagePoolTemplateMock.handle);
+                    }
+                    return authMock.authenticateAndCall(urlResult, storagePoolTemplateMock.handle);
                 }
                 break;
             case 'file-systems':

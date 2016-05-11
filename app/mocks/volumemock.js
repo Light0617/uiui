@@ -12,6 +12,15 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
         }
     };
 
+    var volumeSummaryMock = {
+        'volumeCountByType':{
+            'HDP':30,
+            'HTI':2,
+            'HDT':30
+        },
+        'numberOfVolumes':64
+    };
+    
     var generateMockVolume = function (v) {
         return {
             volumeId: v + '',
@@ -54,7 +63,10 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
         _.each(volumes, function(volume) {
             volume.storageSystemId = urlResult.resourceId + '';
         });
-        if (urlResult.subResourceId) {
+        if(urlResult.subResourceId === 'summary') {
+            return mockUtils.response.ok(volumeSummaryMock);
+        }
+        else if (urlResult.subResourceId) {
             var volume = mockUtils.fromCollection(volumes, urlResult.subResourceId, 'volumeId');
             return (volume) ? mockUtils.response.ok(volume) : mockUtils.response.notFound('Unable to find volume with matching Id.');
         }
