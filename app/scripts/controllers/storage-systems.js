@@ -147,6 +147,15 @@ angular.module('rainierApp')
 
                 },
                 {
+                    title: 'storage-systems-svp-ip-address',
+                    sizeClass: 'sixth',
+                    sortField: 'svpIpAddress',
+                    getDisplayValue: function (item) {
+                        return item.svpIpAddress;
+                    }
+
+                },
+                {
                     title: 'storage-systems-model',
                     sizeClass: 'sixth',
                     sortField: 'model',
