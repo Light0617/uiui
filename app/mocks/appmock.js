@@ -12,7 +12,9 @@ window.rainierAppMock = angular.module('rainierAppMock', [
 rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSystemMock, dataProtectionMock, storagePoolMock,
                             serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
                             filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock,
-                            parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock) {
+                            parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
+                            replicationgroupmock, volumepairmock, fabricmock, licensemock) {
+
     console.log('!! mocking Rainier backend APIs !!');
 
     // initialize mocks
@@ -37,6 +39,11 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     parityGroupMock.init();
     externalParityGroupMock.init();
     storagePoolTemplateMock.init();
+    replicationgroupmock.init();
+    volumepairmock.init();
+    fabricmock.init();
+    serversMock.init();
+
 
     var parseUrl = function(method, url, data, headers) {
         var type = '',
@@ -131,7 +138,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.handle(urlResult);
             case 'data-protection':
                 return authMock.authenticateAndCall(urlResult, dataProtectionMock.handle);
-            case 'servers':
+            case 'compute':
+            case 'server':
                 return authMock.authenticateAndCall(urlResult, serversMock.handle);
             case 'vfs':
                 return authMock.authenticateAndCall(urlResult, evsMock.handle);
@@ -139,6 +147,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, jobMock.handle);
             case 'templates':
                 return templateSwitcher(urlResult);
+            case 'san-fabrics':
+                return authMock.authenticateAndCall(urlResult, fabricmock.handle);
         }
     };
 
@@ -171,6 +181,11 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
             case null:
                 return authMock.authenticateAndCall(urlResult, storageSystemMock.handle);
             //Block
+            case 'settings':
+                if (urlResult.subResourceId === 'licenses') {
+                    return authMock.authenticateAndCall(urlResult, licensemock.handle);
+                }
+                break;
             case 'storage-pools':
                 return authMock.authenticateAndCall(urlResult, storagePoolMock.handle);
             case 'storage-ports':
@@ -182,9 +197,11 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
             case 'external-parity-groups':
                 return authMock.authenticateAndCall(urlResult, externalParityGroupMock.handle);
             case 'replication-groups':
-                break;
+                return authMock.authenticateAndCall(urlResult, replicationgroupmock.handle);
             case 'disks':
                 return authMock.authenticateAndCall(urlResult, diskMock.handle);
+            case 'volume-pairs':
+                return authMock.authenticateAndCall(urlResult, volumepairmock.handle);
             case 'tiers':
                 return authMock.authenticateAndCall(urlResult, tierSummaryMock.handle);
             //File

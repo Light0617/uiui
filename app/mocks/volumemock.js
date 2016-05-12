@@ -32,7 +32,9 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             availableCapacity: mockUtils.getCapacity(50, 75),
             status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
             type: _.sample(['HDP', 'HDT', 'HTI']),
-            dataProtectionSummary: getVolumeDataProtectionSummary()
+            dataProtectionSummary: getVolumeDataProtectionSummary(),
+            utilization: 0,
+            paths: [{'storagePortId':'CL1-D','storageSystemId':'410266','lun':5,'name':'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec','hostMode':'LINUX','wwns':['1059273981505633'],'hostModeOptions':[71,72]}]
         };
     };
 
@@ -82,6 +84,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
         getMock: function () {
             return volumes;
         },
+        generateMockVolumes: generateMockVolumes(),
         handle: function (urlResult) {
             switch (urlResult.method) {
                 case 'GET':

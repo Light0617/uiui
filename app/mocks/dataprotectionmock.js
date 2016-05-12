@@ -2,19 +2,23 @@
 
 rainierAppMock.factory('dataProtectionMock', function(mockUtils) {
     var numberOfStorageSystems = 64;
+    var hostDpAlert = {
+        'hostDpAlert': 6
+    };
+    var volumeDpAlert = {
+        'volumeAlerts': 6
+    };
 
     var handleGetRequest = function (urlResult){
-        if (urlResult.resourceId === 'servers') {
-            var hostDpAlert = {
-                'hostDpAlert': 6
-            };
-            return mockUtils.response.ok(hostDpAlert);
+        if (urlResult.resourceId === 'server') {
+            if (urlResult.subResourceId && urlResult.subResourceId === 'alert') {
+                return mockUtils.response.ok(volumeDpAlert);
+            } else {
+                return mockUtils.response.ok(hostDpAlert);
+            }
         }
         if (urlResult.resourceId === 'volumes') {
-            var volumeAlerts = {
-                'volumeAlerts': 6
-            };
-            return mockUtils.response.ok(volumeAlerts);
+            return mockUtils.response.ok(volumeDpAlert);
         }
         if (urlResult.resourceId === 'summary' || urlResult.subResourceId === 'summary') {
             var thinUsed = parseInt(mockUtils.getCapacity(400 * numberOfStorageSystems, 400 * numberOfStorageSystems));

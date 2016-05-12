@@ -1,15 +1,17 @@
 'use strict';
 
-rainierAppMock.factory('serversMock', function (mockUtils) {
+rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
     var mockHosts = [];
+    var mockVolumes = [];
 
-    var generateMockHosts = function () {
+    var generateMockHostsAndVolumes = function () {
         var total = 200;
 
         while (total-- !== 0) {
             var mockHost = generateMockHost(total);
             mockHosts.push(mockHost);
         }
+        mockVolumes = volumeMock.getMock();
     };
 
     var generateMockHost = function (v) {
@@ -21,7 +23,9 @@ rainierAppMock.factory('serversMock', function (mockUtils) {
             wwpns: mockUtils.getWWN(),
             osType: _.sample(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'NETWARE', 'OVMS']),
             dpStatus: _.sample(['Failed', 'Success']),
-            dpType: mockUtils.getDpType()
+            dpType: mockUtils.getDpType(),
+            dataProtectionSummary:{replicationType:['CLONE','SNAPSHOT']},
+            attachedVolumeCount: 7
         };
     };
 
@@ -41,23 +45,28 @@ rainierAppMock.factory('serversMock', function (mockUtils) {
     };
 
     var handleGetRequest = function (urlResult) {
-        if (urlResult.type === 'servers') {
-            mockUtils.response.ok({
-                    osTypeCount: getOsTypeCount(),
-                    totalHost: 200
+        if (urlResult.resourceId === 'servers') {
+            if (urlResult.subType) {
+                switch (urlResult.subType) {
+                    case 'summary':
+                        return mockUtils.response.ok({osTypeCount: getOsTypeCount(), totalHost: 200});
+                    case 'attached-volumes':
+                        return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(mockVolumes));
+                    default:
+                        var host = mockUtils.fromCollection(mockHosts, parseInt(urlResult.subType), 'serverId');
+                        return (host) ? mockUtils.response.ok(host) : mockUtils.response.notFound('Unable to find host with matching Id.');
                 }
-            );
+            } else {
+                return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(mockHosts, 'servers'));
+            }
+        } else if (urlResult.subType === 'volumes') {
+            return mockUtils.response.ok({dpVolResouce: mockVolumes, hostId: urlResult.resourceId});
         }
-        if (urlResult.type === 'compute') {
-            mockUtils.response.ok(mockUtils.collectionResponse(mockHosts, 'servers'));
-        }
-
-        return mockUtils.response.ok(mockUtils.collectionResponse(mockHosts, 'servers'));
     };
 
     return {
         init: function () {
-            generateMockHosts();
+            generateMockHostsAndVolumes();
         },
         getMock: function () {
             return mockHosts;
