@@ -34,9 +34,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).all('disks/' + diskId).post(payload));
             },
             hostModeOptions: function () {
-//            [TODO] 96, 97, 100, 102 will need to be re-enabled once cci command is updated
-//                return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83, 96, 97, 100, 102];
-                return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83];
+                return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83, 96, 97, 100, 102];
             },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {
