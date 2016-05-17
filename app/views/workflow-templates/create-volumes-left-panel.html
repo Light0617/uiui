@@ -4,8 +4,8 @@
     </select>
 </div>
 <div class="dataviz-container pvd">
-    <h3 ng-repeat="item in dataModel.summaryModel.arrayDataVisualizationModel.items">{{item.used.label}} <em>
-        {{item.used.percentage}} % ({{item.used.capacity.size}} {{item.used.capacity.unit}})</em>
+    <h3 ng-repeat="item in dataModel.summaryModel.arrayDataVisualizationModel.items">{{item[0].label}} <em>
+        {{item[0].percentage}} % ({{item[0].capacity.size}} {{item[0].capacity.unit}})</em>
     </h3>
 
     <div class="wizard-pdv polar-data-viz-concentric" ng-if="dataModel.summaryModel">

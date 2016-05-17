@@ -12,14 +12,15 @@ angular.module('rainierApp')
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService) {
 
-        var allocatedColor = 'white';
+        var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
         var physicalCapacityColor = '#66A2FF';
-        var fileUsedCapacityColor = '#D0E384';
+        var fileUsedCapacityColor = '#3D84F5';
         var fileFreeCapacityColor = '#265CB3';
         var thinUsedColor = '#7BC242';
         var thinFreeColor = '#599628';
         var overCommitColor = '#272727';
+        var subscribedCapacityColor = 'white';
         var vspG200 = 'VSP G200';
         var vspG400 = 'VSP G400';
         var vspF400 = 'VSP F400';
@@ -34,8 +35,8 @@ angular.module('rainierApp')
         var vspG1000Identifier = '/sanproject';
 
         var capacity = function (usedCapacity, freeCapacity) {
-            return {
-                used: {
+            return [
+                {
                     label: (function (key) {
                         return synchronousTranslateService.translate(key);
                     })('common-label-used'),
@@ -45,7 +46,7 @@ angular.module('rainierApp')
                     capacity: usedCapacity,
                     color: thinUsedColor
                 },
-                free: {
+                {
                     label: (function (key) {
                         return synchronousTranslateService.translate(key);
                     })('common-label-free'),
@@ -55,7 +56,7 @@ angular.module('rainierApp')
                     capacity: freeCapacity,
                     color: thinFreeColor
                 }
-            };
+            ];
         };
 
         var addZero = function (time) {
@@ -78,6 +79,7 @@ angular.module('rainierApp')
             item.usePercentage = usePercentage;
             item.usage = usePercentage + '%';
             item.physicalUsed = diskSizeService.getDisplaySize(item.usedCapacity);
+            item.physicalTotal = diskSizeService.getDisplaySize(item.allocatedToPool);
             item.physicalFree = diskSizeService.getDisplaySize(item.allocatedToPool - item.usedCapacity);
             item.poolCapacity = diskSizeService.getDisplaySize(item.allocatedToPool);
             item.unallocatedToPoolsCapacity = diskSizeService.getDisplaySize(item.totalUsableCapacity -
@@ -836,7 +838,6 @@ angular.module('rainierApp')
             transformToStorageSummaryModel: function (item, file, dataProtection) {
                 //TODO: EL Need to ask for correct tooltips and colors
                 var breakdown = [];
-
                 if (dataProtection) {
                     breakdown = [
                         {
@@ -870,8 +871,18 @@ angular.module('rainierApp')
                 }
                 if (file) {
                     var unifiedItems = [
-                        {
-                            used: {
+                        [
+                            {
+                                capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
+                                tooltip: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('file-physical-capacity-tooltip'),
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-physical-capacity'),
+                                color: physicalCapacityColor
+                            },
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-allocated'),
@@ -881,29 +892,31 @@ angular.module('rainierApp')
                                 capacity: item.poolCapacity,
                                 color: allocatedColor
                             },
-                            free: {
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-unallocated'),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('unallocated-capacity-tooltip'),
-                                capacity: item.unallocatedToPoolsCapacity,
+                                capacity: item.total,
+                                legendDisplay: item.unallocatedToPoolsCapacity,
                                 color: unallocatedColor
                             },
-                            unified: {
-                                capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
+                            {
+                                percentage: item.subscribedCapacityPercentage,
+                                capacity: diskSizeService.getDisplaySize(item.subscribedCapacity),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
-                                })('file-physical-capacity-tooltip'),
+                                })('subscription-capacity-tooltip'),
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
-                                })('common-label-physical-capacity'),
-                                color: physicalCapacityColor
+                                })('common-label-subscription'),
+                                color: subscribedCapacityColor
                             }
-                        },
-                        {
-                            used: {
+                        ],
+                        [
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-used'),
@@ -945,28 +958,18 @@ angular.module('rainierApp')
                                     }
                                 ]
                             },
-                            free: {
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-free'),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('free-capacity-tooltip'),
-                                capacity: item.physicalFree,
+                                capacity: item.physicalTotal,
+                                legendDisplay: item.physicalFree,
                                 color: thinFreeColor
                             },
-                            subscribed: {
-                                percentage: item.subscribedCapacityPercentage,
-                                percentageCapacity: diskSizeService.getDisplaySize(item.subscribedCapacity),
-                                tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
-                                })('overcommit-capacity-tooltip'),
-                                label: (function (key) {
-                                    return synchronousTranslateService.translate(key);
-                                })('common-label-overcommit'),
-                                color: overCommitColor
-                            },
-                            unified: {
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-file-pool-used'),
@@ -976,12 +979,12 @@ angular.module('rainierApp')
                                 capacity: diskSizeService.getDisplaySize(file.usedCapacity),
                                 color: fileUsedCapacityColor
                             }
-                        }
+                        ]
                     ];
                 }
                 var blockItems = [
-                    {
-                        used: {
+                    [
+                        {
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-allocated'),
@@ -991,19 +994,31 @@ angular.module('rainierApp')
                             capacity: item.poolCapacity,
                             color: allocatedColor
                         },
-                        free: {
+                        {
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-unallocated'),
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('unallocated-capacity-tooltip'),
-                            capacity: item.unallocatedToPoolsCapacity,
+                            capacity: item.total,
+                            legendDisplay: item.unallocatedToPoolsCapacity,
                             color: unallocatedColor
+                        },
+                        {
+                            percentage: item.subscribedCapacityPercentage,
+                            capacity: diskSizeService.getDisplaySize(item.subscribedCapacity),
+                            tooltip: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('subscription-capacity-tooltip'),
+                            label: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('common-label-subscription'),
+                            color: subscribedCapacityColor
                         }
-                    },
-                    {
-                        used: {
+                    ],
+                    [
+                        {
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-used'),
@@ -1017,33 +1032,23 @@ angular.module('rainierApp')
                             breakdown: breakdown,
                             color: thinUsedColor
                         },
-                        free: {
+                        {
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-free'),
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('free-capacity-tooltip'),
-                            capacity: item.physicalFree,
+                            capacity: item.physicalTotal,
+                            legendDisplay: item.physicalFree,
                             color: thinFreeColor
-                        },
-                        subscribed: {
-                            percentage: item.subscribedCapacityPercentage,
-                            percentageCapacity: diskSizeService.getDisplaySize(item.subscribedCapacity),
-                            tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
-                            })('subscription-capacity-tooltip'),
-                            label: (function (key) {
-                                return synchronousTranslateService.translate(key);
-                            })('common-label-subscription'),
-                            color: overCommitColor
                         }
-                    }
+                    ]
                 ];
                 if (file) {
                     var fileItems = [
-                        {
-                            used: {
+                        [
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-allocated'),
@@ -1053,19 +1058,20 @@ angular.module('rainierApp')
                                 capacity: item.poolCapacity,
                                 color: allocatedColor
                             },
-                            free: {
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-unallocated'),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('unallocated-capacity-tooltip'),
-                                capacity: item.unallocatedToPoolsCapacity,
+                                capacity: item.total,
+                                legendDisplay: item.unallocatedToPoolsCapacity,
                                 color: unallocatedColor
                             }
-                        },
-                        {
-                            used: {
+                        ],
+                        [
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-file-pool-used'),
@@ -1074,9 +1080,9 @@ angular.module('rainierApp')
                                 })('file-used-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(file.usedCapacity),
                                 breakdown: 'none',
-                                color: physicalCapacityColor
+                                color: fileUsedCapacityColor
                             },
-                            free: {
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-physical-capacity'),
@@ -1086,9 +1092,9 @@ angular.module('rainierApp')
                                 capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
                                 color: fileFreeCapacityColor
                             },
-                            subscribed: {
-                                percentage: item.subscribedCapacityPercentage,
-                                percentageCapacity: diskSizeService.getDisplaySize(file.overcommitCapacity),
+                            {
+                                percentage: parseInt(file.overcommitCapacity * 100 / file.physicalCapacity),
+                                capacity: diskSizeService.getDisplaySize(file.overcommitCapacity),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('overcommit-capacity-tooltip'),
@@ -1097,7 +1103,7 @@ angular.module('rainierApp')
                                 })('common-label-overcommit'),
                                 color: overCommitColor
                             }
-                        }
+                        ]
                     ];
                 }
 
@@ -1292,8 +1298,8 @@ angular.module('rainierApp')
                             })('common-label-total'),
                             capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity)
                         },
-                        items: [{
-                            used: {
+                        items: [[
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-subscription'),
@@ -1302,9 +1308,9 @@ angular.module('rainierApp')
                                 })('subscription-capacity-tooltip'),
                                 percentage: storageSystem.subscribedCapacityPercentage,
                                 capacity: diskSizeService.getDisplaySize(storageSystem.subscribedCapacity),
-                                color: overCommitColor
+                                color: subscribedCapacityColor
                             },
-                            free: {
+                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-unallocated'),
@@ -1314,7 +1320,7 @@ angular.module('rainierApp')
                                 capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity),
                                 color: unallocatedColor
                             }
-                        }]
+                        ]]
                     }
                 };
             },
@@ -1472,8 +1478,8 @@ angular.module('rainierApp')
                 items.push(capacity(item.usedCapacity, item.availableCapacity));
 
                 if (item.type !== 'HTI') {
-                    items.push({
-                        used: {
+                    items.push([
+                        {
                             percentage: (item.totalCapacity.value === 0) ? 0 : Math.round(
                                     item.usedSubscribedCapacity * 100 / item.totalCapacity.value
                             ),
@@ -1485,11 +1491,11 @@ angular.module('rainierApp')
                                 return synchronousTranslateService.translate(key);
                             })('subscription-capacity-tooltip')
                         },
-                        free: {
+                        {
                             percentage: 100,
                             color: unallocatedColor
                         }
-                    });
+                    ]);
                 }
                 return {
                     total: {
@@ -1509,8 +1515,8 @@ angular.module('rainierApp')
                 items.push(capacity(item.usedCapacityInBytes, item.availableCapacityInBytes));
 
                 if (item.type !== 'HTI') {
-                    items.push({
-                        used: {
+                    items.push([
+                        {
                             percentage: item.usedSubscription,
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
@@ -1520,11 +1526,11 @@ angular.module('rainierApp')
                             })('subscription-capacity-tooltip'),
                             color: allocatedColor
                         },
-                        free: {
+                        {
                             percentage: item.subscriptionLimit.value,
                             color: unallocatedColor
                         }
-                    });
+                    ]);
                 }
                 return {
                     arrayDataVisualizationModel: {

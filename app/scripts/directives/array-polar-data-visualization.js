@@ -33,7 +33,10 @@ angular.module('rainierApp')
 
         var getDisplayForLegend = function (item) {
             var displayText;
-            if (_.isUndefined(item.percentage) || _.isNull(item.percentage)) {
+            if(item.legendDisplay) {
+                displayText = item.legendDisplay.size + ' ' + item.legendDisplay.unit + ' ' + item.label;
+            }
+            else if (_.isUndefined(item.percentage) || _.isNull(item.percentage)) {
                 displayText = item.capacity.size + ' ' + item.capacity.unit + ' ' + item.label;
 
             }
@@ -200,261 +203,56 @@ angular.module('rainierApp')
             },
             _buildDonutLayout: function (d3, options) {
                 var container = options.container;
-                var unlimitedNumericValue = options.used.percentage;
                 var circleRadius = options.radius;
                 var overflowEnd = options.overflowWidth;
                 var angle360 = 2 * Math.PI;
-
-                var endAngle = null;
-                var middleEndAngle = null;
-                var unifiedEndAngle = null;
                 var showOverflow = false;
-                var used;
-                var freeValue;
-                if(options.used.capacity) {
-                    used = options.used.capacity.value;
-                    freeValue = options.free.capacity.value;
-                }
-                else if(options.used.percentage) {
-                    used = options.used.percentage;
-                    freeValue = options.free.percentage;
-                }
-                else {
-                    used = options.percentage;
-                    freeValue = 100;
-                }
-                var subscribedValue;
-                var unified;
-                if(options.subscribed && _.isUndefined(unlimitedNumericValue) || _.isNull(unlimitedNumericValue)) {
-                    subscribedValue = options.subscribed.percentageCapacity.value;
-                    if (used > -1 && freeValue > -1 && (used + freeValue > 0)) {
-                        endAngle = (used / (used + freeValue + subscribedValue)) * angle360;
-                        if (endAngle > angle360) {
-                            endAngle = angle360;
-                            showOverflow = true;
-                        }
-                    }
-                    if (freeValue && subscribedValue > -1 && used > -1 && (freeValue + used + subscribedValue > 0)) {
-                        middleEndAngle = ((freeValue + used) / (freeValue + used + subscribedValue)) * angle360;
-                        if (middleEndAngle > angle360) {
-                            middleEndAngle = angle360;
-                            showOverflow = true;
-                        }
-                    }
-                }
-                else if (_.isUndefined(unlimitedNumericValue) || _.isNull(unlimitedNumericValue)) {
-                    if (used && freeValue && (used + freeValue > 0)) {
-                        endAngle = (used / (used + freeValue)) * angle360;
-                        if (endAngle > angle360) {
-                            endAngle = angle360;
-                            showOverflow = true;
-                        }
-                    }
-                }
-                else {
-                    if (unlimitedNumericValue.hasOwnProperty('unlimited')) {
-                        if (unlimitedNumericValue.unlimited || unlimitedNumericValue.value > 100) {
-                            endAngle = angle360;
-                            showOverflow = true;
-                        }
-                        else {
-                            endAngle = angle360 * unlimitedNumericValue.value  / 100;
-                        }
-                    }
-                    else {
-                        if (unlimitedNumericValue > 100 ) {
-                            endAngle = angle360;
-                            showOverflow = true;
-
-                        }
-                        else {
-                            endAngle = angle360 * unlimitedNumericValue / 100;
-                        }
-                    }
-                }
-
                 var arc = d3.svg.arc()
                     .innerRadius(circleRadius)
                     .outerRadius(circleRadius)
                     .startAngle(0);
 
                 var circlesContainer = container.append('g');
+                var currentValue = 0;
+                var totalValue = 0;
+                var containsCapacity = false;
+                var sortedCircles;
 
-                var subscribedColor = '#272727';
-                if (!options.subscribed) {
-                    subscribedColor = options.free.color;
-                }
-                var subscribedPath = circlesContainer.append('path')
-                    .datum({endAngle: angle360})
-                    //TODO: EL ask for a middle class from UX team
-                    //.attr('class', 'circle-fg')
-                    .attr('stroke', subscribedColor)
-                    .attr('d', arc)
-                    .attr('stroke-width', circleWidth);
-
-                var background = circlesContainer.append('path')
-                    .datum({endAngle: 0})
-                    .attr('d', arc)
-                    .attr('stroke-width', circleWidth)
-                    .attr('stroke', options.free.color)
-                    .attr('stroke-linejoin', 'round');
-
-                var foreground = circlesContainer.append('path')
-                    .datum({endAngle: 0})
-                    .attr('d', arc)
-                    .attr('stroke-width', circleWidth)
-                    .attr('stroke', options.used.color)
-                    .attr('stroke-linejoin', 'round');
-
-                if(options.unified) {
-                    var filePoolUsed = options.unified.capacity.value;
-                    if (freeValue && filePoolUsed && (filePoolUsed + freeValue > 0)) {
-                        unifiedEndAngle = (filePoolUsed / (filePoolUsed + freeValue)) * angle360;
-                        if (unifiedEndAngle > angle360) {
-                            unifiedEndAngle = angle360;
-                            showOverflow = true;
-                        }
+                if(_.first(options.circles).capacity) {
+                    containsCapacity = true;
+                    sortedCircles = _.sortBy(options.circles, function (circle) {
+                        return circle.capacity.value;
+                    });
+                    totalValue = _.last(sortedCircles).capacity.value;
+                    if(totalValue === 0) {
+                        _.last(sortedCircles).capacity.value = 1;
+                        totalValue = 1;
                     }
-                    unified = circlesContainer.append('path')
-                        .datum({endAngle: 0})
-                        .attr('stroke', options.unified.color)
-                        .attr('d', arc)
-                        .attr('stroke-width', circleWidth)
-                        .attr('stroke-linejoin', 'round');
-                }
-
-
-                if (showOverflow) {
-                    var ofg = circlesContainer.append('g');
-
-                    var overflowY = -1 * (circleRadius + space / 2 + circleWidth / 2) + 2;
-
-                    var ofXCoordinateShift = 10; // +10 to shift the starting point a bit to the right
-                    var of = ofg.append('rect')
-                        .attr('class', 'circle-fg-overflow')
-                        .attr('rx', (circleWidth + space) / 2)
-                        .attr('ry', (circleWidth + space) / 2)
-                        .attr('x', -circleWidth + ofXCoordinateShift)
-                        .attr('y', overflowY - 2)
-                        .attr('fill', options.free.color)
-                        .attr('height', circleWidth + 3.5)
-                        .attr('width', 0)
-                        .attr('stroke', 'black')
-                        .attr('stroke-width', 3);
-
-                    var ofHide = ofg.append('rect')
-                        .attr('class', 'circle-fg-overflow')
-                        .attr('rx', (circleWidth + space + 8) / 2)
-                        .attr('ry', (circleWidth + space + 8) / 2)
-                        .attr('x', -circleWidth - 1.5)
-                        .attr('y', overflowY - 0.40)
-                        .attr('fill', options.used.color)
-                        .attr('height', circleWidth + 0.25)
-                        .attr('width', 0);
-
-                    var coverStartAngle = endAngle;
-
-                    var coverArc = d3.svg.arc()
-                        .innerRadius(circleRadius)
-                        .outerRadius(circleRadius)
-                        .startAngle(coverStartAngle);
-                    var cover = circlesContainer.append('path')
-                        .datum({endAngle: coverStartAngle})
-                        .attr('class', 'circle-fg')
-                        .attr('d', coverArc)
-                        .attr('stroke-width', circleWidth)
-                        .attr('stroke-linejoin', 'round');
-
-
-                    transitionDuration -= overflowDuration;
-
-                    var foregroundDuration = Math.round(coverStartAngle / angle360 * transitionDuration);
-
-                    if(unified) {
-                        unified.transition()
-                            .ease('cubic-in-out')
-                            .duration(foregroundDuration)
-                            .call(function (transition, newAngle) {
-                                transition.attrTween('d', function (d) {
-
-                                    var interpolate = d3.interpolate(d.endAngle, newAngle);
-                                    return function (t) {
-                                        d.endAngle = interpolate(t);
-                                        return arc(d);
-                                    };
-                                });
-                            }, coverStartAngle);
-                    }
-
-                    foreground.transition()
-                        .ease('cubic-in-out')
-                        .duration(foregroundDuration)
-                        .call(function (transition, newAngle) {
-                            transition.attrTween('d', function (d) {
-
-                                var interpolate = d3.interpolate(d.endAngle, newAngle);
-                                return function (t) {
-                                    d.endAngle = interpolate(t);
-                                    return arc(d);
-                                };
-                            });
-                        }, coverStartAngle);
-
-                    background.transition()
-                        .ease('cubic-in-out')
-                        .duration(foregroundDuration)
-                        .call(function (transition, newAngle) {
-                            transition.attrTween('d', function (d) {
-
-                                var interpolate = d3.interpolate(d.endAngle, newAngle);
-                                return function (t) {
-                                    d.endAngle = interpolate(t);
-                                    return arc(d);
-                                };
-                            });
-                        }, coverStartAngle);
-
-                    cover.transition()
-                        .ease('cubic-in-out')
-                        .duration(transitionDuration - foregroundDuration)
-                        .delay(foregroundDuration)
-                        .call(function (transition, newAngle) {
-                            transition.attrTween('d', function (d) {
-
-                                var interpolate = d3.interpolate(d.endAngle, newAngle);
-                                return function (t) {
-                                    d.endAngle = interpolate(t);
-                                    return coverArc(d);
-                                };
-                            });
-                        }, angle360);
-
-                    of.transition()
-                        .attr('width', overflowEnd + circleWidth - ofXCoordinateShift)
-                        .duration(overflowDuration)
-                        .delay(transitionDuration);
-
-                    ofHide.transition()
-                        .attr('width', overflowEnd)
-                        .duration(overflowDuration)
-                        .delay(transitionDuration);
                 }
                 else {
-                    background.transition()
-                        .ease('cubic-in-out')
-                        .duration(transitionDuration)
-                        .call(function (transition, newAngle) {
-                            transition.attrTween('d', function (d) {
+                    sortedCircles = options.circles;
+                    totalValue = _.last(sortedCircles).percentage;
+                    if(totalValue === 0) {
+                        _.last(sortedCircles).percentage = 1;
+                        totalValue = 1;
+                    }
+                }
+                _.each(sortedCircles.reverse(), function(item) {
+                    currentValue = containsCapacity ? item.capacity.value : item.percentage;
+                    var endAngle = currentValue / totalValue * angle360;
 
-                                var interpolate = d3.interpolate(d.endAngle, newAngle);
-                                return function (t) {
-                                    d.endAngle = interpolate(t);
-                                    return arc(d);
-                                };
-                            });
-                        }, middleEndAngle);
+                    if (endAngle > angle360) {
+                        endAngle = angle360;
+                        showOverflow = true;
+                    }
+                    var line = circlesContainer.append('path')
+                        .datum({endAngle: 0})
+                        .attr('d', arc)
+                        .attr('stroke-width', circleWidth)
+                        .attr('stroke', item.color)
+                        .attr('stroke-linejoin', 'round');
 
-                    foreground.transition()
+                    line.transition()
                         .ease('cubic-in-out')
                         .duration(transitionDuration)
                         .call(function (transition, newAngle) {
@@ -467,32 +265,78 @@ angular.module('rainierApp')
                                 };
                             });
                         }, endAngle);
+                    if(showOverflow) {
+                        var ofg = circlesContainer.append('g');
 
-                    if(options.unified) {
-                        unified.transition()
+                        var overflowY = -1 * (circleRadius + space / 2 + circleWidth / 2) + 2;
+
+                        var ofXCoordinateShift = 10; // +10 to shift the starting point a bit to the right
+                        var of = ofg.append('rect')
+                            .attr('class', 'circle-fg-overflow')
+                            .attr('rx', (circleWidth + space) / 2)
+                            .attr('ry', (circleWidth + space) / 2)
+                            .attr('x', -circleWidth + ofXCoordinateShift)
+                            .attr('y', overflowY - 2)
+                            .attr('fill', item.color)
+                            .attr('height', circleWidth + 3.5)
+                            .attr('width', 0)
+                            .attr('stroke', 'black')
+                            .attr('stroke-width', 3);
+
+                        var ofHide = ofg.append('rect')
+                            .attr('class', 'circle-fg-overflow')
+                            .attr('rx', (circleWidth + space + 8) / 2)
+                            .attr('ry', (circleWidth + space + 8) / 2)
+                            .attr('x', -circleWidth - 1.5)
+                            .attr('y', overflowY - 0.40)
+                            .attr('fill', item.color)
+                            .attr('height', circleWidth + 0.25)
+                            .attr('width', 0);
+
+                        var coverStartAngle = endAngle;
+
+                        var coverArc = d3.svg.arc()
+                            .innerRadius(circleRadius)
+                            .outerRadius(circleRadius)
+                            .startAngle(coverStartAngle);
+                        var cover = circlesContainer.append('path')
+                            .datum({endAngle: coverStartAngle})
+                            .attr('class', 'circle-fg')
+                            .attr('d', coverArc)
+                            .attr('stroke-width', circleWidth)
+                            .attr('stroke-linejoin', 'round');
+
+
+                        transitionDuration -= overflowDuration;
+
+                        var foregroundDuration = Math.round(coverStartAngle / angle360 * transitionDuration);
+
+                        cover.transition()
                             .ease('cubic-in-out')
-                            .duration(transitionDuration)
+                            .duration(transitionDuration - foregroundDuration)
+                            .delay(foregroundDuration)
                             .call(function (transition, newAngle) {
                                 transition.attrTween('d', function (d) {
 
                                     var interpolate = d3.interpolate(d.endAngle, newAngle);
                                     return function (t) {
                                         d.endAngle = interpolate(t);
-                                        return arc(d);
+                                        return coverArc(d);
                                     };
                                 });
-                            }, unifiedEndAngle);
+                            }, angle360);
+                        of.transition()
+                            .attr('width', overflowEnd + circleWidth - ofXCoordinateShift)
+                            .duration(overflowDuration)
+                            .delay(transitionDuration);
+
+                        ofHide.transition()
+                            .attr('width', overflowEnd)
+                            .duration(overflowDuration)
+                            .delay(transitionDuration);
                     }
-                }
-                appendToolTip(foreground, options.used);
-                if(options.subscribed) {
-                    appendToolTip(subscribedPath, options.subscribed);
-                    appendToolTip(background,  options.free);
-                }
-                else {
-                    appendToolTip(subscribedPath, options.free);
-                }
-                appendToolTip(unified,  options.unified);
+                    appendToolTip(line, item);
+                });
             },
             _buildLegendLayout: function (options) {
                 var legendBoxWidth = options.legendBoxWidth;
@@ -506,25 +350,23 @@ angular.module('rainierApp')
                     .attr('transform', 'translate(0,' + legendYOffset + ')');
 
                 var legendIndicatorSize = 12;
-                var ly = 0;
-                var textToLegendIncatorOffset = 2;
-                var noFreeLabel;
+                var ly = 7;
+                var textToLegendIndicatorOffset = 7;
 
                 _.forEach(circles.reverse(), function (cdata, i) {
-                    var legendSize = 2;
-                    noFreeLabel = 0;
-                    if(cdata.subscribed) {
-                        legendSize = 3;
-                    }
-                    else if(cdata.free && !cdata.free.label) {
-                        noFreeLabel = legendIndicatorSize * 2;
-                    }
+                    var legendSize = cdata.circles.length;
+                    _.each(cdata.circles, function (circle) {
+                       if(!circle.label) {
+                           legendSize--;
+                       }
+                    });
+                    var noLabelHeight = (3 - legendSize) * 23;
                     var lg = legend.append('g')
                         .attr('class', 'legend-box legend-box-' + i);
 
                     lg.append('rect')
                         .attr('width', legendBoxWidth)
-                        .attr('height', legendBoxHeight - noFreeLabel)
+                        .attr('height', legendBoxHeight - noLabelHeight)
                         .attr('x', options.legendBoxX)
                         .attr('y', ly)
                         .attr('rx', circleWidth / 2)
@@ -534,96 +376,58 @@ angular.module('rainierApp')
 
                     var delta1 = legendBoxHeight / 2 - space - legendIndicatorSize;
                     var legendIndicationY = ly + delta1 - legendIndicatorSize;
-                    var legendValueY = legendIndicationY +  legendIndicatorSize - textToLegendIncatorOffset + space;
-                    lg.append('rect')
-                        .attr('width', legendIndicatorSize)
-                        .attr('height', legendIndicatorSize)
-                        .attr('x', legendIndicatorSize)
-                        .attr('y', legendIndicationY + space * 2)
-                        .attr('rx', space / 2)
-                        .attr('ry', space / 2)
-                        .attr('stroke', 'black')
-                        .attr('fill', cdata.used.color);
 
-                    var displayText = '';
+                    _.each(cdata.circles, function (circle) {
+                        if(circle.label) {
 
-                    if (_.isUndefined(cdata.used.percentage) || _.isNull(cdata.used.percentage)) {
-                        displayText = cdata.used.capacity.size + ' ' + cdata.used.capacity.unit + ' ' + cdata.used.label;
+                            lg.append('rect')
+                                .attr('width', legendIndicatorSize)
+                                .attr('height', legendIndicatorSize)
+                                .attr('x', legendIndicatorSize)
+                                .attr('y', legendIndicationY)
+                                .attr('rx', space / 2)
+                                .attr('ry', space / 2)
+                                .attr('stroke', 'black')
+                                .attr('fill', circle.color);
 
-                    }
-                    else {
-                        if (_.isNumber(cdata.used.percentage)) {
-                            displayText = cdata.used.percentage + '%';
-                        } else if (cdata.used.percentage.unlimited ) {
-                            displayText = synchronousTranslateService.translate('common-label-unlimited');
-                        }
-                        else {
-                            if(!isNaN(cdata.used.percentage.value)) {
-                                displayText = cdata.used.percentage.value + '%';
-                            } else {
-                                displayText = '0%';
+                            var displayText = '';
+
+                            if (_.isUndefined(circle.percentage) || _.isNull(circle.percentage)) {
+                                displayText = circle.capacity.size + ' ' + circle.capacity.unit + ' ' + circle.label;
+
                             }
+                            else {
+                                if (_.isNumber(circle.percentage)) {
+                                    displayText = circle.percentage + '%';
+                                    displayText += ' ' + circle.label;
+                                }
+                                else if (circle.percentage.unlimited) {
+                                    displayText = synchronousTranslateService.translate('common-label-unlimited');
+                                    displayText += ' ' + circle.label;
+                                }
+                                else if (circle.capacity) {
+                                    displayText = getDisplayForLegend(circle);
+                                }
+                                else {
+                                    if (!isNaN(circle.percentage.value)) {
+                                        displayText = circle.percentage.value + '%';
+                                    } else {
+                                        displayText = '0%';
+                                    }
+                                    displayText += ' ' + circle.label;
+                                }
+                            }
+                            var text = lg.append('text')
+                                .attr('class', 'legend-value')
+                                .attr('x', legendIndicatorSize * 2 + space)
+                                .attr('y', legendIndicationY + textToLegendIndicatorOffset)
+
+                                .text(displayText);
+                            appendToolTip(text, circle);
+                            legendIndicationY += legendIndicatorSize + space * 3;
                         }
-
-                        displayText += ' '  + cdata.used.label;
-
-
-                    }
-                    var usedText = lg.append('text')
-                        .attr('class', 'legend-value')
-                        .attr('x', legendIndicatorSize * 2 + space)
-                        .attr('y', legendValueY - textToLegendIncatorOffset + space)
-
-                        .text(displayText);
-
-                    appendToolTip(usedText, cdata.used);
-                    if (_.isUndefined(cdata.free) || _.isNull(cdata.free)) {
-                        return;
-                    }
-                    legendIndicationY = legendBoxHeight / legendSize + space + ly;
-                    legendValueY = legendIndicationY + legendIndicatorSize - textToLegendIncatorOffset + space;
-                    if(cdata.free.label) {
-                        lg.append('rect')
-                            .attr('width', legendIndicatorSize)
-                            .attr('height', legendIndicatorSize)
-                            .attr('x', legendIndicatorSize)
-                            .attr('y', (legendBoxHeight / legendSize + space + ly) + space * 2)
-                            .attr('rx', space / 2)
-                            .attr('ry', space / 2)
-                            .attr('stroke', 'black')
-                            .attr('fill', cdata.free.color);
-
-                        var freeText = lg.append('text')
-                            .attr('class', 'legend-value')
-                            .attr('x', legendIndicatorSize * 2 + space)
-                            .attr('y', legendValueY - textToLegendIncatorOffset + space)
-                            .text(getDisplayForLegend(cdata.free));
-
-                        appendToolTip(freeText, cdata.free);
-                    }
-                    delta1 = delta1 - legendIndicatorSize + space;
-                    if(cdata.subscribed) {
-                        lg.append('rect')
-                            .attr('width', legendIndicatorSize)
-                            .attr('height', legendIndicatorSize)
-                            .attr('x', legendIndicatorSize)
-                            .attr('y', (legendBoxHeight / legendSize + space + ly) + delta1 + space)
-                            .attr('rx', space / 2)
-                            .attr('ry', space / 2)
-                            .attr('stroke', 'black')
-                            .attr('fill', cdata.subscribed.color);
-
-                        displayText = getDisplayForLegend(cdata.subscribed);
-                        var subscribedText = lg.append('text')
-                            .attr('class', 'legend-value')
-                            .attr('x', legendIndicatorSize * 2 + space)
-                            .attr('y', legendValueY + delta1 - textToLegendIncatorOffset)
-                            .text(displayText);
-
-                        appendToolTip(subscribedText, cdata.subscribed);
-                        ly += space + legendIndicatorSize;
-                    }
-                    ly += legendBoxHeight;
+                    });
+                    ly += legendBoxHeight + space;
                 });
 
 
@@ -632,7 +436,6 @@ angular.module('rainierApp')
                 var legendBoxX = options.legendBoxX + 100;
                 var legendBoxWidth = options.legendBoxWidth;
                 var legendBoxHeight = options.legendBoxHeight;
-                var circles = options.circles;
                 var displayText;
                 var unifiedText;
                 var textOffset = 9;
@@ -640,7 +443,6 @@ angular.module('rainierApp')
                 var maskOffset = 45;
                 var legend = options.container.append('g')
                     .attr('class', 'polar-viz-legend-container');
-
                 var unifiedIcon = legend.append('g')
                     .attr('transform', 'scale(2.8) translate('+options.legendBoxX + 10+', '+scaledOffset+')');
                 unifiedIcon.append('text')
@@ -766,9 +568,11 @@ angular.module('rainierApp')
                     .attr('rx', circleWidth / 2)
                     .attr('ry', circleWidth / 2)
                     .attr('class', 'bg');
-
-                _.forEach(circles.reverse(), function (cdata) {
-                    if(cdata.unified) {
+                _.each(options.circles.reverse(), function (circleObject) {
+                    var sortedCircles = _.sortBy(circleObject.circles, function (circle) {
+                        return circle.capacity.value;
+                    });
+                    _.each(sortedCircles, function (circle) {
                         lg.append('rect')
                             .attr('width', legendIndicatorSize)
                             .attr('height', legendIndicatorSize)
@@ -777,9 +581,9 @@ angular.module('rainierApp')
                             .attr('rx', space / 2)
                             .attr('ry', space / 2)
                             .attr('stroke', 'white')
-                            .attr('fill', cdata.unified.color);
+                            .attr('fill', circle.color);
 
-                        displayText = getDisplayForLegend(cdata.unified);
+                        displayText = getDisplayForLegend(circle);
                         unifiedText = lg.append('text')
                             .attr('class', 'legend-value')
                             .attr('fill', 'white')
@@ -787,75 +591,12 @@ angular.module('rainierApp')
                             .attr('y', ly + space * 3 + textOffset)
                             .text(displayText);
 
-                        appendToolTip(unifiedText, cdata.unified);
+                        appendToolTip(unifiedText, circle);
                         ly += space + legendIndicatorSize;
-                    }
-                    lg.append('rect')
-                         .attr('width', legendIndicatorSize)
-                         .attr('height', legendIndicatorSize)
-                         .attr('x', legendBoxX + legendIndicatorSize)
-                         .attr('y', ly + space * 3)
-                         .attr('rx', space / 2)
-                         .attr('ry', space / 2)
-                        .attr('stroke', 'white')
-                         .attr('fill', cdata.used.color);
-
-                    displayText = getDisplayForLegend(cdata.used);
-
-                    var usedText = lg.append('text')
-                         .attr('class', 'legend-value')
-                         .attr('fill', 'white')
-                         .attr('x', legendIndicatorSize * 2 + space + legendBoxX)
-                         .attr('y', ly + space * 3 + textOffset)
-                         .text(displayText);
-
-                     appendToolTip(usedText, cdata.used);
-                     if (_.isUndefined(cdata.free) || _.isNull(cdata.free)) {
-                         return;
-                     }
-                    ly += space + legendIndicatorSize;
-                    lg.append('rect')
-                         .attr('width', legendIndicatorSize)
-                         .attr('height', legendIndicatorSize)
-                         .attr('x', legendBoxX + legendIndicatorSize)
-                         .attr('y', ly + space * 3)
-                         .attr('rx', space / 2)
-                         .attr('ry', space / 2)
-                        .attr('stroke', 'white')
-                         .attr('fill', cdata.free.color);
-
-                     var freeText =lg.append('text')
-                         .attr('class', 'legend-value')
-                         .attr('fill', 'white')
-                         .attr('x', legendIndicatorSize * 2 + space + legendBoxX)
-                         .attr('y', ly + space * 3 + textOffset)
-                         .text(cdata.free.capacity.size + ' ' + cdata.free.capacity.unit + ' ' + cdata.free.label);
-
-                     appendToolTip(freeText, cdata.free);
-                    ly += space + legendIndicatorSize;
-                    if(cdata.subscribed) {
-                        lg.append('rect')
-                            .attr('width', legendIndicatorSize)
-                            .attr('height', legendIndicatorSize)
-                            .attr('x', legendBoxX + legendIndicatorSize)
-                            .attr('y', ly + space * 3)
-                            .attr('rx', space / 2)
-                            .attr('ry', space / 2)
-                            .attr('stroke', 'white')
-                            .attr('fill', cdata.subscribed.color);
-
-                        displayText = getDisplayForLegend(cdata.subscribed);
-                        unifiedText = lg.append('text')
-                            .attr('class', 'legend-value')
-                            .attr('fill', 'white')
-                            .attr('x', legendIndicatorSize * 2 + space + legendBoxX)
-                            .attr('y', ly + space * 3 + textOffset)
-                            .text(displayText);
-
-                        appendToolTip(unifiedText, cdata.subscribed);
-                        ly += space + legendIndicatorSize;
-                    }
+                    });
                 });
+
+
             },
 
             _buildBreakdownDataLayout: function (d3, data, options, scope) {
@@ -1175,15 +916,18 @@ angular.module('rainierApp')
                 }
                 var finalRadius = radius;
 
-                var circles = _.map(data.items, function (item, index) {
+                var circlesObject = _.map(data.items, function (item, index) {
                     var cloned = _.cloneDeep(item);
-                    cloned.index = item.index || index;
-                    cloned.radius = finalRadius;
+                    var circleObject = {
+                        index: item.index || index,
+                        radius: finalRadius,
+                        circles: cloned
+                    };
                     finalRadius += circleWidth + space;
-                    return cloned;
+                    return circleObject;
                 });
 
-                var noOfCircles = circles.length;
+                var noOfCircles = circlesObject.length;
 
                 var legendBoxWidth = finalRadius + legendWidth + space;
 
@@ -1209,23 +953,25 @@ angular.module('rainierApp')
                 }
 
                 _.forEach(data.items, function (item) {
-                    if (!_.isUndefined(item.used.breakdown) && !_.isNull(item.used.breakdown)) {
+                    _.forEach(item, function (line) {
+                        if (!_.isUndefined(line.breakdown) && !_.isNull(line.breakdown)) {
 
-                        var breakdownOptions = {
-                            container: svg,
-                            data: item.used.breakdown,
-                            legendBoxWidth: legendBoxWidth,
-                            legendBoxHeight: legendBoxHeight,
-                            legendYOffset: legendYOffset,
-                            svgWidth: svgWidth,
-                            legendItemsHeight: legendItemsHeight,
-                            finalRadius: finalRadius,
-                            title: data.tiers ? data.tiersBreakdownLabel : item.used.breakdownLabel,
-                            breakdownViewWidth : breakdownViewWidth,
-                            onlyShowBreakDown : onlyShowBreakDown
-                        };
-                        builder._buildBreakdownDataLayout(d3, data, breakdownOptions, scope);
-                    }
+                            var breakdownOptions = {
+                                container: svg,
+                                data: line.breakdown,
+                                legendBoxWidth: legendBoxWidth,
+                                legendBoxHeight: legendBoxHeight,
+                                legendYOffset: legendYOffset,
+                                svgWidth: svgWidth,
+                                legendItemsHeight: legendItemsHeight,
+                                finalRadius: finalRadius,
+                                title: data.tiers ? data.tiersBreakdownLabel : line.breakdownLabel,
+                                breakdownViewWidth : breakdownViewWidth,
+                                onlyShowBreakDown : onlyShowBreakDown
+                            };
+                            builder._buildBreakdownDataLayout(d3, data, breakdownOptions, scope);
+                        }
+                    });
                 });
 
                 var calculatedLegendWidth = legendWidth;
@@ -1241,7 +987,7 @@ angular.module('rainierApp')
                     legendBoxHeight: legendBoxHeight,
                     legendYOffset: legendYOffset,
                     container: svg,
-                    circles: circles
+                    circles: circlesObject
                 };
 
                 if (!data.unified && !hideLegendBox) {
@@ -1319,7 +1065,7 @@ angular.module('rainierApp')
                         .append('title')
                         .text(tooltip);
 
-                    _.forEach(circles, function (circle) {
+                    _.forEach(circlesObject, function (circle) {
                         circle.container = sg;
                         circle.overflowWidth = finalRadius;
                         builder._buildDonutLayout(d3, circle);

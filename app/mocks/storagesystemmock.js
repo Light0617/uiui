@@ -49,7 +49,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                 'unallocatedToPool': mockUtils.getCapacity(400 * storageSystems.length, 400 * storageSystems.length),
                 'usedCapacity': mockUtils.getCapacity(400 * storageSystems.length, 400 * storageSystems.length),
                 'availableCapacity': mockUtils.getCapacity(100 * storageSystems.length, 100 * storageSystems.length),
-                'subscribedCapacity': mockUtils.getCapacity(600 * storageSystems.length, 600 * storageSystems.length),
+                'subscribedCapacity': mockUtils.getCapacity(1000 * storageSystems.length, 1000 * storageSystems.length),
                 'tierSummaryItems': [
                     {
                         'freeCapacity': mockUtils.getCapacity(1, 50),
