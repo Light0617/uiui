@@ -206,8 +206,8 @@ angular.module('rainierApp')
                 return iopList;
             },
             getKeyAndColors: function(item){
-                var usedDisplaySize = diskSizeService.getDisplaySize(item.used.capacity.value);
-                var freeDisplaySize = diskSizeService.getDisplaySize(item.free.capacity.value);
+                var usedDisplaySize = diskSizeService.getDisplaySize(_.first(item).capacity.value);
+                var freeDisplaySize = diskSizeService.getDisplaySize(_.last(item).capacity.value);
                 return [{
                     key: Math.round(usedDisplaySize.size) + ' ' + usedDisplaySize.unit + ' Physical Block Pool Capacity',
                     color: '#3D84F5'

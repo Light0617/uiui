@@ -80,6 +80,7 @@
 <script src="bower_components/bel-ui/app/scripts/directives/fill-height.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/goback.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/serversideinventoryview.js"></script>
+<script src="bower_components/bel-ui/app/scripts/directives/array-polar-data-visualization.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/queryService.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/locale.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/base64.js"></script>
