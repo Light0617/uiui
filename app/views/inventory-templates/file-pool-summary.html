@@ -24,8 +24,8 @@
                     <span class="icon icon-md {{dataModel.filePool.displayLinks[1].icon}}" ></span> {{dataModel.filePool.displayLinks[1].label}}</a>
             </div>
         </div>
-        <div class="bdv two-thirds">
-            <bar-data-visualization ng-model="dataModel.filePool"></bar-data-visualization>
+        <div class="full-width margin-percent-L-R-10">
+            <bar-data-visualization ng-model="dataModel.filePool.barData" bottom-legend="true"></bar-data-visualization>
         </div>
 </div>
 

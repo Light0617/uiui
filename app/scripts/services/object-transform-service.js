@@ -1790,9 +1790,6 @@ angular.module('rainierApp')
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.fileSystemCapacityDetails.usedCapacity);
                 item.blockSize = diskSizeService.getDisplaySize(item.blockSize);
                 item.expansionLimitInBytes = diskSizeService.getDisplaySize(item.fileSystemCapacityDetails.expansionLimit);
-                item.onlyShowTwoBars = true;
-                item.usedLegend = item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-systems-used-capacity');
-                item.allocatedLegend = item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-systems-total-capacity');
                 item.storageSystemId = storageSystemId;
                 item.displayLinks = [];
                 item.usageBare = 0;
@@ -1819,6 +1816,27 @@ angular.module('rainierApp')
                         left: true,
                         title: item.label,
                         detailsNoSlash: [item.status]
+                    }
+                ];
+
+                item.barData = [
+                    {
+                        colorClass: 'file-used',
+                        popover: {
+                            placement: 'bottom',
+                            content: 'Used'
+                        },
+                        legendText: item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-systems-used-capacity'),
+                        capacity: item.usedCapacityInBytes
+                    },
+                    {
+                        colorClass: 'file-allocated',
+                        popover: {
+                            placement: 'bottom',
+                            content: 'Free'
+                        },
+                        legendText: item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-systems-total-capacity'),
+                        capacity: item.capacityInBytes
                     }
                 ];
 
@@ -1860,17 +1878,61 @@ angular.module('rainierApp')
                 };
             },
             transformFilePoolSummaryModel: function(item) {
-                item.usedLegend = item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-used-capacity');
-                item.allocatedLegend = item.physicalCapacityInBytes.size + ' ' + item.physicalCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-allocated-capacity');
-                item.overCommitLegend = item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-over-commit-capacity');
+                item.barData = [
+                    {
+                        colorClass: 'file-used',
+                        popover: {
+                            placement: 'bottom',
+                            content: 'Used'
+                        },
+                        legendText: item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-used-capacity'),
+                        capacity: item.usedCapacityInBytes
+                    },
+                    {
+                        colorClass: 'file-allocated',
+                        popover: {
+                            placement: 'bottom',
+                            content: 'Allocated'
+                        },
+                        legendText: item.physicalCapacityInBytes.size + ' ' + item.physicalCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-allocated-capacity'),
+                        capacity: item.physicalCapacityInBytes
+                    },
+                    {
+                        colorClass: 'file-overcommited',
+                        legendText: item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-over-commit-capacity'),
+                        capacity: item.capacityInBytes
+                    }
+                ];
             },
             transformFilePoolsSummaryModel: function(item) {
                 item.capacityInBytes = diskSizeService.getDisplaySize(item.filePoolSummary.overcommitCapacity);
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.filePoolSummary.usedCapacity);
                 item.physicalCapacityInBytes = diskSizeService.getDisplaySize(item.filePoolSummary.physicalCapacity);
-                item.usedLegend = item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-used-capacity');
-                item.allocatedLegend = item.physicalCapacityInBytes.size + ' ' + item.physicalCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-allocated-capacity');
-                item.overCommitLegend = item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-over-commit-capacity');
+                item.barData = [
+                    {
+                        colorClass: 'file-used',
+                        popover: {
+                            placement: 'bottom',
+                            content: 'Used'
+                        },
+                        legendText: item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-used-capacity'),
+                        capacity: item.usedCapacityInBytes
+                    },
+                    {
+                        colorClass: 'file-allocated',
+                        popover: {
+                            placement: 'bottom',
+                            content: 'Allocated'
+                        },
+                        legendText: item.physicalCapacityInBytes.size + ' ' + item.physicalCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-allocated-capacity'),
+                        capacity: item.physicalCapacityInBytes
+                    },
+                    {
+                        colorClass: 'file-overcommited',
+                        legendText: item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-over-commit-capacity'),
+                        capacity: item.capacityInBytes
+                    }
+                ];
             },
             transformFilePoolCapacitySummaryModel: function(item, selectedCapacity, unit) {
                 if(!selectedCapacity){

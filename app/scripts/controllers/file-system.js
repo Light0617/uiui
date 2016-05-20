@@ -26,7 +26,6 @@ angular.module('rainierApp')
             shares = result.shares;
             return orchestratorService.fileSystem(storageSystemId, fileSystemId);
         }).then(function (result) {
-            result.bottomLegend = true;
             fileSystem = result;
             return orchestratorService.filePool(storageSystemId, result.filePoolId);
         }).then(function (fp) {
