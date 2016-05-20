@@ -662,6 +662,65 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-ports';
 
                 item.alerts = 0;
+
+                switch (item.topology) {
+                    case 'FABRIC_ON_ARB_LOOP':
+                        item.fabric = 'On';
+                        item.connectionType = 'FC-AL';
+                        break;
+                    case 'FABRIC_OFF_ARB_LOOP':
+                        item.fabric = 'Off';
+                        item.connectionType = 'FC-AL';
+                        break;
+                    case 'FABRIC_ON_POINT_TO_POINT':
+                        item.fabric = 'On';
+                        item.connectionType = 'P-to-P';
+                        break;
+                    case 'FABRIC_OFF_POINT_TO_POINT':
+                        item.fabric = 'Off';
+                        item.connectionType = 'P-to-P';
+                        break;
+                }
+
+                var newAttributes = [];
+                _.each(item.attributes, function(attribute) {
+                    switch (attribute) {
+                        case 'TARGET_PORT':
+                            newAttributes.push('Target');
+                            break;
+                        case 'MCU_INITIATOR_PORT':
+                            newAttributes.push('Initiator');
+                            break;
+                        case 'RCU_TARGET_PORT':
+                            newAttributes.push('RCU Target');
+                            break;
+                        case 'EXTERNAL_INITIATOR_PORT':
+                            newAttributes.push('External');
+                            break;
+                    }
+                });
+                item.attributes = newAttributes;
+            },
+            transformToPortSummary : function(storagePorts, typeNames) {
+                // Only support for fibre port and iscsi port for now
+                var filteredPorts = _.filter(storagePorts, function(sp) {
+                    return sp.type === 'FIBRE' || sp.type === 'ISCSI';
+                });
+
+                var summaryModel = {chartData: []};
+                var typeCount = _.countBy(filteredPorts, function(filteredPort){
+                    return filteredPort.type;
+                });
+
+                _.each (typeNames, function (typeName) {
+                    if (typeCount[typeName.name]) {
+                        summaryModel.chartData.push({
+                            name: synchronousTranslateService.translate(typeName.name),
+                            value: typeCount[typeName.name]
+                        });
+                    }
+                })
+                return summaryModel;
             },
             transformParityGroup: function (item) {
                 var used = item.totalCapacityInBytes - item.availableCapacityInBytes;

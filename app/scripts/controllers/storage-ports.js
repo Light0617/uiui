@@ -23,64 +23,13 @@ angular.module('rainierApp')
             { name: 'ISCSI', caption: 'iSCSI' },
             { name: 'SCSI', caption: 'SCSI' }];
 
-        function getTypeCount(storagePorts){
-            return  _.countBy(storagePorts, function(storagePort){
-                return storagePort.type;
-            });
-        }
-
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             $scope.storageSystemModel= result.model;
         });
 
         paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId).then(function (result) {
-            // Only support for fibre port and iscsi port for now
-            var storagePorts = _.filter(result.resources, function(sp) {
-                return sp.type === 'FIBRE' || sp.type === 'ISCSI';
-            });
-
-            angular.forEach(storagePorts, function(item) {
-                if(item.topology === 'FABRIC_ON_ARB_LOOP') {
-                    item.fabric = 'On';
-                    item.connectionType = 'FC-AL';
-                } else if(item.topology === 'FABRIC_OFF_ARB_LOOP') {
-                    item.fabric = 'Off';
-                    item.connectionType = 'FC-AL';
-                } else if(item.topology === 'FABRIC_ON_POINT_TO_POINT') {
-                    item.fabric = 'On';
-                    item.connectionType = 'P-to-P';
-                } else if(item.topology === 'FABRIC_OFF_POINT_TO_POINT') {
-                    item.fabric = 'Off';
-                    item.connectionType = 'P-to-P';
-                }
-                var newAttributes = [];
-                angular.forEach(item.attributes, function(attribute) {
-                        if(attribute === 'TARGET_PORT') {
-                            newAttributes.push('Target');
-                        } else if(attribute === 'MCU_INITIATOR_PORT') {
-                            newAttributes.push('Initiator');
-                        } else if(attribute === 'RCU_TARGET_PORT') {
-                            newAttributes.push('RCU Target');
-                        } else if(attribute === 'EXTERNAL_INITIATOR_PORT') {
-                            newAttributes.push('External');
-                        }
-                    }
-                );
-                item.attributes = newAttributes;
-            });
-
-            var summaryModel = {chartData: []};
-            var typeCount = getTypeCount(storagePorts);
-
-            for (var i = 0; i < typeNames.length; ++i) {
-                if (!typeCount[typeNames[i].name]) {
-                    continue;
-                }
-                summaryModel.chartData.push({
-                    name: synchronousTranslateService.translate(typeNames[i].name),
-                    value: typeCount[typeNames[i].name]
-                });
-            }
+            
+            var summaryModel = objectTransformService.transformToPortSummary(result.resources, typeNames);
             summaryModel.title = synchronousTranslateService.translate('common-storage-system-ports');
 
             $scope.summaryModel = summaryModel;
