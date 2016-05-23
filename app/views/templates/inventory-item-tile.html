@@ -30,22 +30,22 @@
 </div>
 <div class="tile-row resource-info smallMarginTop" ng-click="item.onClick()">
     <div ng-attr-class="icon icon-lg {{item.itemIcon}}"></div>
-    <div class="resource-data col-margin" ng-if="item.usage">
+    <div class="resource-data col-margin" ng-if="item.usageBar">
         <div class="inline-values" ng-if="item.status !== 'EXTERNALIZED'">
             <disk-size ng-model="item.topSize" post-fix="/" wrapped-in="p"></disk-size>&nbsp;
             <disk-size ng-model="item.topTotal" post-fix="" wrapped-in="p"></disk-size>
         </div>
         <div class="data-viz bar" ng-if="item.status !== 'EXTERNALIZED'">
-            <usage-indicator-bar class="block data-viz-container" ng-model="item"></usage-indicator-bar>
+            <usage-indicator-bar class="data-viz-container" ng-model="item.usageBar"></usage-indicator-bar>
         </div>
         <div class="inline-values" ng-if="item.status == 'EXTERNALIZED'">
             <disk-size ng-model="item.totalVirtual" post-fix="Total" wrapped-in="p"></disk-size>
         </div>
         <div class="data-viz bar" ng-if="item.fileCapacity">
-            <usage-indicator-bar class="file data-viz-container" ng-model="item.fileCapacity"></usage-indicator-bar>
+            <usage-indicator-bar class="data-viz-container" ng-model="item.fileCapacity"></usage-indicator-bar>
         </div>
         <div class="data-viz bar" ng-if="item.compression">
-            <usage-indicator-bar class="block data-viz-container" ng-model="item.compressionUsageBar"></usage-indicator-bar>
+            <usage-indicator-bar class="data-viz-container" ng-model="item.compressionUsageBar"></usage-indicator-bar>
         </div>
         <div class="inline-values">
             <disk-size ng-model="item.physicalCapacity" post-fix="/"  wrapped-in="p" ng-if="item.compression"></disk-size>&nbsp;

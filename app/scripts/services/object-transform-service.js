@@ -76,8 +76,10 @@ angular.module('rainierApp')
                     totalUsable);
             }
 
-            item.usePercentage = usePercentage;
-            item.usage = usePercentage + '%';
+            item.usageBar = {
+                colorClass: 'normal',
+                usagePercentage: usePercentage
+            };
             item.physicalUsed = diskSizeService.getDisplaySize(item.usedCapacity);
             item.physicalTotal = diskSizeService.getDisplaySize(item.allocatedToPool);
             item.physicalFree = diskSizeService.getDisplaySize(item.allocatedToPool - item.usedCapacity);
@@ -300,8 +302,10 @@ angular.module('rainierApp')
             },
             transformVolume: function (item) {
                 var usePercentage = Math.round(parseInt(item.usedCapacity) * 100.0 / parseInt(item.size));
-                item.usePercentage = usePercentage;
-                item.usage = usePercentage + '%';
+                item.usageBar = {
+                    colorClass: 'normal',
+                    usagePercentage: usePercentage
+                };
                 item.totalCapacity = diskSizeService.getDisplaySize(item.size);
                 item.totalCapacity.intSize = parseInt(item.totalCapacity.size);
                 item.totalCapacity.decimalSize = parseFloat(item.totalCapacity.size);
@@ -476,7 +480,11 @@ angular.module('rainierApp')
                 };
             },
             transformPool: function (item) {
-                item.usage = Math.round(item.usedCapacityInBytes * 100 / item.capacityInBytes) + '%';
+                item.usage = Math.round(item.usedCapacityInBytes * 100 / item.capacityInBytes);
+                item.usageBar = {
+                    colorClass: 'normal',
+                    usagePercentage: item.usage
+                };
                 item.capacityInBytes = diskSizeService.getDisplaySize(item.capacityInBytes);
                 item.availableCapacityInBytes = diskSizeService.getDisplaySize(item.availableCapacityInBytes);
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.usedCapacityInBytes);
@@ -585,7 +593,10 @@ angular.module('rainierApp')
                 item.free = diskSizeService.getDisplaySize(item.availableCapacity);
                 item.total = diskSizeService.getDisplaySize(item.capacity);
                 item.used = diskSizeService.getDisplaySize(used);
-                item.usage = number + '%';
+                item.usageBar = {
+                    colorClass: 'normal',
+                    usagePercentage: number
+                };
                 item.capacity = diskSizeService.getDisplaySize(item.capacity);
                 item.selected = false;
                 item.noSelection = true;
@@ -660,17 +671,19 @@ angular.module('rainierApp')
                 item.total = diskSizeService.getDisplaySize(item.totalCapacityInBytes);
                 item.physicalCapacity = diskSizeService.getDisplaySize(item.physicalCapacityInBytes);
                 item.used = diskSizeService.getDisplaySize(used);
-                item.usage = number + '%';
+                item.usageBar = {
+                    colorClass: 'normal',
+                    usagePercentage: number
+                };
                 item.capacity = diskSizeService.getDisplaySize(item.capacity);
                 item.diskSpec.speed = diskSizeService.getDisplaySpeed(item.diskSpec.speed);
                 item.diskType = [item.diskSpec.type, item.diskSpec.speed].join(' ');
                 item.raidType = [item.raidLevel, item.raidLayout].join(' ');
                 var compressionPercent = parseInt(parseInt(item.physicalCapacityInBytes) / parseInt(item.totalCapacityInBytes) * 100);
                 item.compressionUsageBar = {
-                    physicalCapacity: item.physicalCapacity,
-                    total: diskSizeService.getDisplaySize(item.totalCapacityInBytes),
                     tooltip: compressionPercent +  '% ' + synchronousTranslateService.translate('storage-pool-physical-capacity'),
-                    usage: compressionPercent
+                    colorClass: 'compression',
+                    usagePercentage: compressionPercent
                 };
 
                 item.actions = {
@@ -1649,7 +1662,10 @@ angular.module('rainierApp')
                 item.file = true;
                 item.displayLinks = [];
                 item.usageBare = Math.round(item.usedCapacity * 100 / item.totalCapacity);
-                item.usage = item.usageBare.toString() + '%';
+                item.usageBar = {
+                    colorClass: 'file',
+                    usagePercentage: item.usageBare
+                };
                 item.capacityInBytes = diskSizeService.getDisplaySize(item.totalCapacity);
                 item.availableCapacityInBytes = diskSizeService.getDisplaySize(item.freeCapacity);
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.usedCapacity);
@@ -1796,7 +1812,10 @@ angular.module('rainierApp')
                 if(item.availableCapacityInBytes.size !== 0) {
                     item.usageBare = Math.round(item.usedCapacityInBytes.size * 100 / item.capacityInBytes.size);
                 }
-                item.usage = item.usageBare + '%';
+                item.usageBar = {
+                    colorClass: 'file',
+                    usagePercentage: item.usageBare
+                };
                 var icons = [];
 
                 if(item.blockSize.size === '4.00')

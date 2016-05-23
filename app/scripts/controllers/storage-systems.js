@@ -35,13 +35,13 @@ angular.module('rainierApp')
                     orchestratorService.filePoolSummary(storageSystem.storageSystemId).then(function (result) {
                         storageSystem.bottomSize = diskSizeService.getDisplaySize(result.usedCapacity);
                         storageSystem.bottomTotal = diskSizeService.getDisplaySize(result.overcommitCapacity);
-                        var usage = '0%';
+                        var usage = 0;
                         if (storageSystem.bottomTotal.value !== 0) {
-                            usage = parseInt(storageSystem.bottomSize.value / storageSystem.bottomTotal.value * 100).toString() + '%';
+                            usage = parseInt(storageSystem.bottomSize.value / storageSystem.bottomTotal.value * 100);
                         }
                         storageSystem.fileCapacity = {
-                            usage: usage,
-                            file: true
+                            colorClass: 'file',
+                            usagePercentage: usage
                         };
                     });
                 }
