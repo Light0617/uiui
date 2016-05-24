@@ -38,13 +38,13 @@
         <div class="tile meta-tile third">
             <div class="label-value-container">
                 <p class="label">{{ 'storage-volume-label' | translate}}</p>
-                <p class="value">{{model.label}}</p>
+                <p class="value" ng-attr-title="{{model.label}}">{{model.label}}</p>
                 <p class="label" ng-if="model.poolId">{{ 'storage-pool-id' | translate}}</p>
                 <p class="value" ng-if="model.poolId">{{model.poolId}}</p>
                 <p class="label" ng-if="model.storagePool.displayType">{{ 'storage-pool-type' | translate}}</p>
                 <p class="value" ng-if="model.storagePool.displayType">{{model.storagePool.displayType}}</p>
                 <p class="label" ng-if="model.storagePool.tierNames">{{ 'storage-pool-tier' | translate}}</p>
-                <p class="value" ng-if="model.storagePool.tierNames">{{model.storagePool.tierNames}}</p>
+                <p class="value" ng-if="model.storagePool.tierNames" ng-attr-title="{{model.storagePool.tierNames}}">{{model.storagePool.tierNames}}</p>
                 <p class="label">{{ 'storage-volume-protected' | translate}}</p>
                 <div ng-if="protected" class="icon icon-solo icon-checkmark-fill icon-sm centered-content"></div>
                 <div ng-if="!protected" class="icon icon-solo icon-failed icon-sm centered-content"></div>
