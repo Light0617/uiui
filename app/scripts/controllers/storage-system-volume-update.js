@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StorageSystemVolumeUpdateCtrl', function ($scope, $routeParams, orchestratorService, diskSizeService) {
+    .controller('StorageSystemVolumeUpdateCtrl', function ($scope, $routeParams, orchestratorService, diskSizeService, volumeService) {
 
         var storageSystemId = $routeParams.storageSystemId;
 
@@ -16,7 +16,6 @@ angular.module('rainierApp')
 
             var dataModel = result;
             var updatedModel = angular.copy(result);
-            var simpleNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
 
             updatedModel.submit = function () {
                 var updateVolumePayload = buildUpdateVolumePayload(dataModel, updatedModel);
@@ -45,7 +44,7 @@ angular.module('rainierApp')
                 if (dataModel.label === updatedModel.label) {
                     dataModel.labelIsValid = true;
                 } else {
-                    dataModel.labelIsValid = simpleNameRegexp.test(updatedModel.label);
+                    dataModel.labelIsValid = volumeService.validateCombinedLabel(updatedModel.label, null, 1);
                 }
             };
             $scope.dataModel = dataModel;

@@ -15,7 +15,7 @@ angular.module('rainierApp')
                     return true;
                 }
 
-                var simpleNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
+                var simpleNameRegexp = /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+$)/;
                 var largestSuffix;
                 if (suffix === null) {
                     largestSuffix = '';
