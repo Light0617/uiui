@@ -4,8 +4,8 @@
     "dependencies": {
         "angular": "1.4.8",
         "bel-ui": "http://git.mcp.com/ui/bel.git#jurgen-tweener",
-        "helpui-framework": "http://git.mcp.com/ui/help-framework#develop",
-        "helpui-content": "git@git.mcp.com:ui/help-content#unbranded",
+        "helpui-framework": "http://git.mcp.com/ui/help-framework.git#develop",
+        "helpui-content": "git@git.mcp.com:ui/help-content.git#unbranded",
         "angular-resource": "1.4.8",
         "angular-route": "1.4.8",
         "d3": "3.5.12",
