@@ -719,7 +719,7 @@ angular.module('rainierApp')
                             value: typeCount[typeName.name]
                         });
                     }
-                })
+                });
                 return summaryModel;
             },
             transformParityGroup: function (item) {
