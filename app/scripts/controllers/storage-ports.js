@@ -25,10 +25,8 @@ angular.module('rainierApp')
 
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             $scope.storageSystemModel= result.model;
-        });
-
-        paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId).then(function (result) {
-            
+            return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId);
+        }).then( function (result) {
             var summaryModel = objectTransformService.transformToPortSummary(result.resources, typeNames);
             summaryModel.title = synchronousTranslateService.translate('common-storage-system-ports');
 
