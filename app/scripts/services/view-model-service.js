@@ -247,7 +247,7 @@ angular.module('rainierApp')
                 };
                 s.selected = false;
                 s.selectablePorts = _.map(ports, function (pt) {
-                    if (_.include(pt.attributes, 'TARGET_PORT')){
+                    if (_.include(pt.attributes, 'Target')){
                         var p = angular.copy(pt);
                         p.selected = false;
                         return p;
