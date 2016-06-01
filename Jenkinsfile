@@ -1,11 +1,11 @@
 node('docker-slave') {
-    stage 'Initlize Build'
+    stage 'Initialize Build'
 
     //clean up Workspace
     sh "rm -rf *"
 
     def git_url = 'git@git.mcp.com:ui/rainier.git'
-    def git_branch = "${gitlabSourceBranch}"
+    def git_branch = "${env.BRANCH_NAME}"
     def docker_repo = 'rdocker.mcp.com:6000'
     def docker_app_image = 'rainier-ui'
     def docker_jenkins_image = 'jenkins-ui-slave:latest'
