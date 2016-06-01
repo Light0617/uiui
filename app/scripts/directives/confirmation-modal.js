@@ -12,7 +12,6 @@ angular.module('rainierApp')
             scope: {
                 title: '@title',
                 content: '@content',
-                clickOk: '&',
                 confirmClick: '&',
                 modalId: '@',
                 switchEnabled: '=',

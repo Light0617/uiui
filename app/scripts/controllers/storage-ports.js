@@ -23,6 +23,13 @@ angular.module('rainierApp')
             { name: 'ISCSI', caption: 'iSCSI' },
             { name: 'SCSI', caption: 'SCSI' }];
 
+        var portAttributes = {target: 'Target',
+            rcuTarget: 'RCU Target',
+            initiator: 'Initiator',
+            external: 'External'};
+
+        var vspG1000 = 'VSP G1000';
+
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             $scope.storageSystemModel= result.model;
             return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId);
@@ -57,8 +64,7 @@ angular.module('rainierApp')
                         });
                     }
                 },
-                portAttributes: ['Target', 'RCU Target', 'Initiator', 'External'],
-                showPortAttributeFilter: $scope.storageSystemModel === 'VSP G1000',
+                showPortAttributeFilter: $scope.storageSystemModel === vspG1000,
                 chartData: summaryModel.chartData
             };
 
@@ -117,9 +123,9 @@ angular.module('rainierApp')
                             value: false
                         },
                         itemAttribute: {
-                            value: $scope.storageSystemModel === 'VSP G1000' ? '' : null
+                            value: $scope.storageSystemModel === vspG1000 ? portAttributes.target : null
                         },
-                        itemAttributes: ['Target','Initiator','RCU Target','External']
+                        itemAttributes: [portAttributes.target, portAttributes.initiator, portAttributes.rcuTarget, portAttributes.external]
                     },
                     enabled: function () {
                         return dataModel.anySelected();
@@ -129,14 +135,14 @@ angular.module('rainierApp')
                         var enabled = this.dialogSettings.switchEnabled.value;
                         var attribute = null;
 
-                        if ($scope.storageSystemModel === 'VSP G1000') {
-                            if (this.dialogSettings.itemAttribute.value === 'Target') {
+                        if ($scope.storageSystemModel === vspG1000) {
+                            if (this.dialogSettings.itemAttribute.value === portAttributes.target) {
                                 attribute = 'TARGET_PORT';
-                            } else if (this.dialogSettings.itemAttribute.value === 'Initiator') {
+                            } else if (this.dialogSettings.itemAttribute.value === portAttributes.initiator) {
                                 attribute = 'MCU_INITIATOR_PORT';
-                            } else if (this.dialogSettings.itemAttribute.value === 'RCU Target') {
+                            } else if (this.dialogSettings.itemAttribute.value === portAttributes.rcuTarget) {
                                 attribute = 'RCU_TARGET_PORT';
-                            } else if (this.dialogSettings.itemAttribute.value === 'External') {
+                            } else if (this.dialogSettings.itemAttribute.value === portAttributes.external) {
                                 attribute = 'EXTERNAL_INITIATOR_PORT';
                             }
                         }
@@ -150,8 +156,25 @@ angular.module('rainierApp')
                         });
 
                         this.dialogSettings.switchEnabled.value = false;
-                        this.dialogSettings.itemAttribute.value = $scope.storageSystemModel === 'VSP G1000' ? '' : null;
+                        this.dialogSettings.itemAttribute.value = $scope.storageSystemModel === vspG1000 ? portAttributes.target : null;
+                    },
+                    onClick: function () {
+                        if ($scope.storageSystemModel !== vspG1000) {
+                            return;
+                        }
 
+                        var firstItem = _.first(dataModel.getSelectedItems());
+
+                        var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                            return storagePort.attributes[0] === this.attributes[0];
+                        }, firstItem);
+
+                        var isAllSameSecuritySwitchEnabled = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                            return storagePort.securitySwitchEnabled === this.securitySwitchEnabled;
+                        }, firstItem);
+
+                        this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
+                        this.dialogSettings.switchEnabled.value = isAllSameSecuritySwitchEnabled ? firstItem.securitySwitchEnabled : false;
                     }
                 }
             ];
@@ -229,7 +252,7 @@ angular.module('rainierApp')
                     }
                 }
             ];
-            if ($scope.storageSystemModel === 'VSP G1000'){
+            if ($scope.storageSystemModel === vspG1000){
                 dataModel.gridSettings.push({
                     title: 'Attribute',
                     sizeClass: 'sixth',

@@ -33,7 +33,6 @@
                     content="{{ action.dialogSettings.content  | translate:dataModel}}"
                     true-text="{{ action.dialogSettings.trueText  | translate:dataModel}}"
                     false-text="{{ action.dialogSettings.falseText  | translate:dataModel}}"
-                    click-ok="action.onClick(dataModel.orchestratorService, true)"
                     confirm-click="action.confirmClick()"
                     switch-enabled="action.dialogSettings.switchEnabled"
                     modal-id="{{action.dialogSettings.id}}"

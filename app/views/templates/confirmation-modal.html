@@ -34,14 +34,13 @@
                 </div>
                 <div class="control-group" ng-if="itemAttribute && itemAttribute.value !== null && itemAttribute.value !== undefined">
                     <select class="selectpicker inline btn-group-justified" ng-model="itemAttribute.value" ng-options="attribute for attribute in itemAttributes">
-                        <option value="">{{'storage-port-select-port-attribute-filter' | translate}}</option>
                     </select>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="pull-right">
                 <button type="button" class="btn btn-default nomargin active"  tabindex="1" data-dismiss="modal">{{ 'cancel-button' | translate}}</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clickOk(); confirmClick()">{{ 'ok-button' | translate}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="confirmClick()">{{ 'ok-button' | translate}}</button>
                </div>
             </div>
         </div>
