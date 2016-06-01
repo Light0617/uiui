@@ -28,10 +28,10 @@ node('docker-slave') {
 
             sh "ln -f -s /src/node/node_modules/ ."
 
-            stage "bower install"
+            stage "Bower Install"
             sh 'bower install --allow-root'
 
-            stage "grunt build"
+            stage "Grunt Build"
             sh 'grunt build --force'
         }
     }
