@@ -474,12 +474,6 @@ module.exports = function(grunt) {
                 {
                     expand: true,
                     cwd: '.',
-                    src: 'bower_components/bel-ui/app/scripts/directives/*',
-                    dest: '<%= yeoman.dist %>'
-                },
-                {
-                    expand: true,
-                    cwd: '.',
                     src: 'bower_components/bel-ui/app/fonts/*',
                     dest: '<%= yeoman.dist %>'
                 },
@@ -492,7 +486,7 @@ module.exports = function(grunt) {
                 {
                     expand: true,
                     cwd: '.',
-                    src: 'bower_components/bel-ui/app/templates/*',
+                    src: 'bower_components/bel-ui/app/templates/serversideinventoryview.html',
                     dest: '<%= yeoman.dist %>'
                 }, {
                     expand: true,

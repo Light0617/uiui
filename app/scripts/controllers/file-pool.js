@@ -20,6 +20,7 @@ angular.module('rainierApp')
             evses = result.evses;
             return orchestratorService.filePool(storageSystemId, filePoolId);
         }).then(function (fp) {
+            fp.bottomLegend = true;
             result = fp;
             return orchestratorService.filePoolFileSystems(storageSystemId, filePoolId);
         }).then(function (fs) {
