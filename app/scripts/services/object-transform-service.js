@@ -1672,8 +1672,8 @@ angular.module('rainierApp')
                             capacity: item.totalCapacity
                         },
                         items: [
-                            [
-                                {
+                            {
+                                used: {
                                     label: (function (key) {
                                         return synchronousTranslateService.translate(
                                             key);
@@ -1681,17 +1681,16 @@ angular.module('rainierApp')
                                     capacity: item.usedCapacity,
                                     color: thinUsedColor
                                 },
-                                {
+                                free: {
                                     label: (function (key) {
                                         return synchronousTranslateService.translate(
                                             key);
                                     })('common-label-free'),
-                                    legendDisplay: item.availableCapacity,
-                                    capacity: item.totalCapacity,
+                                    capacity: item.availableCapacity,
                                     color: thinFreeColor
                                 }
 
-                            ]
+                            }
 
                         ]
                     },
@@ -2031,16 +2030,16 @@ angular.module('rainierApp')
                             capacity: diskSizeService.getDisplaySize(item.totalCapacity)
                         },
                         items: [
-                            [
-                                {
+                            {
+                                used: {
                                     capacity: diskSizeService.getDisplaySize(parseInt(item.usedCapacity) + parseInt(selectedDisplayCapacity.value)),
                                     color: '#3D84F5'
                                 },
-                                {
+                                free: {
                                     capacity: diskSizeService.getDisplaySize(freeCapacity),
                                     color: '#1A2B45'
                                 }
-                            ]
+                            }
                         ]
                     }
                 };
@@ -2069,17 +2068,16 @@ angular.module('rainierApp')
                             capacity: diskSizeService.getDisplaySize(overCommitCapacity)
                         },
                         items: [
-                            [
-                                {
+                            {
+                                used: {
                                     capacity: diskSizeService.getDisplaySize(totalCapacity),
                                     color: '#3D84F5'
                                 },
-                                {
-                                    legendDisplay: diskSizeService.getDisplaySize(overCommitCapacity - totalCapacity),
-                                    capacity: diskSizeService.getDisplaySize(overCommitCapacity),
+                                free: {
+                                    capacity: diskSizeService.getDisplaySize(overCommitCapacity - totalCapacity),
                                     color: '#1A2B45'
                                 }
-                            ]
+                            }
                         ]
                     }
                 };
