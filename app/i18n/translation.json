@@ -721,7 +721,6 @@
     "tiered": "Tiered",
     "untiered": "Untiered",
     "common-file-used": "Used",
-    "used": "Used",
     "file-pool-free": "Free",
     "file-pool-total": "Total",
     "percent-usage": "% Usage",
