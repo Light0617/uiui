@@ -102,7 +102,7 @@
 <script src="bower_components/highlightjs/highlight.pack.js"></script>
 <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
 <script src="bower_components/papaparse/papaparse.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.compat.js"></script>
 <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
