@@ -13,13 +13,14 @@ angular.module('rainierApp')
                                                    synchronousTranslateService, ShareDataService,
                                                    dataProtectionSettingsService, replicationGroupsService,
                                                    scrollDataSourceBuilderServiceNew, ReplicationGroupSInitialResult,
-                                                   queryService, paginationService) {
+                                                   queryService, paginationService, dpAlertService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId).then(function (result) {
             var summaryModel = objectTransformService.transformToBreakdownSummary(result);
             summaryModel.arrayDataVisualizationModel.hideButtons = true;
             summaryModel.title = synchronousTranslateService.translate('common-replication-groups');
+            summaryModel.dpAlert = dpAlertService;
             $scope.summaryModel = summaryModel;
         });
 

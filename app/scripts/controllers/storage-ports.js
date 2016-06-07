@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StoragePortsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
                                               objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
-                                              queryService, wwnService) {
+                                              queryService, wwnService, hwAlertService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePortsPath = 'storage-ports';
 
@@ -29,6 +29,7 @@ angular.module('rainierApp')
         }).then( function (result) {
             var summaryModel = objectTransformService.transformToPortSummary(result.resources, typeNames);
             summaryModel.title = synchronousTranslateService.translate('common-storage-system-ports');
+            summaryModel.hwAlert = hwAlertService;
 
             $scope.summaryModel = summaryModel;
 

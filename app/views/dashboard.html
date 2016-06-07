@@ -15,19 +15,11 @@
             <!--Alerts Panel-->
             <div class="alert-panel" id="alert-panel">
                 
-                    <capacity-alert ng-model="model.alerts.capacity.count"
-                                    alert-level="model.alerts.capacity.level"></capacity-alert>
-                
-                
-                    <dp-alert ng-model="model.alerts.dp.count" alert-level="model.alerts.dp.level"></dp-alert>
-                
-               
+                <alert-tile service="services.cp"></alert-tile>
+                <alert-tile service="services.dp"></alert-tile>
+                <alert-tile service="services.job"></alert-tile>
+                <alert-tile service="services.hw"></alert-tile>
 
-                    <jobs-alert ng-model="model.alerts.jobs"></jobs-alert>
-                
-                
-                    <hardware-alert ng-model="model.alerts.hardware.count"
-                                    alert-level="model.alerts.hardware.level"></hardware-alert>
                 
             </div>
             <!--Polar Data Viz-->

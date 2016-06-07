@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="rainierAppMock">
+<html class="no-js" ng-app="rainierApp">
 <head>
     <meta charset="utf-8">
     <title>{{ 'brand-company' | translate }} {{ 'brand-rainier' | translate }}</title>
@@ -84,6 +84,7 @@
 <script src="bower_components/bel-ui/app/scripts/directives/usage-indicator-bar.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/bar-data-visualization.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/ribbon.js"></script>
+<script src="bower_components/bel-ui/app/scripts/directives/alert-tile.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/queryService.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/locale.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/base64.js"></script>
@@ -289,6 +290,10 @@
 <script src="scripts/filters/storage-port-search.js"></script>
 <script src="scripts/filters/storage-system-search.js"></script>
 <script src="scripts/filters/storage-system-volumes-search.js"></script>
+<script src="scripts/services/alert-services/capacity-alert-service.js"></script>
+<script src="scripts/services/alert-services/dp-alert-service.js"></script>
+<script src="scripts/services/alert-services/hw-alert-service.js"></script>
+<script src="scripts/services/alert-services/jobs-alert-service.js"></script>
 <script src="scripts/services/api-response-handler-service.js"></script>
 <script src="scripts/services/attach-volume-service.js"></script>
 <script src="scripts/services/breadcrumb-service.js"></script>
@@ -319,7 +324,7 @@
 <script src="scripts/services/wwn-service.js"></script>
 <script src="slider-scripts/scripts.js"></script>
 <script src="slider-scripts/unslider.js"></script>
-<script src="bower_components/angular-mocks/angular-mocks.js"></script>    <script src="mocks/appmock.js"></script>    <script src="mocks/authmock.js"></script>    <script src="mocks/clustermock.js"></script>    <script src="mocks/dataprotectionmock.js"></script>    <script src="mocks/diskmock.js"></script>    <script src="mocks/ethernetinterfacemock.js"></script>    <script src="mocks/evsmock.js"></script>    <script src="mocks/exportsmock.js"></script>    <script src="mocks/externalparitygroupmock.js"></script>    <script src="mocks/fabricmock.js"></script>    <script src="mocks/filepoolexpandtemplatemock.js"></script>    <script src="mocks/filepoolmock.js"></script>    <script src="mocks/filepooltemplatemock.js"></script>    <script src="mocks/filesystemmock.js"></script>    <script src="mocks/licensemock.js"></script>    <script src="mocks/paritygroupmock.js"></script>    <script src="mocks/paritygrouptemplatemock.js"></script>    <script src="mocks/replicationgroupmock.js"></script>    <script src="mocks/serversmock.js"></script>    <script src="mocks/sharesmock.js"></script>    <script src="mocks/storagepoolmock.js"></script>    <script src="mocks/storagepooltemplatemock.js"></script>    <script src="mocks/storageportsmock.js"></script>    <script src="mocks/storagesystemmock.js"></script>    <script src="mocks/tiersmock.js"></script>    <script src="mocks/tiersummarymock.js"></script>    <script src="mocks/unifiedreportingmock.js"></script>    <script src="mocks/volumemock.js"></script>    <script src="mocks/volumepairmock.js"></script>
+
 <!-- endbuild -->
 
 </body>

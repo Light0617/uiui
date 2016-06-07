@@ -8,7 +8,8 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('DashboardCtrl', function ($scope, orchestratorService, objectTransformService, paginationService) {
+    .controller('DashboardCtrl', function ($scope, orchestratorService, objectTransformService, paginationService, 
+                                           capacityAlertService, dpAlertService, jobsAlertService, hwAlertService) {
         var dataProtection;
         var unified;
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
@@ -49,8 +50,17 @@ angular.module('rainierApp')
             });
         }
 
+        $scope.services = {
+            cp: capacityAlertService,
+            dp: dpAlertService,
+            job: jobsAlertService,
+            hw: hwAlertService
+        };
+        
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
-            unified = _.find(result, function (storageSystem) { return storageSystem.unified && storageSystem.accessible; });
+            unified = _.find(result, function (storageSystem) {
+                return storageSystem.unified && storageSystem.accessible;
+            });
             storageSystemsInCacheCount = result.length;
             return orchestratorService.dataProtectionSummary();
         }).then(function (result) {
@@ -58,10 +68,14 @@ angular.module('rainierApp')
             if (unified) {
                 orchestratorService.filePoolsSummary().then(function (result) {
                     transformService(result);
-                }, function() {transformService(false);});
+                }, function () {
+                    transformService(false);
+                });
             }
             else {
                 transformService(false);
             }
         });
+
+
     });

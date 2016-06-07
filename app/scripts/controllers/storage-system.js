@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('StorageSystemCtrl', function ($scope, $routeParams, $window, orchestratorService,
                                                objectTransformService, diskSizeService, synchronousTranslateService,
-                                               paginationService, replicationGroupsService) {
+                                               paginationService, replicationGroupsService,
+                                               capacityAlertService, dpAlertService, jobsAlertService, hwAlertService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -18,6 +19,13 @@ angular.module('rainierApp')
         var tiers;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
         var GET_STORAGE_PORTS_PATH = 'storage-ports';
+        
+        $scope.services = {
+            cp: capacityAlertService,
+            dp: dpAlertService,
+            job: jobsAlertService,
+            hw: hwAlertService
+        };
 
         function getUnifiedInformation() {
             orchestratorService.cluster(storageSystemId).then(function (result) {

@@ -1,8 +1,6 @@
 <div class="summary-container-default" id="top-info" ng-if="dataModel">
     <div class="alert-panel third">
-        <!--Alerts Panel-->
-        <hardware-alert ng-model="dataModel.alerts.hardware.count" class="tile alert"
-                        alert-level="dataModel.alerts.hardware.level"></hardware-alert>
+        <alert-tile service="dataModel.hwAlert"></alert-tile>
     </div>
     <!--PG Summary-->
     <div class="table-responsive two-thirds">
