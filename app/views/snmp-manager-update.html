@@ -4,7 +4,7 @@
     <div class="wizard-body">
         <!--Full-width-->
         <div class="scroll-wizard-container single-pane" >
-            <div class="row section">
+            <div class="row section validation-scope" name="dataModel.validationForm" ng-form>
                 <div class="form-horizontal top clearfix">
                     <div class="form-group form-group-lg col-md-6 col-sm-6 col-xs-12 form-horizontal">
                         <label>{{'snmp-manager-name' | translate }}</label>
@@ -24,12 +24,12 @@
                         <label>{{'snmp-manager-ip-address' | translate }}</label>
                         <input type="text" name="ipAddress" class="form-control"
                                ng-model="dataModel.snmpManager.ipAddress"
-                               required>
+                               required validate-ip>
                     </div>
                     <div class="form-group form-group-lg col-md-6 col-sm-6 col-xs-12 form-horizontal">
                         <label>{{'snmp-manager-port' | translate }}</label>
                         <input type="text" name="port" class="form-control"
-                               ng-model="dataModel.snmpManager.port" required>
+                               ng-model="dataModel.snmpManager.port" required validate-ip-port>
                     </div>
                 </div>
 

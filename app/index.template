@@ -101,6 +101,8 @@
 <script src="bower_components/papaparse/papaparse.js"></script>
 <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
 <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="bower_components/jquery-validation/dist/jquery.validate.js"></script>
+<script src="bower_components/jquery-validation/dist/additional-methods.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

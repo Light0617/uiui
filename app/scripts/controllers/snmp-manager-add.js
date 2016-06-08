@@ -30,7 +30,7 @@ angular.module('rainierApp')
         };
 
         dataModel.canSubmit = function () {
-            var isValid = !_.isEmpty(dataModel.snmpManager.ipAddress) && !_.isEmpty(dataModel.snmpManager.port) &&
+            var isValid = $scope.dataModel.validationForm.ipAddress.$valid && $scope.dataModel.validationForm.port.$valid &&
                 !_.isEmpty(dataModel.snmpManager.name) &&
                 !_.isEmpty(dataModel.snmpManager.username);
             if (isValid) {

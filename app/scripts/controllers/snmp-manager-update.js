@@ -29,8 +29,8 @@ angular.module('rainierApp')
             if (!dataModel.snmpManager){
                 return false;
             }
-            var valid = !_.isEmpty(dataModel.snmpManager.ipAddress) &&
-                 dataModel.snmpManager.port &&
+            var valid = $scope.dataModel.validationForm.ipAddress.$valid &&
+                $scope.dataModel.validationForm.port.$valid &&
                  !_.isEmpty(dataModel.snmpManager.username);
             if (valid) {
                 if (dataModel.snmpManager.privacyProtocol!=='NO_PRIV' && _.isEmpty(dataModel.snmpManager.privacyPassword)){
