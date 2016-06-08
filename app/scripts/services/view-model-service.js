@@ -209,7 +209,6 @@ angular.module('rainierApp')
                     var poolType = vol.poolType;
                     if (vol.pool) {
                         poolId = vol.pool.storagePoolId;
-                        poolType = null;
                     }
 
                     if (!vol.shouldDisableTier()) {
