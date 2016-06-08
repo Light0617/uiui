@@ -231,13 +231,6 @@ angular.module('rainierApp')
                 })
             };
         });
-	
-        orchestratorService.storageExternalParityGroups(storageSystemId).then(function(result) {
-            $scope.externalParityGroups = result.externalParityGroups;
-            $scope.externalParityGroupsSummary = {
-                count : ($scope.externalParityGroups ? $scope.externalParityGroups.length : 0)
-            };
-        });
 
         orchestratorService.externalParityGroupSummary(storageSystemId).then(function(result) {
             $scope.externalParityGroupsSummary = {
