@@ -412,6 +412,7 @@
     "storage-systems-not-accessible": "Not Accessible",
     "storage-systems-add": "Onboard Storage System",
     "storage-systems-serial-number": "S/N",
+    "storage-systems-name": "Name",
     "storage-systems-model": "Model",
     "storage-systems-svp-ip-address": "SVP IP Address",
     "storage-systems-gum-1-ip-address": "Maintenance Utility 1 IP Address",

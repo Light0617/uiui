@@ -17,6 +17,8 @@ angular.module('rainierApp')
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             dataModel = {
                 storageSystemId: result.storageSystemId,
+                originalStorageSystemName: result.storageSystemName,
+                storageSystemName: result.storageSystemName,
                 svpIpAddress: result.svpIpAddress,
                 gum1IpAddress: result.gum1IpAddress,
                 gum2IpAddress: result.gum2IpAddress ,
@@ -27,7 +29,16 @@ angular.module('rainierApp')
         });
 
         $scope.isValid = function () {
-            return  (isNotBlank($scope.dataModel.username) && isNotBlank($scope.dataModel.password));
+            // To modify the storage system name from valid string to empty string or null is not allowed.
+            if (!isBlank($scope.dataModel.originalStorageSystemName) && isBlank($scope.dataModel.storageSystemName)) {
+                return false;
+            }
+
+            if ($scope.dataModel.storageSystemName === $scope.dataModel.originalStorageSystemName) {
+                return (!isBlank($scope.dataModel.username) && !isBlank($scope.dataModel.password));
+            } else {
+                return (isBlank($scope.dataModel.username) && isBlank($scope.dataModel.password)) || (!isBlank($scope.dataModel.username) && !isBlank($scope.dataModel.password));
+            }
         };
 
         $scope.updateStorageSystem = function() {
@@ -38,14 +49,15 @@ angular.module('rainierApp')
 
         function buildUpdateStorageSystemsPayload() {
             var updateStorageSystemsPayload = {
-                username: $scope.dataModel.username,
-                password: $scope.dataModel.password
+                username: isBlank($scope.dataModel.username) ? null : $scope.dataModel.username,
+                password: isBlank($scope.dataModel.password) ? null : $scope.dataModel.password,
+                storageSystemName: ($scope.dataModel.storageSystemName === $scope.dataModel.originalStorageSystemName) ? null : $scope.dataModel.storageSystemName
             };
             return updateStorageSystemsPayload;
         }
 
-        function isNotBlank(inputString) {
-            return (inputString !== undefined && inputString !== null && inputString.length > 0);
+        function isBlank(inputString) {
+            return (inputString === undefined || inputString === null || inputString.length === 0);
         }
 
     });

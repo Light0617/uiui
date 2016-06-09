@@ -128,7 +128,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.storageSystemId,
-                        details: [item.svpIpAddress]
+                        details: [item.storageSystemName, item.svpIpAddress]
                     },
                     {
                         left: false,
