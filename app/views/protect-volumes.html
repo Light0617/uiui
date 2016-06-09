@@ -206,43 +206,42 @@
                 </div>
 
                 <div class="label-value-container" ng-switch="allUseExisting">
-                    <form name="validationForm.rightPanel" class="validation-form form-horizontal col-md-6" role="form"
-                          novalidate>
+                    <form name="validationForm.rightPanel" class="validation-form" role="form" novalidate>
+                        <div class="col-md-6 form-horizontal">
+                            <div class="form-group label-value-container" ng-switch-when="false">
+                                <label class="label">{{'valid-copy-group-name' | translate }}</label>
+                                <input type="text" name="copyGroupName" class="form-control"
+                                       ng-change="changeSubmitButtonStatus()"
+                                       ng-class="{'ng-invalid ng-dirty': copyGroupNameValidation}"
+                                       ng-model="dataModel.copyGroupName" required tabindex="1"
+                                       placeholder="{{'valid-copy-group-name' | translate }}" ng-maxlength="26"
+                                       ng-pattern="copyGroupNameRegexp" maxlength="26">
 
-                        <div class="form-group label-value-container" ng-switch-when="false">
-                            <label class="label">{{'valid-copy-group-name' | translate }}</label>
-                            <input type="text" name="copyGroupName" class="form-control"
-                                   ng-change="changeSubmitButtonStatus()"
-                                   ng-class="{'ng-invalid ng-dirty': copyGroupNameValidation}"
-                                   ng-model="dataModel.copyGroupName" required tabindex="1"
-                                   placeholder="{{'valid-copy-group-name' | translate }}" ng-maxlength="26"
-                                   ng-pattern="copyGroupNameRegexp" maxlength="26">
+                                <p ng-show="(validationForm.rightPanel.copyGroupName.$invalid && !validationForm.rightPanel.copyGroupName.$pristine)
+                                        || (copyGroupNameValidation && validationForm.rightPanel.copyGroupName.$pristine)"
+                                   class="validation-text">{{'invalid-protect-volume-copy-group-message' | translate }}</p>
+                            </div>
 
-                            <p ng-show="(validationForm.rightPanel.copyGroupName.$invalid && !validationForm.rightPanel.copyGroupName.$pristine)
-                                    || (copyGroupNameValidation && validationForm.rightPanel.copyGroupName.$pristine)"
-                               class="validation-text">{{'invalid-protect-volume-copy-group-message' | translate }}</p>
+                            <div class="form-group label-value-container" ng-switch-when="true">
+                                <label class="label">{{'valid-copy-group-name' | translate }}</label>
+                                <input type="text" name="copyGroupName" class="form-control" tabindex="1"
+                                       placeholder="{{'invalid-copy-group-name' | translate }}" ng-disabled="true">
+                            </div>
                         </div>
+                        <div class="col-md-6 form-horizontal">
+                            <div class="form-group label-value-container" ng-switch-when="false">
+                                <label class="label">Comments</label>
+                                <input type="text" name="comments" class="form-control"
+                                       placeholder="Comments (optional)"
+                                       ng-model="dataModel.comments" tabindex="2"
+                                       maxlength="1024">
+                            </div>
 
-                        <div class="form-group label-value-container" ng-switch-when="true">
-                            <label class="label">{{'valid-copy-group-name' | translate }}</label>
-                            <input type="text" name="copyGroupName" class="form-control" tabindex="1"
-                                   placeholder="{{'invalid-copy-group-name' | translate }}" ng-disabled="true">
-                        </div>
-                    </form>
-                    <form name="validationForm.rightPanel" class="validation-form form-horizontal col-md-6" role="form"
-                          novalidate>
-                        <div class="form-group label-value-container" ng-switch-when="false">
-                            <label class="label">Comments</label>
-                            <input type="text" name="comments" class="form-control"
-                                   placeholder="Comments (optional)"
-                                   ng-model="dataModel.comments" tabindex="2"
-                                   maxlength="1024">
-                        </div>
-
-                        <div class="form-group label-value-container" ng-switch-when="true">
-                            <label class="label">Comments</label>
-                            <input type="text" name="comments" class="form-control"
-                                   placeholder="Comments (optional)" tabindex="2" ng-disabled="true">
+                            <div class="form-group label-value-container" ng-switch-when="true">
+                                <label class="label">Comments</label>
+                                <input type="text" name="comments" class="form-control"
+                                       placeholder="Comments (optional)" tabindex="2" ng-disabled="true">
+                            </div>
                         </div>
                     </form>
                 </div>
