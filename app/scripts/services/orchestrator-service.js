@@ -163,35 +163,9 @@ angular.module('rainierApp')
             removeHostWwn: function (hostId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('remove-wwpn').post(payload));
             },
-            dataProtectionFailures: function () {
-                return Restangular.one('data-protection/failed-servers').get().then(function (result) {
-                    var finalResult = {};
-                    finalResult.totalHostAlertCount = _.size(result.servers);
-                    finalResult.servers = result.servers;
-                    var hostAlerts = _.size(result.servers);
-                    return Restangular.one('data-protection/failed-volumes').get().then(function (result) {
-                        var volumeAlertsCount = _.size(result.volumes);
-                        var total = hostAlerts + volumeAlertsCount;
-                        finalResult.totalVolumeAlertCount = volumeAlertsCount;
-                        finalResult.volumes = result.volumes;
-                        finalResult.total = total;
-                        return finalResult;
-                    });
-                });
-            },
-            dataProtectionFailuresForStorageSystem: function (storageSystemId) {
-                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('data-protection/storage-systems', storageSystemId).one('failed-volumes').get().then(function (result) {
-                    var finalResult = {};
-                    var volumeAlertsCount = _.size(result.volumes);
-                    finalResult.totalVolumeAlertCount = volumeAlertsCount;
-                    finalResult.volumes = result.volumes;
-                    return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('data-protection/storage-systems', storageSystemId).one('servers/failed-servers').get().then(function (result) {
-                        var total = volumeAlertsCount + _.size(result.servers);
-                        finalResult.totalHostAlertCount = _.size(result.servers);
-                        finalResult.servers = result.servers;
-                        finalResult.total = total;
-                        return finalResult;
-                    }));
+            failedServersForStorageSystem: function (storageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('data-protection/storage-systems', storageSystemId).one('servers/failed-servers').get().then(function(result) {
+                    return result;
                 }));
             },
             storageSystemsSummary: function () {

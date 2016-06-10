@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('monitoringService', function (orchestratorService, objectTransformService, ShareDataService, $routeParams, $location) {
+    .factory('monitoringService', function (orchestratorService, objectTransformService, ShareDataService, paginationService, $routeParams, $location) {
 
         var currentCategory = 'capacity';
         var currentComponent = 'pool';
@@ -120,34 +120,53 @@ angular.module('rainierApp')
 
         function getDpAlerts(callback) {
             if($routeParams.storageSystemId) {
-                orchestratorService.dataProtectionFailuresForStorageSystem($routeParams.storageSystemId).then(function(result) {
-                    _.forEach(result.volumes, function (item) {
-                        objectTransformService.transformVolume(item);
+                orchestratorService.failedServersForStorageSystem($routeParams.storageSystemId).then(function(serverResult) {
+
+                    model.totalHostAlertCount = serverResult.servers.length;
+                    model.servers = serverResult.servers;
+
+                    paginationService.getAllPromises(null, 'volumes?q=dataProtectionSummary.hasFailures:true', true, $routeParams.storageSystemId, null, false).then(function(volumeResult) {
+                        _.forEach(volumeResult, function (item) {
+                            objectTransformService.transformVolume(item);
+                        });
+                        model.total = model.totalHostAlertCount + volumeResult.length;
+                        model.totalVolumeAlertCount = volumeResult.length;
+                        model.volumes = volumeResult;
+                        callback(model);
                     });
-                    _.forEach(result.servers, function (item) {
-                        objectTransformService.transformHost(item);
-                    });
-                    model.total = result.total;
-                    model.totalHostAlertCount = result.totalHostAlertCount;
-                    model.totalVolumeAlertCount = result.totalVolumeAlertCount;
-                    model.volumes = result.volumes;
-                    model.servers = result.servers;
-                    callback(model);
                 });
-            }else {
-                orchestratorService.dataProtectionFailures().then(function(result) {
-                    _.forEach(result.volumes, function (item) {
-                        objectTransformService.transformVolume(item);
+            } else {
+                paginationService.getAllPromises(null, 'compute/servers?q=dataProtectionSummary.hasFailures:true', true, null, null, false).then(function(serverResult) {
+
+                    var volumeCount = 0;
+                    var volumes = [];
+
+                    model.totalHostAlertCount = serverResult.length;
+                    model.servers = serverResult;
+
+                    paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem, false).then(function(storageSystemResult) {
+                        _.forEach(storageSystemResult, function (storageSystem, index) {
+
+                            if (storageSystem.accessible) {
+                                paginationService.getAllPromises(null, 'volumes?q=dataProtectionSummary.hasFailures:true', true, storageSystem.storageSystemId, null, false).then(function(volumeResult) {
+
+                                    volumeCount += volumeResult.length;
+                                    volumes = volumes.concat(volumeResult);
+
+                                    if (index === storageSystemResult.length - 1) {
+
+                                        _.forEach(volumes, function (item) {
+                                            objectTransformService.transformVolume(item);
+                                        });
+                                        model.total = model.totalHostAlertCount + volumeCount;
+                                        model.totalVolumeAlertCount = volumeCount;
+                                        model.volumes = volumes;
+                                        callback(model);
+                                    }
+                                });
+                            }
+                        });
                     });
-                    _.forEach(result.servers, function (item) {
-                        objectTransformService.transformHost(item);
-                    });
-                    model.total = result.total;
-                    model.totalHostAlertCount = result.totalHostAlertCount;
-                    model.totalVolumeAlertCount = result.totalVolumeAlertCount;
-                    model.volumes = result.volumes;
-                    model.servers = result.servers;
-                    callback(model);
                 });
             }
         }
