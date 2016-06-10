@@ -11,12 +11,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('EvsAddCtrl', function($scope, $routeParams, orchestratorService, fileSystemService, $timeout, subnetMaskService, paginationService, objectTransformService) {
+    .controller('EvsAddCtrl', function($scope, $routeParams, orchestratorService, fileSystemService, $timeout, subnetMaskService, paginationService, objectTransformService, validateIpService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
-        var ipv4 = /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/;
-        var ipv6 = /(^\s*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$)/;
         var selectable;
         var storageSystem;
         var storageSystems;
@@ -68,10 +66,10 @@ angular.module('rainierApp')
                 var splitIp = $scope.dataModel.payload.ipAddress.split('/');
                 $scope.dataModel.validRange = true;
                 $scope.dataModel.validIp = true;
-                if(ipv4.test($scope.dataModel.payload.ipAddress)){
+                if(validateIpService.isIPv4($scope.dataModel.payload.ipAddress)){
                     $scope.dataModel.payload.ipv6 = false;
                 }
-                else if(ipv6.test(_.first(splitIp)) && !ipv4.test(_.first(splitIp))) {
+                else if(validateIpService.isIPv6(_.first(splitIp))) {
                     $scope.dataModel.payload.ipv6 = true;
                     $scope.dataModel.payload.subnetMask = '';
                     $scope.dataModel.validRange = false;

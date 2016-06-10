@@ -9,14 +9,13 @@
  */
 angular.module('rainierApp')
     .controller('FileSystemsAddCtrl', function ($scope, $routeParams, fileSystemService, $timeout, $window, $filter, orchestratorService,
-                                                diskSizeService, objectTransformService, synchronousTranslateService, paginationService) {
+                                                diskSizeService, objectTransformService, synchronousTranslateService, paginationService, validateIpService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var evsId = $routeParams.evsId;
         var filePoolId = $routeParams.filePoolId;
         var storageSystems = [storageSystemId];
         var filePools;
-        var ipv4 = /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/;
 
         var ports = fileSystemService.getVirtualFileServerPorts();
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
@@ -69,8 +68,8 @@ angular.module('rainierApp')
             $scope.dataModel.units = units;
             $scope.dataModel.unit = units[0];
             $scope.dataModel.ports = ports;
-            $scope.dataModel.subnetPattern = /^(255.)((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){2}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/;
-            $scope.dataModel.selectedPattern = /(^\s*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$)/;
+            $scope.dataModel.subnetPattern = validateIpService.getSubnetRegExp();
+            $scope.dataModel.selectedPattern = validateIpService.getIPRegExp();
 
             $scope.dataModel.submit = function () {
             var payload;
@@ -113,7 +112,7 @@ angular.module('rainierApp')
             };
 
             $scope.$watch('dataModel.ipAddress', function () {
-                if(ipv4.test($scope.dataModel.ipAddress)){
+                if(validateIpService.isIPv4($scope.dataModel.ipAddress)){
                     $scope.dataModel.ipv6 = false;
                 }
                 else{

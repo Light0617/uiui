@@ -13,9 +13,7 @@ angular.module('rainierApp')
             require: 'ngModel',
             link: function(scope, element, attr, ngModel) {
                 function validateIPPort(value) {
-                    var num = Number(value);
-
-                    ngModel.$setValidity('IP-PORT', /^\d+$/.test(String(value)) && (0 < num) && (num < 65536));
+                    ngModel.$setValidity('IP-PORT', /^\d+$/.test(value) && (0 < value) && (value < 65536));
 
                     return value;
                 }
