@@ -13,68 +13,35 @@ angular.module('rainierApp')
             templateUrl: 'views/templates/nav-bar-header.html',
             restrict: 'E',
             link: function(scope) {
-                scope.authModel = {
-                    logout: function() {
-                        authService.logout();
-                        $location.path('/login');
-                    }
-                };
-
                 scope.hideOverlay = true;
                 scope.username = authService.getUser().name;
-
-                var currentPath = $location.path();
-                var jobsSelected = currentPath.indexOf('/jobs') === 0;
-                var monitoringSelected = currentPath.indexOf('/monitoring') === 0;
-
                 var PRODUCT_NAME = synchronousTranslateService.translate('product-name');
                 var COPY_RIGHT = synchronousTranslateService.translate('product-copy-right');
-
-                scope.tabsModel = {
-                    jobsSelected: jobsSelected,
-                    dashboardSelected: !jobsSelected && !monitoringSelected,
-                    monitoringSelected: monitoringSelected
-                };
+                scope.pageErrors = [];
 
                 function toggleOverlayContent() {
                     $('overlay').height($('html').height());
                     $('.unslider').addClass('unslider-on');
                 }
 
+                $rootScope.$on('pageErrorReceived', function (evt, error) {
+                    $timeout(function () {
+                        if (scope.pageErrors) {
+                            scope.pageErrors.push(error);
+                        }
+                        else {
+                            scope.pageErrors = [error];
+                        }
+                    });
+                });
+                $rootScope.$on('$routeChangeSuccess', function () {
+                    scope.pageErrors = [];
+                });
+
                 scope.versionModel = {
                     productName: PRODUCT_NAME,
                     copyRight: COPY_RIGHT,
                     versionInfo: $window.sessionStorage.getItem('versionInfo'),
-                    helpOrAboutClicked: (ShareDataService.helpOrAboutClicked !== undefined && ShareDataService.helpOrAboutClicked !== null) ?
-                        ShareDataService.helpOrAboutClicked : false,
-                    toggleHelpContent: function() {
-                        helpuiService.toggleHelpPane();
-                    },
-                    closeHelpContent: function() {
-                        helpuiService.closeHelpPane();
-                    },
-                    dropDownRemove: function () {
-                        document.getElementById('about').removeAttribute('data-toggle');
-                    },
-                    dropDownAdd: function () {
-                        document.getElementById('about').setAttribute('data-toggle', 'dropdown');
-                    },
-                    clickOnHelpOrAbout: function () {
-                        scope.versionModel.helpOrAboutClicked = true;
-                        ShareDataService.helpOrAboutClicked = scope.versionModel.helpOrAboutClicked;
-                    },
-                    clickOnIconPre: function () {
-                        if (!scope.versionModel.helpOrAboutClicked) {
-                            scope.versionModel.dropDownAdd();
-                        }
-                    },
-                    clickOnIconPost: function () {
-                        if (scope.versionModel.helpOrAboutClicked) {
-                            scope.versionModel.dropDownRemove();
-                            scope.versionModel.helpOrAboutClicked = false;
-                            ShareDataService.helpOrAboutClicked = scope.versionModel.helpOrAboutClicked;
-                        }
-                    },
                     getCurrentYear: function() {
                         return new Date().getFullYear();
                     },
@@ -88,45 +55,122 @@ angular.module('rainierApp')
                     }
                 };
 
-                if ($window.sessionStorage.versionInfo === undefined) {
+                if (typeof($window.sessionStorage.versionInfo) === "undefined") {
                     orchestratorService.productVersionInfo().then(function (result) {
                         $window.sessionStorage.setItem('versionInfo', result.productVersionInfo);
                         scope.versionModel.versionInfo = $window.sessionStorage.getItem('versionInfo');
                     });
                 }
 
-                scope.settingsModel = {
-                    launchSnmpManager: function() {
-                        $location.path('/snmp-managers');
-                    },
-                    security: function() {
-                        $location.path('/security');
-                    },
-                    tierManagement: function() {
-                        $location.path('/tier-management');
-                    },
-                    launchChangeLocalPassword: function() {
-                        $location.path('/change-local-password');
-                    }
+                scope.ribbonModel = {
+                    tabs: [
+                        {
+                            tabLink: '#/',
+                            tabName: synchronousTranslateService.translate('common-dashboard')
+                        },
+                        {
+                            tabLink: '#/jobs',
+                            tabName: synchronousTranslateService.translate('nav-bar-header-jobs')
+                        },
+                        {
+                            tabLink: '#/monitoring',
+                            tabName: synchronousTranslateService.translate('nav-bar-header-monitoring')
+                        }
+                    ],
+                    buttons: [
+                        // Warnings
+                        {
+                            buttonIcon: 'icon-warning',
+                            showButton: function () {
+                                return scope.pageErrors.length > 0;
+                            },
+                            options: [
+                                {
+                                    optionType: 'customized',
+                                    optionTemplate: function () {
+                                        return 'views/templates/ribbon-warning.html';
+                                    },
+                                    pageErrors: scope.pageErrors
+                                }
+                            ]
+                        },
+                        // Logout button
+                        {
+                            buttonIcon: 'icon-user',
+                            buttonTitle: scope.username,
+                            options: [
+                                {
+                                    optionName: synchronousTranslateService.translate('nav-bar-header-username-logout'),
+                                    optionAction: function () {
+                                        authService.logout();
+                                        $location.path('/login');
+                                    }
+                                }
+                            ]
+                        },
+                        // Setting button
+                        {
+                            buttonIcon: 'icon-settings',
+                            buttonTitle: 'Settings',
+                            options: [
+                                {
+                                    optionName: synchronousTranslateService.translate('tier-management'),
+                                    optionAction: function () {
+                                        $location.path('/snmp-managers');
+                                    }
+                                },
+                                {
+                                    optionName: synchronousTranslateService.translate('nav-bar-header-security'),
+                                    optionAction: function () {
+                                        $location.path('/security');
+                                    }
+                                },
+                                {
+                                    optionName: synchronousTranslateService.translate('nav-bar-header-settings-snmp'),
+                                    optionAction: function () {
+                                        $location.path('/tier-management');
+                                    }
+                                },
+                                {
+                                    optionName: synchronousTranslateService.translate('nav-bar-header-change-local-password'),
+                                    optionAction: function () {
+                                        $location.path('/change-local-password');
+                                    }
+                                }
+                            ]
+                        },
+                        // Help and about button
+                        {
+                            buttonIcon: 'icon-help',
+                            buttonTitle: synchronousTranslateService.translate('nav-bar-header-help-tooltip'),
+                            options: [
+                                {
+                                    optionName: synchronousTranslateService.translate('nav-bar-header-help'),
+                                    optionAction: function () {
+                                        helpuiService.toggleHelpPane();
+                                    }
+                                },
+                                {
+                                    optionName: synchronousTranslateService.translate('nav-bar-header-about'),
+                                    optionType: 'popup',
+                                    optionTitle: synchronousTranslateService.translate('nav-bar-header-about'),
+                                    optionTemplate: 'views/templates/product-version-info.html',
+                                    optionDataModel: scope.versionModel
+                                }
+                            ]
+                        },
+                        // Overlay button
+                        {
+                            buttonIcon: 'icon-information',
+                            buttonTitle: synchronousTranslateService.translate('common-information'),
+                            noOptions: true,
+                            buttonAction: function () {
+                                scope.versionModel.toggleOverlayContent();
+                            }
+                        }
+                    ]
                 };
 
-
-                $rootScope.$on('pageErrorReceived', function (evt, error) {
-
-
-                    $timeout(function () {
-                        if (scope.pageErrors) {
-                            scope.pageErrors.push(error);
-                        }
-                        else {
-                            scope.pageErrors = [error];
-                        }
-                    });
-                });
-
-                $rootScope.$on('$routeChangeSuccess', function () {
-                    scope.pageErrors = [];
-                });
             }
         };
     });
