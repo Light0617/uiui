@@ -55,7 +55,7 @@ angular.module('rainierApp')
                     }
                 };
 
-                if (typeof($window.sessionStorage.versionInfo) === "undefined") {
+                if (typeof($window.sessionStorage.versionInfo) === 'undefined') {
                     orchestratorService.productVersionInfo().then(function (result) {
                         $window.sessionStorage.setItem('versionInfo', result.productVersionInfo);
                         scope.versionModel.versionInfo = $window.sessionStorage.getItem('versionInfo');

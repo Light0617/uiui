@@ -4,11 +4,11 @@
 
             </div>
 
-            <div ng-if="model.chartData.length" class="col-lg-10 col-md-10 col-sm-5 col-xs-5">
-                <donut-dynamic-chart></donut-dynamic-chart>
+            <div ng-if="model.data.length" class="col-lg-10 col-md-10 col-sm-5 col-xs-5">
+                <donut-data-visualization ng-model="model"></donut-data-visualization>
            </div>
 
-        <div class="alert alert-warning" role="alert" ng-if="!model.chartData.length" class="col-lg-10 col-md-10 col-sm-5 col-xs-5">
+        <div class="alert alert-warning" role="alert" ng-if="!model.data.length" class="col-lg-10 col-md-10 col-sm-5 col-xs-5">
             <h1>{{'no-servers-onboarded' | translate}}</h1>
         </div>
     </div>
