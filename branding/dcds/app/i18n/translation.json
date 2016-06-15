@@ -686,7 +686,7 @@
     "invalid-protect-volume-snapshot-number-message": "Enter a number between 1 to 1024.",
     "invalid-protect-volume-clone-number-message": "Enter a number between 0 to 9.",
     "invalid-protect-volume-copy-group-message": "Enter up to 26 alphanumeric characters, hyphens, and underscores in the name, but it must not start with a hyphen.",
-    "invalid-volume-label": "There must be alphanumeric characters, hyphens, and underscores in the label, but it must not start with a hyphen. The max length of label and suffix is 32.",
+    "invalid-volume-label": "Revise the label input. Following characters are valid: a-z, A-Z, 0-9, '_', '.', '@', '-' and ' '. The maximum length of label and suffix is 32. The label must not start with '-' or ' ' and must not end with ' '.",
 
     "both": "Both",
     "health": "Health Status",
