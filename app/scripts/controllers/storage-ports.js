@@ -159,22 +159,22 @@ angular.module('rainierApp')
                         this.dialogSettings.itemAttribute.value = $scope.storageSystemModel === vspG1000 ? portAttributes.target : null;
                     },
                     onClick: function () {
-                        if ($scope.storageSystemModel !== vspG1000) {
-                            return;
-                        }
 
                         var firstItem = _.first(dataModel.getSelectedItems());
-
-                        var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
-                            return storagePort.attributes[0] === this.attributes[0];
-                        }, firstItem);
 
                         var isAllSameSecuritySwitchEnabled = _.all(dataModel.getSelectedItems(), function (storagePort) {
                             return storagePort.securitySwitchEnabled === this.securitySwitchEnabled;
                         }, firstItem);
 
-                        this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
                         this.dialogSettings.switchEnabled.value = isAllSameSecuritySwitchEnabled ? firstItem.securitySwitchEnabled : false;
+
+                        if ($scope.storageSystemModel === vspG1000) {
+                            var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                                return storagePort.attributes[0] === this.attributes[0];
+                            }, firstItem);
+
+                            this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
+                        }
                     }
                 }
             ];
