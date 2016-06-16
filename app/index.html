@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="rainierApp">
+<html class="no-js" ng-app="rainierAppMock">
 <head>
     <meta charset="utf-8">
     <title>{{ 'brand-company' | translate }} {{ 'brand-rainier' | translate }}</title>
@@ -10,8 +10,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
-    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="../bower_components/ng-tags-input/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="../bower_components/highlightjs/styles/default.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -37,78 +37,70 @@
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/angular-cookies/angular-cookies.js"></script>
-<script src="bower_components/angular-messages/angular-messages.js"></script>
-<script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="bower_components/angular-touch/angular-touch.js"></script>
-<script src="bower_components/angular-translate/angular-translate.js"></script>
-<script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
-<script src="bower_components/moment/moment.js"></script>
-<script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
-<script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
-<script src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
-<script src="bower_components/bel-ui/app/mockApp/belMock.js"></script>
-<script src="bower_components/bel-ui/app/mockApp/jobMock.js"></script>
-<script src="bower_components/bel-ui/app/mockApp/mockUtils.js"></script>
-<script src="bower_components/bel-ui/app/grizzly/grizzlyApp.js"></script>
-<script src="bower_components/bel-ui/app/grizzly/constants.js"></script>
-<script src="bower_components/bel-ui/app/grizzly/grizzlyService.js"></script>
-<script src="bower_components/bel-ui/app/grizzly/jobs/jobsController.js"></script>
-<script src="bower_components/bel-ui/app/grizzly/jobs/jobDataVis.js"></script>
-<script src="bower_components/bel-ui/app/grizzly/jobs/details/jobDetailsController.js"></script>
-<script src="bower_components/bel-ui/app/scripts/bel.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/modal.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/fliptile.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/fill-height.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/goback.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/serversideinventoryview.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/array-polar-data-visualization.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/usage-indicator-bar.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/bar-data-visualization.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/breadcrumb-bar.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/donut-data-visualization.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/alert-tile.js"></script>
-<script src="bower_components/bel-ui/app/scripts/directives/ribbon.js"></script>
-<script src="bower_components/bel-ui/app/scripts/services/queryService.js"></script>
-<script src="bower_components/bel-ui/app/scripts/services/locale.js"></script>
-<script src="bower_components/bel-ui/app/scripts/services/base64.js"></script>
-<script src="bower_components/bel-ui/app/scripts/services/breadcrumb-service.js"></script>
-<script src="bower_components/bel-ui/app/scripts/services/auth.js"></script>
-<script src="bower_components/bel-ui/app/scripts/services/callback.js"></script>
-<script src="bower_components/bel-ui/app/scripts/filters/freetextsearch.js"></script>
-<script src="bower_components/helpui-framework/helpuiModule.js"></script>
-<script src="bower_components/helpui-content/helpuiContent.js"></script>
-<script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/lodash/dist/lodash.compat.js"></script>
-<script src="bower_components/restangular/dist/restangular.js"></script>
-<script src="bower_components/jquery-ui/jquery-ui.js"></script>
-<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
-<script src="bower_components/raphael/raphael.js"></script>
-<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script src="bower_components/highlightjs/highlight.pack.js"></script>
-<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
-<script src="bower_components/papaparse/papaparse.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.compat.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="../bower_components/es5-shim/es5-shim.js"></script>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="../bower_components/angular-messages/angular-messages.js"></script>
+<script src="../bower_components/angular-resource/angular-resource.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../bower_components/angular-touch/angular-touch.js"></script>
+<script src="../bower_components/angular-translate/angular-translate.js"></script>
+<script src="../bower_components/angular-strap/dist/angular-strap.js"></script>
+<script src="../bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+<script src="../bower_components/lodash/dist/lodash.compat.js"></script>
+<script src="../bower_components/d3/d3.js"></script>
+<script src="../bower_components/json3/lib/json3.js"></script>
+<script src="../bower_components/moment/moment.js"></script>
+<script src="../bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+<script src="../bower_components/snap.svg/dist/snap.svg-min.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/bel.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/modal.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/fliptile.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/fill-height.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/goback.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/serversideinventoryview.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/array-polar-data-visualization.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/bar-data-visualization.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/breadcrumb-bar.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/directives/serversideinventoryview.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/services/queryService.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/services/locale.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/services/base64.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/services/breadcrumb-service.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/services/auth.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/services/callback.js"></script>
+<script src="../bower_components/bel-ui/app/scripts/filters/freetextsearch.js"></script>
+<script src="../bower_components/bel-ui/app/grizzly/grizzlyApp.js"></script>
+<script src="../bower_components/bel-ui/app/grizzly/constants.js"></script>
+<script src="../bower_components/bel-ui/app/grizzly/grizzlyService.js"></script>
+<script src="../bower_components/bel-ui/app/grizzly/jobs/jobsController.js"></script>
+<script src="../bower_components/bel-ui/app/grizzly/jobs/jobDataVis.js"></script>
+<script src="../bower_components/bel-ui/app/grizzly/jobs/details/jobDetailsController.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/belMock.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/jobMock.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/mockUtils.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/inventoryPaginationMockUtils.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/inventoryPaginationServiceMock.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/jobInventoryMock.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/jobQueryFilterServiceMock.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/jobRequestHandlerMock.js"></script>
+<script src="../bower_components/bel-ui/app/mockApp/queryInspectorMock.js"></script>
+<script src="../bower_components/helpui-framework/helpuiModule.js"></script>
+<script src="../bower_components/helpui-content/helpuiContent.js"></script>
+<script src="../bower_components/restangular/dist/restangular.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+<script src="../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+<script src="../bower_components/raphael/raphael.js"></script>
+<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="../bower_components/highlightjs/highlight.pack.js"></script>
+<script src="../bower_components/ng-file-upload/angular-file-upload.js"></script>
+<script src="../bower_components/papaparse/papaparse.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -326,7 +318,36 @@
 <script src="scripts/services/wwn-service.js"></script>
 <script src="slider-scripts/scripts.js"></script>
 <script src="slider-scripts/unslider.js"></script>
-
+<script src="bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="mocks/appmock.js"></script>
+    <script src="mocks/authmock.js"></script>
+    <script src="mocks/clustermock.js"></script>
+    <script src="mocks/dataprotectionmock.js"></script>
+    <script src="mocks/diskmock.js"></script>
+    <script src="mocks/ethernetinterfacemock.js"></script>
+    <script src="mocks/evsmock.js"></script>
+    <script src="mocks/exportsmock.js"></script>
+    <script src="mocks/externalparitygroupmock.js"></script>
+    <script src="mocks/fabricmock.js"></script>
+    <script src="mocks/filepoolexpandtemplatemock.js"></script>
+    <script src="mocks/filepoolmock.js"></script>
+    <script src="mocks/filepooltemplatemock.js"></script>
+    <script src="mocks/filesystemmock.js"></script>
+    <script src="mocks/licensemock.js"></script>
+    <script src="mocks/paritygroupmock.js"></script>
+    <script src="mocks/paritygrouptemplatemock.js"></script>
+    <script src="mocks/replicationgroupmock.js"></script>
+    <script src="mocks/serversmock.js"></script>
+    <script src="mocks/sharesmock.js"></script>
+    <script src="mocks/storagepoolmock.js"></script>
+    <script src="mocks/storagepooltemplatemock.js"></script>
+    <script src="mocks/storageportsmock.js"></script>
+    <script src="mocks/storagesystemmock.js"></script>
+    <script src="mocks/tiersmock.js"></script>
+    <script src="mocks/tiersummarymock.js"></script>
+    <script src="mocks/unifiedreportingmock.js"></script>
+    <script src="mocks/volumemock.js"></script>
+    <script src="mocks/volumepairmock.js"></script>
 <!-- endbuild -->
 
 </body>
