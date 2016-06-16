@@ -83,12 +83,14 @@
 <script src="bower_components/bel-ui/app/scripts/directives/array-polar-data-visualization.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/usage-indicator-bar.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/bar-data-visualization.js"></script>
+<script src="bower_components/bel-ui/app/scripts/directives/breadcrumb-bar.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/donut-data-visualization.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/alert-tile.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/ribbon.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/queryService.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/locale.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/base64.js"></script>
+<script src="bower_components/bel-ui/app/scripts/services/breadcrumb-service.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/auth.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/callback.js"></script>
 <script src="bower_components/bel-ui/app/scripts/filters/freetextsearch.js"></script>
