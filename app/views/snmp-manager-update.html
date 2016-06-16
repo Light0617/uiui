@@ -25,11 +25,15 @@
                         <input type="text" name="ipAddress" class="form-control"
                                ng-model="dataModel.snmpManager.ipAddress"
                                required validate-ip>
+                        <p ng-show="dataModel.validationForm.ipAddress.$invalid && dataModel.validationForm.ipAddress.$dirty"
+                           class="validation-text">{{'file-server-invalid-ip' | translate }}</p>
                     </div>
                     <div class="form-group form-group-lg col-md-6 col-sm-6 col-xs-12 form-horizontal">
                         <label>{{'snmp-manager-port' | translate }}</label>
                         <input type="text" name="port" class="form-control"
                                ng-model="dataModel.snmpManager.port" required validate-ip-port>
+                        <p ng-show="dataModel.validationForm.port.$invalid && dataModel.validationForm.port.$dirty"
+                           class="validation-text">{{'common-invalid-number-range' | translate:dataModel.validationForm.port.translationData }}</p>
                     </div>
                 </div>
 
