@@ -27,9 +27,9 @@ angular.module('rainierApp')
             },
             isInvalid: function() {
                 return !$scope.model ||
-                    _.isEmpty($scope.model.svpIpAddress) ||
-                    _.isEmpty($scope.model.username) ||
-                    _.isEmpty($scope.model.password) ;
+                    $scope.model.validationForm.svpIpAddress.$invalid ||
+                    $scope.model.validationForm.username.$invalid ||
+                    $scope.model.validationForm.password.$invalid ;
             }
         };
     });
