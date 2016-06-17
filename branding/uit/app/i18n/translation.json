@@ -146,6 +146,7 @@
     "common-storage-system-active": "Active",
     "common-storage-system-inactive": "Inactive",
 
+    "common-invalid-number-range": "Enter a number between {{_0}} to {{_1}}.",
 
     "storage-port-type": "Port Type:",
     "storage-port-speed": "Port Speed:",
