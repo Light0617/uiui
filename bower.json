@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "dependencies": {
         "angular": "1.4.8",
-        "bel-ui": "git@git.mcp.com:ui/bel.git#jurgen-tweener",
+        "bel-ui": "/home/zhhuang/src/ui/bel#jurgen-tweener",
         "helpui-framework": "git@git.mcp.com:ui/help-framework#develop",
         "helpui-content": "git@git.mcp.com:ui/help-content#develop",
         "angular-resource": "1.4.8",
