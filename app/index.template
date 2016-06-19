@@ -87,6 +87,8 @@
 <script src="bower_components/bel-ui/app/scripts/directives/donut-data-visualization.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/alert-tile.js"></script>
 <script src="bower_components/bel-ui/app/scripts/directives/ribbon.js"></script>
+<script src="bower_components/bel-ui/app/scripts/directives/delaunay.js"></script>
+<script src="bower_components/bel-ui/app/scripts/directives/login.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/queryService.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/locale.js"></script>
 <script src="bower_components/bel-ui/app/scripts/services/base64.js"></script>
