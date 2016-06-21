@@ -15,15 +15,13 @@
                     <h2>{{'storage-systems-add' | translate }}</h2>
                 </div>
 
-                    <div class="scroll-wizard-container single-pane validation-scope" name="model.validationForm" ng-form>
+                    <div class="scroll-wizard-container single-pane">
                         
                             <div role="form" class="solo">
                                 <div class="form-group form-group-lg">
                                     <label>{{'storage-systems-svp-ip-address' | translate }}</label>
                                     <input type="text" name="svpIpAddress" class="form-control"
-                                           ng-model="model.svpIpAddress" required tabindex="1" validate-ip>
-                                    <p ng-show="model.validationForm.svpIpAddress.$invalid && model.validationForm.svpIpAddress.$dirty"
-                                       class="validation-text">{{'file-server-invalid-ip' | translate }}</p>
+                                           ng-model="model.svpIpAddress" required tabindex="1">
                                 </div>
                             </div>  
                             <div class="row section" role="form">
