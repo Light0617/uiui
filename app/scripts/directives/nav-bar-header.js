@@ -16,6 +16,7 @@ angular.module('rainierApp')
                 scope.authModel = {
                     logout: function() {
                         authService.logout();
+                        helpuiService.setHelpPaneVisible(false);
                         $location.path('/login');
                     }
                 };
