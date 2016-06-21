@@ -6,12 +6,12 @@
                     <h2 title="{{dataModel.share.label}}">{{dataModel.share.name}}</h2>
                 </div>
                 <div class="header-data pull-left lower-top-4">
-                    <p class="header-label">{{ 'share-internal-path' | translate}} <span class="header-value">{{dataModel.share.fileSystemPath}}</span></p>
-                    <p class="header-label">{{ 'share-external-path' | translate}} <span class="header-value">\\{{dataModel.evsIp}}\{{dataModel.share.name}}</span></p>
+                    <p class="header-label ellipsis">{{ 'share-internal-path' | translate}} <span class="header-value" ng-attr-title="{{dataModel.share.fileSystemPath}}">{{dataModel.share.fileSystemPath}}</span></p>
+                    <p class="header-label ellipsis">{{ 'share-external-path' | translate}} <span class="header-value" ng-attr-title="\\{{dataModel.evsIp}}\{{dataModel.share.name}}">\\{{dataModel.evsIp}}\{{dataModel.share.name}}</span></p>
                 </div>
                 <div class="header-data pull-left">
-                    <p class="header-label">{{ 'share-user-groups' | translate}} <span class="header-value">{{dataModel.userGroups}}</span></p>
-                    <p class="header-label ellipsis">{{ 'export-access-configuration' | translate}} <span class="header-value" title="{{dataModel.share.accessConfiguration}}">{{dataModel.share.accessConfiguration}}</span></p>
+                    <p class="header-label ellipsis">{{ 'share-user-groups' | translate}} <span class="header-value" ng-attr-title="{{dataModel.userGroups}}">{{dataModel.userGroups}}</span></p>
+                    <p class="header-label ellipsis">{{ 'export-access-configuration' | translate}} <span class="header-value" ng-attr-title="{{dataModel.share.accessConfiguration}}">{{dataModel.share.accessConfiguration}}</span></p>
                 </div>
             </div>
             <div class="footer-row margin-tile">
