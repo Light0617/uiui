@@ -301,6 +301,37 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   outline-color: #7bc142 !important;
 }
 
+.validation-scope {
+  input.form-control {
+    &.ng-dirty.ng-invalid {
+      border-color: $error-dark;
+    }
+    &:focus.ng-dirty.ng-valid {
+      border-color: $accent1;
+    }
+    &.error {
+      &, &.ng-dirty.ng-valid {
+        border-color: $error-dark;
+      }
+    }
+    &:focus.success {
+      &, &.ng-dirty.ng-invalid {
+        border-color: $accent1;
+      }
+    }
+  }
+
+  input[disabled].form-control {
+    &.ng-dirty,
+    &.error,
+    &.error.ng-dirty.ng-valid,
+    &.success,
+    &.success.ng-dirty.ng-invalid {
+      border-color: $neutral03;
+    }
+  }
+}
+
 .light-text {
   color: white;
 }

@@ -26,10 +26,7 @@ angular.module('rainierApp')
                 });
             },
             isInvalid: function() {
-                return !$scope.model ||
-                    _.isEmpty($scope.model.svpIpAddress) ||
-                    _.isEmpty($scope.model.username) ||
-                    _.isEmpty($scope.model.password) ;
+                return !$scope.model || $scope.payload.validationForm.$invalid;
             }
         };
     });

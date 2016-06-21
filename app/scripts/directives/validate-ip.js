@@ -13,7 +13,7 @@ angular.module('rainierApp')
             require: 'ngModel',
             link: function(scope, element, attr, ngModel) {
                 function validateIP(value) {
-                    ngModel.$setValidity('IP', validateIpService.isIP(value));
+                    ngModel.$setValidity('ip', validateIpService.isIP(value));
 
                     return value;
                 }
