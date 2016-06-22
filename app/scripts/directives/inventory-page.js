@@ -49,7 +49,8 @@ angular.module('rainierApp')
                 gridItemTemplate : '@',
                 listDetailsTemplate : '@',
                 pageActions :'=',
-                selectedItemActions : '='
+                selectedItemActions : '=',
+                services: '='
             },
             controller: controller,
             templateUrl: 'views/templates/inventory-page.html',
