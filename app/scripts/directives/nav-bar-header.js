@@ -12,6 +12,9 @@ angular.module('rainierApp')
         return {
             templateUrl: 'views/templates/nav-bar-header.html',
             restrict: 'E',
+            scope: {
+                hideBreadcrumb: '='
+            },
             link: function(scope) {
                 scope.hideOverlay = true;
                 scope.username = authService.getUser().name;
