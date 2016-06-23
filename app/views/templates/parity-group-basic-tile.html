@@ -30,8 +30,8 @@
         </select>
     </div>
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell control validation-form">
-        <input type="number" ng-min="0"
-               ng-max="{{pgTemplateRow.raidOptions.numberOfParityGroupsOriginal}}"
+        <input type="number" min="0"
+               max="{{pgTemplateRow.raidOptions.numberOfParityGroupsOriginal}}"
                ng-model="pgTemplateRow.raidOptions.numberOfParityGroups"
                class="number inline form-valid" name="numberOfParityGroups" title="{{pgTemplateRow.parityGroupTitle}}">
     </div>
