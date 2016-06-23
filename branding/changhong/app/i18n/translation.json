@@ -196,7 +196,7 @@
     "storage-pools-question-active-flash": "Intend to enable active flash?",
     "storage-pools-active-flash-license-info": "Valid license is needed to enable Active Flash for Pool.",
 
-    "storage-pool-id": "Pool Id",
+    "storage-pool-id": "Pool ID",
     "storage-pool-label": "Pool Label",
     "storage-pool-type": "Type",
     "storage-pool-tier": "Tier",
