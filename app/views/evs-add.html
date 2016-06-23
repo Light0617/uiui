@@ -1,6 +1,6 @@
 <common-page-header></common-page-header>
 <wizard-page>
-        <form name="dataModel.validationForm" role="form" class="validation-form" ng-submit="dataModel.submit()">
+        <form name="dataModel.validationForm" role="form" class="validation-scope" ng-submit="dataModel.submit()">
             <wizard-header ng-title="'evs-add'| translate" title="{{ 'evs-tooltip' | translate }}" icon-class="icon-virtual-file-server"></wizard-header>
             <div class="wizard-body">
                 <div class="header-row">
@@ -12,7 +12,7 @@
                                 <label title="{{ 'evs-tooltip' | translate }}">{{'vfs-label' | translate }}</label>
                                 <input type="text" name="label" class="form-control" placeholder="{{'file-systems-add-type-label' | translate}}"
                                        ng-minlength="1" ng-maxlength="15" ng-model="dataModel.payload.name" required>
-                                <p ng-show="dataModel.validationForm.label.$invalid && !dataModel.validationForm.label.$pristine"
+                                <p ng-show="dataModel.validationForm.label.$invalid && dataModel.validationForm.label.$dirty"
                                    class="validation-text">{{'file-server-invalid-label' | translate }}</p>
                             </div>
                         </div>
@@ -21,10 +21,10 @@
                                 <label title="{{ 'evs-tooltip' | translate }}">{{'evs-ip-address' | translate }}</label>
                                 <input type="text" name="ipAddress" class="form-control"
                                        placeholder="{{'common-ip-address' | translate}}"
-                                       ng-model="dataModel.payload.ipAddress" ng-class="{'ng-invalid ng-dirty': ( !dataModel.validIp || !dataModel.validRange ) && !dataModel.validationForm.ipAddress.$pristine, 'ng-valid': dataModel.validIp}" required>
-                                <p ng-show="!dataModel.validIp && !dataModel.validationForm.ipAddress.$pristine"
+                                       ng-model="dataModel.payload.ipAddress" validate-ip-evs required>
+                                <p ng-show="dataModel.validationForm.ipAddress.$error.ip"
                                    class="validation-text">{{'file-server-invalid-ip' | translate }}</p>
-                                <p ng-show="!dataModel.validRange && !dataModel.validationForm.ipAddress.$pristine"
+                                <p ng-show="dataModel.validationForm.ipAddress.$error.range"
                                    class="validation-text">{{'file-server-invalid-range' | translate }}</p>
                             </div>
                         </div>

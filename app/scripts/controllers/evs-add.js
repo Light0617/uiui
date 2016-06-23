@@ -11,19 +11,13 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('EvsAddCtrl', function($scope, $routeParams, orchestratorService, fileSystemService, $timeout, subnetMaskService, paginationService, objectTransformService, validateIpService) {
+    .controller('EvsAddCtrl', function($scope, $routeParams, orchestratorService, fileSystemService, $timeout, subnetMaskService, paginationService, objectTransformService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var selectable;
         var storageSystem;
         var storageSystems;
-
-        function validRange(range) {
-            if(range > 0 && range < 129) {
-                $scope.dataModel.validRange = true;
-            }
-        }
 
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
             storageSystems = _.reject(result, function (storageSystem) { return !storageSystem.accessible || !storageSystem.unified; });
@@ -62,26 +56,6 @@ angular.module('rainierApp')
 
             $scope.dataModel = dataModel;
 
-            $scope.$watch('dataModel.payload.ipAddress', function () {
-                var splitIp = $scope.dataModel.payload.ipAddress.split('/');
-                $scope.dataModel.validRange = true;
-                $scope.dataModel.validIp = true;
-                if(validateIpService.isIPv4($scope.dataModel.payload.ipAddress)){
-                    $scope.dataModel.payload.ipv6 = false;
-                }
-                else if(validateIpService.isIPv6(_.first(splitIp))) {
-                    $scope.dataModel.payload.ipv6 = true;
-                    $scope.dataModel.payload.subnetMask = '';
-                    $scope.dataModel.validRange = false;
-                    if(splitIp.length === 2) {
-                        validRange(_.last(splitIp));
-                    }
-                }
-                else {
-                    $scope.dataModel.validIp = false;
-                }
-            });
-
             function setDropDownVisibility() {
                 $scope.dataModel.showDropDownColumn = true;
             }
@@ -108,4 +82,39 @@ angular.module('rainierApp')
                 });
             };
         });
+    })
+    .directive('validateIpEvs', function(validateIpService) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attr, ngModel) {
+                function validateRange(range) {
+                    return (range > 0 && range < 129);
+                }
+
+                function validateIP(value) {
+                    var splitIp = value.split('/');
+                    var validRange = true;
+                    var validIp = true;
+                    if (validateIpService.isIPv4(value)) {
+                        $scope.dataModel.payload.ipv6 = false;
+                    }
+                    else if (validateIpService.isIPv6(_.first(splitIp))) {
+                        $scope.dataModel.payload.ipv6 = true;
+                        $scope.dataModel.payload.subnetMask = '';
+                        validRange = ((splitIp.length === 2) && validateRange(_.last(splitIp)));
+                    }
+                    else {
+                        validIp = false;
+                    }
+
+                    ngModel.$setValidity('ip', validIp);
+                    ngModel.$setValidity('range', validRange);
+
+                    return value;
+                }
+
+                ngModel.$parsers.push(validateIP);
+            }
+        };
     });
