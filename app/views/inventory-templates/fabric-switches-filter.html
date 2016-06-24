@@ -1,14 +1,14 @@
 <!--Control group: Pool Type Input-->
 <div class="control-group">
-    <h3>{{'fabric-tile-switch-type' | translate}}<span class="read-only" type="text">{{ model.search.switchType || 'fabric-search-all' | translate}}</span>
+    <h3>{{'fabric-tile-switch-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.switchType || 'fabric-search-all' | translate}}</span>
     </h3>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="filterModel.filter.switchType" btn-radio="'BROCADE'" title="BROCADE" uncheckable ng-click="filterModel.filterQuery('switchType', 'BROCADE')">{{'fabric-search-brocade' | translate}}
+            <label class="btn btn-default" ng-model="filterModel.filter.switchType" btn-radio="'fabric-search-brocade'" title="BROCADE" uncheckable ng-click="filterModel.filterQuery('switchType', 'BROCADE')">{{'fabric-search-brocade' | translate}}
             </label>
         </div>
         <div class="btn-group">
-            <label class="btn btn-default" ng-model="filterModel.filter.switchType" btn-radio="'CISCO'" title="CISCO" uncheckable ng-click="filterModel.filterQuery('switchType', 'CISCO')">{{'fabric-search-cisco' | translate}}
+            <label class="btn btn-default" ng-model="filterModel.filter.switchType" btn-radio="'fabric-search-cisco'" title="CISCO" uncheckable ng-click="filterModel.filterQuery('switchType', 'CISCO')">{{'fabric-search-cisco' | translate}}
             </label>
         </div>
     </div>
