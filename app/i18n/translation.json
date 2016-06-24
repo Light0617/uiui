@@ -442,6 +442,11 @@
 
     "storage-system-delete-one-confirmation": "Delete Storage System Confirmation",
     "storage-system-delete-current-content": "The current storage system will be deleted. Do you want to proceed?",
+    "storage-system-invalid-username": "Enter alphanumeric characters or symbols (- . @ _) within 63 characters. If you have already setup username using other character with HDvM-SN, please modify.",
+    "storage-system-invalid-password": "Enter alphanumeric characters or symbols (- . @ _) within 63 characters. If you have already setup password using other character with HDvM-SN, please modify.",
+    "storage-system-update-invalid-username": "Invalid username. Enter alphanumeric characters or symbols (- . @ _) within 63 characters. If you have already setup username using other character with HDvM-SN, please modify.",
+    "storage-system-update-invalid-password": "Invalid password. Enter alphanumeric characters or symbols (- . @ _) within 63 characters. If you have already setup password using other character with HDvM-SN, please modify.",
+
     "error-message-title": "Action Failed!",
     "common-error-message": "Check input and try again. Otherwise, navigate to the Jobs page and view job status - the operation may be taking longer than expected.",
     "common-api-get-message": "Failed to get data from API. Try again.",

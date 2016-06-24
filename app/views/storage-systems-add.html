@@ -38,12 +38,18 @@
                                         <label>{{'storage-systems-username' | translate }}</label>
                                         <input type="text" name="username" class="form-control"
                                                ng-model="model.username"
-                                               required tabindex="3">
+                                               required tabindex="3"
+                                               validate-storage-system-username>
+                                        <p ng-show="payload.validationForm.username.$error.username"
+                                           class="validation-text">{{'storage-system-invalid-username' | translate }}</p>
                                     </div>
                                     <div class="form-group form-group-lg col-md-6 col-sm-6 col-xs-12 form-horizontal">
                                         <label>{{'storage-systems-password' | translate }}</label>
                                         <input type="password" name="password" class="form-control"
-                                               ng-model="model.password" required tabindex="4">
+                                               ng-model="model.password" required tabindex="4"
+                                               validate-storage-system-password>
+                                        <p ng-show="payload.validationForm.password.$error.password"
+                                           class="validation-text">{{'storage-system-invalid-password' | translate }}</p>
                                     </div>
                             </div>
                         

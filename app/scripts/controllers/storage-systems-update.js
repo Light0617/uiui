@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StorageSystemsUpdateCtrl', function ($scope, $routeParams, orchestratorService) {
+    .controller('StorageSystemsUpdateCtrl', function ($scope, $routeParams, orchestratorService, validateStorageSystemUserAccountService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var dataModel = {
@@ -28,9 +28,21 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
         });
 
+        $scope.usernameIsValid = function () {
+            return validateStorageSystemUserAccountService.isValidUserName(dataModel.username);
+        };
+
+        $scope.passwordIsValid = function() {
+            return validateStorageSystemUserAccountService.isValidPassword(dataModel.password);
+        };
+
         $scope.isValid = function () {
             // To modify the storage system name from valid string to empty string or null is not allowed.
             if (!isBlank($scope.dataModel.originalStorageSystemName) && isBlank($scope.dataModel.storageSystemName)) {
+                return false;
+            }
+
+            if (!$scope.usernameIsValid() || !$scope.passwordIsValid()) {
                 return false;
             }
 

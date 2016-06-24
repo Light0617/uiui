@@ -76,6 +76,8 @@
                         </div>
                     </div>
                 </div>
+                <p class="validation-text" ng-if="!usernameIsValid()"> {{'storage-system-update-invalid-username' | translate }}</p>
+                <p class="validation-text" ng-if="!passwordIsValid()"> {{'storage-system-update-invalid-password' | translate }}</p>
             </div>
         </div>
         <!--Fixed footer-->
