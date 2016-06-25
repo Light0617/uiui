@@ -1,7 +1,7 @@
 <div class="summary-container-condensed">
-        <div class="meta-tile-short half">
+        <div class="meta-tile-short third">
             <div class="tile-row resource-info">
-                <div class="resource-icon icon icon-pools icon-lg-md">
+                <div class="status-icon-group icon icon-pools icon-lg-md">
                     <a role="button" ng-repeat="icon in dataModel.filePool.getIcons()" ng-click="icon.onClick()" ng-attr-title="{{icon.title | translate }}" ng-attr-class="btn icon-btn icon icon-tiny {{icon.icon}}"></a>
                 </div>
                 
@@ -14,18 +14,18 @@
                     <p class="value">{{dataModel.filePool.chunkSize.size}} <span>{{dataModel.filePool.chunkSize.unit}}</span></p>
                 </div>                 
             </div>
-            <div class="center-content btn-group-justified nopadding" role="group">
+            <div class="tile-row related-resources controls-row" role="group">
+                <div class="btn-group btn-group-justified">
                 <a class="btn btn-default" ng-href="{{dataModel.filePool.displayLinks[0].href}}" title="{{dataModel.filePool.displayLinks[0].label}}"
                    ng-if="dataModel.filePool.displayLinks[0]">
-                    <span class="icon icon-md {{dataModel.filePool.displayLinks[0].icon}}"></span> {{dataModel.filePool.displayLinks[0].label}}</a>
+                    <span class="icon icon-sm {{dataModel.filePool.displayLinks[0].icon}}"></span> {{dataModel.filePool.displayLinks[0].label}}</a>
 
                 <a class="btn btn-default" ng-href="{{dataModel.filePool.displayLinks[1].href}}" title="{{dataModel.filePool.displayLinks[1].label}}"
                    ng-if="dataModel.filePool.displayLinks[1]">
-                    <span class="icon icon-md {{dataModel.filePool.displayLinks[1].icon}}" ></span> {{dataModel.filePool.displayLinks[1].label}}</a>
-            </div>
+                    <span class="icon icon-sm {{dataModel.filePool.displayLinks[1].icon}}" ></span> {{dataModel.filePool.displayLinks[1].label}}</a>
+                </div>
+                </div>
         </div>
-        <div class="full-width margin-percent-L-R-10">
-            <bar-data-visualization ng-model="dataModel.filePool.barData" bottom-legend="true"></bar-data-visualization>
-        </div>
+        <bar-data-visualization class="two-thirds" ng-model="dataModel.filePool.barData" bottom-legend="true"></bar-data-visualization>
 </div>
 
