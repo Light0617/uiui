@@ -1,5 +1,5 @@
 <div class="summary-container-condensed">
-        <div class="meta-tile-short half">
+        <div class="meta-tile-short third">
             <div class="tile-row resource-info">
                 <div class="label-value-container resource-data">
                     <p class="label">{{ 'windows' | translate}}</p>
@@ -12,18 +12,20 @@
                     <p class="value">{{dataModel.expansionLimit.size}} {{dataModel.expansionLimit.unit}}</p>
                 </div>
             </div>
-            <div class="center-content btn-group-justified nopadding" role="group">
-                    <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[0].href}}" title="{{dataModel.fileSystem.displayLinks[0].label}}"
+            <div class="tile-row related-resources controls-row" role="group">
+                <div class="btn-group btn-group-justified">   
+                <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[0].href}}" title="{{dataModel.fileSystem.displayLinks[0].label}}"
                        ng-if="dataModel.fileSystem.displayLinks[0]">
-                        <span class="icon icon-md {{dataModel.fileSystem.displayLinks[0].icon}}"></span> {{dataModel.fileSystem.displayLinks[0].label}}</a>
+                        <span class="icon icon-sm {{dataModel.fileSystem.displayLinks[0].icon}}"></span> {{dataModel.fileSystem.displayLinks[0].label}}</a>
 
                     <a class="btn btn-default" ng-href="{{dataModel.fileSystem.displayLinks[1].href}}" title="{{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}"
                        ng-if="dataModel.fileSystem.displayLinks[1]">
-                        <span class="icon icon-md {{dataModel.fileSystem.displayLinks[1].icon}}" ></span> {{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}</a>
+                        <span class="icon icon-sm {{dataModel.fileSystem.displayLinks[1].icon}}" ></span> {{dataModel.fileServer.name}}@{{dataModel.fileServerIp}}</a>
+                    </div>
             </div>
         </div>
-        <div class="full-width margin-percent-L-R-10">
-            <bar-data-visualization ng-model="dataModel.fileSystem"></bar-data-visualization>
+        <div class="tile data-viz-container two-thirds">
+            <bar-data-visualization ng-model="dataModel.fileSystem.barData" bottom-legend="true"></bar-data-visualization>
         </div>
 </div>
 

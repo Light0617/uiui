@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('StoragePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService,
-                                              scrollDataSourceBuilderServiceNew, $location, paginationService, queryService) {
+                                              scrollDataSourceBuilderServiceNew, $location, paginationService, queryService, capacityAlertService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
         orchestratorService.tiers().then(function (result) {
@@ -255,6 +255,8 @@ angular.module('rainierApp')
             dataModel.addAction = function () {
                 $location.path(['storage-systems', storageSystemId, 'storage-pools', 'add'].join('/'));
             };
+            
+            dataModel.capacityAlert = capacityAlertService;
 
             $scope.dataModel = dataModel;
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storagePools, 'storagePoolSearch');

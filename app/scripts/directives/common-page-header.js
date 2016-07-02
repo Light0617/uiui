@@ -12,6 +12,9 @@ angular.module('rainierApp')
             templateUrl: 'views/templates/common-page-header.html',
             restrict: 'E',
             replace: true,
+            scope: {
+                hideBreadcrumb: '='
+            },
             link: function (scope, element, attr) {
                 scope.noPageFluid = attr.noPageFluid;
             }

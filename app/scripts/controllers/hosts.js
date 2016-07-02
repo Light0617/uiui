@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('HostsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService,
                                        scrollDataSourceBuilderServiceNew, ShareDataService, queryService,
-                                       paginationService, $location) {
+                                       paginationService, $location, donutService) {
 
         $scope.operatingSystemType = {};
         $scope.operatingSystems = orchestratorService.osType();
@@ -42,15 +42,15 @@ angular.module('rainierApp')
         }
 
         orchestratorService.hostsSummary().then(function (result) {
-            var summaryModel = {chartData: []};
+            var summaryModel = donutService.hostSummary();
 
             summaryModel.totalHost = result.totalHost;
             for (var i = 0; i < $scope.operatingSystems.length; ++i) {
                 if (!result.osTypeCount[$scope.operatingSystems[i]]) {
                     continue;
                 }
-                summaryModel.chartData.push({
-                    name: translateOsName($scope.operatingSystems[i]),
+                summaryModel.data.push({
+                    label: translateOsName($scope.operatingSystems[i]),
                     value: result.osTypeCount[$scope.operatingSystems[i]]
                 });
             }

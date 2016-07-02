@@ -9,12 +9,19 @@
  */
 angular.module('rainierApp')
     .controller('StorageSystemsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService,
-                                                $location, diskSizeService, paginationService) {
+                                                $location, diskSizeService, paginationService, capacityAlertService, dpAlertService, jobsAlertService, hwAlertService) {
 
         var dataProtection;
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var tiers;
         var unified;
+
+        $scope.services = {
+            cp: capacityAlertService,
+            dp: dpAlertService,
+            job: jobsAlertService,
+            hw: hwAlertService
+        };
 
         function transformService(fileSummary) {
             orchestratorService.tiers().then(function (result) {

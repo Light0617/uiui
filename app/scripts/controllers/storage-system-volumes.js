@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                       objectTransformService, orchestratorService,
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
-                                                      storageSystemVolumeService) {
+                                                      storageSystemVolumeService, dpAlertService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -39,6 +39,7 @@ angular.module('rainierApp')
                 summaryModel.protectedVolume = result.protectedVolumes;
                 summaryModel.unprotectedVolume = result.unprotectedVolumes;
                 summaryModel.secondaryVolume = result.secondaryVolumes;
+                summaryModel.dpAlert = dpAlertService;
                 $scope.summaryModel = summaryModel;
         });
 

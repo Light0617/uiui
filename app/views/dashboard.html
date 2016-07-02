@@ -1,7 +1,7 @@
-<common-page-header></common-page-header>
+<common-page-header hide-breadcrumb="true"></common-page-header>
 <application-stage>
-    <div class="dashboard">
-        <div class="dark-panel col-lg-2 col-md-3 col-sm-3 hidden-xs flex-column start" id="resource-counts-panel"
+    <div class="container-fluid stage dashboard">
+        <div class="dark-panel dashboard-aside" id="resource-counts-panel"
              fill-height="">
             <!--Storage System icon tile-->
             <storage-arrays-icon-tile ng-model="model.summary.storageSystemsInCacheCount"></storage-arrays-icon-tile>
@@ -10,28 +10,20 @@
             <evs-icon-tile ng-model="dataModel.evsCount" ng-if="dataModel.unified" title="{{ 'evs-tooltip' | translate }}"></evs-icon-tile>
             <!--End resource counts icons-->
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 col-lg-offset-2 col-md-offset-3 col-sm-offset-3 dashboard-right"
+        <div class="dashboard-main"
              ng-if="model.summary.storageArraysCount > 0">
             <!--Alerts Panel-->
-            <div class="alert-panel" id="alert-panel">
+            <div class="alert-panel quarters" id="alert-panel">
                 
-                    <capacity-alert ng-model="model.alerts.capacity.count"
-                                    alert-level="model.alerts.capacity.level"></capacity-alert>
-                
-                
-                    <dp-alert ng-model="model.alerts.dp.count" alert-level="model.alerts.dp.level"></dp-alert>
-                
-               
+                <alert-tile service="services.cp"></alert-tile>
+                <alert-tile service="services.dp"></alert-tile>
+                <alert-tile service="services.job"></alert-tile>
+                <alert-tile service="services.hw"></alert-tile>
 
-                    <jobs-alert ng-model="model.alerts.jobs"></jobs-alert>
-                
-                
-                    <hardware-alert ng-model="model.alerts.hardware.count"
-                                    alert-level="model.alerts.hardware.level"></hardware-alert>
                 
             </div>
             <!--Polar Data Viz-->
-            <div class="data-viz">
+            <div class="polar-data-viz-concentric">
                 <array-polar-data-visualization class="dashboard-data-viz scale-with-parent-container"
                         ng-model="model.arrayDataVisualizationModel"></array-polar-data-visualization>
             </div>

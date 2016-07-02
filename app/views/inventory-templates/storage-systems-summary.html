@@ -2,21 +2,10 @@
 
         <!--Alerts Panel-->
         <div class="alert-panel third" id="alert-panel">
-            
-                <capacity-alert ng-model="summaryModel.alerts.capacity.count"
-                                alert-level="summaryModel.alerts.capacity.level"></capacity-alert>
-            
-            
-                <dp-alert ng-model="summaryModel.alerts.dp.count" alert-level="summaryModel.alerts.dp.level"></dp-alert>
-            
-            
-
-                <jobs-alert ng-model="summaryModel.alerts.jobs"></jobs-alert>
-            
-            
-                <hardware-alert ng-model="summaryModel.alerts.hardware.count"
-                                alert-level="summaryModel.alerts.hardware.level"></hardware-alert>
-           
+            <alert-tile service="services.cp"></alert-tile>
+            <alert-tile service="services.dp"></alert-tile>
+            <alert-tile service="services.job"></alert-tile>
+            <alert-tile service="services.hw"></alert-tile>
         </div>
 
         <div class="tile data-viz-container two-thirds">

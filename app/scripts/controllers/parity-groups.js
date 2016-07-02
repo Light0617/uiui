@@ -8,7 +8,8 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, diskSizeService, scrollDataSourceBuilderService, $location, paginationService) {
+    .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, 
+                                              diskSizeService, scrollDataSourceBuilderService, $location, paginationService, hwAlertService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
         var getParityGroupsPath = 'parity-groups';
@@ -320,6 +321,7 @@ angular.module('rainierApp')
                 }
             ];
 
+            dataModel.hwAlert = hwAlertService;
             $scope.dataModel = dataModel;
 
             scrollDataSourceBuilderService.setupDataLoader($scope, parityGroups, 'parityGroupsSearch');

@@ -1,0 +1,5 @@
+<div class="col-md-12 ">
+    <div class="message-padding warning-text" ng-class="{'bottom-border': !$last}" role="alert" ng-repeat="pageError in option.pageErrors|orderBy:'received':true">
+        <span class="icon icon-warning warning-state"></span> {{pageError.received | date:'mediumTime'}} - {{pageError.message}}
+    </div>
+</div>
