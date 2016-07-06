@@ -47,7 +47,7 @@ angular.module('rainierApp')
                             usage = parseInt(storageSystem.bottomSize.value / storageSystem.bottomTotal.value * 100).toString() + '%';
                         }
                         storageSystem.fileCapacity = {
-                            usage: usage,
+                            usagePercentage: usage,
                             file: true
                         };
                     });

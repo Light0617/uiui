@@ -34,8 +34,8 @@ angular.module('rainierApp')
                     item.availableCapacity.value <= freeMaxSize.value &&
                     item.totalCapacity.value >= totalMinSize.value &&
                     item.totalCapacity.value <= totalMaxSize.value &&
-                    item.usePercentage >= search.utilization.min &&
-                    item.usePercentage <= search.utilization.max;
+                    item.usagePercentage >= search.utilization.min &&
+                    item.usagePercentage <= search.utilization.max;
 
                 var isFilter = function(criteria) {
                     return _.isArray(criteria) && _.size(criteria)> 0;

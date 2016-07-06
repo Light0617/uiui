@@ -68,16 +68,16 @@ angular.module('rainierApp')
 
         function transformStorageSystemsSummary(item) {
             var subscribedCapacityPercentage = 0;
-            var usePercentage = 0;
+            var usagePercentage = 0;
             var totalUsable = parseInt(item.totalUsableCapacity);
             if (totalUsable > 0) {
-                usePercentage = Math.round(parseInt(item.usedCapacity) * 100.0 / totalUsable);
+                usagePercentage = Math.round(parseInt(item.usedCapacity) * 100.0 / totalUsable);
                 subscribedCapacityPercentage = Math.round(parseInt(item.subscribedCapacity) * 100 /
                     totalUsable);
             }
 
-            item.usePercentage = usePercentage;
-            item.usage = usePercentage + '%';
+            item.usagePercentage = usagePercentage;
+            item.usage = usagePercentage + '%';
             item.physicalUsed = diskSizeService.getDisplaySize(item.usedCapacity);
             item.physicalTotal = diskSizeService.getDisplaySize(item.allocatedToPool);
             item.physicalFree = diskSizeService.getDisplaySize(item.allocatedToPool - item.usedCapacity);
@@ -299,9 +299,9 @@ angular.module('rainierApp')
                 }
             },
             transformVolume: function (item) {
-                var usePercentage = Math.round(parseInt(item.usedCapacity) * 100.0 / parseInt(item.size));
-                item.usePercentage = usePercentage;
-                item.usage = usePercentage + '%';
+                var usagePercentage = Math.round(parseInt(item.usedCapacity) * 100.0 / parseInt(item.size));
+                item.usagePercentage = usagePercentage;
+                item.usage = usagePercentage + '%';
                 item.totalCapacity = diskSizeService.getDisplaySize(item.size);
                 item.totalCapacity.intSize = parseInt(item.totalCapacity.size);
                 item.totalCapacity.decimalSize = parseFloat(item.totalCapacity.size);
@@ -1659,26 +1659,22 @@ angular.module('rainierApp')
                             capacity: item.totalCapacity
                         },
                         items: [
+                            [{
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(
+                                        key);
+                                })('common-label-used'),
+                                capacity: item.usedCapacity,
+                                color: thinUsedColor
+                            },
                             {
-                                used: {
-                                    label: (function (key) {
-                                        return synchronousTranslateService.translate(
-                                            key);
-                                    })('common-label-used'),
-                                    capacity: item.usedCapacity,
-                                    color: thinUsedColor
-                                },
-                                free: {
-                                    label: (function (key) {
-                                        return synchronousTranslateService.translate(
-                                            key);
-                                    })('common-label-free'),
-                                    capacity: item.availableCapacity,
-                                    color: thinFreeColor
-                                }
-
-                            }
-
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(
+                                        key);
+                                })('common-label-free'),
+                                capacity: item.availableCapacity,
+                                color: thinFreeColor
+                            }]
                         ]
                     },
                     alerts: {
