@@ -486,24 +486,34 @@ module.exports = function(grunt) {
                 {
                     expand: true,
                     cwd: '.',
-                    src: 'bower_components/bel-ui/app/templates/serversideinventoryview.html',
+                    src: 'bower_components/bel-ui/app/scripts/**/*',
                     dest: '<%= yeoman.dist %>'
-                }, {
+                },
+                {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/bel-ui/app/templates/**/*',
+                    dest: '<%= yeoman.dist %>'
+                },
+                {
                     expand: true,
                     cwd: '.',
                     src: 'bower_components/helpui-framework/views/*',
                     dest: '<%= yeoman.dist %>'
-                }, {
+                },
+                {
                     expand: true,
                     cwd: '.',
                     src: 'bower_components/helpui-content/metadata/*',
                     dest: '<%= yeoman.dist %>'
-                }, {
+                },
+                {
                     expand: true,
                     cwd: '.',
                     src: 'bower_components/helpui-content/html/*',
                     dest: '<%= yeoman.dist %>'
-                }, {
+                },
+                {
                     expand: true,
                     cwd: '.',
                     src: 'bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
