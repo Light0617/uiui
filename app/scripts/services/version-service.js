@@ -10,6 +10,8 @@
 angular.module('rainierApp')
     .factory('versionService', function () {
         var supportedFwVersionPrefixes = [
+            '80-05-0',
+            '83-04-0',
             '80-04-2',
             '83-03-2',
             '80-04-0',
