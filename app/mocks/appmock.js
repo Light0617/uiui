@@ -13,7 +13,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                             serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
                             filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock,
                             parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
-                            replicationgroupmock, volumepairmock, fabricmock, licensemock) {
+                            replicationgroupmock, volumepairmock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock, monitorHardwareMockById,
+                            monitorCapacityMockById) {
 
     console.log('!! mocking Rainier backend APIs !!');
 
@@ -149,8 +150,34 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return templateSwitcher(urlResult);
             case 'san-fabrics':
                 return authMock.authenticateAndCall(urlResult, fabricmock.handle);
+            case 'monitoring':
+                return monitorGroupSwitcher(urlResult);
         }
     };
+
+    var monitorGroupSwitcher = function(urlResult)  {
+        switch (urlResult.subType)  {
+            case 'hardware':
+                return authMock.authenticateAndCall(urlResult, monitorHardwareMock.handle)
+            case 'capacity':
+                return authMock.authenticateAndCall(urlResult, monitorCapacityMock.handle)
+            default:
+                return monitorSwitcher(urlResult);
+
+        }
+    };
+
+    var monitorSwitcher = function(urlResult)  {
+        switch(urlResult.subResourceId)  {
+            case 'hardware':
+                return authMock.authenticateAndCall(urlResult, monitorHardwareMockById.handle)
+            case 'capacity':
+                return authMock.authenticateAndCall(urlResult, monitorCapacityMockById.handle)
+            default:
+                console.log(urlResult + "not implemented yet");
+                return null;
+        }
+    }
 
     var templateSwitcher = function(urlResult) {
         switch(urlResult.resourceId) {

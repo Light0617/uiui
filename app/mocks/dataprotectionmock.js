@@ -33,6 +33,9 @@ rainierAppMock.factory('dataProtectionMock', function(mockUtils) {
             };
             return mockUtils.response.ok(capacityInfo);
         }
+        if (urlResult.subResourceId === 'servers') {
+            return mockUtils.response.ok({servers:[]});
+        }
     };
 
     return {
