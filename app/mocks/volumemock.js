@@ -52,7 +52,9 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
 
     var getVolumeDataProtectionSummary = function getVolumeDataProtectionSummary() {
         return {
-            replicationType: _.sample([['CLONE'], ['SNAPSHOT'], ['CLONE', 'SNAPSHOT'], []]),
+            replicationType: _.sample([['CLONE'], ['SNAPSHOT'], ['SNAPSHOT_EXTENDABLE'], ['SNAPSHOT_FULLCOPY'],
+                ['SNAPSHOT_EXTENDABLE', 'CLONE'], ['SNAPSHOT_FULLCOPY', 'CLONE'], ['SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY'],
+                ['SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY', 'CLONE'], ['CLONE', 'SNAPSHOT'], []]),
             volumeType: _.sample([['P-VOL'], ['S-VOL'], ['UNPROTECTED'], ['P-VOL', 'S-VOL']]),
             replicationGroupIdMap: getReplicationGroupIdMap(),
             hasFailures: _.sample([true, false, false, false]),

@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
-                                                 versionService) {
+                                                 versionService, replicationService) {
 
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
@@ -317,12 +317,8 @@ angular.module('rainierApp')
                 item.poolLabel = 'pool' + item.poolId;
                 item.volumeLabel = 'Volume' + item.volumeId;
 
-                var types = [];
-                _.each(item.dataProtectionSummary.replicationType, function (type) {
-                    types.push(type.charAt(0).toUpperCase() + type.toLowerCase().slice(1));
-                });
 
-                item.displayedDpType = types.join(', ');
+                item.displayedDpType = replicationService.displayReplicationType(item.dataProtectionSummary.replicationType);
 
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
