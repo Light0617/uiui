@@ -310,7 +310,7 @@ angular.module('rainierApp')
                 item.alerts = 0;
                 item.open = false;
 
-                if(item.label.indexOf('HSA-reserved-') === 0) {
+                if(item.label && item.label.indexOf('HSA-reserved-') === 0) {
                     item.disabledCheckBox = true;
                 }
 
