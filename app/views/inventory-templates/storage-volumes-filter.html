@@ -87,22 +87,38 @@
         </label>
     </div>
 </div>
-<div class="control-group">
-    <p>{{'storage-volume-filter-protection-type' | translate}}</p>
 
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.filter.snapshot" ng-init="filterModel.filter.snapshot=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? 'SNAPSHOT' : '', filterModel.arrayType, 'SNAPSHOT')">{{'storage-volume-filter-snapshot' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.filter.clone" ng-init="filterModel.filter.clone=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? 'CLONE' : '', filterModel.arrayType, 'CLONE')">{{'storage-volume-filter-clone' | translate}}
-        </label>
-    </div>
+<div class="control-group">
+    <h3>{{'storage-volume-filter-protection-type' | translate}}</h3>
 </div>
+<div class="btn-group btn-group-justified btn-group-vertical">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotex"
+               ng-init="filterModel.filter.snapshotex=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotex ? 'SNAPSHOT_EXTENDABLE' : '', filterModel.arrayType, 'SNAPSHOT_EXTENDABLE')">
+        {{'storage-volume-filter-snapshot-ex' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotfc"
+               ng-init="filterModel.filter.snapshotfc=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotfc ? 'SNAPSHOT_FULLCOPY' : '', filterModel.arrayType, 'SNAPSHOT_FULLCOPY')">
+        {{'storage-volume-filter-snapshot-fc' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshot"
+               ng-init="filterModel.filter.snapshot=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? 'SNAPSHOT' : '', filterModel.arrayType, 'SNAPSHOT')">
+        {{'storage-volume-filter-snapshot' | translate}}
+    </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.clone"
+               ng-init="filterModel.filter.clone=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? 'CLONE' : '', filterModel.arrayType, 'CLONE')">
+        {{'storage-volume-filter-clone' | translate}}
+    </label>
+</div>
+
 <div class="control-group" ng-show="!dataModel.isDPMonitoring">
     <p>{{'storage-volume-filter-data-protection' | translate}}</p>
 

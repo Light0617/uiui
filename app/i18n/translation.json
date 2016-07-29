@@ -259,7 +259,9 @@
     "storage-volume-attach": "Attach Volumes",
 
     "storage-volume-filter-full-copy": "Full Copy",
-    "storage-volume-filter-snapshot": "Snapshot",
+    "storage-volume-filter-snapshot": "Snapshot(Non-Extendable)",
+    "storage-volume-filter-snapshot-ex": "Snapshot(Extendable)",
+    "storage-volume-filter-snapshot-fc": "Snapshot(Full Copy)",
     "storage-volume-filter-clone": "Clone",
     "storage-volume-filter-protected": "Protected",
     "storage-volume-filter-unprotected": "Unprotected",

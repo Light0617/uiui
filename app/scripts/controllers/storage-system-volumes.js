@@ -105,6 +105,8 @@ angular.module('rainierApp')
                     volumeType: '',
                     replicationType: [],
                     protectionStatusList: [],
+                    snapshotex: false,
+                    snapshotfc: false,
                     snapshot: false,
                     clone: false,
                     protected: false,
