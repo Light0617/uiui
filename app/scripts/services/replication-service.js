@@ -9,27 +9,43 @@
  */
 
 angular.module('rainierApp').factory('replicationService', function () {
-    var transformReplicationType = function (type) {
+    var rawToDisp = function (type) {
         switch (type) {
             case 'CLONE':
                 return 'Clone';
             case 'SNAPSHOT':
-                return 'Snapshot(Non-Extendable)';
+                return 'Snapshot (Non-Extendable)';
             case 'SNAPSHOT_FULLCOPY':
-                return 'Snapshot(Full Copy)';
+                return 'Snapshot (Full Copy)';
             case 'SNAPSHOT_EXTENDABLE':
-                return 'Snapshot(Extendable)';
+                return 'Snapshot (Extendable)';
             default:
                 return type.charAt(0).toUpperCase() + type.toLowerCase().slice(1);
         }
     };
+    var dispToRaw = function (type) {
+        switch (type) {
+            case 'Clone':
+                return 'CLONE';
+            case 'Snapshot (Non-Extendable)':
+                return 'SNAPSHOT';
+            case 'Snapshot (Extendable)':
+                return 'SNAPSHOT_EXTENDABLE';
+            case 'Snapshot (Full Copy)':
+                return 'SNAPSHOT_FULLCOPY';
+            default:
+                return type.toString().toUpperCase();
+        }
+    };
     return {
-        displayReplicationType: function (rawType) {
+        displayReplicationTypes: function (rawType) {
             var displayTypes = [];
             _.each(rawType, function (type) {
-                displayTypes.push(transformReplicationType(type));
+                displayTypes.push(rawToDisp(type));
             });
             return displayTypes.join(', ');
-        }
+        },
+        displayReplicationType: rawToDisp,
+        rawReplicationType: dispToRaw
     };
 });

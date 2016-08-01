@@ -20,7 +20,7 @@ rainierAppMock.factory('volumepairmock', function (mockUtils) {
             splitTime: 1450814584000,
             consistent: _.sample([true, false]),
             consistencyId: _.random(1, 100),
-            type: _.sample(['SNAPSHOT', 'CLONE', 'SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY ']),
+            type: _.sample(['SNAPSHOT', 'CLONE', 'SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY']),
             primaryVolume: getVolume('p-vol'),
             secondaryVolume: getVolume('s-vol'),
             state: _.sample(['HEALTHY', 'ERROR'])

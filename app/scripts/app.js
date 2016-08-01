@@ -186,6 +186,12 @@ angular
                             return replicationGroupsService.snapshotExternalVolumePairExists(storageSystemId);
                         }).then(function (result) {
                             finalResult.snapshotExternalVolumePairExist = result === 0 ? false : true;
+                            return replicationGroupsService.snapshotExtendableExternalVolumePairExists(storageSystemId);
+                        }).then(function (result) {
+                            finalResult.snapshotExtendableExternalVolumePairExist = result === 0 ? false : true;
+                            return replicationGroupsService.snapshotFullcopyExternalVolumePairExists(storageSystemId);
+                        }).then(function (result) {
+                            finalResult.snapshotFullcopyExternalVolumePairExist = result === 0 ? false : true;
                             return finalResult;
                         });
                     }

@@ -214,18 +214,18 @@ angular.module('rainierApp')
 
             },
             transformReplicationGroup: function (item) {
-                if (item.type === 'CLONE') {
-                    item.type = 'Clone';
-                    item.schedule = 'N/A';
-                    item.status = 'N/A';
-                } else if (item.type === 'SNAPSHOT') {
-                    item.type = 'Snapshot';
+                if (item.type === 'SNAPSHOT') {
                     if (item.scheduleEnabled === false) {
                         item.status = 'Suspended';
                     } else if (!item.hasOwnProperty('isExternal')) {
                         item.status = 'Active';
                     }
+                } else {
+                    item.schedule = 'N/A';
+                    item.status = 'N/A';
                 }
+
+                item.type = replicationService.displayReplicationType(item.type);
 
                 if (item.consistent === true) {
                     item.consistent = 'On';
@@ -318,7 +318,7 @@ angular.module('rainierApp')
                 item.volumeLabel = 'Volume' + item.volumeId;
 
 
-                item.displayedDpType = replicationService.displayReplicationType(item.dataProtectionSummary.replicationType);
+                item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType);
 
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';

@@ -28,7 +28,7 @@ rainierAppMock.factory('replicationgroupmock', function (mockUtils) {
             storageSystemId: '220010',
             name: 'Replication Group' + v,
             comments: 'Test',
-            type: _.sample(['SNAPSHOT', 'CLONE']),
+            type: _.sample(['SNAPSHOT', 'CLONE', 'SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY']),
             consistent: _.sample([true, false]),
             numberOfCopies: _.random(1, 1024),
             schedule: {hour: 13, minute: 2, recurringUnit: 'WEEKLY', recurringUnitInterval: null, dayOfWeek: ['SUN', 'MON'], dayOfMonth: null},
@@ -46,7 +46,7 @@ rainierAppMock.factory('replicationgroupmock', function (mockUtils) {
             splitTime: 1450814584000,
             consistent: _.sample([true, false]),
             consistencyId: _.random(1, 100),
-            type: _.sample(['SNAPSHOT', 'CLONE']),
+            type: _.sample(['SNAPSHOT', 'CLONE', 'SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY']),
             primaryVolume: getVolume('p-vol'),
             secondaryVolume: getVolume('s-vol'),
             state: _.sample(['HEALTHY', 'ERROR'])

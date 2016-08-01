@@ -217,6 +217,7 @@ angular.module('rainierApp')
                 var anyReplicationGroupSelected = false;
                 var nothingSelected = true;
                 var selectedVolumePairs = [];
+                var containsSnapshotFullcopy = false;
                 if (scope.dataModel.displayList) {
                         for (var i = 0; i < scope.dataModel.displayList.length; ++i) {
                             if (scope.dataModel.displayList[i].selected) {
@@ -227,6 +228,10 @@ angular.module('rainierApp')
                                 for (var j = 0; j < scope.dataModel.displayList[i].volumePairs.length; ++j) {
                                     if (scope.dataModel.displayList[i].volumePairs[j].selected) {
                                         nothingSelected = false;
+                                        var type = scope.dataModel.displayList[i].volumePairs[j].type;
+                                        if (type === 'SNAPSHOT_FULLCOPY') {
+                                            containsSnapshotFullcopy = true;
+                                        }
                                         if (selectedVolumePairs.indexOf(scope.dataModel.displayList[i].volumePairs[j].primaryVolume.id) > -1 ||
                                             scope.dataModel.displayList[i].volumePairs[j].secondaryVolume.id === 'N/A') {
                                             result = false;
@@ -239,7 +244,7 @@ angular.module('rainierApp')
                             }
                         }
                     scope.dataModel.noVolumePairSelected = !(anyReplicationGroupSelected && !nothingSelected);
-                    scope.dataModel.enableRestore = result && !nothingSelected;
+                    scope.dataModel.enableRestore = result && !nothingSelected && !containsSnapshotFullcopy;
                 }
             };
         };

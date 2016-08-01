@@ -1,19 +1,28 @@
 <div class="control-group">
-    <h3>{{'replication-group-label-technology' | translate}}<span class="read-only" type="text">{{ filterModel.filter.type || 'ALL'}}</span></h3>
+    <h3>{{'replication-group-label-technology' | translate}}</h3>
 </div>
-<div class="btn-group btn-group-toggle btn-group-justified">
-    <div class="btn-group">
-        <label class="btn btn-default" ng-model="filterModel.filter.type"
+<div class="btn-group btn-group-vertical btn-group-justified">
+    <label class="btn btn-primary" ng-model="filterModel.filter.type"
+           ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
+           btn-radio="'SNAPSHOT_EXTENDABLE'" uncheckable>
+        {{'replication-groups-filter-snapshot-ex' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.type"
+           ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
+           btn-radio="'SNAPSHOT_FULLCOPY'" uncheckable>
+        {{'replication-groups-filter-snapshot-fc' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.type"
            ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
            btn-radio="'SNAPSHOT'" uncheckable>
         {{'replication-groups-filter-snapshot' | translate}}
-        </label>
-    </div>
-    <div class="btn-group">
-        <label class="btn btn-default" ng-model="filterModel.filter.type"
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.type"
            ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
            btn-radio="'CLONE'" uncheckable>
         {{'replication-groups-filter-clone' | translate}}
-        </label>
-    </div>
+    </label>
 </div>

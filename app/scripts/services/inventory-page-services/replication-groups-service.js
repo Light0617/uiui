@@ -9,12 +9,12 @@
  */
 angular.module('rainierApp')
     .factory('replicationGroupsService', function ($log, Restangular, queryService, objectTransformService,
-                                                   apiResponseHandlerService, paginationService) {
+                                                   apiResponseHandlerService, paginationService, replicationService) {
         return {
             //TODO: CDUAN it's working now, but because it's checked in before we created pagination-service.js
             // need to change it to use Ernest's pattern
             ExternalReplicationGroup: function ExternalReplicationGroup (type) {
-                this.id = type;
+                this.id = replicationService.rawReplicationType(type);
                 this.storageSystemId = 'N/A';
                 this.name = 'External';
                 this.comments = 'N/A';
@@ -30,7 +30,7 @@ angular.module('rainierApp')
                 this.naturalLanguageSchedule = 'N/A';
             },
             getVolumePairsForOneReplicationGroup: function (token, storageSystemId, replicationGroup, volumeId) {
-                var queryParams = {q: ['type:' + replicationGroup.type.toString().toUpperCase()]};
+                var queryParams = {q: ['type:' + replicationService.rawReplicationType(replicationGroup.type)]};
                 if (volumeId !== undefined) {
                     queryParams.q[0] = queryParams.q[0] + ' AND primaryVolume.id:' + parseInt(volumeId);
                 }
@@ -87,6 +87,32 @@ angular.module('rainierApp')
                         return result.total;
                     }));
             },
+            snapshotExtendableExternalVolumePairExists: function (storageSystemId) {
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('_missing_', 'replicationGroup');
+                queryService.setQueryMapEntry('type', 'SNAPSHOT_EXTENDABLE');
+
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular
+                    .one('storage-systems', storageSystemId)
+                    .one('volume-pairs')
+                    .get(queryService.getQueryParameters(true))
+                    .then(function (result) {
+                        return result.total;
+                    }));
+            },
+            snapshotFullcopyExternalVolumePairExists: function (storageSystemId) {
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('_missing_', 'replicationGroup');
+                queryService.setQueryMapEntry('type', 'SNAPSHOT_FULLCOPY');
+
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular
+                    .one('storage-systems', storageSystemId)
+                    .one('volume-pairs')
+                    .get(queryService.getQueryParameters(true))
+                    .then(function (result) {
+                        return result.total;
+                    }));
+            },
             getReplicationGroups: function (token, storageSystemId, isFirstTime) {
                 if (isFirstTime !== undefined) {
                     paginationService.clearQuery();
@@ -124,7 +150,8 @@ angular.module('rainierApp')
                 var currentReplicationGroupTextSearch = queryService.getQuery('replicationGroupTextSearch');
                 if (currentReplicationGroupType !== undefined) {
                     externalReplicationGroups = _.filter(externalReplicationGroups, function (rg) {
-                        return rg.type.toString().toUpperCase() === currentReplicationGroupType.queryText.toUpperCase();
+                        return replicationService.rawReplicationType(rg.type) ===
+                            replicationService.rawReplicationType(currentReplicationGroupType.queryText)
                     });
                 }
                 if (currentReplicationGroupTextSearch !=undefined) {
