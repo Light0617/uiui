@@ -109,6 +109,7 @@
     "common-label-unprotected-hosts": "Unprotected",
     "common-label-partially-hosts": "Partially",
     "common-label-breakdown-hosts": "Breakdown of Server Statuses",
+    "common-label-nas-boot": "NAS Boot",
     "common-hosts": "Servers",
     "common-host-add": "Add Servers",
     "common-host-update": "Update Server",
