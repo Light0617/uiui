@@ -170,7 +170,7 @@ angular.module('rainierApp')
             $scope.numberOfRgWithVolumeIdAsPvol = $scope.rgWithVolumeIdAsPvol.length.toString();
 
 
-            if (($scope.noRgWithVolumeIdAsPvol && $scope.noRgWithVolumeIdAsSvol) || ($scope.rgWithVolumeIdAsPvol.length > 6)) {
+            if (($scope.noRgWithVolumeIdAsPvol && $scope.noRgWithVolumeIdAsSvol) || ($scope.rgWithVolumeIdAsPvol.length > 7)) {
                 $scope.noDataVisualization = true;
             }
 
@@ -197,6 +197,9 @@ angular.module('rainierApp')
                     case '6':
                         baseRightIconString = baseRightIconString + 'sixth-';
                         break;
+                    case '7':
+                        baseRightIconString = baseRightIconString + 'seventh-';
+                        break;
                 }
             } else if ($scope.noRgWithVolumeIdAsSvol && !$scope.noRgWithVolumeIdAsPvol) {
                 switch ($scope.numberOfRgWithVolumeIdAsPvol) {
@@ -217,6 +220,9 @@ angular.module('rainierApp')
                         break;
                     case '6':
                         baseRightIconString = baseRightIconString + 'sixth-long-';
+                        break;
+                    case '7':
+                        baseRightIconString = baseRightIconString + 'seventh-long-';
                         break;
                 }
             }
