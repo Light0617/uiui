@@ -61,6 +61,14 @@ angular.module('rainierApp')
                 }
 
             }, {
+                title: 'volume-provisioning-status',
+                sizeClass: 'twelfth',
+                sortField: 'provisioningStatus',
+                getDisplayValue: function(item) {
+                    return item.provisioningStatus;
+                }
+
+            }, {
                 title: 'common-label-total',
                 sizeClass: 'twelfth',
 

@@ -30,6 +30,7 @@ angular.module('rainierApp')
 
                  pass = pass &&
                     !(search.type && item.type !== search.type) &&
+                    (item.provisioningStatus === search.provisioningStatus || !search.provisioningStatus) &&
                     item.availableCapacity.value >= freeMinSize.value &&
                     item.availableCapacity.value <= freeMaxSize.value &&
                     item.totalCapacity.value >= totalMinSize.value &&

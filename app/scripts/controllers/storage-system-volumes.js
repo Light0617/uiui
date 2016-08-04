@@ -103,6 +103,7 @@ angular.module('rainierApp')
                 filter: {
                     freeText: '',
                     volumeType: '',
+                    provisioningStatus: '',
                     replicationType: [],
                     protectionStatusList: [],
                     snapshotex: false,

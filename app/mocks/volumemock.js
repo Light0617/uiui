@@ -33,6 +33,47 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
             type: _.sample(['HDP', 'HDT', 'HTI']),
             dataProtectionSummary: getVolumeDataProtectionSummary(),
+            provisioningStatus: _.sample(['Attached', 'Unattached', 'Unmanaged']),
+            attachedVolumeServerSummary:[
+            {
+                serverId: null,
+                paths:[
+                    {
+                        'storagePortId':'CL1-D',
+                        'storageSystemId':'410266',
+                        'lun':5,
+                        'name':'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
+                        'hostMode':'LINUX',
+                        'wwns':[
+                            '1059273981505633'
+                        ],
+                        'hostModeOptions':[
+                            71,
+                            72
+                        ]
+                    }
+                ]
+            },
+            {
+                serverId: '2',
+                paths:[
+                    {
+                        'storagePortId':'CL1-E',
+                        'storageSystemId':'410266',
+                        'lun':4,
+                        'name':'HID_CL1-E_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
+                        'hostMode':'LINUX',
+                        'wwns':[
+                            '1059273981505633'
+                        ],
+                        'hostModeOptions':[
+                            71,
+                            72
+                        ]
+                    }
+                ]
+            }
+        ],
             utilization: 0,
             paths: [{'storagePortId':'CL1-D','storageSystemId':'410266','lun':5,'name':'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec','hostMode':'LINUX','wwns':['1059273981505633'],'hostModeOptions':[71,72]}]
         };

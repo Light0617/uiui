@@ -93,7 +93,7 @@
              stop-event-fn="filterModel.sliderQuery('utilization', filterModel.filter.utilization.min, filterModel.filter.utilization.max)">
         </div>
     </div>
-
+    <!--Control group: Volume Type-->
     <div class="control-group">
         <h3>Volume Type<span class="read-only" type="text">{{ filterModel.filter.type || 'ALL'}}</span></h3>
 
@@ -116,7 +116,32 @@
             </label>
         </div>
     </div>
+    <!--Control group: Provisioning Status-->
+    <div class="control-group">
+        <h3>Provisioning Status<span class="read-only" type="text">{{ filterModel.filter.provisioningStatus || 'ALL'}}</span></h3>
 
+    </div>
+    <!-- TODO SH Update Filter queries as part of NEWRAIN-6146-->
+    <div class="btn-group btn-group-toggle-green btn-group-justified">
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.provisioningStatus"
+                   btn-radio="'Attached'" uncheckable ng-click="filterModel.filterQuery('provisioningStatus', 'Attached')">Thin
+            </label>
+
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.type"
+                   btn-radio="'Unattached'" uncheckable ng-click="filterModel.filterQuery('provisioningStatus', 'Unattached')">Tiered
+            </label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.type"
+                   btn-radio="'Unmanaged'" uncheckable ng-click="filterModel.filterQuery('provisioningStatus', 'Unmanaged')">Snap
+            </label>
+        </div>
+    </div>
+
+    <!--Control group: Protection Type-->
     <div class="control-group">
         <p>Protection Type</p>
 
@@ -134,6 +159,7 @@
         </div>
     </div>
 
+    <!--Control group: Data Protection -->
     <div class="control-group">
         <p>Data Protection</p>
 
