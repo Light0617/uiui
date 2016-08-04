@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('StorageSystemVolumeCtrl', function ($scope, $routeParams, $timeout, $window, $location, orchestratorService,
                                                      synchronousTranslateService, objectTransformService, ShareDataService,
-                                                     scrollDataSourceBuilderService, dataProtectionSettingsService,
+                                                     scrollDataSourceBuilderService, dataProtectionSettingsService, replicationService,
                                                      replicationGroupsService, storageSystemVolumeService, paginationService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
@@ -79,7 +79,6 @@ angular.module('rainierApp')
             };
         });
 
-
         storageSystemVolumeService.getVolumePairsAsSVol(volumeId, storageSystemId).then(function (result) {
             if (result.total) {
                 $scope.volumePairsAsSvol = result.resources;
@@ -88,8 +87,8 @@ angular.module('rainierApp')
                     $scope.model.primaryVolumeLabel = result.label;
                     var replicationGroupAsSVolName = _.first($scope.volumePairsAsSvol).replicationGroup;
                     if (replicationGroupAsSVolName === 'N/A') {
-                        $scope.rgWithVolumeIdAsSvol = new replicationGroupsService.ExternalReplicationGroup(_.first($scope.volumePairsAsSvol)
-                            .type.toString().toLocaleLowerCase());
+                        var technologyName = replicationService.displayReplicationType(_.first($scope.volumePairsAsSvol).type.toString());
+                        $scope.rgWithVolumeIdAsSvol = new replicationGroupsService.ExternalReplicationGroup(technologyName);
                         $scope.rgWithVolumeIdAsSvol.volumePairsAsSvol = $scope.volumePairsAsSvol;
                         return storageSystemVolumeService.getVolumePairsAsPVolAndClone(volumeId, storageSystemId);
                     } else {
@@ -149,9 +148,25 @@ angular.module('rainierApp')
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = false;
-                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot'));
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Non-Extendable)'));
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = true;
+            }
+            return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing(volumeId, storageSystemId);
+        }).then(function (result) {
+            if (result.total) {
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable = false;
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Extendable)'));
+            } else {
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable = true;
+            }
+            return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotFullcopyAndRGNameMissing(volumeId, storageSystemId);
+        }).then(function (result) {
+            if (result.total) {
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy = false;
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Full Copy)'));
+            } else {
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy = true;
             }
 
             if ($scope.noRgWithVolumeIdAsSvol) {
@@ -163,7 +178,8 @@ angular.module('rainierApp')
             }
 
             $scope.noRgWithVolumeIdAsPvol = $scope.noRgWithVolumeIdAsPvolAndClone && $scope.noRgWithVolumeIdAsPvolAndSnaphot &&
-                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot;
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot && $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable &&
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy;
 
             $scope.rgWithVolumeIdAsPvol = _.sortBy($scope.rgWithVolumeIdAsPvol, 'id');
 

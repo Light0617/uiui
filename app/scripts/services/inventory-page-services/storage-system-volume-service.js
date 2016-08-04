@@ -45,6 +45,20 @@ angular.module('rainierApp')
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
                 return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
             },
+            getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing: function (currentVolumeId, storageSystemId) {
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
+                queryService.setQueryMapEntry('type', 'SNAPSHOT_EXTENDABLE');
+                queryService.setQueryMapEntry('_missing_', 'replicationGroup');
+                return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
+            },
+            getVolumePairsAsPVolAndSnapshotFullcopyAndRGNameMissing: function (currentVolumeId, storageSystemId) {
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
+                queryService.setQueryMapEntry('type', 'SNAPSHOT_FULLCOPY');
+                queryService.setQueryMapEntry('_missing_', 'replicationGroup');
+                return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
+            },
             getReplicationGroupByName: function (name, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('name', name.toString());

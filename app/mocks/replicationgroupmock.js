@@ -5,7 +5,7 @@ rainierAppMock.factory('replicationgroupmock', function (mockUtils) {
     var affectedVolumePairs = [];
 
     var generateMockReplicationGroups = function () {
-        var total = 4;
+        var total = 2;
 
         while (total-- !== 0) {
             var mockReplicationGroup = generateMockReplicationGroup(total);
