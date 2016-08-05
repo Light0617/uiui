@@ -1,0 +1,11 @@
+<div class="confirmation">
+    <div class="modal-header">
+        <h1 class="modal-title"><span class="icon warning-state" ng-class="{'icon-information' : type==='information', 'icon-warning' : type === 'warning'}" ></span></h1>
+    </div>
+    <div class="modal-body">
+        <p>{{ message | translate }}</p>
+    </div>
+    <div class="modal-footer btn-group-confirm">
+        <button type="button" class="btn btn-default active" selected="selected" ng-click="cancel()">Close</button>
+    </div>
+</div>

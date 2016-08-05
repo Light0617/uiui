@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
-                                                 versionService, replicationService) {
+                                                 versionService, replicationService, storageNavigatorSessionService) {
 
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
@@ -33,6 +33,7 @@ angular.module('rainierApp')
         var vspX400X600IdentifierPrefix = '/dev/storage/834000';
         var vspX800IdentifierPrefix = '/dev/storage/836000';
         var vspG1000Identifier = '/sanproject';
+        var sessionScopeEncryptionKeys = 'encryption-keys';
 
         var capacity = function (usedCapacity, freeCapacity) {
             return [
@@ -188,7 +189,8 @@ angular.module('rainierApp')
                                 type: 'hyperlink',
                                 title: 'storage-system-launch-hdvm',
                                 href: item.hdvmSnLaunchUrl
-                            }
+                            },
+                            storageNavigatorSessionService.getNavigatorSessionAction(item.storageSystemId, sessionScopeEncryptionKeys)
                             // BLOCKING ISW LINK (NEWRAIN-3236).
                             //,
                             //{
@@ -358,7 +360,7 @@ angular.module('rainierApp')
 
                 ];
 
-                <!-- TODO SH remove this after NEWRAIN-6146-->
+                //<!-- TODO SH remove this after NEWRAIN-6146-->
                 if(_.size(item.attachedVolumeServerSummary) === 0) {
                     item.provisioningStatus = 'Unattached';
                 } else if (_.every(item.attachedVolumeServerSummary, function(summaryItem) {

@@ -190,6 +190,12 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            storageNavigatorSession: function (storageSystemId, sessionScope) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('storage-navigator-session', sessionScope)
+                    .get().then(function (result) {
+                    return result;
+                }));
+            },
             deleteStorageSystem: function (storageSystemId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).remove());
             },
