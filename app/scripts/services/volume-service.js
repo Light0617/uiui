@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .factory('volumeService', function ( ) {
         return {
             validateCombinedLabel: function (label, suffix, volumeCount) {
-                if (label === null && suffix === null){
+                if (label === null && suffix === null) {
                     return true;
                 }
 
@@ -26,11 +26,16 @@ angular.module('rainierApp')
 
                 if (combinedLabel === null || combinedLabel === '') {
                     return true;
-                } else if (combinedLabel.length > 32){
+                } else if (combinedLabel.length > 32) {
                     return false;
                 } else {
                     return simpleNameRegexp.test(combinedLabel);
                 }
+            },
+            restorable: function (volume) {
+                var type = volume.dataProtectionSummary.replicationType;
+                var snapshotFullcopyOnly = type.length === 1 && type[0] === 'SNAPSHOT_FULLCOPY';
+                return !volume.isUnprotected() && !snapshotFullcopyOnly;
             }
         };
 

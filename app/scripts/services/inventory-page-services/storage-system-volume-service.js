@@ -20,6 +20,14 @@ angular.module('rainierApp')
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
                 return paginationService.get(token,VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, false, storageSystemId);
             },
+            getVolumePairsAsPVolWithoutSnapshotFullcopy: function (token, currentVolumeId, storageSystemId) {
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
+                var queryText = [{text:'SNAPSHOT'}, {text:'SNAPSHOT_EXTENDABLE'}, {text:'CLONE'}]; // TODO: rewrite with must_not query.
+                var queryObject = queryService.getQueryObjectInstance('type', queryText);
+                queryService.setQueryObject(queryObject);
+                return paginationService.get(token,VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, false, storageSystemId);
+            },
             getVolumePairsAsSVol: function (currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('secondaryVolume.id', parseInt(currentVolumeId));

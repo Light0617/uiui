@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('StorageSystemVolumesCtrl', function ($scope, $routeParams, $timeout, $filter, $location,
-                                                      objectTransformService, orchestratorService,
+                                                      objectTransformService, orchestratorService, volumeService,
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService) {
@@ -56,7 +56,7 @@ angular.module('rainierApp')
                 volumeId = selectedVolumes[0].volumeId;
             }
 
-            storageSystemVolumeService.getVolumePairsAsPVol(null, volumeId, storageSystemId).then(function (result) {
+            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
 
                 ShareDataService.SVolsList = _.filter(result.resources, function(SVol){ return SVol.primaryVolume && SVol.secondaryVolume; });
                 ShareDataService.restorePrimaryVolumeId = volumeId;
@@ -234,9 +234,9 @@ angular.module('rainierApp')
                         volumeRestoreAction('restore', dataModel.getSelectedItems());
                     },
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
                             function (vol) {
-                                return vol.isUnprotected();
+                                return volumeService.restorable(vol);
                             });
                     }
                 }

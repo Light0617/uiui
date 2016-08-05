@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('DataProtectionMonitoringCtrl', function ($scope, $timeout, $routeParams, orchestratorService,
+    .controller('DataProtectionMonitoringCtrl', function ($scope, $timeout, $routeParams, orchestratorService, volumeService,
                                                           objectTransformService, synchronousTranslateService,
                                                           scrollDataSourceBuilderService, $location, ShareDataService,
                                                           monitoringService, inventorySettingsService, storageSystemVolumeService) {
@@ -44,7 +44,7 @@ angular.module('rainierApp')
                 path = ['storage-systems', storageSystemId, 'data-protection-monitoring', 'volume-actions-restore-selection'].join('/');
             }
 
-            storageSystemVolumeService.getVolumePairsAsPVol(null, volumeId, storageSystemId).then(function (result) {
+            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
 
                 ShareDataService.SVolsList = _.filter(result.resources, function(SVol){ return SVol.primaryVolume && SVol.secondaryVolume && SVol.replicationGroup; });
                 ShareDataService.restorePrimaryVolumeId = volumeId;
@@ -110,9 +110,9 @@ angular.module('rainierApp')
                         volumeRestoreAction('restore', dataModel.getSelectedItems());
                     },
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
                             function (vol) {
-                                return vol.isUnprotected();
+                                return volumeService.restorable(vol);
                             });
                     }
                 }
@@ -336,6 +336,12 @@ angular.module('rainierApp')
         $scope.volumesFilterModel = {
             filterDpType: function () {
                 var replicationTypes = [];
+                if ($scope.dataModel.snapshotex) {
+                    replicationTypes.push('SNAPSHOT_EXTENDABLE');
+                }
+                if ($scope.dataModel.snapshotfc) {
+                    replicationTypes.push('SNAPSHOT_FULLCOPY');
+                }
                 if ($scope.dataModel.snapshot) {
                     replicationTypes.push('SNAPSHOT');
                 }
@@ -372,6 +378,12 @@ angular.module('rainierApp')
             },
             filterDpType: function () {
                 var replicationTypes = [];
+                if ($scope.dataModel.snapshotex) {
+                    replicationTypes.push('SNAPSHOT_EXTENDABLE');
+                }
+                if ($scope.dataModel.snapshotfc) {
+                    replicationTypes.push('SNAPSHOT_FULLCOPY');
+                }
                 if ($scope.dataModel.snapshot) {
                     replicationTypes.push('SNAPSHOT');
                 }

@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('HostCtrl', function ($scope, $routeParams, $window, $timeout, $location, orchestratorService,
                                       objectTransformService, scrollDataSourceBuilderService, ShareDataService,
                                       inventorySettingsService, storageSystemVolumeService, queryService,
-                                      paginationService, scrollDataSourceBuilderServiceNew) {
+                                      paginationService, scrollDataSourceBuilderServiceNew, volumeService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var updateToggleId =  function (resources) {
@@ -38,7 +38,7 @@ angular.module('rainierApp')
             var storageSystemId = selectedVolumes[0].storageSystemId;
             ShareDataService.restoreStorageSystemId = storageSystemId;
 
-            storageSystemVolumeService.getVolumePairsAsPVol(null, volumeId, storageSystemId).then(function (result) {
+            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
 
                 ShareDataService.SVolsList = _.filter(result.resources, function (SVol) {
                     return SVol.primaryVolume && SVol.secondaryVolume;
@@ -206,9 +206,9 @@ angular.module('rainierApp')
                         volumeRestoreAction('restore', dataModel.getSelectedItems());
                     },
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
                                 function (vol) {
-                                    return vol.isUnprotected();
+                                    return volumeService.restorable(vol);
                                 });
                     }
                 }

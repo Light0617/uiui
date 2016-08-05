@@ -49,7 +49,7 @@ angular.module('rainierApp')
                 if ($scope.restorePrimaryVolumeToken !== null && $scope.restorePrimaryVolumeToken !== undefined &&
                     !$scope.busy) {
                     $scope.busy = true;
-                    storageSystemVolumeService.getVolumePairsAsPVol($scope.restorePrimaryVolumeToken,
+                    storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy($scope.restorePrimaryVolumeToken,
                         ShareDataService.restorePrimaryVolumeId, storageSystemId).then(function (result) {
                             $scope.volumeRows =  $scope.volumeRows.concat(result.resources);
                             $scope.restorePrimaryVolumeToken = result.nextToken;

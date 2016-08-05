@@ -82,21 +82,29 @@
     </div>
 </div>
 <div class="control-group">
-    <p>Protection Type</p>
-
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="dataModel.snapshot" ng-init="dataModel.snapshot=false"
-                   ng-change="filterModel.filterDpType()">{{'storage-volume-filter-snapshot' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="dataModel.cloneNow" ng-init="dataModel.cloneNow=false"
-                   ng-change="filterModel.filterDpType()">{{'storage-volume-filter-clone' | translate}}
-        </label>
-    </div>
+    <h3>{{'replication-group-label-technology' | translate}}</h3>
 </div>
+
+<div class="btn-group btn-group-justified btn-group-vertical">
+    <label class="btn btn-primary">
+        <input type="checkbox" ng-model="dataModel.snapshotex" ng-init="dataModel.snapshotex=false" data-toggle="buttons-checkbox"
+               ng-change="filterModel.filterDpType()">{{'storage-volume-filter-snapshot-ex' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" ng-model="dataModel.snapshotfc" ng-init="dataModel.snapshotfc=false" data-toggle="buttons-checkbox"
+               ng-change="filterModel.filterDpType()">{{'storage-volume-filter-snapshot-fc' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" ng-model="dataModel.snapshot" ng-init="dataModel.snapshot=false" data-toggle="buttons-checkbox"
+               ng-change="filterModel.filterDpType()">{{'storage-volume-filter-snapshot' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" ng-model="dataModel.cloneNow" ng-init="dataModel.cloneNow=false" data-toggle="buttons-checkbox"
+               ng-change="filterModel.filterDpType()">{{'storage-volume-filter-clone' | translate}}
+    </label>
+</div>
+
+
 <div class="control-group" ng-show="!dataModel.isDPMonitoring">
     <p>Data Protection</p>
 
