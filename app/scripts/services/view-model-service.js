@@ -203,9 +203,9 @@ angular.module('rainierApp')
                 return self.volumes;
             };
 
-            self.mapToPayloads = function (vols) {
+            self.mapToPayloads = function (vols, autoSelectedPoolId) {
                 return _.map(vols, function (vol) {
-                    var poolId = null;
+                    var poolId = autoSelectedPoolId !== undefined ? autoSelectedPoolId : null;
                     var poolType = vol.poolType;
                     if (vol.pool) {
                         poolId = vol.pool.storagePoolId;

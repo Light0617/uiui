@@ -118,6 +118,36 @@ angular.module('rainierApp')
             return deferred.promise;
         }
 
+        function filterSearch(queryObject){
+            if (!_.isEmpty(queryObject.value) || queryObject.type === type.ARRAY) {
+                var query = queryService.getQuery(queryObject.key);
+                if(query && queryObject.value === query.queryText) {
+                    queryService.removeQueryMapEntry(queryObject.key);
+                    return;
+                }
+                if(queryObject.type === type.ARRAY) {
+                    var value = [];
+                    var queryParams = [];
+                    if(!_.isEmpty(queryObject.value)) {
+                        value.push(queryObject.value);
+                    }
+                    if(query && query.queryText) {
+                        queryParams = query.queryText.replace('(', '').replace(')', '').split(' OR ');
+                        _.each(queryParams, function(val) {
+                            if(!_.isEmpty(queryObject.value) || val !== queryObject.arrayClearKey) {
+                                value.push(val);
+                            }
+                        });
+                    }
+                    queryObject.value = getQueryStringForList(value);
+                }
+                var queryObjectInstance = queryService.getQueryObjectInstance(queryObject.key, queryObject.value);
+                queryService.setQueryObject(queryObjectInstance);
+            } else {
+                queryService.removeQueryMapEntry(queryObject.key);
+            }
+        }
+
         return {
             PAGE_SIZE: 100,
             clearQuery: clearQuery,
@@ -159,33 +189,16 @@ angular.module('rainierApp')
                 queryService.setQueryObject(queryObjectInstance);
             },
             setFilterSearch: function (queryObject) {
-                if (!_.isEmpty(queryObject.value) || queryObject.type === type.ARRAY) {
-                    var query = queryService.getQuery(queryObject.key);
-                    if(query && queryObject.value === query.queryText) {
-                        queryService.removeQueryMapEntry(queryObject.key);
-                        return;
-                    }
-                    if(queryObject.type === type.ARRAY) {
-                        var value = [];
-                        var queryParams = [];
-                        if(!_.isEmpty(queryObject.value)) {
-                            value.push(queryObject.value);
+                if(Array.isArray(queryObject)) {
+                    _.each(queryObject, function (query) {
+                        if(query.arrayClearKey == undefined) {
+                            queryService.setQueryMapEntry(query.key, query.value, true);
+                        } else {
+                            filterSearch(query);
                         }
-                        if(query && query.queryText) {
-                            queryParams = query.queryText.replace('(', '').replace(')', '').split(' OR ');
-                            _.each(queryParams, function(val) {
-                                if(!_.isEmpty(queryObject.value) || val !== queryObject.arrayClearKey) {
-                                    value.push(val);
-                                }
-                            });
-                        }
-                        queryObject.value = getQueryStringForList(value);
-                    }
-                    var queryObjectInstance = queryService.getQueryObjectInstance(queryObject.key, queryObject.value);
-                    queryService.setQueryObject(queryObjectInstance);
-                } else {
-                    queryService.removeQueryMapEntry(queryObject.key);
+                    });
                 }
+                filterSearch(queryObject);
             },
             setTextSearch: function (queryObjects) {
                 var value = _.first(queryObjects).value;

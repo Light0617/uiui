@@ -11,9 +11,10 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumesAddCtrl', function ($scope, $routeParams, $timeout, $window, $filter,
                                                          orchestratorService, diskSizeService, viewModelService,
                                                          volumeService, synchronousTranslateService, paginationService,
-                                                         objectTransformService) {
+                                                         objectTransformService, ShareDataService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
+        var autoSelectedPoolId = ShareDataService.pop('autoSelectedPoolId');
 
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEMS_PATH, true, null,
             objectTransformService.transformStorageSystem).then(function (result) {
@@ -27,7 +28,8 @@ angular.module('rainierApp')
             var dataModel = {
                 storageSystems: storageSystems,
                 selectedStorageSystem: storageSystem,
-                storageSystemSelectable: selectable
+                storageSystemSelectable: selectable,
+                autoSelectedPoolId: autoSelectedPoolId
             };
 
             $scope.dataModel = dataModel;
@@ -40,8 +42,15 @@ angular.module('rainierApp')
 
             paginationService.getAllPromises(null, 'storage-pools', true, selectedStorageSystem.storageSystemId, objectTransformService.transformPool)
                 .then (function (result) {
-                var filteredPools = _.filter(result, function(pool) { return pool.type !== synchronousTranslateService.translate('HTI');});
+                var filteredPools = _.filter(result, function(pool) {
+                    return pool.type !== synchronousTranslateService.translate('HTI');
+                });
                 $scope.dataModel.storagePools = filteredPools;
+                if(autoSelectedPoolId!==undefined) {
+                    $scope.dataModel.storagePools = _.filter(filteredPools, function(pool) {
+                        return pool.type !== synchronousTranslateService.translate('HTI') && pool.storagePoolId == autoSelectedPoolId;
+                    });
+                }
             });
 
             $scope.dataModel.summaryModel = viewModelService.buildSummaryModel(selectedStorageSystem);
@@ -60,7 +69,7 @@ angular.module('rainierApp')
                     return $scope.dataModel.createModel.volumesGroupsModel.isValid();
                 },
                 submit: function () {
-                    var volumes = volumesGroupsModel.mapToPayloads(volumesGroupsModel.getVolumeGroups());
+                    var volumes = volumesGroupsModel.mapToPayloads(volumesGroupsModel.getVolumeGroups(), autoSelectedPoolId);
                     var payload = {
                         storageSystemId: storageSystemId,
                         volumes: volumes

@@ -57,12 +57,16 @@
                 <option>GB</option>
             </select>
         </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
+        <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="dataModel.autoSelectedPoolId === undefined">
             <select class="form-control" ng-model="volumeGroup.poolType"
                     ng-options="pt | translate for pt in dataModel.createModel.volumesGroupsModel.poolTypes"
                     ng-change="volumeGroup.pool = null"
                     >
             </select>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="dataModel.autoSelectedPoolId !== undefined">
+            <input type="text" class="form-control" ng-disabled="true"
+                   ng-model="volumeGroup.poolType | translate">
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 cell control">
             <select class="form-control" ng-model="volumeGroup.tier"
@@ -74,7 +78,11 @@
                 <option>-</option>
             </select>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 cell control">
+        <div class="col-lg-2 col-md-2 col-sm-2 cell control" ng-if="dataModel.autoSelectedPoolId !== undefined">
+            <input type="text" class="form-control" ng-disabled="true"
+                   ng-model="volumeGroup.getPools()[0].poolLabel">
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 cell control" ng-if="dataModel.autoSelectedPoolId === undefined">
             <select class="form-control" ng-model="volumeGroup.pool" additional-watch="volumeGroup.pools"
                     ng-options="p.poolLabel for p in volumeGroup.getPools()">
                 <option value=""> Auto Selected </option>

@@ -102,6 +102,11 @@ angular.module('rainierApp')
                 dataModel.addAction = function() {
                     $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
                 };
+
+                dataModel.addPoolDetailsClickAction = function(storagePoolId) {
+                    ShareDataService.push('autoSelectedPoolId', storagePoolId);
+                    $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
+                };
             }
 
         };
