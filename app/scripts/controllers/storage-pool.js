@@ -104,16 +104,16 @@ angular.module('rainierApp')
                 },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
-                    var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject(key, type, value, arrayClearKey));
-                    queryObjects.push(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
-                    paginationService.setFilterSearch(queryObjects);
+                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                    paginationService.setFilterSearch(queryObject);
+                    paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 sliderQuery: function(key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
+                    paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
@@ -122,8 +122,8 @@ angular.module('rainierApp')
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
                     queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
-                    queryObjects.push(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
                     paginationService.setTextSearch(queryObjects);
+                    paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
