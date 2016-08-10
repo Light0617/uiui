@@ -477,7 +477,9 @@
     "host-filter-netware": "Netware",
     "host-filter-ovms": "OVMS",
     "host-filter-full-copy": "Full Copy",
-    "host-filter-snapshot": "Snapshot",
+    "host-filter-snapshot": "Snapshot (Non-Extendable)",
+    "host-filter-snapshot-ex": "Snapshot (Extendable)",
+    "host-filter-snapshot-fc": "Snapshot (Full Copy)",
     "host-filter-clone": "Clone",
 
     "host-mode-AUTO": "AutoSelect",

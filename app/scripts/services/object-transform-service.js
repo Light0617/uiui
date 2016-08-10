@@ -1281,7 +1281,7 @@ angular.module('rainierApp')
             transformHost: function (item) {
                 var types = [];
                 _.each(item.dataProtectionSummary.replicationType, function (type) {
-                    types.push(type.charAt(0).toUpperCase() + type.toLowerCase().slice(1));
+                    types.push(replicationService.displayReplicationType(type));
                 });
 
                 item.displayedDpType = types.join(', ');
