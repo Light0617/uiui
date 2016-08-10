@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
-                                                 versionService, replicationService, storageNavigatorSessionService) {
+                                                 versionService, replicationService, storageNavigatorSessionService,
+                                                 constantService) {
 
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
@@ -491,6 +492,7 @@ angular.module('rainierApp')
             },
             transformPool: function (item) {
                 item.usage = Math.round(item.usedCapacityInBytes * 100 / item.capacityInBytes) + '%';
+                item.logicalUtilization = Math.round(item.usedLogicalCapacityInBytes * 100 / item.logicalCapacityInBytes); // In percentage
                 item.capacityInBytes = diskSizeService.getDisplaySize(item.capacityInBytes);
                 item.availableCapacityInBytes = diskSizeService.getDisplaySize(item.availableCapacityInBytes);
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.usedCapacityInBytes);
@@ -533,8 +535,45 @@ angular.module('rainierApp')
                     }
                 ];
 
+                if (item.type === constantService.poolType.HDT){
+                    item.metaData.push({
+                            left: false,
+                            title: synchronousTranslateService.translate('storage-pool-tiering-mode') + ': ' + synchronousTranslateService.translate(item.tieringMode),
+                            details: []
+                        },
+                        {
+                            left: false,
+                            title: synchronousTranslateService.translate('storage-pool-monitoring-mode') + ': ' + synchronousTranslateService.translate(item.monitoringMode),
+                            details: []
+                        });
+                }
+
+                var icons = [];
+                if (item.logicalUtilization >= item.utilizationThreshold1){
+                    var alertTitle = 'utilization at ' + item.logicalUtilization + '%';
+                    if (item.logicalUtilization < item.utilizationThreshold2) {
+                        icons.push({
+                            icon: 'icon-small-triangle',
+                            title: alertTitle
+                        });
+
+                        // The property is for list view
+                        item.alertIcon = 'icon-small-triangle';
+                    } else {
+                        icons.push({
+                            icon: 'icon-small-diamond',
+                            title: alertTitle
+                        });
+                        item.alertIcon = 'icon-small-diamond';
+                    }
+
+                    // The following properties are for list view
+                    item.alertType = 'pool-alert';
+                    item.alertTitle = alertTitle;
+                }
+
                 item.getIcons = function () {
-                    return [];
+                    return icons;
                 };
                 item.topTotal = item.capacityInBytes;
                 item.topSize = item.usedCapacityInBytes;

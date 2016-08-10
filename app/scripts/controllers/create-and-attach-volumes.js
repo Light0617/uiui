@@ -19,7 +19,7 @@ angular.module('rainierApp')
     .controller('CreateAndAttachVolumesCtrl', function($scope, orchestratorService, viewModelService, ShareDataService,
                                                        paginationService, objectTransformService,
                                                        cronStringConverterService, attachVolumeService,
-                                                       volumeService, $location, $timeout) {
+                                                       volumeService, constantService, $location, $timeout) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -107,8 +107,8 @@ angular.module('rainierApp')
                 return;
             }
 
-            var hostModeOptions = orchestratorService.hostModeOptions();
-            var hostModes = orchestratorService.osType().sort();
+            var hostModeOptions = constantService.hostModeOptions();
+            var hostModes = constantService.osType().sort();
             hostModes.splice(0, 0, autoSelect);
             var attachModel = {
                 lastSelectedHostModeOption: [999],

@@ -19,6 +19,7 @@ angular.module('rainierApp')
         $scope,
         ShareDataService,
         orchestratorService,
+        constantService,
         scrollDataSourceBuilderServiceNew,
         viewModelService,
         synchronousTranslateService,
@@ -278,8 +279,8 @@ angular.module('rainierApp')
                 return;
             }
 
-            var hostModeOptions =  orchestratorService.hostModeOptions();
-            var hostModes = orchestratorService.osType();
+            var hostModeOptions =  constantService.hostModeOptions();
+            var hostModes = constantService.osType();
             hostModes.splice(0, 0, autoSelect);
 
             var dataModel = $scope.dataModel;

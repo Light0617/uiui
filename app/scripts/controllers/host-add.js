@@ -8,9 +8,9 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostAddCtrl', function ($scope, $filter, orchestratorService, $timeout, wwnService) {
+    .controller('HostAddCtrl', function ($scope, $filter, orchestratorService, constantService, $timeout, wwnService) {
 
-        var osTypes = orchestratorService.osType();
+        var osTypes = constantService.osType();
         var pageSize = 25;
         var dataModel = {
             hostsModel: {

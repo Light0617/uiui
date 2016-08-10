@@ -8,9 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('FabricSwitchAddCtrl', function($scope, $routeParams, $timeout, $window, $filter, orchestratorService) {
-        var switchTypes = orchestratorService.switchTypes();
-        var defaultPrincipalSwitchPortNumber = orchestratorService.defaultPrincipalSwitchPortNumber();
+    .controller('FabricSwitchAddCtrl', function($scope, $routeParams, $timeout, $window, $filter, orchestratorService,
+            constantService) {
+        var switchTypes = constantService.switchTypes();
+        var defaultPrincipalSwitchPortNumber = constantService.defaultPrincipalSwitchPortNumber();
 
         var dataModel = {
             fabricSwitches: [],

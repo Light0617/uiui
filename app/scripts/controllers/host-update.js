@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostUpdateCtrl', function ($scope, $routeParams, orchestratorService, wwnService) {
+    .controller('HostUpdateCtrl', function ($scope, $routeParams, orchestratorService, wwnService, constantService) {
         var hostId = $routeParams.hostId;
 
         orchestratorService.host(hostId).then(function(result) {
@@ -21,7 +21,7 @@ angular.module('rainierApp')
                 updatedIpAddress: result.ipAddress,
                 updatedOsType: result.osType,
                 updatedWwns: wwns,
-                osTypes: orchestratorService.osType(),
+                osTypes: constantService.osType(),
                 isValid: function () {
                     return !_.isEmpty(this.updatedHostName) && !_.isEmpty(this.updatedOsType) && !_.isEmpty(this.updatedWwns) && (result.serverName !== $scope.dataModel
                         .updatedHostName || result.description !== $scope.dataModel.updatedDescription || result.ipAddress !== $scope.dataModel.updatedIpAddress ||

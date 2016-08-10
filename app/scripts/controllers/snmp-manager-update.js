@@ -8,12 +8,12 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('SnmpManagerUpdateCtrl', function ($scope, $routeParams, $window, orchestratorService) {
+    .controller('SnmpManagerUpdateCtrl', function ($scope, $routeParams, $window, orchestratorService, constantService) {
 
         var snmpMgrName = $routeParams.name;
         var dataModel = {
-            authProtocols: orchestratorService.authProtocols(),
-            privacyProtocols: orchestratorService.privacyProtocols()
+            authProtocols: constantService.authProtocols(),
+            privacyProtocols: constantService.privacyProtocols()
         };
 
         orchestratorService.snmpManager(snmpMgrName)

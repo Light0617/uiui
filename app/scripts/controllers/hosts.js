@@ -10,10 +10,10 @@
 angular.module('rainierApp')
     .controller('HostsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService,
                                        scrollDataSourceBuilderServiceNew, ShareDataService, queryService,
-                                       paginationService, $location, donutService) {
+                                       paginationService, constantService, $location, donutService) {
 
         $scope.operatingSystemType = {};
-        $scope.operatingSystems = orchestratorService.osType();
+        $scope.operatingSystems = constantService.osType();
         queryService.clearQueryMap();
         var GET_HOSTS_PATH = 'compute/servers';
 

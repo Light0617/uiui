@@ -8,20 +8,20 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('SnmpManagerAddCtrl', function ($scope, $window, orchestratorService) {
+    .controller('SnmpManagerAddCtrl', function ($scope, $window, orchestratorService, constantService) {
 
         var dataModel = {
             snmpManager: {
                 authProtocol: {value:'NO_AUTH', display:'No Auth'},
                 privacyProtocol: {value:'NO_PRIV', display:'No Privacy'}
             },
-            authProtocols: _.map(orchestratorService.authProtocols(), function(value) {
+            authProtocols: _.map(constantService.authProtocols(), function(value) {
                 if(value === 'NO_AUTH') {
                     return {value:value, display:'No Auth'};
                 }
                 return {value:value, display:value};
             }),
-            privacyProtocols: _.map(orchestratorService.privacyProtocols(), function(value) {
+            privacyProtocols: _.map(constantService.privacyProtocols(), function(value) {
                 if(value === 'NO_PRIV') {
                     return {value:value, display:'No Privacy'};
                 }

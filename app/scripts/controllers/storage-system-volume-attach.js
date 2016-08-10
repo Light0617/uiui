@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
                                                            paginationService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
                                                            ShareDataService, $location, $routeParams, viewModelService,
-                                                           attachVolumeService) {
+                                                           attachVolumeService, constantService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         $scope.canSubmit = true;
@@ -33,7 +33,7 @@ angular.module('rainierApp')
         }
 
         $scope.operatingSystemType = {};
-        $scope.operatingSystems = orchestratorService.osType();
+        $scope.operatingSystems = constantService.osType();
 
 
         function handleHost(host) {
@@ -204,8 +204,8 @@ angular.module('rainierApp')
                 return;
             }
 
-            var hostModeOptions = orchestratorService.hostModeOptions();
-            var hostModes = orchestratorService.osType();
+            var hostModeOptions = constantService.hostModeOptions();
+            var hostModes = constantService.osType();
             hostModes.splice(0, 0, autoSelect);
 
             var dataModel = $scope.dataModel;

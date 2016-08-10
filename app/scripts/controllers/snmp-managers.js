@@ -8,7 +8,8 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('SnmpManagerCtrl', function ($scope, $timeout, $location, $window, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService) {
+    .controller('SnmpManagerCtrl', function ($scope, $timeout, $location, $window, orchestratorService, objectTransformService,
+                                             synchronousTranslateService, scrollDataSourceBuilderService, constantService) {
 
         orchestratorService.snmpManagers().then(function (result) {
             initView(result);
@@ -39,8 +40,8 @@ angular.module('rainierApp')
                 noAlerts: false,
                 displayPrompt: false,
                 allItemsSelected: false,
-                authProtocols: orchestratorService.authProtocols(),
-                privacyProtocols: orchestratorService.privacyProtocols(),
+                authProtocols: constantService.authProtocols(),
+                privacyProtocols: constantService.privacyProtocols(),
                 search: {
                     freeText: ''
                 },
