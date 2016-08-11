@@ -15,6 +15,7 @@ angular.module('rainierApp')
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
         var GET_VOLUMES_PATH = 'volumes';
+        ShareDataService.showProvisioningStatus = true;
 
         var volumeUnprotectActions = function (selectedVolume) {
             ShareDataService.volumeListForUnprotect = selectedVolume;

@@ -61,14 +61,6 @@ angular.module('rainierApp')
                 }
 
             }, {
-                title: 'volume-provisioning-status',
-                sizeClass: 'twelfth',
-                sortField: 'provisioningStatus',
-                getDisplayValue: function(item) {
-                    return item.provisioningStatus;
-                }
-
-            }, {
                 title: 'common-label-total',
                 sizeClass: 'twelfth',
 
@@ -97,6 +89,17 @@ angular.module('rainierApp')
                 type: 'size'
 
             }];
+
+            if(ShareDataService.showProvisioningStatus == true) {
+                dataModel.gridSettings.push({
+                    title: 'volume-provisioning-status',
+                    sizeClass: 'twelfth',
+                    sortField: 'provisioningStatus',
+                    getDisplayValue: function(item) {
+                        return item.provisioningStatus;
+                    }
+                });
+            }
 
             if (options.canAdd) {
                 dataModel.addAction = function() {

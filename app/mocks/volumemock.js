@@ -33,7 +33,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
             type: _.sample(['HDP', 'HDT', 'HTI']),
             dataProtectionSummary: getVolumeDataProtectionSummary(),
-            provisioningStatus: _.sample(['Attached', 'Unattached', 'Unmanaged']),
+            provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             attachedVolumeServerSummary:[
             {
                 serverId: null,

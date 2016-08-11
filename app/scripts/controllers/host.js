@@ -14,6 +14,7 @@ angular.module('rainierApp')
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
+        ShareDataService.showProvisioningStatus = false;
         var updateToggleId =  function (resources) {
             var id = 0;
             _.forEach(resources, function (r) {

@@ -353,23 +353,16 @@ angular.module('rainierApp')
                         title: item.storageSystemId,
                         details: [item.displayedDpType],
                         detailsToolTips: [item.toolTipDpType]
-                    },
-                    {
-                        left: true,
-                        title: item.provisioningStatus
                     }
-
                 ];
 
-                //<!-- TODO SH remove this after NEWRAIN-6146-->
-                if(_.size(item.attachedVolumeServerSummary) === 0) {
-                    item.provisioningStatus = 'Unattached';
-                } else if (_.every(item.attachedVolumeServerSummary, function(summaryItem) {
-                        return _.isNull(summaryItem.serverId);
-                    })) {
-                    item.provisioningStatus = 'Unmanaged';
-                } else {
-                    item.provisioningStatus = 'Attached';
+                if(ShareDataService.showProvisioningStatus == true) {
+                    item.metaData.push(
+                        {
+                            left: true,
+                            title: item.provisioningStatus
+                        }
+                    );
                 }
 
                 var allDataProtectionStatus = [];
