@@ -356,7 +356,7 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if(ShareDataService.showProvisioningStatus == true) {
+                if(ShareDataService.showProvisioningStatus === true) {
                     item.metaData.push(
                         {
                             left: true,

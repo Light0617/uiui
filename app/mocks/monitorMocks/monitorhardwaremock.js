@@ -5,16 +5,16 @@ rainierAppMock.factory('monitorHardwareMock', function (monitorMock, mockUtils) 
     var getMockMonitorHardware = function ()  {
         //v1/monitoring/status/hardware & /v1/monitoring/status:storageArrayId/hardware
         return {
-            "totalComponentWiseHardwareAlerts": 4,
-            "hardwareComponents": {
-                "diskAlerts": true,
-                "powerSupplyAlerts": true,
-                "batteryAlerts": true,
-                "fanAlerts": false,
-                "portAlerts": true,
-                "cacheAlerts": false,
-                "memoryAlerts": false,
-                "processorAlerts": false
+            'totalComponentWiseHardwareAlerts': 4,
+            'hardwareComponents': {
+                'diskAlerts': true,
+                'powerSupplyAlerts': true,
+                'batteryAlerts': true,
+                'fanAlerts': false,
+                'portAlerts': true,
+                'cacheAlerts': false,
+                'memoryAlerts': false,
+                'processorAlerts': false
             }
         };
     };
@@ -23,7 +23,7 @@ rainierAppMock.factory('monitorHardwareMock', function (monitorMock, mockUtils) 
         var diskAlerts = monitorMock.diskAlert;
         var hardwareAlerts = monitorMock.hardwareAlert;
         //v1/monitorng/status/hardware/:resourceType & v1/monitoring/status/:storageArrayId/hardware/:resourceType
-        var alerts = _.filter(resourceType == "disk" ? diskAlerts : hardwareAlerts, function (alert) {
+        var alerts = _.filter(resourceType === 'disk' ? diskAlerts : hardwareAlerts, function (alert) {
             return alert.resourceType.toUpperCase() === resourceType.toUpperCase();
         });
         if (alerts)  {
@@ -32,7 +32,7 @@ rainierAppMock.factory('monitorHardwareMock', function (monitorMock, mockUtils) 
     };
 
     var handleGetRequest = function (urlResult) {
-        if (urlResult.subResourceId == null) {
+        if (urlResult.subResourceId === null) {
             return mockUtils.response.ok(getMockMonitorHardware());
         } else  {
             return mockUtils.response.ok(getMockMonitorHardwareResourceType(urlResult.subResourceId));

@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('StoragePoolCtrl', function ($scope, $routeParams, $window, orchestratorService, objectTransformService, diskSizeService,
                                              paginationService, ShareDataService, inventorySettingsService, scrollDataSourceBuilderServiceNew,
-                                             storageSystemVolumeService, $location) {
+                                             storageSystemVolumeService, $location, queryService, $timeout) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;

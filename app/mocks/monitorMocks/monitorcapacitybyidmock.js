@@ -1,13 +1,13 @@
-'use strict';
+'use strict'; // jshint ignore:line
 
 rainierAppMock.factory('monitorCapacityMockById', function (monitorMock, mockUtils) {
 
-    var geteMockMonitorCapacityByStorageId = function (v)  {
+    var geteMockMonitorCapacityByStorageId = function ()  {
         //v1/monitoring/status:storageArrayId/capacity
         return {
-            "totalComponentWiseCapacityAlerts": "1",
-            "capacityComponents": {
-                "poolAlerts": true
+            'totalComponentWiseCapacityAlerts': '1',
+            'capacityComponents': {
+                'poolAlerts': true
             }
         };
     };
@@ -15,17 +15,18 @@ rainierAppMock.factory('monitorCapacityMockById', function (monitorMock, mockUti
     var getMockMonitorCapacityResourceTypeById  = function(resourceType, storageArrayId)  {
         //v1/monitorng/status/capacity/:resourceType
         var capacityAlerts = monitorMock.capacityAlert;
-        if (resourceType)
+        if (resourceType) {
             var alerts = _.filter(capacityAlerts, function (alert) {
-                return alert.resourceType.toUpperCase() === resourceType.toUpperCase() && alert.storageSerialNumber == storageArrayId;;
-            })
-        if (alerts) {
-            return { capacityAlertInformationList: alerts };
+                return alert.resourceType.toUpperCase() === resourceType.toUpperCase() && alert.storageSerialNumber === storageArrayId;
+            });
+            if (alerts) {
+                return { capacityAlertInformationList: alerts };
+            }
         }
     };
 
     var handleGetRequest = function (urlResult) {
-        if (urlResult.subSubType == null) {
+        if (urlResult.subSubType === null) {
             return mockUtils.response.ok(geteMockMonitorCapacityByStorageId(urlResult.subType));
         } else  {
             return mockUtils.response.ok(getMockMonitorCapacityResourceTypeById(urlResult.subSubType,urlResult.subType));
@@ -34,10 +35,10 @@ rainierAppMock.factory('monitorCapacityMockById', function (monitorMock, mockUti
 
     return {
         init: function () {
-            console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+            console.log('aaaaaaaaaaaaaaaaaaaaaaa');
         },
         getMock: function () {
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
             return geteMockMonitorCapacityByStorageId();
         },
         handle: function (urlResult) {

@@ -6,8 +6,8 @@ rainierAppMock.factory('monitorHardwareMockById', function (monitorMock, monitor
         var diskAlerts = monitorMock.diskAlert;
         var hardwareAlerts = monitorMock.hardwareAlert;
         //v1/monitorng/status/hardware/:resourceType & v1/monitoring/status/:storageArrayId/hardware/:resourceType
-        var alerts = _.filter(resourceType == "disk" ? diskAlerts : hardwareAlerts, function (alert) {
-            return alert.resourceType.toUpperCase() === resourceType.toUpperCase() && alert.storageSerialNumber == storageArrayId;
+        var alerts = _.filter(resourceType === 'disk' ? diskAlerts : hardwareAlerts, function (alert) {
+            return alert.resourceType.toUpperCase() === resourceType.toUpperCase() && alert.storageSerialNumber === storageArrayId;
         });
         if (alerts)  {
             return resourceType === 'disk' ? { diskAlertInformationList: alerts } : { alertInformationList: alerts };
@@ -15,7 +15,7 @@ rainierAppMock.factory('monitorHardwareMockById', function (monitorMock, monitor
     };
 
     var handleGetRequest = function (urlResult) {
-        if (urlResult.subSubType == null) {
+        if (urlResult.subSubType === null) {
             return mockUtils.response.ok(monitorHardwareMock.getMock());
         } else  {
             return mockUtils.response.ok(getMockMonitorHardwareByIdResourceType(urlResult.subSubType, urlResult.subType));

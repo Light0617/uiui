@@ -158,9 +158,9 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     var monitorGroupSwitcher = function(urlResult)  {
         switch (urlResult.subType)  {
             case 'hardware':
-                return authMock.authenticateAndCall(urlResult, monitorHardwareMock.handle)
+                return authMock.authenticateAndCall(urlResult, monitorHardwareMock.handle);
             case 'capacity':
-                return authMock.authenticateAndCall(urlResult, monitorCapacityMock.handle)
+                return authMock.authenticateAndCall(urlResult, monitorCapacityMock.handle);
             default:
                 return monitorSwitcher(urlResult);
 
@@ -170,14 +170,14 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     var monitorSwitcher = function(urlResult)  {
         switch(urlResult.subResourceId)  {
             case 'hardware':
-                return authMock.authenticateAndCall(urlResult, monitorHardwareMockById.handle)
+                return authMock.authenticateAndCall(urlResult, monitorHardwareMockById.handle);
             case 'capacity':
-                return authMock.authenticateAndCall(urlResult, monitorCapacityMockById.handle)
+                return authMock.authenticateAndCall(urlResult, monitorCapacityMockById.handle);
             default:
-                console.log(urlResult + "not implemented yet");
+                console.log(urlResult + 'not implemented yet');
                 return null;
         }
-    }
+    };
 
     var templateSwitcher = function(urlResult) {
         switch(urlResult.resourceId) {

@@ -90,7 +90,7 @@ angular.module('rainierApp')
 
             }];
 
-            if(ShareDataService.showProvisioningStatus == true) {
+            if(ShareDataService.showProvisioningStatus === true) {
                 dataModel.gridSettings.push({
                     title: 'volume-provisioning-status',
                     sizeClass: 'twelfth',
