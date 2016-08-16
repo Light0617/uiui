@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                       objectTransformService, orchestratorService, volumeService,
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
-                                                      storageSystemVolumeService, dpAlertService) {
+                                                      storageSystemVolumeService, dpAlertService, storageNavigatorSessionService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -28,7 +28,24 @@ angular.module('rainierApp')
             }
         };
 
-        $scope.summaryModel = {};
+        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
+        //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
+        sn2Action.icon = 'icon-settings';
+        sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
+        sn2Action.enabled = function () {
+            return true;
+        };
+
+        var actions = {
+            'SN2': sn2Action
+        };
+
+        $scope.summaryModel={
+            getActions: function () {
+                return _.map(actions);
+            }
+        };
+
         $scope.filterModel = {};
 
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
@@ -36,12 +53,14 @@ angular.module('rainierApp')
             return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
         }).then(function (result) {
             var summaryModel = objectTransformService.transformToStorageSummaryModel(storageSystem, null, result);
-                summaryModel.title = 'Volumes';
-                summaryModel.protectedVolume = result.protectedVolumes;
-                summaryModel.unprotectedVolume = result.unprotectedVolumes;
-                summaryModel.secondaryVolume = result.secondaryVolumes;
-                summaryModel.dpAlert = dpAlertService;
-                $scope.summaryModel = summaryModel;
+
+            summaryModel.title = 'Volumes';
+            summaryModel.protectedVolume = result.protectedVolumes;
+            summaryModel.unprotectedVolume = result.unprotectedVolumes;
+            summaryModel.secondaryVolume = result.secondaryVolumes;
+            summaryModel.dpAlert = dpAlertService;
+            summaryModel.getActions = $scope.summaryModel.getActions;
+            $scope.summaryModel = summaryModel;
         });
 
         var volumeUnprotectActions = function (selectedVolume) {

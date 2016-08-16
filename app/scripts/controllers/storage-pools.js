@@ -9,12 +9,31 @@
  */
 angular.module('rainierApp')
     .controller('StoragePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService,
-                                              scrollDataSourceBuilderServiceNew, $location, paginationService, queryService, capacityAlertService) {
+                                              scrollDataSourceBuilderServiceNew, $location, paginationService, queryService, capacityAlertService,
+                                              storageNavigatorSessionService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
         orchestratorService.tiers().then(function (result) {
             $scope.tiers = result.tiers;
         });
+
+        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.POOLS);
+        //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
+        sn2Action.icon = 'icon-settings';
+        sn2Action.tooltip = 'tooltip-configure-storage-pools';
+        sn2Action.enabled = function () {
+            return true;
+        };
+
+        var actions = {
+            'SN2': sn2Action
+        };
+
+        $scope.summaryModel={
+            getActions: function () {
+                return _.map(actions);
+            }
+        };
 
         orchestratorService.storagePoolsSummary(storageSystemId).then(function (result) {
             $scope.usageGraphs = _.map(result.summariesByType, objectTransformService.transformToSummaryByTypeModel);
@@ -29,7 +48,6 @@ angular.module('rainierApp')
             dataModel.tiers = values[1];
             dataModel.usageGraphs = values[2];
         });
-
 
         paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true, storageSystemId).then(function (result) {
             var storagePools = result.resources;

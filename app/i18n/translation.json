@@ -315,6 +315,12 @@
     "lun-alignment-tooltip": "Select Yes if you want the volume to be attached to all servers using same LUN ID",
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
 
+    "tooltip-configure-parity-groups": "Configure parity groups",
+    "tooltip-configure-storage-pools": "Configure storage pools",
+    "tooltip-configure-storage-system-volumes": "Configure volumes",
+    "tooltip-configure-storage-ports": "Configure storage ports",
+    "tooltip-configure-replication-groups": "Configure replication groups",
+
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volume(s)",
 
     "disk-manage": "Disk Management",

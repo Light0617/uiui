@@ -9,11 +9,32 @@
  */
 angular.module('rainierApp')
     .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, 
-                                              diskSizeService, scrollDataSourceBuilderService, $location, paginationService, hwAlertService) {
+                                              diskSizeService, scrollDataSourceBuilderService,
+                                              storageNavigatorSessionService,
+                                              $location, paginationService, hwAlertService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
         var getParityGroupsPath = 'parity-groups';
         var storageSystem;
+
+        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.PARITY_GROUPS);
+        //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
+        sn2Action.icon = 'icon-settings';
+        sn2Action.tooltip = 'tooltip-configure-parity-groups';
+        sn2Action.enabled = function () {
+            return true;
+        };
+
+        var actions = {
+            'SN2': sn2Action
+        };
+
+        $scope.summaryModel = {
+            getActions: function () {
+                return _.map(actions);
+            }
+        };
+
 
         orchestratorService.parityGroupSummary(storageSystemId).then(function(result){
             var pgSumWithConfCountCap = [];
@@ -42,7 +63,7 @@ angular.module('rainierApp')
                 }
                 pgSumWithConfCountCap = _.sortBy(pgSumWithConfCountCap, 'diskConfig');
             }
-            $scope.summaryModel = pgSumWithConfCountCap;
+           $scope.summaryModel.pgSums = pgSumWithConfCountCap;
         });
 
         var getUniqueRaidConfig = function (item) {

@@ -51,6 +51,12 @@
 
     "common-list-header-details": "Details",
 
+    "tooltip-configure-parity-groups": "Configure parity groups",
+    "tooltip-configure-storage-pools": "Configure storage pools",
+    "tooltip-configure-storage-system-volumes": "Configure volumes",
+    "tooltip-configure-storage-ports": "Configure storage ports",
+    "tooltip-configure-replication-groups": "Configure replication groups",
+
     "capacity-alerts-tooltip": "Total number of managed elements with capacity alerts.",
     "dp-alerts-tooltip": "Total number of volumes and servers with data protection alerts",
     "jobs-alerts-tooltip": "Total number of failed job alerts in the last 24 hours.",
