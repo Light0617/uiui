@@ -201,7 +201,7 @@ angular.module('rainierApp')
                 enabled: function () {
                     return dataModel.anySelected() && !_.find(dataModel.getSelectedItems(), function(item) {
                             return item.encryption || item.diskSpec.type === 'SAS' || item.diskSpec.type === 'SSD' || item.diskSpec.type === 'FMD' ||
-                                item.status !== 'AVAILABLE' || item.compression; });
+                                item.status !== 'AVAILABLE' || item.compression || item.nasBoot; });
                 },
                 onClick: function () {
                     _.forEach(dataModel.getSelectedItems(), function (item) {
@@ -216,8 +216,9 @@ angular.module('rainierApp')
                 confirmTitle: 'parity-group-delete-confirmation',
                 confirmMessage: 'parity-group-delete-selected-content',
                 enabled: function () {
-                return dataModel.anySelected();
-            },
+                    return dataModel.anySelected() &&
+                        !_.find(dataModel.getSelectedItems(), function(item) { return item.nasBoot; });
+                },
                 onClick: function () {
                     _.forEach(dataModel.getSelectedItems(), function (item) {
                         item.actions.delete.onClick(orchestratorService, false);

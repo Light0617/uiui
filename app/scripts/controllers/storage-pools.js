@@ -133,19 +133,6 @@ angular.module('rainierApp')
             dataModel.cachedList = storagePools;
             dataModel.displayList = storagePools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
-            dataModel.isAnyPoolUsingExternalStorage = function (poolList){
-                  var foundPoolUsingExtStorage = false; 
-                  if(poolList && poolList.length > 0){
-                           var foundPools = _.find(poolList, function(pool){
-                                return pool.isUsingExternalStorage();
-                           });
-                           if(foundPools){
-                                foundPoolUsingExtStorage = true; 
-                           }
-                  }  
-                  return foundPoolUsingExtStorage;  
-            };
-
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -154,7 +141,10 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-pool-delete-confirmation',
                     confirmMessage: 'storage-pool-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected() && !dataModel.isAnyPoolUsingExternalStorage(dataModel.getSelectedItems());
+                        return dataModel.anySelected() &&
+                            !_.find(dataModel.getSelectedItems(), function(item) {
+                                return item.isUsingExternalStorage() || item.nasBoot;
+                            });
                     },
                     onClick: function () {
                         _.forEach(dataModel.getSelectedItems(), function (item) {
@@ -167,7 +157,10 @@ angular.module('rainierApp')
                     tooltip :'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && !dataModel.isAnyPoolUsingExternalStorage(dataModel.getSelectedItems());
+                        return dataModel.onlyOneSelected() &&
+                            !_.find(dataModel.getSelectedItems(), function(item) {
+                                return item.isUsingExternalStorage();
+                            });
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());

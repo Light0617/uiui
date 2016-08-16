@@ -74,6 +74,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'expansionRate': mockUtils.randomInt(0,10),
             'externalParityGroupIds' : [],
             'logicalCapacityInBytes': mockUtils.getCapacity(50, 100),
+            'nasBoot': mockUtils.trueOrFalse(),
             'parityGroups': [
                 {
                     'id': '1-1',

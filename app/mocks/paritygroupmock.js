@@ -144,7 +144,8 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
             availableCapacityInBytes: mockUtils.getCapacity(50, 80),
             physicalCapacityInBytes: physicalCapacity,
             encryption: _.sample(encryption),
-            compression: compression
+            compression: compression,
+            nasBoot: mockUtils.trueOrFalse()
         };
     };
 
