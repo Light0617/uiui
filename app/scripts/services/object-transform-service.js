@@ -321,7 +321,7 @@ angular.module('rainierApp')
                 item.volumeLabel = 'Volume' + item.volumeId;
 
 
-                item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType);
+                item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType, item.gadSummary);
 
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';

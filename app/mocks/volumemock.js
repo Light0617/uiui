@@ -22,6 +22,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
     };
     
     var generateMockVolume = function (v) {
+        var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
         return {
             volumeId: v + '',
             storageSystemId: 'REPLACE',
@@ -31,8 +32,9 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             usedCapacity: mockUtils.getCapacity(10, 25),
             availableCapacity: mockUtils.getCapacity(50, 75),
             status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
-            type: _.sample(['HDP', 'HDT', 'HTI']),
+            type: volType,
             dataProtectionSummary: getVolumeDataProtectionSummary(),
+            gadSummary: getVolumeGADSummary(volType, v),
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             attachedVolumeServerSummary:[
             {
@@ -91,6 +93,14 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
         return map;
     };
 
+    var getVirtualVolumeId = function () {
+        return '42';
+    };
+
+    var getVirtualStorageMachine = function () {
+        return '99999';
+    };
+
     var getVolumeDataProtectionSummary = function getVolumeDataProtectionSummary() {
         return {
             replicationType: _.sample([['CLONE'], ['SNAPSHOT'], ['SNAPSHOT_EXTENDABLE'], ['SNAPSHOT_FULLCOPY'],
@@ -102,6 +112,19 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             secondaryVolumeCount: 17,
             secondaryVolumeFailures: 13
         };
+    };
+
+    var getVolumeGADSummary = function getVolumeGADSummary(volType, v) {
+        if(volType === 'GAD') {
+            return {
+                displayType: 'GAD',
+                pairStatus: _.sample([['ACTIVE PRIMARY'], ['ACTIVE SECONDARY']]),
+                virtualVolumeId: getVirtualVolumeId(v),
+                vsmId: getVirtualStorageMachine()
+            };
+        } else {
+            return null;
+        }
     };
 
     var handleGetRequest = function (urlResult) {

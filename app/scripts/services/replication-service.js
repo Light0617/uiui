@@ -8,7 +8,7 @@
  * Provider in the rainierApp.
  */
 
-angular.module('rainierApp').factory('replicationService', function () {
+angular.module('rainierApp').factory('replicationService', function (synchronousTranslateService) {
     var rawToDisp = function (type) {
         switch (type) {
             case 'CLONE':
@@ -38,11 +38,16 @@ angular.module('rainierApp').factory('replicationService', function () {
         }
     };
     return {
-        displayReplicationTypes: function (rawType) {
+        displayReplicationTypes: function (rawType, gadSummary) {
             var displayTypes = [];
+
             _.each(rawType, function (type) {
                 displayTypes.push(rawToDisp(type));
             });
+
+            if(gadSummary) {
+                displayTypes.push(synchronousTranslateService.translate('gad-display-type'));
+            }
             return displayTypes.join(', ');
         },
         displayReplicationType: rawToDisp,
