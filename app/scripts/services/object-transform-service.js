@@ -2242,6 +2242,24 @@ angular.module('rainierApp')
                 item.getActions = function () {
                     return _.map(item.actions);
                 };
+            },
+            transformToHostModeOptions: function (items) {
+                var hostModeOptions = [];
+                hostModeOptions.push({
+                   id: 999,
+                   name: 'AutoSelect',
+                   displayName: 'AutoSelect'
+                });
+                
+                _.each(items.resources, function(item) {
+                    hostModeOptions.push({
+                        id: item.storageSystemHostModeOptionId,
+                        name : item.storageSystemHostModeOptionName,
+                        displayName : item.storageSystemHostModeOptionId + ' - ' + item.storageSystemHostModeOptionName
+                        });
+
+                });
+                return hostModeOptions;
             }
         };
 

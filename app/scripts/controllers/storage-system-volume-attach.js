@@ -204,60 +204,59 @@ angular.module('rainierApp')
                 return;
             }
 
-            var hostModeOptions = constantService.hostModeOptions();
             var hostModes = constantService.osType();
             hostModes.splice(0, 0, autoSelect);
 
             var dataModel = $scope.dataModel;
+            orchestratorService.storageSystemHostModeOptions($scope.dataModel.selectedStorageSystem.storageSystemId).then(function (results) {
+                dataModel.attachModel = {
+                    storageSystemSelectable: false,
 
-            dataModel.attachModel = {
-                storageSystemSelectable: false,
+                    lastSelectedHostModeOption: [999],
+                    selectedVolumes: selectedVolumes,
+                    selectedServers: _.where(dataModel.displayList, 'selected'),
+                    storagePorts: ports,
+                    hostModes: hostModes,
+                    hostMode: hostModes[0],
+                    hostModeOptions: results,
+                    selectedHostModeOption: [999],
+                    enableZoning: false,
+                    enableLunUnification: false,
+                    canSubmit: function () {
+                        return _.every(dataModel.attachModel.selectedVolumes, function (v) {
+                            return !v.lun || _.isFinite(v.lun);
+                        });
+                    },
+                    submit: function () {
+                        if (!$scope.canSubmit) {
+                            return;
+                        }
+                        var volumes = viewModelService.buildLunResources(dataModel.attachModel.selectedVolumes);
+                        var hosts = dataModel.attachModel.serverPortMapperModel.getPorts();
 
-                lastSelectedHostModeOption: [999],
-                selectedVolumes: selectedVolumes,
-                selectedServers: _.where(dataModel.displayList, 'selected'),
-                storagePorts: ports,
-                hostModes: hostModes,
-                hostMode: hostModes[0],
-                hostModeOptions: hostModeOptions,
-                selectedHostModeOption: [999],
-                enableZoning: false,
-                enableLunUnification: false,
-                canSubmit: function () {
-                    return _.every(dataModel.attachModel.selectedVolumes, function (v) {
-                        return !v.lun || _.isFinite(v.lun);
-                    });
-                },
-                submit: function () {
-                    if (!$scope.canSubmit) {
-                        return;
+                        var payload = {
+                            storageSystemId: storageSystemId,
+                            hostModeOptions: attachVolumeService.getSelectedHostMode(dataModel),
+                            volumes: volumes,
+                            ports: hosts,
+                            enableZoning: dataModel.attachModel.enableZoning,
+                            enableLunUnification: dataModel.attachModel.enableLunUnification
+                        };
+
+                        if (dataModel.attachModel.hostMode !== autoSelect) {
+                            payload.intendedImageType = dataModel.attachModel.hostMode;
+                        }
+
+                        orchestratorService.attachVolume(payload).then(function () {
+                            window.history.back();
+                        });
+                    },
+                    previous: function () {
+                        dataModel.goBack();
                     }
-                    var volumes = viewModelService.buildLunResources(dataModel.attachModel.selectedVolumes);
-                    var hosts = dataModel.attachModel.serverPortMapperModel.getPorts();
 
-                    var payload = {
-                        storageSystemId: storageSystemId,
-                        hostModeOptions: attachVolumeService.getSelectedHostMode(dataModel),
-                        volumes: volumes,
-                        ports: hosts,
-                        enableZoning: dataModel.attachModel.enableZoning,
-                        enableLunUnification: dataModel.attachModel.enableLunUnification
-                    };
-
-                    if (dataModel.attachModel.hostMode !== autoSelect) {
-                        payload.intendedImageType = dataModel.attachModel.hostMode;
-                    }
-
-                    orchestratorService.attachVolume(payload).then(function () {
-                        window.history.back();
-                    });
-                },
-                previous: function () {
-                    dataModel.goBack();
-                }
-
-            };
-
+                };
+            });
             dataModel.checkSelectedHostModeOptions = function() {
                 attachVolumeService.checkSelectedHostModeOptions(dataModel);
             };
