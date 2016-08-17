@@ -141,6 +141,17 @@ angular.module('rainierApp')
                 item.getIcons = function () {
                     return [];
                 };
+                if (item.gadStatus === 'Incomplete') {
+                    item.alertType = 'alert-link';
+                    item.alertLink = {
+                        icon: 'icon-small-triangle',
+                        title: 'Incomplete Gad Array.',
+                    };
+                }
+
+                item.getIcons = function () {
+                    return [this.alertLink];
+                };
                 item.topTotal = item.total;
                 item.topSize = item.physicalUsed;
                 if(item.unified) {
