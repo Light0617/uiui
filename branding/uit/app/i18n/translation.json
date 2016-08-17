@@ -280,6 +280,7 @@
     "storage-volume-summary-unprotected-volumes": "Unprotected Volumes",
     "storage-volume-summary-secondary-volumes": "Secondary Volumes",
 
+    "gad-display-type": "GAD",
     "security-security": "Security",
     "security-active-directory": "Active Directory",
     "security-account-domain": "Account Domain",
