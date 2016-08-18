@@ -162,3 +162,25 @@
         </label>
     </div>
 </div>
+<div class="control-group">
+    <h3>{{'volume-capacity-saving-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.dkcDataSavingType || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group btn-group-vertical btn-group-justified">
+    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
+           ng-change="filterModel.filterQuery('dkcDataSavingType', 'NONE')"
+           btn-radio="'No'" uncheckable>
+        {{'volume-capacity-saving-type-filter-no' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
+           ng-change="filterModel.filterQuery('dkcDataSavingType', 'COMPRESSION')"
+           btn-radio="'Compression'" uncheckable>
+        {{'volume-capacity-saving-type-filter-compression' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
+           ng-change="filterModel.filterQuery('dkcDataSavingType', 'DEDUPLICATION_AND_COMPRESSION')"
+           btn-radio="'Deduplication and Compression'" uncheckable>
+        {{'volume-capacity-saving-type-filter-deduplication-and-compression' | translate}}
+    </label>
+</div>

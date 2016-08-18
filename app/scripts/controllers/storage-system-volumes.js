@@ -124,6 +124,7 @@ angular.module('rainierApp')
                     freeText: '',
                     volumeType: '',
                     provisioningStatus: '',
+                    dkcDataSavingType: '',
                     replicationType: [],
                     protectionStatusList: [],
                     snapshotex: false,

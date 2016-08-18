@@ -36,6 +36,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             dataProtectionSummary: getVolumeDataProtectionSummary(),
             gadSummary: getVolumeGADSummary(volType, v),
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
+            dkcDataSavingType: _.sample(['NONE', 'COMPRESSION', 'DEDUPLICATION_AND_COMPRESSION']),
             attachedVolumeServerSummary:[
             {
                 serverId: null,

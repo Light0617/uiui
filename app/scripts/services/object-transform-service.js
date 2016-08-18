@@ -338,6 +338,7 @@ angular.module('rainierApp')
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
                 item.dpMonitoringStatus = item.dataProtectionSummary.replicationType.length === 0 ? '' : item.dpMonitoringStatus;
 
+                var icons = [];
                 if (item.dpStatus) {
                     item.alertType = 'alert-link';
                     item.alertLink = {
@@ -348,10 +349,32 @@ angular.module('rainierApp')
                             $location.path(path);
                         }
                     };
-                    item.getIcons = function () {
-                        return [this.alertLink];
-                    };
+                    icons.push(item.alertLink);
                 }
+
+                switch (item.dkcDataSavingType) {
+                    case 'COMPRESSION':
+                        icons.push({
+                            icon: 'icon-compression',
+                            title: 'Compression Enabled'
+                        });
+                        break;
+                    case 'DEDUPLICATION_AND_COMPRESSION':
+                        icons.push({
+                            // TODO M.Nakayama NEWRAIN-6280 Icom must be changed to deduplication icon.
+                            icon: 'icon-compression',
+                            title: 'Deduplication Enabled'
+                        });
+                        icons.push({
+                            icon: 'icon-compression',
+                            title: 'Compression Enabled'
+                        });
+                        break;
+                }
+
+                item.getIcons = function () {
+                    return icons;
+                };
 
                 item.metaData = [
                     {
@@ -415,6 +438,18 @@ angular.module('rainierApp')
                         break;
                     default:
                         item.itemIcon = 'icon-volume';
+                }
+
+                switch (item.dkcDataSavingType) {
+                    case 'NONE':
+                        item.capacitySavingType = 'No';
+                        break;
+                    case 'COMPRESSION':
+                        item.capacitySavingType = 'Compression';
+                        break;
+                    case 'DEDUPLICATION_AND_COMPRESSION':
+                        item.capacitySavingType = 'Deduplication and Compression';
+                        break;
                 }
 
                 item.topTotal = item.totalCapacity;
