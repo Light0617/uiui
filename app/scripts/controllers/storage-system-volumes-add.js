@@ -48,7 +48,7 @@ angular.module('rainierApp')
                 $scope.dataModel.storagePools = filteredPools;
                 if(autoSelectedPoolId!==undefined) {
                     $scope.dataModel.storagePools = _.filter(filteredPools, function(pool) {
-                        return pool.type !== synchronousTranslateService.translate('HTI') && pool.storagePoolId === autoSelectedPoolId;
+                        return pool.type !== synchronousTranslateService.translate('HTI') && pool.storagePoolId.toString() === autoSelectedPoolId;
                     });
                 }
             });
