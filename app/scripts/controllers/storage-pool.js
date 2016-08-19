@@ -276,9 +276,9 @@ angular.module('rainierApp')
             result.logicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.logicalCapacityInBytes));
             result.usedLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes));
             result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
-            result.expansionRate = addColonSign(1, result.expansionRate);
-            result.compressionRate = addColonSign(result.compressionRate, 1);
-            result.savingsPercentage = addPercentageSign(result.savingsPercentage);
+            result.expansionRate = addColonSign(1, result.fmcCompressionDetails.expansionRate);
+            result.compressionRate = addColonSign(result.fmcCompressionDetails.compressionRate, 1);
+            result.savingsPercentage = addPercentageSign(result.fmcCompressionDetails.savingsPercentage);
             $scope.poolDataModel = result;
         });
 

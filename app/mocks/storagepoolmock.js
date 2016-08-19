@@ -68,10 +68,9 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                 'value': 0
             },
             'capacityInBytes': mockUtils.getCapacity(50, 100),
-            'compressed': mockUtils.trueOrFalse() ? 'YES' : 'NO',
-            'compressionRate': mockUtils.randomInt(0,10),
+            'fmcCompressed': mockUtils.trueOrFalse() ? 'YES' : 'NO',
             'encrypted': mockUtils.trueOrFalse() ? 'YES' : 'NO',
-            'expansionRate': mockUtils.randomInt(0,10),
+            'fmcCompressionDetails': getFmcCompressionDetails(),
             'externalParityGroupIds' : [],
             'logicalCapacityInBytes': mockUtils.getCapacity(50, 100),
             'nasBoot': mockUtils.trueOrFalse(),
@@ -83,7 +82,6 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                 }
             ],
             'storageSystemId': '22000',
-            'savingsPercentage': mockUtils.randomInt(0,10),
             'status': 'NORMAL',
             'storagePoolId': v,
             'label':'Storage Pool ' + v,
@@ -98,7 +96,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'utilizationThreshold1': mockUtils.randomInt(1,100),
             'utilizationThreshold2': mockUtils.randomInt(1,100),
             'activeFlashEnabled': mockUtils.trueOrFalse(),
-            'tiers': tiers
+            'tiers': tiers,
+            'deduplicationEnabled': mockUtils.trueOrFalse()
         };
     };
 
@@ -112,6 +111,14 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
         }
 
         return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(storagePools));
+    };
+
+    var getFmcCompressionDetails = function getFmcCompressionDetails() {
+        return {
+            expansionRate: mockUtils.randomInt(0,10),
+            compressionRate: mockUtils.randomInt(0,10),
+            savingsPercentage: mockUtils.randomInt(0,10),
+        };
     };
 
     return {

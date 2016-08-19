@@ -587,7 +587,7 @@ angular.module('rainierApp')
                     },
                     {
                         left: false,
-                        title: synchronousTranslateService.translate('storage-pool-compression') + ': ' + synchronousTranslateService.translate(item.compressed),
+                        title: synchronousTranslateService.translate('storage-pool-compression') + ': ' + synchronousTranslateService.translate(item.fmcCompressed),
                         details: []
                     }
                 ];
@@ -627,6 +627,14 @@ angular.module('rainierApp')
                     // The following properties are for list view
                     item.alertType = 'pool-alert';
                     item.alertTitle = alertTitle;
+                }
+
+                if (item.deduplicationEnabled) {
+                    icons.push({
+                        // TODO NEWRAIN-6280 Icom must be changed to deduplication icon.
+                        icon: 'icon-compression',
+                        title: 'Deduplication Enabled'
+                    });
                 }
 
                 item.getIcons = function () {

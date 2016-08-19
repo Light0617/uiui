@@ -52,7 +52,7 @@
                                             no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
         </div>
     </div>
-    <div ng-if="poolDataModel.compressed === 'YES' || poolDataModel.compressed === 'PARTIAL'">
+    <div ng-if="poolDataModel.fmcCompressed === 'YES' || poolDataModel.fmcCompressed === 'PARTIAL'">
         <div class="row page-title with-tools">
             <h1>{{ 'storage-pool-compression' | translate }}</h1>
         </div>
@@ -64,10 +64,10 @@
                             <div class="tile-row resource-info">
                                 <div class="resource-data">
                                     <div class="label-value-container">
-                                        <p class="label">{{ 'storage-pool-compression' | translate}}</p> <p class="value">{{poolDataModel.compressed | translate}}</p>
-                                        <p class="label">{{ 'storage-pool-expansion-rate' | translate}}</p> <p class="value">{{poolDataModel.expansionRate | translate}}</p>
-                                        <p class="label">{{ 'storage-pool-compression-rate' | translate}}</p> <p class="value">{{poolDataModel.compressionRate | translate}}</p>
-                                        <p class="label">{{ 'storage-pool-savings-percentage' | translate}}</p> <p class="value">{{poolDataModel.savingsPercentage}}</p>
+                                        <p class="label">{{ 'storage-pool-compression' | translate}}</p> <p class="value">{{poolDataModel.fmcCompressed | translate}}</p>
+                                        <p class="label">{{ 'storage-pool-expansion-rate' | translate}}</p> <p class="value">{{poolDataModel.fmcCompressionDetails.expansionRate | translate}}</p>
+                                        <p class="label">{{ 'storage-pool-compression-rate' | translate}}</p> <p class="value">{{poolDataModel.fmcCompressionDetails.compressionRate | translate}}</p>
+                                        <p class="label">{{ 'storage-pool-savings-percentage' | translate}}</p> <p class="value">{{poolDataModel.fmcCompressionDetails.savingsPercentage}}</p>
                                         <p class="label">{{ 'storage-pool-logical-capacity' | translate}}</p> <p class="value">{{poolDataModel.logicalCapacityInBytes | translate}}</p>
                                         <p class="label">{{ 'storage-pool-used-logical-capacity' | translate}}</p> <p class="value">{{poolDataModel.usedLogicalCapacityInBytes | translate}}</p>
                                         <p class="label">{{ 'storage-pool-available-logical-capacity' | translate}}</p> <p class="value">{{poolDataModel.availableLogicalCapacityInBytes | translate}}</p>

@@ -125,15 +125,30 @@
 </div>
 <div class="control-group">
     <h3>{{ 'storage-pool-compression' | translate }}<span class="read-only"
-                                                   type="text">{{dataModel.filter.compression || 'ALL'}}</span>
+                                                   type="text">{{dataModel.filter.fmcCompression || 'ALL'}}</span>
     </h3>
     <div class="control-group">
-        <select class="selectpicker inline btn-group-justified" ng-model="dataModel.filter.compression" ng-change="filterModel.filterQuery('compressed', dataModel.filter.compression)">
+        <select class="selectpicker inline btn-group-justified" ng-model="dataModel.filter.fmcCompression" ng-change="filterModel.filterQuery('fmcCompressed', dataModel.filter.fmcCompression)">
             <option value="">{{'storage-pool-compression-filter' | translate}}</option>
             <option value="YES">YES</option>
             <option value="NO">NO</option>
             <option value="PARTIAL">PARTIAL</option>
             <option value="UNKNOWN">UNKNOWN</option>
         </select>
+    </div>
+</div>
+<div class="control-group">
+    <h3>{{ 'storage-pool-deduplication-enabled' | translate }}<span class="read-only"
+                                                                    type="text">{{filterModel.filter.deduplicationEnabled || 'ALL'}}</span>
+    </h3>
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.deduplicationEnabled" btn-radio="'YES'" title="true" ng-click="filterModel.filterQuery('deduplicationEnabled', 'true')" uncheckable>YES
+            </label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.deduplicationEnabled" btn-radio="'NO'" title="false" ng-click="filterModel.filterQuery('deduplicationEnabled', 'false')" uncheckable>NO
+            </label>
+        </div>
     </div>
 </div>
