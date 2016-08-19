@@ -177,6 +177,21 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    icon: 'icon-detach-volume',
+                    tooltip: 'storage-volume-detach',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                });
+                    },
+                    onClick: function () {
+                        var item = _.first(dataModel.getSelectedItems());
+                        item.actions.detach.onClick();
+                    }
+                },
+                {
                     icon: 'icon-data-protection',
                     tooltip: 'action-tooltip-protect-volumes',
                     type: 'link',

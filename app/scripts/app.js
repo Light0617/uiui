@@ -780,6 +780,14 @@ angular
                 },
                 helpContext: 'T_EXPAND_FILE_POOL'
             })
+            .when('/storage-systems/:storageSystemId/volumes/:volumeId/detach', {
+                templateUrl: 'views/detach-volume.html',
+                controller: 'DetachVolumeCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'storage-volume-detach'
+                },
+                helpContext: ''
+            })
             .otherwise({
                 redirectTo: '/'
             });

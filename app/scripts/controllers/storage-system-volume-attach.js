@@ -148,7 +148,7 @@ angular.module('rainierApp')
         };
 
         $scope.filterModel = {
-
+            showAllFilters: true,
             filterOperatingSystem: function () {
                 var enabledOperatingSystemType = [];
                 var operatingSystemType = $scope.filterModel.operatingSystemType;

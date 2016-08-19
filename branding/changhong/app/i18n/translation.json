@@ -371,6 +371,7 @@
     "storage-volume-detach-zero-selected": "Select at least one volume for deletion!",
     "storage-volume-detach-remove-zone": "Remove Zone",
     "storage-volume-detach-not-remove-zone": "Not Remove Zone",
+    "storage-volume-detach": "Detach Volume",
 
     "parity-group-raid-configuration": "RAID Type:",
     "parity-group-disk-type": "Disk Type:",

@@ -145,6 +145,7 @@ angular.module('rainierApp')
             });
 
             $scope.filterModel = {
+                showAllFilters: true,
                 filter: {
                     freeText: '',
                     volumeType: '',

@@ -430,6 +430,10 @@ angular.module('rainierApp')
                     return (this.dataProtectionSummary.volumeType.indexOf('P-VOL') === -1);
                 };
 
+                item.isAttached = function () {
+                    return (this.provisioningStatus === 'ATTACHED');
+                };
+
                 item.actions = {
                     'delete': {
                         icon: 'icon-delete',
@@ -470,6 +474,20 @@ angular.module('rainierApp')
                             ShareDataService.push('selectedVolumes', [item]);
                             $location.path(['storage-systems', item.storageSystemId,
                                 'attach-volumes'
+                            ].join('/'));
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    },
+                    'detach': {
+                        icon: 'icon-detach-volume',
+                        tooltip: 'storage-volume-detach',
+                        type: 'link',
+                        onClick: function () {
+                            ShareDataService.push('selectedVolumes', [item]);
+                            $location.path(['storage-systems', item.storageSystemId,
+                                'volumes', item.volumeId, 'detach'
                             ].join('/'));
                         },
                         enabled: function () {

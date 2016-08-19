@@ -1,4 +1,4 @@
-<div class="btn-group btn-group-toggle-green btn-group-justified">
+<div class="btn-group btn-group-toggle-green btn-group-justified" ng-if="filterModel.showAllFilters==true">
     <div class="btn-group">
         <label class="btn btn-default" ng-model="filterModel.filter.status" btn-radio="'Provisioned'" uncheckable
                ng-change="filterModel.filterQuery('attachedVolumeCount', '[1 TO *]')">{{'host-filter-provisioned'
@@ -12,7 +12,7 @@
         </label>
     </div>
 </div>
-<div class="control-group">
+<div class="control-group" ng-if="filterModel.showAllFilters==true">
     <p>OS Type</p>
 
     <div class="checkbox pull-bottom">
