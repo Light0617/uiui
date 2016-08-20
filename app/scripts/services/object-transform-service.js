@@ -564,7 +564,7 @@ angular.module('rainierApp')
             },
             transformPool: function (item) {
                 item.usage = Math.round(item.usedCapacityInBytes * 100 / item.capacityInBytes) + '%';
-                item.logicalUtilization = Math.round(item.usedLogicalCapacityInBytes * 100 / item.logicalCapacityInBytes); // In percentage
+                item.logicalUtilization = Math.round(item.usedCapacityInBytes * 100 / item.capacityInBytes); // In percentage
                 item.capacityInBytes = diskSizeService.getDisplaySize(item.capacityInBytes);
                 item.availableCapacityInBytes = diskSizeService.getDisplaySize(item.availableCapacityInBytes);
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.usedCapacityInBytes);
@@ -1706,6 +1706,43 @@ angular.module('rainierApp')
                 var items = [];
                 items.push(capacity(item.usedCapacityInBytes, item.availableCapacityInBytes));
 
+                var tierInfos = [];
+                if (item.type === 'HDT') {
+                    _.each(item.tiers, function (tier) {
+                        var usedPercentage = tier.usedCapacity / tier.capacity * 100;
+                        tierInfos.push({
+                            tierName: tier.tier,
+                            total: {
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-total'),
+                                capacity: diskSizeService.getDisplaySize(tier.capacity)
+                            },
+                            used: {
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-tier-used'),
+                                capacity: diskSizeService.getDisplaySize(tier.usedCapacity)
+                            },
+                            item: [
+                                {
+                                    percentage: usedPercentage.toFixed(1),
+                                    label: (function (key) {
+                                        return synchronousTranslateService.translate(key);
+                                    })(usedPercentage),
+                                    tooltip: (function (key) {
+                                        return synchronousTranslateService.translate(key);
+                                    })(usedPercentage + '%'),
+                                    color: allocatedColor
+                                },
+                                {
+                                    percentage: 100,
+                                    color: unallocatedColor
+                                }]
+                        });
+                    });
+                }
+
                 if (item.type !== 'HTI') {
                     items.push([
                         {
@@ -1733,6 +1770,9 @@ angular.module('rainierApp')
                             capacity: item.capacityInBytes
                         },
                         items: items
+                    },
+                    dataVisualizationModel: {
+                        items: tierInfos
                     },
                     alerts: {
                         capacity: {

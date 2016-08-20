@@ -52,6 +52,56 @@
                                             no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
         </div>
     </div>
+    <div class="container-fluid resource-detail tiles-view" ng-if="poolDataModel.type==='HDT'">
+        <div class="resource-row">
+            <div class="nested-tiles-meta-tile">
+
+                <div class="tile meta-tile">
+                    <div class="label-value-container resource-data">
+                        <h2>{{'storage-pool-tier-information'|translate}}</h2>
+                        <p class="label">{{ 'storage-pool-tiering-mode' | translate}}</p>
+                        <p class="value">{{poolDataModel.tieringMode}}</p>
+                        <p class="label">{{ 'storage-pool-monitoring-mode' | translate}}</p>
+                        <p class="value">{{poolDataModel.monitoringMode}}</p>
+                    </div>
+                </div>
+
+                <div ng-repeat="item in summaryModel.dataVisualizationModel.items" class="tile tier-tile">
+                    <div>
+                        <div class="title-row">
+                            <span class="icon icon-md icon-tier"></span>
+                            <h3>{{item.tierName}}</h3>
+                        </div>
+                        <div class="tile-row resource-info">
+                            <div class="data-viz-column">
+                                <h4>{{'pool-buffer-space'|translate}}</h4>
+                                <div class="data-viz bar">
+                                    <p class="label">{{'pool-new-page-assignment'|translate}}</p>
+                                    <!--TODO: Need to add svg item here-->
+                                </div>
+                                <div class="data-viz bar">
+                                    <p class="label">{{'pool-tier-relocation'|translate}}</p>
+                                    <!--TODO: Need to add svg item here-->
+                                </div>
+                                <h4>{{'pool-performance-utilization'|translate}}</h4>
+                                <div class="data-viz bar">
+                                    <!--TODO: Need to add svg item here-->
+                                </div>
+                            </div>
+
+                            <div class="data-viz-column">
+                                <h4>{{'storage-pool-tier-capacity'|translate}}</h4>
+                                <polar-data-visualization class="utilization"
+                                                          ng-model="item"></polar-data-visualization>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div ng-if="poolDataModel.fmcCompressed === 'YES' || poolDataModel.fmcCompressed === 'PARTIAL'">
         <div class="row page-title with-tools">
             <h1>{{ 'storage-pool-compression' | translate }}</h1>
