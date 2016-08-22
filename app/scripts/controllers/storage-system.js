@@ -153,6 +153,12 @@ angular.module('rainierApp')
             return replicationGroupsService.snapshotExternalVolumePairExists(storageSystemId);
         }).then(function (result) {
             externalVolumePairExist.snapshot = result === 0 ? false : true;
+            return replicationGroupsService.snapshotExtendableExternalVolumePairExists(storageSystemId);
+        }).then(function (result) {
+            externalVolumePairExist.snapshotEx = result === 0 ? false : true;
+            return replicationGroupsService.snapshotFullcopyExternalVolumePairExists(storageSystemId);
+        }).then(function (result) {
+            externalVolumePairExist.snapshotFc = result === 0 ? false : true;
             return orchestratorService.replicationGroupSummary(storageSystemId);
         }).then(function (result) {
             var replicationGroupCountByTypes = result.replicationGroupCountByType;
@@ -163,8 +169,10 @@ angular.module('rainierApp')
                 _.forEach(replicationGroupCountByTypes, function(replicationGroupCountByType) {
                     if (replicationGroupCountByType.replicationType === 'CLONE' && externalVolumePairExist.clone) {
                         replicationGroupCountByType.count++;
-                    } else if (replicationGroupCountByType.replicationType === 'SNAPSHOT' && externalVolumePairExist.snapshot) {
-                        replicationGroupCountByType.count++;
+                    } else if (replicationGroupCountByType.replicationType === 'SNAPSHOT') {
+                        replicationGroupCountByType.count += externalVolumePairExist.snapshot ? 1 : 0;
+                        replicationGroupCountByType.count += externalVolumePairExist.snapshotEx ? 1 : 0;
+                        replicationGroupCountByType.count += externalVolumePairExist.snapshotFc ? 1 : 0;
                     }
                     var replicationGroupType = {
                         type: replicationGroupCountByType.replicationType,
