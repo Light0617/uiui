@@ -16,6 +16,12 @@ angular.module('rainierApp')
             if (dataModel.cloneNow) {
                 replicationTypes.push('CLONE');
             }
+            if (dataModel.snapshotEx) {
+                replicationTypes.push('SNAPSHOT_EXTENDABLE');
+            }
+            if (dataModel.snapshotFc) {
+                replicationTypes.push('SNAPSHOT_FULLCOPY');
+            }
             filterModel.filter.replicationTypes = replicationTypes;
         };
 
