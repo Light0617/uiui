@@ -61,8 +61,8 @@ angular.module('rainierApp')
                                 redirectWindow.document.body.innerText = synchronousTranslateService.translate('navigator-session-permission-html-error');
                                 showDialog('', 'navigator-session-permission-modal-error', 'warning');
                             } else {
-                                redirectWindow.document.body.innerText = synchronousTranslateService.translate('navigator-session-error-message');
-                                showDialog('', 'navigator-session-error-message', 'warning');
+                                redirectWindow.document.body.innerText = synchronousTranslateService.translate('navigator-session-html-error');
+                                showDialog('', 'navigator-session-modal-error', 'warning');
                             }
                         });
                     }

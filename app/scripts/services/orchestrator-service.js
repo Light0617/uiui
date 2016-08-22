@@ -315,6 +315,11 @@ angular.module('rainierApp')
             createParityGroups: function (storageSystemId, createParityGroupsPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('templates/parity-group').post(createParityGroupsPayload));
             },
+            storageSystemHostModeOptions: function (storageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('host-mode-options').get().then(function (result) {
+                    return objectTransformService.transformToHostModeOptions(result);
+                }));
+            },
             createVolumes: function (createVolumesPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/create').post(createVolumesPayload));
             },

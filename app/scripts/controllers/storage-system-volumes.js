@@ -12,11 +12,12 @@ angular.module('rainierApp')
                                                       objectTransformService, orchestratorService, volumeService,
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
-                                                      storageSystemVolumeService, dpAlertService) {
+                                                      storageSystemVolumeService, dpAlertService, storageNavigatorSessionService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
         ShareDataService.showProvisioningStatus = true;
+        ShareDataService.showPoolBreadCrumb = false;
         $scope.dataModel = {
             view: 'tile',
             storageSystemId: storageSystemId,
@@ -28,7 +29,24 @@ angular.module('rainierApp')
             }
         };
 
-        $scope.summaryModel = {};
+        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
+        //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
+        sn2Action.icon = 'icon-settings';
+        sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
+        sn2Action.enabled = function () {
+            return true;
+        };
+
+        var actions = {
+            'SN2': sn2Action
+        };
+
+        $scope.summaryModel={
+            getActions: function () {
+                return _.map(actions);
+            }
+        };
+
         $scope.filterModel = {};
 
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
@@ -36,12 +54,14 @@ angular.module('rainierApp')
             return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
         }).then(function (result) {
             var summaryModel = objectTransformService.transformToStorageSummaryModel(storageSystem, null, result);
-                summaryModel.title = 'Volumes';
-                summaryModel.protectedVolume = result.protectedVolumes;
-                summaryModel.unprotectedVolume = result.unprotectedVolumes;
-                summaryModel.secondaryVolume = result.secondaryVolumes;
-                summaryModel.dpAlert = dpAlertService;
-                $scope.summaryModel = summaryModel;
+
+            summaryModel.title = 'Volumes';
+            summaryModel.protectedVolume = result.protectedVolumes;
+            summaryModel.unprotectedVolume = result.unprotectedVolumes;
+            summaryModel.secondaryVolume = result.secondaryVolumes;
+            summaryModel.dpAlert = dpAlertService;
+            summaryModel.getActions = $scope.summaryModel.getActions;
+            $scope.summaryModel = summaryModel;
         });
 
         var volumeUnprotectActions = function (selectedVolume) {
@@ -105,6 +125,7 @@ angular.module('rainierApp')
                     freeText: '',
                     volumeType: '',
                     provisioningStatus: '',
+                    dkcDataSavingType: '',
                     replicationType: [],
                     protectionStatusList: [],
                     snapshotex: false,
@@ -156,6 +177,10 @@ angular.module('rainierApp')
 
             inventorySettingsService.setVolumesGridSettings(dataModel);
 
+            var hasGadVolume = function(selectedVolumes)  {
+                return _.find(selectedVolumes, function(volume) {return volume.gadSummary !== null;}) !== undefined;
+            };
+
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -165,20 +190,20 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-volume-delete-confirmation',
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected();
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             item.actions.delete.onClick(orchestratorService, false);
                         });
-                    }
+                    },
                 },
                 {
                     icon: 'icon-edit',
                     tooltip: 'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected();
+                        return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
@@ -196,7 +221,22 @@ angular.module('rainierApp')
                             '/'));
                     },
                     enabled: function () {
-                        return dataModel.anySelected();
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
+                    }
+                },
+                {
+                    icon: 'icon-detach-volume',
+                    tooltip: 'storage-volume-detach',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                });
+                    },
+                    onClick: function () {
+                        var item = _.first(dataModel.getSelectedItems());
+                        item.actions.detach.onClick();
                     }
                 },
                 {
@@ -210,7 +250,7 @@ angular.module('rainierApp')
                             ].join('/'));
                     },
                     enabled: function () {
-                        return dataModel.anySelected();
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                     }
                 },
                 {
@@ -224,7 +264,7 @@ angular.module('rainierApp')
                         return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
                             function (vol) {
                                 return vol.isUnprotected();
-                            });
+                            }) && !hasGadVolume(dataModel.getSelectedItems());
                     }
                 },
                 {
@@ -238,7 +278,7 @@ angular.module('rainierApp')
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
                             function (vol) {
                                 return volumeService.restorable(vol);
-                            });
+                            }) && !hasGadVolume(dataModel.getSelectedItems());
                     }
                 }
             ];

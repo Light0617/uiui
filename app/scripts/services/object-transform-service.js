@@ -141,6 +141,17 @@ angular.module('rainierApp')
                 item.getIcons = function () {
                     return [];
                 };
+                if (item.gadStatus === 'Incomplete') {
+                    item.alertType = 'alert-link';
+                    item.alertLink = {
+                        icon: 'icon-small-triangle',
+                        title: 'Incomplete Gad Array.',
+                    };
+                }
+
+                item.getIcons = function () {
+                    return [this.alertLink];
+                };
                 item.topTotal = item.total;
                 item.topSize = item.physicalUsed;
                 if(item.unified) {
@@ -303,6 +314,7 @@ angular.module('rainierApp')
                 item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
                 item.alerts = 0;
                 item.open = false;
+                item.storagePoolId = parseInt(item.poolId);
 
                 if(item.label && item.label.indexOf('HSA-reserved-') === 0) {
                     item.disabledCheckBox = true;
@@ -312,12 +324,13 @@ angular.module('rainierApp')
                 item.volumeLabel = 'Volume' + item.volumeId;
 
 
-                item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType);
+                item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType, item.gadSummary);
 
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
                 item.dpMonitoringStatus = item.dataProtectionSummary.replicationType.length === 0 ? '' : item.dpMonitoringStatus;
 
+                var icons = [];
                 if (item.dpStatus) {
                     item.alertType = 'alert-link';
                     item.alertLink = {
@@ -328,10 +341,32 @@ angular.module('rainierApp')
                             $location.path(path);
                         }
                     };
-                    item.getIcons = function () {
-                        return [this.alertLink];
-                    };
+                    icons.push(item.alertLink);
                 }
+
+                switch (item.dkcDataSavingType) {
+                    case 'COMPRESSION':
+                        icons.push({
+                            icon: 'icon-compression',
+                            title: 'Compression Enabled'
+                        });
+                        break;
+                    case 'DEDUPLICATION_AND_COMPRESSION':
+                        icons.push({
+                            // TODO M.Nakayama NEWRAIN-6280 Icom must be changed to deduplication icon.
+                            icon: 'icon-compression',
+                            title: 'Deduplication Enabled'
+                        });
+                        icons.push({
+                            icon: 'icon-compression',
+                            title: 'Compression Enabled'
+                        });
+                        break;
+                }
+
+                item.getIcons = function () {
+                    return icons;
+                };
 
                 item.metaData = [
                     {
@@ -397,6 +432,18 @@ angular.module('rainierApp')
                         item.itemIcon = 'icon-volume';
                 }
 
+                switch (item.dkcDataSavingType) {
+                    case 'NONE':
+                        item.capacitySavingType = 'No';
+                        break;
+                    case 'COMPRESSION':
+                        item.capacitySavingType = 'Compression';
+                        break;
+                    case 'DEDUPLICATION_AND_COMPRESSION':
+                        item.capacitySavingType = 'Deduplication and Compression';
+                        break;
+                }
+
                 item.topTotal = item.totalCapacity;
                 item.topSize = item.usedCapacity;
                 item.topPostFix = 'common-label-total';
@@ -408,6 +455,10 @@ angular.module('rainierApp')
 
                 item.isUnprotected = function () {
                     return (this.dataProtectionSummary.volumeType.indexOf('P-VOL') === -1);
+                };
+
+                item.isAttached = function () {
+                    return (this.provisioningStatus === 'ATTACHED');
                 };
 
                 item.actions = {
@@ -434,9 +485,16 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-update',
                         type: 'link',
                         onClick: function () {
-                            $location.path(['storage-systems', item.storageSystemId, 'volumes',
-                                item.volumeId, 'update'
-                            ].join('/'));
+                            if(ShareDataService.showPoolBreadCrumb === true) {
+                                $location.path(['storage-systems', item.storageSystemId, 'storage-pools',
+                                    item.storagePoolId, 'volumes',
+                                    item.volumeId, 'update'
+                                ].join('/'));
+                            } else {
+                                $location.path(['storage-systems', item.storageSystemId, 'volumes',
+                                    item.volumeId, 'update'
+                                ].join('/'));
+                            }
                         },
                         enabled: function () {
                             return true;
@@ -464,6 +522,27 @@ angular.module('rainierApp')
                             $location.path(['storage-systems', item.storageSystemId,
                                 'attach-volumes'
                             ].join('/'));
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    },
+                    'detach': {
+                        icon: 'icon-detach-volume',
+                        tooltip: 'storage-volume-detach',
+                        type: 'link',
+                        onClick: function () {
+                            ShareDataService.push('selectedVolumes', [item]);
+                            if(ShareDataService.showPoolBreadCrumb === true) {
+                                $location.path(['storage-systems', item.storageSystemId, 'storage-pools',
+                                    item.storagePoolId, 'volumes',
+                                    item.volumeId, 'detach'
+                                ].join('/'));
+                            } else {
+                                $location.path(['storage-systems', item.storageSystemId,
+                                    'volumes', item.volumeId, 'detach'
+                                ].join('/'));
+                            }
                         },
                         enabled: function () {
                             return true;
@@ -527,7 +606,7 @@ angular.module('rainierApp')
                     },
                     {
                         left: false,
-                        title: synchronousTranslateService.translate('storage-pool-compression') + ': ' + synchronousTranslateService.translate(item.compressed),
+                        title: synchronousTranslateService.translate('storage-pool-compression') + ': ' + synchronousTranslateService.translate(item.fmcCompressed),
                         details: []
                     }
                 ];
@@ -567,6 +646,14 @@ angular.module('rainierApp')
                     // The following properties are for list view
                     item.alertType = 'pool-alert';
                     item.alertTitle = alertTitle;
+                }
+
+                if (item.deduplicationEnabled) {
+                    icons.push({
+                        // TODO NEWRAIN-6280 Icom must be changed to deduplication icon.
+                        icon: 'icon-compression',
+                        title: 'Deduplication Enabled'
+                    });
                 }
 
                 item.getIcons = function () {
@@ -2248,6 +2335,24 @@ angular.module('rainierApp')
                 item.getActions = function () {
                     return _.map(item.actions);
                 };
+            },
+            transformToHostModeOptions: function (items) {
+                var hostModeOptions = [];
+                hostModeOptions.push({
+                   id: 999,
+                   name: 'AutoSelect',
+                   displayName: 'AutoSelect'
+                });
+                
+                _.each(items.resources, function(item) {
+                    hostModeOptions.push({
+                        id: item.storageSystemHostModeOptionId,
+                        name : item.storageSystemHostModeOptionName,
+                        displayName : item.storageSystemHostModeOptionId + ' - ' + item.storageSystemHostModeOptionName
+                        });
+
+                });
+                return hostModeOptions;
             }
         };
 

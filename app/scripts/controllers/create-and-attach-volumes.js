@@ -107,27 +107,28 @@ angular.module('rainierApp')
                 return;
             }
 
-            var hostModeOptions = constantService.hostModeOptions();
             var hostModes = constantService.osType().sort();
             hostModes.splice(0, 0, autoSelect);
-            var attachModel = {
-                lastSelectedHostModeOption: [999],
-                storageSystemSelectable: false,
-                enableZoning: false,
-                enableLunUnification: false,
-                storagePools: ports,
-                selectedServers: selectedServers,
-                selectedHostModeOption: [999],
-                hostModes: hostModes,
-                hostMode: hostModes[0],
-                hostModeOptions: hostModeOptions,
-                serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
-                previous: function() {
-                    $scope.dataModel.goBack();
-                }
+            orchestratorService.storageSystemHostModeOptions($scope.dataModel.selectedStorageSystem.storageSystemId).then(function (results) {
+                var attachModel = {
+                    lastSelectedHostModeOption: [999],
+                    storageSystemSelectable: false,
+                    enableZoning: false,
+                    enableLunUnification: false,
+                    storagePools: ports,
+                    selectedServers: selectedServers,
+                    selectedHostModeOption: [999],
+                    hostModes: hostModes,
+                    hostMode: hostModes[0],
+                    hostModeOptions: results,
+                    serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
+                    previous: function() {
+                        $scope.dataModel.goBack();
+                    }
 
-            };
-            $scope.dataModel.attachModel = attachModel;
+                };
+                $scope.dataModel.attachModel = attachModel;
+            });
 
             $scope.dataModel.checkSelectedHostModeOptions = function() {
                 attachVolumeService.checkSelectedHostModeOptions($scope.dataModel);

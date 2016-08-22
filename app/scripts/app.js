@@ -150,6 +150,14 @@ angular
                 }
                 //TODO:Help context
             })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/volume-actions-restore-selection', {
+                templateUrl: 'views/volume-actions-restore-selection.html',
+                controller: 'volumeActionsRestoreSelectionCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'restore-volume'
+                }
+                //TODO:Help context
+            })
             .when('/data-protection-monitoring/volume-actions-restore-selection', {
                 templateUrl: 'views/volume-actions-restore-selection.html',
                 controller: 'volumeActionsRestoreSelectionCtrl',
@@ -305,6 +313,14 @@ angular
                 },
                 helpContext: 'C_DATAPROTECTION'
             })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/protect', {
+                templateUrl: 'views/protect-volumes.html',
+                controller: 'ProtectVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'protect-volumes'
+                },
+                helpContext: 'C_DATAPROTECTION'
+            })
             .when('/storage-systems/:storageSystemId/volumes/:volumeId/protect', {
                 templateUrl: 'views/protect-volumes.html',
                 controller: 'ProtectVolumesCtrl',
@@ -314,6 +330,14 @@ angular
                 helpContext: 'C_DATAPROTECTION'
             })
             .when('/storage-systems/:storageSystemId/volumes/unprotect', {
+                templateUrl: 'views/unprotect-volumes.html',
+                controller: 'UnprotectVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'unprotect-volume'
+                },
+                helpContext: 'T_UNPROTECT_VOLUMES'
+            })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/unprotect', {
                 templateUrl: 'views/unprotect-volumes.html',
                 controller: 'UnprotectVolumesCtrl',
                 breadcrumbOptions: {
@@ -374,7 +398,36 @@ angular
                 },
                 helpContext: 'T_UPDATE_VOL'
             })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes', {
+                breadcrumbOptions: {
+                    labelKey: 'common-storage-system-volumes',
+                },
+                templateUrl: 'views/storage-pool.html',
+                controller: 'StoragePoolCtrl',
+                helpContext: 'R_POOL_DETAILS'
+            })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/:volumeId', {
+                templateUrl: 'views/storage-system-volume.html',
+                controller: 'StorageSystemVolumeCtrl',
+                helpContext: 'R_VOLUME_DETAILS'
+            })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/:volumeId/update', {
+                templateUrl: 'views/storage-system-volume-update.html',
+                controller: 'StorageSystemVolumeUpdateCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'storage-volume-update'
+                },
+                helpContext: 'T_UPDATE_VOL'
+            })
             .when('/storage-systems/:storageSystemId/attach-volumes', {
+                templateUrl: 'views/storage-system-volumes-attach.html',
+                controller: 'StorageSystemVolumeAttachCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'storage-volume-attach'
+                },
+                helpContext: 'T_ATTACH_VOLUME'
+            })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/attach-volumes', {
                 templateUrl: 'views/storage-system-volumes-attach.html',
                 controller: 'StorageSystemVolumeAttachCtrl',
                 breadcrumbOptions: {
@@ -787,6 +840,22 @@ angular
                     labelKey: 'file-pool-expand'
                 },
                 helpContext: 'T_EXPAND_FILE_POOL'
+            })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/:volumeId/detach', {
+                templateUrl: 'views/detach-volume.html',
+                controller: 'DetachVolumeCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'storage-volume-detach'
+                },
+                helpContext: ''
+            })
+            .when('/storage-systems/:storageSystemId/volumes/:volumeId/detach', {
+                templateUrl: 'views/detach-volume.html',
+                controller: 'DetachVolumeCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'storage-volume-detach'
+                },
+                helpContext: ''
             })
             .otherwise({
                 redirectTo: '/'

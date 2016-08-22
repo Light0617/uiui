@@ -450,7 +450,8 @@ var parityGroups = _.map(_.range(1, 121), function (v) {
         availableCapacityInBytes: getCapacity(50, 80),
         physicalCapacityInBytes: physicalCapacity,
         encryption: _.sample(encryption),
-        compression: _.sample(compression)
+        compression: _.sample(compression),
+        nasBoot: mockUtils.trueOrFalse()
     };
 });
 
@@ -557,7 +558,8 @@ var storagePools = _.map(_.range(1, 100), function (v) {
         "compressionRate": compressionRate,
         "encrypted": encryption,
         "compressed": compression,
-        "savingsPercentage": 10
+        "savingsPercentage": 10,
+        "nasBoot": mockUtils.trueOrFalse()
     };
 
 });

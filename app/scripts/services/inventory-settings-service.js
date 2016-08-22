@@ -61,6 +61,13 @@ angular.module('rainierApp')
                 }
 
             }, {
+                title: 'volume-capacity-saving-type',
+                sizeClass: 'twelfth',
+                sortField: 'capacitySavingType',
+                getDisplayValue: function (item) {
+                    return item.capacitySavingType;
+                }
+            }, {
                 title: 'common-label-total',
                 sizeClass: 'twelfth',
 

@@ -3,6 +3,12 @@
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.15.1.
 
+## Install Dependencies
+
+Please refer to the readme in ui/shasta
+
+http://git.mcp.com/ui/shasta
+
 ## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.

@@ -14,16 +14,16 @@
                 ng-options="'host-mode-' + mode | translate for mode in dataModel.attachModel.hostModes">
         </select>
     </div>
-        <div class="margin-T-B-L">     
+    <div class="margin-T-B-L">
         <label>Host Mode Option</label>
         <select class="form-control"
                 title="None"
                 ng-model="dataModel.attachModel.selectedHostModeOption"
                 ng-change="dataModel.checkSelectedHostModeOptions()"
-                ng-options="'host-mode-option-' + hmo | translate for hmo in dataModel.attachModel.hostModeOptions"
+                ng-options="hostModeOptions.id as hostModeOptions.displayName for hostModeOptions in dataModel.attachModel.hostModeOptions"
                 multiple>
         </select>
-    </div>    
+    </div>
 </div>
 <div>
     <div class="form-group">

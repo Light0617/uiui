@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StoragePortsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
                                               objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
-                                              queryService, wwnService, hwAlertService) {
+                                              queryService, wwnService, hwAlertService, storageNavigatorSessionService,constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePortsPath = 'storage-ports';
 
@@ -30,14 +30,31 @@ angular.module('rainierApp')
 
         var vspG1000 = 'VSP G1000';
 
+        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.PORTS);
+        //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
+        sn2Action.icon = 'icon-settings';
+        sn2Action.tooltip = 'tooltip-configure-storage-ports';
+        sn2Action.enabled = function () {
+            return true;
+        };
+
+        var actions = {
+            'SN2': sn2Action
+        };
+
+        $scope.summaryModel={
+            getActions: function () {
+                return _.map(actions);
+            }
+        };
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            $scope.storageSystemModel= result.model;
+            $scope.storageSystemModel = result.model;
             return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId);
-        }).then( function (result) {
+        }).then(function (result) {
             var summaryModel = objectTransformService.transformToPortSummary(result.resources, typeNames);
             summaryModel.title = synchronousTranslateService.translate('common-storage-system-ports');
             summaryModel.hwAlert = hwAlertService;
-
+            summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
 
             var dataModel = {
@@ -59,7 +76,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
+                            paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });

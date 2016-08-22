@@ -16,11 +16,12 @@ angular.module('rainierApp')
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
         var GET_VOLUMES_PATH = 'volumes';
         ShareDataService.showProvisioningStatus = true;
+        ShareDataService.showPoolBreadCrumb = true;
 
         var volumeUnprotectActions = function (selectedVolume) {
             ShareDataService.volumeListForUnprotect = selectedVolume;
 
-            $location.path(['storage-systems', storageSystemId, 'volumes', 'unprotect'].join('/'));
+            $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'volumes', 'unprotect'].join('/'));
         };
 
         var volumeRestoreAction = function (action, selectedVolumes) {
@@ -39,7 +40,8 @@ angular.module('rainierApp')
                 _.forEach(ShareDataService.SVolsList, function (volume) {
                     volume.selected = false;
                 });
-                $location.path(['/storage-systems/', storageSystemId, '/volumes/volume-actions-restore-selection'].join(''));
+                $location.path(['/storage-systems/', storageSystemId,  '/storage-pools/', storagePoolId,
+                    '/volumes/volume-actions-restore-selection'].join(''));
             });
         };
 
@@ -169,11 +171,26 @@ angular.module('rainierApp')
                     type: 'link',
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join(
+                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
                             '/'));
                     },
                     enabled: function () {
                         return dataModel.anySelected();
+                    }
+                },
+                {
+                    icon: 'icon-detach-volume',
+                    tooltip: 'storage-volume-detach',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                });
+                    },
+                    onClick: function () {
+                        var item = _.first(dataModel.getSelectedItems());
+                        item.actions.detach.onClick();
                     }
                 },
                 {
@@ -182,7 +199,7 @@ angular.module('rainierApp')
                     type: 'link',
                     onClick: function () {
                         ShareDataService.volumesList = dataModel.getSelectedItems();
-                        $location.path(['storage-systems', storageSystemId,
+                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId,
                             'volumes/protect'
                         ].join('/'));
                     },
@@ -261,9 +278,9 @@ angular.module('rainierApp')
             result.logicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.logicalCapacityInBytes));
             result.usedLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes));
             result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
-            result.expansionRate = addColonSign(1, result.expansionRate);
-            result.compressionRate = addColonSign(result.compressionRate, 1);
-            result.savingsPercentage = addPercentageSign(result.savingsPercentage);
+            result.expansionRate = addColonSign(1, result.fmcCompressionDetails.expansionRate);
+            result.compressionRate = addColonSign(result.fmcCompressionDetails.compressionRate, 1);
+            result.savingsPercentage = addPercentageSign(result.fmcCompressionDetails.savingsPercentage);
             $scope.poolDataModel = result;
         });
 
