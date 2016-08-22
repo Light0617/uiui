@@ -323,6 +323,7 @@ angular.module('rainierApp')
                 item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
                 item.alerts = 0;
                 item.open = false;
+                item.storagePoolId = parseInt(item.poolId);
 
                 if(item.label && item.label.indexOf('HSA-reserved-') === 0) {
                     item.disabledCheckBox = true;
@@ -493,9 +494,16 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-update',
                         type: 'link',
                         onClick: function () {
-                            $location.path(['storage-systems', item.storageSystemId, 'volumes',
-                                item.volumeId, 'update'
-                            ].join('/'));
+                            if(ShareDataService.showPoolBreadCrumb === true) {
+                                $location.path(['storage-systems', item.storageSystemId, 'storage-pools',
+                                    item.storagePoolId, 'volumes',
+                                    item.volumeId, 'update'
+                                ].join('/'));
+                            } else {
+                                $location.path(['storage-systems', item.storageSystemId, 'volumes',
+                                    item.volumeId, 'update'
+                                ].join('/'));
+                            }
                         },
                         enabled: function () {
                             return true;
@@ -521,9 +529,16 @@ angular.module('rainierApp')
                         type: 'link',
                         onClick: function () {
                             ShareDataService.push('selectedVolumes', [item]);
-                            $location.path(['storage-systems', item.storageSystemId,
-                                'volumes', item.volumeId, 'detach'
-                            ].join('/'));
+                            if(ShareDataService.showPoolBreadCrumb === true) {
+                                $location.path(['storage-systems', item.storageSystemId, 'storage-pools',
+                                    item.storagePoolId, 'volumes',
+                                    item.volumeId, 'detach'
+                                ].join('/'));
+                            } else {
+                                $location.path(['storage-systems', item.storageSystemId,
+                                    'volumes', item.volumeId, 'detach'
+                                ].join('/'));
+                            }
                         },
                         enabled: function () {
                             return true;

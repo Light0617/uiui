@@ -17,6 +17,7 @@ angular.module('rainierApp')
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
         ShareDataService.showProvisioningStatus = true;
+        ShareDataService.showPoolBreadCrumb = false;
         $scope.dataModel = {
             view: 'tile',
             storageSystemId: storageSystemId,
