@@ -139,6 +139,17 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    icon: 'icon-edit',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected();
+                    },
+                    onClick: function () {
+                        var item = _.first(dataModel.getSelectedItems());
+                        item.actions.editLun.onClick();
+                    }
+                },
+                {
                     icon: 'icon-detach-volume',
                     tooltip: 'action-tooltip-detach-volumes',
                     type: 'confirmation-modal',

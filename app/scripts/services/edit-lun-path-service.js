@@ -1,3 +1,9 @@
-/**
- * Created by root on 8/11/16.
- */
+'use strict';
+
+angular.module('rainierApp').factory('editLunPathService', function (){
+
+    return {
+
+    };
+
+});

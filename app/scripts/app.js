@@ -257,6 +257,14 @@ angular
                 },
                 helpContext: 'T_HID_VERIFY_STORAGE_SYSTEM'
             })
+            .when('/volume-manager/edit-lun-path', {
+                templateUrl: 'views/edit-lun-path.html',
+                controller: 'EditLunPathCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'edit-lun-path'
+                }
+                //TODO: Devan - add help context
+            })
             .when('/login', {
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'

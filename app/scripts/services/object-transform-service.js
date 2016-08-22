@@ -192,15 +192,6 @@ angular.module('rainierApp')
                                 href: item.hdvmSnLaunchUrl
                             },
                             storageNavigatorSessionService.getNavigatorSessionAction(item.storageSystemId, sessionScopeEncryptionKeys)
-                            // BLOCKING ISW LINK (NEWRAIN-3236).
-                            //,
-                            //{
-                            //    type: 'link',
-                            //    title: 'storage-system-settings',
-                            //    onClick: function () {
-                            //        $location.path(['storage-systems', item.storageSystemId, 'settings'].join('/'));
-                            //    }
-                            //}
                         ],
                         enabled: function () {
                             return true;
@@ -446,6 +437,19 @@ angular.module('rainierApp')
                             $location.path(['storage-systems', item.storageSystemId, 'volumes',
                                 item.volumeId, 'update'
                             ].join('/'));
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    },
+                    'editLun': {
+                        //TODO: Devan - replace with edit lun path icon when ready from Jurgen
+                        icon: 'icon-edit',
+                        tooltip: 'action-tooltip-edit',
+                        type: 'link',
+                        onClick: function () {
+                            $location.path(['volume-manager', 'edit-lun-path'].join(
+                                '/'));
                         },
                         enabled: function () {
                             return true;
@@ -1323,6 +1327,19 @@ angular.module('rainierApp')
                         type: 'link',
                         onClick: function () {
                             $location.path(['hosts', item.serverId, 'update'].join('/'));
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    },
+                    'editLun': {
+                        //TODO: Devan - replace with edit lun path icon when ready from Jurgen
+                        icon: 'icon-edit',
+                        tooltip: 'action-tooltip-edit',
+                        type: 'link',
+                        onClick: function () {
+                            $location.path(['volume-manager', 'edit-lun-path'].join(
+                                '/'));
                         },
                         enabled: function () {
                             return true;

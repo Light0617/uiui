@@ -1,3 +1,10 @@
-/**
- * Created by root on 8/11/16.
- */
+'use strict';
+
+angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, $timeout, orchestratorService,
+                                        objectTransformService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
+                                        ShareDataService, $location, $routeParams, viewModelService,
+                                        editLunPathService, d3service){
+
+
+
+});
