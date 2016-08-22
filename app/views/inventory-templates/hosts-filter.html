@@ -1,4 +1,4 @@
-<div class="btn-group btn-group-toggle-green btn-group-justified" ng-if="filterModel.showAllFilters==true">
+<div class="btn-group btn-group-toggle-green btn-group-justified">
     <div class="btn-group">
         <label class="btn btn-default" ng-model="filterModel.filter.status" btn-radio="'Provisioned'" uncheckable
                ng-change="filterModel.filterQuery('attachedVolumeCount', '[1 TO *]')">{{'host-filter-provisioned'
@@ -13,85 +13,75 @@
     </div>
 </div>
 <div class="control-group" ng-if="filterModel.showAllFilters==true">
-    <p>OS Type</p>
-
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.HP_UX"
-                   ng-init="filterModel.operatingSystemType.HP_UX=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.HP_UX ? 'HP_UX' : '', filterModel.arrayType, 'HP_UX')">{{'host-filter-hp-unix' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.SOLARIS"
-                   ng-init="filterModel.operatingSystemType.SOLARIS=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.SOLARIS ? 'SOLARIS' : '', filterModel.arrayType, 'SOLARIS')">{{'host-filter-oracle-solaris' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.AIX"
-                   ng-init="filterModel.operatingSystemType.AIX=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.AIX ? 'AIX' : '', filterModel.arrayType, 'AIX')">{{'host-filter-ibm-aix' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.TRU64"
-                   ng-init="filterModel.operatingSystemType.TRU64=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.TRU64 ? 'TRU64' : '', filterModel.arrayType, 'TRU64')">{{'host-filter-tru64-unix' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.WIN"
-                   ng-init="filterModel.operatingSystemType.WIN=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.WIN ? 'WIN' : '', filterModel.arrayType, 'WIN')">{{'host-filter-windows' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.WIN_EX"
-                   ng-init="filterModel.operatingSystemType.WIN_EX=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.WIN_EX ? 'WIN_EX' : '', filterModel.arrayType, 'WIN_EX')">{{'host-filter-windows-ex' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.LINUX"
-                   ng-init="filterModel.operatingSystemType.LINUX=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.LINUX ? 'LINUX' : '', filterModel.arrayType, 'LINUX')">{{'host-filter-linux' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.VMWARE"
-                   ng-init="filterModel.operatingSystemType.VMWARE=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.VMWARE ? 'VMWARE' : '', filterModel.arrayType, 'VMWARE')">{{'host-filter-vmware' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.VMWARE_EX"
-                   ng-init="filterModel.operatingSystemType.VMWARE_EX=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.VMWARE_EX ? 'VMWARE_EX' : '', filterModel.arrayType, 'VMWARE_EX')">{{'host-filter-vmware-ex' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.NETWARE"
-                   ng-init="filterModel.operatingSystemType.NETWARE=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.NETWARE ? 'NETWARE' : '', filterModel.arrayType, 'NETWARE')">{{'host-filter-netware' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.operatingSystemType.OVMS"
-                   ng-init="filterModel.operatingSystemType.OVMS=false"
-                   ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.OVMS ? 'OVMS' : '', filterModel.arrayType, 'OVMS')">{{'host-filter-ovms' | translate}}
-        </label>
-    </div>
+    <h3>OS Type</h3>
+</div>
+<div class="btn-group btn-group-justified btn-group-vertical">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.HP_UX"
+               ng-init="filterModel.operatingSystemType.HP_UX=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.HP_UX ? 'HP_UX' : '', filterModel.arrayType, 'HP_UX')">
+        {{'host-filter-hp-unix' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.SOLARIS"
+               ng-init="filterModel.operatingSystemType.SOLARIS=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.SOLARIS ? 'SOLARIS' : '', filterModel.arrayType, 'SOLARIS')">
+        {{'host-filter-oracle-solaris' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.AIX"
+               ng-init="filterModel.operatingSystemType.AIX=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.AIX ? 'AIX' : '', filterModel.arrayType, 'AIX')">
+        {{'host-filter-ibm-aix' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.TRU64"
+               ng-init="filterModel.operatingSystemType.TRU64=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.TRU64 ? 'TRU64' : '', filterModel.arrayType, 'TRU64')">
+        {{'host-filter-tru64-unix' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.WIN"
+               ng-init="filterModel.operatingSystemType.WIN=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.WIN ? 'WIN' : '', filterModel.arrayType, 'WIN')">
+        {{'host-filter-windows' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.WIN_EX"
+               ng-init="filterModel.operatingSystemType.WIN_EX=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.WIN_EX ? 'WIN_EX' : '', filterModel.arrayType, 'WIN_EX')">
+        {{'host-filter-windows-ex' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.LINUX"
+               ng-init="filterModel.operatingSystemType.LINUX=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.LINUX ? 'LINUX' : '', filterModel.arrayType, 'LINUX')">
+        {{'host-filter-linux' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.VMWARE"
+               ng-init="filterModel.operatingSystemType.VMWARE=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.VMWARE ? 'VMWARE' : '', filterModel.arrayType, 'VMWARE')">
+        {{'host-filter-vmware' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.VMWARE_EX"
+               ng-init="filterModel.operatingSystemType.VMWARE_EX=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.VMWARE_EX ? 'VMWARE_EX' : '', filterModel.arrayType, 'VMWARE_EX')">
+        {{'host-filter-vmware-ex' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.NETWARE"
+               ng-init="filterModel.operatingSystemType.NETWARE=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.NETWARE ? 'NETWARE' : '', filterModel.arrayType, 'NETWARE')">
+        {{'host-filter-netware' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.operatingSystemType.OVMS"
+               ng-init="filterModel.operatingSystemType.OVMS=false"
+               ng-change="filterModel.filterQuery('osType', filterModel.operatingSystemType.OVMS ? 'OVMS' : '', filterModel.arrayType, 'OVMS')">
+        {{'host-filter-ovms' | translate}}
+    </label>
 </div>
 
 
