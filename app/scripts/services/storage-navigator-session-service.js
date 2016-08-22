@@ -54,10 +54,12 @@ angular.module('rainierApp')
                             var url = result.launchServletUrl + '/' + result.oneTimeKey;
                             redirectWindow.location.href = url;
 
-                            // Open a pop-up message
-                            showDialog('', 'navigator-session-message', 'information');
+                            // Open a pop-up message if not configure encryption key
+                            if (sessionPageScope !== 'encryption-keys') {
+                                showDialog('', 'navigator-session-message', 'information');
+                            }
                         }, function (error) {
-                            if (error.status === 403){
+                            if (error.status === 403) {
                                 redirectWindow.document.body.innerText = synchronousTranslateService.translate('navigator-session-permission-html-error');
                                 showDialog('', 'navigator-session-permission-modal-error', 'warning');
                             } else {
