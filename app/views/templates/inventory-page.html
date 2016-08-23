@@ -127,7 +127,8 @@
                     </p>
                     <a ng-switch-when="id" title="{{settings.getDisplayValue(item)}}">{{settings.getDisplayValue(item)}}</a>
 
-                    <a ng-switch-when="icon" title="{{settings.getDisplayValue(item)}}">{{settings.getDisplayValue(item)}}</a>
+                    <span ng-switch-when="icon" ng-attr-class="view icon {{settings.getIconClass(item)}}"
+                          title="{{settings.getDisplayValue(item) | translate}}"></span>
 
                     <p ng-switch-when="dpType" title="{{settings.getToolTipValue(item)}}">{{settings.getDisplayValue(item)}}</p>
 
