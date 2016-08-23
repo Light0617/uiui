@@ -154,6 +154,7 @@ angular.module('rainierApp')
             }
             return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing(volumeId, storageSystemId);
         }).then(function (result) {
+            $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable = false;
                 $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Extendable)'));
@@ -162,6 +163,7 @@ angular.module('rainierApp')
             }
             return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotFullcopyAndRGNameMissing(volumeId, storageSystemId);
         }).then(function (result) {
+            $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy = false;
                 $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Full Copy)'));
