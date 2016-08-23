@@ -140,6 +140,7 @@ angular.module('rainierApp')
                 },
                 {
                     icon: 'icon-edit',
+                    tooltip: 'action-tooltip-edit-lun-path',
                     type: 'link',
                     enabled: function () {
                         return dataModel.onlyOneSelected();

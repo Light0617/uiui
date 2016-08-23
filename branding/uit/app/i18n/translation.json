@@ -635,6 +635,7 @@
     "no-data-protected": "No data has been protected yet.",
 
     "action-tooltip-edit" : "Edit",
+    "action-tooltip-edit-lun-path" : "Edit Lun Path",
     "action-tooltip-delete" : "Expand",
     "action-tooltip-delete" : "Delete",
     "action-tooltip-mount" : "Mount",
