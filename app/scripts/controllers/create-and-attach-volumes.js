@@ -18,7 +18,7 @@
 angular.module('rainierApp')
     .controller('CreateAndAttachVolumesCtrl', function($scope, orchestratorService, viewModelService, ShareDataService,
                                                        paginationService, queryService, objectTransformService,
-                                                       cronStringConverterService, attachVolumeService,
+                                                       cronStringConverterService, attachVolumeService, replicationService
                                                        volumeService, constantService, $location, $timeout) {
 
         var selectedServers = ShareDataService.pop('selectedServers');

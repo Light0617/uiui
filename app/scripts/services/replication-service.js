@@ -9,30 +9,42 @@
  */
 
 angular.module('rainierApp').factory('replicationService', function (synchronousTranslateService) {
+    var dispTypeConst = {
+        CLONE: 'Clone',
+        SNAPSHOT_NONEXTENDABLE: 'Snapshot (Non-Extendable)',
+        SNAPSHOT_EXTENDABLE: 'Snapshot (Extendable)',
+        SNAPSHOT_FULLCOPY: 'Snapshot (Full Copy)'
+    };
+    var rawTypeConst = {
+        CLONE: 'CLONE',
+        SNAPSHOT_NONEXTENDABLE: 'SNAPSHOT',
+        SNAPSHOT_EXTENDABLE: 'SNAPSHOT_EXTENDABLE',
+        SNAPSHOT_FULLCOPY: 'SNAPSHOT_FULLCOPY'
+    };
     var rawToDisp = function (type) {
         switch (type) {
-            case 'CLONE':
-                return 'Clone';
-            case 'SNAPSHOT':
-                return 'Snapshot (Non-Extendable)';
-            case 'SNAPSHOT_FULLCOPY':
-                return 'Snapshot (Full Copy)';
-            case 'SNAPSHOT_EXTENDABLE':
-                return 'Snapshot (Extendable)';
+            case rawTypeConst.CLONE:
+                return dispTypeConst.CLONE;
+            case rawTypeConst.SNAPSHOT_NONEXTENDABLE:
+                return dispTypeConst.SNAPSHOT_NONEXTENDABLE;
+            case rawTypeConst.SNAPSHOT_EXTENDABLE:
+                return dispTypeConst.SNAPSHOT_EXTENDABLE;
+            case rawTypeConst.SNAPSHOT_FULLCOPY:
+                return dispTypeConst.SNAPSHOT_FULLCOPY;
             default:
                 return type.charAt(0).toUpperCase() + type.toLowerCase().slice(1);
         }
     };
     var dispToRaw = function (type) {
         switch (type) {
-            case 'Clone':
-                return 'CLONE';
-            case 'Snapshot (Non-Extendable)':
-                return 'SNAPSHOT';
-            case 'Snapshot (Extendable)':
-                return 'SNAPSHOT_EXTENDABLE';
-            case 'Snapshot (Full Copy)':
-                return 'SNAPSHOT_FULLCOPY';
+            case dispTypeConst.CLONE:
+                return rawTypeConst.CLONE;
+            case dispTypeConst.SNAPSHOT_NONEXTENDABLE:
+                return rawTypeConst.SNAPSHOT_NONEXTENDABLE;
+            case dispTypeConst.SNAPSHOT_EXTENDABLE:
+                return rawTypeConst.SNAPSHOT_EXTENDABLE;
+            case dispTypeConst.SNAPSHOT_FULLCOPY:
+                return rawTypeConst.SNAPSHOT_FULLCOPY;
             default:
                 return type.toString().toUpperCase();
         }
@@ -55,6 +67,23 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
             return displayTypes.join(', ');
         },
         displayReplicationType: rawToDisp,
-        rawReplicationType: dispToRaw
+        rawReplicationType: dispToRaw,
+        dispTypes: dispTypeConst,
+        rawTypes: rawTypeConst,
+        isClone: function (type) {
+            return type === dispTypeConst.CLONE || type === rawTypeConst.CLONE;
+        },
+        isSnapshotNonExtendable: function (type) {
+            return type === dispTypeConst.SNAPSHOT_NONEXTENDABLE ||
+                type === rawTypeConst.SNAPSHOT_NONEXTENDABLE;
+        },
+        isSnapshotExtendable: function (type) {
+            return type === dispTypeConst.SNAPSHOT_EXTENDABLE ||
+                type === rawTypeConst.SNAPSHOT_EXTENDABLE;
+        },
+        isSnapshotFullcopy: function (type) {
+            return type === dispTypeConst.SNAPSHOT_FULLCOPY ||
+                type === rawTypeConst.SNAPSHOT_FULLCOPY;
+        }
     };
 });

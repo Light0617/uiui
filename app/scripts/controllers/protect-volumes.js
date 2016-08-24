@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('ProtectVolumesCtrl', function ($scope, $routeParams, $timeout, $window, $filter, $q,
-                                                orchestratorService, diskSizeService, ShareDataService,
+                                                orchestratorService, diskSizeService, ShareDataService, replicationService,
                                                 cronStringConverterService, paginationService, objectTransformService) {
 
         $scope.numberOfSnapshotsValidation = false;
@@ -118,10 +118,10 @@ angular.module('rainierApp')
                 var scheduleString = scheduleStr();
                 var consistencyGroupNeeded = $scope.dataModel.consistencyGroupNeeded ? 'On' : 'Off';
 
-                if (technology === SNAPSHOT) {
+                if (replicationService.isSnapshotNonExtendable(technology)) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
                         volume.copyGroupNames = _.where(allCopyGroups[volume.storageSystemId], function (cg) {
-                            return ('Snapshot' === cg.type) &&
+                            return (replicationService.isSnapshotNonExtendable(cg.type)) &&
                                 (consistencyGroupNeeded === cg.consistent) &&
                                 (!_.isFinite(numberOfCopiesInput) || numberOfCopiesInput === cg.numberOfCopies) &&
                                 (_.isEmpty(scheduleString) || cronStringConverterService.isEqualForObjectModel(scheduleString, cg.schedule));
@@ -131,7 +131,7 @@ angular.module('rainierApp')
                 } else if (technology === CLONE) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
                         volume.copyGroupNames = _.where(allCopyGroups[volume.storageSystemId], function (cg) {
-                            return ('Clone' === cg.type) &&
+                            return (replicationService.isClone(cg.type)) &&
                                 (consistencyGroupNeeded === cg.consistent);
                         });
                         volume.CGSelection = {};

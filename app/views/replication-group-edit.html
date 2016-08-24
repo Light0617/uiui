@@ -46,10 +46,10 @@
             <!--Right column-->
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
                 <div class="header-row" ng-if="!dataModel.noPrimaryVolume">
-                    <h2 ng-if="dataModel.replicationType === 'Snapshot'">
+                    <h2 ng-if="isSnapshotNonExtendable(dataModel.replicationType)">
                         {{'replication-group-edit-snapshot-message' | translate}}</h2>
 
-                    <h2 ng-if="dataModel.replicationType === 'Clone'">
+                    <h2 ng-if="isClone(dataModel.replicationType)">
                         {{'replication-group-edit-clone-message' | translate}}</h2>
                 </div>
 
@@ -57,7 +57,7 @@
 
                     <div class="control-row">
                         <form name="validationForm.rightPanel" role="form"
-                              ng-class=" dataModel.replicationType === 'Snapshot' ? 'validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal' : 'validation-form col-lg-12 col-md-12 col-sm-12 col-xs-12 form-horizontal'">
+                              ng-class="isSnapshotNonExtendable(dataModel.replicationType) ? 'validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal' : 'validation-form col-lg-12 col-md-12 col-sm-12 col-xs-12 form-horizontal'">
                             <div class="form-group label-value-container">
                                 <label class="label">{{'replication-group-label-comments' | translate}}</label>
                                 <input class="form-control" id="comments" ng-model="dataModel.comments"
@@ -68,7 +68,7 @@
 
                         <form name="validationForm.rightPanel" role="form"
                               class="validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal"
-                              ng-if="dataModel.replicationType === 'Snapshot'">
+                              ng-if="isSnapshotNonExtendable(dataModel.replicationType)">
                             <div class="form-group label-value-container">
                                 <label class="label">{{'number-of-snapshots' | translate }}</label>
                                 <input type="number" ng-min="1" ng-max="1024"
@@ -79,7 +79,7 @@
                         </form>
                     </div>
 
-                    <div class="control-row" ng-if="dataModel.replicationType === 'Snapshot'">
+                    <div class="control-row" ng-if="isSnapshotNonExtendable(dataModel.replicationType)">
                         <div class="btn-group btn-group-toggle btn-group-justified">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule.type"
@@ -105,7 +105,7 @@
                     </div>
 
                     <div class="btn-group checkbox-btn-array clearfix sevenths control-row"
-                         ng-if="dataModel.replicationType === 'Snapshot' && dataModel.schedule.type === 'WEEKLY'">
+                         ng-if="isSnapshotNonExtendable(dataModel.replicationType) && dataModel.schedule.type === 'WEEKLY'">
                         <!--Days checkboxes start  -->
                         <div class="btn-group-justified">
                             <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Sun"
@@ -125,7 +125,7 @@
                         </div>
                     </div>
 
-                    <div class="row control-row" ng-if="dataModel.replicationType === 'Snapshot'">
+                    <div class="row control-row" ng-if="isSnapshotNonExtendable(dataModel.replicationType)">
                         <form name="validationForm.timePicker" class="validation-form" novalidate>
                             <div class="form-group form-group-lg form-horizontal" ng-if="dataModel.schedule.type !== 'HOURLY'"
                                  ng-class="{'col-md-4': dataModel.schedule.type === 'MONTHLY', 'col-md-8': dataModel.schedule.type === 'DAILY' || dataModel.schedule.type === 'WEEKLY'}">

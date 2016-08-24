@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('replicationGroupEditCtrl', function ($scope, orchestratorService, objectTransformService,
                                                       $routeParams, $q, $timeout, cronStringConverterService,
                                                       ShareDataService, $filter, paginationService, queryService,
-                                                      storageSystemVolumeService) {
+                                                      storageSystemVolumeService, replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
         var replicationGroup = _.first(ShareDataService.selectedReplicationGroup);
         var primaryVolumes = [];
@@ -82,14 +82,14 @@ angular.module('rainierApp')
             });
 
             $scope.canSubmit = function () {
-                if ($scope.dataModel.replicationType === 'Clone') {
+                if (replicationService.isClone($scope.dataModel.replicationType)) {
                     return ($scope.anyPrimaryVolumeSelected && $scope.dataModel.replicationName) ||
                         ($scope.dataModel.replicationName && $scope.dataModel.replicationName !== replicationGroup.name) ||
                         ($scope.dataModel.replicationName && $scope.dataModel.comments !==
                         (replicationGroup.comments !== 'N/A' ? replicationGroup.comments : ''));
                 }
 
-                if ($scope.dataModel.replicationType === 'Snapshot') {
+                if (replicationService.isSnapshotNonExtendable($scope.dataModel.replicationType)) {
                     return canSubmitSnapshot();
                 }
             };
@@ -122,7 +122,7 @@ angular.module('rainierApp')
             }, true);
 
             $scope.submitActions = function () {
-                if ($scope.dataModel.replicationType === 'Clone') {
+                if (replicationService.isClone($scope.dataModel.replicationType)) {
                     var cloneTasks = [];
 
                     var clonePayload = {};
@@ -156,7 +156,7 @@ angular.module('rainierApp')
                     });
                 }
 
-                if ($scope.dataModel.replicationType === 'Snapshot') {
+                if (replicationService.isSnapshotNonExtendable($scope.dataModel.replicationType)) {
                     var snapshotTasks = [];
                     if ($scope.anyPrimaryVolumeSelected) {
                         var snapshotPayLoadPrimaryVolumeIds = [];
@@ -204,6 +204,9 @@ angular.module('rainierApp')
                     });
                 }
             };
+
+            $scope.isSnapshotNonExtendable = replicationService.isSnapshotNonExtendable;
+            $scope.isClone = replicationService.isClone;
 
             function hasDaySelected(days) {
                 var result = false;
