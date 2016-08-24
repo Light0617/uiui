@@ -22,14 +22,6 @@ angular.module('rainierApp')
         var thinFreeColor = '#599628';
         var overCommitColor = '#272727';
         var subscribedCapacityColor = 'white';
-        var vspG200 = 'VSP G200';
-        var vspG400 = 'VSP G400';
-        var vspF400 = 'VSP F400';
-        var vspG600 = 'VSP G600';
-        var vspF600 = 'VSP F600';
-        var vspG800 = 'VSP G800';
-        var vspF800 = 'VSP F800';
-        var vspG1000 = 'VSP G1000';
         var vspX200IdentifierPrefix = '/dev/storage/832000';
         var vspX400X600IdentifierPrefix = '/dev/storage/834000';
         var vspX800IdentifierPrefix = '/dev/storage/836000';
@@ -94,20 +86,22 @@ angular.module('rainierApp')
         function transformHdvmSnLaunchUrl(item) {
             var identifier = '';
             switch (item.model) {
-                case vspG200:
+                case constantService.storageModel.VPS_G200:
                     identifier = vspX200IdentifierPrefix+ item.storageSystemId;
                     break;
-                case vspG400:
-                case vspF400:
-                case vspG600:
-                case vspF600:
+                case constantService.storageModel.VPS_G400:
+                case constantService.storageModel.VSP_F400:
+                case constantService.storageModel.VSP_G600:
+                case constantService.storageModel.VSP_F600:
                     identifier = vspX400X600IdentifierPrefix + item.storageSystemId;
                     break;
-                case vspG800:
-                case vspF800:
+                case constantService.storageModel.VSP_G800:
+                case constantService.storageModel.VSP_F800:
                     identifier = vspX800IdentifierPrefix + item.storageSystemId;
                     break;
-                case vspG1000:
+                case constantService.storageModel.VSP_G1000:
+                case constantService.storageModel.VSP_G1500:
+                case constantService.storageModel.VSP_F1500:
                     identifier = vspG1000Identifier;
                     break;
             }
@@ -756,7 +750,7 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if (item.storageSystemModel === 'VSP G1000') {
+                if (constantService.isR800Series(item.storageSystemModel)) {
                     item.metaData[0].details.unshift(item.attributes[0]);
                 }
 

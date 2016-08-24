@@ -28,8 +28,6 @@ angular.module('rainierApp')
             initiator: 'Initiator',
             external: 'External'};
 
-        var vspG1000 = 'VSP G1000';
-
         var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.PORTS);
         //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
         sn2Action.icon = 'icon-security';
@@ -82,7 +80,7 @@ angular.module('rainierApp')
                         });
                     }
                 },
-                showPortAttributeFilter: $scope.storageSystemModel === vspG1000,
+                showPortAttributeFilter: constantService.isR800Series($scope.storageSystemModel),
                 chartData: summaryModel.chartData
             };
 
@@ -141,7 +139,13 @@ angular.module('rainierApp')
                             value: false
                         },
                         itemAttribute: {
-                            value: $scope.storageSystemModel === vspG1000 ? portAttributes.target : null
+                            value : function () {
+                              if (constantService.isR800Series($scope.storageSystemModel)) {
+                                  return portAttributes.target;
+                              } else {
+                                  return null;
+                              }
+                            },
                         },
                         itemAttributes: [portAttributes.target, portAttributes.initiator, portAttributes.rcuTarget, portAttributes.external]
                     },
@@ -153,7 +157,7 @@ angular.module('rainierApp')
                         var enabled = this.dialogSettings.switchEnabled.value;
                         var attribute = null;
 
-                        if ($scope.storageSystemModel === vspG1000) {
+                        if (constantService.isR800Series($scope.storageSystemModel)) {
                             if (this.dialogSettings.itemAttribute.value === portAttributes.target) {
                                 attribute = 'TARGET_PORT';
                             } else if (this.dialogSettings.itemAttribute.value === portAttributes.initiator) {
@@ -174,7 +178,13 @@ angular.module('rainierApp')
                         });
 
                         this.dialogSettings.switchEnabled.value = false;
-                        this.dialogSettings.itemAttribute.value = $scope.storageSystemModel === vspG1000 ? portAttributes.target : null;
+                        this.dialogSettings.itemAttribute.value = function () {
+                            if (constantService.isR800Series($scope.storageSystemModel)) {
+                                return portAttributes.target; 
+                            } else {
+                                return null;
+                            }
+                        };
                     },
                     onClick: function () {
 
@@ -186,7 +196,7 @@ angular.module('rainierApp')
 
                         this.dialogSettings.switchEnabled.value = isAllSameSecuritySwitchEnabled ? firstItem.securitySwitchEnabled : false;
 
-                        if ($scope.storageSystemModel === vspG1000) {
+                        if (constantService.isR800Series($scope.storageSystemModel)) {
                             var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
                                 return storagePort.attributes[0] === this.attributes[0];
                             }, firstItem);
@@ -270,7 +280,7 @@ angular.module('rainierApp')
                     }
                 }
             ];
-            if ($scope.storageSystemModel === vspG1000){
+            if (constantService.isR800Series($scope.storageSystemModel)){
                 dataModel.gridSettings.push({
                     title: 'Attribute',
                     sizeClass: 'sixth',

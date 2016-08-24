@@ -28,6 +28,29 @@ angular.module('rainierApp')
             hostModeOptions: function () {
                 return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83, 96, 97, 100, 102];
             },
+            isR800Series: function (storageModel) {
+                if (storageModel === this.storageModel.VSP_G1000 ||
+                    storageModel === this.storageModel.VSP_G1500 ||
+                    storageModel === this.storageModel.VSP_F1500) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            isHM800Series: function (storageModel) {
+                if (storageModel === this.storageModel.VSP_G100 ||
+                    storageModel === this.storageModel.VPS_G200 ||
+                    storageModel === this.storageModel.VPS_G400 ||
+                    storageModel === this.storageModel.VSP_G600 ||
+                    storageModel === this.storageModel.VSP_G800 ||
+                    storageModel === this.storageModel.VSP_F400 ||
+                    storageModel === this.storageModel.VSP_F600 ||
+                    storageModel === this.storageModel.VSP_F800) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             sessionScope: {
                 ENCRYPTION_KEYS: 'ENCRYPTION_KEYS',
                 PARITY_GROUPS: 'PARITY-GROUPS',
@@ -46,6 +69,19 @@ angular.module('rainierApp')
                 NONE: 'NONE',
                 MANUAL: 'MANUAL',
                 AUTOMATIC: 'AUTOMATIC'
+            },
+            storageModel: {
+                VSP_G100: 'VSP G100',
+                VPS_G200: 'VSP G200',
+                VPS_G400: 'VSP G400',
+                VSP_G600: 'VSP G600',
+                VSP_G800: 'VSP G800',
+                VSP_F400: 'VSP F400',
+                VSP_F600: 'VSP F600',
+                VSP_F800: 'VSP F800',
+                VSP_G1000: 'VSP G1000',
+                VSP_G1500: 'VSP G1500',
+                VSP_F1500: 'VSP F1500'
             },
             yes: 'YES',
             no: 'NO'

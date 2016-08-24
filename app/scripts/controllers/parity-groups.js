@@ -255,7 +255,7 @@ angular.module('rainierApp')
                 initializeParityGroupAction, compressParityGroupAction
             ];
             dataModel.getActions = function () {
-                if ($scope.storageSystemModel === 'VSP G1000')
+                if (constantService.isR800Series($scope.storageSystemModel))
                 {
                     return r800Actions;
                 }
@@ -263,7 +263,7 @@ angular.module('rainierApp')
             };
 
 
-            if ($scope.storageSystemModel !== 'VSP G1000') {
+            if (constantService.isHM800Series($scope.storageSystemModel)) {
                 dataModel.addAction = function () {
                     $location.path(['storage-systems', storageSystemId, 'parity-groups', 'add'].join('/'));
                 };
