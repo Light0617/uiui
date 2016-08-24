@@ -1755,7 +1755,10 @@ angular.module('rainierApp')
                                 {
                                     percentage: 100,
                                     color: unallocatedColor
-                                }]
+                                }],
+                            newPageAssignment: tier.bufferSpace.newPageAssignment,
+                            tierRelocation: tier.bufferSpace.tierRelocation,
+                            performanceUtilization: tier.performanceUtilization
                         });
                     });
                 }

@@ -45,8 +45,14 @@
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="col-md-6">
+
+        <div class="col-md-4" ng-if="poolDataModel">
+            <threshold-visualization ng-model="poolDataModel">
+            </threshold-visualization>
+        </div>
+        <div class="col-md-4">
             <array-polar-data-visualization class="utilization"
                                             ng-model="summaryModel.arrayDataVisualizationModel"
                                             no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
@@ -76,16 +82,16 @@
                             <div class="data-viz-column">
                                 <h4>{{'pool-buffer-space'|translate}}</h4>
                                 <div class="data-viz bar">
-                                    <p class="label">{{'pool-new-page-assignment'|translate}}</p>
-                                    <!--TODO: Need to add svg item here-->
+                                    <p class="label">{{'pool-new-page-assignment'|translate}} {{item.bufferSpace.newPageAssignment.value}}</p>
+                                    <percentage-bar class="bdv" ng-model="item.newPageAssignment"></percentage-bar>
                                 </div>
                                 <div class="data-viz bar">
                                     <p class="label">{{'pool-tier-relocation'|translate}}</p>
-                                    <!--TODO: Need to add svg item here-->
+                                    <percentage-bar class="bdv" ng-model="item.tierRelocation"></percentage-bar>
                                 </div>
                                 <h4>{{'pool-performance-utilization'|translate}}</h4>
                                 <div class="data-viz bar">
-                                    <!--TODO: Need to add svg item here-->
+                                    <percentage-bar class="bdv" ng-model="item.performanceUtilization"></percentage-bar>
                                 </div>
                             </div>
 
