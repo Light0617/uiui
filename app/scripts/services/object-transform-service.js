@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService) {
+                                                 constantService, commonConverterService) {
 
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
@@ -585,7 +585,8 @@ angular.module('rainierApp')
                 var activeFlashTitle = '';
                 if(_.find(item.tiers, function(tier) { return tier.tier === 'Platinum'; })) {
                     item.containsPlatinum = true;
-                    activeFlashTitle = synchronousTranslateService.translate('pool-active-flash') + ': ' + item.activeFlashEnabled;
+                    activeFlashTitle = synchronousTranslateService.translate('pool-active-flash') +
+                        ': ' + commonConverterService.convertBooleanToString(item.activeFlashEnabled);
                 }
 
                 item.metaData = [

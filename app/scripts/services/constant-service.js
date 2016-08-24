@@ -46,6 +46,8 @@ angular.module('rainierApp')
                 NONE: 'NONE',
                 MANUAL: 'MANUAL',
                 AUTOMATIC: 'AUTOMATIC'
-            }
+            },
+            yes: 'YES',
+            no: 'NO'
         };
     });

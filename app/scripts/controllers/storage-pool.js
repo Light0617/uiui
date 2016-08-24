@@ -8,9 +8,11 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StoragePoolCtrl', function ($scope, $routeParams, $window, orchestratorService, objectTransformService, diskSizeService,
-                                             paginationService, ShareDataService, inventorySettingsService, scrollDataSourceBuilderServiceNew,
-                                             storageSystemVolumeService, $location, queryService, $timeout) {
+    .controller('StoragePoolCtrl', function ($scope, $routeParams, $window, orchestratorService, objectTransformService,
+                                             diskSizeService, paginationService, ShareDataService, 
+                                             inventorySettingsService, scrollDataSourceBuilderServiceNew,
+                                             storageSystemVolumeService, $location, queryService, $timeout, 
+                                             synchronousTranslateService, commonConverterService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -289,6 +291,10 @@ angular.module('rainierApp')
             };
         };
 
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            $scope.storageSystemDataModel = result;
+        });
+
         orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
 
             var summaryModel = objectTransformService.transformToPoolSummaryModel(result);
@@ -308,6 +314,11 @@ angular.module('rainierApp')
             result.expansionRate = addColonSign(1, result.fmcCompressionDetails.expansionRate);
             result.compressionRate = addColonSign(result.fmcCompressionDetails.compressionRate, 1);
             result.savingsPercentage = addPercentageSign(result.fmcCompressionDetails.savingsPercentage);
+            result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
+            result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
+            result.subscriptionLimit = result.subscriptionLimit.unlimited ?
+                synchronousTranslateService.translate('common-label-unlimited') : result.subscriptionLimit.value;
+
             $scope.poolDataModel = result;
         });
 
