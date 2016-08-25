@@ -247,6 +247,9 @@
     "pool-new-page-assignment": "New page assignment",
     "pool-tier-relocation": "Tier relocation",
     "pool-performance-utilization": "Performance utilization",
+    "subscription-limit": "Subscription Limit:",
+    "threshold1": "Threshold 1:",
+    "threshold2": "Threshold 2:",
 
     "storage-volume-id": "Volume ID",
     "storage-volume-type": "Volume type",

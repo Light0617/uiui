@@ -18,14 +18,19 @@ angular.module('rainierApp')
         var percentageValue;
         var textClass = 'more-than-ten-percent';
         var textAnchor = 'end';
+        var percentageString;
         if (percentage.unlimited === true){
           percentageValue = 100;
+          percentageString = 'unlimited';
         } else {
           percentageValue = percentage.value;
           if (percentageValue <= 10){
             textClass = 'less-than-ten-percent';
             textAnchor = 'start';
           }
+
+          percentageString = percentageValue + '%';
+          percentageValue = percentageValue > 100 ? 100 : percentageValue;
         }
 
         var bar = svg
@@ -53,7 +58,7 @@ angular.module('rainierApp')
             .attr('width', percentageValue + '%')
             .attr('height', 60)
             .append('title')
-            .text(percentageValue + '%');
+            .text(percentageString);
 
         bar.append('text')
             .attr('class', textClass)
@@ -61,7 +66,7 @@ angular.module('rainierApp')
             .attr('y', 0)
             .attr('dy', '68%')
             .attr('text-anchor', textAnchor)
-            .text(percentageValue + '%');
+            .text(percentageString);
       }
     };
 

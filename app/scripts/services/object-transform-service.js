@@ -612,19 +612,6 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if (item.type === constantService.poolType.HDT){
-                    item.metaData.push({
-                            left: false,
-                            title: synchronousTranslateService.translate('storage-pool-tiering-mode') + ': ' + synchronousTranslateService.translate(item.tieringMode),
-                            details: []
-                        },
-                        {
-                            left: false,
-                            title: synchronousTranslateService.translate('storage-pool-monitoring-mode') + ': ' + synchronousTranslateService.translate(item.monitoringMode),
-                            details: []
-                        });
-                }
-
                 var icons = [];
                 if (item.logicalUtilization >= item.utilizationThreshold1){
                     var alertTitle = 'utilization at ' + item.logicalUtilization + '%';

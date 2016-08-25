@@ -6,7 +6,7 @@
     </page-title>
 
     <div class="summary-container-default">
-        <div class="container-fluid resource-detail tiles-view">
+        <div class="tile quarter">
             <div class="resource-row">
                 <div class="meta-tile-short single tile"  ng-if="summaryModel">
                     <div class="tile-row resource-info">
@@ -70,11 +70,12 @@
 
         </div>
 
-        <div class="col-md-4" ng-if="poolDataModel">
+        <div class="tile quarter" ng-if="poolDataModel">
+            <h3>Utilization</h3>
             <threshold-visualization ng-model="poolDataModel">
             </threshold-visualization>
         </div>
-        <div class="col-md-4">
+        <div class="tile quarter">
             <array-polar-data-visualization class="utilization"
                                             ng-model="summaryModel.arrayDataVisualizationModel"
                                             no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>

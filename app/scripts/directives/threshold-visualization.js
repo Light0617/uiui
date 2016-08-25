@@ -7,8 +7,8 @@
  * # backButton
  */
 angular.module('rainierApp')
-    .directive('thresholdVisualization', function (d3service) {
-        var baseHeight = 80;
+    .directive('thresholdVisualization', function (synchronousTranslateService, d3service) {
+        var baseHeight = 50;
         var svgWidth = 75;
         var arrowHeight = 2;
 
@@ -18,7 +18,7 @@ angular.module('rainierApp')
                 var threshold1 = parseFloat(model.utilizationThreshold1);
                 var threshold2 = parseFloat(model.utilizationThreshold2);
 
-                var baseWidth = baseHeight / 2;
+                var baseWidth = baseHeight * 0.75;
                 var thresholdDiff = (threshold2 - threshold1) * baseHeight / 100;
                 var y2 = (100 - threshold2) * baseHeight / 100 - arrowHeight / 2;
                 var y1 = (100 - threshold1) * baseHeight / 100 - arrowHeight / 2;
@@ -52,35 +52,37 @@ angular.module('rainierApp')
                     .attr('height', thresholdDiff);
 
                 bar.append('polygon')
-                    .attr('style', 'fill: lime')
+                    .attr('class', 'caret')
                     .attr('points', polygon2Points);
 
                 bar.append('polygon')
-                    .attr('style', 'fill: lime')
+                    .attr('class', 'caret')
                     .attr('points', polygon1Points);
 
                 bar.append('text')
                     .attr('x', baseWidth + arrowHeight + 2)
                     .attr('y', y2+1)
                     .attr('font-size', '20%')
-                    .text('Threshold 2: ' + model.utilizationThreshold2);
+                    .attr('style','text-transform: uppercase')
+                    .text(synchronousTranslateService.translate('threshold2') + ' ' + model.utilizationThreshold2);
                 bar.append('text')
                     .attr('x', baseWidth + arrowHeight + 2)
                     .attr('y', y1+1)
                     .attr('font-size', '20%')
-                    .text('Threshold 1: ' + model.utilizationThreshold1);
+                    .attr('style','text-transform: uppercase')
+                    .text(synchronousTranslateService.translate('threshold1') + ' ' + model.utilizationThreshold1);
 
                 bar.append('text')
                     .attr('x', baseWidth/2 - 13)
                     .attr('y', baseHeight / 2)
                     .attr('font-size', '20%')
                     .attr('fill', 'white')
-                    .text('Subscription Limit: ');
+                    .text(synchronousTranslateService.translate('subscription-limit') + ' ');
 
                 bar.append('text')
-                    .attr('x', baseWidth/2 - 4)
+                    .attr('x', baseWidth/2 - 7)
                     .attr('y', baseHeight / 2 + 5)
-                    .attr('font-size', '20%')
+                    .attr('font-size', '25%')
                     .attr('fill', 'white')
                     .text((model.subscriptionLimit.unlimited === true) ? 'unlimited' : model.subscriptionLimit.value);
             }
