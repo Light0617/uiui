@@ -10,48 +10,58 @@
 angular.module('bel-services')
     .directive('topologicalLunPathEditor', function ($timeout, d3service) {
 
-        var builder = {
+        var builder;
+        builder = {
 
             _buildTopologicalEditor: function (d3, svg, data) {
-                var lines = svg.attr("class", "line")
-                    .selectAll("line").data(data.servers.hba)
+
+                function findAttribute(name) {
+                    for (var i = 0, len = data.servers.length; i < len; i++) {
+                        if (data.servers[i].name == name) {
+                            return data.servers[i];
+                        }
+                    }
+                }
+
+                var lines = svg.attr('class', 'line')
+                    .selectAll('line').data(data.servers.hba)
                     .enter()
-                    .append("line")
-                    .attr("x1", function (d, i) {
-                        return d.x
+                    .append('line')
+                    .attr('x1', function (d, i) {
+                        return d.x;
                     })
-                    .attr("y1", function (d) {
-                        return d.y
+                    .attr('y1', function (d) {
+                        return d.y;
                     })
-                    .attr("x2", function (d) {
+                    .attr('x2', function (d) {
                         return (findAttribute(d.connected).x);
                     })
-                    .attr("y2", function (d) {
-                        return (findAttribute(d.connected).y)
+                    .attr('y2', function (d) {
+                        return (findAttribute(d.connected).y);
                     })
-                    .attr("selected", "existing")
-                    .on("mouseover", function () {
-                        if ((d3.select(this).attr("selected")) != "click") {
-                            d3.select(this).attr("selected", "hover")
+                    .attr('selected', 'existing')
+                    .on('mouseover', function () {
+                        if ((d3.select(this).attr('selected')) !== 'click') {
+                            d3.select(this).attr('selected', 'hover');
                         }
                     })
-                    .on("mouseout", function () {
-                        if ((d3.select(this).attr("selected")) != "click") {
-                            d3.select(this).attr("selected", "existing")
+                    .on('mouseout', function () {
+                        if ((d3.select(this).attr('selected')) !== 'click') {
+                            d3.select(this).attr('selected', 'existing');
                         }
                     })
-                    .on("click", function () {
-                        if ((d3.select(this).attr("selected")) != "click") {
-                            d3.select(this).attr("selected", "click")
+                    .on('click', function () {
+                        if ((d3.select(this).attr('selected')) !== 'click') {
+                            d3.select(this).attr('selected', 'click');
                         } else {
-                            d3.select(this).attr("selected", "existing")
+                            d3.select(this).attr('selected', 'existing');
                         }
                     });
 
                 function movePath() {
-                    var coordinates = d3.this("line");
-                    line.attr("x2", coordinates[0])
-                        .attr("y2", coordinates[1]);
+                    var coordinates = d3.this('line');
+                    line.attr('x2', coordinates[0])
+                        .attr('y2', coordinates[1]);
                 }
 
                 function createPath() {
@@ -60,21 +70,21 @@ angular.module('bel-services')
                     var x = coordinates[0];
                     var y = coordinates[1];
 
-                    line = svg.append("line")
-                        .attr("x1", x)
-                        .attr("y1", y)
-                        .attr("x2", x)
-                        .attr("y2", y)
-                        .attr("selected", "click");
-                    svg.on("mousemove", movePath)
+                    line = svg.append('line')
+                        .attr('x1', x)
+                        .attr('y1', y)
+                        .attr('x2', x)
+                        .attr('y2', y)
+                        .attr('selected', 'click');
+                    svg.on('mousemove', movePath);
                 }
 
                 //TODO: replace rect with the final symbol names
-                var servers = svg.selectAll("rect")
+                var servers = svg.selectAll('rect')
                     .data(data.servers)
                     .enter()
-                    .append("rect")
-                    .on("click", createPath);
+                    .append('rect')
+                    .on('click', createPath);
             }
         };
 

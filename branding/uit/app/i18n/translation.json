@@ -117,6 +117,9 @@
     "common-label-partially-hosts": "Partially",
     "common-label-breakdown-hosts": "Breakdown of Server Statuses",
     "common-label-nas-boot": "NAS Boot",
+    "common-label-suggest-reset": "Suggest/Reset",
+    "common-label-select-none": "Select None",
+    "common-label-delete-selected": "Delete Selected",
     "common-hosts": "Servers",
     "common-host-add": "Add Servers",
     "common-host-update": "Update Server",
@@ -270,6 +273,8 @@
     "storage-volume-pool-tier": "Pool Tier",
     "storage-volume-pool": "Pool",
     "storage-volume-attach": "Attach Volumes",
+    "storage-volume-attach-setting": "Attach Settings",
+
 
     "storage-volume-filter-full-copy": "Full Copy",
     "storage-volume-filter-snapshot": "Snapshot (Non-Extendable)",
@@ -613,8 +618,10 @@
     "restore-volume": "Restore Volume",
 
     "workflow-title-create-volumes": "Create Volumes",
+    "workflow-title-edit-lun-path": "Edit Lun path",
     "workflow-title-protect-volumes": "Protect Volumes",
     "workflow-title-select-servers": "Select Servers",
+    "workflow-title-create-paths": "Create Paths",
 
     "storage-systems-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Systems",
     "storage-pools-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Pools",
