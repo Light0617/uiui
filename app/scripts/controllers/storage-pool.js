@@ -8,9 +8,11 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StoragePoolCtrl', function ($scope, $routeParams, $window, orchestratorService, objectTransformService, diskSizeService,
-                                             paginationService, ShareDataService, inventorySettingsService, scrollDataSourceBuilderServiceNew,
-                                             storageSystemVolumeService, $location, queryService, $timeout) {
+    .controller('StoragePoolCtrl', function ($scope, $routeParams, $window, orchestratorService, objectTransformService,
+                                             diskSizeService, paginationService, ShareDataService, 
+                                             inventorySettingsService, scrollDataSourceBuilderServiceNew,
+                                             storageSystemVolumeService, $location, queryService, $timeout, 
+                                             synchronousTranslateService, commonConverterService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -86,10 +88,14 @@ angular.module('rainierApp')
                     snapshotex: false,
                     snapshotfc: false,
                     snapshot: false,
+                    gad: false,
                     clone: false,
                     protected: false,
                     unprotected: false,
                     secondary: false,
+                    gadActivePrimary: false,
+                    gadActiveSecondary: false,
+                    gadNotAvailable: false,
                     freeCapacity: {
                         min: 0,
                         max: 1000,
@@ -107,9 +113,32 @@ angular.module('rainierApp')
                 },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
-                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                    paginationService.setFilterSearch(queryObject);
-                    paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
+                    var queryObject;
+                    // This is used when you need to use 1 click/button to query more than 1 possibilities on 1 attribute.
+                    if (value instanceof Array && arrayClearKey instanceof Array) {
+                        for (var queryParameterIndex = 0 ; queryParameterIndex < value.length; ++queryParameterIndex) {
+                            if ($scope.filterModel.filter.gadActivePrimary && key === 'gadSummary.volumeType' &&
+                                arrayClearKey[queryParameterIndex] === 'Active-Primary') {
+                                continue;
+                            }
+                            if ($scope.filterModel.filter.gadActiveSecondary && key === 'gadSummary.volumeType' &&
+                                arrayClearKey[queryParameterIndex] === 'Active-Secondary') {
+                                continue;
+                            }
+
+                            queryObject =
+                                new paginationService.QueryObject(key, type, value[queryParameterIndex], arrayClearKey[queryParameterIndex]);
+                            paginationService.setFilterSearch(queryObject);
+                            paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
+                        }
+                    } else {
+                        if (!($scope.filterModel.filter.gad && key === 'gadSummary.volumeType' &&
+                            (arrayClearKey === 'Active-Primary' || arrayClearKey === 'Active-Secondary'))) {
+                            queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                            paginationService.setFilterSearch(queryObject);
+                            paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
+                        }
+                    }
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
@@ -262,6 +291,10 @@ angular.module('rainierApp')
             };
         };
 
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            $scope.storageSystemDataModel = result;
+        });
+
         orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
 
             var summaryModel = objectTransformService.transformToPoolSummaryModel(result);
@@ -281,6 +314,11 @@ angular.module('rainierApp')
             result.expansionRate = addColonSign(1, result.fmcCompressionDetails.expansionRate);
             result.compressionRate = addColonSign(result.fmcCompressionDetails.compressionRate, 1);
             result.savingsPercentage = addPercentageSign(result.fmcCompressionDetails.savingsPercentage);
+            result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
+            result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
+            result.subscriptionLimit = result.subscriptionLimit.unlimited ?
+                synchronousTranslateService.translate('common-label-unlimited') : result.subscriptionLimit.value;
+
             $scope.poolDataModel = result;
         });
 

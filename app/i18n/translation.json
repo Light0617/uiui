@@ -250,6 +250,9 @@
     "pool-new-page-assignment": "New page assignment",
     "pool-tier-relocation": "Tier relocation",
     "pool-performance-utilization": "Performance utilization",
+    "subscription-limit": "Subscription Limit:",
+    "threshold1": "Threshold 1:",
+    "threshold2": "Threshold 2:",
 
     "storage-volume-id": "Volume ID",
     "storage-volume-type": "Volume type",
@@ -294,12 +297,17 @@
     "storage-volume-filter-utilization": "Utilization (%)",
     "storage-volume-filter-protection-type": "Protection Type",
     "storage-volume-filter-data-protection": "Data Protection",
+    "storage-volume-filter-data-protection-volume-type": "Data Protection Volume Type",
 
     "storage-volume-summary-protected-volumes": "Protected Volumes",
     "storage-volume-summary-unprotected-volumes": "Unprotected Volumes",
     "storage-volume-summary-secondary-volumes": "Secondary Volumes",
 
     "gad-display-type": "GAD",
+    "gad-volume-type-primary": "Active Primary",
+    "gad-volume-type-secondary": "Active Secondary",
+    "gad-volume-type-not-available": "GAD Not Available",
+    "gad-volume-type": "GAD Volume Type",
     "security-security": "Security",
     "security-active-directory": "Active Directory",
     "security-account-domain": "Account Domain",
@@ -328,11 +336,11 @@
     "lun-alignment-tooltip": "Select Yes if you want the volume to be attached to all servers using same LUN ID",
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
 
-    "tooltip-configure-parity-groups": "Configure parity groups",
-    "tooltip-configure-storage-pools": "Configure storage pools",
-    "tooltip-configure-storage-system-volumes": "Configure volumes",
-    "tooltip-configure-storage-ports": "Configure storage ports",
-    "tooltip-configure-replication-groups": "Configure replication groups",
+    "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
+    "tooltip-configure-storage-pools": "Open the Pools page in Storage Navigator",
+    "tooltip-configure-storage-system-volumes": "Open the Logical Devices page in Storage Navigator",
+    "tooltip-configure-storage-ports": "Open the Ports/Host Groups/iSCSI Targets page in Storage Navigator",
+    "tooltip-configure-replication-groups": "Open the Local Replication page in Storage Navigator",
 
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volume(s)",
 

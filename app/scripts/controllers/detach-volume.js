@@ -29,10 +29,10 @@ angular.module('rainierApp')
             });
 
             var GET_HOSTS_PATH_WITH_SERVER_ID;
-            if(serverIds.length == 1) {
+            if(serverIds.length === 1) {
                 GET_HOSTS_PATH_WITH_SERVER_ID = 'compute/servers?q=serverId:' + serverIds[0];
             } else {
-                GET_HOSTS_PATH_WITH_SERVER_ID = 'compute/servers?q=serverId+IN+(' + serverIds.join(" OR ") + ')';
+                GET_HOSTS_PATH_WITH_SERVER_ID = 'compute/servers?q=serverId+IN+(' + serverIds.join(' OR ') + ')';
             }
 
             paginationService.get(null, GET_HOSTS_PATH_WITH_SERVER_ID, handleHost, true).then(function (result) {
@@ -137,7 +137,7 @@ angular.module('rainierApp')
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                     paginationService.setFilterSearch(queryObject);
                     for(var index in serverIds) {
-                        paginationService.addSearchParameter(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, serverIds[index]))
+                        paginationService.addSearchParameter(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, serverIds[index]));
                     }
                     paginationService.getQuery(GET_HOSTS_PATH, handleHost).then(function(result) {
                         updateResultTotalCounts(result);
@@ -149,7 +149,7 @@ angular.module('rainierApp')
                     queryObjects.push(new paginationService.QueryObject('serverName', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     for(var index in serverIds) {
-                        paginationService.addSearchParameter(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, serverIds[index]))
+                        paginationService.addSearchParameter(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, serverIds[index]));
                     }
                     paginationService.getQuery(GET_HOSTS_PATH, handleHost).then(function(result) {
                         updateResultTotalCounts(result);

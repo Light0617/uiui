@@ -45,7 +45,11 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
                 displayTypes.push(rawToDisp(type));
             });
 
-            if(gadSummary) {
+            // For GAD, there's no difference between raw type and display type, so no need to update rawToDisp() and dispToRaw()
+            if(gadSummary && _.find([synchronousTranslateService.translate('gad-display-type'),
+                    synchronousTranslateService.translate('gad-display-type')], function (validGadType) {
+                        return validGadType === gadSummary.volumeType;
+                    }) !== undefined) {
                 displayTypes.push(synchronousTranslateService.translate('gad-display-type'));
             }
             return displayTypes.join(', ');

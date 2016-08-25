@@ -342,16 +342,19 @@ angular.module('rainierApp')
 
                 }
             ];
-            
+
             if (storageSystem.unified) {
-                dataModel.gridSettings.push( 
-                {
+                dataModel.gridSettings.push({
                     title: 'common-label-nas-boot',
                     sizeClass: 'twelfth',
                     sortField: 'nasBoot',
                     getDisplayValue: function (item) {
-                        return item.nasBoot ? 'YES' : 'NO';
-                    }
+                        return item.nasBoot ? 'common-label-nas-boot' : '';
+                    },
+                    getIconClass: function (item) {
+                        return item.nasBoot ? 'icon-checkmark' : '';
+                    },
+                    type: 'icon'
                 });
             }
 

@@ -13,6 +13,11 @@ angular.module('rainierApp')
                                               storageNavigatorSessionService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
+        var storageSystem;
+
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            storageSystem = result;
+        });
         orchestratorService.tiers().then(function (result) {
             $scope.tiers = result.tiers;
         });
@@ -226,9 +231,12 @@ angular.module('rainierApp')
                     sizeClass: 'twelfth',
                     sortField: 'activeFlashEnabled',
                     getDisplayValue: function (item) {
-                        return item.activeFlashEnabled;
-                    }
-
+                        return item.activeFlashEnabled ? 'pool-active-flash' : '';
+                    },
+                    getIconClass: function (item) {
+                        return item.activeFlashEnabled ? 'icon-checkmark' : '';
+                    },
+                    type: 'icon'
                 },
                 {
                     title: 'common-label-total',
@@ -262,6 +270,21 @@ angular.module('rainierApp')
 
                 }
             ];
+
+            if (storageSystem.unified) {
+                dataModel.gridSettings.push({
+                    title: 'common-label-nas-boot',
+                    sizeClass: 'twelfth',
+                    sortField: 'nasBoot',
+                    getDisplayValue: function (item) {
+                        return item.nasBoot ? 'common-label-nas-boot' : '';
+                    },
+                    getIconClass: function (item) {
+                        return item.nasBoot ? 'icon-checkmark' : '';
+                    },
+                    type: 'icon'
+                });
+            }
 
             dataModel.addAction = function () {
                 $location.path(['storage-systems', storageSystemId, 'storage-pools', 'add'].join('/'));

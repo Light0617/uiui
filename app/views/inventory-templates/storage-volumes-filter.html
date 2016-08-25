@@ -86,6 +86,11 @@
                uncheckable ng-click="filterModel.filterQuery('type', 'HTI')">{{'storage-volume-filter-snap' | translate}}
         </label>
     </div>
+    <div class="btn-group">
+        <label class="btn btn-default" ng-model="filterModel.filter.volumeType" btn-radio="'GAD'" title="GAD"
+               uncheckable ng-click="filterModel.filterQuery('type', 'GAD')">{{'gad-display-type' | translate}}
+        </label>
+    </div>
 </div>
 
 <div class="control-group" ng-if="filterModel.filter.hasOwnProperty('provisioningStatus')">
@@ -107,6 +112,29 @@
                uncheckable ng-click="filterModel.filterQuery('provisioningStatus', 'UNMANAGED')">{{'storage-volume-filter-unmanaged' | translate}}
         </label>
     </div>
+</div>
+
+<div class="control-group">
+    <h3>{{'volume-capacity-saving-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.dkcDataSavingType || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group btn-group-vertical btn-group-justified">
+    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
+           ng-change="filterModel.filterQuery('dkcDataSavingType', 'NONE')"
+           btn-radio="'No'" uncheckable>
+        {{'volume-capacity-saving-type-filter-no' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
+           ng-change="filterModel.filterQuery('dkcDataSavingType', 'COMPRESSION')"
+           btn-radio="'Compression'" uncheckable>
+        {{'volume-capacity-saving-type-filter-compression' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
+           ng-change="filterModel.filterQuery('dkcDataSavingType', 'DEDUPLICATION_AND_COMPRESSION')"
+           btn-radio="'Deduplication and Compression'" uncheckable>
+        {{'volume-capacity-saving-type-filter-deduplication-and-compression' | translate}}
+    </label>
 </div>
 
 <div class="control-group">
@@ -138,49 +166,53 @@
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? 'CLONE' : '', filterModel.arrayType, 'CLONE')">
         {{'storage-volume-filter-clone' | translate}}
     </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gad"
+               ng-init="filterModel.filter.gad=false"
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gad ? ['Active-Primary', 'Active-Secondary'] : ['', ''], filterModel.arrayType, ['Active-Primary', 'Active-Secondary'])">
+        {{'gad-display-type' | translate}}
+    </label>
 </div>
 
 <div class="control-group" ng-show="!dataModel.isDPMonitoring">
-    <p>{{'storage-volume-filter-data-protection' | translate}}</p>
+    <h3>{{'storage-volume-filter-data-protection-volume-type' | translate}}</h3>
+</div>
 
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.filter.protected" ng-init="filterModel.filter.protected=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.protected ? 'P-VOL' : '', filterModel.arrayType, 'P-VOL')">{{'storage-volume-filter-protected' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.filter.unprotected" ng-init="filterModel.filter.unprotected=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.unprotected ? 'UNPROTECTED' : '', filterModel.arrayType, 'UNPROTECTED')">{{'storage-volume-filter-unprotected' | translate}}
-        </label>
-    </div>
-    <div class="checkbox pull-bottom">
-        <label>
-            <input type="checkbox" ng-model="filterModel.filter.secondary" ng-init="filterModel.filter.secondary=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.secondary ? 'S-VOL' : '', filterModel.arrayType, 'S-VOL')">{{'storage-volume-filter-secondary' | translate}}
-        </label>
-    </div>
-</div>
-<div class="control-group">
-    <h3>{{'volume-capacity-saving-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.dkcDataSavingType || 'ALL'}}</span></h3>
-</div>
-<div class="btn-group btn-group-vertical btn-group-justified">
-    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
-           ng-change="filterModel.filterQuery('dkcDataSavingType', 'NONE')"
-           btn-radio="'No'" uncheckable>
-        {{'volume-capacity-saving-type-filter-no' | translate}}
+<div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.protected" ng-init="filterModel.filter.protected=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.protected ? 'P-VOL' : '', filterModel.arrayType, 'P-VOL')">{{'storage-volume-filter-protected' | translate}}
     </label>
 
-    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
-           ng-change="filterModel.filterQuery('dkcDataSavingType', 'COMPRESSION')"
-           btn-radio="'Compression'" uncheckable>
-        {{'volume-capacity-saving-type-filter-compression' | translate}}
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.unprotected" ng-init="filterModel.filter.unprotected=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.unprotected ? 'UNPROTECTED' : '', filterModel.arrayType, 'UNPROTECTED')">{{'storage-volume-filter-unprotected' | translate}}
     </label>
 
-    <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
-           ng-change="filterModel.filterQuery('dkcDataSavingType', 'DEDUPLICATION_AND_COMPRESSION')"
-           btn-radio="'Deduplication and Compression'" uncheckable>
-        {{'volume-capacity-saving-type-filter-deduplication-and-compression' | translate}}
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.secondary" ng-init="filterModel.filter.secondary=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.secondary ? 'S-VOL' : '', filterModel.arrayType, 'S-VOL')">{{'storage-volume-filter-secondary' | translate}}
+    </label>
+</div>
+
+<div class="control-group" ng-show="!dataModel.isDPMonitoring">
+    <h3>{{'gad-volume-type' | translate}}</h3>
+</div>
+
+<div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadActivePrimary" ng-init="filterModel.filter.gadActivePrimary=false"
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActivePrimary ? 'Active-Primary' : '', filterModel.arrayType, 'Active-Primary')">{{'gad-volume-type-primary' | translate}}
+    </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadActiveSecondary" ng-init="filterModel.filter.gadActiveSecondary=false"
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActiveSecondary ? 'Active-Secondary' : '', filterModel.arrayType, 'Active-Secondary')">{{'gad-volume-type-secondary' | translate}}
+    </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadNotAvailable" ng-init="filterModel.filter.gadNotAvailable=false"
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadNotAvailable ? 'SMPL' : '', filterModel.arrayType, 'SMPL')">{{'gad-volume-type-not-available' | translate}}
     </label>
 </div>

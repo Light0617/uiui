@@ -6,20 +6,42 @@
     </page-title>
 
     <div class="summary-container-default">
-        <div class="container-fluid resource-detail tiles-view">
+        <div class="tile quarter">
             <div class="resource-row">
                 <div class="meta-tile-short single tile"  ng-if="summaryModel">
                     <div class="tile-row resource-info">
                         <div class="resource-data">
                             <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-label' | translate}}</p><p class="value">{{poolDataModel.label}}</p>
-                                <p class="label">{{ 'storage-pool-type' | translate}}</p><p class="value">{{poolDataModel.type | translate}}</p>
-                                <p class="label" title= "{{poolDataModel.tierNames}}">{{ 'storage-pool-tier' | translate}}</p><p class="value">{{poolDataModel.tierNames}}</p>
-                                <p class="label">{{ 'storage-pool-encryption' | translate}} </p><p class="value">{{poolDataModel.encrypted | translate}}</p>
-                                <p class="label" ng-if="poolDataModel.containsPlatinum">{{ 'pool-active-flash' | translate }} </p><p class="value" ng-if="poolDataModel.containsPlatinum">{{poolDataModel.activeFlashEnabled}}</p>
-                                <p class="label">{{ 'storage-pool-utilization-threshold1' | translate}} </p> <p class="value">{{poolDataModel.utilizationThreshold1}}</p>
-                                <p class="label">{{ 'storage-pool-utilization-threshold2' | translate}} </p><p class="value">{{poolDataModel.utilizationThreshold2}}</p>
-                                <p class="label">{{ 'storage-pool-subscription-limit' | translate}} </p><p class="value">{{poolDataModel.subscriptionLimit.unlimited ? ('common-label-unlimited' | translate) : poolDataModel.subscriptionLimit.value}}</p></p>
+                                <p class="label">{{ 'storage-pool-label' | translate}}</p>
+                                <p class="value" title="{{poolDataModel.label}}">{{poolDataModel.label}}</p>
+
+                                <p class="label">{{ 'storage-pool-type' | translate}}</p>
+                                <p class="value">{{poolDataModel.type | translate}}</p>
+
+                                <p class="label">{{ 'storage-pool-tier' | translate}}</p>
+                                <p class="value" title="{{poolDataModel.tierNames}}">{{poolDataModel.tierNames}}</p>
+
+                                <p class="label">{{ 'storage-pool-encryption' | translate}}</p>
+                                <p class="value">{{poolDataModel.encrypted | translate}}</p>
+
+                                <div ng-if="poolDataModel.containsPlatinum">
+                                    <p class="label">{{ 'pool-active-flash' | translate }}</p>
+                                    <p class="value">{{poolDataModel.activeFlashEnabled}}</p>
+                                </div>
+
+                                <div ng-if="storageSystemDataModel.unified">
+                                    <p class="label">{{ 'common-label-nas-boot' | translate }}</p>
+                                    <p class="value">{{poolDataModel.nasBoot}}</p>
+                                </div>
+
+                                <p class="label">{{ 'storage-pool-utilization-threshold1' | translate}}</p>
+                                <p class="value">{{poolDataModel.utilizationThreshold1}}</p>
+
+                                <p class="label">{{ 'storage-pool-utilization-threshold2' | translate}}</p>
+                                <p class="value">{{poolDataModel.utilizationThreshold2}}</p>
+
+                                <p class="label">{{ 'storage-pool-subscription-limit' | translate}}</p>
+                                <p class="value">{{poolDataModel.subscriptionLimit}}</p>
                             </div>
                         </div>
                     </div>
@@ -45,8 +67,15 @@
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="col-md-6">
+
+        <div class="tile quarter" ng-if="poolDataModel">
+            <h3>Utilization</h3>
+            <threshold-visualization ng-model="poolDataModel">
+            </threshold-visualization>
+        </div>
+        <div class="tile quarter">
             <array-polar-data-visualization class="utilization"
                                             ng-model="summaryModel.arrayDataVisualizationModel"
                                             no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
@@ -76,16 +105,16 @@
                             <div class="data-viz-column">
                                 <h4>{{'pool-buffer-space'|translate}}</h4>
                                 <div class="data-viz bar">
-                                    <p class="label">{{'pool-new-page-assignment'|translate}}</p>
-                                    <!--TODO: Need to add svg item here-->
+                                    <p class="label">{{'pool-new-page-assignment'|translate}} {{item.bufferSpace.newPageAssignment.value}}</p>
+                                    <percentage-bar class="bdv" ng-model="item.newPageAssignment"></percentage-bar>
                                 </div>
                                 <div class="data-viz bar">
                                     <p class="label">{{'pool-tier-relocation'|translate}}</p>
-                                    <!--TODO: Need to add svg item here-->
+                                    <percentage-bar class="bdv" ng-model="item.tierRelocation"></percentage-bar>
                                 </div>
                                 <h4>{{'pool-performance-utilization'|translate}}</h4>
                                 <div class="data-viz bar">
-                                    <!--TODO: Need to add svg item here-->
+                                    <percentage-bar class="bdv" ng-model="item.performanceUtilization"></percentage-bar>
                                 </div>
                             </div>
 

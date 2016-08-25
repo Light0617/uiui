@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService) {
+                                                 constantService, commonConverterService) {
 
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
@@ -585,7 +585,8 @@ angular.module('rainierApp')
                 var activeFlashTitle = '';
                 if(_.find(item.tiers, function(tier) { return tier.tier === 'Platinum'; })) {
                     item.containsPlatinum = true;
-                    activeFlashTitle = synchronousTranslateService.translate('pool-active-flash') + ': ' + item.activeFlashEnabled;
+                    activeFlashTitle = synchronousTranslateService.translate('pool-active-flash') +
+                        ': ' + commonConverterService.convertBooleanToString(item.activeFlashEnabled);
                 }
 
                 item.metaData = [
@@ -610,19 +611,6 @@ angular.module('rainierApp')
                         details: []
                     }
                 ];
-
-                if (item.type === constantService.poolType.HDT){
-                    item.metaData.push({
-                            left: false,
-                            title: synchronousTranslateService.translate('storage-pool-tiering-mode') + ': ' + synchronousTranslateService.translate(item.tieringMode),
-                            details: []
-                        },
-                        {
-                            left: false,
-                            title: synchronousTranslateService.translate('storage-pool-monitoring-mode') + ': ' + synchronousTranslateService.translate(item.monitoringMode),
-                            details: []
-                        });
-                }
 
                 var icons = [];
                 if (item.logicalUtilization >= item.utilizationThreshold1){
@@ -1755,7 +1743,10 @@ angular.module('rainierApp')
                                 {
                                     percentage: 100,
                                     color: unallocatedColor
-                                }]
+                                }],
+                            newPageAssignment: tier.bufferSpace.newPageAssignment,
+                            tierRelocation: tier.bufferSpace.tierRelocation,
+                            performanceUtilization: tier.performanceUtilization
                         });
                     });
                 }
