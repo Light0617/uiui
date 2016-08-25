@@ -276,7 +276,7 @@
     "storage-volume-pool-tier": "Pool Tier",
     "storage-volume-pool": "Pool",
     "storage-volume-attach": "Attach Volumes",
-    "storage-volume-attach-setting": "Attach Settings",
+    "storage-volume-attach-settings": "Attach Settings",
 
 
     "storage-volume-filter-full-copy": "Full Copy",
@@ -626,7 +626,7 @@
     "restore-volume": "Restore Volume",
 
     "workflow-title-create-volumes": "Create Volumes",
-    "workflow-title-edit-lun-path": "Edit Lun path",
+    "workflow-title-edit-lun-paths": "Edit Lun path",
     "workflow-title-protect-volumes": "Protect Volumes",
     "workflow-title-select-servers": "Select Servers",
     "workflow-title-create-paths": "Create Paths",

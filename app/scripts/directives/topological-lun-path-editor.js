@@ -16,7 +16,7 @@ angular.module('bel-services')
             _buildTopologicalEditor: function (d3, svg, data) {
 
                 function findAttribute(name) {
-                    for (var i = 0, len = data.servers.length; i < len; i++) {
+                    for (var i = 0; i < data.servers.length; i++) {
                         if (data.servers[i].name == name) {
                             return data.servers[i];
                         }
