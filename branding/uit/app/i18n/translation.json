@@ -626,7 +626,7 @@
     "restore-volume": "Restore Volume",
 
     "workflow-title-create-volumes": "Create Volumes",
-    "workflow-title-edit-lun-paths": "Edit Lun path",
+    "workflow-title-edit-lun-paths": "Edit Lun Paths",
     "workflow-title-protect-volumes": "Protect Volumes",
     "workflow-title-select-servers": "Select Servers",
     "workflow-title-create-paths": "Create Paths",
