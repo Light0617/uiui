@@ -17,7 +17,7 @@
  */
 angular.module('rainierApp')
     .controller('CreateAndAttachVolumesCtrl', function($scope, orchestratorService, viewModelService, ShareDataService,
-                                                       paginationService, objectTransformService,
+                                                       paginationService, queryService, objectTransformService,
                                                        cronStringConverterService, attachVolumeService,
                                                        volumeService, constantService, $location, $timeout) {
 
@@ -110,24 +110,34 @@ angular.module('rainierApp')
             var hostModes = constantService.osType().sort();
             hostModes.splice(0, 0, autoSelect);
             orchestratorService.storageSystemHostModeOptions($scope.dataModel.selectedStorageSystem.storageSystemId).then(function (results) {
-                var attachModel = {
-                    lastSelectedHostModeOption: [999],
-                    storageSystemSelectable: false,
-                    enableZoning: false,
-                    enableLunUnification: false,
-                    storagePools: ports,
-                    selectedServers: selectedServers,
-                    selectedHostModeOption: [999],
-                    hostModes: hostModes,
-                    hostMode: hostModes[0],
-                    hostModeOptions: results,
-                    serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
-                    previous: function() {
-                        $scope.dataModel.goBack();
-                    }
+                var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
+                var queryString = paginationService.getQueryStringForList(wwpns);
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('hbaWwns', queryString);
+                paginationService.getAllPromises(null, 'host-groups', false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+                    var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
+                    var attachModel = {
+                        lastSelectedHostModeOption: hostModeOption,
+                        storageSystemSelectable: false,
+                        enableZoning: false,
+                        enableLunUnification: false,
+                        storagePools: ports,
+                        selectedServers: selectedServers,
+                        selectedHostModeOption: hostModeOption,
+                        hostModes: hostModes,
+                        hostMode: attachVolumeService.getMatchedHostMode(hostGroupResults, hostModes[0]),
+                        hostModeOptions: results,
+                        serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
+                        previous: function() {
+                            $scope.dataModel.goBack();
+                        }
 
-                };
-                $scope.dataModel.attachModel = attachModel;
+                    };
+                    $scope.dataModel.attachModel = attachModel;
+                }).finally(function(){
+                    paginationService.clearQuery();
+                });
+
             });
 
             $scope.dataModel.checkSelectedHostModeOptions = function() {

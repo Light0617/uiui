@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
-                                                           paginationService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
+                                                           paginationService, queryService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
                                                            ShareDataService, $location, $routeParams, viewModelService,
                                                            attachVolumeService, constantService) {
 
@@ -96,6 +96,20 @@ angular.module('rainierApp')
 
             });
 
+            var setHostModeAndHostModeOptions = function(selectedServers, defaultHostMode) {
+                var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
+                var queryString = paginationService.getQueryStringForList(wwpns);
+                paginationService.clearQuery();
+                queryService.setQueryMapEntry('hbaWwns', queryString);
+                paginationService.getAllPromises(null, 'host-groups', false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+                    var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
+                    $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
+                    $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
+                    $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
+                }).finally(function(){
+                    paginationService.clearQuery();
+                });
+            };
             dataModel.selectModel = {
                 confirmTitle: synchronousTranslateService.translate('host-attach-confirmation'),
                 confirmMessage: synchronousTranslateService.translate('host-attach-zero-selected'),
@@ -108,6 +122,7 @@ angular.module('rainierApp')
                     }
                     var selectedServers = _.where(dataModel.displayList, 'selected');
                     dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
+                    setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode);
                     dataModel.goNext();
                 },
                 validation: true,
@@ -217,6 +232,7 @@ angular.module('rainierApp')
                     selectedServers: _.where(dataModel.displayList, 'selected'),
                     storagePorts: ports,
                     hostModes: hostModes,
+                    defaultHostMode: hostModes[0],
                     hostMode: hostModes[0],
                     hostModeOptions: results,
                     selectedHostModeOption: [999],

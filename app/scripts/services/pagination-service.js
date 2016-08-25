@@ -143,6 +143,7 @@ angular.module('rainierApp')
                 return get(path, transform, queryParams, storageSystemId);
             },
             getAll: getAllItems,
+            getQueryStringForList: getQueryStringForList,
             getAllPromises: getAllPromises,
             getQuery: function (path, transform, storageSystemId) {
                 var queryParams = queryService.getQueryParameters(true);

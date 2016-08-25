@@ -22,6 +22,69 @@ angular.module('rainierApp')
             }
         }
 
+        //Function to check if all hostmode options match, if not return default host mode option
+        var getMatchedHostModeOption = function(hostGroups) {
+            var defaultHostModeOption = [999];
+            var selectedHostModeOptions = defaultHostModeOption;
+            if (hostGroups !== null && hostGroups !== undefined && hostGroups.length > 0) {
+                selectedHostModeOptions = hostGroups[0].hostModeOptions;
+                for (var i = 1; i < hostGroups.length; i++) {
+                    var hostGroup = hostGroups[i];
+                    if (hostGroup.hostModeOptions.length !== selectedHostModeOptions.length) {
+                        return defaultHostModeOption;
+                    } else {
+                        for (var j = 0; j < hostGroup.hostModeOptions.length; j++) {
+                            if (!isHostModeOptionFound(hostGroup.hostModeOptions[j], selectedHostModeOptions)) {
+                                return defaultHostModeOption;
+                            }
+                        }
+                    }
+                }
+            }
+            //address the case where host mode option = [] in host group, then set to default.
+            if (selectedHostModeOptions.length === 0) {
+                selectedHostModeOptions = defaultHostModeOption;
+            }
+            return selectedHostModeOptions;
+        };
+
+        var isHostModeOptionFound = function(hostModeOption, selectedHostModeOptions) {
+            for (var k = 0; k < selectedHostModeOptions.length; k++) {
+                if (hostModeOption === selectedHostModeOptions[k]) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        var getSelectedServerWwpns = function(selectedServers) {
+            var serverWwpns = [];
+            if (selectedServers !== null && selectedServers !== undefined) {
+                for (var i = 0; i < selectedServers.length; i++) {
+                    var selectedServer = selectedServers[i];
+                    for (var j = 0; j < selectedServer.wwpns.length; j++) {
+                        serverWwpns.push(selectedServer.wwpns[j]);
+                    }
+                }
+            }
+            return serverWwpns;
+        };
+
+        var getMatchedHostMode = function(hostGroups, autoSelectHostMode) {
+            var selectedHostMode = autoSelectHostMode;
+            if (hostGroups !== null && hostGroups !== undefined && hostGroups.length > 0) {
+                selectedHostMode = hostGroups[0].hostMode;
+                for (var i = 1; i < hostGroups.length; i++) {
+                    if (hostGroups[i].hostMode !== selectedHostMode) {
+                        //if the hostmode does not match then use auto select
+                        return autoSelectHostMode;
+                    }
+                }
+
+            }
+            return selectedHostMode;
+        };
+
         return {
             checkSelectedHostModeOptions: function (dataModel) {
                 var selectedHostModeOptions = dataModel.attachModel.selectedHostModeOption;
@@ -45,6 +108,9 @@ angular.module('rainierApp')
                         return (mode !== 999);
                     });
                 }
-            }
+            },
+            getMatchedHostModeOption: getMatchedHostModeOption,
+            getSelectedServerWwpns: getSelectedServerWwpns,
+            getMatchedHostMode: getMatchedHostMode
         };
     });
