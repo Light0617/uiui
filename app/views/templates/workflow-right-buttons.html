@@ -16,7 +16,7 @@
     <div type="button" class="btn btn-default" ng-if="dataModel.validation && dataModel.next && !dataModel.noAvailableArray"
             ng-attr-confirm="{{!dataModel.itemSelected}}" confirm-title="{{dataModel.confirmTitle}}"
             confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()">
-        {{'common-label-next' | translate}}
+        {{'common-label-next' | translate}} {{dataModel.next}}
     </div>
 
     <button type="button" class="btn btn-default" type="button" ng-if="dataModel.reset" ng-click="dataModel.reset()">

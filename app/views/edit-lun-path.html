@@ -1,57 +1,35 @@
 <common-page-header></common-page-header>
 <wizard-page>
     <!--Wizard Header-->
-    <wizard-header ng-title="'workflow-title-edit-lun-path' | translate" icon-class="icon-volume"></wizard-header>
+    <wizard-header ng-title="'workflow-title-edit-lun-paths' | translate" icon-class="icon-volume"></wizard-header>
     <wizard-body>
         <wizard-advanced-stepper>
-            <wizard-advanced-stepper-button ng-title="'workflow-title-select-servers' | translate"
-                                            step-completed="dataModel.isStepCompleted('select')"
-                                            step-active="dataModel.isStepActive('select')"></wizard-advanced-stepper-button>
             <wizard-advanced-stepper-button ng-title="'storage-volume-attach-settings' | translate"
                                             step-completed="dataModel.isStepCompleted('attach')"
                                             step-active="dataModel.isStepActive('attach')"></wizard-advanced-stepper-button>
             <wizard-advanced-stepper-button ng-title="'workflow-title-edit-lun-paths' | translate"
                                             step-completed="dataModel.isStepCompleted('paths')"
                                             step-active="dataModel.isStepActive('paths')"></wizard-advanced-stepper-button>
-            <wizard-advanced-stepper-button ng-title="'protect-volumes' | translate"
-                                            step-completed="dataModel.isStepCompleted('protect')"
-                                            step-active="dataModel.isStepActive('protect')"></wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
-
-        <wizard-single-panel-content ng-if="dataModel.isStepActive('select')"
-                                     panel-template="views/workflow-templates/select-servers-panel.html"
-                                     ng-model="dataModel"
-                                     filter-model="filterModel"></wizard-single-panel-content>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('attach')"
                                    ng-title="dataModel.attachModel.subTitle"
                                    left-panel-template="views/workflow-templates/attach-volumes-left-panel.html"
-                                   right-panel-template="views/workflow-templates/attach-existing-volumes-right-panel.html"
+                                   right-panel-template="views/workflow-templates/edit-lun-path-right-panel.html"
                                    ng-model="dataModel"></wizard-left-right-content>
 
         <wizard-svg-page ng-if="dataModel.isStepActive('paths')"
                          ng-title="'workflow-title-create-paths' | translate"
                          ng-model="dataModel"></wizard-svg-page>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('protect')"
-                                   ng-title="'workflow-title-protect-volumes' | translate"
-                                   left-panel-template="views/workflow-templates/protect-volumes-left-panel.html"
-                                   right-panel-template="views/workflow-templates/protect-volumes-right-panel.html"
-                                   ng-model="dataModel"></wizard-left-right-content>
     </wizard-body>
 
 
-    <wizard-footer ng-if="dataModel.isStepActive('select')"
-                   ng-model="dataModel.selectModel"></wizard-footer>
+    <wizard-footer ng-if="dataModel.isStepActive('attach')"
+                    ng-model="dataModel.attachModel"></wizard-footer>
 
-    <wizard-foorter ng-if="dataModel.isStepActive('attach')"
-                    ng-title="dataModel.attachModel"></wizard-foorter>
-
-    <wizard-foorter ng-if="dataModel.isStepActive('paths')"
-                    ng-title="dataModel.pathModel"></wizard-foorter>
-
-    <wizard-foorter ng-if="dataModel.isStepActive('protect')"
-                    ng-title="dataModel.protectModel"></wizard-foorter>
+    <wizard-footer ng-if="dataModel.isStepActive('paths')"
+                    ng-model="dataModel.pathModel"></wizard-footer>
 
 
 </wizard-page>

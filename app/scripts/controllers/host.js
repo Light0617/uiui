@@ -28,6 +28,7 @@ angular.module('rainierApp')
 
             $location.path(['hosts', hostId, 'unprotect'].join('/'));
         };
+        $scope.dataModel = {};
 
         var volumeRestoreAction = function (action, selectedVolumes) {
 
@@ -54,12 +55,13 @@ angular.module('rainierApp')
             });
         };
 
-        orchestratorService.host(hostId).then(function (hosts) {
+        orchestratorService.host(hostId).then(function (host) {
 
             var totalVolumesCapacity = 0;
             var usedVolumesCapacity = 0;
             var availableVolumesCapacity = 0;
-            orchestratorService.hostVolumes(hosts.serverId).then(function (result) {
+            $scope.dataModel.host = host;
+            orchestratorService.hostVolumes(host.serverId).then(function (result) {
                 _.forEach(result.dpVolResouce, function (volume) {
                     totalVolumesCapacity += volume.totalCapacity.value;
                     usedVolumesCapacity = usedVolumesCapacity + volume.usedCapacity.value;
@@ -73,7 +75,7 @@ angular.module('rainierApp')
                     if (result.volumeAlerts !== 0) {
                         summaryModel.alerts.dp.level = 'error';
                     }
-                    summaryModel.server = hosts;
+                    summaryModel.server = host;
 
                     summaryModel.getActions = function () {
                         return this.server.getActions();
@@ -143,11 +145,14 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit-lun-path',
                     type: 'link',
                     enabled: function () {
+                        //TODO: there should be a validation to check whether the selected volumes are from the same host group
                         return dataModel.onlyOneSelected();
                     },
                     onClick: function () {
-                        var item = _.first(dataModel.getSelectedItems());
-                        item.actions.editLun.onClick();
+                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                        ShareDataService.push('selectedHost', dataModel.getSelectedItems());
+                        $location.path(['volume-manager', 'edit-lun-path'].join(
+                            '/'));
                     }
                 },
                 {
@@ -239,6 +244,7 @@ angular.module('rainierApp')
             dataModel.cachedList = result.resources;
             dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel = dataModel;
+            angular.extend($scope.dataModel, dataModel);
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);
 
         });
