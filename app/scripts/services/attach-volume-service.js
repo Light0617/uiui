@@ -41,10 +41,6 @@ angular.module('rainierApp')
                     }
                 }
             }
-            //address the case where host mode option = [] in host group, then set to default.
-            if (selectedHostModeOptions.length === 0) {
-                selectedHostModeOptions = defaultHostModeOption;
-            }
             return selectedHostModeOptions;
         };
 
