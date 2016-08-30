@@ -291,32 +291,60 @@ angular.module('rainierApp')
             };
         };
 
-        orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            $scope.storageSystemDataModel = result;
-        });
-
         orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
 
             var summaryModel = objectTransformService.transformToPoolSummaryModel(result);
             summaryModel.title = 'Storage pool ' + storagePoolId;
             summaryModel.noBreakdown = true;
             $scope.summaryModel = summaryModel;
-            result.orchestratorService = orchestratorService;
 
+            var fmdDc2CompModel = objectTransformService.transformToPoolFMCDC2CompressionModel(result);
+            var logicalCapacityDisplaySize = diskSizeService.getDisplaySize(result.logicalCapacityInBytes);
+            var usedCapacityDisplaySize = diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes);
+
+            result.arrayDataVisualizationModel = fmdDc2CompModel;
+            result.orchestratorService = orchestratorService;
             result.compressedParityGroups = _.filter(result.parityGroups, function(pg) { return pg.compression; });
             result.actionsList = _.map(result.actions);
             result.utilizationThreshold1 = addPercentageSign(result.utilizationThreshold1);
             result.utilizationThreshold2 = addPercentageSign(result.utilizationThreshold2);
             result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
-            result.logicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.logicalCapacityInBytes));
-            result.usedLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes));
+            result.logicalCapacityInBytes = getSizeDisplayText(logicalCapacityDisplaySize);
+            result.usedLogicalCapacityInBytes = getSizeDisplayText(usedCapacityDisplaySize);
             result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
-            result.expansionRate = addColonSign(1, result.fmcCompressionDetails.expansionRate);
-            result.compressionRate = addColonSign(result.fmcCompressionDetails.compressionRate, 1);
-            result.savingsPercentage = addPercentageSign(result.fmcCompressionDetails.savingsPercentage);
             result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
             result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
+            result.fmcCapacityData = transformToPoolSummaryModel(logicalCapacityDisplaySize, usedCapacityDisplaySize);
 
+
+            result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
+            result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+            result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
+
+            result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
+            result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
+            result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+
+            result.showCompressionDetails = function () {
+                if (result.fmcCompressed === 'YES') {
+                    return true;
+                } else if (result.deduplicationEnabled === true) {
+                    return true;
+                } else if (result.compressionDetails.compressionRate === 1 &&
+                    result.compressionDetails.savingsPercentage === 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            };
+            result.showFmcDetails = function() {
+                if (result.fmcCompressed === 'YES') {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+            
             $scope.poolDataModel = result;
         });
 
@@ -330,5 +358,64 @@ angular.module('rainierApp')
 
         function getSizeDisplayText (object) {
             return object.size + ' ' + object.unit;
+        }
+
+        function transformToCompressRatio(rate) {
+            return {
+                radius: 75,
+                numerator: 1,
+                denominator: rate,
+                numeratorColor: '#265CB3',
+                denominatorColor: '#66A2FF',
+            };
+        }
+
+        function transformToExpansionRatio(rate) {
+            return {
+                radius: 75,
+                denominator: 1,
+                numerator: rate,
+                numeratorColor: '#265CB3',
+                denominatorColor: '#66A2FF',
+            };
+        }
+
+        function transformToUsageBarData(percentage) {
+            return  {
+                colorClass: 'normal',
+                usagePercentage: percentage,
+            };
+        }
+
+        function  transformToPoolSummaryModel (totalCapacity, usedCapacity) {
+            var percentage = (usedCapacity.size / totalCapacity.size * 100.0).toFixed(1);
+            return {
+                item: {
+                    total: {
+                        capacity: {
+                            size: totalCapacity.size,
+                            unit: totalCapacity.unit
+                        },
+                        label: 'Total',
+                    },
+                    used: {
+                        capacity: {
+                            size: usedCapacity.size,
+                            unit: usedCapacity.unit
+                        },
+                        label: 'Used'
+                    },
+                    item: [
+                        {
+                            percentage: percentage,
+                            label: 'Used%',
+                            color: '#7BC242'
+                        },
+                        {
+                            percentage: 100,
+                            color: '#294A0E'
+                        }],
+                }
+            };
         }
     });

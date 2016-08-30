@@ -71,6 +71,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'fmcCompressed': mockUtils.trueOrFalse() ? 'YES' : 'NO',
             'encrypted': mockUtils.trueOrFalse() ? 'YES' : 'NO',
             'fmcCompressionDetails': getFmcCompressionDetails(),
+            'compressionDetails': getCompressionDetails(),
             'externalParityGroupIds' : [],
             'logicalCapacityInBytes': mockUtils.getCapacity(50, 100),
             'nasBoot': mockUtils.trueOrFalse(),
@@ -118,6 +119,14 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             expansionRate: mockUtils.randomInt(0,10),
             compressionRate: mockUtils.randomInt(0,10),
             savingsPercentage: mockUtils.randomInt(0,10),
+        };
+    };
+
+    var getCompressionDetails = function getCompressionDetails() {
+        return {
+            compressionRate: mockUtils.randomInt(0,9) + '.' + mockUtils.randomInt(0,9) + mockUtils.randomInt(0,9),
+            deduplicationRate: mockUtils.randomInt(0,9) + '.' + mockUtils.randomInt(0,9) + mockUtils.randomInt(0,9),
+            savingsPercentage: mockUtils.randomInt(0,9) + '.' + mockUtils.randomInt(0,9),
         };
     };
 

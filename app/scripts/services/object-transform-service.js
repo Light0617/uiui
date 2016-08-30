@@ -53,6 +53,26 @@ angular.module('rainierApp')
             ];
         };
 
+        var logicalCapacity = function (usedLogicalCapacity, availableLogicalCapacity) {
+            return [
+                {
+                    label: (function (key) {
+                        return synchronousTranslateService.translate(key);
+                    })('storage-pool-used-logical-capacity'),
+                    capacity: usedLogicalCapacity,
+                    color: thinUsedColor
+                },
+                {
+                    label: (function (key) {
+                        return synchronousTranslateService.translate(key);
+                    })('storage-pool-available-logical-capacity'),
+                    capacity: availableLogicalCapacity,
+                    color: thinFreeColor
+                }
+            ];
+        };
+
+
         var addZero = function (time) {
             if (time < 10) {
                 time = '0' + time;
@@ -1786,6 +1806,24 @@ angular.module('rainierApp')
                             level: 'healthy'
                         }
                     }
+                };
+            },
+            transformToPoolFMCDC2CompressionModel: function (item) {
+                var logicalCapacityInBytes = diskSizeService.getDisplaySize(item.logicalCapacityInBytes);
+                var usedLogicalCapacityInBytes = diskSizeService.getDisplaySize(item.usedLogicalCapacityInBytes);
+                var availableLogicalCapacityInBytes = diskSizeService.getDisplaySize(item.availableLogicalCapacityInBytes);
+
+                var items = [];
+                items.push(logicalCapacity(usedLogicalCapacityInBytes, availableLogicalCapacityInBytes));
+
+                return {
+                    total: {
+                        label: (function (key) {
+                            return synchronousTranslateService.translate(key);
+                        })('common-label-total'),
+                        capacity: logicalCapacityInBytes
+                    },
+                    items: items
                 };
             },
             transformToParityGroupSummaryModel: function () {
