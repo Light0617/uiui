@@ -316,8 +316,6 @@ angular.module('rainierApp')
             result.savingsPercentage = addPercentageSign(result.fmcCompressionDetails.savingsPercentage);
             result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
             result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
-            result.subscriptionLimit = result.subscriptionLimit.unlimited ?
-                synchronousTranslateService.translate('common-label-unlimited') : result.subscriptionLimit.value;
 
             $scope.poolDataModel = result;
         });

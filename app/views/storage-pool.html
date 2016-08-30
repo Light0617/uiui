@@ -41,7 +41,8 @@
                                 <p class="value">{{poolDataModel.utilizationThreshold2}}</p>
 
                                 <p class="label">{{ 'storage-pool-subscription-limit' | translate}}</p>
-                                <p class="value">{{poolDataModel.subscriptionLimit}}</p>
+                                <p class="value">{{poolDataModel.subscriptionLimit.unlimited? 'common-label-unlimited':
+                                    poolDataModel.subscriptionLimit.value | translate}}</p>
                             </div>
                         </div>
                     </div>
