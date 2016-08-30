@@ -11,8 +11,28 @@ angular.module('rainierApp')
     .controller('HostUpdateCtrl', function ($scope, $routeParams, orchestratorService, wwnService, constantService) {
         var hostId = $routeParams.hostId;
 
+        var addedWwns = [{value:''}];
+
+        function setWwnValues(wwns){
+            var wwnObjects = [];
+            _.forEach(wwns, function(wwn){
+                wwnObjects.push({value:wwn});
+            });
+
+            return wwnObjects;
+        }
+
+        function hasValueWwns(wwns){
+            for(var i = 0; i < wwns.length; i++){
+                if (!_.isEmpty(wwns[i])){
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         orchestratorService.host(hostId).then(function(result) {
-            var wwns = result.displayWWNs.join(', ');
 
             $scope.dataModel = {
                 originalHost: result,
@@ -20,15 +40,41 @@ angular.module('rainierApp')
                 updatedDescription: result.description,
                 updatedIpAddress: result.ipAddress,
                 updatedOsType: result.osType,
-                updatedWwns: wwns,
+                updatedWwns: setWwnValues(result.displayWWNs),
+                addedWwns: addedWwns,
+                applyChangesToAttachedVolumes: false,
+                requireSelection: false,
                 osTypes: constantService.osType(),
                 isValid: function () {
                     return !_.isEmpty(this.updatedHostName) && !_.isEmpty(this.updatedOsType) && !_.isEmpty(this.updatedWwns) && (result.serverName !== $scope.dataModel
                         .updatedHostName || result.description !== $scope.dataModel.updatedDescription || result.ipAddress !== $scope.dataModel.updatedIpAddress ||
-                        result.osType !== $scope.dataModel.updatedOsType || wwns !== $scope.dataModel.updatedWwns);
+                        result.osType !== $scope.dataModel.updatedOsType ||
+                        hasValueWwns($scope.dataModel.originalHost.wwpns) ||
+                        differentWwns($scope.dataModel.originalHost.wwpns, $scope.dataModel.updatedWwns));
+                },
+                deleteWwn: function(wwnIndex) {
+                    $scope.dataModel.addedWwns.splice(wwnIndex, 1);
+                },
+                addNewWwn: function(){
+                    $scope.dataModel.addedWwns.splice(0,0, {value: ''});
                 }
             };
         });
+
+        function differentWwns(originaWwns, updatedWwns){
+            if (originaWwns.length !== updatedWwns.length){
+                return true;
+            }
+            for (var i = 0; i < originaWwns.length; ++i){
+                var updatedWwn = updatedWwns[i].value.trim();
+                updatedWwn = wwnService.removeSymbol(updatedWwn);
+                if (originaWwns[i] !== updatedWwn){
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         $scope.updateHost = function() {
             updateHostWwns();
@@ -39,27 +85,53 @@ angular.module('rainierApp')
         function updateHostWwns() {
 
             var updatedWwns = [];
-            _.forEach($scope.dataModel.updatedWwns.split(','), function(w) {
-                w = w.trim();
-                w = wwnService.removeSymbol(w);
-                updatedWwns.push(w);
+            var wwpnDiffPayload = [];
+            _.forEach($scope.dataModel.updatedWwns, function(w) {
+                var updatedWwn = w.value.trim();
+                updatedWwn = wwnService.removeSymbol(updatedWwn);
+                updatedWwns.push(updatedWwn);
+            });
+
+            _.forEach($scope.dataModel.addedWwns, function(w) {
+                var addedWwn = w.value;
+                if (!_.isEmpty(addedWwn)){
+                    addedWwn = addedWwn.trim();
+                    addedWwn = wwnService.removeSymbol(addedWwn);
+                    if (!_.isEmpty(addedWwn)) {
+                        wwpnDiffPayload.push(
+                            {
+                                'currentValue': null,
+                                'newValue': addedWwn
+                            }
+                        );
+                    }
+                }
+
             });
 
             var originalWwns = $scope.dataModel.originalHost.wwpns;
-            var wwnToAdd = _.difference(updatedWwns, originalWwns);
-            var wwnToRemove = _.difference(originalWwns, updatedWwns);
+            for (var i = 0; i < originalWwns.length; ++i){
+                var originalWwn = originalWwns[i];
+                var updatedWwn = updatedWwns[i];
+                if (originalWwn !== updatedWwn){
+                    wwpnDiffPayload.push(
+                        {
+                            'currentValue': originalWwn,
+                            'newValue': _.isEmpty(updatedWwn) ? null : updatedWwn
+                        }
+                    );
+                }
+            }
 
-            if (wwnToAdd.length > 0) {
-                orchestratorService.addHostWwn(hostId, {
-                    wwpns: wwnToAdd
+            if (wwpnDiffPayload.length > 0) {
+                // In UI, when users want to update the attached volumes, we also update the zones.
+                orchestratorService.updateHostWwn(hostId, {
+                    'updates': wwpnDiffPayload,
+                    'updateAttachedVolumes': $scope.dataModel.applyChangesToAttachedVolumes,
+                    'updateZones': $scope.dataModel.applyChangesToAttachedVolumes
                 });
             }
 
-            if (wwnToRemove.length > 0) {
-                orchestratorService.removeHostWwn(hostId, {
-                    wwpns: wwnToRemove
-                });
-            }
         }
 
         function updateHostFields() {

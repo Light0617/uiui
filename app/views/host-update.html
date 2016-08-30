@@ -20,51 +20,83 @@
                 <div class="tile-view list-view">
                     <!--Header Row-->
                     <div class="tile row row-tile column-headers">
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
                             <p>Server Name</p>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs cell">
                             <p>Description</p>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs cell">
                             <p>IP Address</p>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
                             <p>OS Type</p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 cell">
-                            <p>WWN</p>
                         </div>
                     </div>
                     <!--Standard Row-->
                     <div class="tile row row-tile">
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
                             <input type="text" ng-model="dataModel.updatedHostName"
                                    class="form-control text inline" name="name"
                                    title="name" placeholder="Host Name">
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs cell">
                             <input type="text" ng-model="dataModel.updatedDescription"
                                    class="form-control text inline" name="description"
                                    title="description" placeholder="Description">
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+                        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs cell">
                             <input type="text" ng-model="dataModel.updatedIpAddress"
                                    class="form-control text inline" name="ipAddress"
                                    title="ipAddress" placeholder="IP Address">
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell control">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell control">
     
                             <select class="dropdown inline" name="osType" title="osType"
                                     ng-model="dataModel.updatedOsType"
                                     ng-options="'host-mode-' + mode | translate for mode in dataModel.osTypes">
                             </select>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 cell">
-                            <input type="text" ng-model="dataModel.updatedWwns"
-                                   class="form-control text inline" name="wwn"
-                                   title="wwn" placeholder="50:00:00:00:00:00:00:00, 50:00:00:00:00:00:00:01">
+                    </div>
+                </div>
+                <div class="header-row">
+                    <h2>{{'host-update-existing-wwns'| translate}}</h2>
+                </div>
+                <div class="tile-view list-view">
+                    <div class="tile row row-tile" ng-repeat="wwn in dataModel.updatedWwns track by $index">
+                        <input type="text" ng-model="wwn.value"
+                               class="form-control text inline" name="wwn"
+                               title="wwn" >
+                    </div>
+                </div>
+
+                <div class="header-row">
+                    <h2>{{'host-update-add-wwns'| translate}}</h2>
+                </div>
+                <div class="tile-view list-view">
+                    <div class="tile row row-tile" ng-repeat="addedWwn in dataModel.addedWwns track by $index">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 cell">
+                            <input type="text" ng-model="addedWwn.value"
+                                   class="form-control text inline" name="wwns"
+                                   title="wwn" placeholder="50:00:00:00:00:00:00:00">
                         </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="!$first">
+                            <button class="btn icon-btn icon-sm icon-delete-item"
+                                    ng-click="dataModel.deleteWwn($index)"></button>
+
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="$first">
+                            <button class="btn icon-btn icon-sm icon-add"
+                                    ng-click="dataModel.addNewWwn()"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tile-view list-view">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="dataModel.applyChangesToAttachedVolumes">{{'host-update-apply-change' | translate}}
+                        </label>
                     </div>
                 </div>
             </div>
@@ -76,7 +108,11 @@
                     <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
                         <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>{{ 'cancel-button' | translate}}</button>
                         <button type="button" class="btn btn-default active" id="submit" title="submit"
-                                ng-click="updateHost()" ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}
+                                confirm
+                                confirm-title="{{ 'host-update-confirmation-title' | translate}}"
+                                confirm-message="{{ 'host-update-confirmation-content' | translate}}"
+                                ng-click="updateHost()"
+                                ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}</button>
                     </div>
                 </div>
             </div>

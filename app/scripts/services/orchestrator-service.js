@@ -139,11 +139,16 @@ angular.module('rainierApp')
             updateHost: function (hostId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('compute/servers/' + hostId).post(payload));
             },
+            // "Obsolete: this API will be discontinued in the next release, please use ~/update-wwpns instead")
             addHostWwn: function (hostId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('add-wwpn').post(payload));
             },
+            // "Obsolete: this API will be discontinued in the next release, please use ~/update-wwpns instead")
             removeHostWwn: function (hostId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('remove-wwpn').post(payload));
+            },
+            updateHostWwn: function (hostId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('update-wwpns').post(payload));
             },
             failedServersForStorageSystem: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('data-protection/storage-systems', storageSystemId).one('servers/failed-servers').get().then(function(result) {
