@@ -75,7 +75,7 @@
                 </div>
                 <div class="tile-view list-view">
                     <div class="tile row row-tile" ng-repeat="addedWwn in dataModel.addedWwns track by $index">
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 cell">
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 cell">
                             <input type="text" ng-model="addedWwn.value"
                                    class="form-control text inline" name="wwns"
                                    title="wwn" placeholder="50:00:00:00:00:00:00:00">
@@ -107,10 +107,15 @@
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
                         <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>{{ 'cancel-button' | translate}}</button>
-                        <button type="button" class="btn btn-default active" id="submit" title="submit"
+                        <button type="button" class="btn btn-default active" title="submit"
+                                ng-if="dataModel.applyChangesToAttachedVolumes === true"
                                 confirm
                                 confirm-title="{{ 'host-update-confirmation-title' | translate}}"
                                 confirm-message="{{ 'host-update-confirmation-content' | translate}}"
+                                ng-click="updateHost()"
+                                ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}</button>
+                        <button type="button" class="btn btn-default active" title="submit"
+                                ng-if="dataModel.applyChangesToAttachedVolumes !== true"
                                 ng-click="updateHost()"
                                 ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}</button>
                     </div>

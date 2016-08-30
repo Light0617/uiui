@@ -24,7 +24,7 @@ angular.module('rainierApp')
 
         function hasValueWwns(wwns){
             for(var i = 0; i < wwns.length; i++){
-                if (!_.isEmpty(wwns[i])){
+                if (!_.isEmpty(wwns[i].value)){
                     return true;
                 }
             }
@@ -49,7 +49,7 @@ angular.module('rainierApp')
                     return !_.isEmpty(this.updatedHostName) && !_.isEmpty(this.updatedOsType) && !_.isEmpty(this.updatedWwns) && (result.serverName !== $scope.dataModel
                         .updatedHostName || result.description !== $scope.dataModel.updatedDescription || result.ipAddress !== $scope.dataModel.updatedIpAddress ||
                         result.osType !== $scope.dataModel.updatedOsType ||
-                        hasValueWwns($scope.dataModel.originalHost.wwpns) ||
+                        hasValueWwns($scope.dataModel.addedWwns) ||
                         differentWwns($scope.dataModel.originalHost.wwpns, $scope.dataModel.updatedWwns));
                 },
                 deleteWwn: function(wwnIndex) {
