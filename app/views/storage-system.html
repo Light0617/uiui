@@ -5,32 +5,40 @@
 </page-title>
 <ng-include src="'views/inventory-templates/storage-systems-summary.html'"></ng-include>
 
-<div class="container-fluid stage">
-    <div class="container-fluid resource-detail tiles-view file-data" ng-if="dataModel.unified">
-        <div class="resource-row">
-            <div class="tile meta-tile-short single black-tile">
-                <div class="header-row">
-                    <h3>Cluster</h3>
-                </div>
-                <div class="tile-row resource-info">
-                    <div class="resource-icon icon icon-cluster icon-lg-md icon-white"></div>
-                    <div class="resource-data-columns">
-                        <div class="label-value-container">
-                            <p class="label">{{'health' |translate }}</p>
-                            <p class="value">{{clusterSummary.health}}</p>
+    <div class="container-fluid stage">
+        <div class="container-fluid resource-detail tiles-view file-data" ng-if="dataModel.unified">
+            <div class="resource-row">
+                <div class="nested-tiles-meta-tile black-tile">
+                    <div class="tile meta-tile">
+                        <div class="label-value-container resource-data">
+                            <h2 class="ng-binding">Cluster
+                                <div class="resource-icon icon icon-cluster icon-lg-md icon-white"></div>
+                            </h2>
                         </div>
-                        <div class="label-value-container" ng-repeat="node in clusterSummary.clusterNodes">
-                            <p class="label"> {{'blade' | translate}} {{node.id}} {{node.name}} {{'status' |translate }} </p>
-                            <p class="value">{{node.displayStatus}}</p>
-                        </div>
-                        <div class="label-value-container" ng-repeat="node in clusterSummary.clusterNodes">
-                            <p class="label">{{'blade' | translate}} {{node.id}} {{node.name}} {{'common-storage-system-fw-version' |translate }}</p>
-                            <p class="value">{{node.firmware}}</p>
+                        <div class="label-value-container resource-data">
+                            <p class="label ng-binding">{{'health' |translate }}</p>
+                            <p class="value ng-binding">{{clusterSummary.health}}</p>
                         </div>
                     </div>
+
+                    <!-- ngRepeat: node in clusterSummary.clusterNodes -->
+                    <div ng-repeat="node in clusterSummary.clusterNodes" class="tile meta-tile label-value-container">
+                        <div class="title-row">
+                            <h3>{{'blade' | translate}} {{node.id}} {{node.name}} </h3>
+                        </div>
+                        <div>
+                            <p class="label ng-binding"> {{'status'
+                                |translate }} </p>
+                            <p class="value ng-binding">{{node.displayStatus}}</p>
+                            <p class="label ng-binding">
+                                {{'common-storage-system-fw-version' |translate }}</p>
+                            <p class="value ng-binding">{{node.firmware}}</p>
+
+                        </div>
+                    </div>
+                    <!-- end ngRepeat: node in clusterSummary.clusterNodes -->
                 </div>
             </div>
-        </div>
         <div class="resource-row">
             <!--Meta-tile formatted-->
             <div class="tile meta-tile quarter">    
