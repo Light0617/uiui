@@ -231,7 +231,7 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        ShareDataService.push('selectedHost', dataModel.getSelectedItems());
+                        ShareDataService.push('selectedHost', [$scope.dataModel.host]);
                         $location.path(['volume-manager', 'edit-lun-path'].join(
                             '/'));
                     }
@@ -324,8 +324,11 @@ angular.module('rainierApp')
 
             dataModel.cachedList = result.resources;
             dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
+            // In case the getHost call returns earlier than this backend api call, we should restore the "host".
+            dataModel.host = $scope.dataModel.host;
             $scope.dataModel = dataModel;
-            angular.extend($scope.dataModel, dataModel);
+
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);
 
         });

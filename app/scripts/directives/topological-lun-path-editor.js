@@ -92,6 +92,7 @@ angular.module('bel-services')
             scope: {
                 data: '=ngModel'
             },
+            templateUrl: 'views/templates/topological-lun-path-editor.html',
             restrict: 'E',
             link: function postLink(scope, element) {
                 d3service.d3().then(function (d3) {
