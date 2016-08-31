@@ -14,6 +14,7 @@ angular.module('rainierApp')
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
+        var hostGroupsInStorageSystem = {};
         ShareDataService.showProvisioningStatus = false;
         var updateToggleId =  function (resources) {
             var id = 0;
@@ -86,9 +87,90 @@ angular.module('rainierApp')
             });
         });
 
+        var getUniqueStorageSystemsForAttachedVolumes = function (attachedVolumesPerServer) {
+            var uniqueStorageSystemIds = [];
+            if (attachedVolumesPerServer !== null && attachedVolumesPerServer !== undefined &&
+                attachedVolumesPerServer.resources !== null && attachedVolumesPerServer.resources !== undefined) {
+                var attachedVolumes = attachedVolumesPerServer.resources;
+                for (var i = 0; i < attachedVolumes.length; i++) {
+                    var storageSystemId = attachedVolumes[i].storageSystemId;
+                    if ($.inArray(storageSystemId, uniqueStorageSystemIds) === -1) {
+                        uniqueStorageSystemIds.push(storageSystemId);
+                    }
+                }
+            }
+            return uniqueStorageSystemIds;
+        };
+
+        var getHostGroupsForStorageSystems = function (attachedVolumesPerServer) {
+            var uniqueStorageSystemIds = getUniqueStorageSystemsForAttachedVolumes (attachedVolumesPerServer);
+            for (var i = 0; i < uniqueStorageSystemIds.length; i++) {
+                getHostGroupsForStorageSystem(uniqueStorageSystemIds[i]);
+            }
+        };
+
+        var getHostGroupsForStorageSystem = function (storageSystemId) {
+            paginationService.clearQuery();
+            paginationService.getAllPromises(null, 'host-groups', false, storageSystemId, null, false).then(function(hostGroupResults) {
+                hostGroupsInStorageSystem[storageSystemId] = hostGroupResults;
+            });
+        };
+        var isVolumesPartOfSameStorageSystem = function (selectedVolumes) {
+            if (selectedVolumes !== null && selectedVolumes !== undefined && selectedVolumes.length > 0) {
+                var storageSystemId = selectedVolumes[0].storageSystemId;
+                for (var i = 1; i < selectedVolumes.length; i++) {
+                    if (storageSystemId !== selectedVolumes[i].storageSystemId) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        };
+
+        var getvolumeIdLunIdMap = function (lunsInHostGroup) {
+            var volumeIdLunIdMap = {};
+            if (lunsInHostGroup !== null && lunsInHostGroup !== undefined && lunsInHostGroup.length > 0) {
+                for (var j = 0; j < lunsInHostGroup.length; j++) {
+                    var lunInfo = lunsInHostGroup[j];
+                    volumeIdLunIdMap[lunInfo.volumeId] = lunInfo.lun;
+                }
+            }
+            return volumeIdLunIdMap;
+        };
+
+        var isVolumeIdsMatch = function (volumeIdLunIdMap, selectedVolumeIds) {
+            for (var i = 0; i < selectedVolumeIds.length; i++) {
+                if (!volumeIdLunIdMap.hasOwnProperty(selectedVolumeIds[i])) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        var isVolumesPartOfSameHostGroup = function (selectedVolumes) {
+            if (isVolumesPartOfSameStorageSystem(selectedVolumes)) {
+                var selectedVolumeIds = [];
+                var storageSystemId = selectedVolumes[0].storageSystemId;
+                for (var i = 0; i < selectedVolumes.length; i++) {
+                    selectedVolumeIds[i] = selectedVolumes[i].volumeId;
+                }
+                if (hostGroupsInStorageSystem.hasOwnProperty(storageSystemId)) {
+                    var hostGroups = hostGroupsInStorageSystem[storageSystemId];
+                    for (var j = 0; j < hostGroups.length; j++) {
+                        if (isVolumeIdsMatch(getvolumeIdLunIdMap(hostGroups[j].luns), selectedVolumeIds)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        };
+
         paginationService.clearQuery();
         queryService.setQueryMapEntry('serverId', parseInt(hostId));
         paginationService.get(null, ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false).then(function (result) {
+            getHostGroupsForStorageSystems(result);
             updateToggleId(result.resources);
             var dataModel = {
                 view: 'list',
@@ -145,8 +227,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit-lun-path',
                     type: 'link',
                     enabled: function () {
-                        //TODO: there should be a validation to check whether the selected volumes are from the same host group
-                        return dataModel.onlyOneSelected();
+                        return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
