@@ -1,4 +1,4 @@
-var express = require('express')
+ express = require('express')
 var bodyParser = require('body-parser')
 var _ = require('lodash');
 
@@ -447,6 +447,7 @@ var parityGroups = _.map(_.range(1, 121), function (v) {
         },
         status: _.sample(statuses),
         totalCapacityInBytes: getCapacity(100, 200),
+        uninitializedCapacityInBytes: getCapacity(0, 50),
         availableCapacityInBytes: getCapacity(50, 80),
         physicalCapacityInBytes: physicalCapacity,
         encryption: _.sample(encryption),

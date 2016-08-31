@@ -818,10 +818,11 @@ angular.module('rainierApp')
                 return summaryModel;
             },
             transformParityGroup: function (item) {
-                var used = item.totalCapacityInBytes - item.availableCapacityInBytes;
+                var used = item.totalCapacityInBytes - item.availableCapacityInBytes - item.uninitializedCapacityInBytes;
                 var number = Math.round((used) * 100 / item.totalCapacityInBytes);
                 item.usageValue = number;
                 item.free = diskSizeService.getDisplaySize(item.availableCapacityInBytes);
+                item.uninitialized = diskSizeService.getDisplaySize(item.uninitializedCapacityInBytes);
                 item.total = diskSizeService.getDisplaySize(item.totalCapacityInBytes);
                 item.physicalCapacity = diskSizeService.getDisplaySize(item.physicalCapacityInBytes);
                 item.used = diskSizeService.getDisplaySize(used);

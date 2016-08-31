@@ -141,6 +141,7 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
             },
             status: status,
             totalCapacityInBytes: totalCapacity,
+            uninitializedCapacityInBytes: mockUtils.getCapacity(0, 50),
             availableCapacityInBytes: mockUtils.getCapacity(50, 80),
             physicalCapacityInBytes: physicalCapacity,
             encryption: _.sample(encryption),

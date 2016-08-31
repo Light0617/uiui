@@ -322,7 +322,17 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'common-label-free',
+                    title: 'parity-group-uninitialized-capacity',
+                    sizeClass: 'twelfth',
+                    sortField: 'uninitialized.value',
+                    getDisplayValue: function (item) {
+                        return item.uninitialized;
+                    },
+                    type: 'size'
+
+                },
+                {
+                    title: 'parity-group-initialized-capacity',
                     sizeClass: 'twelfth',
                     sortField: 'free.value',
                     getDisplayValue: function (item) {
@@ -332,7 +342,7 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'common-label-used',
+                    title: 'parity-group-used',
                     sizeClass: 'twelfth',
                     sortField: 'used.value',
                     getDisplayValue: function (item) {
