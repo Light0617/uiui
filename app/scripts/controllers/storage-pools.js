@@ -13,11 +13,7 @@ angular.module('rainierApp')
                                               storageNavigatorSessionService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
-        var storageSystem;
 
-        orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            storageSystem = result;
-        });
         orchestratorService.tiers().then(function (result) {
             $scope.tiers = result.tiers;
         });
@@ -54,246 +50,247 @@ angular.module('rainierApp')
             dataModel.usageGraphs = values[2];
         });
 
-        paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true, storageSystemId).then(function (result) {
-            var storagePools = result.resources;
-            var dataModel = {
-                title: synchronousTranslateService.translate('common-storage-system-pools'),
-                alerts: {
-                    capacity: {
-                        count: 0,
-                        level: 'healthy'
+        orchestratorService.storageSystem(storageSystemId).then(function (storageSystem) {
+            paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true, storageSystemId).then(function (result) {
+                var storagePools = result.resources;
+                var dataModel = {
+                    title: synchronousTranslateService.translate('common-storage-system-pools'),
+                    alerts: {
+                        capacity: {
+                            count: 0,
+                            level: 'healthy'
+                        },
+                        dp: {
+                            count: 0,
+                            level: 'healthy'
+                        },
+                        hardware: {
+                            count: 0,
+                            level: 'healthy'
+                        },
+                        jobs: {
+                            count: 0,
+                            level: 'healthy'
+                        }
                     },
-                    dp: {
-                        count: 0,
-                        level: 'healthy'
-                    },
-                    hardware: {
-                        count: 0,
-                        level: 'healthy'
-                    },
-                    jobs: {
-                        count: 0,
-                        level: 'healthy'
-                    }
-                },
-                storageSystemId: storageSystemId,
-                nextToken: result.nextToken,
-                total: result.total,
-                view: 'tile',
-                allItemsSelected: false,
-                sort: {
-                    field: 'name',
-                    reverse: false,
-                    setSort: function (f) {
-                        $timeout(function () {
-                            if ($scope.dataModel.sort.field === f) {
-                                queryService.setSort(f, !$scope.dataModel.sort.reverse);
-                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            } else {
-                                $scope.dataModel.sort.field = f;
-                                queryService.setSort(f, false);
-                                $scope.dataModel.sort.reverse = false;
-                            }
-                            paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
-                                updateResultTotalCounts(result);
+                    storageSystemId: storageSystemId,
+                    nextToken: result.nextToken,
+                    total: result.total,
+                    view: 'tile',
+                    allItemsSelected: false,
+                    sort: {
+                        field: 'name',
+                        reverse: false,
+                        setSort: function (f) {
+                            $timeout(function () {
+                                if ($scope.dataModel.sort.field === f) {
+                                    queryService.setSort(f, !$scope.dataModel.sort.reverse);
+                                    $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
+                                } else {
+                                    $scope.dataModel.sort.field = f;
+                                    queryService.setSort(f, false);
+                                    $scope.dataModel.sort.reverse = false;
+                                }
+                                paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                                    updateResultTotalCounts(result);
+                                });
                             });
-                        });
+                        }
                     }
-                }
-            };
-
-            $scope.filterModel = {
-                filter: {
-                    freeText: '',
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    }
-                },
-                filterQuery: function (key, value, type, arrayClearKey) {
-                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                    paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
-                        updateResultTotalCounts(result);
-                    });
-                },
-                sliderQuery: function(key, start, end, unit) {
-                    paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
-                        updateResultTotalCounts(result);
-                    });
-                },
-                searchQuery: function (value) {
-                    var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject('storagePoolId', new paginationService.SearchType().INT, value));
-                    queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
-                    paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
-                        updateResultTotalCounts(result);
-                    });
-                }
-            };
-
-            var updateResultTotalCounts = function(result) {
-                $scope.dataModel.nextToken = result.nextToken;
-                $scope.dataModel.cachedList = result.resources;
-                $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-                $scope.dataModel.itemCounts = {
-                    filtered: $scope.dataModel.displayList.length,
-                    total: $scope.dataModel.total
                 };
-            };
 
-            dataModel.getResources = function(){
-                return paginationService.get($scope.dataModel.nextToken, getStoragePoolsPath, objectTransformService.transformPool, false, storageSystemId);
-            };
-            dataModel.cachedList = storagePools;
-            dataModel.displayList = storagePools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-
-            var actions = [
-                {
-                    icon: 'icon-delete',
-                    tooltip :'action-tooltip-delete',
-                    type: 'confirm',
-                    confirmTitle: 'storage-pool-delete-confirmation',
-                    confirmMessage: 'storage-pool-delete-selected-content',
-                    enabled: function () {
-                        return dataModel.anySelected() &&
-                            !_.find(dataModel.getSelectedItems(), function(item) {
-                                return item.isUsingExternalStorage() || item.nasBoot;
-                            });
+                $scope.filterModel = {
+                    filter: {
+                        freeText: '',
+                        freeCapacity: {
+                            min: 0,
+                            max: 1000,
+                            unit: 'PB'
+                        },
+                        totalCapacity: {
+                            min: 0,
+                            max: 1000,
+                            unit: 'PB'
+                        }
                     },
-                    onClick: function () {
-                        _.forEach(dataModel.getSelectedItems(), function (item) {
-                            item.actions.delete.onClick(orchestratorService, false);
+                    filterQuery: function (key, value, type, arrayClearKey) {
+                        var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                        paginationService.setFilterSearch(queryObject);
+                        paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                            updateResultTotalCounts(result);
+                        });
+                    },
+                    sliderQuery: function(key, start, end, unit) {
+                        paginationService.setSliderSearch(key, start, end, unit);
+                        paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                            updateResultTotalCounts(result);
+                        });
+                    },
+                    searchQuery: function (value) {
+                        var queryObjects = [];
+                        queryObjects.push(new paginationService.QueryObject('storagePoolId', new paginationService.SearchType().INT, value));
+                        queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
+                        paginationService.setTextSearch(queryObjects);
+                        paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                            updateResultTotalCounts(result);
                         });
                     }
-                },
-                {
-                    icon: 'icon-edit',
-                    tooltip :'action-tooltip-edit',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() &&
-                            !_.find(dataModel.getSelectedItems(), function(item) {
-                                return item.isUsingExternalStorage();
+                };
+
+                var updateResultTotalCounts = function(result) {
+                    $scope.dataModel.nextToken = result.nextToken;
+                    $scope.dataModel.cachedList = result.resources;
+                    $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+                    $scope.dataModel.itemCounts = {
+                        filtered: $scope.dataModel.displayList.length,
+                        total: $scope.dataModel.total
+                    };
+                };
+
+                dataModel.getResources = function(){
+                    return paginationService.get($scope.dataModel.nextToken, getStoragePoolsPath, objectTransformService.transformPool, false, storageSystemId);
+                };
+                dataModel.cachedList = storagePools;
+                dataModel.displayList = storagePools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
+                var actions = [
+                    {
+                        icon: 'icon-delete',
+                        tooltip :'action-tooltip-delete',
+                        type: 'confirm',
+                        confirmTitle: 'storage-pool-delete-confirmation',
+                        confirmMessage: 'storage-pool-delete-selected-content',
+                        enabled: function () {
+                            return dataModel.anySelected() &&
+                                !_.find(dataModel.getSelectedItems(), function(item) {
+                                    return item.isUsingExternalStorage() || item.nasBoot;
+                                });
+                        },
+                        onClick: function () {
+                            _.forEach(dataModel.getSelectedItems(), function (item) {
+                                item.actions.delete.onClick(orchestratorService, false);
                             });
+                        }
                     },
-                    onClick: function () {
-                        var item = _.first(dataModel.getSelectedItems());
-                        item.actions.edit.onClick();
+                    {
+                        icon: 'icon-edit',
+                        tooltip :'action-tooltip-edit',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() &&
+                                !_.find(dataModel.getSelectedItems(), function(item) {
+                                    return item.isUsingExternalStorage();
+                                });
+                        },
+                        onClick: function () {
+                            var item = _.first(dataModel.getSelectedItems());
+                            item.actions.edit.onClick();
+
+                        }
+                    }
+                ];
+
+                dataModel.getActions = function () {
+                    return actions;
+                };
+
+                dataModel.gridSettings = [
+                    {
+                        title: 'ID',
+                        sizeClass: 'twelfth',
+                        sortField: 'storagePoolId',
+                        getDisplayValue: function (item) {
+                            return item.storagePoolId;
+                        },
+                        type: 'id'
+
+                    },
+                    {
+                        title: 'Name',
+                        sizeClass: 'sixth',
+                        sortField: 'label',
+                        getDisplayValue: function (item) {
+                            return item.label;
+                        }
+
+                    },
+                    {
+                        title: 'Type',
+                        sizeClass: 'twelfth',
+                        sortField: 'type',
+                        getDisplayValue: function (item) {
+                            return synchronousTranslateService.translate(item.type);
+                        }
+
+                    },
+                    {
+                        title: 'pool-active-flash',
+                        sizeClass: 'twelfth',
+                        sortField: 'activeFlashEnabled',
+                        getDisplayValue: function (item) {
+                            return item.activeFlashEnabled ? 'pool-active-flash' : '';
+                        },
+                        getIconClass: function (item) {
+                            return item.activeFlashEnabled ? 'icon-checkmark' : '';
+                        },
+                        type: 'icon'
+                    },
+                    {
+                        title: 'common-label-total',
+                        sizeClass: 'twelfth',
+
+                        sortField: 'capacityInBytes.value',
+                        getDisplayValue: function (item) {
+                            return item.capacityInBytes;
+                        },
+                        type: 'size'
+
+                    },
+                    {
+                        title: 'common-label-free',
+                        sizeClass: 'twelfth',
+                        sortField: 'availableCapacityInBytes.value',
+                        getDisplayValue: function (item) {
+                            return item.availableCapacityInBytes;
+                        },
+                        type: 'size'
+
+                    },
+                    {
+                        title: 'common-label-used',
+                        sizeClass: 'twelfth',
+                        sortField: 'usedCapacityInBytes.value',
+                        getDisplayValue: function (item) {
+                            return item.usedCapacityInBytes;
+                        },
+                        type: 'size'
 
                     }
+                ];
+
+                if (storageSystem.unified) {
+                    dataModel.gridSettings.push({
+                        title: 'common-label-nas-boot',
+                        sizeClass: 'twelfth',
+                        sortField: 'nasBoot',
+                        getDisplayValue: function (item) {
+                            return item.nasBoot ? 'common-label-nas-boot' : '';
+                        },
+                        getIconClass: function (item) {
+                            return item.nasBoot ? 'icon-checkmark' : '';
+                        },
+                        type: 'icon'
+                    });
                 }
-            ];
 
-            dataModel.getActions = function () {
-                return actions;
-            };
+                dataModel.addAction = function () {
+                    $location.path(['storage-systems', storageSystemId, 'storage-pools', 'add'].join('/'));
+                };
 
-            dataModel.gridSettings = [
-                {
-                    title: 'ID',
-                    sizeClass: 'twelfth',
-                    sortField: 'storagePoolId',
-                    getDisplayValue: function (item) {
-                        return item.storagePoolId;
-                    },
-                    type: 'id'
+                dataModel.capacityAlert = capacityAlertService;
 
-                },
-                {
-                    title: 'Name',
-                    sizeClass: 'sixth',
-                    sortField: 'label',
-                    getDisplayValue: function (item) {
-                        return item.label;
-                    }
-
-                },
-                {
-                    title: 'Type',
-                    sizeClass: 'twelfth',
-                    sortField: 'type',
-                    getDisplayValue: function (item) {
-                        return synchronousTranslateService.translate(item.type);
-                    }
-
-                },
-                {
-                    title: 'pool-active-flash',
-                    sizeClass: 'twelfth',
-                    sortField: 'activeFlashEnabled',
-                    getDisplayValue: function (item) {
-                        return item.activeFlashEnabled ? 'pool-active-flash' : '';
-                    },
-                    getIconClass: function (item) {
-                        return item.activeFlashEnabled ? 'icon-checkmark' : '';
-                    },
-                    type: 'icon'
-                },
-                {
-                    title: 'common-label-total',
-                    sizeClass: 'twelfth',
-
-                    sortField: 'capacityInBytes.value',
-                    getDisplayValue: function (item) {
-                        return item.capacityInBytes;
-                    },
-                    type: 'size'
-
-                },
-                {
-                    title: 'common-label-free',
-                    sizeClass: 'twelfth',
-                    sortField: 'availableCapacityInBytes.value',
-                    getDisplayValue: function (item) {
-                        return item.availableCapacityInBytes;
-                    },
-                    type: 'size'
-
-                },
-                {
-                    title: 'common-label-used',
-                    sizeClass: 'twelfth',
-                    sortField: 'usedCapacityInBytes.value',
-                    getDisplayValue: function (item) {
-                        return item.usedCapacityInBytes;
-                    },
-                    type: 'size'
-
-                }
-            ];
-
-            if (storageSystem.unified) {
-                dataModel.gridSettings.push({
-                    title: 'common-label-nas-boot',
-                    sizeClass: 'twelfth',
-                    sortField: 'nasBoot',
-                    getDisplayValue: function (item) {
-                        return item.nasBoot ? 'common-label-nas-boot' : '';
-                    },
-                    getIconClass: function (item) {
-                        return item.nasBoot ? 'icon-checkmark' : '';
-                    },
-                    type: 'icon'
-                });
-            }
-
-            dataModel.addAction = function () {
-                $location.path(['storage-systems', storageSystemId, 'storage-pools', 'add'].join('/'));
-            };
-            
-            dataModel.capacityAlert = capacityAlertService;
-
-            $scope.dataModel = dataModel;
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storagePools, 'storagePoolSearch');
+                $scope.dataModel = dataModel;
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storagePools, 'storagePoolSearch');
+            });
         });
-
     });
