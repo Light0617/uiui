@@ -19,11 +19,14 @@
         <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
             <p title="{{'storage-volume-pool-type' | translate}}">{{'storage-volume-pool-type' | translate}}</p>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
             <p title="{{'storage-volume-pool-tier' | translate}}">{{'storage-volume-pool-tier' | translate}}</p>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
             <p title="{{'storage-volume-pool' | translate}}">{{'storage-volume-pool' | translate}}</p>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
+            <p title="{{'volume-capacity-saving-type' | translate}}">{{'volume-capacity-saving-type' | translate}}</p>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
             <p>&nbsp;</p>
@@ -68,7 +71,7 @@
             <input type="text" class="form-control" ng-disabled="true"
                    ng-model="volumeGroup.poolType | translate">
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 cell control">
+        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
             <select class="form-control" ng-model="volumeGroup.tier"
                     ng-options="tier for tier in dataModel.createModel.volumesGroupsModel.tiers"
                     ng-change="volumeGroup.pool = null"
@@ -87,6 +90,12 @@
                     ng-options="p.poolLabel for p in volumeGroup.getPools()">
                 <option value=""> Auto Selected </option>
 
+            </select>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
+            <select class="form-control" ng-model="volumeGroup.dkcDataSavingType" additional-watch="volumeGroup"
+                    ng-options="type.value as type.label | translate for type in volumeGroup.getDkcDataSavingTypes()">
+                <option value="">{{'volume-capacity-saving-type-filter-no' | translate}}</option>
             </select>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="$first">

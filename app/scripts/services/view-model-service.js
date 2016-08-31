@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('viewModelService', function ($timeout, diskSizeService, objectTransformService, wwnService) {
+    .factory('viewModelService', function ($timeout, diskSizeService, objectTransformService, wwnService, volumeService) {
 
         function WizardViewModel(pages) {
             var completedSteps = {};
@@ -111,7 +111,8 @@ angular.module('rainierApp')
                         unit: 'GB'
                     },
                     poolType: poolTypes[0],
-                    pool: null
+                    pool: null,
+                    dkcDataSavingType: null
                 };
                 template.isSizeValid = function () {
                     var valid =
@@ -161,8 +162,14 @@ angular.module('rainierApp')
                     }
                     return diskSizeService.getDisplaySize(0);
                 };
-                return template;
 
+                template.getDkcDataSavingTypes = function () {
+                    var type = (template.pool !== null ? template.pool.type : template.poolType);
+
+                    return volumeService.getDkcDataSavingTypes().slice(0, type === 'HDP' ? 2 : 0);
+                };
+
+                return template;
             };
 
 
@@ -221,7 +228,8 @@ angular.module('rainierApp')
                         label: vol.label === '' ? null : vol.label,
                         suffix: vol.suffix,
                         capacity: diskSizeService.createDisplaySize(vol.size.value, vol.size.unit).value.toString(),
-                        poolId: poolId
+                        poolId: poolId,
+                        dkcDataSavingType: vol.dkcDataSavingType
                     };
                 });
             };
