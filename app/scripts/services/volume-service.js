@@ -36,6 +36,14 @@ angular.module('rainierApp')
                 var type = volume.dataProtectionSummary.replicationType;
                 var snapshotFullcopyOnly = type.length === 1 && type[0] === 'SNAPSHOT_FULLCOPY';
                 return !volume.isUnprotected() && !snapshotFullcopyOnly;
+            },
+            getDkcDataSavingTypes: function () {
+                var dkcDataSavingTypes = [
+                    { label: 'volume-capacity-saving-type-filter-compression', value: 'COMPRESSION' },
+                    { label: 'volume-capacity-saving-type-filter-deduplication-and-compression', value: 'DEDUPLICATION_AND_COMPRESSION' },
+                    { label: 'volume-capacity-saving-type-filter-no', value: 'NONE' }
+                ];
+                return dkcDataSavingTypes;
             }
         };
 

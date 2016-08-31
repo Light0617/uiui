@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService, commonConverterService) {
+                                                 constantService, commonConverterService, volumeService) {
 
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
@@ -323,6 +323,10 @@ angular.module('rainierApp')
                 item.dpStatus = item.dataProtectionSummary.hasFailures;
                 item.dpMonitoringStatus = item.dataProtectionSummary.hasFailures ? 'Failed' : 'Success';
                 item.dpMonitoringStatus = item.dataProtectionSummary.replicationType.length === 0 ? '' : item.dpMonitoringStatus;
+
+
+                item.dataSavingTypeValuePairs = volumeService.getDkcDataSavingTypes();
+                item.dataSavingTypeValuePair = _.findWhere(volumeService.getDkcDataSavingTypes(), {value: item.dkcDataSavingType});
 
                 var icons = [];
                 if (item.dpStatus) {
