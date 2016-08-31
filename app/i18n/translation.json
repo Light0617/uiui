@@ -313,6 +313,8 @@
     "gad-volume-type-secondary": "Active Secondary",
     "gad-volume-type-not-available": "GAD Not Available",
     "gad-volume-type": "GAD Volume Type",
+    "gad-pvol-storage-system-id": "P-Vol Storage System Id",
+    "gad-svol-storage-system-id": "S-Vol Storage System Id",
     "security-security": "Security",
     "security-active-directory": "Active Directory",
     "security-account-domain": "Account Domain",

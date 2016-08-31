@@ -46,10 +46,25 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
             case dispTypeConst.SNAPSHOT_FULLCOPY:
                 return rawTypeConst.SNAPSHOT_FULLCOPY;
             default:
-                return type.toString().toUpperCase();
+                return type!=='GAD' ? type.toString().toUpperCase(): type;
         }
     };
     return {
+        GadDevice: function GadDevice () {
+            this.volumeId = 'N/A';
+            this.storageSystemId = 'N/A';
+            this.ioMode = 'N/A';
+            this.state = 'N/A';
+            this.pairSuspendStatus = 'N/A';
+            this.targetStorageSystemId = 'N/A';
+            this.targetModel = 'N/A';
+            this.targetVolumeId = 'N/A';
+            this.targetLunNumber = 'N/A';
+            this.type = 'N/A';
+            this.status = 'N/A';
+            this.pairCreationTime = 'N/A';
+            this.quorumId = 'N/A';
+        },
         displayReplicationTypes: function (rawType, gadSummary) {
             var displayTypes = [];
 

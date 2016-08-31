@@ -13,6 +13,7 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService) {
 
+
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
         var physicalCapacityColor = '#66A2FF';
@@ -312,6 +313,37 @@ angular.module('rainierApp')
                 for(var property in item) {
                     if (item.hasOwnProperty(property)) {
                         if (property !== 'primaryVolume' && property !== 'secondaryVolume' && item[property] === null) {
+                            item[property] = 'N/A';
+                        }
+                    }
+                }
+            },
+            transformGadPair: function (item) {
+                if (item.primary) {
+                    item.hasPrimaryHalf = true;
+                    item.launchPvol = function () {
+                        var path = ['storage-systems', item.primary.storageSystemId, 'volumes', item.primary.volumeId].join('/');
+                        $location.path(path);
+                    };
+                } else {
+                    item.hasPrimaryHalf = false;
+                    item.primary = new replicationService.GadDevice();
+                }
+
+                if (item.secondary) {
+                    item.hasSecondaryHalf = true;
+                    item.launchSvol = function () {
+                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
+                        $location.path(path);
+                    };
+                } else {
+                    item.hasSecondaryHalf = false;
+                    item.secondary = new replicationService.GadDevice();
+                }
+
+                for(var property in item) {
+                    if (item.hasOwnProperty(property)) {
+                        if (property !== 'primary' && property !== 'secondary' && item[property] === null) {
                             item[property] = 'N/A';
                         }
                     }

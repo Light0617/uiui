@@ -20,6 +20,7 @@ angular.module('rainierApp')
         $scope.noRgWithVolumeIdAsPvolAndClone = false;
         $scope.noRgWithVolumeIdAsPvolAndSnaphot = false;
         $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = false;
+        $scope.noGadRgWithVolmeIdAsPvolAndSvol = false;
         $scope.noRgWithVolumeIdAsSvol = false;
         $scope.noDataVisualization = false;
         $scope.numberOfVPWithVolumeIdAsPvol = 0;
@@ -170,6 +171,15 @@ angular.module('rainierApp')
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy = true;
             }
+            return storageSystemVolumeService.getGadVolumePairsAsPVolAndSvol(null, volumeId, storageSystemId);
+        }).then(function (result) {
+            if (result.total) {
+                $scope.noGadRgWithVolmeIdAsPvolAndSvol = false;
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('GAD'));
+            } else {
+                $scope.noGadRgWithVolmeIdAsPvolAndSvol = true;
+            }
+
 
             if ($scope.noRgWithVolumeIdAsSvol) {
                 dataProtectionSettingsService.truncateMessageOnISRDiagram($scope.rgWithVolumeIdAsPvol, $scope.rgWithVolumeIdAsSvol,
@@ -181,7 +191,7 @@ angular.module('rainierApp')
 
             $scope.noRgWithVolumeIdAsPvol = $scope.noRgWithVolumeIdAsPvolAndClone && $scope.noRgWithVolumeIdAsPvolAndSnaphot &&
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot && $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable &&
-                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy;
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy && $scope.noGadRgWithVolmeIdAsPvolAndSvol;
 
             $scope.rgWithVolumeIdAsPvol = _.sortBy($scope.rgWithVolumeIdAsPvol, 'id');
 
@@ -328,6 +338,9 @@ angular.module('rainierApp')
                 noVolumePairSelected: true,
                 childrenToken: null,
                 busyLoadingMoreChildren: false,
+                // Different APIs, have to separate this.
+                gadChildrenToken: null,
+                busyLoadingMoreGadChildren: false,
                 search: {
                     freeText: '',
                     type: ''
@@ -347,22 +360,46 @@ angular.module('rainierApp')
                     }
                 },
                 fetchFirstPageChildren: function (item) {
-                    replicationGroupsService.getVolumePairsForOneReplicationGroup(null, storageSystemId, item, volumeId)
-                        .then(function (result){
+                    if(item.type === 'GAD') {
+                        storageSystemVolumeService.getGadVolumePairsAsPVolAndSvol(null, volumeId, storageSystemId).then(function(result){
                             _.forEach (result.resources, function (item) {
-                                objectTransformService.transformVolumePairs(item);
+                                objectTransformService.transformGadPair(item);
                             });
                             item.volumePairs = result.resources;
-                            $scope.dataModel.childrenToken = result.nextToken;
+                            $scope.dataModel.gadChildrenToken = result.nextToken;
                         });
+                    } else {
+                        replicationGroupsService.getVolumePairsForOneReplicationGroup(null, storageSystemId, item, volumeId)
+                            .then(function (result){
+                                _.forEach (result.resources, function (item) {
+                                    objectTransformService.transformVolumePairs(item);
+                                });
+                                item.volumePairs = result.resources;
+                                $scope.dataModel.childrenToken = result.nextToken;
+                            });
+                    }
+
                     paginationService.clearQuery();
                 },
                 loadMoreChildren: function (item) {
-                    if (item.hasOwnProperty('volumePairs') && item.volumePairs.length >= paginationService.PAGE_SIZE &&
+                    if (item.type === 'GAD' && item.hasOwnProperty('volumePairs') && item.volumePairs.length >= paginationService.PAGE_SIZE &&
+                    $scope.dataModel.gadChildrenToken !== null && !$scope.dataModel.busyLoadingMoreGadChildren) {
+                        $scope.busyLoadingMoreGadChildren =true;
+                        storageSystemVolumeService.getGadVolumePairsAsPVolAndSvol($scope.dataModel.gadChildrenToken, volumeId, storageSystemId).then(function(result){
+                            _.forEach (result.resources, function (item) {
+                                objectTransformService.transformGadPair(item);
+                            });
+                            item.volumePairs = result.resources;
+                            $scope.dataModel.gadChildrenToken = result.nextToken;
+                            setTimeout(function() {
+                                $scope.dataModel.busyLoadingMoreGadChildren = false;
+                                $scope.$apply();
+                            }, 1000);
+                        });
+                    } else if (item.hasOwnProperty('volumePairs') && item.volumePairs.length >= paginationService.PAGE_SIZE &&
                         $scope.dataModel.childrenToken !== null && !$scope.dataModel.busyLoadingMoreChildren) {
                         $scope.dataModel.busyLoadingMoreChildren = true;
-                        replicationGroupsService.getVolumePairsForOneReplicationGroup($scope.dataModel.childrenToken,
-                            storageSystemId, item, volumeId).then(function (result) {
+                        replicationGroupsService.getVolumePairsForOneReplicationGroup($scope.dataModel.childrenToken, storageSystemId, item, volumeId).then(function (result) {
                                 _.forEach (result.resources, function (item) {
                                     objectTransformService.transformVolumePairs(item);
                                 });
@@ -374,7 +411,7 @@ angular.module('rainierApp')
                                     // Need to trigger digest loop manually inside setTimeout
                                     $scope.$apply();
                                 }, 1000);
-                            });
+                        });
                     }
                 }
             };

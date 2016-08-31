@@ -121,6 +121,11 @@ angular.module('rainierApp')
         return {
             PAGE_SIZE: 100,
             clearQuery: clearQuery,
+            EmptyResourcePage: function () {
+                this.nextToken = null;
+                this.resources =  [];
+                this.total = 0;
+            },
             QueryObject: function (key, type, value, arrayClearKey) {
                 this.key = key;
                 this.type = type;

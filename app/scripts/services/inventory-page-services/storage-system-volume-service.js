@@ -84,6 +84,26 @@ angular.module('rainierApp')
                 };
                 queryService.setQueryObject(queryObject);
                 return paginationService.getQuery(REPLICATION_GROUPS_PATH, objectTransformService.transformReplicationGroup, storageSystemId);
+            },
+            getGadVolumePairsAsPVolAndSvol: function(token, currentVolumeId, storageSystemId) {
+                if (currentVolumeId || currentVolumeId === 0) {
+                    // Doing it in this way because querySerice can not handle 'OR' between attributes.
+                    // Only way to optimize this is to modify the queryService.
+                    var queryParams = {q: ['primary.volumeId:' + currentVolumeId]};
+                    queryParams.q[0] = queryParams.q[0] + ' OR secondary.volumeId:' + currentVolumeId;
+                    if (token !== undefined) {
+                        queryParams.nextToken = token;
+                    }
+                    return apiResponseHandlerService._apiGetResponseHandler(Restangular
+                        .one('storage-systems', storageSystemId)
+                        .one('gad-pairs')
+                        .get(queryParams)
+                        .then(function (result) {
+                            return result;
+                        }));
+                } else {
+                    return new paginationService.EmptyResourcePage();
+                }
             }
         };
     });

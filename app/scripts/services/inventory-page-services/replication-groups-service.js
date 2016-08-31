@@ -19,9 +19,11 @@ angular.module('rainierApp')
                 this.name = 'External';
                 this.comments = 'N/A';
                 this.type = type;
-                this.consistent = 'N/A';this.numberOfCopies = 'N/A';
+                this.consistent = 'N/A';
+                this.numberOfCopies = 'N/A';
                 this.schedule = 'N/A';
-                this.scheduleEnabled = 'N/A';this.primaryVolumeIds = [];
+                this.scheduleEnabled = 'N/A';
+                this.primaryVolumeIds = [];
                 this.failures = 'N/A';
                 this.status = 'N/A';
                 this.isExternal = true;
