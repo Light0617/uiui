@@ -1,0 +1,13 @@
+<div class="confirmation">
+    <div class="modal-header">
+        <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{
+            message || 'error-message-title' | translate }}</h1>
+    </div>
+    <div class="modal-body">
+        <p>{{'resource-tracker-error-message' | translate }}</p>
+    </div>
+    <div class="modal-footer btn-group-confirm">
+        <button type="button" class="btn btn-default active" selected="selected" ng-click="cancel()">No</button>
+        <button type="button" class="btn btn-default " selected="selected" ng-click="ok()">Yes</button>
+    </div>
+</div>

@@ -8,27 +8,31 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StorageSystemVolumeUpdateCtrl', function ($scope, $routeParams, orchestratorService, diskSizeService, volumeService) {
+    .controller('StorageSystemVolumeUpdateCtrl', function ($scope, $routeParams, orchestratorService, diskSizeService,
+                                                           volumeService, resourceTrackerService) {
 
         var storageSystemId = $routeParams.storageSystemId;
+        var volumeId = $routeParams.volumeId;
 
-        orchestratorService.volume(storageSystemId, $routeParams.volumeId).then(function (result) {
+        orchestratorService.volume(storageSystemId, volumeId).then(function (result) {
 
             var dataModel = result;
 
             orchestratorService.storagePool(storageSystemId, dataModel.storagePoolId).then(function (result) {
                 dataModel.belongsPoolType = result.type;
-
+                var poolId = result.storagePoolId;
                 var updatedModel = angular.copy(dataModel);
 
                 updatedModel.submit = function () {
                     var updateVolumePayload = buildUpdateVolumePayload(dataModel, updatedModel);
-                    orchestratorService.updateVolume(
-                        updatedModel.storageSystemId,
-                        updatedModel.volumeId,
-                        updateVolumePayload).then(function () {
-                            window.history.back();
-                        });
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    reservedResourcesList.push(volumeId + '=' + resourceTrackerService.volume());
+                    reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+
+                    // Show popup if resource is present in resource tracker else submit
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Update Volume Confirmation', storageSystemId, volumeId, updateVolumePayload, orchestratorService.updateVolume);
                 };
 
                 updatedModel.canSubmit = function () {

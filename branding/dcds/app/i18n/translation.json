@@ -496,6 +496,7 @@
     "navigator-session-permission-html-error": "You do not have sufficient permissions to launch this page of Storage Navigator. Please close this page and log on to Hitachi Storage Advisor with a different user who has sufficient permissions.",
     "common-api-get-message": "Failed to get data from API. Try again.",
     "job-started-title": "Job Started: ",
+    "resource-tracker-error-message": "One or more requested resources are being worked on by currently running Jobs. Do you want to proceed?",
 
     "host-filter-provisioned": "Provisioned",
     "host-filter-not-provisioned": "Not Provisioned",

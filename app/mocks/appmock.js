@@ -14,7 +14,7 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                             filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock,
                             parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
                             replicationgroupmock, volumepairmock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock, monitorHardwareMockById,
-                            monitorCapacityMockById) {
+                            monitorCapacityMockById, resourceTrackerMock) {
 
     console.log('!! mocking Rainier backend APIs !!');
 
@@ -152,6 +152,14 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, fabricmock.handle);
             case 'monitoring':
                 return monitorGroupSwitcher(urlResult);
+            case 'resource-tracker':
+                return resourceTrackerReservedResources(urlResult);
+        }
+    };
+
+    var resourceTrackerReservedResources = function(urlResult)  {
+        if(urlResult.resourceId)  {
+            return authMock.authenticateAndCall(urlResult, resourceTrackerMock.handle);
         }
     };
 

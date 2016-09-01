@@ -8,7 +8,9 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StoragePoolUpdateCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService, storagePoolService, paginationService, objectTransformService) {
+    .controller('StoragePoolUpdateCtrl', function ($modal, $scope, $routeParams, $timeout, orchestratorService,
+                                                   diskSizeService, storagePoolService, paginationService,
+                                                   objectTransformService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var poolId = $routeParams.storagePoolId;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -17,6 +19,7 @@ angular.module('rainierApp')
         orchestratorService.storagePool(storageSystemId, poolId)
             .then(function (pool) {
                 $scope.model = pool;
+                $scope.poolPgs = pool.parityGroups;
                 $scope.model.originalActiveFlash = pool.activeFlashEnabled;
                 $scope.model.originalLabel = pool.label;
                 $scope.model.originalPoolType = pool.type;
@@ -202,9 +205,27 @@ angular.module('rainierApp')
                                 updatePoolPayload.utilizationThreshold1 = 1;
                                 updatePoolPayload.subscriptionLimit.value = 1;
                             }
-                            orchestratorService.updateStoragePool(storageSystemId, poolId, updatePoolPayload).then(function () {
-                                window.history.back();
+
+                            // Get selected and existing parity groups on the pool
+                            $scope.poolPgIds = [];
+                            _.forEach($scope.poolPgs, function (poolPg) {
+                                $scope.poolPgIds.push(poolPg.id);
                             });
+                            _.forEach($scope.model.selectedParityGroups, function (selectedPg) {
+                                $scope.poolPgIds.push(selectedPg);
+                            });
+
+                            // Build reserved resources
+                            var reservedResourcesList = [];
+                            reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+                            _.forEach($scope.poolPgIds, function (poolPgId) {
+                                reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
+                            });
+
+                            // Show popup if resource is present in resource tracker else submit
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                'Update Pool Confirmation', storageSystemId, poolId, updatePoolPayload,
+                                orchestratorService.updateStoragePool);
                         }
                     },
                     isValid: function () {
