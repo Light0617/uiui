@@ -600,7 +600,7 @@ angular.module('rainierApp')
                 var icons = [];
                 if (item.logicalUtilization >= item.utilizationThreshold1){
                     var alertTitle = 'utilization at ' + item.logicalUtilization + '%';
-                    if (item.logicalUtilization < item.utilizationThreshold2) {
+                    if (item.logicalUtilization < item.utilizationThreshold2 && item.type !== 'HTI') {
                         icons.push({
                             icon: 'icon-small-triangle',
                             title: alertTitle
@@ -608,7 +608,7 @@ angular.module('rainierApp')
 
                         // The property is for list view
                         item.alertIcon = 'icon-small-triangle';
-                    } else {
+                    } else if (item.logicalUtilization >= item.utilizationThreshold2) {
                         icons.push({
                             icon: 'icon-small-diamond',
                             title: alertTitle
