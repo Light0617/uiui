@@ -339,6 +339,8 @@
     "storage-attach-new-volumes": "Attach Volume(s)",
     "select-port-wwn-tooltip": "Optional inputs - Select the storage port and Server WWN to be used for create one or more path between the Server and Storage system. If not selected, Hitachi Storage Advisor will auto select the best port and WWN to be used",
     "lun-alignment-tooltip": "Select Yes if you want the volume to be attached to all servers using same LUN ID",
+    "lun-existing-label": "Existing",
+    "lun-new-label": "New",
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
 
     "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
