@@ -22,6 +22,7 @@
     <div class="nested-row-tile" ng-repeat="vp in item.volumePairs track by $index">
         <div class="col-md-2 cell">
         </div>
+        <!--TODO: CDUAN Attribute may change-->
         <a class="col-md-2 cell text-resize" ng-click="vp.launchPvol()" ng-if="vp.hasPrimaryHalf" title="{{vp.primary.volumeId}}"><p>{{vp.primary.volumeId}}</p></a>
         <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasPrimaryHalf" title="{{vp.primary.volumeId}}"><p>{{vp.primary.volumeId}}</p></div>
         <a class="col-md-2 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.hasSecondaryHalf" title="{{vp.secondary.volumeId}}"><p>{{vp.secondary.volumeId}}</p></a>

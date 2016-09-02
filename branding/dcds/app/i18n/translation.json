@@ -306,6 +306,9 @@
     "storage-volume-summary-unprotected-volumes": "Unprotected Volumes",
     "storage-volume-summary-secondary-volumes": "Secondary Volumes",
 
+    "common-virtual-storage-machines": "Virtual Storage Machines",
+    "common-virtual-storage-machine": "Virtual Storage Machine",
+
     "gad-display-type": "GAD",
     "gad-volume-type-primary": "Active Primary",
     "gad-volume-type-secondary": "Active Secondary",
@@ -645,6 +648,7 @@
     "workflow-title-select-servers": "Select Servers",
     "workflow-title-create-paths": "Create Paths",
 
+    "virtual-storage-machines-showing-x-of-y": "Showing {{filtered}} of {{total}} Virtual Storage Machines",
     "storage-systems-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Systems",
     "storage-pools-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Pools",
     "storage-ports-showing-x-of-y": "Showing {{filtered}} of {{total}} Ports",

@@ -13,7 +13,6 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService) {
 
-
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
         var physicalCapacityColor = '#66A2FF';
@@ -318,6 +317,28 @@ angular.module('rainierApp')
                     }
                 }
             },
+            transformVirtualStorageMachine: function (item) {
+                item.noSelection = true;
+                item.displayPhysicalStorageSystems = item.physicalStorageSystems.join(', ');
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.storageSystemId,
+                        details: [item.model]
+                    },
+                    {
+                        left: false,
+                        title: item.pairHACount,
+                        details: [item.displayPhysicalStorageSystems]
+                    }
+                ];
+                // TODO: CDUAN Placeholder icon. Need to be replaced by vsm icon
+                item.itemIcon = 'icon-hardware';
+                item.onClick = function () {
+                    $location.path(['virtual-storage-systems', item.storageSystemId, 'model', item.model, 'virtual-storage-machine'].join(
+                        '/'));
+                };
+            },
             transformGadPair: function (item) {
                 if (item.primary) {
                     item.hasPrimaryHalf = true;
@@ -340,6 +361,8 @@ angular.module('rainierApp')
                     item.hasSecondaryHalf = false;
                     item.secondary = new replicationService.GadDevice();
                 }
+
+                item.noSelection = true;
 
                 for(var property in item) {
                     if (item.hasOwnProperty(property)) {

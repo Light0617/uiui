@@ -13,8 +13,9 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                             serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
                             filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock,
                             parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
-                            replicationgroupmock, volumepairmock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock, monitorHardwareMockById,
-                            monitorCapacityMockById, resourceTrackerMock) {
+                            replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
+                            monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock) {
+
 
     console.log('!! mocking Rainier backend APIs !!');
 
@@ -23,6 +24,7 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     storageSystemMock.init();
     serversMock.init();
     volumeMock.init();
+    virtualStorageMachineMock.init();
     filePoolMock.init();
     evsMock.init();
     fileSystemMock.init();
@@ -42,6 +44,7 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     storagePoolTemplateMock.init();
     replicationgroupmock.init();
     volumepairmock.init();
+    virtualStorageMachineMock.init();
     fabricmock.init();
     serversMock.init();
 
@@ -152,6 +155,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, fabricmock.handle);
             case 'monitoring':
                 return monitorGroupSwitcher(urlResult);
+            case 'virtual-storage-machines':
+                return authMock.authenticateAndCall(urlResult, virtualStorageMachineMock.handle);
             case 'resource-tracker':
                 return resourceTrackerReservedResources(urlResult);
         }

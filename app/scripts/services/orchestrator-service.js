@@ -18,6 +18,11 @@ angular.module('rainierApp')
             storageSystemDisksUpdate: function (storageSystemId, diskId, payload) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).all('disks/' + diskId).post(payload));
             },
+            virtualStorageMachines: function() {
+              return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('virtual-storage-machines').get().then(function (result) {
+                    return result;
+                }));
+            },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {
                     var externalReplicationGroup = function (type) {

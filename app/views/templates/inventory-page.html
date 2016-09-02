@@ -17,7 +17,7 @@
                 </div>
                 <inventory-actions ng-model="dataModel"></inventory-actions>
             </div>
-            <div class="btn-toolbar horizontal pull-right" ng-if="!dataModel.singleView">
+            <div class="btn-toolbar horizontal pull-right" ng-if="(!dataModel.singleView && !dataModel.singleViewAndPaged)">
                 <div class="btn-group icon-btn-group-toggle">
                     <span class="btn icon-btn icon-sm icon-tile-view" ng-class="{active : dataModel.view=== 'tile'}"
                           title="Tile View" ng-click="dataModel.view ='tile'"></span>
@@ -153,7 +153,7 @@
                 <button type="submit" class="icon icon-btn icon-search"
                         ng-click="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTextSearch)"></button>
             </div>
-            <div class="form-group search" ng-if="!dataModel.search && !dataModel.singleView">
+            <div class="form-group search" ng-if="((!dataModel.search && !dataModel.singleView) || dataModel.singleViewAndPaged)">
                 <input type="text" class="form-control" placeholder="Search" ng-model="filterModel.filter.freeText"
                        ng-change="filterModel.searchQuery(filterModel.filter.freeText)">
                 <button type="submit" class="icon icon-btn icon-search"></button>

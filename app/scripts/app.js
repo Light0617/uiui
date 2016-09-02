@@ -548,6 +548,23 @@ angular
                 },
                 helpContext: 'C_CREATE_PARITY_GROUPS'
             })
+            .when('/virtual-storage-systems/:virtualStorageSystemId/model/:model/virtual-storage-machine', {
+                templateUrl: 'views/virtual-storage-machine-details.html',
+                controller: 'VirtualStorageMachineDetailsCtrl',
+                //TODO: CDUAN Need to discuss both url and breadcrumb with PO
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machine'
+                },
+                //TODO: Help context
+            })
+            .when('/virtual-storage-machines', {
+                templateUrl: 'views/virtual-storage-machines.html',
+                controller: 'VirtualStorageMachinesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                //TODO: Help context
+            })
             .when('/fabric-switches/add', {
                 templateUrl: 'views/fabric-switch-add.html',
                 controller: 'FabricSwitchAddCtrl',
