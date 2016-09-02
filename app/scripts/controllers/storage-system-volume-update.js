@@ -43,9 +43,7 @@ angular.module('rainierApp')
                     }
                     var newSize = diskSizeService.createDisplaySize(updatedModel.totalCapacity.decimalSize, updatedModel.totalCapacity.unit).value;
                     var oldSize = diskSizeService.createDisplaySize(dataModel.totalCapacity.decimalSize, dataModel.totalCapacity.unit).value;
-                    return newSize > oldSize
-                        || dataModel.label !== updatedModel.label
-                        || dataModel.dataSavingTypeValuePair.value !== updatedModel.dataSavingTypeValuePair.value;
+                    return newSize > oldSize || dataModel.label !== updatedModel.label || dataModel.dataSavingTypeValuePair.value !== updatedModel.dataSavingTypeValuePair.value;
                 };
 
                 dataModel.updateModel = updatedModel;
@@ -73,7 +71,7 @@ angular.module('rainierApp')
             }
 
             if (oldVolume.dataSavingTypeValuePair.value !== updatedVolume.dataSavingTypeValuePair.value) {
-                payload.dkcDataSavingType = updatedVolume.dataSavingTypeValuePair.value
+                payload.dkcDataSavingType = updatedVolume.dataSavingTypeValuePair.value;
             }
 
             return payload;
