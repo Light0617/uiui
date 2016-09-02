@@ -351,8 +351,7 @@ angular.module('rainierApp')
                         break;
                     case 'DEDUPLICATION_AND_COMPRESSION':
                         icons.push({
-                            // TODO M.Nakayama NEWRAIN-6280 Icom must be changed to deduplication icon.
-                            icon: 'icon-compression',
+                            icon: 'icon-deduplication',
                             title: 'Deduplication Enabled'
                         });
                         icons.push({
@@ -623,8 +622,7 @@ angular.module('rainierApp')
 
                 if (item.deduplicationEnabled) {
                     icons.push({
-                        // TODO NEWRAIN-6280 Icom must be changed to deduplication icon.
-                        icon: 'icon-compression',
+                        icon: 'icon-deduplication',
                         title: 'Deduplication Enabled'
                     });
                 }
