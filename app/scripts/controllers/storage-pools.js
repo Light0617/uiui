@@ -19,8 +19,7 @@ angular.module('rainierApp')
         });
 
         var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.POOLS);
-        //TODO:RainierNEWRAIN-5925 use another SN2 button to replace the setting button
-        sn2Action.icon = 'icon-security';
+        sn2Action.icon = 'icon-storage-navigator-settings';
         sn2Action.tooltip = 'tooltip-configure-storage-pools';
         sn2Action.enabled = function () {
             return true;
