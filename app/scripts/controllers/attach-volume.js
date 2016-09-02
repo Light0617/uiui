@@ -427,5 +427,5 @@ angular.module('rainierApp')
                 }
             }
             return true;
-        }
+        };
     });
