@@ -17,6 +17,7 @@
 angular.module('rainierApp')
     .controller('AttachVolumesCtrl', function (
         $scope,
+        $modal,
         ShareDataService,
         orchestratorService,
         constantService,
@@ -88,8 +89,57 @@ angular.module('rainierApp')
                 canGoNext: function () {
                     return _.some(dataModel.displayList, 'selected');
                 },
+
+                showPopUpOnAnyAttachedVolume: function () {
+                    if(dataModel.selectModel.areAllSelectedVolumesUnattached()) {
+                        return true;
+                    } else {
+                        var modelInstance = $modal.open({
+                            templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
+                            windowClass: 'modal fade confirmation',
+                            backdropClass: 'modal-backdrop',
+                            controller: function ($scope) {
+                                $scope.cancel = function () {
+                                    modelInstance.dismiss('cancel');
+                                    self.errorDialogOpend = false;
+                                };
+
+                                $scope.ok = function() {
+                                    $timeout(function () {
+                                        dataModel.attachModel.selectedVolumes = _.where(dataModel.displayList, 'selected');
+                                        _.forEach(dataModel.attachModel.selectedVolumes, function(volume) {
+                                            volume.lun = null;
+                                            volume.decimalNumberRegexp = /^[^.]+$/;
+                                            volume.hasDuplicatedLun = false;
+                                            volume.validationTooltip = VALID_TOOLTIP;
+                                        });
+                                    });
+                                    dataModel.goNext();
+                                    modelInstance.close(true);
+                                    self.errorDialogOpend = false;
+                                };
+
+                                modelInstance.result.finally(function() {
+                                    $scope.cancel();
+                                });
+                            }
+                        });
+                    }
+                },
+
+                areAllSelectedVolumesUnattached: function() {
+                    var flags = [];
+                    _.forEach(dataModel.getSelectedItems(), function (item) {
+                        flags.push(item.isUnattached());
+                    });
+                    return flags.areAllItemsTrue();
+                },
+
                 next: function () {
                     if (dataModel.selectModel.canGoNext && !dataModel.selectModel.canGoNext()) {
+                        return;
+                    }
+                    if(!dataModel.selectModel.showPopUpOnAnyAttachedVolume()) {
                         return;
                     }
                     $timeout(function () {
@@ -370,5 +420,13 @@ angular.module('rainierApp')
             $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
             $scope.dataModel.allItemsSelected = false;
+        }
+
+        Array.prototype.areAllItemsTrue = function() {
+            for(var i = 0; i < this.length; i++) {
+                if(this[i] === false)
+                    return false;
+            }
+            return true;
         }
     });

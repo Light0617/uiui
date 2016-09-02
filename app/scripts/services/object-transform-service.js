@@ -478,6 +478,10 @@ angular.module('rainierApp')
                     return (this.provisioningStatus === 'ATTACHED');
                 };
 
+                item.isUnattached = function () {
+                    return (this.provisioningStatus === 'UNATTACHED');
+                };
+
                 item.actions = {
                     'delete': {
                         icon: 'icon-delete',

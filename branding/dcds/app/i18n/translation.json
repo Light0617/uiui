@@ -616,6 +616,8 @@
     "volume-actions-confirmation-message": "Intended operation would affect the replication groups mentioned below. Do you want to continue?",
     "volume-actions-resume-confirmation-message": "The schedule for selected snapshots and the replication for selected clones will be resumed. Do you want to continue?",
     "volume-actions-suspend-confirmation-message": "The schedule for selected snapshots and the replication for selected clones will be suspended. Do you want to continue?",
+    "attach-volumes-confirmation": "Attach Volumes Confirmation",
+    "attach-volume-popup-message": "Some of the selected volume(s) are already attached to another server. Proceed?",
 
     "host-delete-confirmation": "Delete Servers Confirmation",
     "host-delete-zero-selected": "Select at least one server for deletion!",
