@@ -15,7 +15,7 @@ angular.module('rainierApp')
                                          message, storageSystemId, resourceId, resourcePayload, orchestratorFunction) {
                 var flag = false;
                 var tasks = _.map(reservedResourcesList, function (reservedResource) {
-                    var res = reservedResource.split("=");
+                    var res = reservedResource.split('=');
                     var resId = res[0];
                     var resType = res[1];
                     resourceTrackerService.setSearchParameters(resId, resType, parentResId, parentResType);
@@ -52,7 +52,6 @@ angular.module('rainierApp')
                         $scope.message = message;
                         $scope.cancel = function () {
                             modelInstance.dismiss('cancel');
-                            self.errorDialogOpend = false;
                         };
 
                         $scope.ok = function() {
@@ -60,7 +59,6 @@ angular.module('rainierApp')
                                 window.history.back();
                             });
                             modelInstance.close(true);
-                            self.errorDialogOpend = false;
                         };
 
                         modelInstance.result.finally(function() {

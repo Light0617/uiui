@@ -261,7 +261,6 @@ angular.module('rainierApp')
                                 controller: function ($scope) {
                                     $scope.cancel = function () {
                                         modelInstance.dismiss('cancel');
-                                        self.errorDialogOpend = false;
                                     };
 
                                     $scope.ok = function() {
@@ -269,7 +268,6 @@ angular.module('rainierApp')
                                         $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join(
                                             '/'));
                                         modelInstance.close(true);
-                                        self.errorDialogOpend = false;
                                     };
 
                                     modelInstance.result.finally(function() {
@@ -369,8 +367,9 @@ angular.module('rainierApp')
 
         Array.prototype.areAllItemsTrue = function() {
             for(var i = 0; i < this.length; i++) {
-                if(this[i] === false)
+                if(this[i] === false) {
                     return false;
+                }
             }
             return true;
         }
