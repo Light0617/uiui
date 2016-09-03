@@ -1,31 +1,19 @@
 <!--Toolbar actions for edit lun path-->
 <edit-lun-path-toolbar></edit-lun-path-toolbar>
 
-<div id="topology-editor" class="scroll-wizard-container single-pane editor">
+<div class="scroll-wizard-container single-pane editor">
 
-    <svg class="topology-editor" viewBox="0 0 1000 1000" xml:space="preserve" preserveAspectRatio="xMidYMid meet">
-        <!--Symbols start-->
-        <!--Storage Ports-->
-        <symbol id="storage-port-icon">
-            <circle class="storage-port-icon-outer" cx="8" cy="8" r="6"/>
-            <circle class="storage-port-icon-inner" cx="8" cy="8" r="2"/>
-        </symbol>
-
-        <!--Server Icons-->
+    <svg id="topology-editor" class="topology-editor" viewBox="0 0 1000 1000" xml:space="preserve" preserveAspectRatio="xMidYMid meet">
+        <!--Server Icon symbol-->
         <symbol id="server-icon">
             <path class="server-tile-icon" d="M16.46,15A1.44,1.44,0,1,1,15,13.56,1.44,1.44,0,0,1,16.46,15ZM20,13.21V18a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V13.21a9.28,9.28,0,0,1,.21-2.1s0-.07,0-.1L3,0H17l2.79,11.12h0v0l.06.21h0A11.69,11.69,0,0,1,20,13.21ZM3.17,17.44H16.83a.66.66,0,0,0,.65-.65V13.38c0-.3,0-.59,0-.82h-15c0,.22,0,.51,0,.82v3.4A.66.66,0,0,0,3.17,17.44ZM16.91,10,15.11,2.51H4.89L3.09,10Z"/>
         </symbol>
-        <symbol id="server-port-icon">
-            <circle class="port-icon" cx="8" cy="8" r="6"/>
-            <rect class="port-icon-plug" x="6" y="6" width="16" height="4" rx="2" ry="2"/>
-        </symbol>
-        <!--Symbols end-->
 
-        <g ng-repeat="host in data.pathModel.selectedHosts track by $index" ng-if="data.pathModel.selectedHosts">
+        <g ng-repeat="host in dataModel.pathModel.selectedHosts track by $index" ng-if="dataModel.pathModel.selectedHosts">
             <g ng-if="host.startHeight !== undefined">
-                <rect class="tile-base" ng-class="{'active': host.isSelected === true}" x="5" y="{{host.startHeight}}" width="235"
-                      height="{{host.wwpns.length <= 4 ? 100 : host.wwpns.length * 25}}" rx="10" ry="10"
-                      ng-click="data.pathModel.toggleSelected(host)" />
+                <rect class="tile-base" ng-class="{'active': host.isSelected === true}" x="5" ng-attr-y="{{host.startHeight}}" width="235"
+                      ng-attr-height="{{host.wwpns.length <= 4 ? 100 : host.wwpns.length * 25}}" rx="10" ry="10"
+                      ng-click="dataModel.pathModel.toggleSelected(host)" />
 
                 <use xlink:href="#server-icon" x="30" ng-attr-y="{{host.startHeight + 10}}"/>
 
@@ -36,26 +24,26 @@
                     <title>{{host.allHostModeOptionsString}} {{host.isSelected}}</title>
                 </text>
                 <g title="ports" ng-repeat="wwn in host.displayWWNs">
-                    <use xlink:href="#server-port-icon" x="224" ng-attr-y="{{host.startHeight + 5 + $index*25}}"/>
+                    <!--WWN icon-->
+                    <circle class="port-icon" ng-attr-cx="{{host.wwnCoordinates[$index].x}}" ng-attr-cy="{{host.wwnCoordinates[$index].y}}" r="6"/>
+                    <rect class="port-icon-plug" x="232" ng-attr-y="{{host.startHeight + 11 + $index*25}}" width="16" height="4" rx="2" ry="2"/>
+
                     <text class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{wwn}}</text>
                 </g>
 
             </g>
         </g>
 
-        <g id="right-column" ng-repeat="port in data.pathModel.storagePorts track by $index" ng-if="data.pathModel.storagePorts" ng-cloak>
+        <g ng-repeat="port in dataModel.pathModel.storagePorts track by $index" ng-if="dataModel.pathModel.storagePorts" ng-cloak>
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
-                  x="800" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
-                  ng-click="data.pathModel.toggleSelected(port)"/>
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#storage-port-icon" x="802" ng-attr-y="{{2 + $index * 25}}"></use>
-            <text class="sm-label" x="822" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
+                  x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
+                  ng-click="dataModel.pathModel.toggleSelected(port)"/>
+            <!--storage port icon-->
+            <circle class="storage-port-icon-outer" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="6"/>
+            <circle class="storage-port-icon-inner" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="2"/>
+
+            <text class="sm-label" x="882" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
         </g>
 
     </svg>
 </div>
-
-
-
-<body>
-<div id="wizardArea"></div>
-</body>

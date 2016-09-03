@@ -98,7 +98,7 @@ angular.module('rainierApp')
             get(getAllPath, null, queryParams, storageSystemId)
                 .then(function(result){
 
-                    dataModel.process(result.resources);
+                    dataModel.process(result.resources, token);
                     if (result.nextToken === null){
                         return;
                     }

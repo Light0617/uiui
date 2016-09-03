@@ -345,6 +345,9 @@ angular.module('rainierApp')
             createAttachProtectVolumes: function (payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/create-attach-protect').post(payload));
             },
+            editLunPaths: function (editLunPathPayload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/edit-lun-paths').post(editLunPathPayload));
+            },
             deleteVolume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).remove());
             },

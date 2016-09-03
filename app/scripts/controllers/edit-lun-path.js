@@ -21,6 +21,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                                                      attachVolumeService, constantService) {
 
     var GET_PORTS_PATH = 'storage-ports';
+    var idCoordinates = {};
 
     var selectedVolumes = ShareDataService.pop('selectedVolumes') || [];
     var selectedHosts = ShareDataService.pop('selectedHost') || null;
@@ -30,7 +31,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     }
 
     var storageSystemId = selectedVolumes[0].storageSystemId;
-
+    $scope.canSubmit = true;
     $scope.operatingSystemType = {};
     $scope.operatingSystems = constantService.osType();
 
@@ -71,6 +72,36 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         return allHostModeOptionString;
     }
 
+    function setPortCoordinates(storagePorts) {
+        for (var i =0; i< storagePorts.length; ++i){
+            var point = {
+                x: 870,
+                y: 10 + i * 25
+            };
+            storagePorts[i].coordinate = point;
+            idCoordinates[storagePorts[i].storagePortId] = point;
+        }
+    }
+
+    function getPathsFromHostGroups(hostGroups){
+        var paths = [];
+        _.forEach(hostGroups, function(hostGroup){
+           _.forEach(hostGroup.hbaWwns, function(hbaWwn){
+               if (idCoordinates.hasOwnProperty(hbaWwn)){
+                   var path = {
+                       storagePortId: hostGroup.storagePortId,
+                       storageSystemId: hostGroup.storageSystemId,
+                       serverWwn: hbaWwn,
+                       luns: hostGroup.luns
+                   };
+                   paths.push(path);
+               }
+           });
+        });
+
+        return paths;
+    }
+
     var previousHeight = 0;
     var bufferHeight = 5;
     _.forEach(selectedHosts, function(host){
@@ -80,12 +111,23 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         previousHeight += (length && length > 4) ? length* 25 + bufferHeight : 100;
 
         host.isSelected = false;
+
+        // Calculate the coordinates of all the wwn icons of each host so that the html can easily use it.
+        var wwnCoordinates = [];
+        for (var j = 0; j < length; ++j) {
+            var point = {
+                x: 232,
+                y: host.startHeight + 13 + j*25
+            };
+
+            idCoordinates[host.wwpns[j]] = point;
+            wwnCoordinates.push(point);
+        }
+        host.wwnCoordinates = wwnCoordinates;
     });
 
     angular.extend(dataModel, {
-        selectedStorageSystem: {
-            storageSystemId: storageSystemId
-        },
+        selectedStorageSystem: storageSystem,
         storageSystems: [storageSystem]
     });
 
@@ -99,12 +141,13 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
             $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
             $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
+            angular.extend($scope.dataModel.pathModel, {paths: getPathsFromHostGroups(hostGroupResults)});
         }).finally(function(){
             paginationService.clearQuery();
         });
     };
 
-    dataModel.process = function(resources){
+    dataModel.process = function(resources, token){
         // Only support for fibre port for now
         resources = _.filter(resources, function(storagePort) {
             return storagePort.type === 'FIBRE';
@@ -116,17 +159,30 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         });
 
         dataModel.storagePorts = dataModel.storagePorts.concat(resources);
+
+        if (token === null){
+            setPortCoordinates(dataModel.storagePorts);
+            setAllModels();
+        }
     };
     dataModel.storagePorts = [];
+    dataModel.pathModel = {};
 
     $scope.dataModel = dataModel;
 
     var autoSelect = 'AUTO';
 
-    $scope.$watch('dataModel.storagePorts', function (ports) {
-        if (!ports) {
-            return;
-        }
+    function getPath(path){
+        var d = '';
+        d += 'M ' + idCoordinates[path.serverWwn].x + ' ' + idCoordinates[path.serverWwn].y + ' ';
+        d += 'L ' + (idCoordinates[path.serverWwn].x + 50) + ' ' + idCoordinates[path.serverWwn].y + ' ';
+        d += 'L ' + (idCoordinates[path.storagePortId].x - 50) + ' ' + idCoordinates[path.storagePortId].y + ' ';
+        d += 'L ' + idCoordinates[path.storagePortId].x + ' ' + idCoordinates[path.storagePortId].y + ' ';
+
+        return d;
+    }
+
+    function setAllModels() {
 
         var hostModes = constantService.osType();
         hostModes.splice(0, 0, autoSelect);
@@ -139,11 +195,12 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 lastSelectedHostModeOption: [999],
                 selectedVolumes: selectedVolumes,
                 selectedServers: selectedHosts,
-                storagePorts: ports,
+                storagePorts: dataModel.storagePorts,
                 hostModes: hostModes,
                 defaultHostMode: hostModes[0],
                 hostMode: hostModes[0],
                 hostModeOptions: results,
+                serverPortMapperModel: viewModelService.newServerPortMapperModel(dataModel.storagePorts, selectedHosts),
                 selectedHostModeOption: [999],
                 enableZoning: false,
                 enableLunUnification: false,
@@ -154,8 +211,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                     if (dataModel.attachModel.canGoNext && !dataModel.attachModel.canGoNext()) {
                         return;
                     }
-                    var selectedServers = _.where(dataModel.displayList, 'selected');
-                    setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode);
+
                     dataModel.goNext();
                 },
                 validation: true,
@@ -163,23 +219,36 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                     dataModel.goBack();
                 }
             };
-            $scope.dataModel.pathModel = {
+            setHostModeAndHostModeOptions(selectedHosts, dataModel.attachModel.defaultHostMode);
+            angular.extend($scope.dataModel.pathModel, {
                 selectedVolumes: selectedVolumes,
                 selectedHosts: selectedHosts,
                 storagePorts: dataModel.storagePorts,
                 validation: true,
+                getPath: getPath,
                 previous: function () {
                     dataModel.goBack();
                 },
                 toggleSelected: function(item){
                     item.isSelected = !item.isSelected;
+                },
+                canSubmit: function () {
+                    return true;
+                },
+                submit: function () {
+                    if (!$scope.canSubmit) {
+                        return;
+                    }
+                    // To be implemented.
                 }
-            };
+            });
         });
 
         dataModel.checkSelectedHostModeOptions = function() {
             attachVolumeService.checkSelectedHostModeOptions(dataModel);
         };
-    });
+    }
+
+
 
 });
