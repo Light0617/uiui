@@ -45,10 +45,9 @@ angular.module('rainierApp')
                         });
                     }
                 },
-                // TODO: CDUAN Attribute name may change
                 gridSettings: [
                     {
-                        title: synchronousTranslateService.translate('fabric-tile-san-fabric-id'),
+                        title: synchronousTranslateService.translate('virtual-storage-system-id'),
                         sizeClass: 'sixth',
                         sortField: 'storageSystemId',
                         getDisplayValue: function (item) {
@@ -56,7 +55,7 @@ angular.module('rainierApp')
                         }
                     },
                     {
-                        title: synchronousTranslateService.translate('fabric-tile-virtual-fabric-id'),
+                        title: synchronousTranslateService.translate('storage-systems-model'),
                         sizeClass: 'sixth',
                         sortField: 'model',
                         getDisplayValue: function (item) {
@@ -65,7 +64,7 @@ angular.module('rainierApp')
 
                     },
                     {
-                        title: synchronousTranslateService.translate('fabric-tile-switch-type'),
+                        title: synchronousTranslateService.translate('volume-pair-count'),
                         sizeClass: 'sixth',
                         sortField: 'pairHACount',
                         getDisplayValue: function (item) {
@@ -74,7 +73,7 @@ angular.module('rainierApp')
 
                     },
                     {
-                        title: synchronousTranslateService.translate('fabric-tile-switch-ip'),
+                        title: synchronousTranslateService.translate('physical-storage-systems'),
                         sizeClass: 'quarter',
                         sortField: 'displayPhysicalStorageSystems',
                         getDisplayValue: function (item) {

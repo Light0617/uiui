@@ -332,10 +332,12 @@ angular.module('rainierApp')
                         details: [item.displayPhysicalStorageSystems]
                     }
                 ];
-                // TODO: CDUAN Placeholder icon. Need to be replaced by vsm icon
-                item.itemIcon = 'icon-hardware';
+                //TODO: CDUAN Remove after Wei-chih or Arash finished uuid for vsm
+                item.serialModelNumber = '6cad-a341-ac61-90a5';
+                item.itemIcon = 'icon-vsm';
                 item.onClick = function () {
-                    $location.path(['virtual-storage-systems', item.storageSystemId, 'model', item.model, 'virtual-storage-machine'].join(
+                    ShareDataService.virtualStorageMachine = item;
+                    $location.path(['virtual-storage-machines', item.serialModelNumber].join(
                         '/'));
                 };
             },
@@ -363,6 +365,7 @@ angular.module('rainierApp')
                 }
 
                 item.noSelection = true;
+                item.itemIcon = 'icon-deduplication';
 
                 for(var property in item) {
                     if (item.hasOwnProperty(property)) {

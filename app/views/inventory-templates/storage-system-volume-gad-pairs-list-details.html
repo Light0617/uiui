@@ -8,8 +8,11 @@
         <div class="col-md-2 cell text-resize ellipsis" title="{{'repliaction-group-volume-list-svolid' | translate}}">
             <p class="sort-column-header">{{'repliaction-group-volume-list-svolid' | translate}}</p>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{'replication-group-label-status' | translate}}">
-            <p class="sort-column-header">{{'replication-group-label-status' | translate}}</p>
+        <div class="col-md-1 cell text-resize ellipsis" title="{{'repliaction-group-volume-list-pvol-status' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-pvol-status' | translate}}</p>
+        </div>
+        <div class="col-md-1 cell text-resize ellipsis" title="{{'repliaction-group-volume-list-pvol-status' | translate}}">
+            <p class="sort-column-header">{{'repliaction-group-volume-list-svol-status' | translate}}</p>
         </div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{'gad-pvol-storage-system-id' | translate}}">
             <p class="sort-column-header">{{'gad-pvol-storage-system-id' | translate}}</p>
@@ -22,12 +25,12 @@
     <div class="nested-row-tile" ng-repeat="vp in item.volumePairs track by $index">
         <div class="col-md-2 cell">
         </div>
-        <!--TODO: CDUAN Attribute may change-->
         <a class="col-md-2 cell text-resize" ng-click="vp.launchPvol()" ng-if="vp.hasPrimaryHalf" title="{{vp.primary.volumeId}}"><p>{{vp.primary.volumeId}}</p></a>
         <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasPrimaryHalf" title="{{vp.primary.volumeId}}"><p>{{vp.primary.volumeId}}</p></div>
         <a class="col-md-2 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.hasSecondaryHalf" title="{{vp.secondary.volumeId}}"><p>{{vp.secondary.volumeId}}</p></a>
         <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasSecondaryHalf" title="{{vp.secondary.volumeId}}"><p>{{vp.secondary.volumeId}}</p></div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{vp.state}}"><p>{{vp.state}}</p></div>
+        <div class="col-md-1 cell text-resize ellipsis" title="{{vp.primary.status}}"><p>{{vp.primary.status}}</p></div>
+        <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondary.status}}"><p>{{vp.secondary.status}}</p></div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{vp.primary.storageSystemId}}"><p>{{vp.primary.storageSystemId}}</p></div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{vp.secondary.storageSystemId}}"><p>{{vp.secondary.storageSystemId}}</p></div>
     </div>

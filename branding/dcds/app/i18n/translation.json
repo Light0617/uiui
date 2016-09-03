@@ -308,6 +308,9 @@
 
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
+    "virtual-storage-system-id": "Virtual Storage System Id",
+    "volume-pair-count": "Volume Pair Count",
+    "physical-storage-systems": "Physical Storage Systems",
 
     "gad-display-type": "GAD",
     "gad-volume-type-primary": "Active Primary",

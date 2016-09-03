@@ -2,44 +2,47 @@
 
 /**
  * @ngdoc function
- * @name rainierApp.controller:StoragePortsCtrl
+ * @name rainierApp.controller:VirtualStorageMachineDetailsCtrl
  * @description
- * # StoragePortsCtrl
+ * # VirtualStorageMachineDetailsCtrl
  * Controller of the rainierApp
  */
-//TODO: CDUAN All pagination calls
 angular.module('rainierApp')
     .controller('VirtualStorageMachineDetailsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
                                               objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
-                                              queryService, wwnService, hwAlertService) {
-        var storageSystemId = $routeParams.storageSystemId;
-        var getStoragePortsPath = 'storage-ports';
-        $scope.summaryModel= {};
+                                              queryService, wwnService, dpAlertService) {
+        var serialModelNumber = $routeParams.serialModelNumber;
+        var getGadPairsPath = 'gad-pairs';
+        var getVirtualStorageMachinesPath = 'virtual-storage-machines';
+        if (!ShareDataService.virtualStorageMachine) {
+            window.history.back();
+        }
+        var currentVirtualStorageMachine = ShareDataService.virtualStorageMachine;
 
-        orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            // TODO: CDUAN Do we wanna show data protection tile? Check with PO
-            // TODO: CDUAN Revisit header summary when designer finished NEWRAIN-6105
-            $scope.storageSystemModel = result.model;
-            return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId);
-        }).then(function (result) {
-            // TODO: CDUAN Revisit header summary when designer finished NEWRAIN-6105
-            var summaryModel = objectTransformService.transformToPortSummary(result.resources);
-            summaryModel.title = synchronousTranslateService.translate('common-storage-system-ports');
-            summaryModel.hwAlert = hwAlertService;
-            summaryModel.getActions = $scope.summaryModel.getActions;
-            $scope.summaryModel = summaryModel;
+        var summaryModel = {
+            pairCount: currentVirtualStorageMachine.pairHACount,
+            leftPhysicalStorageSystem: currentVirtualStorageMachine.physicalStorageSystems[0],
+            rightPhysicalStorageSystem: currentVirtualStorageMachine.physicalStorageSystems[1],
+            services: {
+                dp: dpAlertService
+            }
+        };
+        $scope.summaryModel = summaryModel;
 
+        paginationService.get(null, getGadPairsPath, objectTransformService.transformGadPair, true,
+            null, getVirtualStorageMachinesPath, serialModelNumber)
+            .then(function (result) {
             var dataModel = {
+                title: 'Virtual storage machine ' + serialModelNumber,
                 singleViewAndPaged: true,
-                storageSystemId: storageSystemId,
                 view: 'list',
                 onlyOperation: true,
                 nextToken: result.nextToken,
                 total: result.total,
                 currentPageCount: 0,
                 sort: {
-                    field: 'name',
+                    field: 'primary.volumeId',
                     reverse: false,
                     setSort: function (f) {
                         $timeout(function () {
@@ -51,7 +54,8 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                            paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
+                                null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -65,9 +69,11 @@ angular.module('rainierApp')
                 },
                 searchQuery: function (value) {
                     var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject('storagePortId', new paginationService.SearchType().STRING, value));
+                    // TODO: CDUAN Which attributes do we wanna search on? Ask PO.
+                    queryObjects.push(new paginationService.QueryObject('primary.volumeId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
+                    paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
+                        null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 }
@@ -84,75 +90,63 @@ angular.module('rainierApp')
             };
 
             dataModel.getResources = function(){
-                return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, false, storageSystemId);
+                return paginationService.get(null, getGadPairsPath, objectTransformService.transformGadPair, false,
+                    null, getVirtualStorageMachinesPath, serialModelNumber);
             };
 
-
-            // TODO CDUAN Attribute name should be changed
             dataModel.gridSettings = [
                 {
-                    title: 'ID',
+                    title: 'repliaction-group-volume-list-pvolid',
                     sizeClass: 'twelfth',
-                    sortField: 'storagePortId',
+                    sortField: 'primary.volumeId',
                     getDisplayValue: function (item) {
-                        return item.storagePortId;
-                    },
-                    type: 'id'
+                        return item.primary.volumeId;
+                    }
+                },
+                {
+                    title: 'repliaction-group-volume-list-svolid',
+                    sizeClass: 'twelfth',
+                    sortField: 'secondary.volumeId',
+                    getDisplayValue: function (item) {
+                        return item.secondary.volumeId;
+                    }
 
                 },
                 {
-                    title: 'WWN',
+                    title: 'repliaction-group-volume-list-pvol-status',
+                    sizeClass: 'twelfth',
+                    sortField: 'primary.status',
+                    getDisplayValue: function (item) {
+                        return item.primary.status;
+                    }
+
+                },
+                {
+                    title: 'repliaction-group-volume-list-svol-status',
+                    sizeClass: 'twelfth',
+                    sortField: 'secondary.status',
+                    getDisplayValue: function (item) {
+                        return item.secondary.status;
+                    }
+
+                },
+                {
+                    title: 'gad-pvol-storage-system-id',
                     sizeClass: 'sixth',
-                    sortField: 'wwn',
+                    sortField: 'primary.storageSystemId',
                     getDisplayValue: function (item) {
-                        return item.type === 'FIBRE' ? wwnService.appendColon(item.wwn) : '';
+                        return item.primary.storageSystemId;
                     }
 
                 },
                 {
-                    title: 'Type',
-                    sizeClass: 'twelfth',
-                    sortField: 'type',
+                    title: 'gad-svol-storage-system-id',
+                    sizeClass: 'sixth',
+                    sortField: 'secondary.storageSystemId',
                     getDisplayValue: function (item) {
-                        return item.type;
+                        return item.secondary.storageSystemId;
                     }
 
-                },
-                {
-                    title: 'Speed',
-                    sizeClass: 'twelfth',
-
-                    sortField: 'speed',
-                    getDisplayValue: function (item) {
-                        return item.speed;
-                    }
-
-                },
-                {
-                    title: 'Fabric',
-                    sizeClass: 'twelfth',
-                    sortField: 'fabric',
-                    getDisplayValue: function (item) {
-                        return item.fabric;
-                    }
-
-                },
-                {
-                    title: 'Connection Type',
-                    sizeClass: 'twelfth',
-                    sortField: 'connectionType',
-                    getDisplayValue: function (item) {
-                        return item.connectionType;
-                    }
-
-                },
-                {
-                    title: 'Security',
-                    sizeClass: 'twelfth',
-                    sortField: 'securitySwitchEnabled',
-                    getDisplayValue: function (item) {
-                        return item.securitySwitchEnabled ? 'Enabled' : 'Disabled';
-                    }
                 }
             ];
 
@@ -160,8 +154,7 @@ angular.module('rainierApp')
             dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
             $scope.dataModel = dataModel;
-            //TODO CDUAN Do we need a search? May need to refactor this
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'virtualStorageMachineSearch', true);
+            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, null, true);
         });
 
 

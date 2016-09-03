@@ -17,8 +17,24 @@ angular.module('rainierApp')
             this.RANGE = 'range';
         }
         var type = new SearchType();
-        function get(path, transform, queryParams, storageSystemId) {
-            if(storageSystemId) {
+        // If we're using a prefix other than "storageSystem", that's when prefix and perfixId will be used.
+        function get(path, transform, queryParams, storageSystemId, prefix, prefixId) {
+            if (prefix && prefixId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one(prefix, prefixId)
+                    .one(path)
+                    .get(queryParams).then(function (result) {
+                        var resources = result.resources;
+                        if(transform) {
+                            _.forEach(resources, function (item) {
+                                if (_.isFunction(transform)) {
+                                    transform(item);
+                                }
+                            });
+                        }
+                        return result;
+                    }));
+            }
+            else if(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId)
                     .one(path)
                     .get(queryParams).then(function (result) {
@@ -134,7 +150,7 @@ angular.module('rainierApp')
             },
             SearchType: SearchType,
             getPartialSearchQueryString: getPartialSearchQueryString,
-            get: function (token, path, transform, isFirstCall, storageSystemId) {
+            get: function (token, path, transform, isFirstCall, storageSystemId, prefix, prefixId) {
                 if (isFirstCall) {
                     clearQuery();
                 }
@@ -145,15 +161,15 @@ angular.module('rainierApp')
                 if (token !== undefined) {
                     queryParams.nextToken = token;
                 }
-                return get(path, transform, queryParams, storageSystemId);
+                return get(path, transform, queryParams, storageSystemId, prefix, prefixId);
             },
             getAll: getAllItems,
             getQueryStringForList: getQueryStringForList,
             getAllPromises: getAllPromises,
-            getQuery: function (path, transform, storageSystemId) {
+            getQuery: function (path, transform, storageSystemId, prefix, prefixId) {
                 var queryParams = queryService.getQueryParameters(true);
                 queryParams.nextToken = null;
-                return get(path, transform, queryParams, storageSystemId);
+                return get(path, transform, queryParams, storageSystemId, prefix, prefixId);
             },
             setSliderSearch: function (key, start, end, unit) {
                 if(unit) {
