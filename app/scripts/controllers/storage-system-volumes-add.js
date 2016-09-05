@@ -60,7 +60,7 @@ angular.module('rainierApp')
             if (!pools) {
                 return;
             }
-            var volumesGroupsModel = viewModelService.newCreateVolumeModel(pools);
+            var volumesGroupsModel = viewModelService.newCreateVolumeModel(pools, false);
             var createModel = {
                 storageSystemSelectable: false,
                 simpleNameRegexp: /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/,

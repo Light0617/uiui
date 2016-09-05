@@ -95,7 +95,7 @@ angular.module('rainierApp')
             }
             $scope.dataModel.createModel = {
                 storageSystemSelectable: true,
-                volumesGroupsModel: viewModelService.newCreateVolumeModel(pools)
+                volumesGroupsModel: viewModelService.newCreateVolumeModel(pools, true)
             };
 
         });

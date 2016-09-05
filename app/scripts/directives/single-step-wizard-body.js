@@ -22,8 +22,8 @@ angular.module('rainierApp')
                 leftPanelTemplate: '@',
                 rightPanelTemplate: '@',
                 pageTitle: '@ngTitle',
-                data: '='
-
+                data: '=',
+                pageName: '@'
             },
             templateUrl: 'views/templates/single-step-wizard-body.html',
             restrict: 'E',

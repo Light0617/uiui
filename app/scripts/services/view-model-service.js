@@ -8,7 +8,8 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('viewModelService', function ($timeout, diskSizeService, objectTransformService, wwnService, volumeService) {
+    .factory('viewModelService', function ($timeout, diskSizeService, objectTransformService, wwnService, volumeService,
+                                           synchronousTranslateService) {
 
         function WizardViewModel(pages) {
             var completedSteps = {};
@@ -44,12 +45,152 @@ angular.module('rainierApp')
 
         }
 
+        var dataSavingTypes = volumeService.getDkcDataSavingTypes().sort(function(a, b) {
+            return a.value.length - b.value.length;
+        });
+
+        function CreateVolumeTemplate(createVolumeModel) {
+            var self = this;
+
+            self.$createVolumeModel = createVolumeModel;
+
+            self.noOfVolumes = 1;
+            self.label = null;
+            self.labelIsValid= true;
+            self.suffix = null;
+            self.disableTier = false;
+            self.tier = createVolumeModel.tiers[0];
+            self.size = { value: 1, unit: createVolumeModel.$volumeSizeUnits[0] };
+            self.poolType = createVolumeModel.poolTypes[0];
+            self.pool = null;
+            self.dataSavingTypeValue = null;
+
+            self.copy = function () {
+                var template = new CreateVolumeTemplate(self.$createVolumeModel);
+                template.noOfVolumes = self.noOfVolumes;
+                template.label = self.label;
+                template.labelIsValid = self.labelIsValid;
+                template.suffix = self.suffix;
+                template.disableTier = self.disableTier;
+                template.tier = self.tier;
+                template.size.value = self.size.value;
+                template.size.unit = self.size.unit;
+                template.poolType = self.poolType;
+                template.pool = self.pool;
+                template.dataSavingTypeValue = self.dataSavingTypeValue;
+                return template;
+            };
+
+            self.isSizeValid = function () {
+                return self.noOfVolumes && self.noOfVolumes > 0 && self.size && self.size.value && self.size.value > 0;
+            };
+
+            self.valid = function () {
+                return self.isSizeValid() && self.labelIsValid && (self.pool || self.tier);
+            };
+
+            self.size.getDisplayText = function () {
+                return [self.size.value, self.size.unit].join(' ');
+            };
+
+            self.shouldDisableTier = function () {
+                return self.poolType === 'HDT';
+            };
+
+            self.tierDisplayName = function () {
+                if (self.shouldDisableTier()) {
+                    return self.pool ? self.pool.tierNames : '';
+                } else {
+                    return self.tier;
+                }
+            };
+
+            self.remove = function () {
+                _.remove(self.$createVolumeModel.volumes, function (v) {
+                    return v === self;
+                });
+            };
+
+            self.getPools = function () {
+                self.pools = self.$createVolumeModel.getPoolsFoView(self);
+                return self.pools;
+            };
+
+            self.getTotalSize = function () {
+                return self.isSizeValid() ?
+                    diskSizeService.createDisplaySize(parseInt(self.noOfVolumes) * parseInt(self.size.value), self.size.unit) :
+                    diskSizeService.getDisplaySize(0);
+            };
+
+            self.getDataSavingTypes = function () {
+                var type = (self.pool ? self.pool.type : self.poolType);
+                return dataSavingTypes.slice(1, type === 'HDP' ? 3 : 1);
+            };
+        }
+
+        function newCreateVolumeTemplateBuilder(createVolumeModel) {
+            var builder = new CreateVolumeTemplate(createVolumeModel);
+
+            builder.$autoSelectPoolLabel = synchronousTranslateService.translate('common-auto-selected');
+
+            builder.getDataSavingTypes = function () {
+                var type = (builder.pool ? builder.pool.type : builder.poolType);
+                return dataSavingTypes.slice(0, type === 'HDP' ? 3 : 1);
+            };
+
+            builder.setSizeUnit = function(unit) {
+                builder.size.unit = unit;
+            };
+
+            builder.setPoolType = function(pt) {
+                builder.poolType = pt;
+                builder.setPool(null);
+            };
+
+            builder.setTier = function(tier) {
+                builder.tier = tier;
+                builder.setPool(null);
+            };
+
+            builder.getPoolLabel = function() {
+                return builder.pool ? builder.pool.poolLabel : builder.$autoSelectPoolLabel;
+            };
+
+            builder.setPool = function(p) {
+                builder.pool = p;
+                builder.setDataSavingTypeValue(builder.dataSavingTypeValue);
+            };
+
+            builder.autoSelectPool = function() {
+                builder.setPool(null);
+            };
+
+            builder.getDataSavingType = function () {
+                return _.find(dataSavingTypes, function(type) {
+                    // replace null with 'NONE'
+                    var value = (builder.dataSavingTypeValue ? builder.dataSavingTypeValue : dataSavingTypes[0].value);
+                    return type.value === value;
+                });
+            };
+
+            builder.setDataSavingTypeValue = function(value) {
+                function isValid(value) {
+                    return _.some(builder.getDataSavingTypes(), function(type) {
+                        return type.value === value;
+                    });
+                }
+                // replace 'NONE' with null and then replace [value] not included in currently selectable saving types.
+                builder.dataSavingTypeValue = (value !== dataSavingTypes[0].value && isValid(value) ? value : null);
+            };
+
+            return builder;
+        }
+
         function CreateVolumeModel(pools) {
 
             var self = this;
-            var isHdt = function (type) {
-                return type === 'HDT';
-            };
+
+            self.$volumeSizeUnits = volumeService.getVolumeSizeUnits();
 
             var poolLabelFunction = function (pool) {
 
@@ -96,85 +237,10 @@ angular.module('rainierApp')
             self.poolType = poolTypes[0];
             self.tiers = tiers;
             self.volumes = [];
-            self.volumeGroupBuilder = function () {
-
-
-                var template = {
-                    noOfVolumes: 1,
-                    label: null,
-                    labelIsValid: true,
-                    suffix: null,
-                    disableTier: false,
-                    tier: tiers[0],
-                    size: {
-                        value: 1,
-                        unit: 'GB'
-                    },
-                    poolType: poolTypes[0],
-                    pool: null,
-                    dkcDataSavingType: null
-                };
-                template.isSizeValid = function () {
-                    var valid =
-                        template.noOfVolumes && template.noOfVolumes > 0 &&
-
-                        template.size && template.size.value && template.size.value > 0;
-                    return valid;
-                };
-                template.valid = function () {
-
-                    if (!template.isSizeValid() || template.labelIsValid === false) {
-                        return false;
-                    }
-
-                    return template.pool || template.tier;
-                };
-
-                template.size.getDisplayText = function () {
-                    return [template.size.value, template.size.unit].join(' ');
-                };
-
-                template.shouldDisableTier = function () {
-                    return isHdt(template.poolType);
-                };
-                template.tierDisplayName = function () {
-                    if (template.shouldDisableTier()) {
-                        if (template.pool) {
-                            return template.pool.tierNames;
-                        }
-                        return '';
-                    }
-                    return template.tier;
-                };
-                template.remove = function () {
-                    _.remove(self.volumes, function (v) {
-                        return v === template;
-                    });
-                };
-                template.getPools = function () {
-                    template.pools = self.getPoolsFoView(template);
-                    return template.pools;
-                };
-
-                template.getTotalSize = function () {
-                    if (template.isSizeValid()) {
-                        return diskSizeService.createDisplaySize(parseInt(template.noOfVolumes) * parseInt(template.size.value), template.size.unit);
-                    }
-                    return diskSizeService.getDisplaySize(0);
-                };
-
-                template.getDkcDataSavingTypes = function () {
-                    var type = (template.pool !== null ? template.pool.type : template.poolType);
-
-                    return volumeService.getDkcDataSavingTypes().slice(0, type === 'HDP' ? 2 : 0);
-                };
-
-                return template;
-            };
-
+            self.template = newCreateVolumeTemplateBuilder(self);
 
             self.add = function () {
-                var cloned = self.volumeGroupBuilder();
+                var cloned = self.template.copy();
                 $timeout(function () {
                     self.volumes.splice(0, 0, cloned);
                 });
@@ -235,8 +301,6 @@ angular.module('rainierApp')
             };
 
             self.isReady = true;
-            self.add();
-
         }
 
 
@@ -442,8 +506,12 @@ angular.module('rainierApp')
             newWizardViewModel: function (pages) {
                 return new WizardViewModel(pages);
             },
-            newCreateVolumeModel: function (pools) {
-                return new CreateVolumeModel(pools);
+            newCreateVolumeModel: function (pools, needsAddButton) {
+                var createVolumeModel = new CreateVolumeModel(pools);
+                if (needsAddButton) {
+                    createVolumeModel.add();
+                }
+                return createVolumeModel;
             },
 
             newServerPortMapperModel: function (ports, servers) {

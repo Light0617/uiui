@@ -1,115 +1,131 @@
-<div class="tile-view list-view">
-    <div class="tile row row-tile column-headers" ng-if="dataModel.storageSystems.length">
-
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'storage-volume-number-of-volumes' | translate}}">{{'storage-volume-number-of-volumes' | translate}}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
-            <p title="{{'storage-volume-label' | translate}}">{{'storage-volume-label' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'storage-volume-label-suffix' | translate}}">{{'storage-volume-label-suffix' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'storage-volume-size' | translate}}">{{'storage-volume-size' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'storage-volume-unit' | translate}}">{{'storage-volume-unit' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'storage-volume-pool-type' | translate}}">{{'storage-volume-pool-type' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'storage-volume-pool-tier' | translate}}">{{'storage-volume-pool-tier' | translate}}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
-            <p title="{{'storage-volume-pool' | translate}}">{{'storage-volume-pool' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p title="{{'volume-capacity-saving-type' | translate}}">{{'volume-capacity-saving-type' | translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
-            <p>&nbsp;</p>
+<div class="add-resource-pattern">
+    <div class="input-panel validation-scope">
+        <fieldset class="fieldset label-value-container">
+            <label for="label" class="label">{{'storage-volume-label' | translate}}</label>
+            <input id="label" class="form-control" placeholder="Volume" type="text" maxlength="32"
+                   ng-model="dataModel.createModel.volumesGroupsModel.template.label"
+                   ng-change="dataModel.validLabel(volumeGroup)"/>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="subscribed" class="label">{{'storage-volume-label-suffix' | translate}}</label>
+            <input id="subscribed" class="form-control" placeholder="0" type="number" min="0"
+                   ng-model="dataModel.createModel.volumesGroupsModel.template.suffix"
+                   ng-change="dataModel.validLabel(volumeGroup)"/>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="number-volumes" class="label">{{'storage-volume-number-of-volumes' | translate}}</label>
+            <input id="number-volumes" class="form-control" placeholder="1" type="number" min="1"
+                   ng-model="dataModel.createModel.volumesGroupsModel.template.noOfVolumes"
+                   ng-change="dataModel.validLabel(volumeGroup)"/>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="size" class="label">{{'storage-volume-size' | translate}}</label>
+            <div class="form-h-align">
+                <input id="size" class="form-control" placeholder="1" type="number" min="1"
+                       ng-model="dataModel.createModel.volumesGroupsModel.template.size.value"/>
+                <div class="dropdown">
+                    <button id="units" class="btn dropdown-toggle" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{dataModel.createModel.volumesGroupsModel.template.size.unit}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="units">
+                        <li ng-repeat="unit in dataModel.createModel.volumesGroupsModel.$volumeSizeUnits">
+                            <a ng-click="dataModel.createModel.volumesGroupsModel.template.setSizeUnit(unit)">
+                                {{unit}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="pool-type" class="label">{{'storage-volume-pool-type' | translate}}</label>
+            <div class="dropdown" ng-if="dataModel.autoSelectedPoolId === undefined">
+                <button id="pool-type" class="btn btn-block dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{dataModel.createModel.volumesGroupsModel.template.poolType | translate}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="pool-type">
+                    <li ng-repeat="pt in dataModel.createModel.volumesGroupsModel.poolTypes">
+                        <a ng-click="dataModel.createModel.volumesGroupsModel.template.setPoolType(pt)">
+                            {{pt | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+            <input type="text" class="form-control"
+                   value="{{dataModel.createModel.volumesGroupsModel.template.poolType | translate}}"
+                   ng-if="dataModel.autoSelectedPoolId !== undefined" ng-disabled="true"/>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="pool-tier" class="label">{{'storage-volume-pool-tier' | translate}}</label>
+            <div class="dropdown"
+                 ng-if="!dataModel.createModel.volumesGroupsModel.template.shouldDisableTier()">
+                <button id="pool-tier" class="btn btn-block dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{dataModel.createModel.volumesGroupsModel.template.tier}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="pool-tier">
+                    <li ng-repeat="tier in dataModel.createModel.volumesGroupsModel.tiers">
+                        <a ng-click="dataModel.createModel.volumesGroupsModel.template.setTier(tier)">
+                            {{tier}}</a>
+                    </li>
+                </ul>
+            </div>
+            <input type="text" class="form-control" value="-"
+                   ng-if="dataModel.createModel.volumesGroupsModel.template.shouldDisableTier()"
+                   ng-disabled="true"/>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="pool" class="label">{{'storage-volume-pool' | translate}}</label>
+            <div class="dropdown" ng-if="dataModel.autoSelectedPoolId === undefined">
+                <button id="pool" class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{dataModel.createModel.volumesGroupsModel.template.getPoolLabel()}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="pool">
+                    <li><a ng-click="dataModel.createModel.volumesGroupsModel.template.autoSelectPool()">
+                        {{dataModel.createModel.volumesGroupsModel.template.$autoSelectPoolLabel}}</a></li>
+                    <li ng-repeat="p in dataModel.createModel.volumesGroupsModel.template.getPools()">
+                        <a ng-click="dataModel.createModel.volumesGroupsModel.template.setPool(p)">
+                            {{p.poolLabel}}</a>
+                    </li>
+                </ul>
+            </div>
+            <input type="text" class="form-control"
+                   value="{{dataModel.createModel.volumesGroupsModel.template.getPools()[0].poolLabel}}"
+                   ng-if="dataModel.autoSelectedPoolId !== undefined" ng-disabled="true"/>
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label for="data-saving" class="label">{{'volume-capacity-saving-type' | translate}}</label>
+            <div class="dropdown">
+                <button id="data-saving" class="btn btn-block dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{dataModel.createModel.volumesGroupsModel.template.getDataSavingType().label | translate}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="data-saving">
+                    <li ng-repeat="type in dataModel.createModel.volumesGroupsModel.template.getDataSavingTypes()">
+                        <a ng-click="dataModel.createModel.volumesGroupsModel.template.setDataSavingTypeValue(type.value)">
+                            {{type.label | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+    <div class="tile control-tile" ng-click="dataModel.createModel.volumesGroupsModel.add()">
+        <div class="tile-button add-resource">
+            <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
+                <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 ">
+                </polygon>
+            </svg>
         </div>
     </div>
-    <div class="alert alert-warning" role="alert" ng-if="!dataModel.storageSystems.length">
-        <h1>{{'no-accessible-storage-system' | translate}}</h1>
+</div>
+<div class="work-panel">
+    <div class="scroll-wizard-container"
+         ng-include="'views/templates/create-volume-list.html'" ng-init="removeAddButton=true">
     </div>
-    <div class="tile row row-tile active" ng-repeat="volumeGroup in dataModel.createModel.volumesGroupsModel.volumes">
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <input type="number" class="form-control" placeholder="1"  min="1"
-                   ng-model="volumeGroup.noOfVolumes" ng-change="dataModel.validLabel(volumeGroup)">
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 cell control">
-            <input type="text" class="form-control" placeholder="Volume"
-                   ng-model="volumeGroup.label" ng-change="dataModel.validLabel(volumeGroup)"
-                   maxlength="32">
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <input type="number" class="form-control" min="0" name="suffix"
-                   ng-model="volumeGroup.suffix" ng-change="dataModel.validLabel(volumeGroup)">
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <input type="number" class="form-control" min="1" name="size"
-                   ng-model="volumeGroup.size.value">
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <select class="form-control inline" ng-model="volumeGroup.size.unit">
-                <option>TB</option>
-                <option>PB</option>
-                <option>GB</option>
-            </select>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="dataModel.autoSelectedPoolId === undefined">
-            <select class="form-control" ng-model="volumeGroup.poolType"
-                    ng-options="pt | translate for pt in dataModel.createModel.volumesGroupsModel.poolTypes"
-                    ng-change="volumeGroup.pool = null"
-                    >
-            </select>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="dataModel.autoSelectedPoolId !== undefined">
-            <input type="text" class="form-control" ng-disabled="true"
-                   ng-model="volumeGroup.poolType | translate">
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <select class="form-control" ng-model="volumeGroup.tier"
-                    ng-options="tier for tier in dataModel.createModel.volumesGroupsModel.tiers"
-                    ng-change="volumeGroup.pool = null"
-                    ng-if="!volumeGroup.shouldDisableTier()">
-            </select>
-            <select class="form-control" ng-if="volumeGroup.shouldDisableTier()" disabled>
-                <option>-</option>
-            </select>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 cell control" ng-if="dataModel.autoSelectedPoolId !== undefined">
-            <input type="text" class="form-control" ng-disabled="true"
-                   ng-model="volumeGroup.getPools()[0].poolLabel">
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 cell control" ng-if="dataModel.autoSelectedPoolId === undefined">
-            <select class="form-control" ng-model="volumeGroup.pool" additional-watch="volumeGroup.pools"
-                    ng-options="p.poolLabel for p in volumeGroup.getPools()">
-                <option value=""> Auto Selected </option>
-
-            </select>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <select class="form-control" ng-model="volumeGroup.dkcDataSavingType" additional-watch="volumeGroup"
-                    ng-options="type.value as type.label | translate for type in volumeGroup.getDkcDataSavingTypes()">
-                <option value="">{{'volume-capacity-saving-type-filter-no' | translate}}</option>
-            </select>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="$first">
-            <button class="btn icon-btn icon-sm icon-add" ng-click="dataModel.createModel.volumesGroupsModel.add()"></button>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="!$first">
-            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="volumeGroup.remove()"></button>
-        </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12 autoHeight" ng-if="!volumeGroup.labelIsValid">
-            <p class="validation-text"> {{'invalid-volume-label' | translate }}</p>
-        </div>
-
-    </div>
-
-
 </div>

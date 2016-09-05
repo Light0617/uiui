@@ -90,7 +90,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                 'unlimited': mockUtils.trueOrFalse(),
                 'value': mockUtils.randomInt(0,100)
             },
-            'type': tiers.length > 1 ? 'Tiered' : 'Thin',
+            'type': tiers.length > 1 ? 'HDT' : 'HDP',
             'usedCapacityInBytes': capacityInfo.usedCapacity,
             'usedLogicalCapacityInBytes': capacityInfo.usedCapacity,
             'usedSubscription': 0,

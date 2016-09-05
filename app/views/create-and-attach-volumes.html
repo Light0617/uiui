@@ -20,7 +20,7 @@
                                    ng-title="(dataModel.storageSystems.length !== 0) ? ('workflow-title-create-volumes' | translate)
                                    : ''"
                                    left-panel-template="views/workflow-templates/create-volumes-left-panel.html"
-                                   right-panel-template="views/workflow-templates/create-volumes-right-panel.html"
+                                   right-panel-template="views/templates/create-volume-list.html"
                                    ng-model="dataModel"></wizard-left-right-content>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('attach')"

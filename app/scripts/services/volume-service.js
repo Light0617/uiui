@@ -38,12 +38,14 @@ angular.module('rainierApp')
                 return !volume.isUnprotected() && !snapshotFullcopyOnly;
             },
             getDkcDataSavingTypes: function () {
-                var dkcDataSavingTypes = [
+                return [
                     { label: 'volume-capacity-saving-type-filter-compression', value: 'COMPRESSION' },
                     { label: 'volume-capacity-saving-type-filter-deduplication-and-compression', value: 'DEDUPLICATION_AND_COMPRESSION' },
                     { label: 'volume-capacity-saving-type-filter-no', value: 'NONE' }
                 ];
-                return dkcDataSavingTypes;
+            },
+            getVolumeSizeUnits: function () {
+                return ['GB', 'TB', 'PB'];
             }
         };
 
