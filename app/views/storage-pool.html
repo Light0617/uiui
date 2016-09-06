@@ -120,7 +120,16 @@
                     </div>
                 </div>
                 <div class="tile comp-tile" ng-if="poolDataModel.showFmcDetails()">
-                    <h3 class="solo-header-row">FMD DC2 Compression</h3>
+                    <div class="two-column-header-row">
+                        <div class="resource-row">
+                            <h3>FMD DC2 Compression</h3>
+                            <div class="label-value-container">
+                                <p class="label">{{ 'storage-pool-compressed-parity-group-ids' | translate}}
+                                    <span ng-repeat="parityGroup in poolDataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span class="icon icon-sm icon-password" ng-if="parityGroup.encryption" title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="resource-row">
                         <div class="tile-row resource-info">
                             <div class="tile">
