@@ -8,7 +8,8 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService, storagePoolService, objectTransformService, paginationService) {
+    .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService, storagePoolService,
+                                                 objectTransformService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -212,9 +213,23 @@ angular.module('rainierApp')
                             subscriptionLimit: $scope.model.subscriptionLimit,
                             parityGroupIds: $scope.model.selectedParityGroups
                         };
-                        orchestratorService.createStoragePool($scope.model.storageSystem.storageSystemId, createPoolPayload).then(function () {
-                            window.history.back();
+
+                        // Get selected parity groups on the pool
+                        $scope.poolPgIds = [];
+                        _.forEach($scope.model.selectedParityGroups, function (selectedPg) {
+                            $scope.poolPgIds.push(selectedPg);
                         });
+
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        _.forEach($scope.poolPgIds, function (poolPgId) {
+                            reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
+                        });
+
+                        // Show popup if resource is present in resource tracker else submit
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Create Pool Confirmation', $scope.model.storageSystem.storageSystemId, null, createPoolPayload, orchestratorService.createStoragePool);
+
                     }
 
 
