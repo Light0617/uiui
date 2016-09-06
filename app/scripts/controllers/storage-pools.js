@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('StoragePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, $location, paginationService, queryService, capacityAlertService,
-                                              storageNavigatorSessionService, constantService) {
+                                              storageNavigatorSessionService, constantService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
 
@@ -166,9 +166,18 @@ angular.module('rainierApp')
                                 });
                         },
                         onClick: function () {
+
+                            // Build reserved resources
+                            var reservedResourcesList = [];
+                            var poolIds = [];
                             _.forEach(dataModel.getSelectedItems(), function (item) {
-                                item.actions.delete.onClick(orchestratorService, false);
+                                reservedResourcesList.push(item.storagePoolId + '=' + resourceTrackerService.storagePool());
+                                poolIds.push(item.storagePoolId);
                             });
+
+                            // Show popup if resource is present in resource tracker else submit
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                'Delete Pools Confirmation', storageSystemId, poolIds, null, orchestratorService.deleteStoragePool);
                         }
                     },
                     {

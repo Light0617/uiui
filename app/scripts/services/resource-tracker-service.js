@@ -12,7 +12,7 @@ angular.module('rainierApp')
         var resourceTrackerService =
         {
             showReservedPopUpOrSubmit: function(reservedResourcesList, parentResId, parentResType,
-                                         message, storageSystemId, resourceId, resourcePayload, orchestratorFunction) {
+                                         message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction) {
                 var flag = false;
                 var tasks = _.map(reservedResourcesList, function (reservedResource) {
                     var res = reservedResource.split('=');
@@ -27,23 +27,40 @@ angular.module('rainierApp')
                 });
                 $q.all(tasks).then(function () {
                     if(flag) {
-                        resourceTrackerService.showPopUp(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction);
+                        resourceTrackerService.showPopUp(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction);
                     } else {
-                        orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
-                            window.history.back();
-                        });
+                        if(orchestratorFunction) {
+                            if(resourcePayload) {
+                                if(resourceId) {
+                                    orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
+                                        window.history.back();
+                                    });
+                                } else {
+                                    orchestratorFunction(storageSystemId, resourcePayload).then(function () {
+                                        window.history.back();
+                                    });
+                                }
+                            } else {
+                                _.forEach(resourceId, function (rId) {
+                                    orchestratorFunction(storageSystemId, rId);
+                                });
+                            }
+                        } else {
+                            urlRedirectFunction();
+                        }
                     }
                 });
             },
 
             setSearchParameters: function(resId, resType, parentResId, parentResType) {
+                paginationService.clearQuery();
                 paginationService.addSearchParameter(new paginationService.QueryObject('resId', new paginationService.SearchType().STRING, resId));
                 paginationService.addSearchParameter(new paginationService.QueryObject('resType', new paginationService.SearchType().STRING, resType));
                 paginationService.addSearchParameter(new paginationService.QueryObject('parentResId', new paginationService.SearchType().STRING, parentResId));
                 paginationService.addSearchParameter(new paginationService.QueryObject('parentResType', new paginationService.SearchType().STRING, parentResType));
             },
 
-            showPopUp: function(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction) {
+            showPopUp: function(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction) {
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/resource-tracker-confirmation-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -55,9 +72,25 @@ angular.module('rainierApp')
                         };
 
                         $scope.ok = function() {
-                            orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
-                                window.history.back();
-                            });
+                            if(orchestratorFunction) {
+                                if(resourcePayload) {
+                                    if(resourceId) {
+                                        orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
+                                            window.history.back();
+                                        });
+                                    } else {
+                                        orchestratorFunction(storageSystemId, resourcePayload).then(function () {
+                                            window.history.back();
+                                        });
+                                    }
+                                } else {
+                                    _.forEach(resourceId, function (rId) {
+                                        orchestratorFunction(storageSystemId, rId);
+                                    });
+                                }
+                            } else {
+                                urlRedirectFunction();
+                            }
                             modelInstance.close(true);
                         };
 
