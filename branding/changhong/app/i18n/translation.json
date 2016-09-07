@@ -209,6 +209,7 @@
     "storage-pool-label": "Pool Label",
     "storage-pool-type": "Type",
     "storage-pool-tier": "Tier",
+    "storage-pool-utilization": "Utilization",
     "storage-pool-utilization-threshold1": "Utilization TH 1",
     "storage-pool-utilization-threshold2": "Utilization TH 2",
     "storage-pool-utilization-threshold-high": "Utilization Threshold (High) %",
@@ -251,6 +252,7 @@
     "subscription-limit": "Subscription Limit:",
     "threshold1": "Threshold 1:",
     "threshold2": "Threshold 2:",
+    "utilization": "Utilization:",
 
     "storage-volume-id": "Volume ID",
     "storage-volume-type": "Volume type",

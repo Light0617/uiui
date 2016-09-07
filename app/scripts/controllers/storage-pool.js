@@ -352,10 +352,6 @@ angular.module('rainierApp')
             return value + '%';
         }
 
-        function addColonSign (value1, value2) {
-            return value1 + ':' + value2;
-        }
-
         function getSizeDisplayText (object) {
             return object.size + ' ' + object.unit;
         }
