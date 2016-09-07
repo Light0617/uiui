@@ -26,25 +26,26 @@ angular.module('rainierApp')
                     .attr('path-index', function(d, i){
                         return i;
                     })
-                    .attr('stroke-width', 2)
-                    .attr('stroke', 'blue')
-                    .attr('fill', 'none')
+                    .attr('class', 'existing')
+                    .attr('selected', 'false')
                     .on('mouseover', function () {
                         if ((d3.select(this).attr('selected')) !== 'true') {
-                            d3.select(this).attr('stroke', 'red');
+                            d3.select(this).attr('class', 'selected');
                         }
-
                     })
                     .on('mouseout', function () {
                         if ((d3.select(this).attr('selected')) !== 'true') {
-                            d3.select(this).attr('stroke', 'blue');
+                            d3.select(this).attr('class', 'existing');
                         }
                     })
                     .on('click', function () {
                         if ((d3.select(this).attr('selected')) !== 'true') {
-                            d3.select(this).attr('selected', 'true');
+                            d3.select(this).attr('class', 'selected')
+                                .attr('selected', 'true');
+
                         } else {
-                            d3.select(this).attr('selected', 'false');
+                            d3.select(this).attr('class', 'existing')
+                                .attr('selected', 'false');
                         }
                     });
 

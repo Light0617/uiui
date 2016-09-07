@@ -86,17 +86,17 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     function getPathsFromHostGroups(hostGroups){
         var paths = [];
         _.forEach(hostGroups, function(hostGroup){
-           _.forEach(hostGroup.hbaWwns, function(hbaWwn){
-               if (idCoordinates.hasOwnProperty(hbaWwn)){
-                   var path = {
-                       storagePortId: hostGroup.storagePortId,
-                       storageSystemId: hostGroup.storageSystemId,
-                       serverWwn: hbaWwn,
-                       luns: hostGroup.luns
-                   };
-                   paths.push(path);
-               }
-           });
+            _.forEach(hostGroup.hbaWwns, function(hbaWwn){
+                if (idCoordinates.hasOwnProperty(hbaWwn)){
+                    var path = {
+                        storagePortId: hostGroup.storagePortId,
+                        storageSystemId: hostGroup.storageSystemId,
+                        serverWwn: hbaWwn,
+                        luns: hostGroup.luns
+                    };
+                    paths.push(path);
+                }
+            });
         });
 
         return paths;
