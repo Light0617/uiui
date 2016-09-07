@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumesAddCtrl', function ($scope, $routeParams, $timeout, $window, $filter,
                                                          orchestratorService, diskSizeService, viewModelService,
                                                          volumeService, synchronousTranslateService, paginationService,
-                                                         objectTransformService, ShareDataService) {
+                                                         objectTransformService, ShareDataService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
         var autoSelectedPoolId = ShareDataService.pop('autoSelectedPoolId');
@@ -74,9 +74,18 @@ angular.module('rainierApp')
                         storageSystemId: storageSystemId,
                         volumes: volumes
                     };
-                    orchestratorService.createVolumes(payload).then(function () {
-                        window.history.back();
+
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    _.forEach(volumes, function (vol) {
+                        if(vol.poolId !== null) {
+                            reservedResourcesList.push(vol.poolId + '=' + resourceTrackerService.storagePool());
+                        }
                     });
+
+                    // Show popup if resource is present in resource tracker else submit
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Create Volumes Confirmation', null, null, payload, orchestratorService.createVolumes);
                 }
 
             };

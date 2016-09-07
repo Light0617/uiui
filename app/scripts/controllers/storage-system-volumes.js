@@ -12,7 +12,8 @@ angular.module('rainierApp')
                                                       objectTransformService, orchestratorService, volumeService,
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
-                                                      storageSystemVolumeService, dpAlertService, storageNavigatorSessionService, constantService) {
+                                                      storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
+                                                      constantService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -222,10 +223,20 @@ angular.module('rainierApp')
                         return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
+
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        var volIds = [];
                         _.forEach(dataModel.getSelectedItems(), function (item) {
-                            item.actions.delete.onClick(orchestratorService, false);
+                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                            volIds.push(item.volumeId);
                         });
-                    },
+
+                        // Show popup if resource is present in resource tracker else submit
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Delete Volumes Confirmation', storageSystemId, volIds, null, orchestratorService.deleteVolume);
+
+                    }
                 },
                 {
                     icon: 'icon-edit',
@@ -249,10 +260,20 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             flags.push(item.isUnattached());
                         });
-                        if(flags.areAllItemsTrue()) {
-                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                            $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join(
-                                '/'));
+                        if(flags.areAllItemsTrue() ) {
+                            // Build reserved resources
+                            var reservedResourcesList = [];
+                            _.forEach(dataModel.getSelectedItems(), function (item) {
+                                reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                            });
+
+                            // Show popup if resource is present in resource tracker else redirect
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                'Attach Volumes Confirmation', null, null, null, null, function() {
+                                    ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                                    $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join(
+                                        '/'));
+                                });
                         } else {
                             var modelInstance = $modal.open({
                                 templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
@@ -264,9 +285,19 @@ angular.module('rainierApp')
                                     };
 
                                     $scope.ok = function() {
-                                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                                        $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join(
-                                            '/'));
+                                        // Build reserved resources
+                                        var reservedResourcesList = [];
+                                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                                        });
+
+                                        // Show popup if resource is present in resource tracker else redirect
+                                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                            'Attach Volumes Confirmation', null, null, null, null, function() {
+                                                ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                                                $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join(
+                                                    '/'));
+                                            });
                                         modelInstance.close(true);
                                     };
 
@@ -292,8 +323,14 @@ angular.module('rainierApp')
                                 });
                     },
                     onClick: function () {
+                        // Build reserved resources
                         var item = _.first(dataModel.getSelectedItems());
-                        item.actions.detach.onClick();
+                        var reservedResourcesList = [];
+                        reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+
+                        // Show popup if resource is present in resource tracker else redirect
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Detach Volume Confirmation', null, null, null, null, item.actions.detach.onClick);
                     }
                 },
                 {
@@ -301,10 +338,20 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-protect-volumes',
                     type: 'link',
                     onClick: function () {
-                        ShareDataService.volumesList = dataModel.getSelectedItems();
-                        $location.path(['storage-systems', storageSystemId,
-                                'volumes/protect'
-                            ].join('/'));
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                        });
+
+                        // Show popup if resource is present in resource tracker else redirect
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Protect Volumes Confirmation', null, null, null, null, function() {
+                                ShareDataService.volumesList = dataModel.getSelectedItems();
+                                $location.path(['storage-systems', storageSystemId,
+                                    'volumes/protect'
+                                ].join('/'));
+                            });
                     },
                     enabled: function () {
                         return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
@@ -315,7 +362,17 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-unprotect-volumes',
                     type: 'link',
                     onClick: function () {
-                        volumeUnprotectActions(dataModel.getSelectedItems());
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                        });
+
+                        // Show popup if resource is present in resource tracker else redirect
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Unprotect Volume Confirmation', null, null, null, null, function() {
+                                volumeUnprotectActions(dataModel.getSelectedItems());
+                            });
                     },
                     enabled: function () {
                         return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
@@ -329,7 +386,17 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-restore-volumes',
                     type: 'link',
                     onClick: function () {
-                        volumeRestoreAction('restore', dataModel.getSelectedItems());
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                        });
+
+                        // Show popup if resource is present in resource tracker else redirect
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Restore Volume Confirmation', null, null, null, null, function() {
+                                volumeRestoreAction('restore', dataModel.getSelectedItems());
+                            });
                     },
                     enabled: function () {
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),

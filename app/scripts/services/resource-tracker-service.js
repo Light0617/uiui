@@ -31,8 +31,12 @@ angular.module('rainierApp')
                     } else {
                         if(orchestratorFunction) {
                             if(resourcePayload) {
-                                if(resourceId) {
+                                if(resourceId && storageSystemId) {
                                     orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
+                                        window.history.back();
+                                    });
+                                } else if(!resourceId && !storageSystemId) {
+                                    orchestratorFunction(resourcePayload).then(function () {
                                         window.history.back();
                                     });
                                 } else {
@@ -74,8 +78,12 @@ angular.module('rainierApp')
                         $scope.ok = function() {
                             if(orchestratorFunction) {
                                 if(resourcePayload) {
-                                    if(resourceId) {
+                                    if(resourceId && storageSystemId) {
                                         orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
+                                            window.history.back();
+                                        });
+                                    } else if(!resourceId && !storageSystemId) {
+                                        orchestratorFunction(resourcePayload).then(function () {
                                             window.history.back();
                                         });
                                     } else {
