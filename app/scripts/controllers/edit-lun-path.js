@@ -21,7 +21,10 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                                                      attachVolumeService, constantService) {
 
     var GET_PORTS_PATH = 'storage-ports';
+    var GET_HOST_GROUPS_PATH = 'host-groups';
     var idCoordinates = {};
+    var volumeIdMap = {};
+    var originalPaths;
 
     var selectedVolumes = ShareDataService.pop('selectedVolumes') || [];
     var selectedHosts = ShareDataService.pop('selectedHost') || null;
@@ -31,6 +34,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     }
 
     var storageSystemId = selectedVolumes[0].storageSystemId;
+    var originalSelectedVolumes = angular.copy(selectedVolumes);
+
     $scope.canSubmit = true;
     $scope.operatingSystemType = {};
     $scope.operatingSystems = constantService.osType();
@@ -45,6 +50,10 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     var storageSystem = {
         storageSystemId: storageSystemId
     };
+
+    _.forEach(selectedVolumes, function(volume){
+        volumeIdMap[volume.volumeId] = volume;
+    });
 
     function getAllHostModeOptionsString(volumes){
         var hostModeOptionSet = {};
@@ -84,19 +93,39 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     }
 
     function getPathsFromHostGroups(hostGroups){
-        var paths = [];
+        var paths;
         _.forEach(hostGroups, function(hostGroup){
-            _.forEach(hostGroup.hbaWwns, function(hbaWwn){
-                if (idCoordinates.hasOwnProperty(hbaWwn)){
-                    var path = {
-                        storagePortId: hostGroup.storagePortId,
-                        storageSystemId: hostGroup.storageSystemId,
-                        serverWwn: hbaWwn,
-                        luns: hostGroup.luns
-                    };
-                    paths.push(path);
+            var i;
+            var foundLun = false;
+
+            var luns = [];
+            for(i = 0; i< hostGroup.luns.length; ++i) {
+                if (volumeIdMap.hasOwnProperty(hostGroup.luns[i].volumeId)){
+                    foundLun = true;
+                    break;
                 }
-            });
+            }
+            if (foundLun === false) {
+                return;
+            }
+           _.forEach(hostGroup.hbaWwns, function(hbaWwn){
+               if (idCoordinates.hasOwnProperty(hbaWwn)){
+                   // Only store the luns, which contain any selected volumeId, in the path.
+                   paths = [];
+                   _.forEach(hostGroup.luns, function(lun){
+                       if (volumeIdMap.hasOwnProperty(lun.volumeId)){
+                           luns.push();
+                       }
+                   });
+
+                   var path = {
+                       storagePortId: hostGroup.storagePortId,
+                       serverWwn: hbaWwn,
+                       luns: luns
+                   };
+                   paths.push(path);
+               }
+           });
         });
 
         return paths;
@@ -105,6 +134,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     var previousHeight = 0;
     var bufferHeight = 5;
     _.forEach(selectedHosts, function(host){
+        var j;
+        var wwnCoordinates = [];
         var length = host.wwpns.length;
         host.allHostModeOptionsString = getAllHostModeOptionsString(selectedVolumes);
         host.startHeight = previousHeight;
@@ -113,8 +144,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         host.isSelected = false;
 
         // Calculate the coordinates of all the wwn icons of each host so that the html can easily use it.
-        var wwnCoordinates = [];
-        for (var j = 0; j < length; ++j) {
+
+        for (j = 0; j < length; ++j) {
             var point = {
                 x: 232,
                 y: host.startHeight + 13 + j*25
@@ -136,12 +167,17 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         var queryString = paginationService.getQueryStringForList(wwpns);
         paginationService.clearQuery();
         queryService.setQueryMapEntry('hbaWwns', queryString);
-        paginationService.getAllPromises(null, 'host-groups', false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+        paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
             var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
+            var originalAllPaths = getPathsFromHostGroups(hostGroupResults);
             $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
             $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
-            angular.extend($scope.dataModel.pathModel, {paths: getPathsFromHostGroups(hostGroupResults)});
+            angular.extend($scope.dataModel.pathModel, {
+                paths: originalAllPaths,
+                originalPathLength: originalAllPaths.length
+            });
+            originalPaths = angular.copy(originalAllPaths);
         }).finally(function(){
             paginationService.clearQuery();
         });
@@ -173,11 +209,15 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     var autoSelect = 'AUTO';
 
     function getPath(path){
-        var d = '';
-        d += 'M ' + idCoordinates[path.serverWwn].x + ' ' + idCoordinates[path.serverWwn].y + ' ';
-        d += 'L ' + (idCoordinates[path.serverWwn].x + 50) + ' ' + idCoordinates[path.serverWwn].y + ' ';
-        d += 'L ' + (idCoordinates[path.storagePortId].x - 50) + ' ' + idCoordinates[path.storagePortId].y + ' ';
-        d += 'L ' + idCoordinates[path.storagePortId].x + ' ' + idCoordinates[path.storagePortId].y + ' ';
+        return createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
+            idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
+    }
+
+    function createPath(x1, y1, x2, y2) {
+        var d = 'M ' + x1 + ' ' + y1 + ' ';
+        d += 'L ' + (x1 + 50) + ' ' + y1 + ' ';
+        d += 'L ' + (x2 - 50) + ' ' + y2 + ' ';
+        d += 'L ' + x2 + ' ' + y2 + ' ';
 
         return d;
     }
@@ -226,20 +266,109 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 storagePorts: dataModel.storagePorts,
                 validation: true,
                 getPath: getPath,
+                createPath: createPath,
                 previous: function () {
                     dataModel.goBack();
                 },
-                toggleSelected: function(item){
+                toggleSelected: function(item, event) {
                     item.isSelected = !item.isSelected;
+                    if (event) {
+                        event.stopPropagation();
+                    }
                 },
                 canSubmit: function () {
                     return true;
                 },
                 submit: function () {
+                    var i;
+                    var j;
                     if (!$scope.canSubmit) {
                         return;
                     }
-                    // To be implemented.
+
+                    var updates = [];
+                    for (i = 0; i<$scope.dataModel.pathModel.paths.length; ++i){
+                        var path = $scope.dataModel.pathModel.paths[i];
+
+                        for(j = 0; j<selectedVolumes.length; ++j){
+
+                            var lunPathDiffPayload = null;
+                            var volume = selectedVolumes[j];
+                            // Add new path
+                            if (!path.luns){
+                                lunPathDiffPayload = {
+                                    storageSystemId: storageSystemId,
+                                    volumeId: volume.volumeId,
+                                    lun: volume.lun,
+                                    currentPath: null,
+                                    newPath: {
+                                        serverWwn: path.serverWwn,
+                                        storagePort: path.storagePortId
+                                    }
+                                };
+                            } else {
+                                var originalPath = originalPaths[i];
+                                if (path.deleted === true) {
+                                    // When path.luns is not set, it means that the path is newly added.
+                                    // Deleting a newly added path means no-op.
+                                    if (path.luns) {
+                                        // Delete the path
+                                        lunPathDiffPayload = {
+                                            storageSystemId: storageSystemId,
+                                            volumeId: volume.volumeId,
+                                            lun: volume.lun,
+                                            currentPath: {
+                                                serverWwn: originalPath.serverWwn,
+                                                storagePort: originalPath.storagePortId
+                                            },
+                                            newPath: null
+                                        };
+                                    }
+                                } else {
+                                    // modify the path
+                                    var pathChanged = false;
+                                    var lunChange = false;
+                                    if (originalPath.serverWwn !== path.serverWwn && originalPath.storagePortId !== path.storagePortId){
+                                        pathChanged = true;
+                                    }
+                                    if (volume.lun !== originalSelectedVolumes[j].lun){
+                                        lunChange = true;
+                                    }
+                                    if (pathChanged || lunChange) {
+                                        lunPathDiffPayload = {
+                                            storageSystemId: storageSystemId,
+                                            volumeId: volume.volumeId,
+                                            lun: volume.lun,
+                                            currentPath: {
+                                                serverWwn: originalPath.serverWwn,
+                                                storagePort: originalPath.storagePortId
+                                            },
+                                            newPath: pathChanged !== true ? null :
+                                                {
+                                                    serverWwn: path.serverWwn,
+                                                    storagePort: path.storagePortId
+                                                }
+                                        };
+                                    }
+                                }
+                            }
+
+                            if (lunPathDiffPayload) {
+                                updates.push(lunPathDiffPayload);
+                            }
+                        }
+
+                    }
+
+                    var payload = {
+                        enableZoning: $scope.dataModel.attachModel.enableZoning,
+                        hostMode: $scope.dataModel.attachModel.hostMode,
+                        hostModeOptions: $scope.dataModel.attachModel.selectedHostModeOption,
+                        updates: updates
+                    };
+
+                    orchestratorService.editLunPaths(payload);
+                    window.history.back();
                 }
             });
         });

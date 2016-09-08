@@ -1,5 +1,5 @@
 <!--Toolbar actions for edit lun path-->
-<edit-lun-path-toolbar></edit-lun-path-toolbar>
+<edit-lun-path-toolbar ng-model="dataModel"></edit-lun-path-toolbar>
 
 <div class="scroll-wizard-container single-pane editor">
 
@@ -13,7 +13,7 @@
             <g ng-if="host.startHeight !== undefined">
                 <rect class="tile-base" ng-class="{'active': host.isSelected === true}" x="5" ng-attr-y="{{host.startHeight}}" width="235"
                       ng-attr-height="{{host.wwpns.length <= 4 ? 100 : host.wwpns.length * 25}}" rx="10" ry="10"
-                      ng-click="dataModel.pathModel.toggleSelected(host)" />
+                      ng-click="dataModel.pathModel.toggleSelected(host, $event)" />
 
                 <use xlink:href="#server-icon" x="30" ng-attr-y="{{host.startHeight + 10}}"/>
 
@@ -22,9 +22,9 @@
                 <text class="host-mode-options md-label" x="10" ng-attr-y="{{host.startHeight + 75}}">{{host.allHostModeOptionsString.length > 10 ? host.allHostModeOptionsString.substring(0,9) + '...' : host.allHostModeOptionsString}}
                     <title>{{host.allHostModeOptionsString}} {{host.isSelected}}</title>
                 </text>
-                <g title="ports" ng-repeat="wwn in host.displayWWNs">
+                <g title="server-wwn" ng-repeat="wwn in host.displayWWNs" attr-wwn="{{wwn}}">
                     <!--WWN icon-->
-                    <circle class="port-icon" ng-attr-cx="{{host.wwnCoordinates[$index].x}}" ng-attr-cy="{{host.wwnCoordinates[$index].y}}" r="6"/>
+                    <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{host.wwnCoordinates[$index].x}}" ng-attr-cy="{{host.wwnCoordinates[$index].y}}" r="6"/>
                     <rect class="port-icon-plug" x="232" ng-attr-y="{{host.startHeight + 11 + $index*25}}" width="16" height="4" rx="2" ry="2"/>
 
                     <text class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{wwn}}</text>
@@ -33,13 +33,16 @@
             </g>
         </g>
 
-        <g ng-repeat="port in dataModel.pathModel.storagePorts track by $index" ng-if="dataModel.pathModel.storagePorts" ng-cloak>
+        <g ng-repeat="port in dataModel.pathModel.storagePorts track by $index" ng-if="dataModel.pathModel.storagePorts">
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
                   x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
-                  ng-click="dataModel.pathModel.toggleSelected(port)"/>
+                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
+
             <!--storage port icon-->
-            <circle class="storage-port-icon-outer" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="6"/>
-            <circle class="storage-port-icon-inner" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="2"/>
+            <g title="storage-port" class="g_main" port-index="{{$index}}" port-id="{{port.storagePortId}}">
+                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="6"/>
+                <circle fill="black" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="2"/>
+            </g>
 
             <text class="sm-label" x="882" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
         </g>
