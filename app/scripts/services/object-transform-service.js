@@ -155,7 +155,7 @@ angular.module('rainierApp')
                 item.getIcons = function () {
                     return [];
                 };
-                if (item.gadStatus === 'Incomplete') {
+                if (item.gadSummary === 'Incomplete') {
                     item.alertType = 'alert-link';
                     item.alertLink = {
                         icon: 'icon-small-triangle',

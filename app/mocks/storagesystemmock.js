@@ -38,7 +38,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'unusedDisks': 10,
             'unusedDisksCapacity': mockUtils.getCapacity(200, 1000),
             'accessible': true,
-            'gadStatus': _.sample(['Incomplete', 'Not Available'])
+            'gadSummary': _.sample(['Incomplete', 'Not Available'])
         };
     };
 
