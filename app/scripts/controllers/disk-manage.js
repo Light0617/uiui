@@ -8,7 +8,8 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('DiskManageCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService, diskSizeService, $location, objectTransformService, paginationService) {
+    .controller('DiskManageCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService, diskSizeService, $location,
+                                            objectTransformService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
@@ -108,14 +109,20 @@ angular.module('rainierApp')
 
         // Post call to the server to create parity groups
         $scope.updateDiskPurpose = function () {
+            var reservedResourcesList = [];
+            var diskIds = [];
             var disUpdatePayload = buildUpdateDiskPurposePayload();
             _.forEach($scope.dataModel.disksList, function (disk) {
                 if ((disk.selected === true) && (disk.purpose === $scope.dataModel.search.purpose)) {
-                    orchestratorService.storageSystemDisksUpdate($scope.dataModel.selectedStorageSystemId, disk.diskId, disUpdatePayload);
+                    // Build reserved resources
+                    reservedResourcesList.push(disk.diskId + '=' + resourceTrackerService.disk());
+                    diskIds.push(disk.diskId);
                 }
             });
-
-            $location.path('storage-systems/' + $scope.dataModel.selectedStorageSystemId + '/parity-groups');
+            // Show popup if resource is present in resource tracker else submit
+            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                'Update Disk Confirmation', $scope.dataModel.selectedStorageSystemId, diskIds, disUpdatePayload,
+                orchestratorService.storageSystemDisksUpdate, null, true);
         };
 
         // Generates payload for advanced parity group creation based on selected disks

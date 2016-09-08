@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, 
                                               diskSizeService, scrollDataSourceBuilderService,
                                               storageNavigatorSessionService,
-                                              $location, paginationService, hwAlertService, constantService) {
+                                              $location, paginationService, hwAlertService, constantService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
         var getParityGroupsPath = 'parity-groups';
@@ -207,9 +207,18 @@ angular.module('rainierApp')
                     return dataModel.anySelected() && !containsAvailable;
                 },
                 onClick: function () {
+
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    var parityGroupIds = [];
                     _.forEach(dataModel.getSelectedItems(), function (item) {
-                        item.actions.initialize.onClick(orchestratorService, false);
+                        reservedResourcesList.push(item.parityGroupId + '=' + resourceTrackerService.parityGroup());
+                        parityGroupIds.push(item.parityGroupId);
                     });
+
+                    // Show popup if resource is present in resource tracker else submit
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Initialize Parity Groups Confirmation', storageSystemId, parityGroupIds, null, orchestratorService.initializeParityGroup);
                 }
             };
             var compressParityGroupAction= {
@@ -224,14 +233,22 @@ angular.module('rainierApp')
                                 item.status !== 'AVAILABLE' || item.compression || item.nasBoot; });
                 },
                 onClick: function () {
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    var parityGroupIds = [];
                     _.forEach(dataModel.getSelectedItems(), function (item) {
-                        item.actions.compress.onClick(orchestratorService, false);
+                        reservedResourcesList.push(item.parityGroupId + '=' + resourceTrackerService.parityGroup());
+                        parityGroupIds.push(item.parityGroupId);
                     });
+
+                    // Show popup if resource is present in resource tracker else submit
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Compress Parity Groups Confirmation', storageSystemId, parityGroupIds, null, orchestratorService.compressParityGroup);
                 }
             };
             var deletePartityGroupAction={
                 icon: 'icon-delete',
-                    tooltip :'action-tooltip-delete',
+                tooltip :'action-tooltip-delete',
                 type: 'confirm',
                 confirmTitle: 'parity-group-delete-confirmation',
                 confirmMessage: 'parity-group-delete-selected-content',
@@ -240,9 +257,17 @@ angular.module('rainierApp')
                         !_.find(dataModel.getSelectedItems(), function(item) { return item.nasBoot; });
                 },
                 onClick: function () {
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    var parityGroupIds = [];
                     _.forEach(dataModel.getSelectedItems(), function (item) {
-                        item.actions.delete.onClick(orchestratorService, false);
+                        reservedResourcesList.push(item.parityGroupId + '=' + resourceTrackerService.parityGroup());
+                        parityGroupIds.push(item.parityGroupId);
                     });
+
+                    // Show popup if resource is present in resource tracker else submit
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Delete Parity Groups Confirmation', storageSystemId, parityGroupIds, null, orchestratorService.deleteParityGroup);
                 }
             };
 

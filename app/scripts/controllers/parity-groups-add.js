@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('ParityGroupsAddCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService, diskSizeService, $location, synchronousTranslateService,
-                                                 objectTransformService, paginationService) {
+                                                 objectTransformService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_DISKS_PATH = 'disks';
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
@@ -281,9 +281,16 @@ angular.module('rainierApp')
                  return;
              }
             var createParityGroupPayload = buildCreateParityGroupPayloadAdvanced();
-            orchestratorService.createParityGroup($scope.dataModel.selectedStorageSystemId, createParityGroupPayload);
 
-            $location.path('storage-systems/' + $scope.dataModel.selectedStorageSystemId + '/parity-groups');
+            // Build reserved resources
+            var reservedResourcesList = [];
+            _.forEach(getAllSelectedDisksIds($scope.dataModel.disksList), function (diskId) {
+                reservedResourcesList.push(diskId + '=' + resourceTrackerService.disk());
+            });
+
+            // Show popup if resource is present in resource tracker else submit
+            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                'Create Parity Group Confirmation', $scope.dataModel.selectedStorageSystemId, null, createParityGroupPayload, orchestratorService.createParityGroup);
         };
 
         $scope.$watch('dataModel.pgTemplateRows', function (pgTemplateRows) {

@@ -12,7 +12,7 @@ angular.module('rainierApp')
         var resourceTrackerService =
         {
             showReservedPopUpOrSubmit: function(reservedResourcesList, parentResId, parentResType,
-                                         message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction) {
+                                         message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction, bulkUpdateFlag) {
                 var flag = false;
                 var tasks = _.map(reservedResourcesList, function (reservedResource) {
                     var res = reservedResource.split('=');
@@ -27,14 +27,24 @@ angular.module('rainierApp')
                 });
                 $q.all(tasks).then(function () {
                     if(flag) {
-                        resourceTrackerService.showPopUp(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction);
+                        resourceTrackerService.showPopUp(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction, bulkUpdateFlag);
                     } else {
                         if(orchestratorFunction) {
                             if(resourcePayload) {
                                 if(resourceId && storageSystemId) {
-                                    orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
-                                        window.history.back();
-                                    });
+                                    if(bulkUpdateFlag) {
+                                        var bulkUpdateTasks = _.map(resourceId, function (rId) {
+                                            return orchestratorFunction(storageSystemId, rId, resourcePayload).then(function () {
+                                            });
+                                        });
+                                        $q.all(bulkUpdateTasks).then(function () {
+                                            window.history.back();
+                                        });
+                                    } else {
+                                        orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
+                                            window.history.back();
+                                        });
+                                    }
                                 } else if(!resourceId && !storageSystemId) {
                                     orchestratorFunction(resourcePayload).then(function () {
                                         window.history.back();
@@ -64,7 +74,7 @@ angular.module('rainierApp')
                 paginationService.addSearchParameter(new paginationService.QueryObject('parentResType', new paginationService.SearchType().STRING, parentResType));
             },
 
-            showPopUp: function(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction) {
+            showPopUp: function(message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction, bulkUpdateFlag) {
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/resource-tracker-confirmation-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -79,9 +89,19 @@ angular.module('rainierApp')
                             if(orchestratorFunction) {
                                 if(resourcePayload) {
                                     if(resourceId && storageSystemId) {
-                                        orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
-                                            window.history.back();
-                                        });
+                                        if(bulkUpdateFlag) {
+                                            var bulkUpdateTasks = _.map(resourceId, function (rId) {
+                                                return orchestratorFunction(storageSystemId, rId, resourcePayload).then(function () {
+                                                });
+                                            });
+                                            $q.all(bulkUpdateTasks).then(function () {
+                                                window.history.back();
+                                            });
+                                        } else {
+                                            orchestratorFunction(storageSystemId, resourceId, resourcePayload).then(function () {
+                                                window.history.back();
+                                            });
+                                        }
                                     } else if(!resourceId && !storageSystemId) {
                                         orchestratorFunction(resourcePayload).then(function () {
                                             window.history.back();
