@@ -332,8 +332,6 @@ angular.module('rainierApp')
                         details: [item.displayPhysicalStorageSystems]
                     }
                 ];
-                //TODO: CDUAN Remove after Wei-chih or Arash finished uuid for vsm
-                item.serialModelNumber = '6cad-a341-ac61-90a5';
                 item.itemIcon = 'icon-vsm';
                 item.onClick = function () {
                     ShareDataService.virtualStorageMachine = item;

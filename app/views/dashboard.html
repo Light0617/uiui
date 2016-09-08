@@ -8,7 +8,7 @@
             <hosts-icon-tile ng-model="model.summary.hostsCount"></hosts-icon-tile>
             <fabric-switches-icon-tile ng-model="dataModel.fabricsCount"></fabric-switches-icon-tile>
             <evs-icon-tile ng-model="dataModel.evsCount" ng-if="dataModel.unified" title="{{ 'evs-tooltip' | translate }}"></evs-icon-tile>
-            <virtual-storage-machine-icon-tile ng-model="model.summary.virtualStorageMachineCount"></virtual-storage-machine-icon-tile>
+            <virtual-storage-machine-icon-tile ng-if="model.summary.model.summary.virtualStorageMachineCount === 0" ng-model="model.summary.virtualStorageMachineCount"></virtual-storage-machine-icon-tile>
 
             <!--End resource counts icons-->
         </div>
