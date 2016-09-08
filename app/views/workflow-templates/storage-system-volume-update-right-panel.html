@@ -26,8 +26,8 @@
                 </div>
             </div>
 
-            <div ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
-                <div class="form-group col-xs-4">
+            <div class="form-group col-xs-4">
+                <div ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
                     <h2 class="col-xs-12">{{ 'storage-volume-update-new-size' | translate}}</h2>
                     <div class="form-horizontal">
                         <div class="form-group col-xs-6 form-group-lg">
@@ -45,29 +45,29 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div ng-if="dataModel.belongsPoolType === 'HDP'">
-                    <h2 class="row section col-xs-12"></h2>
+            <div ng-if="dataModel.belongsPoolType === 'HDP'">
+                <div class="row section col-xs-12"></div>
 
-                    <h2 class="col-xs-12">{{ 'storage-volume-update-change-compression' | translate}}</h2>
+                <h2 class="col-xs-12">{{ 'storage-volume-update-change-compression' | translate}}</h2>
 
-                    <div class="form-group col-xs-4">
-                        <h2 class="col-xs-12">{{ 'storage-volume-update-compression-current' | translate}}</h2>
-                        <div class="form-horizontal">
-                            <div class="form-group col-xs-12 form-group-lg">
-                                <input type="text" class="form-control" ng-disabled="true"
-                                       ng-model="dataModel.dataSavingTypeValuePair.label | translate">
-                            </div>
+                <div class="form-group col-xs-4">
+                    <h2 class="col-xs-12">{{ 'storage-volume-update-compression-current' | translate}}</h2>
+                    <div class="form-horizontal">
+                        <div class="form-group col-xs-12 form-group-lg">
+                            <input type="text" class="form-control" ng-disabled="true"
+                                   ng-model="dataModel.dataSavingTypeValuePair.label | translate">
                         </div>
                     </div>
-                    <div class="form-group col-xs-4">
-                        <h2 class="col-xs-12">{{ 'storage-volume-update-compression-new' | translate}}</h2>
-                        <div class="form-horizontal">
-                            <div class="form-group col-xs-12 form-group-lg">
-                                <select type="text" class="form-control" ng-model="dataModel.updateModel.dataSavingTypeValuePair"
-                                    ng-options="type as type.label | translate for type in dataModel.updateModel.dataSavingTypeValuePairs">
-                                </select>
-                            </div>
+                </div>
+                <div class="form-group col-xs-4">
+                    <h2 class="col-xs-12">{{ 'storage-volume-update-compression-new' | translate}}</h2>
+                    <div class="form-horizontal">
+                        <div class="form-group col-xs-12 form-group-lg">
+                            <select type="text" class="form-control" ng-model="dataModel.updateModel.dataSavingTypeValuePair"
+                                ng-options="type as type.label | translate for type in dataModel.updateModel.dataSavingTypeValuePairs">
+                            </select>
                         </div>
                     </div>
                 </div>
