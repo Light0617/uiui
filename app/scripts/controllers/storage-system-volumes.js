@@ -337,17 +337,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-restore-volumes',
                     type: 'link',
                     onClick: function () {
-                        // Build reserved resources
-                        var reservedResourcesList = [];
-                        _.forEach(dataModel.getSelectedItems(), function (item) {
-                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
-                        });
-
-                        // Show popup if resource is present in resource tracker else redirect
-                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                            'Restore Volume Confirmation', null, null, null, null, function() {
-                                volumeRestoreAction('restore', dataModel.getSelectedItems());
-                            });
+                        volumeRestoreAction('restore', dataModel.getSelectedItems());
                     },
                     enabled: function () {
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),

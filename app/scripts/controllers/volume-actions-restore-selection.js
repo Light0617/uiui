@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('volumeActionsRestoreSelectionCtrl', function ($scope, orchestratorService, $location, $routeParams,
                                                                ShareDataService, $filter, synchronousTranslateService,
                                                                storageSystemVolumeService, paginationService,
-                                                               objectTransformService, $timeout, queryService) {
+                                                               objectTransformService, $timeout, queryService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         $scope.title = synchronousTranslateService.translate('restore-volume') + ' ' + ShareDataService.restorePrimaryVolumeId;
 
@@ -67,8 +67,15 @@ angular.module('rainierApp')
             var payload = {
                 secondaryVolumeId: selection.secondaryVolume.id.toString()
             };
-            orchestratorService.restoreReplicationGroup(selection.primaryVolume.storageSystemId,
-                selection.primaryVolume.id, payload).then(function () {window.history.back();});
+
+            // Build reserved resources
+            var reservedResourcesList = [];
+            reservedResourcesList.push(selection.primaryVolume.id + '=' + resourceTrackerService.volume());
+            reservedResourcesList.push(selection.secondaryVolume.id.toString() + '=' + resourceTrackerService.volume());
+
+            // Show popup if resource is present in resource tracker else redirect
+            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                'Restore Volume Confirmation', selection.primaryVolume.storageSystemId, selection.primaryVolume.id, payload, orchestratorService.restoreReplicationGroup);
         };
 
     });
