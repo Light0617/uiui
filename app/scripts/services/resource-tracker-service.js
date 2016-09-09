@@ -46,9 +46,19 @@ angular.module('rainierApp')
                                         });
                                     }
                                 } else if(!resourceId && !storageSystemId) {
-                                    orchestratorFunction(resourcePayload).then(function () {
-                                        window.history.back();
-                                    });
+                                    if(resourcePayload instanceof Array) {
+                                        var bulkPayloadTasks = _.map(resourcePayload, function (payload) {
+                                            return orchestratorFunction(payload).then(function () {
+                                            });
+                                        });
+                                        $q.all(bulkPayloadTasks).then(function () {
+                                            window.history.back();
+                                        });
+                                    } else {
+                                        orchestratorFunction(resourcePayload).then(function () {
+                                            window.history.back();
+                                        });
+                                    }
                                 } else {
                                     orchestratorFunction(storageSystemId, resourcePayload).then(function () {
                                         window.history.back();
@@ -103,9 +113,19 @@ angular.module('rainierApp')
                                             });
                                         }
                                     } else if(!resourceId && !storageSystemId) {
-                                        orchestratorFunction(resourcePayload).then(function () {
-                                            window.history.back();
-                                        });
+                                        if(resourcePayload instanceof Array) {
+                                            var bulkPayloadTasks = _.map(resourcePayload, function (payload) {
+                                                return orchestratorFunction(payload).then(function () {
+                                                });
+                                            });
+                                            $q.all(bulkPayloadTasks).then(function () {
+                                                window.history.back();
+                                            });
+                                        } else {
+                                            orchestratorFunction(resourcePayload).then(function () {
+                                                window.history.back();
+                                            });
+                                        }
                                     } else {
                                         orchestratorFunction(storageSystemId, resourcePayload).then(function () {
                                             window.history.back();

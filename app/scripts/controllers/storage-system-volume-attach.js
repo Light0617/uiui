@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
                                                            paginationService, queryService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
                                                            ShareDataService, $location, $routeParams, viewModelService,
-                                                           attachVolumeService, constantService) {
+                                                           attachVolumeService, constantService, resourceTrackerService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         $scope.canSubmit = true;
@@ -263,9 +263,15 @@ angular.module('rainierApp')
                             payload.intendedImageType = dataModel.attachModel.hostMode;
                         }
 
-                        orchestratorService.attachVolume(payload).then(function () {
-                            window.history.back();
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        _.forEach(volumes, function (vol) {
+                            reservedResourcesList.push(vol.volumeId + '=' + resourceTrackerService.volume());
                         });
+
+                        // Show popup if resource is present in resource tracker else redirect
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Attach Volumes Confirmation', null, null, payload, orchestratorService.attachVolume);
                     },
                     previous: function () {
                         dataModel.goBack();

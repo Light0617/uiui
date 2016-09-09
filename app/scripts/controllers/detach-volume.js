@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('DetachVolumeCtrl', function ($scope, $routeParams, $timeout, orchestratorService,
                                               diskSizeService, storagePoolService, objectTransformService,
-                                              paginationService, viewModelService, scrollDataSourceBuilderServiceNew) {
+                                              paginationService, viewModelService, scrollDataSourceBuilderServiceNew, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
         var GET_HOSTS_PATH = 'compute/servers';
@@ -76,18 +76,24 @@ angular.module('rainierApp')
                         return dataModel.anySelected();
                     },
                     submit: function () {
+                        var payloads = [];
                         var selectedServers = _.where(dataModel.displayList, 'selected');
                         for(var selectedServer in selectedServers) {
-                            var payload = {
+                            payloads.push({
                                 storageSystemId: storageSystemId,
                                 volumeId: volumeId,
                                 serverId: selectedServers[selectedServer].serverId,
                                 removeConnection: $scope.model.removeZone
-                            };
-
-                            orchestratorService.detachVolume(payload);
+                            });
                         }
-                        window.history.back();
+
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        reservedResourcesList.push(volumeId + '=' + resourceTrackerService.volume());
+
+                        // Show popup if resource is present in resource tracker else redirect
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                            'Detach Volume Confirmation', null, null, payloads, orchestratorService.detachVolume);
                     }
                 };
 
