@@ -241,6 +241,7 @@
     "storage-pool-monitoring-mode": "Monitoring",
     "storage-pool-tier-capacity": "Capacity",
     "storage-pool-tier-information": "Tier Information",
+    "storage-pool-deduplication": "Deduplication",
     "storage-pool-deduplication-enabled": "Deduplication Enabled",
     "storage-pool-deduplication-enabled-filter": "Select Deduplication Enabled Filter",
     "HDP": "Thin",

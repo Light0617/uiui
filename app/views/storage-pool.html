@@ -52,6 +52,11 @@
                             </div>
 
                             <div class="label-value-container">
+                                <p class="label">{{ 'storage-pool-deduplication' | translate}}</p>
+                                <p class="value">{{poolDataModel.deduplicationEnabled}}</p>
+                            </div>
+
+                            <div class="label-value-container">
                                 <p class="label">{{ 'storage-pool-parity-group-ids' | translate}}</p>
                                 <span ng-repeat="parityGroup in poolDataModel.parityGroups track by $index">{{parityGroup.id}}<span class="icon icon-sm icon-password" ng-if="parityGroup.encryption" title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </div>

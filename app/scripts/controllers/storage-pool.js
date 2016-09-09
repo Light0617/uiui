@@ -345,6 +345,8 @@ angular.module('rainierApp')
                 }
             };
             
+            result.deduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
+            
             $scope.poolDataModel = result;
         });
 
