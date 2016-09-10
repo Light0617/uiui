@@ -10,6 +10,9 @@
             <wizard-advanced-stepper-button ng-title="'storage-attach-volumes' | translate"
                                             step-completed="dataModel.isStepCompleted('attach')"
                                             step-active="dataModel.isStepActive('attach')"></wizard-advanced-stepper-button>
+            <wizard-advanced-stepper-button ng-title="'workflow-title-edit-lun-paths' | translate"
+                                            step-completed="dataModel.isStepCompleted('paths')"
+                                            step-active="dataModel.isStepActive('paths')"></wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
         <wizard-single-panel-content ng-if="dataModel.isStepActive('select')"
@@ -22,6 +25,10 @@
                                    right-panel-template="views/workflow-templates/attach-existing-volumes-right-panel.html"
                                    ng-model="dataModel"></wizard-left-right-content>
 
+        <wizard-svg-page ng-if="dataModel.isStepActive('paths')"
+                         ng-title="'workflow-title-create-paths' | translate"
+                         ng-model="dataModel">
+        </wizard-svg-page>
 
     </wizard-body>
     <wizard-footer ng-if="dataModel.isStepActive('select')"
@@ -32,4 +39,8 @@
                    ng-model="dataModel.attachModel">
 
     </wizard-footer>
+    <wizard-footer ng-if="dataModel.isStepActive('paths')"
+                   ng-model="dataModel.pathModel">
+    </wizard-footer>
+
 </wizard-page>

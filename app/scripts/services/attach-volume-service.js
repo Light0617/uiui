@@ -8,7 +8,81 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('attachVolumeService', function () {
+    .factory('attachVolumeService', function (orchestratorService, viewModelService, resourceTrackerService) {
+        var autoSelect = 'AUTO';
+        var idCoordinates = {};
+        var wwpnServerIdMap = {};
+
+        function setPortCoordinates(storagePorts) {
+            for (var i =0; i< storagePorts.length; ++i){
+                var point = {
+                    x: 870,
+                    y: 10 + i * 25
+                };
+                storagePorts[i].coordinate = point;
+                idCoordinates[storagePorts[i].storagePortId] = point;
+            }
+        }
+
+        function getAllHostModeOptionsString(hostModeOptions) {
+            var allHostModeOptionString = '';
+            _.forEach(hostModeOptions, function(hostModeOption) {
+                if (allHostModeOptionString !== ''){
+                    allHostModeOptionString += ', ';
+                }
+
+                allHostModeOptionString += hostModeOption;
+            });
+        }
+
+        function setWwnCoordinates(selectedHosts, hostModeOptions){
+            var previousHeight = 0;
+            var bufferHeight = 5;
+            _.forEach(selectedHosts, function(host){
+                var j;
+                var wwpn;
+                var wwnCoordinates = [];
+                var length = host.wwpns.length;
+
+                host.allHostModeOptionsString = getAllHostModeOptionsString(hostModeOptions);
+                host.startHeight = previousHeight;
+                previousHeight += (length && length > 4) ? length* 25 + bufferHeight : 100;
+
+                host.isSelected = false;
+
+                // Calculate the coordinates of all the wwn icons of each host so that the html can easily use it.
+
+                for (j = 0; j < length; ++j) {
+                    wwpn = host.wwpns[j];
+                    var point = {
+                        x: 232,
+                        y: host.startHeight + 13 + j*25
+                    };
+
+                    idCoordinates[wwpn] = point;
+                    wwnCoordinates.push(point);
+
+                    wwpnServerIdMap[wwpn] = host.serverId;
+                }
+                host.wwnCoordinates = wwnCoordinates;
+
+
+            });
+        }
+
+        function convertPathResources(pathResources){
+            var paths = [];
+            _.forEach(pathResources, function(pathResource){
+                var path = {
+                    storagePortId: pathResource.portId,
+                    serverWwn: pathResource.serverWwn
+                };
+                paths.push(path);
+            });
+
+            return paths;
+        }
+
         function updateHostModeOptions(hostModeOptions, dataModel) {
             dataModel.attachModel.selectedHostModeOption = hostModeOptions;
             dataModel.attachModel.lastSelectedHostModeOption = dataModel.attachModel.selectedHostModeOption;
@@ -81,6 +155,119 @@ angular.module('rainierApp')
             return selectedHostMode;
         };
 
+        function getPath(path){
+            return createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
+                idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
+        }
+
+        function createPath(x1, y1, x2, y2) {
+            var d = 'M ' + x1 + ' ' + y1 + ' ';
+            d += 'L ' + (x1 + 50) + ' ' + y1 + ' ';
+            d += 'L ' + (x2 - 50) + ' ' + y2 + ' ';
+            d += 'L ' + x2 + ' ' + y2 + ' ';
+
+            return d;
+        }
+
+        function getPayload(storageSystemId, dataModel, hostModeOptions){
+            var i;
+            var path;
+            var volumes = viewModelService.buildLunResources(dataModel.attachModel.selectedVolumes);
+            var ports = [];
+
+            var payload = {
+                storageSystemId: storageSystemId,
+                hostModeOptions: hostModeOptions,
+                volumes: volumes,
+                enableZoning: dataModel.attachModel.enableZoning,
+                enableLunUnification: dataModel.attachModel.enableLunUnification
+            };
+
+            if (dataModel.attachModel.hostMode !== autoSelect) {
+                payload.intendedImageType = dataModel.attachModel.hostMode;
+            }
+
+            for (i = 0; i < dataModel.pathModel.paths.length; ++i) {
+                path = dataModel.pathModel.paths[i];
+
+                // If marked as deleted, it is deleted and should not be added.
+                if (path.deleted === true){
+                    continue;
+                }
+
+                ports.push({
+                        serverId: wwpnServerIdMap[path.serverWwn],
+                        serverWwns: [path.serverWwn],
+                        portIds: [path.storagePortId]
+                    }
+                );
+            }
+
+            payload.ports = ports;
+
+            return payload;
+        }
+
+        var setEditLunPage = function(dataModel, storageSystemId, selectedVolumes, selectedHosts,
+                                      hostModeOptions, storagePorts, originalAllPaths, isCreateAndAttach) {
+            setPortCoordinates(storagePorts);
+            setWwnCoordinates(selectedHosts, hostModeOptions);
+            originalAllPaths = convertPathResources(originalAllPaths);
+
+            dataModel.pathModel = {
+                selectedVolumes: selectedVolumes,
+                selectedHosts: selectedHosts,
+                storagePorts: storagePorts,
+                validation: true,
+                itemSelected: true,
+                paths: originalAllPaths,
+                originalPathLength: originalAllPaths.length,
+                getPath: getPath,
+                createPath: createPath,
+                previous: function () {
+                    dataModel.goBack();
+                },
+                toggleSelected: function(item, event) {
+                    item.isSelected = !item.isSelected;
+                    if (event) {
+                        event.stopPropagation();
+                    }
+                }
+            };
+
+            if (isCreateAndAttach){
+                dataModel.pathModel.canGoNext = function(){
+                    return true;
+                };
+                dataModel.pathModel.next = function() {
+                    dataModel.pathModel.attachVolumesToServersPayload = getPayload(storageSystemId, dataModel, hostModeOptions);
+                    dataModel.goNext();
+                };
+            } else {
+                dataModel.pathModel.canSubmit = function () {
+                    return true;
+                };
+                dataModel.pathModel.submit = function () {
+                    if (!dataModel.canSubmit) {
+                        return;
+                    }
+
+                    var payload = getPayload(storageSystemId, dataModel, hostModeOptions);
+
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    _.forEach(selectedVolumes, function (vol) {
+                        reservedResourcesList.push(vol.volumeId + '=' + resourceTrackerService.volume());
+                    });
+
+                    // Show popup if resource is present in resource tracker else redirect
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Attach Volumes Confirmation', null, null, payload, orchestratorService.attachVolume);
+
+                };
+            }
+        };
+
         return {
             checkSelectedHostModeOptions: function (dataModel) {
                 var selectedHostModeOptions = dataModel.attachModel.selectedHostModeOption;
@@ -107,6 +294,7 @@ angular.module('rainierApp')
             },
             getMatchedHostModeOption: getMatchedHostModeOption,
             getSelectedServerWwpns: getSelectedServerWwpns,
-            getMatchedHostMode: getMatchedHostMode
+            getMatchedHostMode: getMatchedHostMode,
+            setEditLunPage: setEditLunPage
         };
     });

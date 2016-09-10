@@ -59,6 +59,7 @@ angular.module('rainierApp')
             }
 
             var dataModel = {
+                canSubmit: true,
                 view: 'tile',
                 selectedStorageSystem: selectedStorageSystem,
                 storageSystems: storageSystems,
@@ -80,7 +81,7 @@ angular.module('rainierApp')
                 }
 
             };
-            angular.extend(dataModel, viewModelService.newWizardViewModel(['select', 'attach']));
+            angular.extend(dataModel, viewModelService.newWizardViewModel(['select', 'attach', 'paths']));
 
             dataModel.selectModel = {
                 noAvailableArray: noAvailableArray,
@@ -354,35 +355,40 @@ angular.module('rainierApp')
                         selectedHostModeOption: hostModeOption,
                         enableZoning: false,
                         enableLunUnification: false,
-                        canSubmit: function () {
-                            return _.every(dataModel.attachModel.selectedVolumes, function (v) {
-                                return !v.lun || _.isFinite(v.lun);
-                            });
+                        canGoNext: function () {
+                            return true;
                         },
-                        submit: function () {
-                            if (!$scope.canSubmit) {
+                        next: function () {
+                            if (dataModel.attachModel.canGoNext && !dataModel.attachModel.canGoNext()) {
                                 return;
                             }
-                            var volumes = viewModelService.buildLunResources(dataModel.attachModel.selectedVolumes);
-                            var hosts = dataModel.attachModel.serverPortMapperModel.getPorts();
 
-                            var selectedHostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
-                            var payload = {
-                                storageSystemId: dataModel.selectedStorageSystem.storageSystemId,
-                                hostModeOptions: selectedHostModeOptions,
-                                volumes: volumes,
-                                ports: hosts,
-                                enableZoning: dataModel.attachModel.enableZoning,
-                                enableLunUnification: dataModel.attachModel.enableLunUnification
-                            };
-
-                            if (dataModel.attachModel.hostMode !== autoSelect) {
-                                payload.intendedImageType = dataModel.attachModel.hostMode;
-                            }
-
-                            orchestratorService.attachVolume(payload).then(function () {
-                                window.history.back();
+                            var serverIds = [];
+                            _.forEach(selectedServers, function(server){
+                                serverIds.push(server.serverId);
                             });
+                            var selectedHostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
+
+                            var autoPathSelectionPayload = {
+                                storageSystemId: dataModel.selectedStorageSystem.storageSystemId,
+                                hostMode: (dataModel.attachModel.hostMode === autoSelect) ? null : dataModel.attachModel.hostMode,
+                                hostModeOptions: (!selectedHostModeOptions || selectedHostModeOptions.length === 0) ? null : selectedHostModeOptions,
+                                serverIds: serverIds
+                            };
+                            orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
+                                attachVolumeService.setEditLunPage(dataModel,
+                                    dataModel.selectedStorageSystem.storageSystemId,
+                                    dataModel.attachModel.selectedVolumes,
+                                    selectedServers,
+                                    autoPathSelectionPayload.hostModeOptions,
+                                    ports,
+                                    result.pathResources);
+                                dataModel.goNext();
+                            }).finally(function(){
+                                dataModel.isWaiting = false;
+                            });
+
+                            dataModel.isWaiting = true;
                         },
                         previous: function() {
                             dataModel.goBack();

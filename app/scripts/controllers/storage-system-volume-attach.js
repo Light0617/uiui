@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
                                                            paginationService, queryService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
                                                            ShareDataService, $location, $routeParams, viewModelService,
-                                                           attachVolumeService, constantService, resourceTrackerService) {
+                                                           attachVolumeService, constantService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         $scope.canSubmit = true;
@@ -51,13 +51,14 @@ angular.module('rainierApp')
 
             var hosts = result.resources;
 
-            var dataModel = viewModelService.newWizardViewModel(['select', 'attach']);
+            var dataModel = viewModelService.newWizardViewModel(['select', 'attach', 'paths']);
 
             var storageSystem = {
                 storageSystemId: storageSystemId
             };
 
             angular.extend(dataModel, {
+                canSubmit: true,
                 selectedStorageSystem: storageSystem,
                 storageSystems: [storageSystem],
                 hosts: hosts,
@@ -110,6 +111,7 @@ angular.module('rainierApp')
                     paginationService.clearQuery();
                 });
             };
+
             dataModel.selectModel = {
                 confirmTitle: synchronousTranslateService.translate('host-attach-confirmation'),
                 confirmMessage: synchronousTranslateService.translate('host-attach-zero-selected'),
@@ -238,50 +240,44 @@ angular.module('rainierApp')
                     selectedHostModeOption: [999],
                     enableZoning: false,
                     enableLunUnification: false,
-                    canSubmit: function () {
-                        return _.every(dataModel.attachModel.selectedVolumes, function (v) {
-                            return !v.lun || _.isFinite(v.lun);
-                        });
-                    },
-                    submit: function () {
-                        if (!$scope.canSubmit) {
-                            return;
-                        }
-                        var volumes = viewModelService.buildLunResources(dataModel.attachModel.selectedVolumes);
-                        var hosts = dataModel.attachModel.serverPortMapperModel.getPorts();
-
-                        var payload = {
-                            storageSystemId: storageSystemId,
-                            hostModeOptions: attachVolumeService.getSelectedHostMode(dataModel),
-                            volumes: volumes,
-                            ports: hosts,
-                            enableZoning: dataModel.attachModel.enableZoning,
-                            enableLunUnification: dataModel.attachModel.enableLunUnification
-                        };
-
-                        if (dataModel.attachModel.hostMode !== autoSelect) {
-                            payload.intendedImageType = dataModel.attachModel.hostMode;
-                        }
-
-                        // Build reserved resources
-                        var reservedResourcesList = [];
-                        _.forEach(volumes, function (vol) {
-                            reservedResourcesList.push(vol.volumeId + '=' + resourceTrackerService.volume());
-                        });
-
-                        // Show popup if resource is present in resource tracker else redirect
-                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                            'Attach Volumes Confirmation', null, null, payload, orchestratorService.attachVolume);
-                    },
                     previous: function () {
                         dataModel.goBack();
-                    }
+                    },
+                    canGoNext: function () {
+                        return true;
+                    },
+                    next: function () {
+                        if (dataModel.attachModel.canGoNext && !dataModel.attachModel.canGoNext()) {
+                            return;
+                        }
+                        var selectedServers = _.where(dataModel.displayList, 'selected');
+                        dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
+                        var serverIds = [];
+                        _.forEach(dataModel.attachModel.serverPortMapperModel.servers, function(server){
+                            serverIds.push(server.serverId);
+                        });
+                        var autoPathSelectionPayload = {
+                            storageSystemId: storageSystemId,
+                            hostMode: dataModel.attachModel.hostMode,
+                            hostModeOptions: attachVolumeService.getSelectedHostMode(dataModel),
+                            serverIds: serverIds
+                        };
+                        orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
+                            attachVolumeService.setEditLunPage(dataModel, storageSystemId, selectedVolumes, dataModel.attachModel.serverPortMapperModel.servers, autoPathSelectionPayload.hostModeOptions, ports, result.pathResources);
+                            dataModel.goNext();
+                        }).finally(function(){
+                            dataModel.isWaiting = false;
+                        });
 
+                        dataModel.isWaiting = true;
+                   }
                 };
+
             });
             dataModel.checkSelectedHostModeOptions = function() {
                 attachVolumeService.checkSelectedHostModeOptions(dataModel);
             };
+
         });
 
         $scope.$watch(function ($scope) {

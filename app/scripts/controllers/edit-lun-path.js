@@ -254,10 +254,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
                     dataModel.goNext();
                 },
-                validation: true,
-                previous: function () {
-                    dataModel.goBack();
-                }
+                validation: true
             };
             setHostModeAndHostModeOptions(selectedHosts, dataModel.attachModel.defaultHostMode);
             angular.extend($scope.dataModel.pathModel, {

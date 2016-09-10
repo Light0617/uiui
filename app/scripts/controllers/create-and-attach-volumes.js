@@ -28,7 +28,7 @@ angular.module('rainierApp')
         }
 
         paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
-            var dataModel = viewModelService.newWizardViewModel(['create', 'attach', 'protect']);
+            var dataModel = viewModelService.newWizardViewModel(['create', 'attach', 'paths', 'protect']);
             dataModel.storageSystems = [];
             _.forEach(result, function (storageSystem) {
                 if (storageSystem.accessible) {
@@ -55,6 +55,7 @@ angular.module('rainierApp')
 
                 dataModel.storagePorts = resources;
             };
+            dataModel.canSubmit = true;
             $scope.dataModel = dataModel;
         });
 
@@ -121,7 +122,7 @@ angular.module('rainierApp')
                         storageSystemSelectable: false,
                         enableZoning: false,
                         enableLunUnification: false,
-                        storagePools: ports,
+                        storagePorts: ports,
                         selectedServers: selectedServers,
                         selectedHostModeOption: hostModeOption,
                         hostModes: hostModes,
@@ -130,10 +131,46 @@ angular.module('rainierApp')
                         serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
                         previous: function() {
                             $scope.dataModel.goBack();
-                        }
+                        },
+                        canGoNext: function () {
+                            return true;
+                        },
+                        next: function() {
+                            var serverIds = [];
+                            _.forEach(selectedServers, function(server){
+                                serverIds.push(server.serverId);
+                            });
+                            var hostModeOptions = attachVolumeService.getSelectedHostMode($scope.dataModel);
+                            var autoPathSelectionPayload = {
+                                storageSystemId: $scope.dataModel.selectedStorageSystem.storageSystemId,
+                                hostMode: (attachModel.hostMode === autoSelect) ? null : attachModel.hostMode,
+                                hostModeOptions: (!hostModeOptions || hostModeOptions.length ===0) ? null : hostModeOptions,
+                                serverIds: serverIds
+                            };
+                            orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
+                                attachVolumeService.setEditLunPage($scope.dataModel,
+                                    $scope.dataModel.selectedStorageSystem.storageSystemId,
+                                    attachModel.selectedVolumes,
+                                    selectedServers,
+                                    autoPathSelectionPayload.hostModeOptions,
+                                    attachModel.storagePorts,
+                                    result.pathResources,
+                                    true
+                                );
+                                $scope.dataModel.goNext();
+                            }).finally(function() {
+                                $scope.dataModel.isWaiting = false;
+                            });
 
+                            angular.extend($scope.dataModel.protectModel,
+                                {
+                                    selectedVolumes: attachModel.selectedVolumes
+                                });
+                            $scope.dataModel.isWaiting = true;
+                        }
                     };
                     $scope.dataModel.attachModel = attachModel;
+
                 }).finally(function(){
                     paginationService.clearQuery();
                 });
@@ -194,20 +231,16 @@ angular.module('rainierApp')
                     if (!skipProtection) {
                         replicationPayload = model.protectModel.getReplicationPayload();
                     }
-                    var selectedHostModeOptions = attachVolumeService.getSelectedHostMode($scope.dataModel);
-                    var payload = {
-                        storageSystemId: model.selectedStorageSystem.storageSystemId,
-                        hostModeOptions: selectedHostModeOptions,
-                        ports: model.attachModel.serverPortMapperModel.getPorts(),
-                        enableZoning: model.attachModel.enableZoning,
-                        enableLunUnification: model.attachModel.enableLunUnification,
-                        volumes: volumePayloads,
-                        skipProtection : skipProtection,
-                        replicationGroup :replicationPayload
-                    };
-                    if (model.attachModel.hostMode !== autoSelect) {
-                        payload.intendedImageType = model.attachModel.hostMode;
-                    }
+                    var payload = $scope.dataModel.pathModel.attachVolumesToServersPayload;
+
+                    angular.extend(payload,
+                        {
+                            volumes: volumePayloads,
+                            skipProtection : skipProtection,
+                            replicationGroup :replicationPayload
+                        }
+                    );
+
                     orchestratorService.createAttachProtectVolumes(payload).then(function() {
                         window.history.back();
                     });
@@ -275,7 +308,6 @@ angular.module('rainierApp')
                 }
                 return payload;
             };
-
 
             $scope.dataModel.protectModel = protectModel;
             filterCopyGroups($scope.dataModel.protectModel.replicationTechnology);
@@ -363,22 +395,6 @@ angular.module('rainierApp')
             };
             createModel.canGoNext = function() {
                 return volumesGroupsModel.isValid();
-            };
-        });
-
-        $scope.$watchGroup(['dataModel.attachModel', 'dataModel.protectModel'], function(vals) {
-            if (_.some(vals, function(v) {
-                    return !v;
-                })) {
-                return;
-            }
-
-            var protectModel = vals[1];
-            var attachModel = vals[0];
-            attachModel.next = function() {
-
-                protectModel.selectedVolumes = attachModel.selectedVolumes;
-                $scope.dataModel.goNext();
             };
         });
 

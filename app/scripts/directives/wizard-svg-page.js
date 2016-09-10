@@ -11,11 +11,12 @@ angular.module('rainierApp')
     .directive('wizardSvgPage', function ($timeout, d3service, wwnService) {
 
         var builder;
-        var selectedColor = 'red';
+        var selectedColor = '#265cb3';
         var unselectedColor = '#c0d667';
         var highlightedColor = 'orange';
         var originalPortColor = 'black';
         var newPathColor = '#3d84f5';
+        var pathPage = 'paths';
 
         var deleteSelected = function(pathModel){
             var i;
@@ -278,7 +279,7 @@ angular.module('rainierApp')
                 d3.select('body')
                     .on('keydown', function(){
                     // If "delete" or "backspace" key is clicked, delete the selected paths.
-                    if (d3.event.keyCode === 8 || d3.event.keyCode === 46) {
+                    if (dataModel.isStepActive(pathPage) && (d3.event.keyCode === 8 || d3.event.keyCode === 46)) {
                         deleteSelected(dataModel.pathModel);
                     }
                 });
