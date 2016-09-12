@@ -120,7 +120,7 @@ angular.module('rainierApp')
                                 {
                                     optionName: synchronousTranslateService.translate('tier-management'),
                                     optionAction: function () {
-                                        $location.path('/snmp-managers');
+                                        $location.path('/tier-management');
                                     }
                                 },
                                 {
@@ -132,7 +132,7 @@ angular.module('rainierApp')
                                 {
                                     optionName: synchronousTranslateService.translate('nav-bar-header-settings-snmp'),
                                     optionAction: function () {
-                                        $location.path('/tier-management');
+                                        $location.path('/snmp-managers');
                                     }
                                 },
                                 {

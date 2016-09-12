@@ -257,7 +257,7 @@ angular.module('rainierApp')
                         !_.find(dataModel.getSelectedItems(), function(item) {
                             return item.status === 'IN_USE' || item.status === 'UNSUPPORTED_ATTACHED' ||
                                 item.status === 'UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP' || item.nasBoot;
-                        })
+                        });
                 },
                 onClick: function () {
                     // Build reserved resources
