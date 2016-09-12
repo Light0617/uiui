@@ -253,11 +253,11 @@ angular.module('rainierApp')
                 confirmTitle: 'parity-group-delete-confirmation',
                 confirmMessage: 'parity-group-delete-selected-content',
                 enabled: function () {
-                    var parityGroupStatusesProhibitedDeletion = [
-                        'IN_USE', 'UNSUPPORTED_ATTACHED', 'UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP'];
                     return dataModel.anySelected() &&
                         !_.find(dataModel.getSelectedItems(), function(item) {
-                            return parityGroupStatusesProhibitedDeletion.includes(item.status) || item.nasBoot; });
+                            return item.status === 'IN_USE' || item.status === 'UNSUPPORTED_ATTACHED' ||
+                                item.status === 'UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP' || item.nasBoot;
+                        })
                 },
                 onClick: function () {
                     // Build reserved resources
