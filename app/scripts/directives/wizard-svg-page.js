@@ -59,7 +59,7 @@ angular.module('rainierApp')
             return pathIndex < dataModel.pathModel.originalPathLength;
         }
 
-        function setPathAttrs(path, dataModel, isNewPath){
+        function setPathAttrs(path, dataModel, isNewPath, svg){
             var selectedPath;
             path.attr('stroke-width', 3)
                 .attr('stroke', isNewPath ? newPathColor : unselectedColor)
@@ -80,6 +80,17 @@ angular.module('rainierApp')
                     }
                 })
                 .on('click', function () {
+                    //If in the middle of creating/changing a path, users should not be able to select a path.
+                    var line = svg.select('line[title="line-from-port"]');
+                    if (!line.empty()){
+                        return;
+                    } else {
+                        line = svg.select('line[title="line-from-wwn"]');
+                        if (!line.empty()){
+                            return;
+                        }
+                    }
+
                     selectedPath = d3.select(this);
                     var pathIndex = parseInt(selectedPath.attr('path-index'));
                     var currentPath = dataModel.pathModel.paths[pathIndex];
@@ -112,7 +123,7 @@ angular.module('rainierApp')
                     if (!pathIndex){
                         pathIndex = i;
                     } else {
-                        break;
+                        return null;
                     }
                 }
             }
@@ -197,7 +208,7 @@ angular.module('rainierApp')
                         parseInt(line.attr('y1')));
                 })
                 .attr('path-index', pathIndex ? pathIndex : dataModel.pathModel.paths.length);
-            setPathAttrs(path, dataModel, !pathIndex);
+            setPathAttrs(path, dataModel, !pathIndex, svg);
 
             // If 'path-index' attribute is set, we are modifying a path.
             if (pathIndex){
@@ -238,7 +249,7 @@ angular.module('rainierApp')
                         parseInt(circle.attr('cy')));
                 })
                 .attr('path-index', pathIndex ? pathIndex : dataModel.pathModel.paths.length);
-            setPathAttrs(path, dataModel, !pathIndex);
+            setPathAttrs(path, dataModel, !pathIndex, svg);
 
             // If 'path-index' is set, we are modifying a path.
             if (pathIndex) {
@@ -297,7 +308,7 @@ angular.module('rainierApp')
                         return i;
                     });
 
-                setPathAttrs(allPaths, dataModel);
+                setPathAttrs(allPaths, dataModel, false, svg);
 
                 // Draw the wwn side of the new path
                 svg.selectAll('g[title="server-wwn"]').on('click', function(){
