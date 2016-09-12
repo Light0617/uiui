@@ -10,7 +10,7 @@ angular.module('rainierApp')
     .directive('editLunPathToolbar', function () {
         return {
             scope: {
-                model: '=ngModel',
+                dataModel: '=ngModel',
                 select: '&'
             },
             templateUrl: 'views/edit-lun-path-toolbar.html',
