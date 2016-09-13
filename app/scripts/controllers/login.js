@@ -10,8 +10,6 @@
 angular.module('rainierApp')
     .controller('LoginCtrl', function ($scope, $compile, $location, authService, synchronousTranslateService) {
         $scope.model = {
-            company: synchronousTranslateService.translate('brand-company'),
-            product: synchronousTranslateService.translate('brand-rainier'),
             submitAction: function () {
                 authService.login($scope.model.username, $scope.model.password).then(
                     function () {
@@ -26,10 +24,21 @@ angular.module('rainierApp')
                     }
                 );
             },
-            userPlaceholder: synchronousTranslateService.translate('login-username-placeholder'),
-            passwdPlaceholder: synchronousTranslateService.translate('login-password-placeholder'),
-            failedMessage: synchronousTranslateService.translate('login-common-error'),
-            unauthorizedMessage: synchronousTranslateService.translate('login-unauthorized-error'),
             palette: ['#35665C', '#458B74', '#56AF8C', '#66D4A4']
         };
+
+        function watch(key, prop) {
+            $scope.$watch(function () {
+                return synchronousTranslateService.translate(key);
+            }, function (newVal) {
+                $scope.model[prop] = newVal;
+            });
+        }
+
+        watch('brand-company', 'company');
+        watch('brand-rainier', 'product');
+        watch('login-username-placeholder', 'userPlaceholder');
+        watch('login-password-placeholder', 'passwdPlaceholder');
+        watch('login-common-error', 'failedMessage');
+        watch('login-unauthorized-error', 'unauthorizedMessage');
     });
