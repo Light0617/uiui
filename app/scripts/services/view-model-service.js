@@ -295,7 +295,7 @@ angular.module('rainierApp')
                         suffix: vol.suffix,
                         capacity: diskSizeService.createDisplaySize(vol.size.value, vol.size.unit).value.toString(),
                         poolId: poolId,
-                        dkcDataSavingType: vol.dkcDataSavingType
+                        dkcDataSavingType: vol.dataSavingTypeValue
                     };
                 });
             };
