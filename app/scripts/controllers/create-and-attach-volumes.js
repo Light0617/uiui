@@ -170,25 +170,14 @@ angular.module('rainierApp')
 
         var subscriptionUpdateModel = viewModelService.newSubscriptionUpdateModel();
 
-        $scope.$watchGroup(['dataModel.selectedStorageSystem', 'dataModel.createModel.volumesGroupsModel.volumes'], function(vals) {
+        $scope.$watch('dataModel.createModel.volumesGroupsModel.volumes', function(volumeGroups) {
 
-            if (_.some(vals, function(v) {
-                    return !v;
-                })) {
-                return;
+            var arrayCopy = subscriptionUpdateModel.getUpdatedModel($scope.dataModel.selectedStorageSystem, volumeGroups);
+            if (arrayCopy) {
+                $timeout(function() {
+                    buildSummaryModel(arrayCopy);
+                });
             }
-            var storageSystem = vals[0];
-            var volumeGroups = vals[1];
-
-            var arrayCopy = subscriptionUpdateModel.getUpdatedModel(storageSystem, volumeGroups);
-            if (!arrayCopy) {
-                return;
-            }
-            $timeout(function() {
-                buildSummaryModel(arrayCopy);
-            });
-
-
         }, true);
 
         $scope.$watch('dataModel.copyGroups', function(copyGroups) {
