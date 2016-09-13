@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeCtrl', function ($scope, $routeParams, $timeout, $window, $location, orchestratorService,
                                                      synchronousTranslateService, objectTransformService, ShareDataService,
                                                      scrollDataSourceBuilderService, dataProtectionSettingsService, replicationService,
-                                                     replicationGroupsService, storageSystemVolumeService, paginationService) {
+                                                     replicationGroupsService, storageSystemVolumeService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
         $scope.volumeId = volumeId;
@@ -70,8 +70,14 @@ angular.module('rainierApp')
             };
 
             $scope.deleteConfirmOk = function () {
-                orchestratorService.deleteVolume($scope.model.storageSystemId, $scope.model.volumeId);
-                $location.path('storage-systems/' + $scope.model.storageSystemId + '/volumes');
+                // Build reserved resources
+                var reservedResourcesList = [];
+                var volIds = [$scope.model.volumeId];
+                reservedResourcesList.push($scope.model.volumeId + '=' + resourceTrackerService.volume());
+
+                // Show popup if resource is present in resource tracker else submit
+                resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                    'Delete Volume Confirmation', $scope.model.storageSystemId, volIds, null, orchestratorService.deleteVolume);
             };
 
             $scope.attachToHost = function () {
