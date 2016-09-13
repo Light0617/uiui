@@ -20,7 +20,7 @@
                 <text class="large-label" x="10" ng-attr-y="{{host.startHeight + 45}}">{{host.serverName}}</text>
                 <text class="os-type md-label" x="10" ng-attr-y="{{host.startHeight + 60}}">{{host.osTypeDisplayValue}}</text>
                 <text class="host-mode-options md-label" x="10" ng-attr-y="{{host.startHeight + 75}}">{{host.allHostModeOptionsString.length > 10 ? host.allHostModeOptionsString.substring(0,9) + '...' : host.allHostModeOptionsString}}
-                    <title>{{host.allHostModeOptionsString}} {{host.isSelected}}</title>
+                    <title>{{host.allHostModeOptionsString}}</title>
                 </text>
                 <g title="server-wwn" ng-repeat="wwn in host.displayWWNs" attr-wwn="{{wwn}}">
                     <!--WWN icon-->

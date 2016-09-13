@@ -19,6 +19,9 @@ angular.module('rainierApp')
         var INVALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-invalid-tooltip');
         var GET_PORTS_PATH = 'storage-ports';
         var GET_HOSTS_PATH = 'compute/servers';
+        var GET_HOST_GROUPS_PATH = 'host-groups';
+        var dataModel = viewModelService.newWizardViewModel(['select', 'attach', 'paths']);
+        var enableSelectPageNextButton = false;
 
         var selectedVolumes = ShareDataService.pop('selectedVolumes') || [];
         _.forEach(selectedVolumes, function(volume) {
@@ -41,6 +44,41 @@ angular.module('rainierApp')
 
             host.metaData[0].details.push(host.attachedVolumeCount + ' volume(s)');
         }
+        function setHostModeAndHostModeOptions(selectedServers, defaultHostMode, ports) {
+            var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
+            var queryString = paginationService.getQueryStringForList(wwpns);
+            paginationService.clearQuery();
+            queryService.setQueryMapEntry('hbaWwns', queryString);
+            paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+                var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
+                $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
+                $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
+                $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
+                $scope.dataModel.attachModel.hostGroups = hostGroupResults;
+
+                $scope.dataModel.attachModel.canGoNext = function () {
+                    return true;
+                };
+                $scope.dataModel.attachModel.next = function () {
+                    if ($scope.dataModel.attachModel.canGoNext && !$scope.dataModel.attachModel.canGoNext()) {
+                        return;
+                    }
+
+                    attachVolumeService.setEditLunPage(
+                        $scope.dataModel, storageSystemId,
+                        selectedVolumes,
+                        $scope.dataModel.attachModel.serverPortMapperModel.servers,
+                        attachVolumeService.getSelectedHostMode($scope.dataModel),
+                        ports,
+                        $scope.dataModel.attachModel.hostGroups);
+
+                    $scope.dataModel.goNext();
+                };
+
+            }).finally(function(){
+                paginationService.clearQuery();
+            });
+        }
 
         paginationService.get(null, GET_HOSTS_PATH, handleHost, true).then(function (result) {
 
@@ -50,8 +88,6 @@ angular.module('rainierApp')
             });
 
             var hosts = result.resources;
-
-            var dataModel = viewModelService.newWizardViewModel(['select', 'attach', 'paths']);
 
             var storageSystem = {
                 storageSystemId: storageSystemId
@@ -97,26 +133,11 @@ angular.module('rainierApp')
 
             });
 
-            var setHostModeAndHostModeOptions = function(selectedServers, defaultHostMode) {
-                var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
-                var queryString = paginationService.getQueryStringForList(wwpns);
-                paginationService.clearQuery();
-                queryService.setQueryMapEntry('hbaWwns', queryString);
-                paginationService.getAllPromises(null, 'host-groups', false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
-                    var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
-                    $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
-                    $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
-                    $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
-                }).finally(function(){
-                    paginationService.clearQuery();
-                });
-            };
-
             dataModel.selectModel = {
                 confirmTitle: synchronousTranslateService.translate('host-attach-confirmation'),
                 confirmMessage: synchronousTranslateService.translate('host-attach-zero-selected'),
                 canGoNext: function () {
-                    return dataModel.getSelectedHostCount() > 0;
+                    return dataModel.getSelectedHostCount() > 0 && enableSelectPageNextButton;
                 },
                 next: function () {
                     if (dataModel.selectModel.canGoNext && !dataModel.selectModel.canGoNext()) {
@@ -124,14 +145,14 @@ angular.module('rainierApp')
                     }
                     var selectedServers = _.where(dataModel.displayList, 'selected');
                     dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
-                    setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode);
+                    setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode, dataModel.attachModel.storagePorts);
                     dataModel.goNext();
                 },
                 validation: true,
                 itemSelected: false
             };
 
-            dataModel.process = function(resources){
+            dataModel.process = function(resources, token){
                 // Only support for fibre port for now
                 resources = _.filter(resources, function(storagePort) {
                     return storagePort.type === 'FIBRE';
@@ -142,6 +163,10 @@ angular.module('rainierApp')
                 });
 
                 dataModel.storagePorts = dataModel.storagePorts.concat(resources);
+
+                if (token === null) {
+                    afterGetAllPorts(dataModel.storagePorts);
+                }
             };
             dataModel.storagePorts = [];
             dataModel.getResources = function(){
@@ -216,7 +241,7 @@ angular.module('rainierApp')
 
         var autoSelect = 'AUTO';
 
-        $scope.$watch('dataModel.storagePorts', function (ports) {
+        function afterGetAllPorts(ports) {
             if (!ports) {
                 return;
             }
@@ -242,44 +267,17 @@ angular.module('rainierApp')
                     enableLunUnification: false,
                     previous: function () {
                         dataModel.goBack();
-                    },
-                    canGoNext: function () {
-                        return true;
-                    },
-                    next: function () {
-                        if (dataModel.attachModel.canGoNext && !dataModel.attachModel.canGoNext()) {
-                            return;
-                        }
-                        var selectedServers = _.where(dataModel.displayList, 'selected');
-                        dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
-                        var serverIds = [];
-                        _.forEach(dataModel.attachModel.serverPortMapperModel.servers, function(server){
-                            serverIds.push(server.serverId);
-                        });
-                        var hostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
-                        var autoPathSelectionPayload = {
-                            storageSystemId: storageSystemId,
-                            hostMode: (dataModel.attachModel.hostMode === autoSelect) ? null : dataModel.attachModel.hostMode,
-                            hostModeOptions: (!hostModeOptions || hostModeOptions.length === 0) ? null : hostModeOptions,
-                            serverIds: serverIds
-                        };
-                        orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
-                            attachVolumeService.setEditLunPage(dataModel, storageSystemId, selectedVolumes, dataModel.attachModel.serverPortMapperModel.servers, autoPathSelectionPayload.hostModeOptions, ports, result.pathResources);
-                            dataModel.goNext();
-                        }).finally(function(){
-                            dataModel.isWaiting = false;
-                        });
-
-                        dataModel.isWaiting = true;
-                   }
+                    }
                 };
+
+                enableSelectPageNextButton = true;
 
             });
             dataModel.checkSelectedHostModeOptions = function() {
                 attachVolumeService.checkSelectedHostModeOptions(dataModel);
             };
 
-        });
+        }
 
         $scope.$watch(function ($scope) {
             if ($scope.dataModel && $scope.dataModel.displayList) {

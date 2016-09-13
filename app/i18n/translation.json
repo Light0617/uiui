@@ -111,7 +111,7 @@
     "common-label-partially-hosts": "Partially",
     "common-label-breakdown-hosts": "Breakdown of Server Statuses",
     "common-label-nas-boot": "NAS Boot",
-    "common-label-suggest-reset": "Suggest/Reset",
+    "common-label-suggest": "Suggest",
     "common-label-select-none": "Select None",
     "common-label-delete-selected": "Delete Selected",
     "common-hosts": "Servers",

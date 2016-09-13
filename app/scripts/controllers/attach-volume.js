@@ -363,32 +363,16 @@ angular.module('rainierApp')
                                 return;
                             }
 
-                            var serverIds = [];
-                            _.forEach(selectedServers, function(server){
-                                serverIds.push(server.serverId);
-                            });
                             var selectedHostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
+                            attachVolumeService.setEditLunPage(dataModel,
+                                dataModel.selectedStorageSystem.storageSystemId,
+                                dataModel.attachModel.selectedVolumes,
+                                selectedServers,
+                                (!selectedHostModeOptions || selectedHostModeOptions.length === 0) ? null : selectedHostModeOptions,
+                                ports,
+                                hostGroupResults);
 
-                            var autoPathSelectionPayload = {
-                                storageSystemId: dataModel.selectedStorageSystem.storageSystemId,
-                                hostMode: (dataModel.attachModel.hostMode === autoSelect) ? null : dataModel.attachModel.hostMode,
-                                hostModeOptions: (!selectedHostModeOptions || selectedHostModeOptions.length === 0) ? null : selectedHostModeOptions,
-                                serverIds: serverIds
-                            };
-                            orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
-                                attachVolumeService.setEditLunPage(dataModel,
-                                    dataModel.selectedStorageSystem.storageSystemId,
-                                    dataModel.attachModel.selectedVolumes,
-                                    selectedServers,
-                                    autoPathSelectionPayload.hostModeOptions,
-                                    ports,
-                                    result.pathResources);
-                                dataModel.goNext();
-                            }).finally(function(){
-                                dataModel.isWaiting = false;
-                            });
-
-                            dataModel.isWaiting = true;
+                            dataModel.goNext();
                         },
                         previous: function() {
                             dataModel.goBack();

@@ -12,8 +12,9 @@ angular.module('rainierApp')
         var autoSelect = 'AUTO';
         var idCoordinates = {};
         var wwpnServerIdMap = {};
+        var hostModeOptionAutoSelect = 999;
 
-        function setPortCoordinates(storagePorts) {
+        function setPortCoordinates(storagePorts, idCoordinates) {
             for (var i =0; i< storagePorts.length; ++i){
                 var point = {
                     x: 870,
@@ -27,15 +28,21 @@ angular.module('rainierApp')
         function getAllHostModeOptionsString(hostModeOptions) {
             var allHostModeOptionString = '';
             _.forEach(hostModeOptions, function(hostModeOption) {
+                if (hostModeOption === hostModeOptionAutoSelect){
+                    return;
+                }
+
                 if (allHostModeOptionString !== ''){
                     allHostModeOptionString += ', ';
                 }
 
                 allHostModeOptionString += hostModeOption;
             });
+
+            return allHostModeOptionString;
         }
 
-        function setWwnCoordinates(selectedHosts, hostModeOptions){
+        function setWwnCoordinates(selectedHosts, hostModeOptions, idCoordinates){
             var previousHeight = 0;
             var bufferHeight = 5;
             _.forEach(selectedHosts, function(host){
@@ -46,7 +53,7 @@ angular.module('rainierApp')
 
                 host.allHostModeOptionsString = getAllHostModeOptionsString(hostModeOptions);
                 host.startHeight = previousHeight;
-                previousHeight += (length && length > 4) ? length* 25 + bufferHeight : 100;
+                previousHeight += ((length && length > 4) ? length* 25 : 100) + bufferHeight;
 
                 host.isSelected = false;
 
@@ -68,19 +75,6 @@ angular.module('rainierApp')
 
 
             });
-        }
-
-        function convertPathResources(pathResources){
-            var paths = [];
-            _.forEach(pathResources, function(pathResource){
-                var path = {
-                    storagePortId: pathResource.portId,
-                    serverWwn: pathResource.serverWwn
-                };
-                paths.push(path);
-            });
-
-            return paths;
         }
 
         function updateHostModeOptions(hostModeOptions, dataModel) {
@@ -208,11 +202,30 @@ angular.module('rainierApp')
             return payload;
         }
 
+        function getPathsFromHostGroups(hostGroups, idCoordinates){
+            var paths = [];
+            _.forEach(hostGroups, function(hostGroup){
+                _.forEach(hostGroup.hbaWwns, function(hbaWwn){
+                    if (idCoordinates.hasOwnProperty(hbaWwn)){
+                        var path = {
+                            storagePortId: hostGroup.storagePortId,
+                            serverWwn: hbaWwn
+                        };
+                        paths.push(path);
+                    }
+                });
+            });
+
+            return paths;
+        }
+
         var setEditLunPage = function(dataModel, storageSystemId, selectedVolumes, selectedHosts,
-                                      hostModeOptions, storagePorts, originalAllPaths, isCreateAndAttach) {
-            setPortCoordinates(storagePorts);
-            setWwnCoordinates(selectedHosts, hostModeOptions);
-            originalAllPaths = convertPathResources(originalAllPaths);
+                                      hostModeOptions, storagePorts, hostGroups, isCreateAndAttach) {
+            idCoordinates = {};
+            wwpnServerIdMap = {};
+            setPortCoordinates(storagePorts, idCoordinates);
+            setWwnCoordinates(selectedHosts, hostModeOptions, idCoordinates);
+            var originalAllPaths = getPathsFromHostGroups(hostGroups, idCoordinates);
 
             dataModel.pathModel = {
                 selectedVolumes: selectedVolumes,
@@ -222,6 +235,7 @@ angular.module('rainierApp')
                 itemSelected: true,
                 paths: originalAllPaths,
                 originalPathLength: originalAllPaths.length,
+                idCoordinates: idCoordinates,
                 getPath: getPath,
                 createPath: createPath,
                 previous: function () {
@@ -295,6 +309,9 @@ angular.module('rainierApp')
             getMatchedHostModeOption: getMatchedHostModeOption,
             getSelectedServerWwpns: getSelectedServerWwpns,
             getMatchedHostMode: getMatchedHostMode,
-            setEditLunPage: setEditLunPage
+            setEditLunPage: setEditLunPage,
+            setWwnCoordinates: setWwnCoordinates,
+            getAllHostModeOptionsString: getAllHostModeOptionsString,
+            createPath: createPath
         };
     });

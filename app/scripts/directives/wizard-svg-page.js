@@ -8,7 +8,7 @@
 'use strict';
 
 angular.module('rainierApp')
-    .directive('wizardSvgPage', function ($timeout, d3service, wwnService) {
+    .directive('wizardSvgPage', function ($timeout, d3service, wwnService, attachVolumeService, orchestratorService) {
 
         var builder;
         var selectedColor = '#265cb3';
@@ -17,6 +17,8 @@ angular.module('rainierApp')
         var originalPortColor = 'black';
         var newPathColor = '#3d84f5';
         var pathPage = 'paths';
+        var autoSelect = 'AUTO';
+        var svg;
 
         var deleteSelected = function(pathModel){
             var i;
@@ -53,6 +55,77 @@ angular.module('rainierApp')
             }
 
         };
+
+        function getPathMap(paths){
+            var pathMap = {};
+            var key;
+            _.forEach(paths, function(path){
+                // If the path is deleted, we should still draw the suggested path if it is overlapping with the deleted path.
+                if (path.deleted === true){
+                    return;
+                }
+                key = path.serverWwn + ',' + path.storagePortId;
+                if (!pathMap.hasOwnProperty(key)){
+                    pathMap[key] = true;
+                }
+            });
+
+            return pathMap;
+        }
+
+        function showSuggest(dataModel){
+
+            var serverIds = [];
+            _.forEach(dataModel.pathModel.selectedHosts, function(server){
+                serverIds.push(server.serverId);
+            });
+            var selectedHostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
+
+            var autoPathSelectionPayload = {
+                storageSystemId: dataModel.selectedStorageSystem.storageSystemId,
+                hostMode: (dataModel.attachModel.hostMode === autoSelect) ? null : dataModel.attachModel.hostMode,
+                hostModeOptions: (!selectedHostModeOptions || selectedHostModeOptions.length === 0) ? null : selectedHostModeOptions,
+                serverIds: serverIds
+            };
+            orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
+                // Add the suggested paths to existing paths
+                //
+                var pathMap = getPathMap(dataModel.pathModel.paths);
+
+                _.forEach(result.pathResources, function(pathResource){
+                    // When the suggested path already exists in the existing path, the suggested path is not added into
+                    // the dataModel.pathModel.paths.
+                    if (pathMap.hasOwnProperty(pathResource.serverWwn + ',' + pathResource.portId)){
+                        return;
+                    }
+
+                    var wwnPoint = dataModel.pathModel.idCoordinates[pathResource.serverWwn];
+                    var portPoint = dataModel.pathModel.idCoordinates[pathResource.portId];
+                    var newPath = d3.select('g[title="path-wwn-port"]')
+                        .append('path')
+                        .attr('d', function () {
+                            return dataModel.pathModel.createPath(
+                                wwnPoint.x,
+                                wwnPoint.y,
+                                portPoint.x,
+                                portPoint.y);
+                        })
+                        .attr('path-index', dataModel.pathModel.paths.length);
+                    setPathAttrs(newPath, dataModel, true, svg);
+
+                    dataModel.pathModel.paths.push({
+                        storagePortId: pathResource.portId,
+                        serverWwn: pathResource.serverWwn
+                    });
+
+                });
+
+            }).finally(function(){
+                dataModel.isWaiting = false;
+            });
+
+            dataModel.isWaiting = true;
+        }
 
         function isExistingPath(currentPath, dataModel){
             var pathIndex = parseInt(currentPath.attr('path-index'));
@@ -119,7 +192,7 @@ angular.module('rainierApp')
             var path;
             for (i = 0; i < paths.length; ++i){
                 path = paths[i];
-                if (path.selected === true){
+                if (path.selected === true && !path.deleted){
                     if (!pathIndex){
                         pathIndex = i;
                     } else {
@@ -216,7 +289,7 @@ angular.module('rainierApp')
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
-                    serverWwn: wwnText
+                    serverWwn: wwnService.removeSymbol(wwnText)
                 });
             }
 
@@ -257,7 +330,7 @@ angular.module('rainierApp')
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
-                    serverWwn: wwn
+                    serverWwn: wwnService.removeSymbol(wwn)
                 });
             }
 
@@ -265,7 +338,7 @@ angular.module('rainierApp')
         }
 
         builder = {
-            _buildTopologicalEditor: function (d3, svg, dataModel) {
+            _buildTopologicalEditor: function (d3, selectedSvg, dataModel) {
                 var circle;
                 var cx;
                 var cy;
@@ -284,6 +357,7 @@ angular.module('rainierApp')
                 if (!d3.select('path[path-index]').empty()) {
                     return;
                 }
+                svg = selectedSvg;
                 g = svg.append('g')
                     .attr('title', 'path-wwn-port');
 
@@ -435,10 +509,11 @@ angular.module('rainierApp')
             link: function postLink(scope) {
                 scope.dataModel.pathModel.deleteSelected = deleteSelected;
                 scope.dataModel.pathModel.selectNone = selectNone;
+                scope.dataModel.pathModel.showSuggest = showSuggest;
 
                 d3service.d3().then(function (d3) {
 
-                    var svg = d3.select('#topology-editor');
+                    var selectedSvg = d3.select('#topology-editor');
 
                     scope.$watch(function () {
                         return scope.dataModel;
@@ -452,7 +527,7 @@ angular.module('rainierApp')
                             return;
                         }
 
-                        builder._buildTopologicalEditor(d3, svg, dataModel);
+                        builder._buildTopologicalEditor(d3, selectedSvg, dataModel);
                     };
                 });
             }

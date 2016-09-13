@@ -136,37 +136,23 @@ angular.module('rainierApp')
                             return true;
                         },
                         next: function() {
-                            var serverIds = [];
-                            _.forEach(selectedServers, function(server){
-                                serverIds.push(server.serverId);
-                            });
                             var hostModeOptions = attachVolumeService.getSelectedHostMode($scope.dataModel);
-                            var autoPathSelectionPayload = {
-                                storageSystemId: $scope.dataModel.selectedStorageSystem.storageSystemId,
-                                hostMode: (attachModel.hostMode === autoSelect) ? null : attachModel.hostMode,
-                                hostModeOptions: (!hostModeOptions || hostModeOptions.length ===0) ? null : hostModeOptions,
-                                serverIds: serverIds
-                            };
-                            orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
-                                attachVolumeService.setEditLunPage($scope.dataModel,
-                                    $scope.dataModel.selectedStorageSystem.storageSystemId,
-                                    attachModel.selectedVolumes,
-                                    selectedServers,
-                                    autoPathSelectionPayload.hostModeOptions,
-                                    attachModel.storagePorts,
-                                    result.pathResources,
-                                    true
-                                );
-                                $scope.dataModel.goNext();
-                            }).finally(function() {
-                                $scope.dataModel.isWaiting = false;
-                            });
+                            attachVolumeService.setEditLunPage($scope.dataModel,
+                                $scope.dataModel.selectedStorageSystem.storageSystemId,
+                                attachModel.selectedVolumes,
+                                selectedServers,
+                                (!hostModeOptions || hostModeOptions.length ===0) ? null : hostModeOptions,
+                                attachModel.storagePorts,
+                                hostGroupResults,
+                                true
+                            );
 
                             angular.extend($scope.dataModel.protectModel,
                                 {
                                     selectedVolumes: attachModel.selectedVolumes
                                 });
-                            $scope.dataModel.isWaiting = true;
+
+                            $scope.dataModel.goNext();
                         }
                     };
                     $scope.dataModel.attachModel = attachModel;

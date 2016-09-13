@@ -22,6 +22,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
     var GET_PORTS_PATH = 'storage-ports';
     var GET_HOST_GROUPS_PATH = 'host-groups';
+    var autoSelect = 'AUTO';
+    var hostModeOptionAutoSelect = 999;
     var idCoordinates = {};
     var volumeIdMap = {};
     var originalPaths;
@@ -55,32 +57,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         volumeIdMap[volume.volumeId] = volume;
     });
 
-    function getAllHostModeOptionsString(volumes){
-        var hostModeOptionSet = {};
-        _.forEach(volumes, function(volume){
-            _.forEach(volume.paths, function(path){
-                _.forEach(path.hostModeOptions, function(hostModeOption){
-                    if(!hostModeOptionSet.hasOwnProperty(hostModeOption)){
-                        hostModeOptionSet[hostModeOption] = true;
-                    }
-                });
-            });
-        });
-
-        var allHostModeOptionString = '';
-        for (var property in hostModeOptionSet){
-            if (hostModeOptionSet.hasOwnProperty(property)){
-                if (allHostModeOptionString !== ''){
-                    allHostModeOptionString += ', ';
-                }
-
-                allHostModeOptionString += property;
-            }
-        }
-
-        return allHostModeOptionString;
-    }
-
     function setPortCoordinates(storagePorts) {
         for (var i =0; i< storagePorts.length; ++i){
             var point = {
@@ -93,7 +69,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     }
 
     function getPathsFromHostGroups(hostGroups){
-        var paths;
+        var paths = [];
         _.forEach(hostGroups, function(hostGroup){
             var i;
             var foundLun = false;
@@ -111,7 +87,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
            _.forEach(hostGroup.hbaWwns, function(hbaWwn){
                if (idCoordinates.hasOwnProperty(hbaWwn)){
                    // Only store the luns, which contain any selected volumeId, in the path.
-                   paths = [];
+
                    _.forEach(hostGroup.luns, function(lun){
                        if (volumeIdMap.hasOwnProperty(lun.volumeId)){
                            luns.push();
@@ -130,32 +106,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
         return paths;
     }
-
-    var previousHeight = 0;
-    var bufferHeight = 5;
-    _.forEach(selectedHosts, function(host){
-        var j;
-        var wwnCoordinates = [];
-        var length = host.wwpns.length;
-        host.allHostModeOptionsString = getAllHostModeOptionsString(selectedVolumes);
-        host.startHeight = previousHeight;
-        previousHeight += (length && length > 4) ? length* 25 + bufferHeight : 100;
-
-        host.isSelected = false;
-
-        // Calculate the coordinates of all the wwn icons of each host so that the html can easily use it.
-
-        for (j = 0; j < length; ++j) {
-            var point = {
-                x: 232,
-                y: host.startHeight + 13 + j*25
-            };
-
-            idCoordinates[host.wwpns[j]] = point;
-            wwnCoordinates.push(point);
-        }
-        host.wwnCoordinates = wwnCoordinates;
-    });
 
     angular.extend(dataModel, {
         selectedStorageSystem: storageSystem,
@@ -206,20 +156,24 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
     $scope.dataModel = dataModel;
 
-    var autoSelect = 'AUTO';
-
     function getPath(path){
-        return createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
+        return attachVolumeService.createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
             idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
     }
 
-    function createPath(x1, y1, x2, y2) {
-        var d = 'M ' + x1 + ' ' + y1 + ' ';
-        d += 'L ' + (x1 + 50) + ' ' + y1 + ' ';
-        d += 'L ' + (x2 - 50) + ' ' + y2 + ' ';
-        d += 'L ' + x2 + ' ' + y2 + ' ';
+    function filterAutoSelect(hostModeOptions){
+        if (!hostModeOptions){
+            return null;
+        }
 
-        return d;
+        var options = [];
+        _.forEach(hostModeOptions, function(option) {
+            if (option !== hostModeOptionAutoSelect){
+                options.push(option) ;
+            }
+        });
+
+        return (options.length === 0) ? null : options;
     }
 
     function setAllModels() {
@@ -232,7 +186,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 noAvailableArray: false,
                 itemSelected: true,
                 storageSystemSelectable: false,
-                lastSelectedHostModeOption: [999],
+                lastSelectedHostModeOption: [hostModeOptionAutoSelect],
                 selectedVolumes: selectedVolumes,
                 selectedServers: selectedHosts,
                 storagePorts: dataModel.storagePorts,
@@ -241,7 +195,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 hostMode: hostModes[0],
                 hostModeOptions: results,
                 serverPortMapperModel: viewModelService.newServerPortMapperModel(dataModel.storagePorts, selectedHosts),
-                selectedHostModeOption: [999],
+                selectedHostModeOption: [hostModeOptionAutoSelect],
                 enableZoning: false,
                 enableLunUnification: false,
                 canGoNext: function () {
@@ -252,18 +206,23 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                         return;
                     }
 
+                    // Update the host mode options before go to next page
+                    _.forEach($scope.dataModel.pathModel.selectedHosts, function(host){
+                        host.allHostModeOptionsString = attachVolumeService.getAllHostModeOptionsString($scope.dataModel.attachModel.selectedHostModeOption);
+                    });
+
                     dataModel.goNext();
                 },
                 validation: true
             };
-            setHostModeAndHostModeOptions(selectedHosts, dataModel.attachModel.defaultHostMode);
+
             angular.extend($scope.dataModel.pathModel, {
                 selectedVolumes: selectedVolumes,
                 selectedHosts: selectedHosts,
                 storagePorts: dataModel.storagePorts,
                 validation: true,
                 getPath: getPath,
-                createPath: createPath,
+                createPath: attachVolumeService.createPath,
                 previous: function () {
                     dataModel.goBack();
                 },
@@ -357,17 +316,24 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
                     }
 
-                    var payload = {
-                        enableZoning: $scope.dataModel.attachModel.enableZoning,
-                        hostMode: $scope.dataModel.attachModel.hostMode,
-                        hostModeOptions: $scope.dataModel.attachModel.selectedHostModeOption,
-                        updates: updates
-                    };
+                    // Currently the api requires the updates to be some value to find the associated host groups to edit.
+                    // So if the updates has no value, we don't call the edit-lun-path api.
+                    if (updates && updates.length > 0) {
+                        var hostMode = $scope.dataModel.attachModel.hostMode;
+                        var payload = {
+                            enableZoning: $scope.dataModel.attachModel.enableZoning,
+                            hostMode: hostMode === autoSelect ? null : hostMode,
+                            hostModeOptions: filterAutoSelect($scope.dataModel.attachModel.selectedHostModeOption),
+                            updates: updates
+                        };
 
-                    orchestratorService.editLunPaths(payload);
+                        orchestratorService.editLunPaths(payload);
+                    }
                     window.history.back();
                 }
             });
+            attachVolumeService.setWwnCoordinates($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.selectedHostModeOption, idCoordinates);
+            setHostModeAndHostModeOptions($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.defaultHostMode);
         });
 
         dataModel.checkSelectedHostModeOptions = function() {
