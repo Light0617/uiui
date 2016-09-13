@@ -256,10 +256,11 @@ angular.module('rainierApp')
                         _.forEach(dataModel.attachModel.serverPortMapperModel.servers, function(server){
                             serverIds.push(server.serverId);
                         });
+                        var hostModeOptions = attachVolumeService.getSelectedHostMode(dataModel);
                         var autoPathSelectionPayload = {
                             storageSystemId: storageSystemId,
-                            hostMode: dataModel.attachModel.hostMode,
-                            hostModeOptions: attachVolumeService.getSelectedHostMode(dataModel),
+                            hostMode: (dataModel.attachModel.hostMode === autoSelect) ? null : dataModel.attachModel.hostMode,
+                            hostModeOptions: (!hostModeOptions || hostModeOptions.length === 0) ? null : hostModeOptions,
                             serverIds: serverIds
                         };
                         orchestratorService.autoPathSelect(autoPathSelectionPayload).then(function(result){
