@@ -111,8 +111,9 @@
                         {{settings.getDisplayValue(item)}}</p>
                 </div>
             </div>
-            <ng-include ng-if="item.type === 'GAD'" src="'views/inventory-templates/storage-system-volume-gad-pairs-list-details.html'" ng-show="item.opened" ng-repeat-end></ng-include>
-            <ng-include ng-if="item.type !== 'GAD'" src="'views/inventory-templates/storage-system-volume-list-details.html'" ng-show="item.opened" ng-repeat-end></ng-include>
+            <ng-include ng-if="item.type === 'GAD'" src="'views/inventory-templates/storage-system-volume-gad-pairs-list-details.html'" ng-show="item.opened"></ng-include>
+            <ng-include ng-if="item.type !== 'GAD'" src="'views/inventory-templates/storage-system-volume-list-details.html'" ng-show="item.opened"></ng-include>
+            <div ng-repeat-end></div>
         </div>
 
 
