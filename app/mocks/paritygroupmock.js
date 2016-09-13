@@ -123,6 +123,8 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
         var subTier = _.sample(tier.subTiers);
         var totalCapacity = mockUtils.getCapacity(100, 200);
         var physicalCapacity = totalCapacity / 8;
+        var availableCapacity = mockUtils.getCapacity(50, 80);
+        var usedCapacity = totalCapacity - availableCapacity;
         var statuses = ['AVAILABLE', 'FORMATTING', 'QUICK_FORMATTING', 'IN_USE', 'UNINITIALIZED', 'UNSUPPORTED_ATTACHED', 'UNSUPPORTED_INACCESSIBLE_RESOURCEGROUP'];
         var encryption = [true, false];
         var level = _.sample(raidConfigs);
@@ -142,8 +144,9 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
             status: status,
             totalCapacityInBytes: totalCapacity,
             uninitializedCapacityInBytes: mockUtils.getCapacity(0, 50),
-            availableCapacityInBytes: mockUtils.getCapacity(50, 80),
+            availableCapacityInBytes: availableCapacity,
             physicalCapacityInBytes: physicalCapacity,
+            usagePercentage: Math.round(usedCapacity * 100 / totalCapacity),
             encryption: _.sample(encryption),
             compression: compression,
             nasBoot: mockUtils.trueOrFalse()

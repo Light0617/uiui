@@ -145,7 +145,7 @@ angular.module('rainierApp')
             dataModel.gridSettings = [
                 {
                     title: 'storage-systems-serial-number',
-                    sizeClass: 'sixth',
+                    sizeClass: 'sixteenth',
                     sortField: 'storageSystemId',
                     getDisplayValue: function (item) {
                         return item.storageSystemId;
@@ -173,7 +173,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'storage-systems-model',
-                    sizeClass: 'sixth',
+                    sizeClass: 'twelfth',
                     sortField: 'model',
                     getDisplayValue: function (item) {
                         return item.model;

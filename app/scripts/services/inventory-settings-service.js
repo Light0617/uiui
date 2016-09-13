@@ -21,7 +21,7 @@ angular.module('rainierApp')
 
             dataModel.gridSettings = [{
                 title: 'ID',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'volumeId',
                 getDisplayValue: function(item) {
                     return item.volumeId;
@@ -30,7 +30,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'storage-systems-serial-number',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'storageSystemId',
                 getDisplayValue: function(item) {
                     return item.storageSystemId;
@@ -46,7 +46,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'data-protection-type',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'dataProtectionSummary.replicationType',
                 getDisplayValue: function(item) {
                     return item.displayedDpType;
@@ -54,7 +54,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'data-protection-status',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'dataProtectionSummary.hasFailures',
                 getDisplayValue: function(item) {
                     return item.dpMonitoringStatus;
@@ -69,7 +69,7 @@ angular.module('rainierApp')
                 }
             }, {
                 title: 'common-label-total',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
 
                 sortField: 'size',
                 getDisplayValue: function(item) {
@@ -79,7 +79,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'common-label-free',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'availableCapacity',
                 getDisplayValue: function(item) {
                     return item.availableCapacity;
@@ -88,7 +88,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'common-label-used',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'usedCapacity',
                 getDisplayValue: function(item) {
                     return item.usedCapacity;

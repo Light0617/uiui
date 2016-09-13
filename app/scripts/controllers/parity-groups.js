@@ -302,7 +302,7 @@ angular.module('rainierApp')
             dataModel.gridSettings = [
                 {
                     title: 'ID',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'eighteenth',
                     sortField: 'parityGroupId',
                     getDisplayValue: function (item) {
                         return item.parityGroupId;
@@ -312,7 +312,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'Status',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
                     sortField: 'status',
                     getDisplayValue: function (item) {
                         return item.status;
@@ -330,7 +330,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'Disk Type',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
                     sortField: 'diskType',
                     getDisplayValue: function (item) {
                         return item.diskType;
@@ -339,7 +339,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'common-label-total',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
 
                     sortField: 'total.value',
                     getDisplayValue: function (item) {
@@ -350,7 +350,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'parity-group-uninitialized-capacity',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
                     sortField: 'uninitialized.value',
                     getDisplayValue: function (item) {
                         return item.uninitialized;
@@ -360,7 +360,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'parity-group-initialized-capacity',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
                     sortField: 'free.value',
                     getDisplayValue: function (item) {
                         return item.free;
@@ -370,7 +370,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'parity-group-used',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
                     sortField: 'used.value',
                     getDisplayValue: function (item) {
                         return item.used;
@@ -383,7 +383,7 @@ angular.module('rainierApp')
             if (storageSystem.unified) {
                 dataModel.gridSettings.push({
                     title: 'common-label-nas-boot',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'eighteenth',
                     sortField: 'nasBoot',
                     getDisplayValue: function (item) {
                         return item.nasBoot ? 'common-label-nas-boot' : '';

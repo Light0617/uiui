@@ -137,11 +137,13 @@
 
 
                 <div class="td sixth data cell" ng-if="item.usage && !item.fileCapacity" ng-click="item.onClick()">
-                    <usage-indicator-bar ng-model="item"></usage-indicator-bar>
+                    <usage-indicator-bar class="data-viz bar bar-container" ng-model="item"></usage-indicator-bar>
                 </div>
-                <div class="td sixth resource data cell" ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()">
-                    <usage-indicator-bar class="double-bar-list-view" ng-model="item" ng-if="item.usage" ng-click="item.onClick()"></usage-indicator-bar>
-                    <usage-indicator-bar class="double-bar-list-view file" ng-model="item.fileCapacity" ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()"></usage-indicator-bar>
+                <div class="td sixth resource data cell data-viz" ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()">
+                    <usage-indicator-bar class="double-bar-list-view data-viz bar bar-container" ng-model="item" ng-if="item.usage"
+                                         ng-click="item.onClick()"></usage-indicator-bar>
+                    <usage-indicator-bar class="double-bar-list-view data-viz bar bar-container file" ng-model="item.fileCapacity"
+                                         ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()"></usage-indicator-bar>
                 </div>
             </div>
             <ng-include src="listDetailsTemplate" ng-show="item.opened" ng-if="listDetailsTemplate" ng-repeat-end></ng-include>

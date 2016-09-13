@@ -205,7 +205,7 @@ angular.module('rainierApp')
                 dataModel.gridSettings = [
                     {
                         title: 'ID',
-                        sizeClass: 'twelfth',
+                        sizeClass: 'eighteenth',
                         sortField: 'storagePoolId',
                         getDisplayValue: function (item) {
                             return item.storagePoolId;
@@ -224,7 +224,7 @@ angular.module('rainierApp')
                     },
                     {
                         title: 'Type',
-                        sizeClass: 'twelfth',
+                        sizeClass: 'eighteenth',
                         sortField: 'type',
                         getDisplayValue: function (item) {
                             return synchronousTranslateService.translate(item.type);
@@ -233,7 +233,7 @@ angular.module('rainierApp')
                     },
                     {
                         title: 'pool-active-flash',
-                        sizeClass: 'twelfth',
+                        sizeClass: 'eighteenth',
                         sortField: 'activeFlashEnabled',
                         getDisplayValue: function (item) {
                             return item.activeFlashEnabled ? 'pool-active-flash' : '';
@@ -279,7 +279,7 @@ angular.module('rainierApp')
                 if (storageSystem.unified) {
                     dataModel.gridSettings.push({
                         title: 'common-label-nas-boot',
-                        sizeClass: 'twelfth',
+                        sizeClass: 'eighteenth',
                         sortField: 'nasBoot',
                         getDisplayValue: function (item) {
                             return item.nasBoot ? 'common-label-nas-boot' : '';
