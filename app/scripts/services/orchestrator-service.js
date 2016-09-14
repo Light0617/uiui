@@ -346,7 +346,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/create-attach-protect').post(payload));
             },
             autoPathSelect: function (autoPathSelectionPayload) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/auto-path-select').post(autoPathSelectionPayload));
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.all('volume-manager/auto-path-select').post(autoPathSelectionPayload));
             },
             editLunPaths: function (editLunPathPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/edit-lun-paths').post(editLunPathPayload));
