@@ -79,6 +79,10 @@ angular.module('rainierApp')
                 }
             };
 
+            orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
+                dataModel.showAddIcon = result.type === 'HTI' || result.label.indexOf('HSA-reserved-') === 0;
+            });
+
             $scope.filterModel = {
                 filter: {
                     freeText: '',

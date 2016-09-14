@@ -35,7 +35,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="tile resource-tile control-tile" ng-if="dataModel.context === 'poolDetails'" ng-click="dataModel.addPoolDetailsClickAction(dataModel.storagePoolId)"
+            <div class="tile resource-tile control-tile" ng-if="dataModel.context === 'poolDetails' && !dataModel.showAddIcon" ng-click="dataModel.addPoolDetailsClickAction(dataModel.storagePoolId)"
                  title="{{dataModel.actionTitle}}">
                 <div class="tile-button">
                     <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
@@ -70,7 +70,7 @@
             <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile" ng-if="dataModel.context !== 'poolDetails' && dataModel.addAction" ng-click="dataModel.addAction()">
                 <span class="btn icon-btn icon-lg icon-add"></span>
             </div>
-            <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile" ng-if="dataModel.context === 'poolDetails'" ng-click="dataModel.addPoolDetailsClickAction(dataModel.storagePoolId)">
+            <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile" ng-if="dataModel.context === 'poolDetails' && !dataModel.showAddIcon" ng-click="dataModel.addPoolDetailsClickAction(dataModel.storagePoolId)">
                 <span class="btn icon-btn icon-lg icon-add"></span>
             </div>
             <div class="tile row-tile row" ng-repeat-start="item in dataModel.displayList">
