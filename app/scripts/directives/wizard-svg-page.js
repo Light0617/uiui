@@ -18,6 +18,7 @@ angular.module('rainierApp')
         var newPathColor = '#3d84f5';
         var pathPage = 'paths';
         var autoSelect = 'AUTO';
+        var MULTI_SELECTED = -1;
         var svg;
 
         var deleteSelected = function(pathModel){
@@ -25,7 +26,7 @@ angular.module('rainierApp')
             var path;
             for(i = 0; i< pathModel.paths.length; i++) {
                 path = pathModel.paths[i];
-                if (path.selected === true){
+                if (path.selected === true && path.deleted !== true){
                     path.deleted = true;
 
                     d3.select('path[path-index="' + i + '"]').remove();
@@ -196,7 +197,7 @@ angular.module('rainierApp')
                     if (!pathIndex){
                         pathIndex = i;
                     } else {
-                        return null;
+                        return MULTI_SELECTED;
                     }
                 }
             }
@@ -213,6 +214,7 @@ angular.module('rainierApp')
             var currentWwn;
 
             d3.select('path[path-index="' + pathIndex + '"]').remove();
+            dataModel.pathModel.paths[pathIndex].selected = false;
 
             if (modifyWwn) {
                 portGroup = svg.select('g[port-id="' + dataModel.pathModel.paths[pathIndex].storagePortId + '"]');
@@ -267,7 +269,7 @@ angular.module('rainierApp')
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-wwn
             port = dataModel.pathModel.storagePorts[portIndex];
-            svg.select('g[attr-wwn="' + wwnText + '"]')
+            svg.select('g[port-id="' + port.storagePortId + '"]')
                 .select('circle')
                 .attr('stroke', originalPortColor);
 
@@ -322,11 +324,11 @@ angular.module('rainierApp')
                         parseInt(circle.attr('cy')));
                 })
                 .attr('path-index', pathIndex ? pathIndex : dataModel.pathModel.paths.length);
-            setPathAttrs(path, dataModel, !pathIndex, svg);
+            setPathAttrs(path, dataModel, !pathIndex || pathIndex >= dataModel.pathModel.originalPathLength, svg);
 
             // If 'path-index' is set, we are modifying a path.
             if (pathIndex) {
-                dataModel.pathModel.paths.storagePortId = port.storagePortId;
+                dataModel.pathModel.paths[pathIndex].storagePortId = port.storagePortId;
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
@@ -335,6 +337,19 @@ angular.module('rainierApp')
             }
 
             line.remove();
+        }
+
+        function pathExists(dataModel, wwn, portId){
+            var path;
+            var i;
+            for (i = 0; i < dataModel.pathModel.paths.length; ++i){
+                path = dataModel.pathModel.paths[i];
+                if (wwn === path.serverWwn && portId === path.storagePortId){
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         builder = {
@@ -389,16 +404,27 @@ angular.module('rainierApp')
                     circle = d3.select(this).select('circle');
                     wwnText = d3.select(this).select('text').text();
                     pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
-                    if (pathIndex !== null && wwnService.removeSymbol(wwnText) === dataModel.pathModel.paths[pathIndex].serverWwn){
-                        // modify existing path.
-                        // Remove the wwn side of the path.
-                        removeOneSide(dataModel, svg, pathIndex, true);
+                    if (pathIndex !== null) {
+                        if (pathIndex !== MULTI_SELECTED && wwnService.removeSymbol(wwnText) === dataModel.pathModel.paths[pathIndex].serverWwn) {
+                            // modify existing path.
+                            // Remove the wwn side of the path.
+                            removeOneSide(dataModel, svg, pathIndex, true);
+                        }
 
+                        // If one path is selected and the wwn is clicked, we do nothing.
+                        // If multiple paths are selected and any wwn is clicked, we do nothing either.
                         return;
+
                     }
 
                     line = svg.select('line[title="line-from-port"]');
                     if (!line.empty()){
+                        // If we already have the path with the selected wwn and port id, we do nothing.
+                        portIndexInLine = line.attr('attr-port-index');
+                        if (pathExists(dataModel, wwnService.removeSymbol(wwnText), dataModel.pathModel.storagePorts[portIndexInLine].storagePortId)){
+                            return;
+                        }
+
                         // Finish the path
                         finishLineToWwn(circle, line, wwnText, dataModel, svg);
                     } else {
@@ -450,16 +476,25 @@ angular.module('rainierApp')
                         line = svg.select('line[title="line-from-wwn"]');
 
                         pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
-                        if (pathIndex !== null && port.storagePortId === dataModel.pathModel.paths[pathIndex].storagePortId){
-                            // modify existing path.
-                            // First remove the port side of the path.
-                            removeOneSide(dataModel, svg, pathIndex, false, portIndex);
+                        if (pathIndex !== null) {
+                            if (pathIndex !== MULTI_SELECTED && port.storagePortId === dataModel.pathModel.paths[pathIndex].storagePortId) {
+                                // modify existing path.
+                                // First remove the port side of the path.
+                                removeOneSide(dataModel, svg, pathIndex, false, portIndex);
+                            }
 
+                            // If one path is selected and the port is clicked, we do nothing.
+                            // If multiple paths are selected and any port is clicked, we do nothing either.
                             return;
                         }
 
 
                         if (!line.empty()) {
+                            // If we already have the path with the selected wwn and port id, we do nothing.
+                            if (pathExists(dataModel, wwnService.removeSymbol(line.attr('attr-wwn')), port.storagePortId)) {
+                                return;
+                            }
+
                             // Finish the path
                             finishLineToPort(circle, line, port, dataModel, svg);
 

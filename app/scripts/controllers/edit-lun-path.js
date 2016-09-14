@@ -176,6 +176,14 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         return (options.length === 0) ? null : options;
     }
 
+    function differentPaths(path1, path2) {
+        if (path1.serverWwn !== path2.serverWwn || path1.storagePortId !== path2.storagePortId){
+            return true;
+        }
+
+        return false;
+    }
+
     function setAllModels() {
 
         var hostModes = constantService.osType();
@@ -290,7 +298,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                     if (volume.lun !== originalSelectedVolumes[j].lun){
                                         lunChange = true;
                                     }
-                                    if (pathChanged || lunChange) {
+                                    if (pathChanged || lunChange || differentPaths(originalPath, path)) {
                                         lunPathDiffPayload = {
                                             storageSystemId: storageSystemId,
                                             volumeId: volume.volumeId,
