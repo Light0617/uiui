@@ -16,7 +16,7 @@ angular.module('rainierApp')
             window.history.back();
         }
 
-        if(_.first(replicationGroup).type !== 'Snapshot (Non-Extendable)' || action === 'delete') {
+        if(_.first(replicationGroup).type !== 'Snap' || action === 'delete') {
             orchestratorService.affectedVolumePairsByReplicationGroup(storageSystemId, _.first(replicationGroup).id).then(function (result) {
                 _.forEach(result.volumePairs, function (vp) {
                     objectTransformService.transformVolumePairs(vp);
@@ -58,7 +58,7 @@ angular.module('rainierApp')
             var payload;
             switch (action) {
                 case 'suspend':
-                    if (selectedReplicationGroup.type === 'Snapshot (Non-Extendable)') {
+                    if (selectedReplicationGroup.type === 'Snap') {
                         payload = {
                             'scheduleEnabled': false
                         };
@@ -72,7 +72,7 @@ angular.module('rainierApp')
                     }
                     break;
                 case 'resume':
-                    if (selectedReplicationGroup.type === 'Snapshot (Non-Extendable)') {
+                    if (selectedReplicationGroup.type === 'Snap') {
                         payload = {
                             'scheduleEnabled': true
                         };

@@ -155,7 +155,7 @@ angular.module('rainierApp')
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = false;
-                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Non-Extendable)'));
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snap'));
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = true;
             }
@@ -164,7 +164,7 @@ angular.module('rainierApp')
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable = false;
-                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Extendable)'));
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snap on Snap'));
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable = true;
             }
@@ -173,7 +173,7 @@ angular.module('rainierApp')
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy = false;
-                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Full Copy)'));
+                $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('Snap Clone'));
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy = true;
             }

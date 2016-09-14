@@ -50,15 +50,15 @@ angular.module('rainierApp')
                 total++;
             }
             if (ReplicationGroupSInitialResult.snapshotExternalVolumePairExist) {
-                externalReplicationGroups.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Non-Extendable)'));
+                externalReplicationGroups.push(new replicationGroupsService.ExternalReplicationGroup('Snap'));
                 total++;
             }
             if (ReplicationGroupSInitialResult.snapshotExtendableExternalVolumePairExist) {
-                externalReplicationGroups.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Extendable)'));
+                externalReplicationGroups.push(new replicationGroupsService.ExternalReplicationGroup('Snap on Snap'));
                 total++;
             }
             if (ReplicationGroupSInitialResult.snapshotFullcopyExternalVolumePairExist) {
-                externalReplicationGroups.push(new replicationGroupsService.ExternalReplicationGroup('Snapshot (Full Copy)'));
+                externalReplicationGroups.push(new replicationGroupsService.ExternalReplicationGroup('Snap Clone'));
                 total++;
             }
             $scope.replicationGroups = result.resources.concat(externalReplicationGroups);

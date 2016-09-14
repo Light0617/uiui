@@ -160,6 +160,11 @@
 
     "common-invalid-number-range": "Enter a number between {{_0}} to {{_1}}.",
 
+    "common-filter-snapshot": "Snap",
+    "common-filter-snapshot-ex": "Snap on Snap",
+    "common-filter-snapshot-fc": "Snap Clone",
+    "common-filter-clone": "Clone",
+
     "storage-port-type": "Port Type:",
     "storage-port-speed": "Port Speed:",
     "storage-port-security-switch-enabled": "Security:",
@@ -285,11 +290,6 @@
     "storage-volume-pool": "Pool",
     "storage-volume-attach": "Attach Volumes",
 
-    "storage-volume-filter-full-copy": "Full Copy",
-    "storage-volume-filter-snapshot": "Snapshot (Non-Extendable)",
-    "storage-volume-filter-snapshot-ex": "Snapshot (Extendable)",
-    "storage-volume-filter-snapshot-fc": "Snapshot (Full Copy)",
-    "storage-volume-filter-clone": "Clone",
     "storage-volume-filter-protected": "Protected",
     "storage-volume-filter-unprotected": "Unprotected",
     "storage-volume-filter-secondary": "Secondary",
@@ -524,11 +524,6 @@
     "host-filter-vmware-ex": "VMware EX",
     "host-filter-netware": "Netware",
     "host-filter-ovms": "OVMS",
-    "host-filter-full-copy": "Full Copy",
-    "host-filter-snapshot": "Snapshot (Non-Extendable)",
-    "host-filter-snapshot-ex": "Snapshot (Extendable)",
-    "host-filter-snapshot-fc": "Snapshot (Full Copy)",
-    "host-filter-clone": "Clone",
 
     "host-mode-AUTO": "AutoSelect",
     "host-mode-HP_UX": "HP UX",
@@ -894,10 +889,6 @@
     "no-available-replication-group": "Selected volume is in an external replication group or not in any HSA replication group(s).",
     "replication-groups-hourly-note": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hour(s) on the {{minuteDisplay}} minute of the hour.",
     "replication-groups-hourly-note-zero": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hour(s) on the hour.",
-    "replication-groups-filter-snapshot": "Snapshot (Non-Extendable)",
-    "replication-groups-filter-snapshot-ex": "Snapshot (Extendable)",
-    "replication-groups-filter-snapshot-fc": "Snapshot (Full Copy)",
-    "replication-groups-filter-clone": "Clone",
     "replication-group-edit-remove-pvol-message": "Select the Primary volume(s) to remove",
     "replication-group-edit-remove-svol-message": "Delete the associated secondary volumes",
     "replication-group-edit-snapshot-message": "Edit Snapshot(s)",

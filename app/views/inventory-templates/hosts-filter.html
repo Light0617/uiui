@@ -93,24 +93,24 @@
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotex"
                ng-init="filterModel.filter.snapshotex=false"
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotex ? 'SNAPSHOT_EXTENDABLE' : '', filterModel.arrayType, 'SNAPSHOT_EXTENDABLE')">
-        {{'host-filter-snapshot-ex' | translate}}
+        {{'common-filter-snapshot-ex' | translate}}
     </label>
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotfc"
                ng-init="filterModel.filter.snapshotfc=false"
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotfc ? 'SNAPSHOT_FULLCOPY' : '', filterModel.arrayType, 'SNAPSHOT_FULLCOPY')">
-        {{'host-filter-snapshot-fc' | translate}}
+        {{'common-filter-snapshot-fc' | translate}}
     </label>
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshot"
                ng-init="filterModel.filter.snapshot=false"
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? 'SNAPSHOT' : '', filterModel.arrayType, 'SNAPSHOT')">
-        {{'host-filter-snapshot' | translate}}
+        {{'common-filter-snapshot' | translate}}
     </label>
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.clone"
                ng-init="filterModel.filter.clone=false"
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? 'CLONE' : '', filterModel.arrayType, 'CLONE')">
-        {{'host-filter-clone' | translate}}
+        {{'common-filter-clone' | translate}}
     </label>
 </div>

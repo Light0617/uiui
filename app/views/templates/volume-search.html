@@ -150,25 +150,25 @@
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotEx"
                    ng-init="filterModel.filter.snapshotEx=false"
                    ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotEx ? 'SNAPSHOT_EXTENDABLE' : '', filterModel.arrayType, 'SNAPSHOT_EXTENDABLE')">
-            {{'storage-volume-filter-snapshot-ex' | translate}}
+            {{'common-filter-snapshot-ex' | translate}}
         </label>
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotFc"
                    ng-init="filterModel.filter.snapshotFc=false"
                    ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotFc ? 'SNAPSHOT_FULLCOPY' : '', filterModel.arrayType, 'SNAPSHOT_FULLCOPY')">
-            {{'storage-volume-filter-snapshot-fc' | translate}}
+            {{'common-filter-snapshot-fc' | translate}}
         </label>
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshot"
                    ng-init="filterModel.filter.snapshot=false"
                    ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? 'SNAPSHOT' : '', filterModel.arrayType, 'SNAPSHOT')">
-            {{'storage-volume-filter-snapshot' | translate}}
+            {{'common-filter-snapshot' | translate}}
         </label>
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.cloneNow"
                    ng-init="filterModel.filter.cloneNow=false"
                    ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.cloneNow ? 'CLONE' : '', filterModel.arrayType, 'CLONE')">
-            {{'storage-volume-filter-clone' | translate}}
+            {{'common-filter-clone' | translate}}
         </label>
     </div>
 

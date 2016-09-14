@@ -11,9 +11,9 @@
 angular.module('rainierApp').factory('replicationService', function (synchronousTranslateService) {
     var dispTypeConst = {
         CLONE: 'Clone',
-        SNAPSHOT_NONEXTENDABLE: 'Snapshot (Non-Extendable)',
-        SNAPSHOT_EXTENDABLE: 'Snapshot (Extendable)',
-        SNAPSHOT_FULLCOPY: 'Snapshot (Full Copy)'
+        SNAPSHOT_NONEXTENDABLE: 'Snap',
+        SNAPSHOT_EXTENDABLE: 'Snap on Snap',
+        SNAPSHOT_FULLCOPY: 'Snap Clone'
     };
     var rawTypeConst = {
         CLONE: 'CLONE',
