@@ -223,7 +223,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    icon: 'icon-edit',
+                    icon: 'icon-paths',
                     tooltip: 'action-tooltip-edit-lun-path',
                     type: 'link',
                     enabled: function () {
