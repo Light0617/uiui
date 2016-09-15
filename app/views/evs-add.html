@@ -42,6 +42,7 @@
                                 <label>{{'storage-system-id' | translate }}</label>
                                 <select class="form-control fixed-line-height" ng-model="dataModel.storageSystem" ng-disabled="!dataModel.storageSystemSelectable"
                                         ng-options="storageSystem.storageSystemId for storageSystem in dataModel.storageSystems">
+                                    <option value="">{{'common-select-storage-system-id' | translate}}</option>
                                 </select>
                             </div>
                         </div>

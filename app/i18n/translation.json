@@ -136,6 +136,7 @@
     "common-select-port": "Select Port",
     "common-select-subnet-mask": "Select Subnet Mask",
     "common-select-storage-system": "Select Storage System",
+    "common-select-storage-system-id": "Select Storage System ID",
     "common-select-virtual-file-server": "Select Virtual File Server",
 
     "common-storage-system-file-pools": "File Pools",

@@ -22,9 +22,6 @@ angular.module('rainierApp')
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
             storageSystems = _.reject(result, function (storageSystem) { return !storageSystem.accessible || !storageSystem.unified; });
             selectable = _.isUndefined(storageSystemId);
-            if(selectable) {
-                storageSystemId = _.first(storageSystems).storageSystemId;
-            }
             storageSystem = _.find(storageSystems, function (s) {
                 return s.storageSystemId === storageSystemId;
             });
