@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                              diskSizeService, paginationService, ShareDataService, 
                                              inventorySettingsService, scrollDataSourceBuilderServiceNew,
                                              storageSystemVolumeService, $location, queryService, $timeout, 
-                                             synchronousTranslateService, commonConverterService) {
+                                             synchronousTranslateService, commonConverterService, $modal) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -203,9 +203,37 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-attach-volumes',
                     type: 'link',
                     onClick: function () {
-                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
-                            '/'));
+                        var flags = [];
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            flags.push(item.isUnattached());
+                        });
+                        if(flags.areAllItemsTrue() ) {
+                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                            $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
+                                '/'));
+                        } else {
+                            var modelInstance = $modal.open({
+                                templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
+                                windowClass: 'modal fade confirmation',
+                                backdropClass: 'modal-backdrop',
+                                controller: function ($scope) {
+                                    $scope.cancel = function () {
+                                        modelInstance.dismiss('cancel');
+                                    };
+
+                                    $scope.ok = function() {
+                                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
+                                            '/'));
+                                        modelInstance.close(true);
+                                    };
+
+                                    modelInstance.result.finally(function() {
+                                        $scope.cancel();
+                                    });
+                                }
+                            });
+                        }
                     },
                     enabled: function () {
                         return dataModel.anySelected();
