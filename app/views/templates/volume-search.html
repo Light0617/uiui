@@ -149,25 +149,25 @@
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotEx"
                    ng-init="filterModel.filter.snapshotEx=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotEx ? 'SNAPSHOT_EXTENDABLE' : '', filterModel.arrayType, 'SNAPSHOT_EXTENDABLE')">
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotEx ? filterModel.$replicationRawTypes.SNAP_ON_SNAP : '', filterModel.arrayType, filterModel.$replicationRawTypes.SNAP_ON_SNAP)">
             {{'common-filter-snapshot-ex' | translate}}
         </label>
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotFc"
                    ng-init="filterModel.filter.snapshotFc=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotFc ? 'SNAPSHOT_FULLCOPY' : '', filterModel.arrayType, 'SNAPSHOT_FULLCOPY')">
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshotFc ? filterModel.$replicationRawTypes.SNAP_CLONE : '', filterModel.arrayType, filterModel.$replicationRawTypes.SNAP_CLONE)">
             {{'common-filter-snapshot-fc' | translate}}
         </label>
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshot"
                    ng-init="filterModel.filter.snapshot=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? 'SNAPSHOT' : '', filterModel.arrayType, 'SNAPSHOT')">
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? filterModel.$replicationRawTypes.SNAP : '', filterModel.arrayType, filterModel.$replicationRawTypes.SNAP)">
             {{'common-filter-snapshot' | translate}}
         </label>
         <label class="btn btn-primary">
             <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.cloneNow"
                    ng-init="filterModel.filter.cloneNow=false"
-                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.cloneNow ? 'CLONE' : '', filterModel.arrayType, 'CLONE')">
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.cloneNow ? filterModel.$replicationRawTypes.CLONE : '', filterModel.arrayType, filterModel.$replicationRawTypes.CLONE)">
             {{'common-filter-clone' | translate}}
         </label>
     </div>

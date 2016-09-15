@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('StorageSystemCtrl', function ($scope, $routeParams, $window, orchestratorService,
                                                objectTransformService, diskSizeService, synchronousTranslateService,
                                                paginationService, replicationGroupsService,
-                                               capacityAlertService, dpAlertService, jobsAlertService, hwAlertService) {
+                                               capacityAlertService, dpAlertService, jobsAlertService, hwAlertService,
+                                               replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -169,19 +170,22 @@ angular.module('rainierApp')
 
             if (!_.isUndefined(replicationGroupCountByTypes) && !_.isEmpty(replicationGroupCountByTypes)) {
                 _.forEach(replicationGroupCountByTypes, function(replicationGroupCountByType) {
-                    if (replicationGroupCountByType.replicationType === 'CLONE' && externalVolumePairExist.clone) {
+                    var replicationGroup = {};
+
+                    if (replicationService.isClone(replicationGroupCountByType.replicationType) && externalVolumePairExist.clone) {
+                        replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-clone');
                         replicationGroupCountByType.count++;
-                    } else if (replicationGroupCountByType.replicationType === 'SNAPSHOT') {
+                    } else if (replicationService.isSnap(replicationGroupCountByType.replicationType)) {
+                        replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-snapshot');
                         replicationGroupCountByType.count += externalVolumePairExist.snapshot ? 1 : 0;
                         replicationGroupCountByType.count += externalVolumePairExist.snapshotEx ? 1 : 0;
                         replicationGroupCountByType.count += externalVolumePairExist.snapshotFc ? 1 : 0;
                     }
-                    var replicationGroupType = {
-                        type: replicationGroupCountByType.replicationType,
-                        count: replicationGroupCountByType.count
-                    };
-                    replicationGroupsByType.push(replicationGroupType);
-                    total = total + replicationGroupCountByType.count;
+
+                    replicationGroup.count = replicationGroupCountByType.count;
+
+                    replicationGroupsByType.push(replicationGroup);
+                    total += replicationGroupCountByType.count;
                 });
             }
 

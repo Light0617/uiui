@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('DetachVolumeCtrl', function ($scope, $routeParams, $timeout, orchestratorService,
                                               diskSizeService, storagePoolService, objectTransformService,
-                                              paginationService, viewModelService, scrollDataSourceBuilderServiceNew, resourceTrackerService) {
+                                              paginationService, viewModelService, scrollDataSourceBuilderServiceNew,
+                                              resourceTrackerService, replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
         var GET_HOSTS_PATH = 'compute/servers';
@@ -119,14 +120,15 @@ angular.module('rainierApp')
             };
 
             $scope.filterModel = {
+                $replicationRawTypes: replicationService.rawTypes,
                 showAllFilters: false,
                 filterDpType: function () {
                     var replicationTypes = [];
                     if ($scope.dataModel.snapshot) {
-                        replicationTypes.push('SNAPSHOT');
+                        replicationTypes.push($scope.filterModel.$replicationRawTypes.SNAP);
                     }
                     if ($scope.dataModel.cloneNow) {
-                        replicationTypes.push('CLONE');
+                        replicationTypes.push($scope.filterModel.$replicationRawTypes.CLONE);
                     }
                     $scope.dataModel.search.replicationTypes = replicationTypes;
                 },

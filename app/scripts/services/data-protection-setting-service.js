@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('dataProtectionSettingsService', function(ShareDataService, orchestratorService, $location, $q) {
+    .factory('dataProtectionSettingsService', function(ShareDataService, orchestratorService, replicationService, $location, $q) {
 
         // Can't use css to truncate metadata if you reference a pre-defined SVG symbol using <use>. Talked with Jurgen
         // and Tuan, don't have time to refactor the whole thing, use javascript to do it.
@@ -238,8 +238,7 @@ angular.module('rainierApp')
                                 for (var j = 0; j < scope.dataModel.displayList[i].volumePairs.length; ++j) {
                                     if (scope.dataModel.displayList[i].volumePairs[j].selected) {
                                         nothingSelected = false;
-                                        var type = scope.dataModel.displayList[i].volumePairs[j].type;
-                                        if (type === 'SNAPSHOT_FULLCOPY') {
+                                        if (replicationService.isSnapClone(scope.dataModel.displayList[i].volumePairs[j].type)) {
                                             containsSnapshotFullcopy = true;
                                         }
                                         if (selectedVolumePairs.indexOf(scope.dataModel.displayList[i].volumePairs[j].primaryVolume.id) > -1 ||

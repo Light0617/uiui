@@ -28,6 +28,7 @@ angular.module('rainierApp')
         queryService,
         objectTransformService,
         attachVolumeService,
+        replicationService,
         $timeout,
         $location) {
 
@@ -194,6 +195,7 @@ angular.module('rainierApp')
             });
 
             $scope.filterModel = {
+                $replicationRawTypes: replicationService.rawTypes,
                 showAllFilters: true,
                 filter: {
                     freeText: '',

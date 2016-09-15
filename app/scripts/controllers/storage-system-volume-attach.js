@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
                                                            paginationService, queryService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
                                                            ShareDataService, $location, $routeParams, viewModelService,
-                                                           attachVolumeService, constantService) {
+                                                           attachVolumeService, constantService, replicationService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         $scope.canSubmit = true;
@@ -190,6 +190,7 @@ angular.module('rainierApp')
         };
 
         $scope.filterModel = {
+            $replicationRawTypes: replicationService.rawTypes,
             showAllFilters: true,
             filterOperatingSystem: function () {
                 var enabledOperatingSystemType = [];
@@ -205,10 +206,10 @@ angular.module('rainierApp')
             filterDpType: function () {
                 var replicationTypes = [];
                 if ($scope.dataModel.snapshot) {
-                    replicationTypes.push('SNAPSHOT');
+                    replicationTypes.push($scope.filterModel.$replicationRawTypes.SNAP);
                 }
                 if ($scope.dataModel.cloneNow) {
-                    replicationTypes.push('CLONE');
+                    replicationTypes.push($scope.filterModel.$replicationRawTypes.CLONE);
                 }
                 $scope.dataModel.search.replicationTypes = replicationTypes;
             },

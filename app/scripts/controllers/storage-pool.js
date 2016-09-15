@@ -9,10 +9,11 @@
  */
 angular.module('rainierApp')
     .controller('StoragePoolCtrl', function ($scope, $routeParams, $window, orchestratorService, objectTransformService,
-                                             diskSizeService, paginationService, ShareDataService, 
+                                             diskSizeService, paginationService, ShareDataService,
                                              inventorySettingsService, scrollDataSourceBuilderServiceNew,
-                                             storageSystemVolumeService, $location, queryService, $timeout, 
-                                             synchronousTranslateService, commonConverterService, $modal) {
+                                             storageSystemVolumeService, $location, queryService, $timeout,
+                                             synchronousTranslateService, commonConverterService, $modal,
+                                             replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -84,6 +85,7 @@ angular.module('rainierApp')
             });
 
             $scope.filterModel = {
+                $replicationRawTypes: replicationService.rawTypes,
                 filter: {
                     freeText: '',
                     provisioningStatus: '',

@@ -13,7 +13,8 @@ angular.module('rainierApp')
                                                    synchronousTranslateService, ShareDataService,
                                                    dataProtectionSettingsService, replicationGroupsService,
                                                    scrollDataSourceBuilderServiceNew, ReplicationGroupSInitialResult,
-                                                   queryService, paginationService, dpAlertService, storageNavigatorSessionService, constantService) {
+                                                   queryService, paginationService, dpAlertService,
+                                                   storageNavigatorSessionService, constantService, replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.LOCAL_REPLICATION_GROUPS);
@@ -212,6 +213,7 @@ angular.module('rainierApp')
             dataProtectionSettingsService.setDataModelFunctions($scope);
             dataProtectionSettingsService.setReplicationGroupActions($scope, storageSystemId);
             $scope.filterModel = {
+                $rawTypes: replicationService.rawTypes,
                 filter: {
                     freeText: '',
                     type: '',

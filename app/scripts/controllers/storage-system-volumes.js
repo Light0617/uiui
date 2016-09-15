@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
-                                                      constantService, resourceTrackerService) {
+                                                      constantService, resourceTrackerService, replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -121,6 +121,7 @@ angular.module('rainierApp')
             };
 
             $scope.filterModel = {
+                $replicationRawTypes: replicationService.rawTypes,
                 filter: {
                     freeText: '',
                     volumeType: '',

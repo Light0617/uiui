@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('DataProtectionMonitoringCtrl', function ($scope, $timeout, $routeParams, orchestratorService, volumeService,
                                                           objectTransformService, synchronousTranslateService,
                                                           scrollDataSourceBuilderService, $location, ShareDataService,
-                                                          monitoringService, inventorySettingsService, storageSystemVolumeService) {
+                                                          monitoringService, inventorySettingsService, storageSystemVolumeService,
+                                                          replicationService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         if(storageSystemId) {
@@ -337,16 +338,16 @@ angular.module('rainierApp')
             filterDpType: function () {
                 var replicationTypes = [];
                 if ($scope.dataModel.snapshotex) {
-                    replicationTypes.push('SNAPSHOT_EXTENDABLE');
+                    replicationTypes.push(replicationService.rawTypes.SNAP_ON_SNAP);
                 }
                 if ($scope.dataModel.snapshotfc) {
-                    replicationTypes.push('SNAPSHOT_FULLCOPY');
+                    replicationTypes.push(replicationService.rawTypes.SNAP_CLONE);
                 }
                 if ($scope.dataModel.snapshot) {
-                    replicationTypes.push('SNAPSHOT');
+                    replicationTypes.push(replicationService.rawTypes.SNAP);
                 }
                 if ($scope.dataModel.cloneNow) {
-                    replicationTypes.push('CLONE');
+                    replicationTypes.push(replicationService.rawTypes.CLONE);
                 }
                 $scope.dataModel.search.replicationTypes = replicationTypes;
             },
@@ -379,16 +380,16 @@ angular.module('rainierApp')
             filterDpType: function () {
                 var replicationTypes = [];
                 if ($scope.dataModel.snapshotex) {
-                    replicationTypes.push('SNAPSHOT_EXTENDABLE');
+                    replicationTypes.push(replicationService.rawTypes.SNAP_ON_SNAP);
                 }
                 if ($scope.dataModel.snapshotfc) {
-                    replicationTypes.push('SNAPSHOT_FULLCOPY');
+                    replicationTypes.push(replicationService.rawTypes.SNAP_CLONE);
                 }
                 if ($scope.dataModel.snapshot) {
-                    replicationTypes.push('SNAPSHOT');
+                    replicationTypes.push(replicationService.rawTypes.SNAP);
                 }
                 if ($scope.dataModel.cloneNow) {
-                    replicationTypes.push('CLONE');
+                    replicationTypes.push(replicationService.rawTypes.CLONE);
                 }
                 $scope.dataModel.search.replicationTypes = replicationTypes;
             }

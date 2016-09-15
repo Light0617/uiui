@@ -233,7 +233,7 @@ angular.module('rainierApp')
 
             },
             transformReplicationGroup: function (item) {
-                if (item.type === 'SNAPSHOT') {
+                if (replicationService.isSnap(item.type)) {
                     if (item.scheduleEnabled === false) {
                         item.status = 'Suspended';
                     } else if (!item.hasOwnProperty('isExternal')) {

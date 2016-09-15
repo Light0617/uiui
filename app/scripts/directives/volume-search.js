@@ -7,20 +7,20 @@
  * # attachVolumeSearch
  */
 angular.module('rainierApp')
-    .directive('volumeSearch', function () {
+    .directive('volumeSearch', function (replicationService) {
         var filterDpType = function(dataModel, filterModel) {
             var replicationTypes = [];
             if (dataModel.snapshot) {
-                replicationTypes.push('SNAPSHOT');
+                replicationTypes.push(replicationService.rawTypes.SNAP);
             }
             if (dataModel.cloneNow) {
-                replicationTypes.push('CLONE');
+                replicationTypes.push(replicationService.rawTypes.CLONE);
             }
             if (dataModel.snapshotEx) {
-                replicationTypes.push('SNAPSHOT_EXTENDABLE');
+                replicationTypes.push(replicationService.rawTypes.SNAP_ON_SNAP);
             }
             if (dataModel.snapshotFc) {
-                replicationTypes.push('SNAPSHOT_FULLCOPY');
+                replicationTypes.push(replicationService.rawTypes.SNAP_CLONE);
             }
             filterModel.filter.replicationTypes = replicationTypes;
         };

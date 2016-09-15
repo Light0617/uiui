@@ -218,7 +218,7 @@ var volumes = _.map(_.range(1, 10), function (v) {
 
 function getVolumeDataProtectionSummary() {
     return {
-        replicationType: _.sample([['CLONE'], ['SNAPSHOT'], ['CLONE', 'SNAPSHOT'], []]),
+        replicationType: _.sample([['CLONE'], ['SNAP'], ['CLONE', 'SNAP'], []]),
         volumeType: _.sample([['P-VOL'], ['S-VOL'], ['UNPROTECTED'], ['P-VOL', 'S-VOL']]),
         replicationGroupIdMap: getReplicationGroupIdMap(),
         hasFailures: _.sample([true, false, false, false]),
@@ -246,7 +246,7 @@ var replicationGroups = _.map(_.range(1, 3), function (v) {
         storageSystemId: '220010',
         name: 'Replication Group' + v,
         comments: 'Test',
-        type: _.sample(['SNAPSHOT', 'CLONE']),
+        type: _.sample(['SNAP', 'CLONE']),
         consistent: _.sample([true, false]),
         // TODO:CDUAN Real time data or your target?
         numberOfCopies: _.random(1, 2),
@@ -276,7 +276,7 @@ var volumePairs = _.map(_.range(1, 150), function (v) {
         splitTime: 1450814584000, //nullable
         consistent: _.sample([true, false]),
         consistencyId: _.random(1, 100), //nullable
-        type: _.sample(['SNAPSHOT', 'CLONE']),
+        type: _.sample(['SNAP', 'CLONE']),
         primaryVolume: getVolume('p-vol'),
         secondaryVolume: getVolume('s-vol'),
         state: _.sample(['HEALTHY', 'ERROR'])
@@ -351,7 +351,7 @@ function getDpType() {
     }
     rand = _.random(0, 1);
     if (rand === 1) {
-        dpTypeList.push('SNAPSHOT');
+        dpTypeList.push('SNAP');
     }
     return dpTypeList;
 }
@@ -619,7 +619,7 @@ app.get('/v1/storage-systems/:storageSystemId/replication-groups/summary', jsonP
                 {
                     "replicationType": "CLONE", "count": 2
                 }, {
-                    "replicationType": "SNAPSHOT", "count": 2
+                    "replicationType": "SNAP", "count": 2
                 }
             ]
         }
@@ -717,7 +717,7 @@ app.get('/v1/storage-systems/:storageSystemId/volumes/:primaryVolId/protection-d
                     "replicationName": "RG3",
                     "primaryVolId": 1,
                     "secondaryVolId": 2,
-                    "replicationType": "SNAPSHOT",
+                    "replicationType": "SNAP",
                     "snapDateTime": new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes() - _.random(100, 500)).getTime()
                 },
                 {
@@ -733,7 +733,7 @@ app.get('/v1/storage-systems/:storageSystemId/volumes/:primaryVolId/protection-d
                     "replicationName": "RG5",
                     "primaryVolId": 1,
                     "secondaryVolId": 2,
-                    "replicationType": "SNAPSHOT",
+                    "replicationType": "SNAP",
                     "snapDateTime": new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes() - _.random(100, 500)).getTime()
                 }
             ]
@@ -3235,7 +3235,7 @@ app.get('/v1/storage-systems/:storageSystemId/data-protection/all', jsonParser, 
                 "id": 0,
                 "consistencyGroupNeeded": false,
                 "name": "Copy Group 0",
-                "replicationType": "SNAPSHOT",
+                "replicationType": "SNAP",
                 "comments": "TestComment 0",
                 "noOfSVols": 2,
                 "copyGroups": [
@@ -3271,7 +3271,7 @@ app.get('/v1/storage-systems/:storageSystemId/data-protection/all', jsonParser, 
                 "id": 1,
                 "consistencyGroupNeeded": false,
                 "name": "Copy Group 1",
-                "replicationType": "SNAPSHOT",
+                "replicationType": "SNAP",
                 "comments": "TestComment 1",
                 "noOfSVols": 2,
                 "copyGroups": [
@@ -3379,7 +3379,7 @@ app.get('/v1/storage-systems/:storageSystemId/data-protection/all', jsonParser, 
                 "id": 4,
                 "consistencyGroupNeeded": false,
                 "name": "Copy Group 4",
-                "replicationType": "SNAPSHOT",
+                "replicationType": "SNAP",
                 "comments": "TestComment 4",
                 "noOfSVols": 6,
                 "copyGroups": [
@@ -3415,7 +3415,7 @@ app.get('/v1/storage-systems/:storageSystemId/data-protection/all', jsonParser, 
                 "id": 5,
                 "consistencyGroupNeeded": false,
                 "name": "Copy Group 5",
-                "replicationType": "SNAPSHOT",
+                "replicationType": "SNAP",
                 "comments": "TestComment 5",
                 "noOfSVols": 8,
                 "copyGroups": [
@@ -3451,7 +3451,7 @@ app.get('/v1/storage-systems/:storageSystemId/data-protection/all', jsonParser, 
                 "id": 6,
                 "consistencyGroupNeeded": false,
                 "name": "Copy Group 6",
-                "replicationType": "SNAPSHOT",
+                "replicationType": "SNAP",
                 "comments": "TestComment 6",
                 "noOfSVols": 6,
                 "copyGroups": [

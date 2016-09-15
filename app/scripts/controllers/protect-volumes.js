@@ -58,10 +58,11 @@ angular.module('rainierApp')
             var DAILY_KEY = 'DAILY';
             var MONTHLY_KEY = 'MONTHLY';
             var WEEKLY_KEY = 'WEEKLY';
-            var SNAPSHOT = 'SNAPSHOT';
-            var CLONE = 'CLONE';
+            var SNAPSHOT = replicationService.rawTypes.SNAP;
+            var CLONE = replicationService.rawTypes.CLONE;
 
             $scope.dataModel = {
+                $replicationRawTypes: replicationService.rawTypes,
                 replicationTechnology: SNAPSHOT,
                 filterDD: false,
                 schedule: HOURLY_KEY,
@@ -83,6 +84,14 @@ angular.module('rainierApp')
 
                     return selectedCount;
                 }
+            };
+
+            $scope.dataModel.isEnableSnapshot = function() {
+                return replicationService.isSnap($scope.dataModel.replicationTechnology);
+            };
+
+            $scope.dataModel.isEnableClone = function() {
+                return replicationService.isClone($scope.dataModel.replicationTechnology);
             };
 
             $scope.dataModel.Days = {
@@ -118,10 +127,10 @@ angular.module('rainierApp')
                 var scheduleString = scheduleStr();
                 var consistencyGroupNeeded = $scope.dataModel.consistencyGroupNeeded ? 'On' : 'Off';
 
-                if (replicationService.isSnapshotNonExtendable(technology)) {
+                if (replicationService.isSnap(technology)) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
                         volume.copyGroupNames = _.where(allCopyGroups[volume.storageSystemId], function (cg) {
-                            return (replicationService.isSnapshotNonExtendable(cg.type)) &&
+                            return (replicationService.isSnap(cg.type)) &&
                                 (consistencyGroupNeeded === cg.consistent) &&
                                 (!_.isFinite(numberOfCopiesInput) || numberOfCopiesInput === cg.numberOfCopies) &&
                                 (_.isEmpty(scheduleString) || cronStringConverterService.isEqualForObjectModel(scheduleString, cg.schedule));

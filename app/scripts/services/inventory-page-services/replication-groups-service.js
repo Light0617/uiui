@@ -66,7 +66,7 @@ angular.module('rainierApp')
             cloneExternalVolumePairExists: function (storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
-                queryService.setQueryMapEntry('type', 'CLONE');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.CLONE);
 
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular
                     .one('storage-systems', storageSystemId)
@@ -79,7 +79,7 @@ angular.module('rainierApp')
             snapshotExternalVolumePairExists: function (storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
-                queryService.setQueryMapEntry('type', 'SNAPSHOT');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP);
 
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular
                     .one('storage-systems', storageSystemId)
@@ -92,7 +92,7 @@ angular.module('rainierApp')
             snapshotExtendableExternalVolumePairExists: function (storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
-                queryService.setQueryMapEntry('type', 'SNAPSHOT_EXTENDABLE');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP_ON_SNAP);
 
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular
                     .one('storage-systems', storageSystemId)
@@ -105,7 +105,7 @@ angular.module('rainierApp')
             snapshotFullcopyExternalVolumePairExists: function (storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
-                queryService.setQueryMapEntry('type', 'SNAPSHOT_FULLCOPY');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP_CLONE);
 
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular
                     .one('storage-systems', storageSystemId)

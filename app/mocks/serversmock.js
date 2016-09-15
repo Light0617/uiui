@@ -23,7 +23,7 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
             wwpns: mockUtils.getWWN(),
             osType: _.sample(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'NETWARE', 'OVMS']),
             dpStatus: _.sample(['Failed', 'Success']),
-            dataProtectionSummary:{replicationType:['CLONE','SNAPSHOT', 'SNAPSHOT_EXTENDABLE', 'SNAPSHOT_FULLCOPY']},
+            dataProtectionSummary:{replicationType:['CLONE','SNAP', 'SNAP_ON_SNAP', 'SNAP_CLONE']},
             attachedVolumeCount: 7
         };
     };

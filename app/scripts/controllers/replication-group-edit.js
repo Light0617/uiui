@@ -89,7 +89,7 @@ angular.module('rainierApp')
                         (replicationGroup.comments !== 'N/A' ? replicationGroup.comments : ''));
                 }
 
-                if (replicationService.isSnapshotNonExtendable($scope.dataModel.replicationType)) {
+                if (replicationService.isSnap($scope.dataModel.replicationType)) {
                     return canSubmitSnapshot();
                 }
             };
@@ -156,7 +156,7 @@ angular.module('rainierApp')
                     });
                 }
 
-                if (replicationService.isSnapshotNonExtendable($scope.dataModel.replicationType)) {
+                if (replicationService.isSnap($scope.dataModel.replicationType)) {
                     var snapshotTasks = [];
                     if ($scope.anyPrimaryVolumeSelected) {
                         var snapshotPayLoadPrimaryVolumeIds = [];
@@ -205,7 +205,7 @@ angular.module('rainierApp')
                 }
             };
 
-            $scope.isSnapshotNonExtendable = replicationService.isSnapshotNonExtendable;
+            $scope.isSnap = replicationService.isSnap;
             $scope.isClone = replicationService.isClone;
 
             function hasDaySelected(days) {

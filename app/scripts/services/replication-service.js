@@ -11,26 +11,26 @@
 angular.module('rainierApp').factory('replicationService', function (synchronousTranslateService) {
     var dispTypeConst = {
         CLONE: 'Clone',
-        SNAPSHOT_NONEXTENDABLE: 'Snap',
-        SNAPSHOT_EXTENDABLE: 'Snap on Snap',
-        SNAPSHOT_FULLCOPY: 'Snap Clone'
+        SNAP: 'Snap',
+        SNAP_ON_SNAP: 'Snap on Snap',
+        SNAP_CLONE: 'Snap Clone'
     };
     var rawTypeConst = {
         CLONE: 'CLONE',
-        SNAPSHOT_NONEXTENDABLE: 'SNAPSHOT',
-        SNAPSHOT_EXTENDABLE: 'SNAPSHOT_EXTENDABLE',
-        SNAPSHOT_FULLCOPY: 'SNAPSHOT_FULLCOPY'
+        SNAP: 'SNAP',
+        SNAP_ON_SNAP: 'SNAP_ON_SNAP',
+        SNAP_CLONE: 'SNAP_CLONE'
     };
     var rawToDisp = function (type) {
         switch (type) {
             case rawTypeConst.CLONE:
                 return dispTypeConst.CLONE;
-            case rawTypeConst.SNAPSHOT_NONEXTENDABLE:
-                return dispTypeConst.SNAPSHOT_NONEXTENDABLE;
-            case rawTypeConst.SNAPSHOT_EXTENDABLE:
-                return dispTypeConst.SNAPSHOT_EXTENDABLE;
-            case rawTypeConst.SNAPSHOT_FULLCOPY:
-                return dispTypeConst.SNAPSHOT_FULLCOPY;
+            case rawTypeConst.SNAP:
+                return dispTypeConst.SNAP;
+            case rawTypeConst.SNAP_ON_SNAP:
+                return dispTypeConst.SNAP_ON_SNAP;
+            case rawTypeConst.SNAP_CLONE:
+                return dispTypeConst.SNAP_CLONE;
             default:
                 return type.charAt(0).toUpperCase() + type.toLowerCase().slice(1);
         }
@@ -39,12 +39,12 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
         switch (type) {
             case dispTypeConst.CLONE:
                 return rawTypeConst.CLONE;
-            case dispTypeConst.SNAPSHOT_NONEXTENDABLE:
-                return rawTypeConst.SNAPSHOT_NONEXTENDABLE;
-            case dispTypeConst.SNAPSHOT_EXTENDABLE:
-                return rawTypeConst.SNAPSHOT_EXTENDABLE;
-            case dispTypeConst.SNAPSHOT_FULLCOPY:
-                return rawTypeConst.SNAPSHOT_FULLCOPY;
+            case dispTypeConst.SNAP:
+                return rawTypeConst.SNAP;
+            case dispTypeConst.SNAP_ON_SNAP:
+                return rawTypeConst.SNAP_ON_SNAP;
+            case dispTypeConst.SNAP_CLONE:
+                return rawTypeConst.SNAP_CLONE;
             default:
                 return type!=='GAD' ? type.toString().toUpperCase(): type;
         }
@@ -88,17 +88,17 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
         isClone: function (type) {
             return type === dispTypeConst.CLONE || type === rawTypeConst.CLONE;
         },
-        isSnapshotNonExtendable: function (type) {
-            return type === dispTypeConst.SNAPSHOT_NONEXTENDABLE ||
-                type === rawTypeConst.SNAPSHOT_NONEXTENDABLE;
+        isSnap: function (type) {
+            return type === dispTypeConst.SNAP ||
+                type === rawTypeConst.SNAP;
         },
-        isSnapshotExtendable: function (type) {
-            return type === dispTypeConst.SNAPSHOT_EXTENDABLE ||
-                type === rawTypeConst.SNAPSHOT_EXTENDABLE;
+        isSnapOnSnap: function (type) {
+            return type === dispTypeConst.SNAP_ON_SNAP ||
+                type === rawTypeConst.SNAP_ON_SNAP;
         },
-        isSnapshotFullcopy: function (type) {
-            return type === dispTypeConst.SNAPSHOT_FULLCOPY ||
-                type === rawTypeConst.SNAPSHOT_FULLCOPY;
+        isSnapClone: function (type) {
+            return type === dispTypeConst.SNAP_CLONE ||
+                type === rawTypeConst.SNAP_CLONE;
         }
     };
 });

@@ -4,25 +4,25 @@
 <div class="btn-group btn-group-vertical btn-group-justified">
     <label class="btn btn-primary" ng-model="filterModel.filter.type"
            ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
-           btn-radio="'SNAPSHOT_EXTENDABLE'" uncheckable>
+           btn-radio="filterModel.$rawTypes.SNAP_ON_SNAP" uncheckable>
         {{'common-filter-snapshot-ex' | translate}}
     </label>
 
     <label class="btn btn-primary" ng-model="filterModel.filter.type"
            ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
-           btn-radio="'SNAPSHOT_FULLCOPY'" uncheckable>
+           btn-radio="filterModel.$rawTypes.SNAP_CLONE" uncheckable>
         {{'common-filter-snapshot-fc' | translate}}
     </label>
 
     <label class="btn btn-primary" ng-model="filterModel.filter.type"
            ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
-           btn-radio="'SNAPSHOT'" uncheckable>
+           btn-radio="filterModel.$rawTypes.SNAP" uncheckable>
         {{'common-filter-snapshot' | translate}}
     </label>
 
     <label class="btn btn-primary" ng-model="filterModel.filter.type"
            ng-change="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTypeSearch)"
-           btn-radio="'CLONE'" uncheckable>
+           btn-radio="filterModel.$rawTypes.CLONE" uncheckable>
         {{'common-filter-clone' | translate}}
     </label>
 </div>

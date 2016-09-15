@@ -127,6 +127,8 @@
     "common-affected-volumes": "Affected Volumes",
     "common-replication-group": "Replication Group",
     "common-replication-groups": "Replication Groups",
+    "common-replication-groups-clone": "CLONE",
+    "common-replication-groups-snapshot": "SNAPSHOT",
     "common-external-parity-groups": "External Parity Groups",
     "common-replication-group-action-confirmation": "Replication Group Action Confirmation",
     "common-replication-group-action": "{{pageAction}} Replication Group",

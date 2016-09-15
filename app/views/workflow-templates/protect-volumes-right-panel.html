@@ -1,8 +1,8 @@
 
-<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
+<div ng-if="dataModel.protectModel.isEnableSnapshot()">
     <h2>Schedule</h2>
 </div>
-<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
+<div ng-if="dataModel.protectModel.isEnableSnapshot()">
     <div class="btn-group btn-group-toggle btn-group-justified">
         <label class="btn btn-default refine" ng-model="dataModel.protectModel.schedule.type" btn-radio="'hour'" ng-disabled="!dataModel.protectModel.copyGroup.useNew">Hourly</label>
         <label class="btn btn-default refine" ng-model="dataModel.protectModel.schedule.type" btn-radio="'day'" ng-disabled="!dataModel.protectModel.copyGroup.useNew">Daily</label>
@@ -10,10 +10,10 @@
         <label class="btn btn-default refine" ng-model="dataModel.protectModel.schedule.type" btn-radio="'month'" ng-disabled="!dataModel.protectModel.copyGroup.useNew">Monthly</label>
     </div>
 </div>
-<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.schedule.type === 'week'">
+<div ng-if="dataModel.protectModel.isEnableSnapshot() && dataModel.protectModel.schedule.type === 'week'">
     &nbsp;
 </div>
-<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.schedule.type === 'week'">
+<div ng-if="dataModel.protectModel.isEnableSnapshot() && dataModel.protectModel.schedule.type === 'week'">
     <div class="btn-group-justified">
         <label class="btn btn-default refine" ng-model="dataModel.protectModel.schedule.day.Sunday" btn-checkbox ng-disabled="!dataModel.protectModel.copyGroup.useNew">SUN</label>
         <label class="btn btn-default refine" ng-model="dataModel.protectModel.schedule.day.Monday" btn-checkbox ng-disabled="!dataModel.protectModel.copyGroup.useNew">MON</label>
@@ -25,10 +25,10 @@
 
     </div>
 </div>
-<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
+<div ng-if="dataModel.protectModel.isEnableSnapshot()">
     &nbsp;
 </div>
-<div class="clearfix" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
+<div class="clearfix" ng-if="dataModel.protectModel.isEnableSnapshot()">
     <form name="validationForm.rightPanel" role="form" class="validation-form col-lg-3 form-horizontal" ng-if="dataModel.protectModel.schedule.type === 'hour'" novalidate>
         <div class="form-group form-group-lg form-horizontal">
             <label>Start Minute </label>
@@ -51,11 +51,11 @@
         </div>
     </form>
 </div>
-<div ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT'">
+<div ng-if="dataModel.protectModel.isEnableSnapshot()">
     <p ng-if="dataModel.protectModel.schedule.type === 'hour' && dataModel.protectModel.schedule.hourStartMinute === 0 && dataModel.protectModel.schedule.hourInterval">{{ 'replication-groups-hourly-note-zero' | translate : dataModel.protectModel }}</p>
     <p ng-if="dataModel.protectModel.schedule.type === 'hour' && dataModel.protectModel.schedule.hourStartMinute && dataModel.protectModel.schedule.hourInterval">{{ 'replication-groups-hourly-note' | translate : dataModel.protectModel}}</p>
 </div>
-<div class="clearfix" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.schedule.type !== 'hour'">
+<div class="clearfix" ng-if="dataModel.protectModel.isEnableSnapshot() && dataModel.protectModel.schedule.type !== 'hour'">
     <form role="form" class="col-lg-3 form-horizontal" name="inputTimeForm">
         <div class="form-group form-group-lg form-horizontal">
             <label>Start Time </label>

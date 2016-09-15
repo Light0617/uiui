@@ -186,7 +186,8 @@ angular.module('rainierApp')
             }
 
             var protectModel = {
-                replicationTechnology: 'SNAPSHOT',
+                $replicationRawTypes: replicationService.rawTypes,
+                replicationTechnology: replicationService.rawTypes.SNAP,
                 noOfSnapshots: null,
                 noOfCopies: 0,
                 consistencyGroup: false,
@@ -226,6 +227,10 @@ angular.module('rainierApp')
 
             };
 
+            protectModel.isEnableSnapshot = function() {
+                return replicationService.isSnap(protectModel.replicationTechnology);
+            };
+
             protectModel.canSubmit = function() {
                 protectModel.replicationModel = {};
                 if (protectModel.replicationTechnology === 'NONE') {
@@ -241,13 +246,13 @@ angular.module('rainierApp')
                     protectModel.replicationModel.replicationGroupId = protectModel.copyGroup.id;
                 }
 
-                switch (protectModel.replicationTechnology) {
-                    case 'SNAPSHOT':
-                        return protectModel.schedule.isValid();
-                    case 'CLONE':
-                        return _.isFinite(protectModel.noOfSnapshots);
+                if (replicationService.isSnap(protectModel.replicationTechnology)) {
+                    return protectModel.schedule.isValid();
+                } else if (replicationService.isClone(protectModel.replicationTechnology)) {
+                    return _.isFinite(protectModel.noOfSnapshots);
+                } else {
+                    return true;
                 }
-                return true;
             };
 
             protectModel.getReplicationPayload = function() {
@@ -264,17 +269,14 @@ angular.module('rainierApp')
                         numberOfBackups : null
                     };
                     payload.replicationGroupName = protectModel.copyGroupName;
-                    switch (protectModel.replicationTechnology) {
-                        case 'SNAPSHOT':
-                            payload.numberOfBackups = protectModel.noOfSnapshots;
-                            payload.schedule = cronStringConverterService.fromDatePickerToObjectModel(
+                    if (replicationService.isSnap(protectModel.replicationTechnology)) {
+                        payload.numberOfBackups = protectModel.noOfSnapshots;
+                        payload.schedule = cronStringConverterService.fromDatePickerToObjectModel(
                             $scope.dataModel.protectModel.schedule.type, $scope.dataModel.protectModel.schedule.time,
                             $scope.dataModel.protectModel.schedule.dayOfMonth, $scope.dataModel.protectModel.schedule.selectedDays,
                             $scope.dataModel.protectModel.schedule.hourInterval, $scope.dataModel.protectModel.schedule.hourStartMinute);
-                            break;
-                        case 'CLONE':
-                            payload.numberOfBackups = protectModel.noOfCopies;
-                            break;
+                    } else if (replicationService.isClone(protectModel.replicationTechnology)) {
+                        payload.numberOfBackups = protectModel.noOfCopies;
                     }
                 } else {
                     payload = {
@@ -322,20 +324,18 @@ angular.module('rainierApp')
                 $scope.dataModel.protectModel.schedule.selectedDays, $scope.dataModel.protectModel.schedule.hourInterval,
                 $scope.dataModel.protectModel.schedule.hourStartMinute);
 
-            if(replicationType === 'SNAPSHOT'){
+            if(replicationService.isSnap(replicationType)){
                 noOfCopiesInput = parseInt($scope.dataModel.protectModel.noOfSnapshots);
                 _.forEach($scope.dataModel.copyGroups, function (cg) {
                     var cgConsistent = cg.consistent === 'On';
-                    if (replicationType === 'SNAPSHOT') {
-                        if (('Snap' === cg.type) &&
-                            (!_.isFinite(noOfCopiesInput) || noOfCopiesInput === 0 || noOfCopiesInput === cg.numberOfCopies) &&
-                            (cronStringConverterService.isEqualForObjectModel(currentSchedule, cg.schedule)) &&
-                            ($scope.dataModel.protectModel.consistencyGroup === cgConsistent)) {
-                            validCopyGroups.push(cg);
-                        }
+                    if (replicationService.isSnap(cg.type) &&
+                        (!_.isFinite(noOfCopiesInput) || noOfCopiesInput === 0 || noOfCopiesInput === cg.numberOfCopies) &&
+                        (cronStringConverterService.isEqualForObjectModel(currentSchedule, cg.schedule)) &&
+                        ($scope.dataModel.protectModel.consistencyGroup === cgConsistent)) {
+                        validCopyGroups.push(cg);
                     }
                 });
-            } else if (replicationType === 'CLONE') {
+            } else if (replicationService.isClone(replicationType)) {
                 noOfCopiesInput = $scope.dataModel.protectModel.noOfCopies;
             } else {
                 noOfCopiesInput = null;

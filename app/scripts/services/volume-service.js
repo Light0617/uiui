@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('volumeService', function ( ) {
+    .factory('volumeService', function (replicationService) {
         return {
             validateCombinedLabel: function (label, suffix, volumeCount) {
                 if (label === null && suffix === null) {
@@ -34,7 +34,7 @@ angular.module('rainierApp')
             },
             restorable: function (volume) {
                 var type = volume.dataProtectionSummary.replicationType;
-                var snapshotFullcopyOnly = type.length === 1 && type[0] === 'SNAPSHOT_FULLCOPY';
+                var snapshotFullcopyOnly = type.length === 1 && replicationService.isSnapClone(type[0]);
                 return !volume.isUnprotected() && !snapshotFullcopyOnly;
             },
             getDkcDataSavingTypes: function () {

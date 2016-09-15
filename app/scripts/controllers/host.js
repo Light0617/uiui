@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('HostCtrl', function ($scope, $routeParams, $window, $timeout, $location, orchestratorService,
                                       objectTransformService, scrollDataSourceBuilderService, ShareDataService,
                                       inventorySettingsService, storageSystemVolumeService, queryService,
-                                      paginationService, scrollDataSourceBuilderServiceNew, volumeService) {
+                                      paginationService, scrollDataSourceBuilderServiceNew, volumeService,
+                                      replicationService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -343,6 +344,7 @@ angular.module('rainierApp')
         };
 
         $scope.filterModel = {
+            $replicationRawTypes: replicationService.rawTypes,
             filter: {
                 freeText: '',
                 volumeType: '',

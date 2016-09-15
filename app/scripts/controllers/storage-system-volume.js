@@ -261,14 +261,14 @@ angular.module('rainierApp')
                 }
             }
             _.forEach($scope.rgWithVolumeIdAsPvol, function (rgsp) {
-                if (replicationService.isSnapshotNonExtendable(rgsp.type)) {
+                if (replicationService.isSnap(rgsp.type)) {
                     rgsp.icon = baseRightIconString + 'scheduled-active';
                 } else {
                     rgsp.icon = baseRightIconString + 'not-scheduled-active';
                 }
             });
             if ($scope.rgWithVolumeIdAsSvol &&
-                replicationService.isSnapshotNonExtendable($scope.rgWithVolumeIdAsSvol.type)) {
+                replicationService.isSnap($scope.rgWithVolumeIdAsSvol.type)) {
                 $scope.defaultLeftIconString = defaultLeftIconString + 'scheduled-active';
                 $scope.longLeftIconString = longLeftIconString + 'scheduled-active';
             } else if ($scope.rgWithVolumeIdAsSvol) {

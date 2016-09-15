@@ -10,9 +10,9 @@
         <label>Replication Type</label>
         <button type="button" class="btn btn-lg btn-block btn-dark"
                 ng-model="dataModel.protectModel.replicationTechnology"
-                ng-click="dataModel.protectModel.replicationTechnology = 'SNAPSHOT'"
+                ng-click="dataModel.protectModel.replicationTechnology = dataModel.protectModel.$replicationRawTypes.SNAP"
                 ng-attr-title="{{'snapshot-tooltip' | translate}}"
-                btn-radio="'SNAPSHOT'">Snapshot
+                btn-radio="dataModel.protectModel.$replicationRawTypes.SNAP">Snapshot
         </button>
 
         <button type="button" class="btn btn-lg btn-block btn-dark"
@@ -22,7 +22,8 @@
                 btn-radio="'NONE'">None
         </button>
     </div>
-    <div class="form-group margin-T-B-L" ng-if="dataModel.protectModel.replicationTechnology === 'SNAPSHOT' && dataModel.protectModel.copyGroup.useNew">
+    <div class="form-group margin-T-B-L"
+         ng-if="dataModel.protectModel.isEnableSnapshot() && dataModel.protectModel.copyGroup.useNew">
         <label>{{ 'number-of-snapshots' | translate }}</label>
         <input class="form-control number light-text" name="numberOfSnapshots" type="number" ng-min="1" ng-max="1024"
                ng-pattern="dataModel.decimalNumberRegexp" ng-model="dataModel.protectModel.noOfSnapshots" title="Number of Snapshots"

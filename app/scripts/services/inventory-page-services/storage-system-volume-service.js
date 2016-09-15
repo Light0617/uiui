@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .factory('storageSystemVolumeService', function ($log, Restangular, queryService, objectTransformService,
-                                                     apiResponseHandlerService, paginationService) {
+                                                     apiResponseHandlerService, paginationService, replicationService) {
         var VOLUME_PAIRS_PATH = 'volume-pairs';
         var REPLICATION_GROUPS_PATH = 'replication-groups';
         return {
@@ -23,7 +23,11 @@ angular.module('rainierApp')
             getVolumePairsAsPVolWithoutSnapshotFullcopy: function (token, currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
-                var queryText = [{text:'SNAPSHOT'}, {text:'SNAPSHOT_EXTENDABLE'}, {text:'CLONE'}]; // TODO: rewrite with must_not query.
+                var queryText = [
+                    {text: replicationService.rawTypes.SNAP},
+                    {text: replicationService.rawTypes.SNAP_ON_SNAP},
+                    {text: replicationService.rawTypes.CLONE}
+                ]; // TODO: rewrite with must_not query.
                 var queryObject = queryService.getQueryObjectInstance('type', queryText);
                 queryService.setQueryObject(queryObject);
                 return paginationService.get(token,VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, false, storageSystemId);
@@ -36,34 +40,34 @@ angular.module('rainierApp')
             getVolumePairsAsPVolAndClone: function (currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
-                queryService.setQueryMapEntry('type', 'CLONE');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.CLONE);
                 return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
             },
             getVolumePairsAsPVolAndSnapshotAndRGNameExisting: function (currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
-                queryService.setQueryMapEntry('type', 'SNAPSHOT');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP);
                 queryService.setQueryMapEntry('_exists_', 'replicationGroup');
                 return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
             },
             getVolumePairsAsPVolAndSnapshotAndRGNameMissing: function (currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
-                queryService.setQueryMapEntry('type', 'SNAPSHOT');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP);
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
                 return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
             },
             getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing: function (currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
-                queryService.setQueryMapEntry('type', 'SNAPSHOT_EXTENDABLE');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP_ON_SNAP);
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
                 return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
             },
             getVolumePairsAsPVolAndSnapshotFullcopyAndRGNameMissing: function (currentVolumeId, storageSystemId) {
                 paginationService.clearQuery();
                 queryService.setQueryMapEntry('primaryVolume.id', parseInt(currentVolumeId));
-                queryService.setQueryMapEntry('type', 'SNAPSHOT_FULLCOPY');
+                queryService.setQueryMapEntry('type', replicationService.rawTypes.SNAP_CLONE);
                 queryService.setQueryMapEntry('_missing_', 'replicationGroup');
                 return paginationService.getQuery(VOLUME_PAIRS_PATH, objectTransformService.transformVolumePairs, storageSystemId);
             },

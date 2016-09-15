@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('orchestratorService', function (Restangular, objectTransformService, apiResponseHandlerService) {
+    .factory('orchestratorService', function (Restangular, objectTransformService, apiResponseHandlerService, replicationService) {
 
         var service = {
 
@@ -42,8 +42,8 @@ angular.module('rainierApp')
                             isExternal: true
                         };
                     };
-                    result.replicationGroups.push(externalReplicationGroup('CLONE'));
-                    result.replicationGroups.push(externalReplicationGroup('SNAPSHOT'));
+                    result.replicationGroups.push(externalReplicationGroup(replicationService.rawTypes.CLONE));
+                    result.replicationGroups.push(externalReplicationGroup(replicationService.rawTypes.SNAP));
                     _.forEach(result.replicationGroups, function (item) {
                         objectTransformService.transformReplicationGroup(item);
                     });

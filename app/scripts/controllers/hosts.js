@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('HostsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService,
                                        scrollDataSourceBuilderServiceNew, ShareDataService, queryService,
-                                       paginationService, constantService, $location, donutService) {
+                                       paginationService, constantService, $location, donutService, replicationService) {
 
         $scope.operatingSystemType = {};
         $scope.operatingSystems = constantService.osType();
@@ -237,6 +237,7 @@ angular.module('rainierApp')
         };
 
         $scope.filterModel = {
+            $replicationRawTypes: replicationService.rawTypes,
             showAllFilters: true,
             filterOperatingSystem: function () {
                 var enabledOperatingSystemType = [];
@@ -251,10 +252,10 @@ angular.module('rainierApp')
             filterDpType: function () {
                 var replicationTypes = [];
                 if ($scope.dataModel.snapshot) {
-                    replicationTypes.push('SNAPSHOT');
+                    replicationTypes.push($scope.filterModel.$replicationRawTypes.SNAP);
                 }
                 if ($scope.dataModel.cloneNow) {
-                    replicationTypes.push('CLONE');
+                    replicationTypes.push($scope.filterModel.$replicationRawTypes.CLONE);
                 }
                 $scope.filterModel.filter.replicationTypes = replicationTypes;
             },
