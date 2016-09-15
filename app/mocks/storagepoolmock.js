@@ -99,7 +99,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'utilizationThreshold2': mockUtils.randomInt(1,100),
             'activeFlashEnabled': mockUtils.trueOrFalse(),
             'tiers': tiers,
-            'deduplicationEnabled': mockUtils.trueOrFalse()
+            'deduplicationEnabled': mockUtils.trueOrFalse(),
+            'deduplicationSystemDataCapacityInBytes': 40.00 * 1024 * 1024 * 1024 * 1024
         };
     };
 

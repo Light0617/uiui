@@ -75,6 +75,7 @@
     "protected-capacity-tooltip": "Protected - Sum of capacity of all primary volumes that are protected in the system. 0, if there are no volumes protected.",
     "unprotected-capacity-tooltip": "Unprotected - Sum of capacity of all primary volumes that are unprotected in the system.",
     "secondary-capacity-tooltip": "Secondary - Sum of capacity of all secondary volumes in the system. 0, if there are no volumes protected.",
+    "dsd-volume-capacity-tooltip": "{{dsdVolCapacity}} is subscribed for Deduplication.",
     "common-label-free": "Thin Free",
     "free-capacity-tooltip": "Thin Free - Unused thin capacity in the system i.e, difference between Total pool capacity and Thin Used.",
     "common-label-percent-free": "% Used",

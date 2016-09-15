@@ -351,6 +351,8 @@ angular.module('rainierApp')
 
             result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
             result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+            result.deduplicationSystemDataCapacityInBytes = getSizeDisplayText(
+                diskSizeService.getDisplaySize(result.deduplicationSystemDataCapacityInBytes));
             result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
 
             result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);

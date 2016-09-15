@@ -72,6 +72,7 @@
     "common-label-file-pool-used": "Used File Pool Capacity",
     "file-used-capacity-tooltip": "File Pool Used - Sum of all file pool utilization capacities in the system.",
     "used-capacity-tooltip": "Thin Used - Sum of all pool utilization capacities in the system. 0, if the thin volumes do not have any data.",
+    "dsd-volume-capacity-tooltip": "{{dsdVolCapacity}} is subscribed for Deduplication.",
     "protected-capacity-tooltip": "Protected - Sum of capacity of all primary volumes that are protected in the system. 0, if there are no volumes protected.",
     "unprotected-capacity-tooltip": "Unprotected - Sum of capacity of all primary volumes that are unprotected in the system.",
     "secondary-capacity-tooltip": "Secondary - Sum of capacity of all secondary volumes in the system. 0, if there are no volumes protected.",
