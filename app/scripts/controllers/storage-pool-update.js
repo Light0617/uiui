@@ -188,9 +188,18 @@ angular.module('rainierApp')
                                 deployPayload.utilizationThreshold1 = 1;
                                 deployPayload.subscriptionLimit.value = 1;
                             }
-                            orchestratorService.updatePoolTemplate(storageSystemId, poolId, deployPayload).then(function () {
-                                window.history.back();
+
+                            // Build reserved resources
+                            var reservedResourcesList = [];
+                            reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+                            _.forEach($scope.poolPgIds, function (poolPgId) {
+                                reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
                             });
+
+                            // Show popup if resource is present in resource tracker else submit
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                'Update Pool Confirmation', storageSystemId, poolId, deployPayload,
+                                orchestratorService.updatePoolTemplate);
                         } else {
                             var updatePoolPayload = {
                                 label: updatedLabel,
