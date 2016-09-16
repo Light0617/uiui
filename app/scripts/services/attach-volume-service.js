@@ -233,6 +233,7 @@ angular.module('rainierApp')
                 storagePorts: storagePorts,
                 validation: true,
                 itemSelected: true,
+                withSuggest: true,
                 paths: originalAllPaths,
                 originalPathLength: originalAllPaths.length,
                 idCoordinates: idCoordinates,

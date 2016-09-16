@@ -1,7 +1,7 @@
 <div class="editor-header">
     <div class="btn-toolbar standalone">
         <div class="btn-group">
-            <button class="btn btn-default btn-sm btn-dark" ng-click="dataModel.pathModel.showSuggest(dataModel)">{{ 'common-label-suggest' | translate }}</button>
+            <button class="btn btn-default btn-sm btn-dark" ng-click="dataModel.pathModel.showSuggest(dataModel)" ng-if="dataModel.pathModel.withSuggest">{{ 'common-label-suggest' | translate }}</button>
             <button class="btn btn-default btn-sm btn-dark" ng-click="dataModel.pathModel.selectNone(dataModel)">{{ 'common-label-select-none' | translate }}</button>
             <button class="btn btn-default btn-sm btn-dark" ng-click="dataModel.pathModel.deleteSelected(dataModel.pathModel)">{{ 'common-label-delete-selected' | translate }}</button>
         </div>

@@ -229,6 +229,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 selectedHosts: selectedHosts,
                 storagePorts: dataModel.storagePorts,
                 validation: true,
+                withSuggest: false,
                 getPath: getPath,
                 createPath: attachVolumeService.createPath,
                 previous: function () {
