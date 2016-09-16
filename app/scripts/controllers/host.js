@@ -398,12 +398,14 @@ angular.module('rainierApp')
                         paginationService.setFilterSearch(queryObject);
                     }
                 }
+                queryService.setQueryMapEntry('serverId', parseInt(hostId));
                 paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume).then(function (result) {
                         updateResultTotalCounts(result);
                 });
             },
             sliderQuery: function(key, start, end, unit) {
                 paginationService.setSliderSearch(key, start, end, unit);
+                queryService.setQueryMapEntry('serverId', parseInt(hostId));
                 paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume).then(function (result) {
                     updateResultTotalCounts(result);
                 });
@@ -413,6 +415,7 @@ angular.module('rainierApp')
                 queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
                 queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                 paginationService.setTextSearch(queryObjects);
+                queryService.setQueryMapEntry('serverId', parseInt(hostId));
                 paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume).then(function (result) {
                     updateResultTotalCounts(result);
                 });
