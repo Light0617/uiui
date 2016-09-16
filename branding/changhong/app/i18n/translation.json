@@ -486,7 +486,7 @@
     "storage-system-launch-smu": "Launch HNAS SMU",
     "storage-system-settings": "Initial Setup Wizard (Settings)",
     "storage-systems-update": "Update Storage System",
-    "storage-system-launch-security": "--> Configure Encryption",
+    "storage-system-launch-security": "Configure Encryption",
     "navigator-session-message": "The operations performed on Storage Navigator may not be immediately reflected on Storage Advisor.",
     "no-accessible-storage-system": "No storage systems accessible.",
     "isw-common-settings-name": "Name",
