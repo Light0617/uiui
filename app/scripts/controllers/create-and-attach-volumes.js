@@ -327,7 +327,7 @@ angular.module('rainierApp')
                 _.forEach($scope.dataModel.copyGroups, function (cg) {
                     var cgConsistent = cg.consistent === 'On';
                     if (replicationType === 'SNAPSHOT') {
-                        if (('Snapshot' === cg.type) &&
+                        if (('Snap' === cg.type) &&
                             (!_.isFinite(noOfCopiesInput) || noOfCopiesInput === 0 || noOfCopiesInput === cg.numberOfCopies) &&
                             (cronStringConverterService.isEqualForObjectModel(currentSchedule, cg.schedule)) &&
                             ($scope.dataModel.protectModel.consistencyGroup === cgConsistent)) {

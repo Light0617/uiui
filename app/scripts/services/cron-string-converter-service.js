@@ -242,7 +242,7 @@ angular.module('rainierApp')
                         if (requiredParamCheck(objectModel.minute) && requiredParamCheck(objectModel.recurringUnitInterval)) {
                             if (objectModel.minute === 0) {
                                 naturalLanguage = 'Every ' + objectModel.recurringUnitInterval +
-                                    (objectModel.recurringUnitInterval === 1 ? ' hour on the hour' : 'hours on the hour');
+                                    (objectModel.recurringUnitInterval === 1 ? ' hour on the hour' : ' hours on the hour');
                             } else {
                                 naturalLanguage = 'At ' + objectModel.minute + (objectModel.minute === 1 ? ' minute past the hour every ' :  ' minutes past the hour every ') +
                                     objectModel.recurringUnitInterval + (objectModel.recurringUnitInterval === 1 ? ' hour' : ' hours');
