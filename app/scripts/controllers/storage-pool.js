@@ -323,65 +323,69 @@ angular.module('rainierApp')
             };
         };
 
-        orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            $scope.storageSystemDataModel = result;
 
-            var summaryModel = objectTransformService.transformToPoolSummaryModel(result);
-            summaryModel.title = 'Storage pool ' + storagePoolId;
-            summaryModel.noBreakdown = true;
-            $scope.summaryModel = summaryModel;
+            orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
 
-            var fmdDc2CompModel = objectTransformService.transformToPoolFMCDC2CompressionModel(result);
-            var logicalCapacityDisplaySize = diskSizeService.getDisplaySize(result.logicalCapacityInBytes);
-            var usedCapacityDisplaySize = diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes);
+                var summaryModel = objectTransformService.transformToPoolSummaryModel(result);
+                summaryModel.title = 'Storage pool ' + storagePoolId;
+                summaryModel.noBreakdown = true;
+                $scope.summaryModel = summaryModel;
 
-            result.arrayDataVisualizationModel = fmdDc2CompModel;
-            result.orchestratorService = orchestratorService;
-            result.compressedParityGroups = _.filter(result.parityGroups, function(pg) { return pg.compression; });
-            result.actionsList = _.map(result.actions);
-            result.utilizationThreshold1 = addPercentageSign(result.utilizationThreshold1);
-            result.utilizationThreshold2 = addPercentageSign(result.utilizationThreshold2);
-            result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
-            result.logicalCapacityInBytes = getSizeDisplayText(logicalCapacityDisplaySize);
-            result.usedLogicalCapacityInBytes = getSizeDisplayText(usedCapacityDisplaySize);
-            result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
-            result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
-            result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
-            result.fmcCapacityData = transformToPoolSummaryModel(logicalCapacityDisplaySize, usedCapacityDisplaySize);
+                var fmdDc2CompModel = objectTransformService.transformToPoolFMCDC2CompressionModel(result);
+                var logicalCapacityDisplaySize = diskSizeService.getDisplaySize(result.logicalCapacityInBytes);
+                var usedCapacityDisplaySize = diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes);
+
+                result.arrayDataVisualizationModel = fmdDc2CompModel;
+                result.orchestratorService = orchestratorService;
+                result.compressedParityGroups = _.filter(result.parityGroups, function(pg) { return pg.compression; });
+                result.actionsList = _.map(result.actions);
+                result.utilizationThreshold1 = addPercentageSign(result.utilizationThreshold1);
+                result.utilizationThreshold2 = addPercentageSign(result.utilizationThreshold2);
+                result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
+                result.logicalCapacityInBytes = getSizeDisplayText(logicalCapacityDisplaySize);
+                result.usedLogicalCapacityInBytes = getSizeDisplayText(usedCapacityDisplaySize);
+                result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
+                result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
+                result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
+                result.fmcCapacityData = transformToPoolSummaryModel(logicalCapacityDisplaySize, usedCapacityDisplaySize);
 
 
-            result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
-            result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
-            result.deduplicationSystemDataCapacityInBytes = getSizeDisplayText(
-                diskSizeService.getDisplaySize(result.deduplicationSystemDataCapacityInBytes));
-            result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
+                result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
+                result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+                result.deduplicationSystemDataCapacityInBytes = getSizeDisplayText(
+                    diskSizeService.getDisplaySize(result.deduplicationSystemDataCapacityInBytes));
+                result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
 
-            result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
-            result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
-            result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+                result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
+                result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
+                result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
 
-            result.showCompressionDetails = function () {
-                if (result.fmcCompressed === 'YES') {
-                    return true;
-                } else if (result.deduplicationEnabled === true) {
-                    return true;
-                } else if (result.compressionDetails.compressionRate === 1 &&
-                    result.compressionDetails.savingsPercentage === 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            };
-            result.showFmcDetails = function() {
-                if (result.fmcCompressed === 'YES') {
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-            
-            result.dispDeduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
-            
-            $scope.poolDataModel = result;
+                result.showCompressionDetails = function () {
+                    if (result.fmcCompressed === 'YES') {
+                        return true;
+                    } else if (result.deduplicationEnabled === true) {
+                        return true;
+                    } else if (result.compressionDetails.compressionRate === 1 &&
+                        result.compressionDetails.savingsPercentage === 0) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
+                result.showFmcDetails = function() {
+                    if (result.fmcCompressed === 'YES') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+
+                result.dispDeduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
+
+                $scope.poolDataModel = result;
+            });
         });
 
         function addPercentageSign (value) {
