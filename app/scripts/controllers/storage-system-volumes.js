@@ -315,7 +315,11 @@ angular.module('rainierApp')
                             'volumes/protect'].join('/'));
                     },
                     enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
+                            _.all(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                });
                     }
                 },
                 {

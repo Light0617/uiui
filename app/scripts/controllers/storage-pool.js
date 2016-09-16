@@ -265,7 +265,10 @@ angular.module('rainierApp')
                         ].join('/'));
                     },
                     enabled: function () {
-                        return dataModel.anySelected();
+                        return dataModel.anySelected() && _.all(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                });
                     }
                 },
                 {
