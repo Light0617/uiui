@@ -385,6 +385,14 @@ angular
                 },
                 helpContext: 'T_HID_CREATING_A_VOLUME'
             })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/add', {
+                templateUrl: 'views/storage-system-volumes-add.html',
+                controller: 'StorageSystemVolumesAddCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'storage-volumes-add'
+                },
+                helpContext: 'T_HID_CREATING_A_VOLUME'
+            })
             .when('/storage-systems/:storageSystemId/volumes/:volumeId', {
                 templateUrl: 'views/storage-system-volume.html',
                 controller: 'StorageSystemVolumeCtrl',
