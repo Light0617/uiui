@@ -373,6 +373,8 @@ angular.module('rainierApp')
                     return;
                 }
                 svg = selectedSvg;
+                svg.attr('viewBox', '0, 0, 1000, ' + dataModel.pathModel.viewBoxHeight)
+                    .attr('style', 'padding-bottom: ' + dataModel.pathModel.viewBoxHeight/10 + '%');
                 g = svg.append('g')
                     .attr('title', 'path-wwn-port');
 

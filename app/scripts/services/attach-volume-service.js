@@ -77,6 +77,14 @@ angular.module('rainierApp')
             });
         }
 
+        function getViewBoxHeight(hosts, storagePorts){
+            var lastHost = hosts[hosts.length - 1];
+            var hostHeight = lastHost.startHeight + ((lastHost.wwpns.length <= 4) ? 100 : (lastHost.wwpns.length * 25)) + 10;
+            var portHeight = storagePorts[storagePorts.length - 1].coordinate.y + 30;
+
+            return Math.max(hostHeight, portHeight);
+        }
+
         function updateHostModeOptions(hostModeOptions, dataModel) {
             dataModel.attachModel.selectedHostModeOption = hostModeOptions;
             dataModel.attachModel.lastSelectedHostModeOption = dataModel.attachModel.selectedHostModeOption;
@@ -237,6 +245,7 @@ angular.module('rainierApp')
                 paths: originalAllPaths,
                 originalPathLength: originalAllPaths.length,
                 idCoordinates: idCoordinates,
+                viewBoxHeight: getViewBoxHeight(selectedHosts, storagePorts),
                 getPath: getPath,
                 createPath: createPath,
                 previous: function () {
@@ -313,6 +322,7 @@ angular.module('rainierApp')
             setEditLunPage: setEditLunPage,
             setWwnCoordinates: setWwnCoordinates,
             getAllHostModeOptionsString: getAllHostModeOptionsString,
-            createPath: createPath
+            createPath: createPath,
+            getViewBoxHeight: getViewBoxHeight
         };
     });
