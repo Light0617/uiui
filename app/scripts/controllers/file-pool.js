@@ -119,62 +119,30 @@ angular.module('rainierApp')
                 return summaryModelActions;
             };
 
-            dataModel.gridSettings = [
-                {
-                    title: 'Name',
-                    sizeClass: 'sixth',
-                    sortField: 'label',
-                    getDisplayValue: function (item) {
-                        return item.label;
-                    }
-
-                },
-                {
-                    title: 'Status',
-                    sizeClass: 'sixth',
-                    sortField: 'status',
-                    getDisplayValue: function (item) {
-                        return item.status;
-                    }
-
-                },
-                {
-                    title: 'file-pool-total',
-                    sizeClass: 'twelfth',
-
-                    sortField: 'capacityInBytes.value',
-                    getDisplayValue: function (item) {
-                        return item.capacityInBytes;
-                    },
-                    type: 'size'
-
-                },
-                {
-                    title: 'file-pool-free',
-                    sizeClass: 'twelfth',
-                    sortField: 'availableCapacityInBytes.value',
-                    getDisplayValue: function (item) {
-                        return item.availableCapacityInBytes;
-                    },
-                    type: 'size'
-
-                },
-                {
-                    title: 'common-file-used',
-                    sizeClass: 'twelfth',
-                    sortField: 'usedCapacityInBytes.value',
-                    getDisplayValue: function (item) {
-                        return item.usedCapacityInBytes;
-                    },
-                    type: 'size'
-                }
-            ];
-
             dataModel.addAction = function () {
                 $location.path(['storage-systems', storageSystemId, 'file-pools', filePoolId, 'file-systems', 'add'].join('/'));
             };
 
             objectTransformService.transformFilePoolSummaryModel(dataModel.filePool);
+
+            dataModel.filePool.barData = [
+                {
+                    colorClass: 'file-used',
+                    legendText: dataModel.filePool.usedLegend,
+                    capacity: dataModel.filePool.usedCapacityInBytes
+                },
+                {
+                    colorClass: 'file-allocated',
+                    legendText: dataModel.filePool.allocatedLegend,
+                    capacity: dataModel.filePool.physicalCapacityInBytes
+                },
+                {
+                    colorClass: 'file-overcommited',
+                    legendText: dataModel.filePool.overCommitLegend,
+                    capacity: dataModel.filePool.capacityInBytes
+                }
+            ];
+
             $scope.dataModel = dataModel;
             scrollDataSourceBuilderService.setupDataLoader($scope, fileSystems, 'fileSystemsSearch');
             setDataModelActions();

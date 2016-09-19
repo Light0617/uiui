@@ -189,37 +189,22 @@ angular.module('rainierApp')
                 return summaryModelActions;
             };
 
-            dataModel.gridSettings = [
-                {
-                    title: 'Name',
-                    sizeClass: 'twelfth',
-                    sortField: 'name',
-                    getDisplayValue: function (item) {
-                        return item.name;
-                    }
-
-                },
-                {
-                    title: 'Type',
-                    sizeClass: 'twelfth',
-                    sortField: 'type',
-                    getDisplayValue: function (item) {
-                        return item.type;
-                    }
-                },
-                {
-                    title: 'Path',
-                    sizeClass: 'quarter',
-                    sortField: 'fileSystemPath',
-                    getDisplayValue: function (item) {
-                        return item.fileSystemPath;
-                    }
-                }
-            ];
-
             dataModel.addAction = function () {
                 $location.path(['storage-systems', storageSystemId, 'file-systems', fileSystemId, 'shares-exports', 'add'].join('/'));
             };
+
+            dataModel.fileSystem.barData = [
+                {
+                    colorClass: 'file-used',
+                    legendText: dataModel.fileSystem.usedLegend,
+                    capacity: dataModel.fileSystem.usedCapacityInBytes
+                },
+                {
+                    colorClass: 'file-allocated',
+                    legendText: dataModel.fileSystem.allocatedLegend,
+                    capacity: dataModel.fileSystem.capacityInBytes
+                }
+            ];
 
             $scope.dataModel = dataModel;
             $scope.summaryModel = summaryModel;
@@ -263,7 +248,7 @@ angular.module('rainierApp')
                                 item.urlType, item.id, 'update'].join('/'));
                         }
                     }
-                },
+                }
             ];
 
             $scope.dataModel.getActions = function () {
