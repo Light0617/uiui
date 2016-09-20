@@ -15,12 +15,12 @@
 </div>
 <div class="tile-row" ng-click="item.onClick()"> 
         <div class="label-value-container" ng-repeat="md in item.metaData">
-            <h2 ng-if="$first && item.onClick" ng-attr-title="{{md.title}}">
+            <h3 ng-if="$first && item.onClick" ng-attr-title="{{md.title}}">
             <a ng-if="item.onClick">{{md.title}}</a>
-        </h2>
-        <h2 ng-if="$first && !item.onClick" ng-attr-title="{{md.title}}">
+        </h3>
+        <h3 ng-if="$first && !item.onClick" ng-attr-title="{{md.title}}">
             {{md.title}}
-        </h2>
+        </h3>
             <p class="value" ng-if="!$first" ng-attr-title="{{md.title}}">
                 {{md.title}}
             </p>
