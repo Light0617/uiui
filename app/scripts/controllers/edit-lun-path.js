@@ -120,14 +120,16 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
             var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
             var originalAllPaths = getPathsFromHostGroups(hostGroupResults);
+            originalPaths = angular.copy(originalAllPaths);
             $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
             $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
+
             angular.extend($scope.dataModel.pathModel, {
                 paths: originalAllPaths,
-                originalPathLength: originalAllPaths.length
+                originalPathLength: originalPaths.length
             });
-            originalPaths = angular.copy(originalAllPaths);
+
         }).finally(function(){
             paginationService.clearQuery();
         });
@@ -214,6 +216,10 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                         return;
                     }
 
+                    if (originalPaths) {
+                        $scope.dataModel.pathModel.paths = angular.copy(originalPaths);
+                    }
+
                     // Update the host mode options before go to next page
                     _.forEach($scope.dataModel.pathModel.selectedHosts, function(host){
                         host.allHostModeOptionsString = attachVolumeService.getAllHostModeOptionsString($scope.dataModel.attachModel.selectedHostModeOption);
@@ -293,7 +299,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                     // modify the path
                                     var pathChanged = false;
                                     var lunChange = false;
-                                    if (originalPath.serverWwn !== path.serverWwn && originalPath.storagePortId !== path.storagePortId){
+                                    if (originalPath.serverWwn !== path.serverWwn || originalPath.storagePortId !== path.storagePortId){
                                         pathChanged = true;
                                     }
                                     if (volume.lun !== originalSelectedVolumes[j].lun){

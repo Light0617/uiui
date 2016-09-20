@@ -339,10 +339,13 @@ angular.module('rainierApp')
             line.remove();
         }
 
-        function pathExists(dataModel, wwn, portId){
+        function pathExists(dataModel, wwn, portId, excludedIndex){
             var path;
             var i;
             for (i = 0; i < dataModel.pathModel.paths.length; ++i){
+                if (excludedIndex && excludedIndex === i){
+                    break;
+                }
                 path = dataModel.pathModel.paths[i];
                 if (wwn === path.serverWwn && portId === path.storagePortId){
                     return true;
@@ -403,6 +406,7 @@ angular.module('rainierApp')
 
                 // Draw the wwn side of the new path
                 svg.selectAll('g[title="server-wwn"]').on('click', function(){
+                    var excludedIndex;
                     circle = d3.select(this).select('circle');
                     wwnText = d3.select(this).select('text').text();
                     pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
@@ -422,18 +426,26 @@ angular.module('rainierApp')
                     line = svg.select('line[title="line-from-port"]');
                     if (!line.empty()){
                         // If we already have the path with the selected wwn and port id, we do nothing.
+                        // But if we are modifying a path to its original path, we should allow it. excludedIndex is
+                        // the index of the selected path which should be excluded for existence check.
                         portIndexInLine = line.attr('attr-port-index');
-                        if (pathExists(dataModel, wwnService.removeSymbol(wwnText), dataModel.pathModel.storagePorts[portIndexInLine].storagePortId)){
+                        excludedIndex = line.attr('path-index');
+                        if (pathExists(dataModel, wwnService.removeSymbol(wwnText), dataModel.pathModel.storagePorts[portIndexInLine].storagePortId, excludedIndex)){
                             return;
                         }
 
                         // Finish the path
                         finishLineToWwn(circle, line, wwnText, dataModel, svg);
                     } else {
-
-                        // remove the moving line before adding one.
                         line = svg.select('line[title="line-from-wwn"]');
                         if (!line.empty()) {
+                            // If we are modifying a path and in the middle of modifying the port, we can't modify wwn.
+                            // So we just return.
+                            if (line.attr('path-index')){
+                                return;
+                            }
+
+                            // remove the moving line before adding one.
                             wwn = line.attr('attr-wwn');
                             svg.select('g[attr-wwn="' + wwn + '"]')
                                 .select('circle')
@@ -471,6 +483,7 @@ angular.module('rainierApp')
 
                 svg.selectAll('g[title="storage-port"]')
                     .on('click', function(){
+                        var excludedIndex;
                         portGroup = d3.select(this);
                         portIndex = parseInt(portGroup.attr('port-index'));
                         port = dataModel.pathModel.storagePorts[portIndex];
@@ -493,7 +506,10 @@ angular.module('rainierApp')
 
                         if (!line.empty()) {
                             // If we already have the path with the selected wwn and port id, we do nothing.
-                            if (pathExists(dataModel, wwnService.removeSymbol(line.attr('attr-wwn')), port.storagePortId)) {
+                            // But if we are modifying a path to its original path, we should allow it. excludedIndex is
+                            // the index of the selected path which should be excluded for existence check.
+                            excludedIndex = line.attr('path-index');
+                            if (pathExists(dataModel, wwnService.removeSymbol(line.attr('attr-wwn')), port.storagePortId, excludedIndex)) {
                                 return;
                             }
 
@@ -505,6 +521,12 @@ angular.module('rainierApp')
 
                             line = svg.select('line[title="line-from-port"]');
                             if (!line.empty()){
+                                // If we are modifying a path and in the middle of modifying the wwn, we can't modify port.
+                                // So we just return.
+                                if (line.attr('path-index')){
+                                    return;
+                                }
+
                                 // Remove the previous line and change its port icon color
                                 portIndexInLine = line.attr('attr-port-index');
                                 previousPortGroup = svg.select('g[port-index="'+ portIndexInLine +'"]');

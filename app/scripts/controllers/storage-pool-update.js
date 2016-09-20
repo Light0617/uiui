@@ -172,6 +172,7 @@ angular.module('rainierApp')
 
                 $scope.payload = {
                     submit: function () {
+                        var reservedResourcesList;
                         var updatedLabel = ($scope.model.originalLabel === $scope.model.label) ? null : $scope.model.label;
                         if ($scope.model.wizardType === 'basic') {
 
@@ -190,7 +191,7 @@ angular.module('rainierApp')
                             }
 
                             // Build reserved resources
-                            var reservedResourcesList = [];
+                            reservedResourcesList = [];
                             reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
                             _.forEach($scope.poolPgIds, function (poolPgId) {
                                 reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
@@ -225,7 +226,7 @@ angular.module('rainierApp')
                             });
 
                             // Build reserved resources
-                            var reservedResourcesList = [];
+                            reservedResourcesList = [];
                             reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
                             _.forEach($scope.poolPgIds, function (poolPgId) {
                                 reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
