@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('VirtualStorageMachineDetailsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
-                                              objectTransformService, synchronousTranslateService,
+                                              objectTransformService, synchronousTranslateService, $location,
                                               scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
                                               queryService, wwnService, dpAlertService) {
         var serialModelNumber = $routeParams.serialModelNumber;
@@ -69,8 +69,8 @@ angular.module('rainierApp')
                 },
                 searchQuery: function (value) {
                     var queryObjects = [];
-                    // TODO: CDUAN Which attributes do we wanna search on? Ask PO.
-                    queryObjects.push(new paginationService.QueryObject('primary.volumeId', new paginationService.SearchType().STRING, value));
+                    // TODO: CDUAN can not query on primary due to backend limit. Modify tooltip?
+                    queryObjects.push(new paginationService.QueryObject('secondary.volumeId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
                         null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
@@ -101,6 +101,11 @@ angular.module('rainierApp')
                     sortField: 'primary.volumeId',
                     getDisplayValue: function (item) {
                         return item.primary.volumeId;
+                    },
+                    type: 'hyperLink',
+                    onClick: function (item) {
+                        var path = ['storage-systems', item.primary.storageSystemId, 'volumes', item.primary.volumeId].join('/');
+                        $location.path(path);
                     }
                 },
                 {
@@ -109,6 +114,11 @@ angular.module('rainierApp')
                     sortField: 'secondary.volumeId',
                     getDisplayValue: function (item) {
                         return item.secondary.volumeId;
+                    },
+                    type: 'hyperLink',
+                    onClick: function (item) {
+                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
+                        $location.path(path);
                     }
 
                 },

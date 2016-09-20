@@ -52,7 +52,8 @@ angular.module('rainierApp')
                         sortField: 'storageSystemId',
                         getDisplayValue: function (item) {
                             return item.storageSystemId;
-                        }
+                        },
+                        type: 'id'
                     },
                     {
                         title: synchronousTranslateService.translate('storage-systems-model'),

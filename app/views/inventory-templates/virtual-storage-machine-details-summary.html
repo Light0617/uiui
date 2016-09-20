@@ -16,13 +16,18 @@
                 <text class="vsm-value" y="36" text-anchor="middle">{{summaryModel.pairCount}}</text>
                 <text class="vsm-label-sm" y="45" text-anchor="middle">Volume Pairs</text>
             </symbol>
+
             <!-- Storage System Left Label -->
             <symbol id="ss-left-label" viewBox="-18 0 40 20">
-                <text class="vsm-label" y="20" text-anchor="middle">{{summaryModel.leftPhysicalStorageSystem}}</text>
+                <text class="vsm-label" y="20" text-anchor="middle">
+                    {{summaryModel.leftPhysicalStorageSystem}}
+                </text>
             </symbol>
             <!-- Storage System Right Label -->
             <symbol id="ss-right-label" viewBox="-18 0 40 20">
-                <text class="vsm-label" y="20" text-anchor="middle">{{summaryModel.rightPhysicalStorageSystem}}</text>
+                <text class="vsm-label" y="20" text-anchor="middle">
+                    {{summaryModel.rightPhysicalStorageSystem}}
+                </text>
             </symbol>
             <!-- Volume -->
             <symbol id="volume-custom-icon" viewBox="0 0 160 187">
@@ -98,13 +103,17 @@
             </symbol>
             <!-- Storage System Left -->
             <symbol id="ss-left" viewBox="0 0 50 80">
-                <use xlink:href="#custom-storage-system" x="0" y="0"/>
-                <use xlink:href="#ss-left-label" x="0" y="4"/>
+                <a href="#/storage-systems/{{summaryModel.leftPhysicalStorageSystem}}">
+                    <use xlink:href="#custom-storage-system" x="0" y="0"/>
+                    <use xlink:href="#ss-left-label" x="0" y="4"/>
+                </a>
             </symbol>
             <!-- Storage System Right -->
             <symbol id="ss-right" viewBox="0 0 50 80">
-                <use xlink:href="#custom-storage-system" x="0" y="0"/>
-                <use xlink:href="#ss-right-label" x="0" y="4"/>
+                <a href="#/storage-systems/{{summaryModel.rightPhysicalStorageSystem}}">
+                    <use xlink:href="#custom-storage-system" x="0" y="0"/>
+                    <use xlink:href="#ss-right-label" x="0" y="4"/>
+                </a>
             </symbol>
             <!-- /Symbols -->
             <use xlink:href="#decorative-hash-lines" x="-450" y="56"/>
