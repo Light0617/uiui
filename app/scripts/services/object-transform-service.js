@@ -504,7 +504,21 @@ angular.module('rainierApp')
                     default:
                         item.itemIcon = 'icon-volume';
                 }
-
+                if (item.gadSummary) {
+                    switch (item.gadSummary.volumeType) {
+                        case 'Active-Primary':
+                            item.itemIcon = 'icon-primary-volume';
+                            break;
+                        case 'Active-Secondary':
+                            item.itemIcon = 'icon-secondary-volume';
+                            break;
+                        case 'SMPL':
+                            item.itemIcon = 'icon-volume';
+                            break;
+                        default:
+                            item.itemIcon = 'icon-volume';
+                    }
+                }
                 switch (item.dkcDataSavingType) {
                     case 'NONE':
                         item.capacitySavingType = 'No';
