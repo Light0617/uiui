@@ -17,46 +17,43 @@ angular.module('rainierApp')
         orchestratorService.volume(storageSystemId, volumeId).then(function (result) {
 
             var dataModel = result;
+            dataModel.belongsPoolType = result.type;
+            var poolId = result.poolId;
+            var updatedModel = angular.copy(dataModel);
 
-            orchestratorService.storagePool(storageSystemId, dataModel.storagePoolId).then(function (result) {
-                dataModel.belongsPoolType = result.type;
-                var poolId = result.storagePoolId;
-                var updatedModel = angular.copy(dataModel);
+            updatedModel.submit = function () {
+                var updateVolumePayload = buildUpdateVolumePayload(dataModel, updatedModel);
+                // Build reserved resources
+                var reservedResourcesList = [];
+                reservedResourcesList.push(volumeId + '=' + resourceTrackerService.volume());
+                reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
 
-                updatedModel.submit = function () {
-                    var updateVolumePayload = buildUpdateVolumePayload(dataModel, updatedModel);
-                    // Build reserved resources
-                    var reservedResourcesList = [];
-                    reservedResourcesList.push(volumeId + '=' + resourceTrackerService.volume());
-                    reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+                // Show popup if resource is present in resource tracker else submit
+                resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                    'Update Volume Confirmation', storageSystemId, volumeId, updateVolumePayload, orchestratorService.updateVolume);
+            };
 
-                    // Show popup if resource is present in resource tracker else submit
-                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                        'Update Volume Confirmation', storageSystemId, volumeId, updateVolumePayload, orchestratorService.updateVolume);
-                };
+            updatedModel.canSubmit = function () {
 
-                updatedModel.canSubmit = function () {
+                // Modify the label from valid string to empty string or null is not allowed.
+                if (dataModel.label && dataModel.label.length > 0 && (updatedModel.label===null || updatedModel.label.length === 0)){
+                    return false;
+                }
+                var newSize = diskSizeService.createDisplaySize(updatedModel.totalCapacity.decimalSize, updatedModel.totalCapacity.unit).value;
+                var oldSize = diskSizeService.createDisplaySize(dataModel.totalCapacity.decimalSize, dataModel.totalCapacity.unit).value;
+                return newSize > oldSize || dataModel.label !== updatedModel.label || dataModel.dataSavingTypeValuePair.value !== updatedModel.dataSavingTypeValuePair.value;
+            };
 
-                    // Modify the label from valid string to empty string or null is not allowed.
-                    if (dataModel.label && dataModel.label.length > 0 && (updatedModel.label===null || updatedModel.label.length === 0)){
-                        return false;
-                    }
-                    var newSize = diskSizeService.createDisplaySize(updatedModel.totalCapacity.decimalSize, updatedModel.totalCapacity.unit).value;
-                    var oldSize = diskSizeService.createDisplaySize(dataModel.totalCapacity.decimalSize, dataModel.totalCapacity.unit).value;
-                    return newSize > oldSize || dataModel.label !== updatedModel.label || dataModel.dataSavingTypeValuePair.value !== updatedModel.dataSavingTypeValuePair.value;
-                };
-
-                dataModel.updateModel = updatedModel;
-                dataModel.labelIsValid = true;
-                dataModel.validLabel = function() {
-                    if (dataModel.label === updatedModel.label) {
-                        dataModel.labelIsValid = true;
-                    } else {
-                        dataModel.labelIsValid = volumeService.validateCombinedLabel(updatedModel.label, null, 1);
-                    }
-                };
-                $scope.dataModel = dataModel;
-            });
+            dataModel.updateModel = updatedModel;
+            dataModel.labelIsValid = true;
+            dataModel.validLabel = function() {
+                if (dataModel.label === updatedModel.label) {
+                    dataModel.labelIsValid = true;
+                } else {
+                    dataModel.labelIsValid = volumeService.validateCombinedLabel(updatedModel.label, null, 1);
+                }
+            };
+            $scope.dataModel = dataModel;
         });
 
         function buildUpdateVolumePayload(oldVolume, updatedVolume) {
