@@ -2207,16 +2207,20 @@ angular.module('rainierApp')
                             capacity: diskSizeService.getDisplaySize(item.totalCapacity)
                         },
                         items: [
-                            {
-                                used: {
+                            [
+                                {
+                                    label: 'Used Capacity',
+                                    tooltip: 'Used Capacity',
                                     capacity: diskSizeService.getDisplaySize(parseInt(item.usedCapacity) + parseInt(selectedDisplayCapacity.value)),
                                     color: '#3D84F5'
                                 },
-                                free: {
+                                {
+                                    label: 'Free Capacity',
+                                    tooltip: 'Free Capacity',
                                     capacity: diskSizeService.getDisplaySize(freeCapacity),
                                     color: '#1A2B45'
                                 }
-                            }
+                            ]
                         ]
                     }
                 };
