@@ -118,12 +118,15 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         paginationService.clearQuery();
         queryService.setQueryMapEntry('hbaWwns', queryString);
         paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
-            var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
-            var originalAllPaths = getPathsFromHostGroups(hostGroupResults);
+            var hostGroups = attachVolumeService.getMatchHostGroups(hostGroupResults, selectedServers, volumeIdMap);
+            var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroups);
+            var originalAllPaths = getPathsFromHostGroups(hostGroups);
             originalPaths = angular.copy(originalAllPaths);
-            $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
+            $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroups, defaultHostMode);
+            $scope.dataModel.attachModel.originalHostMode = $scope.dataModel.attachModel.hostMode;
             $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
+            $scope.dataModel.attachModel.orignalSelectedHostModeOption = angular.copy(hostModeOption);
 
             angular.extend($scope.dataModel.pathModel, {
                 paths: originalAllPaths,
@@ -186,6 +189,30 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         return false;
     }
 
+    function checkSettingsChange(dataModel) {
+        var hostModeOptionMap = {};
+        var i;
+        if (dataModel.attachModel.originalHostMode !== dataModel.attachModel.hostMode || dataModel.attachModel.enableZoning === true){
+            return true;
+        }
+
+        if (dataModel.attachModel.selectedHostModeOption.length !== dataModel.attachModel.orignalSelectedHostModeOption.length){
+            return true;
+        }
+
+        for (i = 0; i<dataModel.attachModel.selectedHostModeOption.length; ++i){
+            hostModeOptionMap[dataModel.attachModel.selectedHostModeOption[i]] = true;
+        }
+
+        for (i = 0; i<dataModel.attachModel.orignalSelectedHostModeOption.length; ++i){
+            if (!hostModeOptionMap.hasOwnProperty(dataModel.attachModel.orignalSelectedHostModeOption[i])){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     function setAllModels() {
 
         var hostModes = constantService.osType();
@@ -207,7 +234,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 serverPortMapperModel: viewModelService.newServerPortMapperModel(dataModel.storagePorts, selectedHosts),
                 selectedHostModeOption: [hostModeOptionAutoSelect],
                 enableZoning: false,
-                enableLunUnification: false,
                 canGoNext: function () {
                     return true;
                 },
@@ -257,6 +283,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                         return;
                     }
 
+                    var settingsChanged = checkSettingsChange($scope.dataModel);
                     var updates = [];
                     for (i = 0; i<$scope.dataModel.pathModel.paths.length; ++i){
                         var path = $scope.dataModel.pathModel.paths[i];
@@ -296,16 +323,13 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                         };
                                     }
                                 } else {
-                                    // modify the path
-                                    var pathChanged = false;
+                                    // modify the path, or only have changed autoZone, or hostMode, or hostModeOptions
                                     var lunChange = false;
-                                    if (originalPath.serverWwn !== path.serverWwn || originalPath.storagePortId !== path.storagePortId){
-                                        pathChanged = true;
-                                    }
+
                                     if (volume.lun !== originalSelectedVolumes[j].lun){
                                         lunChange = true;
                                     }
-                                    if (pathChanged || lunChange || differentPaths(originalPath, path)) {
+                                    if (lunChange || differentPaths(originalPath, path) || settingsChanged) {
                                         lunPathDiffPayload = {
                                             storageSystemId: storageSystemId,
                                             volumeId: volume.volumeId,
@@ -314,11 +338,10 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                                 serverWwn: originalPath.serverWwn,
                                                 storagePort: originalPath.storagePortId
                                             },
-                                            newPath: pathChanged !== true ? null :
-                                                {
+                                            newPath: {
                                                     serverWwn: path.serverWwn,
                                                     storagePort: path.storagePortId
-                                                }
+                                            }
                                         };
                                     }
                                 }

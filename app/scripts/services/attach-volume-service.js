@@ -252,6 +252,42 @@ angular.module('rainierApp')
             return paths;
         }
 
+        function getMatchHostGroups(hostGroups, servers, volumeIdMap){
+            var resultHostGroups = [];
+            var serverWwnMap = {};
+            var i;
+            var j;
+            var foundMatch;
+
+            _.forEach(servers, function(server){
+                _.forEach(server.wwpns, function(wwpn){
+                    serverWwnMap[wwpn] = true;
+                });
+
+            });
+
+            _.forEach(hostGroups, function(hostGroup) {
+                for (i = 0; i < hostGroup.hbaWwns.length; ++i) {
+                    if (serverWwnMap.hasOwnProperty(hostGroup.hbaWwns[i])) {
+                        foundMatch = false;
+                        for (j = 0; j < hostGroup.luns.length; ++j) {
+                            if (volumeIdMap.hasOwnProperty(hostGroup.luns[j].volumeId)) {
+                                resultHostGroups.push(hostGroup);
+                                foundMatch = true;
+                                break;
+                            }
+                        }
+                        if (foundMatch) {
+                            break;
+                        }
+
+                    }
+                }
+            });
+
+            return resultHostGroups;
+        }
+
         var setEditLunPage = function(dataModel, storageSystemId, selectedVolumes, selectedHosts,
                                       hostModeOptions, storagePorts, hostGroups, isCreateAndAttach) {
             idCoordinates = {};
@@ -349,6 +385,7 @@ angular.module('rainierApp')
             setWwnCoordinates: setWwnCoordinates,
             getAllHostModeOptionsString: getAllHostModeOptionsString,
             createPath: createPath,
-            getViewBoxHeight: getViewBoxHeight
+            getViewBoxHeight: getViewBoxHeight,
+            getMatchHostGroups: getMatchHostGroups
         };
     });
