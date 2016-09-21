@@ -20,11 +20,10 @@
 
         </wizard-advanced-stepper>
         <wizard-left-right-content ng-if="dataModel.isStepActive('create')"
-                                   ng-title="(dataModel.storageSystems.length !== 0) ? ('workflow-title-create-volumes' | translate)
-                                   : ''"
                                    left-panel-template="views/workflow-templates/create-volumes-left-panel.html"
-                                   right-panel-template="views/templates/create-volume-list.html"
-                                   ng-model="dataModel"></wizard-left-right-content>
+                                   right-panel-template="views/workflow-templates/create-volumes-right-panel.html"
+                                   ng-model="dataModel"
+                                   page-name="create-and-attach-volumes"></wizard-left-right-content>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('attach')"
                                    ng-title="'storage-attach-new-volumes' | translate"

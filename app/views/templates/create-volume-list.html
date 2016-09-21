@@ -1,6 +1,5 @@
 <div class="tile-view list-view">
     <div class="tile row row-tile column-headers" ng-if="dataModel.storageSystems.length">
-
         <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs cell">
             <p title="{{'storage-volume-number-of-volumes' | translate}}">{{'storage-volume-number-of-volumes' | translate}}</p>
         </div>
@@ -54,10 +53,9 @@
                    ng-model="volumeGroup.size.value">
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <select class="form-control inline" ng-model="volumeGroup.size.unit">
-                <option>TB</option>
-                <option>PB</option>
-                <option>GB</option>
+            <select class="form-control inline"
+                    ng-model="volumeGroup.size.unit"
+                    ng-options="unit for unit in dataModel.createModel.volumesGroupsModel.$volumeSizeUnits">
             </select>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 cell control" ng-if="dataModel.autoSelectedPoolId === undefined">
@@ -97,12 +95,7 @@
             </select>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <button class="btn icon-btn icon-sm icon-add"
-                    ng-if="!removeAddButton && $first" ng-click="dataModel.createModel.volumesGroupsModel.add()">
-            </button>
-            <button class="btn icon-btn icon-sm icon-delete-item"
-                    ng-if="!(!removeAddButton && $first)" ng-click="volumeGroup.remove()">
-            </button>
+            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="volumeGroup.remove()"></button>
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12 autoHeight" ng-if="!volumeGroup.labelIsValid">

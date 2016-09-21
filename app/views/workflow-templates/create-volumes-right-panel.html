@@ -124,8 +124,10 @@
         </div>
     </div>
 </div>
-<div class="work-panel">
-    <div class="scroll-wizard-container"
-         ng-include="'views/templates/create-volume-list.html'" ng-init="removeAddButton=true">
-    </div>
+
+<div class="work-panel" ng-if="pageName === 'create-volumes'">
+    <div class="scroll-wizard-container" ng-include="'views/templates/create-volume-list.html'"></div>
 </div>
+
+<div class="scroll-wizard-container" ng-if="pageName === 'create-and-attach-volumes'"
+     ng-include="'views/templates/create-volume-list.html'"></div>

@@ -506,12 +506,8 @@ angular.module('rainierApp')
             newWizardViewModel: function (pages) {
                 return new WizardViewModel(pages);
             },
-            newCreateVolumeModel: function (pools, needsAddButton) {
-                var createVolumeModel = new CreateVolumeModel(pools);
-                if (needsAddButton) {
-                    createVolumeModel.add();
-                }
-                return createVolumeModel;
+            newCreateVolumeModel: function (pools) {
+                return new CreateVolumeModel(pools);
             },
 
             newServerPortMapperModel: function (ports, servers) {

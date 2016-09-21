@@ -1,45 +1,25 @@
-<div ng-switch="pageName">
-    <div ng-switch-when="create-volumes">
-        <div class="fieldset">
-            <div class="label-value-container">
-                <p class="label">{{'common-storage-system' | translate}}</p>
-                <p class="value">{{dataModel.selectedStorageSystem.storageSystemId}}</p>
-            </div>
-            <div class="label-value-container" ng-repeat="item in dataModel.summaryModel.arrayDataVisualizationModel.items">
-                <p class="label">{{item[0].label}}</p>
-                <p class="value">{{item[0].percentage}}% ({{item[0].capacity.size}} {{item[0].capacity.unit}})</p>
-            </div>
-        </div>
-        <div class="data-viz-container">
-            <h4>{{'storage-pool-tier-capacity' | translate}}</h4>
-            <array-polar-data-visualization class="utilization"
-                                            ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
-                                            no-break-down="dataModel.summaryModel.noMoreInfo"
-                                            no-legend-box="dataModel.summaryModel.noMoreInfo">
-            </array-polar-data-visualization>
+<div class="fieldset">
+    <div class="label-value-container">
+        <label for="storage-system" class="label">{{'common-storage-system' | translate}}</label>
+        <select id="storage-system" class="value form-control"
+                ng-if="dataModel.createModel.storageSystemSelectable"
+                ng-model="dataModel.selectedStorageSystem"
+                ng-options="ss.storageSystemId for ss in dataModel.storageSystems">
+        </select>
+        <div class="value" ng-if="!dataModel.createModel.storageSystemSelectable">
+            {{dataModel.selectedStorageSystem.storageSystemId}}
         </div>
     </div>
-    <div ng-switch-default>
-        <div class="form-group">
-        <label>{{'common-storage-systems' | translate}}</label>
-            <select class="form-control"
-                    ng-model="dataModel.selectedStorageSystem"
-                    ng-options="ss.storageSystemId for ss in dataModel.storageSystems"
-                    ng-disabled="!dataModel.createModel.storageSystemSelectable">
-            </select>
-        </div>
-        <div class="dataviz-container pvd">
-            <h3 ng-repeat="item in dataModel.summaryModel.arrayDataVisualizationModel.items">{{item[0].label}} <em>
-                {{item[0].percentage}} % ({{item[0].capacity.size}} {{item[0].capacity.unit}})</em>
-            </h3>
-
-            <div class="wizard-pdv polar-data-viz-concentric" ng-if="dataModel.summaryModel">
-                <array-polar-data-visualization class="utilization"
-                                                ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
-                                                no-break-down="dataModel.summaryModel.noMoreInfo"
-                                                no-legend-box="dataModel.summaryModel.noMoreInfo">
-                </array-polar-data-visualization>
-            </div>
-        </div>
+    <div class="label-value-container" ng-repeat="item in dataModel.summaryModel.arrayDataVisualizationModel.items">
+        <p class="label">{{item[0].label}}</p>
+        <p class="value">{{item[0].percentage}}% ({{item[0].capacity.size}} {{item[0].capacity.unit}})</p>
+    </div>
+    <div class="data-viz-container">
+        <h4>{{'storage-pool-tier-capacity' | translate}}</h4>
+        <array-polar-data-visualization class="utilization" ng-if="dataModel.summaryModel"
+                                        ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
+                                        no-break-down="dataModel.summaryModel.noMoreInfo"
+                                        no-legend-box="dataModel.summaryModel.noMoreInfo">
+        </array-polar-data-visualization>
     </div>
 </div>
