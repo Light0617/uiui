@@ -93,8 +93,7 @@ angular.module('rainierApp')
                 if (currentVolumeId || currentVolumeId === 0) {
                     // Doing it in this way because querySerice can not handle 'OR' between attributes.
                     // Only way to optimize this is to modify the queryService.
-                    var queryParams = {q: ['primary.volumeId:' + currentVolumeId]};
-                    queryParams.q[0] = queryParams.q[0] + ' OR secondary.volumeId:' + currentVolumeId;
+                    var queryParams = {q: ['volumeId:' + currentVolumeId]};
                     if (token !== undefined) {
                         queryParams.nextToken = token;
                     }

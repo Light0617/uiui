@@ -179,6 +179,7 @@ angular.module('rainierApp')
             }
             return storageSystemVolumeService.getGadVolumePairsAsPVolAndSvol(null, volumeId, storageSystemId);
         }).then(function (result) {
+            $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
                 $scope.noGadRgWithVolmeIdAsPvolAndSvol = false;
                 $scope.rgWithVolumeIdAsPvol.push(new replicationGroupsService.ExternalReplicationGroup('GAD'));
