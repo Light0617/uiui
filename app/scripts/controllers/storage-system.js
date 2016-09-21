@@ -136,7 +136,9 @@ angular.module('rainierApp')
                     title: 'storage-system-launch-smu',
                     type: 'hyperlink'
                 };
-                $scope.dataModel.actions.settings.items.push(smuLink);
+                if ($scope.clusterSummary && $scope.clusterSummary.numOfNodes !== 4) {
+                    $scope.dataModel.actions.settings.items.push(smuLink);
+                }
                 getUnifiedInformation();
             }
             else {

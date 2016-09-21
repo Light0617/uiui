@@ -69,7 +69,6 @@ angular.module('rainierApp')
                 },
                 searchQuery: function (value) {
                     var queryObjects = [];
-                    // TODO: CDUAN can not query on primary due to backend limit. Modify tooltip?
                     queryObjects.push(new paginationService.QueryObject('secondary.volumeId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
