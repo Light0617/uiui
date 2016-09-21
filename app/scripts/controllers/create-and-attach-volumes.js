@@ -136,6 +136,12 @@ angular.module('rainierApp')
                             return true;
                         },
                         next: function() {
+                            var filteredHostGroups = attachVolumeService.getAllocateLikeFilteredHostGroups(
+                                selectedServers,
+                                hostGroupResults,
+                                $scope.dataModel.attachModel.hostMode,
+                                $scope.dataModel.attachModel.selectedHostModeOption);
+
                             var hostModeOptions = attachVolumeService.getSelectedHostMode($scope.dataModel);
                             attachVolumeService.setEditLunPage($scope.dataModel,
                                 $scope.dataModel.selectedStorageSystem.storageSystemId,
@@ -143,7 +149,7 @@ angular.module('rainierApp')
                                 selectedServers,
                                 (!hostModeOptions || hostModeOptions.length ===0) ? null : hostModeOptions,
                                 attachModel.storagePorts,
-                                hostGroupResults,
+                                filteredHostGroups,
                                 true
                             );
 

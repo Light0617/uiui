@@ -54,7 +54,6 @@ angular.module('rainierApp')
                 $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
                 $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
                 $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
-                $scope.dataModel.attachModel.hostGroups = hostGroupResults;
 
                 $scope.dataModel.attachModel.canGoNext = function () {
                     return true;
@@ -63,6 +62,12 @@ angular.module('rainierApp')
                     if ($scope.dataModel.attachModel.canGoNext && !$scope.dataModel.attachModel.canGoNext()) {
                         return;
                     }
+
+                    $scope.dataModel.attachModel.hostGroups = attachVolumeService.getAllocateLikeFilteredHostGroups(
+                        selectedServers,
+                        hostGroupResults,
+                        $scope.dataModel.attachModel.hostMode,
+                        $scope.dataModel.attachModel.selectedHostModeOption);
 
                     attachVolumeService.setEditLunPage(
                         $scope.dataModel, storageSystemId,

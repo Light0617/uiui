@@ -142,6 +142,31 @@ angular.module('rainierApp')
             return serverWwpns;
         };
 
+        var getAllocateLikeFilteredHostGroups = function(servers, hostGroups, hostMode,  hostModeOptions) {
+            var wwpnToServerMap = {};
+            _.forEach(servers, function(server) {
+                _.forEach(server.wwpns, function(wwpn) {
+                    wwpnToServerMap[wwpn] = server;
+                });
+            });
+
+            var allocateLikeFilteredHostGroups = [];
+            _.forEach(hostGroups, function(hostgroup) {
+                _.forEach(hostgroup.hbaWwns, function(hbaWwn) {
+                    var server = wwpnToServerMap[hbaWwn];
+                    // check if host group matches settings
+                    // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
+                    // if host mode options not auto (999), then host group host mode options needs to match provided host mode options
+                    if (((hostMode === 'AUTO' && hostgroup.hostMode === server.osType) || hostgroup.hostMode === hostMode) &&
+                        (_.isEqual(hostModeOptions, [999]) || _.isEqual(hostModeOptions, hostgroup.hostModeOptions))) {
+                        allocateLikeFilteredHostGroups.push(hostgroup);
+                    }
+                });
+            });
+
+            return allocateLikeFilteredHostGroups;
+        };
+
         var getMatchedHostMode = function(hostGroups, autoSelectHostMode) {
             var selectedHostMode = autoSelectHostMode;
             if (hostGroups !== null && hostGroups !== undefined && hostGroups.length > 0) {
@@ -318,6 +343,7 @@ angular.module('rainierApp')
             },
             getMatchedHostModeOption: getMatchedHostModeOption,
             getSelectedServerWwpns: getSelectedServerWwpns,
+            getAllocateLikeFilteredHostGroups: getAllocateLikeFilteredHostGroups,
             getMatchedHostMode: getMatchedHostMode,
             setEditLunPage: setEditLunPage,
             setWwnCoordinates: setWwnCoordinates,
