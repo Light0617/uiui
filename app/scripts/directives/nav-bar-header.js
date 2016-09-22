@@ -49,6 +49,11 @@ angular.module('rainierApp')
                         return new Date().getFullYear();
                     },
                     toggleOverlayContent: function () {
+                        if (scope.hideOverlay === false){
+                            scope.hideOverlay = true;
+                            $('.unslider').removeClass('unslider-on');
+                            return;
+                        }
                         scope.hideOverlay = false;
                         $timeout(toggleOverlayContent, 500);
                     },
