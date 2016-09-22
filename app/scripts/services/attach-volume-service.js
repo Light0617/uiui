@@ -154,12 +154,14 @@ angular.module('rainierApp')
             _.forEach(hostGroups, function(hostgroup) {
                 _.forEach(hostgroup.hbaWwns, function(hbaWwn) {
                     var server = wwpnToServerMap[hbaWwn];
-                    // check if host group matches settings
-                    // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
-                    // if host mode options not auto (999), then host group host mode options needs to match provided host mode options
-                    if (((hostMode === 'AUTO' && hostgroup.hostMode === server.osType) || hostgroup.hostMode === hostMode) &&
-                        (_.isEqual(hostModeOptions, [999]) || _.isEqual(hostModeOptions, hostgroup.hostModeOptions))) {
-                        allocateLikeFilteredHostGroups.push(hostgroup);
+                    if (server !== undefined) {
+                        // check if host group matches settings
+                        // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
+                        // if host mode options not auto (999), then host group host mode options needs to match provided host mode options
+                        if (((hostMode === 'AUTO' && hostgroup.hostMode === server.osType) || hostgroup.hostMode === hostMode) &&
+                            (_.isEqual(hostModeOptions, [999]) || _.isEqual(hostModeOptions, hostgroup.hostModeOptions))) {
+                            allocateLikeFilteredHostGroups.push(hostgroup);
+                        }
                     }
                 });
             });
