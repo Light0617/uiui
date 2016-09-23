@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                              inventorySettingsService, scrollDataSourceBuilderServiceNew,
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
-                                             replicationService) {
+                                             replicationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -345,7 +345,41 @@ angular.module('rainierApp')
                 result.arrayDataVisualizationModel = fmdDc2CompModel;
                 result.orchestratorService = orchestratorService;
                 result.compressedParityGroups = _.filter(result.parityGroups, function(pg) { return pg.compression; });
-                result.actionsList = _.map(result.actions);
+                result.actions = _.map({
+                    'delete': {
+                        icon: 'icon-delete',
+                        type: 'confirm',
+                        confirmTitle: 'storage-pool-delete-one-confirmation',
+                        confirmMessage: 'storage-pool-delete-current-content',
+                        enabled: function () {
+                            return true;
+                        },
+                        onClick: function (orchestratorService) {
+
+                            // Build reserved resources
+                            var reservedResourcesList = [];
+                            var poolIds = [storagePoolId];
+                            reservedResourcesList.push(storagePoolId + '=' + resourceTrackerService.storagePool());
+
+                            // Show popup if resource is present in resource tracker else submit
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                'Delete Pool Confirmation', storageSystemId, poolIds, null, orchestratorService.deleteStoragePool);
+
+                        }
+                    },
+                    'edit': {
+                        icon: 'icon-edit',
+                        type: 'link',
+                        enabled: function () {
+                            return true;
+                        },
+                        onClick: function () {
+                            $location.path(['storage-systems', storageSystemId,
+                                'storage-pools', storagePoolId, 'update'
+                            ].join('/'));
+                        }
+                    }
+                });
                 result.utilizationThreshold1 = addPercentageSign(result.utilizationThreshold1);
                 result.utilizationThreshold2 = addPercentageSign(result.utilizationThreshold2);
                 result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
