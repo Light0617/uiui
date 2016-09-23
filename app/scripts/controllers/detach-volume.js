@@ -79,14 +79,14 @@ angular.module('rainierApp')
                     submit: function () {
                         var payloads = [];
                         var selectedServers = _.where(dataModel.displayList, 'selected');
-                        for(var selectedServer in selectedServers) {
+                        _.forEach(selectedServers, function(selectedServer) {
                             payloads.push({
                                 storageSystemId: storageSystemId,
                                 volumeId: volumeId,
-                                serverId: selectedServers[selectedServer].serverId,
+                                serverId: selectedServer.serverId,
                                 removeConnection: $scope.model.removeZone
                             });
-                        }
+                        });
 
                         // Build reserved resources
                         var reservedResourcesList = [];
