@@ -116,14 +116,25 @@ angular.module('rainierApp')
                 hostGroupsInStorageSystem[storageSystemId] = hostGroupResults;
             });
         };
-        var isVolumesPartOfSameStorageSystem = function (selectedVolumes) {
-            if (selectedVolumes !== null && selectedVolumes !== undefined && selectedVolumes.length > 0) {
+
+        var isVolumesInSameStorageSystemAndNotGADVolume = function (selectedVolumes) {
+            if (selectedVolumes !== null && selectedVolumes !== undefined && selectedVolumes.length > 0 && !isVolumeGADAware(selectedVolumes[0])) {
                 var storageSystemId = selectedVolumes[0].storageSystemId;
                 for (var i = 1; i < selectedVolumes.length; i++) {
-                    if (storageSystemId !== selectedVolumes[i].storageSystemId) {
+                    var selectedVolume = selectedVolumes[i];
+                    if (storageSystemId !== selectedVolume.storageSystemId || isVolumeGADAware(selectedVolume)) {
                         return false;
                     }
                 }
+                return true;
+            }
+            return false;
+        };
+
+        var isVolumeGADAware = function (selectedVolume) {
+            var gadVolumeTypes = ['Active-Primary', 'Active-Secondary'];
+            var gadSummary = selectedVolume.gadSummary;
+            if (gadSummary !== null && gadSummary !== undefined && $.inArray(gadSummary.volumeType, gadVolumeTypes) > -1) {
                 return true;
             }
             return false;
@@ -150,7 +161,7 @@ angular.module('rainierApp')
         };
 
         var isVolumesPartOfSameHostGroup = function (selectedVolumes) {
-            if (isVolumesPartOfSameStorageSystem(selectedVolumes)) {
+            if (isVolumesInSameStorageSystemAndNotGADVolume(selectedVolumes)) {
                 var selectedVolumeIds = [];
                 var storageSystemId = selectedVolumes[0].storageSystemId;
                 for (var i = 0; i < selectedVolumes.length; i++) {
