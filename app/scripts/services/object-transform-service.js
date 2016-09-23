@@ -548,6 +548,15 @@ angular.module('rainierApp')
                     return (this.provisioningStatus === 'ATTACHED');
                 };
 
+                item.isGadVolume = function () {
+                    if(this.gadSummary) {
+                        return (this.gadSummary.volumeType === 'Active-Primary' ||
+                        this.gadSummary.volumeType === 'Active-Secondary');
+                    } else {
+                        return false;
+                    }
+                };
+
                 item.isUnattached = function () {
                     return (this.provisioningStatus === 'UNATTACHED');
                 };

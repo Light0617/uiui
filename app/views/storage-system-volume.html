@@ -1,8 +1,8 @@
 <common-page-header></common-page-header>
 <application-stage>
     <page-title>
-        <div class="btn icon-btn" ng-click="attachToHost()" title="{{ 'action-tooltip-attach-volumes' | translate}}"
-             ng-if="!model.disabledCheckBox"> <span class="icon-attach-volume icon-sm"></span>
+        <div class="btn icon-btn" ng-disabled="model.isGadVolume()" ng-click="attachToHost()" title="{{ 'action-tooltip-attach-volumes' | translate}}"
+             ng-if="!model.disabledCheckBox && !model.isGadVolume()"> <span class="icon-attach-volume icon-sm"></span>
         </div>
 
         <a class="btn icon-btn" ng-if="!model.disabledCheckBox"
@@ -11,7 +11,7 @@
         </a>
 
         <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-delete-volumes' | translate}}"
-           ng-if="!model.disabledCheckBox"
+           ng-if="!model.disabledCheckBox && !model.isGadVolume()"
            confirm
            confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"
            confirm-message="{{ 'storage-volume-delete-current-content' | translate}}"
