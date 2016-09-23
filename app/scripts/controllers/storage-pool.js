@@ -463,7 +463,7 @@ angular.module('rainierApp')
         }
 
         function  transformToPoolSummaryModel (totalCapacity, usedCapacity) {
-            var percentage = (usedCapacity.size / totalCapacity.size * 100.0).toFixed(1);
+            var percentage = (usedCapacity.value / totalCapacity.value * 100.0).toFixed(1);
             return {
                 item: {
                     total: {
