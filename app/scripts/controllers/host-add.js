@@ -104,6 +104,7 @@ angular.module('rainierApp')
         dataModel.reset = function () {
             dataModel.hostsModel.hosts = [];
             dataModel.hostsModel.displayHosts = [];
+            dataModel.addNewHost();
         };
 
         function buildPayload(name, description, ipAddress, osType, wwns) {
