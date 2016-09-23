@@ -1006,9 +1006,19 @@ angular.module('rainierApp')
                 item.getActions = function () {
                     return _.map(item.actions);
                 };
+
+                var icons = [];
+                if (item.compression) {
+                    var compress = synchronousTranslateService.translate('parity-group-compress-enabled');
+                    icons.push({
+                        icon: 'icon-compression',
+                        title: compress
+                    });
+                }
                 item.getIcons = function () {
-                    return [];
+                    return icons;
                 };
+
                 item.metaData = [
                     {
                         left: true,

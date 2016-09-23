@@ -440,6 +440,7 @@
     "parity-group-compress-selected-content": "Compression will be enabled on the selected {{getSelectedCount()}} parity groups in the current storage system. Do you want to proceed?",
     "parity-group-compress-current-content": "Compression will be enabled on this parity group. Do you want to proceed?",
     "parity-group-compress-tooltip": "Enable Compression on Parity Groups",
+    "parity-group-compress-enabled": "Enabled Compression",
     "one-parity-group-compress-tooltip": "Enable Compression on Parity Group",
 
     "parity-group-delete-confirmation": "Delete Parity Groups Confirmation",

@@ -18,7 +18,7 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
                         'speed': 0
                     },
                     {
-                        'diskType': 'FMC',
+                        'diskType': 'FMD DC2',
                         'speed': 0
                     }
                 ]
