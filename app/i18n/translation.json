@@ -658,6 +658,7 @@
 
     "workflow-title-create-volumes": "Create Volumes",
     "workflow-title-edit-lun-paths": "Create Paths",
+    "workflow-title-edit-lun-paths-edit": "Edit Paths",
     "workflow-title-protect-volumes": "Protect Volumes",
     "workflow-title-select-servers": "Select Servers",
 

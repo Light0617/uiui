@@ -262,6 +262,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 storagePorts: dataModel.storagePorts,
                 validation: true,
                 withSuggest: false,
+                idCoordinates: idCoordinates,
                 getPath: getPath,
                 createPath: attachVolumeService.createPath,
                 previous: function () {

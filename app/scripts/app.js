@@ -269,7 +269,7 @@ angular
                 templateUrl: 'views/edit-lun-path.html',
                 controller: 'EditLunPathCtrl',
                 breadcrumbOptions: {
-                    labelKey: 'workflow-title-edit-lun-paths'
+                    labelKey: 'workflow-title-edit-lun-paths-edit'
                 }
                 //TODO: Devan - add help context
             })
