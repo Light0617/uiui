@@ -24,9 +24,9 @@ angular.module('rainierApp')
                 var container = svg
                     .attr('version', '1.1')
                     .attr('viewBox', '0 0 ' + svgHeight+ ' ' + svgHeight)
-                    .attr('class', 'polar-data-viz-concentric')
+                    .attr('class', 'polar-data-viz-concentric pdv default')
                     .attr('transform', 'scale(1)')
-                    .attr('preserveAspectRatio', 'xMidYMid meet')
+                    .attr('preserveAspectRatio', 'xMidYMin slice')
                     .append('g')
                     .attr('transform', 'translate(' + svgCenter + ', '+ svgCenter +')');
 
