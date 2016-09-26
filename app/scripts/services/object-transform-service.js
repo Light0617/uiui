@@ -940,7 +940,7 @@ angular.module('rainierApp')
                     physicalCapacity: item.physicalCapacity,
                     total: diskSizeService.getDisplaySize(item.totalCapacityInBytes),
                     tooltip: compressionPercent +  '% ' + synchronousTranslateService.translate('storage-pool-physical-capacity'),
-                    usage: compressionPercent
+                    usagePercentage: compressionPercent
                 };
 
                 item.actions = {
