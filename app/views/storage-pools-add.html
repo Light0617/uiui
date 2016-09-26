@@ -2,19 +2,19 @@
 <wizard-page>
     <div ng-if="model">
     <form novalidate ng-submit="payload.submit()">
-        <div class="row wizard-header">
-            <div class="col-lg-1 col-md-1 hidden-sm">
+        <div class="wizard-header">
+            <div class="wizard-nav">
                 <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
             </div>
-            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <div class="wizard-title-group">
                 <span class="icon icon-pools icon-xlg"></span>
 
                 <h1 class="wizard-title">{{'storage-pools-add'| translate}}</h1>
             </div>
         </div>
-        <div class="row wizard-body">
+        <div class="wizard-body">
             <!--Wizard column left-->
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify">
+            <div class="wizard-left">
                 <div class="flex-tile-group">
                     <div class="form-group">
                         <label for="pool-name">{{'storage-pools-pool-label' | translate}}</label>

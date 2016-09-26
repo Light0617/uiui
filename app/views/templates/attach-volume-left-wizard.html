@@ -1,41 +1,50 @@
-<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column form-group">
-    <div>
-        <label>Storage System</label>
-        <input type="name" class="form-control form-lg" ng-model="dataModel.selectedStorageSystemId"
+<div class="wizard-left">
+    <div class="fieldset">
+        <div class="label-value-container">
+        <label class="label">Storage System</label>
+        <input type="name" class="form-control" ng-model="dataModel.selectedStorageSystemId"
                ng-disabled="true">
+        </div>
     </div> 
-    <div class="margin-T-B-L">           
-        <label for="hm" class="margin-T-B-L">Host Mode</label>
-        <select class="form-control form-lg" ng-model="dataModel.selectedHostMode" id="hm"
-                ng-options="hm for hm in dataModel.hostMode">
-        </select>
+    <div class="fieldset">           
+        <div class="label-value-container">
+            <label for="hm" class="label">Host Mode</label>
+            <select class="form-control form-lg" ng-model="dataModel.selectedHostMode" id="hm"
+                    ng-options="hm for hm in dataModel.hostMode">
+            </select>
+        </div>
+        
     </div>
-    <div class="margin-T-B-L">     
-        <label class="margin-T-B-L">Host Mode Option</label>
+    <div class="fieldset">     
+        <label class="label">Host Mode Option</label>
         <select class="form-control" title="None" ng-model="dataModel.selectedHostModeOption"
                 ng-options="{{ 'hmo.value' | translate }} for hmo in dataModel.hostModeOption">
         </select>
     </div>    
-    <div class="form-group toggle-control">
-        <label for="LUN-unification" ng-attr-title="{{'lun-alignment-tooltip' | translate}}">LUN Alignment</label>
-        <div id="LUN-unification" class="btn-group btn-group-justified btn-group-toggle-black" role="toggle">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-dark">Yes</button>
-            </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-dark">No</button>
-            </div>
+    <div class="fieldset">
+        <div class="label-value-container">
+         <label class="label" for="LUN-unification" ng-attr-title="{{'lun-alignment-tooltip' | translate}}">LUN Alignment</label>
+        </div>
+        <div id="LUN-unification" class="btn-group btn-group-justified" data-toggle="buttons">
+            <label class="btn btn-primary btn-dark">
+                <input  name="Yes" autocomplete="off" checked="" type="radio"/>Yes
+            </label>
+            <label class="btn btn-primary btn-dark">
+                <input  name="No" autocomplete="off" checked="" type="radio"/>No
+            </label>
         </div>
     </div>
-    <div class="form-group toggle-control">
-        <label for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto Create Zone</label>
-        <div id="auto-create-zone" class="btn-group btn-group-justified btn-group-toggle-black" role="toggle">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-dark">Yes</button>
-            </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-dark">No</button>
-            </div>
+    <div class="fieldset">
+        <div class="label-value-container">
+             <label class="label" for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto Create Zone</label>
+        </div>
+        <div id="auto-create-zone" class="btn-group btn-group-justified" data-toggle="buttons">
+            <label class="btn btn-primary btn-dark">
+                <input  name="Yes" autocomplete="off" checked="" type="radio"/>Yes
+            </label>
+            <label class="btn btn-primary btn-dark">
+                <input  name="No" autocomplete="off" checked="" type="radio"/>No
+            </label>
         </div>
     </div>
 </div>

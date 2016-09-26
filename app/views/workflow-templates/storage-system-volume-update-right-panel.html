@@ -1,77 +1,65 @@
 <div ng-if="dataModel.displayedDpType !== null && dataModel.displayedDpType !== ''" class="alert alert-warning" role="alert">
-    <h2 class="warning">{{ 'storage-volume-protected-cannot-expand' | translate}}</h2>
+    <h3 class="">{{ 'storage-volume-protected-cannot-expand' | translate}}</h3>
 </div>
 
-<form role="form">
-    <div class="form-horizontal top clearfix">
-        <div class="form-horizontal">
-            <div ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
-                <h2 class="col-xs-12">{{ 'storage-volume-update-expand' | translate}}</h2>
-            </div>
+<form role="form" class="input-panel">
+    
+    <div class="section-label" ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
+        <h4>{{ 'storage-volume-update-expand' | translate}}</h4>
+    </div>
 
-            <div class="form-group col-xs-4">
-                <h2 class="col-xs-12">{{ 'storage-volume-update-current-size' | translate}}</h2>
-                <div class="form-horizontal">
-                    <div class="form-group col-xs-6 form-group-lg">
-                        <input type="number" class="form-control" ng-disabled="true"
-                               ng-model="dataModel.totalCapacity.decimalSize">
-                    </div>
-                    <div class="form-group col-xs-6 form-group-lg">
-                        <select type="text" class="form-control" ng-disabled="true" ng-model="dataModel.totalCapacity.unit">
-                            <option value="GB">GB</option>
-                            <option value="TB">TB</option>
-                            <option value="PB">PB</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+    <fieldset class="fieldset label-value-container">
+        <label class="label">{{ 'storage-volume-update-current-size' | translate}}</label>
+        <div class="form-h-align">
+            <input type="number" class="form-control" ng-disabled="true"
+                       ng-model="dataModel.totalCapacity.decimalSize">
+            <div class="dropdown">
+                <button id="current-size" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    GB
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="current-size" ng-disabled="true" ng-model="dataModel.totalCapacity.unit">
+                    <li><a href="#">GB</a></li>
+                    <li><a href="#">TB</a></li>
+                    <li><a href="#">PB</a></li>
+                </ul>
+            </div> 
+        </div>
+    </fieldset>
 
-            <div class="form-group col-xs-4">
-                <div ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
-                    <h2 class="col-xs-12">{{ 'storage-volume-update-new-size' | translate}}</h2>
-                    <div class="form-horizontal">
-                        <div class="form-group col-xs-6 form-group-lg">
-                            <input type="number" class="form-control"
-                                   ng-model="dataModel.updateModel.totalCapacity.decimalSize"
-                                   ng-disabled="checkUnProtected()">
-                        </div>
-                        <div class="form-group col-xs-6 form-group-lg">
-                            <select type="text" class="form-control" ng-model="dataModel.updateModel.totalCapacity.unit"
-                                    ng-disabled="checkUnProtected()">
-                                <option value="GB">GB</option>
-                                <option value="TB">TB</option>
-                                <option value="PB">PB</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div ng-if="dataModel.belongsPoolType === 'HDP'">
-                <div class="row section col-xs-12"></div>
-
-                <h2 class="col-xs-12">{{ 'storage-volume-update-change-compression' | translate}}</h2>
-
-                <div class="form-group col-xs-4">
-                    <h2 class="col-xs-12">{{ 'storage-volume-update-compression-current' | translate}}</h2>
-                    <div class="form-horizontal">
-                        <div class="form-group col-xs-12 form-group-lg">
-                            <input type="text" class="form-control" ng-disabled="true"
-                                   ng-model="dataModel.dataSavingTypeValuePair.label | translate">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-xs-4">
-                    <h2 class="col-xs-12">{{ 'storage-volume-update-compression-new' | translate}}</h2>
-                    <div class="form-horizontal">
-                        <div class="form-group col-xs-12 form-group-lg">
-                            <select type="text" class="form-control" ng-model="dataModel.updateModel.dataSavingTypeValuePair"
-                                ng-options="type as type.label | translate for type in dataModel.updateModel.dataSavingTypeValuePairs">
-                            </select>
-                        </div>
-                    </div>
-                </div>
+    <fieldset class="fieldset label-value-container"  ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
+        <label class="label">{{ 'storage-volume-update-new-size' | translate}}</label>
+        <div class="form-h-align">
+            <input type="number" class="form-control" ng-model="dataModel.updateModel.totalCapacity.decimalSize" ng-disabled="checkUnProtected()">
+            <div class="dropdown">
+                <button id="new-size" class="btn dropdown-toggle" type="button" data-toggle="dropdown" ariahaspopup="true" aria-expanded="false">
+                    GB
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="new-size" ng-model="dataModel.updateModel.totalCapacity.unit" ng-disabled="checkUnProtected()">
+                    <li><a href="#">GB</a></li>
+                    <li><a href="#">TB</a></li>
+                    <li><a href="#">PB</a></li>
+                </ul>
             </div>
         </div>
-    </div>
+    </fieldset>
+</form>
+<form class="input-panel"  ng-if="dataModel.belongsPoolType === 'HDP'">
+    <div class="section-label">
+        <h4>{{ 'storage-volume-update-change-compression' | translate}}</h4>
+    </div> 
+    
+    <fieldset class="fieldset label-value-container">
+        <label class="label">{{ 'storage-volume-update-compression-current' | translate}}</label>
+        <input type="text" class="form-control" ng-disabled="true"
+                           ng-model="dataModel.dataSavingTypeValuePair.label | translate">
+    </fieldset>
+    
+    <fieldset class="fieldset label-value-container">
+        <label class="label">{{ 'storage-volume-update-compression-new' | translate}}</label>
+        <select type="text" ng-model="dataModel.updateModel.dataSavingTypeValuePair"
+                        ng-options="type as type.label | translate for type in dataModel.updateModel.dataSavingTypeValuePairs">
+        </select>
+    </fieldset>
 </form>

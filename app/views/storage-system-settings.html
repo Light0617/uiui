@@ -4,7 +4,7 @@
 <form novalidate ng-submit="payload.submit()">
             <!--Wizard header-->
 
-            <div class="row wizard-header">
+            <div class="wizard-header">
                 <div class="col-lg-1 col-md-1 hidden-sm">
                     <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg"></button>
                 </div>
@@ -16,7 +16,7 @@
             </div>
 
             <!--Wizard advanced stepper-->
-            <div class="row wizard-body multi-step" role="tabpanel">
+            <div class="wizard-body multi-step" role="tabpanel">
                 <ul class="nav nav-pills" role="tablist">
                     <li role="presentation" ng-class="vm.steps[0].status" ng-click="vm.activateCertainStep(0)"
                             ng-class="{vm.steps[0].status}">
