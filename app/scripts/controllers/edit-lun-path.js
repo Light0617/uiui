@@ -178,7 +178,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
             }
         });
 
-        return (options.length === 0) ? null : options;
+        return options;
     }
 
     function differentPaths(path1, path2) {

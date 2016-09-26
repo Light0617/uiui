@@ -142,12 +142,11 @@ angular.module('rainierApp')
                                 $scope.dataModel.attachModel.hostMode,
                                 $scope.dataModel.attachModel.selectedHostModeOption);
 
-                            var hostModeOptions = attachVolumeService.getSelectedHostMode($scope.dataModel);
                             attachVolumeService.setEditLunPage($scope.dataModel,
                                 $scope.dataModel.selectedStorageSystem.storageSystemId,
                                 attachModel.selectedVolumes,
                                 selectedServers,
-                                (!hostModeOptions || hostModeOptions.length ===0) ? null : hostModeOptions,
+                                attachVolumeService.getSelectedHostMode($scope.dataModel),
                                 attachModel.storagePorts,
                                 filteredHostGroups,
                                 true
