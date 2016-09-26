@@ -316,7 +316,7 @@ angular.module('rainierApp')
                             'volumes/protect'].join('/'));
                     },
                     enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
+                        return dataModel.anySelected() &&
                             _.all(dataModel.getSelectedItems(),
                                 function (vol) {
                                     return vol.isAttached();
@@ -334,7 +334,7 @@ angular.module('rainierApp')
                         return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
                             function (vol) {
                                 return vol.isUnprotected();
-                            }) && !hasGadVolume(dataModel.getSelectedItems());
+                            });
                     }
                 },
                 {
@@ -348,7 +348,7 @@ angular.module('rainierApp')
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
                             function (vol) {
                                 return volumeService.restorable(vol);
-                            }) && !hasGadVolume(dataModel.getSelectedItems());
+                            });
                     }
                 }
             ];
