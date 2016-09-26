@@ -158,7 +158,7 @@
                         ng-click="filterModel.newSortOrFilterRequest(filterModel.queryGenerationFunctions.setTextSearch)"></button>
             </div>
             <div class="form-group search" ng-if="((!dataModel.search && !dataModel.singleView) || dataModel.singleViewAndPaged)">
-                <input type="text" class="form-control" placeholder="{{dataModel.singleViewAndPaged && 'Secondary Volumne Id' || 'Search'}}" ng-model="filterModel.filter.freeText"
+                <input type="text" class="form-control" placeholder="{{dataModel.singleViewAndPaged && 'Secondary Volume Id' || 'Search'}}" ng-model="filterModel.filter.freeText"
                        ng-change="filterModel.searchQuery(filterModel.filter.freeText)">
                 <button type="submit" class="icon icon-btn icon-search"></button>
             </div>

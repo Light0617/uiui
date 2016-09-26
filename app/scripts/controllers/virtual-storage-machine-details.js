@@ -97,7 +97,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-pvolid',
                     sizeClass: 'twelfth',
-                    sortField: 'volumeId',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.primary.volumeId;
                     },
@@ -110,7 +110,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-svolid',
                     sizeClass: 'twelfth',
-                    sortField: 'volumeId',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.secondary.volumeId;
                     },
@@ -124,7 +124,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-pvol-status',
                     sizeClass: 'twelfth',
-                    sortField: 'status',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.primary.status;
                     }
@@ -133,7 +133,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-svol-status',
                     sizeClass: 'twelfth',
-                    sortField: 'status',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.secondary.status;
                     }
@@ -142,7 +142,7 @@ angular.module('rainierApp')
                 {
                     title: 'gad-pvol-storage-system-id',
                     sizeClass: 'sixth',
-                    sortField: 'storageSystemId',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.primary.storageSystemId;
                     }
@@ -151,7 +151,7 @@ angular.module('rainierApp')
                 {
                     title: 'gad-svol-storage-system-id',
                     sizeClass: 'sixth',
-                    sortField: 'storageSystemId',
+                    sortField: '',
                     getDisplayValue: function (item) {
                         return item.secondary.storageSystemId;
                     }
