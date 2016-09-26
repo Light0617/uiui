@@ -23,7 +23,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     var GET_PORTS_PATH = 'storage-ports';
     var GET_HOST_GROUPS_PATH = 'host-groups';
     var autoSelect = 'AUTO';
-    var hostModeOptionAutoSelect = 999;
     var idCoordinates = {};
     var volumeIdMap = {};
     var originalPaths;
@@ -166,21 +165,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
             idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
     }
 
-    function filterAutoSelect(hostModeOptions){
-        if (!hostModeOptions){
-            return null;
-        }
-
-        var options = [];
-        _.forEach(hostModeOptions, function(option) {
-            if (option !== hostModeOptionAutoSelect){
-                options.push(option) ;
-            }
-        });
-
-        return options;
-    }
-
     function differentPaths(path1, path2) {
         if (path1.serverWwn !== path2.serverWwn || path1.storagePortId !== path2.storagePortId){
             return true;
@@ -219,11 +203,12 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         hostModes.splice(0, 0, autoSelect);
 
         orchestratorService.storageSystemHostModeOptions($scope.dataModel.selectedStorageSystem.storageSystemId).then(function (results) {
+            results.shift();
             $scope.dataModel.attachModel = {
                 noAvailableArray: false,
                 itemSelected: true,
                 storageSystemSelectable: false,
-                lastSelectedHostModeOption: [hostModeOptionAutoSelect],
+                lastSelectedHostModeOption: [],
                 selectedVolumes: selectedVolumes,
                 selectedServers: selectedHosts,
                 storagePorts: dataModel.storagePorts,
@@ -232,7 +217,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 hostMode: hostModes[0],
                 hostModeOptions: results,
                 serverPortMapperModel: viewModelService.newServerPortMapperModel(dataModel.storagePorts, selectedHosts),
-                selectedHostModeOption: [hostModeOptionAutoSelect],
+                selectedHostModeOption: [],
                 enableZoning: false,
                 canGoNext: function () {
                     return true;
@@ -362,7 +347,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                         var payload = {
                             enableZoning: $scope.dataModel.attachModel.enableZoning,
                             hostMode: hostMode === autoSelect ? null : hostMode,
-                            hostModeOptions: filterAutoSelect($scope.dataModel.attachModel.selectedHostModeOption),
+                            hostModeOptions: $scope.dataModel.attachModel.selectedHostModeOption,
                             updates: updates
                         };
 
