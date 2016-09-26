@@ -209,7 +209,7 @@ angular.module('rainierApp')
             inventorySettingsService.setVolumesGridSettings(dataModel);
 
             var hasGadVolume = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.gadSummary !== null;}) !== undefined;
+                return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
             };
 
             var actions = [
