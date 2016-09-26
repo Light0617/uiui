@@ -512,9 +512,6 @@ angular.module('rainierApp')
                         case 'Active-Secondary':
                             item.itemIcon = 'icon-secondary-volume';
                             break;
-                        case 'SMPL':
-                            item.itemIcon = 'icon-volume';
-                            break;
                         default:
                             item.itemIcon = 'icon-volume';
                     }

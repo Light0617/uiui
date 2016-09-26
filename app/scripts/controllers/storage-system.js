@@ -29,9 +29,6 @@ angular.module('rainierApp')
         };
 
         function getUnifiedInformation() {
-            orchestratorService.cluster(storageSystemId).then(function (result) {
-                $scope.clusterSummary = result;
-            });
             orchestratorService.filePools(storageSystemId).then(function (result) {
                 var tiered = 0;
                 _.each(result.filePools, function (filePool) {
@@ -137,10 +134,13 @@ angular.module('rainierApp')
                     title: 'storage-system-launch-smu',
                     type: 'hyperlink'
                 };
-                if ($scope.clusterSummary && $scope.clusterSummary.numOfNodes !== 4) {
-                    $scope.dataModel.actions.settings.items.push(smuLink);
-                }
                 getUnifiedInformation();
+                orchestratorService.cluster(storageSystemId).then(function (result) {
+                    $scope.clusterSummary = result;
+                    if (!$scope.clusterSummary || ($scope.clusterSummary && $scope.clusterSummary.numOfNodes !== 4)) {
+                        $scope.dataModel.actions.settings.items.push(smuLink);
+                    }
+                });
             }
             else {
                 var summaryModel = objectTransformService.transformToStorageSummaryModel(result, false, dataProtection);
