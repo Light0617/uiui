@@ -179,6 +179,10 @@ angular.module('rainierApp')
             return false;
         };
 
+        var hasGadVolume = function(selectedVolumes)  {
+            return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
+        };
+
         paginationService.clearQuery();
         queryService.setQueryMapEntry('serverId', parseInt(hostId));
         paginationService.get(null, ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false).then(function (result) {
@@ -239,7 +243,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit-lun-path',
                     type: 'link',
                     enabled: function () {
-                        return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems());
+                        return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems()) && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
