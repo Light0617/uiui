@@ -1480,19 +1480,6 @@ angular.module('rainierApp')
                             return true;
                         }
                     },
-                    'editLun': {
-                        //TODO: Devan - replace with edit lun path icon when ready from Jurgen
-                        icon: 'icon-edit',
-                        tooltip: 'action-tooltip-edit',
-                        type: 'link',
-                        onClick: function () {
-                            $location.path(['volume-manager', 'edit-lun-path'].join(
-                                '/'));
-                        },
-                        enabled: function () {
-                            return true;
-                        }
-                    },
                     'attach': {
                         icon: 'icon-attach-volume',
                         type: 'dropdown',
