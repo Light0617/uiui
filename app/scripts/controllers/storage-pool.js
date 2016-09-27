@@ -338,11 +338,9 @@ angular.module('rainierApp')
                 summaryModel.noBreakdown = true;
                 $scope.summaryModel = summaryModel;
 
-                var fmdDc2CompModel = objectTransformService.transformToPoolFMCDC2CompressionModel(result);
                 var logicalCapacityDisplaySize = diskSizeService.getDisplaySize(result.logicalCapacityInBytes);
                 var usedCapacityDisplaySize = diskSizeService.getDisplaySize(result.usedLogicalCapacityInBytes);
 
-                result.arrayDataVisualizationModel = fmdDc2CompModel;
                 result.orchestratorService = orchestratorService;
                 result.compressedParityGroups = _.filter(result.parityGroups, function(pg) { return pg.compression; });
                 result.actions = _.map({
