@@ -296,7 +296,7 @@ angular.module('rainierApp')
                     tooltip: 'storage-volume-detach',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                        return dataModel.anySelected() && _.every(dataModel.getSelectedItems(),
                                 function (vol) {
                                     return vol.isAttached();
                                 });
