@@ -1559,6 +1559,50 @@ angular.module('rainierApp')
                 
                 item.displayWWNs = wwnService.displayWWNs(item.wwpns);
             },
+            transformFailedServer: function(item) {
+                var types = [];
+                _.each(item.dataProtectionSummary.replicationType, function (type) {
+                    types.push(replicationService.displayReplicationType(type));
+                });
+
+                item.displayedDpType = types.join(', ');
+
+                item.onClick = function () {
+                    $location.path(['hosts', item.serverId].join('/'));
+                };
+                item.osTypeDisplayValue = synchronousTranslateService.translate('host-mode-' + item.osType);
+
+                item.metaData = [{
+                    left: true,
+                    title: item.serverId,
+                    details: [item.serverName, item.ipAddress, item.attachedVolumeCount + ' volume(s)']
+                }, {
+                    left: false,
+                    title: item.osTypeDisplayValue,
+                    details: [item.displayedDpType]
+                }];
+
+                item.itemIcon = 'icon-host';
+
+                item.displayWWNs = wwnService.displayWWNs(item.wwpns);
+
+                item.actions = {
+                    'delete': {
+                        onClick: function (orchestratorService, goback) {
+                            orchestratorService.deleteHost(item.serverId).then(function () {
+                                if (goback) {
+                                    window.history.back();
+                                }
+                            });
+                       }
+                    },
+                    'edit': {
+                        onClick: function () {
+                            $location.path(['hosts', item.serverId, 'update'].join('/'));
+                        }
+                    }
+                };
+            },
             transformToCreateVolumeSummaryModel: function (storageSystem) {
                 return {
                     arrayDataVisualizationModel: {

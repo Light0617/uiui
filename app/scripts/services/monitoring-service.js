@@ -121,9 +121,11 @@ angular.module('rainierApp')
         function getDpAlerts(callback) {
             if($routeParams.storageSystemId) {
                 orchestratorService.failedServersForStorageSystem($routeParams.storageSystemId).then(function(serverResult) {
-
                     model.totalHostAlertCount = serverResult.servers.length;
                     model.servers = serverResult.servers;
+                    _.forEach(model.servers, function(server){
+                        objectTransformService.transformFailedServer(server);
+                    });
 
                     paginationService.getAllPromises(null, 'volumes?q=dataProtectionSummary.hasFailures:true', true, $routeParams.storageSystemId, null, false).then(function(volumeResult) {
                         _.forEach(volumeResult, function (item) {

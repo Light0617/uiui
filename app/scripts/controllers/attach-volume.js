@@ -29,8 +29,7 @@ angular.module('rainierApp')
         objectTransformService,
         attachVolumeService,
         replicationService,
-        $timeout,
-        $location) {
+        $timeout) {
 
 
         var selectedServers = ShareDataService.pop('selectedServers') || [];
@@ -43,7 +42,7 @@ angular.module('rainierApp')
         queryService.clearQueryMap();
 
         if (!selectedServers || selectedServers.length === 0) {
-            $location.path('hosts');
+            window.history.back();
         }
 
         $scope.storageSystems = paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
