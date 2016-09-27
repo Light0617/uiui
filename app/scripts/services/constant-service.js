@@ -70,6 +70,11 @@ angular.module('rainierApp')
                 MANUAL: 'MANUAL',
                 AUTOMATIC: 'AUTOMATIC'
             },
+            gadVolumeType: {
+                NOT_AVAILABLE: 'SMPL',
+                ACTIVE_PRIMARY: 'Active-Primary',
+                ACTIVE_SECONDARY: 'Active-Secondary'
+            },
             storageModel: {
                 VSP_G100: 'VSP G100',
                 VPS_G200: 'VSP G200',

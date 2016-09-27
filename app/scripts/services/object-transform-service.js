@@ -484,12 +484,22 @@ angular.module('rainierApp')
                     default:
                         item.itemIcon = 'icon-volume';
                 }
-                if (item.gadSummary) {
+
+                item.isGadVolume = function () {
+                    if(this.gadSummary) {
+                        return (this.gadSummary.volumeType === constantService.gadVolumeType.ACTIVE_PRIMARY ||
+                        this.gadSummary.volumeType === constantService.gadVolumeType.ACTIVE_SECONDARY);
+                    } else {
+                        return false;
+                    }
+                };
+
+                if (item.isGadVolume()) {
                     switch (item.gadSummary.volumeType) {
-                        case 'Active-Primary':
+                        case constantService.gadVolumeType.ACTIVE_PRIMARY:
                             item.itemIcon = 'icon-primary-volume';
                             break;
-                        case 'Active-Secondary':
+                        case constantService.gadVolumeType.ACTIVE_SECONDARY:
                             item.itemIcon = 'icon-secondary-volume';
                             break;
                         default:
@@ -525,14 +535,6 @@ angular.module('rainierApp')
                     return (this.provisioningStatus === 'ATTACHED');
                 };
 
-                item.isGadVolume = function () {
-                    if(this.gadSummary) {
-                        return (this.gadSummary.volumeType === 'Active-Primary' ||
-                        this.gadSummary.volumeType === 'Active-Secondary');
-                    } else {
-                        return false;
-                    }
-                };
 
                 item.isUnattached = function () {
                     return (this.provisioningStatus === 'UNATTACHED');
