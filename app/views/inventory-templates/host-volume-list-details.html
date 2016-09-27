@@ -1,6 +1,5 @@
 <div class="nested-row-container expanded" >
     <div class="nested-row-tile column-headers">
-        <div class="col-md-1 cell">&nbsp;</div>
         <div class="col-md-2 cell text-resize ellipsis"
              title="{{'host-volume-list-port' | translate}}">
             <p class="sort-column-header">{{'host-volume-list-port' | translate}}</p>
@@ -21,10 +20,12 @@
              title="{{'host-volume-list-host-mode-options' | translate}}">
             <p class="sort-column-header">{{'host-volume-list-host-mode-options' | translate}}</p>
         </div>
+        <div class="col-md-2 cell text-resize ellipsis"
+             title="{{'host-volume-list-host-group' | translate}}">
+            <p class="sort-column-header">{{'host-volume-list-host-group' | translate}}</p>
+        </div>
     </div>
     <div class="nested-row-tile" ng-repeat="path in item.paths">
-        <div class="col-md-1 cell">
-        </div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{path.storagePortId}}">
             <p>{{path.storagePortId}}</p>
         </div>
@@ -39,6 +40,9 @@
         </div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostModeOptions.join(' ')}}">
             <p>{{path.hostModeOptions.join(' ')}}</p>
+        </div>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.name}}">
+            <p>{{path.name}}</p>
         </div>
     </div>
 </div>

@@ -549,6 +549,7 @@
     "host-volume-list-lun-id": "LUN ID",
     "host-volume-list-host-mode": "Host Mode",
     "host-volume-list-host-mode-options": "Host Mode Options",
+    "host-volume-list-host-group": "Host Group",
 
     "rest-api": "REST API",
 
