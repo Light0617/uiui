@@ -263,7 +263,8 @@ angular.module('rainierApp')
                         }
                     },
                     enabled: function () {
-                        return dataModel.anySelected();
+                        return dataModel.anySelected() &&
+                            _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
                     },
                     confirmClick: function () {
                         $('#' + this.dialogSettings.id).modal('hide');
