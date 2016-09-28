@@ -47,8 +47,8 @@ angular.module('rainierApp')
 
                 if (isFilter(search.replicationTypes)) {
                     pass = pass &&
-                        _.isArray(item.dpType) &&
-                        _.size(_.intersection(item.dpType, search.replicationTypes)) > 0;
+                        _.isArray(item.dataProtectionSummary.replicationType) &&
+                        _.size(_.intersection(item.dataProtectionSummary.replicationType, search.replicationTypes)) > 0;
                 }
 
                 pass = item.selected || pass;

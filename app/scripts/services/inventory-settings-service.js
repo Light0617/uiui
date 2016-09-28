@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .factory('inventorySettingsService', function($timeout, diskSizeService, orchestratorService, ShareDataService,
-        $location) {
+        $location, replicationService) {
 
         var volumeGridSettings = function(dataModel, options) {
 
@@ -167,7 +167,9 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'displayedDpType',
                     getDisplayValue: function (item) {
-                        return item.displayedDpType;
+                        return _.map(item.dataProtectionSummary.replicationType, function(elem){
+                            return replicationService.displayReplicationType(elem);
+                        }).join(', ');
                     }
 
                 }

@@ -23,9 +23,19 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
             wwpns: mockUtils.getWWN(),
             osType: _.sample(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'NETWARE', 'OVMS']),
             dpStatus: _.sample(['Failed', 'Success']),
-            dataProtectionSummary:{replicationType:['CLONE','SNAP', 'SNAP_ON_SNAP', 'SNAP_CLONE']},
+            dataProtectionSummary:{replicationType: randomReplicationType()},
             attachedVolumeCount: 7
         };
+    };
+
+    var randomReplicationType = function () {
+        var type= ['CLONE','SNAP', 'SNAP_ON_SNAP', 'SNAP_CLONE'];
+        _.each(type, function(e, i, a) {
+            if(_.random(0, 1)){
+                a.splice(a.indexOf(e), 1);
+            }
+        });
+        return type;
     };
 
     var getOsTypeCount = function () {
