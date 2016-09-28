@@ -172,9 +172,11 @@ angular.module('rainierApp')
                 _.forEach(replicationGroupCountByTypes, function(replicationGroupCountByType) {
                     var replicationGroup = {};
 
-                    if (replicationService.isClone(replicationGroupCountByType.replicationType) && externalVolumePairExist.clone) {
+                    if (replicationService.isClone(replicationGroupCountByType.replicationType)) {
                         replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-clone');
-                        replicationGroupCountByType.count++;
+                        if (externalVolumePairExist.clone) {
+                            replicationGroupCountByType.count++;
+                        }
                     } else if (replicationService.isSnap(replicationGroupCountByType.replicationType)) {
                         replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-snapshot');
                         replicationGroupCountByType.count += externalVolumePairExist.snapshot ? 1 : 0;
