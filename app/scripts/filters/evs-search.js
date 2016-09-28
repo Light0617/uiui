@@ -28,7 +28,7 @@ angular.module('rainierApp')
 
                 pass = pass && (search.isEnabled === null || item.enabled === search.isEnabled);
                 
-                pass = pass && (search.blade === null || item.clusterNodeId === parseInt(search.blade));
+                pass = pass && (search.bladeSelected.length === 0 || search.bladeSelected.includes(item.clusterNodeId));
 
                 pass = pass && (!search.filterStorageSystem || item.storageSystemId === search.filterStorageSystem);
 

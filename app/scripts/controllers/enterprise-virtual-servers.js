@@ -33,7 +33,8 @@ angular.module('rainierApp')
                     freeText: '',
                     isOnline: null,
                     isEnabled: null,
-                    blade: null,
+                    blade: null, // This is only used for ng-model definition.
+                    bladeSelected: [],
                     filterStorageSystem: ''
                 },
                 sort: {

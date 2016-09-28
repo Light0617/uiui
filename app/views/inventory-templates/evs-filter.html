@@ -41,23 +41,31 @@
 
 <!--Control group: File Server Blade Input-->
 <div class="control-group">
-    <h3>{{'blade' | translate}}
-        <span class="read-only" type="text" ng-if="dataModel.search.blade === null">{{'all' | translate}}</span>
-        <span class="read-only" type="text" ng-if="dataModel.search.blade">{{'blade' | translate}} {{dataModel.search.blade}}</span>
-    </h3>
+    <h3>{{'blade' | translate}}</h3>
 
-    <div class="btn-group btn-group-toggle btn-group-justified">
-        <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.blade" btn-radio="1" title="{{'blade' | translate}} 1"
-                   uncheckable>{{'blade' | translate}} 1
-            </label>
-        </div>
-        <div class="btn-group">
-            <label class="btn btn-default" ng-model="dataModel.search.blade" btn-radio="2" title="{{'blade' | translate}} 2"
-                   uncheckable>{{'blade' | translate}} 2
-            </label>
-        </div>
+    <div class="btn-group btn-group-justified btn-group-vertical">
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.blade"
+                   ng-change="dataModel.search.bladeSelected.includes(1) ? dataModel.search.bladeSelected.splice(dataModel.search.bladeSelected.indexOf(1), 1) : dataModel.search.bladeSelected.push(1)">
+            {{'blade' | translate}} 1
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.blade"
+                   ng-change="dataModel.search.bladeSelected.includes(2) ? dataModel.search.bladeSelected.splice(dataModel.search.bladeSelected.indexOf(2), 1) : dataModel.search.bladeSelected.push(2)">
+            {{'blade' | translate}} 2
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.blade"
+                   ng-change="dataModel.search.bladeSelected.includes(3) ? dataModel.search.bladeSelected.splice(dataModel.search.bladeSelected.indexOf(3), 1) : dataModel.search.bladeSelected.push(3)">
+            {{'blade' | translate}} 3
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.blade"
+                   ng-change="dataModel.search.bladeSelected.includes(4) ? dataModel.search.bladeSelected.splice(dataModel.search.bladeSelected.indexOf(4), 1) : dataModel.search.bladeSelected.push(4)">
+            {{'blade' | translate}} 4
+        </label>
     </div>
+
 </div>
 
 <!--Control group: Storage System Input - Show only for All EVS page-->
