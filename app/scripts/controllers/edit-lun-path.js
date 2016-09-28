@@ -253,12 +253,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 previous: function () {
                     dataModel.goBack();
                 },
-                toggleSelected: function(item, event) {
-                    item.isSelected = !item.isSelected;
-                    if (event) {
-                        event.stopPropagation();
-                    }
-                },
                 canSubmit: function () {
                     return true;
                 },

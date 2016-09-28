@@ -313,12 +313,6 @@ angular.module('rainierApp')
                 createPath: createPath,
                 previous: function () {
                     dataModel.goBack();
-                },
-                toggleSelected: function(item, event) {
-                    item.isSelected = !item.isSelected;
-                    if (event) {
-                        event.stopPropagation();
-                    }
                 }
             };
 
