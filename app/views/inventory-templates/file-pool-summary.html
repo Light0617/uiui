@@ -8,8 +8,12 @@
                 <div class="label-value-container resource-data">
                     <p class="label">{{ dataModel.filePool.metaData[1].title }}</p>
                     <p class="value">{{dataModel.filePool.tierNameDisplay}}</p>
+                </div>
+                <div class="label-value-container resource-data">
                     <p class="label">{{ 'file-pool-number-file-systems' | translate}}</p>
                     <p class="value">{{dataModel.numOfFileSystems}}</p>
+                </div>
+                <div class="label-value-container resource-data">
                     <p class="label">{{ 'file-pool-chunk-size' | translate}}</p>
                     <p class="value">{{dataModel.filePool.chunkSize.size}} <span>{{dataModel.filePool.chunkSize.unit}}</span></p>
                 </div>                 

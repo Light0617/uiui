@@ -41,26 +41,38 @@
                     <div class="label-value-container">
                         <p class="label">{{ 'storage-volume-label' | translate}}</p>
                         <p class="value" ng-attr-title="{{model.label}}">{{model.label}}</p>
+                    </div>
+                    <div class="label-value-container">
                         <p class="label" ng-if="model.poolId">{{ 'storage-pool-id' | translate}}</p>
                         <p class="value" ng-if="model.poolId">{{model.poolId}}</p>
+                        </div>
+                    <div class="label-value-container">
                         <p class="label" ng-if="model.storagePool.displayType">{{ 'storage-pool-type' | translate}}</p>
                         <p class="value" ng-if="model.storagePool.displayType">{{model.storagePool.displayType}}</p>
+                        </div>
+                    <div class="label-value-container">
                         <p class="label" ng-if="model.storagePool.tierNames">{{ 'storage-pool-tier' | translate}}</p>
                         <p class="value" ng-if="model.storagePool.tierNames" ng-attr-title="{{model.storagePool.tierNames}}">{{model.storagePool.tierNames}}</p>
+                        </div>
+                    <div class="label-value-container">
                         <p class="label" ng-if="model.provisioningStatus">{{ 'volume-provisioning-status' | translate}}</p>
                         <p class="value" ng-if="model.provisioningStatus">{{model.provisioningStatus}}</p>
+                        </div>
+                    <div class="label-value-container">
                         <p class="label" ng-if="model.capacitySavingType">{{ 'volume-capacity-saving-type' | translate}}</p>
                         <p class="value" ng-if="model.capacitySavingType">{{model.capacitySavingType}}</p>
+                        </div>
+                    <div class="label-value-container">
                         <p class="label">{{ 'storage-volume-protected' | translate}}</p>
-                        <div ng-if="protected" class="icon icon-solo icon-checkmark-fill icon-sm centered-content"></div>
-                        <div ng-if="!protected" class="icon icon-solo icon-failed icon-sm centered-content"></div>
+                        <span ng-if="protected" class="icon icon-solo icon-checkmark-fill icon-sm centered-content"></span>
+                        <span ng-if="!protected" class="icon icon-solo icon-failed icon-sm centered-content"></span>
                     </div>
                 </div>
             </div>
         </div>
 
             <div class="tile data-viz-container third">
-                    <array-polar-data-visualization class="utilization" ng-model="summaryModel.arrayDataVisualizationModel"
+                    <array-polar-data-visualization class="utilization dataviz-legend" ng-model="summaryModel.arrayDataVisualizationModel"
                                                     no-break-down="true"></array-polar-data-visualization>
             </div>
         </div>

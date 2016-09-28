@@ -137,7 +137,10 @@ angular.module('rainierApp')
            //  var data = [10, 20, 30,65,18];
 
 
-           svg.attr({width: width, height: height});
+           svg.attr('viewBox', '0 0 '+ width +' ' + height)
+                .attr('class', 'ddv')
+                .attr('preserveAspectRatio', 'xMidYMin slice')
+               .attr('style', 'padding-bottom:' + height/width*100 + '%');
 
            var g = svg.append('g')
                // center the donut chart

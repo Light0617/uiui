@@ -38,9 +38,11 @@ angular.module('rainierApp')
                 var bar = svg
                     .attr('version', '1.1')
                     .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
-                    .attr('preserveAspectRatio', 'xMinYMin meet')
+                    .attr('preserveAspectRatio', 'xMidYMin slice')
                     .attr('transform', 'scale(1,1)')
-                    .attr('class', 'udv');
+                    .attr('class', 'udv')
+                    .attr('class', 'udv-thresholds')
+                    .attr('style', 'padding-bottom:' + svgHeight/svgWidth*100 + '%');
 
                 var stack = bar.append('g')
                     .attr('class', 'utilization-stack');
@@ -56,13 +58,13 @@ angular.module('rainierApp')
 
                 var colorString = '';
                 if (logicalUtilization>=threshold2) {
-                    colorString = 'fill:red;';
+                    colorString = 'fill:#D14D36';
                 }
                 else if (logicalUtilization>=threshold1 && model.type !== 'HTI') {
-                    colorString = 'fill:orange;';
+                    colorString = 'fill:#FBAF17';
                 }
                 else {
-                    colorString = 'fill:#A1E06E;';
+                    colorString = 'fill:#A1E06E';
                 }
 
                 stack.append('rect')
@@ -95,12 +97,12 @@ angular.module('rainierApp')
 
                 bar.append('polygon')
                     .attr('class', 'caret')
-                    .attr('style', 'fill:red')
+                    .attr('style', 'fill:#D14D36')
                     .attr('points', polygonThreshold2Points);
 
                 bar.append('polygon')
                     .attr('class', 'caret')
-                    .attr('style', 'fill:orange')
+                    .attr('style', 'fill:#FBAF17')
                     .attr('points', polygonThreshold1Points);
 
                 bar.append('polygon')

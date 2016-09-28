@@ -1,15 +1,15 @@
-<div class="summary-container-default stage flex-row" id="top-info" ng-if="model">
-    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-            <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1">
+<div class="summary-container-default" id="top-info" ng-if="model">
+    <div ng-if="model.data.length" class="tile fifth">
+                <donut-data-visualization ng-model="model"></donut-data-visualization>
+           </div>
+            <div class="tile meta-tile half">
 
             </div>
 
-            <div ng-if="model.data.length" class="col-lg-10 col-md-10 col-sm-5 col-xs-5">
-                <donut-data-visualization ng-model="model"></donut-data-visualization>
-           </div>
 
-        <div class="alert alert-warning" role="alert" ng-if="!model.data.length" class="col-lg-10 col-md-10 col-sm-5 col-xs-5">
+
+        <div class="alert alert-warning tile full" role="alert" ng-if="!model.data.length">
             <h1>{{'no-servers-onboarded' | translate}}</h1>
         </div>
-    </div>
+
 </div>

@@ -7,14 +7,18 @@
             <p class="label">{{'hosts-ip-address' | translate}}</p>
             <p class="value" ng-if="summaryModel.server.ipAddress === ''"><i>{{'hosts-ip-address-not-specified' | translate }}</i></p>
             <p class="value" ng-if="summaryModel.server.ipAddress !== ''">{{summaryModel.server.ipAddress}}</p>
+        </div>
+        <div class="label-value-container">
             <p class="label">{{'hosts-name' | translate}}</p>
             <p class="value">{{summaryModel.server.serverName}}</p>
+        </div>
+        <div class="label-value-container">
             <p class="label">{{'hosts-wwn' | translate}}</p>
             <p class="value">{{summaryModel.server.displayWWNs.toString()}}</p>
         </div>
     </div>
     <div class="tile data-viz-container third">
-            <array-polar-data-visualization class="utilization" ng-model="summaryModel.arrayDataVisualizationModel" no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
+            <array-polar-data-visualization class="utilization dataviz-legend" ng-model="summaryModel.arrayDataVisualizationModel" no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>
     </div>
 </div>
 
