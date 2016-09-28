@@ -1352,7 +1352,7 @@ angular.module('rainierApp')
                                 color: fileFreeCapacityColor
                             },
                             {
-                                percentage: parseInt(file.overcommitCapacity * 100 / file.physicalCapacity),
+                                percentage: parseInt(file.physicalCapacity > 0 ? file.overcommitCapacity * 100 / file.physicalCapacity : 0),
                                 capacity: diskSizeService.getDisplaySize(file.overcommitCapacity),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
