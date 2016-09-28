@@ -203,6 +203,15 @@
 
                     <p ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute && dataModel.hourInterval">{{
                         'replication-groups-hourly-note' | translate : dataModel}}</p>
+
+                    <p ng-if="dataModel.schedule === 'DAILY'">
+                        {{ 'replication-groups-daily-note' | translate : dataModel }}</p>
+
+                    <p ng-if="dataModel.schedule === 'WEEKLY'">
+                        {{ 'replication-groups-weekly-note' | translate : dataModel }}</p>
+
+                    <p ng-if="dataModel.schedule === 'MONTHLY'">
+                        {{ 'replication-groups-monthly-note' | translate : dataModel }}</p>
                 </div>
 
                 <div class="label-value-container" ng-switch="allUseExisting">

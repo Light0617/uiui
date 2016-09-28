@@ -899,8 +899,11 @@
 
 
     "no-available-replication-group": "Selected volume is in an external replication group or not in any HSA replication groups.",
-    "replication-groups-hourly-note": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hours on the {{minuteDisplay}} minute of the hour.",
-    "replication-groups-hourly-note-zero": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hours on the hour.",
+    "replication-groups-hourly-note": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hours on the {{minuteDisplay}} minute of the UTC time. Current time in UTC is {{currentDate | date:'MM/dd/yy hh:mm a' : 'UTC'}}.",
+    "replication-groups-hourly-note-zero": "Note: Snapshot will start every {{schedule.hourInterval || hourInterval}} hours of the UTC time. Current time in UTC is {{currentDate | date:'MM/dd/yy hh:mm a' : 'UTC'}}.",
+    "replication-groups-daily-note": "Note: Snapshot will start every day of the UTC time. Current time in UTC is {{currentDate | date:'MM/dd/yy hh:mm a' : 'UTC'}}.",
+    "replication-groups-weekly-note": "Note: Snapshot will start every week of the UTC time. Current time in UTC is {{currentDate | date:'MM/dd/yy hh:mm a' : 'UTC'}}.",
+    "replication-groups-monthly-note": "Note: Snapshot will start every month of the UTC time. Current time in UTC is {{currentDate | date:'MM/dd/yy hh:mm a' : 'UTC'}}.",
     "replication-group-edit-remove-pvol-message": "Select the Primary volumes to remove",
     "replication-group-edit-remove-svol-message": "Delete the associated secondary volumes",
     "replication-group-edit-snapshot-message": "Edit Snapshots",

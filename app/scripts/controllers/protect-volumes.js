@@ -60,6 +60,7 @@ angular.module('rainierApp')
             var WEEKLY_KEY = 'WEEKLY';
             var SNAPSHOT = replicationService.rawTypes.SNAP;
             var CLONE = replicationService.rawTypes.CLONE;
+            var date = new Date();
 
             $scope.dataModel = {
                 $replicationRawTypes: replicationService.rawTypes,
@@ -73,6 +74,7 @@ angular.module('rainierApp')
                 numberOfCopies: null,
                 volumeRows: volumesList,
                 consistencyGroupNeeded: false,
+                currentDate: date,
 
                 getSelectedVolumeCount: function () {
                     var selectedCount = 0;
