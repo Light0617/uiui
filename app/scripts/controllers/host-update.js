@@ -43,6 +43,9 @@ angular.module('rainierApp')
                 updatedWwns: setWwnValues(result.displayWWNs),
                 addedWwns: addedWwns,
                 applyChangesToAttachedVolumes: false,
+                existingWwnsChanged: function(){
+                    return differentWwns($scope.dataModel.originalHost.wwpns, $scope.dataModel.updatedWwns);
+                },
                 requireSelection: false,
                 osTypes: constantService.osType(),
                 isValid: function () {
@@ -58,6 +61,15 @@ angular.module('rainierApp')
                 addNewWwn: function(){
                     $scope.dataModel.addedWwns.splice(0,0, {value: ''});
                 }
+            };
+
+            $scope.updateHost = function() {
+                if (!$scope.dataModel.isValid()){
+                    return;
+                }
+                updateHostWwns();
+                updateHostFields();
+                window.history.back();
             };
         });
 
@@ -75,12 +87,6 @@ angular.module('rainierApp')
 
             return false;
         }
-
-        $scope.updateHost = function() {
-            updateHostWwns();
-            updateHostFields();
-            window.history.back();
-        };
 
         function updateHostWwns() {
 

@@ -107,15 +107,15 @@
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
                         <button type="button" class="btn btn-default" id="cancel" title="cancel" back-button>{{ 'cancel-button' | translate}}</button>
-                        <button type="button" class="btn btn-default active" title="submit"
-                                ng-if="dataModel.applyChangesToAttachedVolumes === true"
+                        <div type="button" class="btn btn-default active" title="submit"
+                                ng-if="dataModel.applyChangesToAttachedVolumes === true && dataModel.existingWwnsChanged()"
                                 confirm
                                 confirm-title="{{ 'host-update-confirmation-title' | translate}}"
                                 confirm-message="{{ 'host-update-confirmation-content' | translate}}"
                                 ng-click="updateHost()"
-                                ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}</button>
+                                ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}</div>
                         <button type="button" class="btn btn-default active" title="submit"
-                                ng-if="dataModel.applyChangesToAttachedVolumes !== true"
+                                ng-if="dataModel.applyChangesToAttachedVolumes !== true || !dataModel.existingWwnsChanged()"
                                 ng-click="updateHost()"
                                 ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate}}</button>
                     </div>
