@@ -59,6 +59,10 @@ angular.module('rainierApp')
 
             objectTransformService.transformFilePoolsSummaryModel(dataModel);
 
+            orchestratorService.cluster(storageSystemId).then(function (result) {
+                dataModel.isGefn = (result.unified === true && result.clusterNodes.length === 4);
+            });
+
             var actions = [
                 {
                     icon: 'icon-delete',
