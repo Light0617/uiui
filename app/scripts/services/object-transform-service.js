@@ -139,7 +139,7 @@ angular.module('rainierApp')
                     item.alertType = 'alert-link';
                     item.alertLink = {
                         icon: 'icon-small-triangle',
-                        title: 'Incomplete Gad Array.',
+                        title: synchronousTranslateService.translate('incomplete-gad-array'),
                     };
                 }
 

@@ -325,6 +325,7 @@
     "gad-volume-type": "GAD Volume Type",
     "gad-pvol-storage-system-id": "P-Vol Storage System Id",
     "gad-svol-storage-system-id": "S-Vol Storage System Id",
+    "incomplete-gad-array": "Incomplete GAD array",
     "security-security": "Security",
     "security-active-directory": "Active Directory",
     "security-account-domain": "Account Domain",
