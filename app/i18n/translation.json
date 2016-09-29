@@ -729,7 +729,7 @@
     "host-update-add-wwns": "Add New WWNs",
     "host-update-apply-change": "Apply changes to attached volumes",
     "host-update-confirmation-title": "Update Servers Confirmation",
-    "host-update-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. Are your sure you want to proceed?",
+    "host-update-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. If there are zones on the fabric switches that were created automatically by HSA, these zones will also be updated (manually created zones will not be affected). Are you sure you want to proceed?",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",
