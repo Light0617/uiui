@@ -676,6 +676,11 @@ angular.module('rainierApp')
                         left: false,
                         title: synchronousTranslateService.translate('storage-pool-compression') + ': ' + synchronousTranslateService.translate(item.fmcCompressed),
                         details: []
+                    },
+                    {
+                        left: true,
+                        title: synchronousTranslateService.translate('storage-pool-monitoring') + ': ' + synchronousTranslateService.translate(item.monitoringMode),
+                        details: []
                     }
                 ];
 

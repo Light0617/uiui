@@ -57,6 +57,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
         ]
     };
 
+    var monitoringModes = ['PERIODICAL', 'CONTINUOUS', 'PERIODICAL_WITH_ACTIVE_FLASH', 'CONTINUOUS_WITH_ACTIVE_FLASH', 'NONE'];
+
     var generateMockStoragePool = function(v) {
         var capacityInfo = mockUtils.getCapacityInformation(100, 150);
         var tiers = mockUtils.trueOrFalse() ? hdp : hdt;
@@ -75,6 +77,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'compressionDetails': getCompressionDetails(),
             'externalParityGroupIds' : [],
             'logicalCapacityInBytes': mockUtils.getCapacity(50, 100),
+            'monitoringMode' : _.sample(monitoringModes),
             'nasBoot': mockUtils.trueOrFalse(),
             'parityGroups': [
                 {

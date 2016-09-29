@@ -238,6 +238,7 @@
     "storage-pool-external-parity-group-ids": "External Parity Group Ids",
     "storage-pool-encryption": "Encryption",
     "storage-pool-compression": "FMD DC2 Compression",
+    "storage-pool-monitoring": "Monitoring",
     "storage-pool-compression-filter": "Select FMD DC2 Compression Filter",
     "storage-pool-encryption-filter": "Select Encryption Filter",
     "storage-pool-encrypted": "Encrypted",
