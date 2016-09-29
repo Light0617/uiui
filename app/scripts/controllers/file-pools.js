@@ -58,6 +58,56 @@ angular.module('rainierApp')
             };
 
             objectTransformService.transformFilePoolsSummaryModel(dataModel);
+            dataModel.gridSettings = [
+                {
+                    title: 'Name',
+                    sizeClass: 'sixth',
+                    sortField: 'label',
+                    getDisplayValue: function (item) {
+                        return item.label;
+                    }
+
+                },
+                {
+                    title: 'Tiered',
+                    sizeClass: 'twelfth',
+                    sortField: 'tiered',
+                    getDisplayValue: function (item) {
+                        return synchronousTranslateService.translate(item.tiered ? 'tiered' : 'untiered');
+                    }
+
+                },
+                {
+                    title: 'file-pool-total',
+                    sizeClass: 'twelfth',
+
+                    sortField: 'capacityInBytes.value',
+                    getDisplayValue: function (item) {
+                        return item.capacityInBytes;
+                    },
+                    type: 'size'
+
+                },
+                {
+                    title: 'file-pool-free',
+                    sizeClass: 'twelfth',
+                    sortField: 'availableCapacityInBytes.value',
+                    getDisplayValue: function (item) {
+                        return item.availableCapacityInBytes;
+                    },
+                    type: 'size'
+
+                },
+                {
+                    title: 'common-file-used',
+                    sizeClass: 'twelfth',
+                    sortField: 'usedCapacityInBytes.value',
+                    getDisplayValue: function (item) {
+                        return item.usedCapacityInBytes;
+                    },
+                    type: 'size'
+                }
+            ];
 
             orchestratorService.cluster(storageSystemId).then(function (result) {
                 dataModel.isGefn = (result.unified === true && result.clusterNodes.length === 4);
