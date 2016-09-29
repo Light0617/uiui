@@ -3,7 +3,7 @@
 </div>
 
 <form role="form" class="input-panel">
-    
+
     <div class="section-label" ng-if="dataModel.displayedDpType === null || dataModel.displayedDpType === ''">
         <h4>{{ 'storage-volume-update-expand' | translate}}</h4>
     </div>
@@ -14,15 +14,10 @@
             <input type="number" class="form-control" ng-disabled="true"
                        ng-model="dataModel.totalCapacity.decimalSize">
             <div class="dropdown">
-                <button id="current-size" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    GB
-                    <span class="caret"></span>
+                <button id="current-size" class="btn dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" ng-disabled="true">
+                    {{dataModel.totalCapacity.unit}}
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="current-size" ng-disabled="true" ng-model="dataModel.totalCapacity.unit">
-                    <li><a href="#">GB</a></li>
-                    <li><a href="#">TB</a></li>
-                    <li><a href="#">PB</a></li>
-                </ul>
             </div> 
         </div>
     </fieldset>
@@ -33,13 +28,13 @@
             <input type="number" class="form-control" ng-model="dataModel.updateModel.totalCapacity.decimalSize" ng-disabled="checkUnProtected()">
             <div class="dropdown">
                 <button id="new-size" class="btn dropdown-toggle" type="button" data-toggle="dropdown" ariahaspopup="true" aria-expanded="false">
-                    GB
+                    {{dataModel.updateModel.totalCapacity.unit}}
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="new-size" ng-model="dataModel.updateModel.totalCapacity.unit" ng-disabled="checkUnProtected()">
-                    <li><a href="#">GB</a></li>
-                    <li><a href="#">TB</a></li>
-                    <li><a href="#">PB</a></li>
+                <ul class="dropdown-menu" aria-labelledby="new-size" ng-disabled="checkUnProtected()">
+                    <li ng-repeat="unit in dataModel.updateModel.volumeSizeUnits">
+                        <a ng-click="dataModel.updateModel.setSizeUnit(unit)">{{unit}}</a>
+                    </li>
                 </ul>
             </div>
         </div>

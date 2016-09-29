@@ -20,6 +20,11 @@ angular.module('rainierApp')
             dataModel.belongsPoolType = result.type;
             var poolId = result.poolId;
             var updatedModel = angular.copy(dataModel);
+            updatedModel.volumeSizeUnits = volumeService.getVolumeSizeUnits();
+
+            updatedModel.setSizeUnit = function(unit) {
+                updatedModel.totalCapacity.unit = unit;
+            };
 
             updatedModel.submit = function () {
                 var updateVolumePayload = buildUpdateVolumePayload(dataModel, updatedModel);
