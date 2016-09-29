@@ -227,7 +227,8 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected();
+                        return dataModel.onlyOneSelected() &&
+                            _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
