@@ -207,6 +207,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
+                            queryService.setQueryMapEntry('serverId', parseInt(hostId));
                             paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume)
                                 .then(function (result) {
                                     updateResultTotalCounts(result);
