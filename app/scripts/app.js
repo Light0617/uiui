@@ -559,7 +559,7 @@ angular
             .when('/virtual-storage-machines/:serialModelNumber', {
                 templateUrl: 'views/virtual-storage-machine-details.html',
                 controller: 'VirtualStorageMachineDetailsCtrl',
-                //TODO: Help context
+                helpContext: 'R_VSM_INVENTORY'
             })
             .when('/virtual-storage-machines', {
                 templateUrl: 'views/virtual-storage-machines.html',
@@ -567,7 +567,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'common-virtual-storage-machines'
                 },
-                //TODO: Help context
+                helpContext: 'R_VSM_INVENTORY'
             })
             .when('/fabric-switches/add', {
                 templateUrl: 'views/fabric-switch-add.html',
