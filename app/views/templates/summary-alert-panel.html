@@ -1,11 +1,10 @@
-<div class="summary-container-default stage bg-panel summary-panel flex-row expand quarters">
+<div class="summary-container-default summary-panel expand">
     <!-- First-tile-->
     <div class="alert-tile capacity" ng-class="capacityPanelState.state">
-        <div class="status-and-detail-flex">
+        <div class="status-and-detail">
             <div class="tile alert capacity alert-tile-capacity-bkg flex-column" ng-class="model.alerts.capacity.level"
                  id="capacity">
                 <h2>Capacity</h2>
-
                 <div class="alert-icon" ng-click="toggleAction(CAPACITY_ID)">
                     <svg class="radial-svg alert-count resource-icon alert-panel-alert" viewBox="0 0 60 60"
                          preserveAspectRatio="xMidYMid meet">
@@ -31,20 +30,20 @@
                 </div>
             </div>
             <div class="tile-details" ng-controller="MonitoringCapacityCarouselCtrl">
-                <carousel class="row row-centered" interval="interval">
+                <carousel interval="interval">
                     <slide ng-repeat="slide in slides" active="slide.active">
-                        <div class="carousel-inner">
-                            <div class="col-md-4 col-centered" ng-repeat="item in slide.items">
+                        
+                            <div class="alert-detail-tile" ng-repeat="item in slide.items">
                                 <multi-carousel-item ng-model="item"></multi-carousel-item>
                             </div>
-                        </div>
+                        
                     </slide>
                 </carousel>
             </div>
         </div>
         <div class="icon-toolbar footer">
             <ul class="icon-row">
-                <li class="alert"><span class="icon icon-sm icon-small-square"></span> {{model.alerts.capacity.count}}
+                <li class="alert"><span class="icon icon-sm icon-small-triangle"></span> {{model.alerts.capacity.count}}
                 </li>
             </ul>
             <button class="btn icon-btn icon-sm" ng-class="capacityPanelState.arrow"
@@ -53,7 +52,7 @@
     </div>
     <!-- Second-tile-->
     <div class="alert-tile data-protection" ng-class="dpPanelState.state" ng-click="launchMonitoringPage(model.alerts.dp.count)">
-        <div class="status-and-detail-flex">
+        <div class="status-and-detail">
             <div class="tile alert data-protection alert-tile-data-protection-bkg flex-column" ng-class="model.alerts.dp.level" id="data-protection">
                 <h2>Data Protection</h2>
 
@@ -84,14 +83,14 @@
         </div>
         <div class="icon-toolbar footer">
             <ul class="icon-row">
-                <li class="alert"><span class="icon icon-sm icon-small-square"></span> {{model.alerts.dp.count}}</li>
+                <li class="alert"><span class="icon icon-sm icon-small-triangle"></span> {{model.alerts.dp.count}}</li>
             </ul>
             <button class="btn icon-btn icon-sm" ng-class="dpPanelState.arrow" title="{{dpPanelState.title}}"></button>
         </div>
     </div>
     <!-- Third-tile-->
     <div class="alert-tile hardware" ng-class="hardwarePanelState.state">
-        <div class="status-and-detail-flex">
+        <div class="status-and-detail">
             <div class="tile alert hardware alert-tile-hardware-bkg flex-column" ng-class="model.alerts.hardware.level"
                  id="hardware">
                 <h2>Hardware</h2>
@@ -120,24 +119,23 @@
                     </svg>
                 </div>
             </div>
-            <div class="tile-details">
+            
                 <div class="tile-details" ng-controller="MonitoringHardwareCarouselCtrl">
-                    <carousel class="row row-centered" interval="interval" disable-animation="true">
+                    <carousel interval="interval" disable-animation="true">
                         <slide ng-repeat="slide in slides" active="slide.active">
-                            <div class="carousel-inner">
-                                <div class="col-md-3 col-centered" ng-repeat="item in slide.items">
+                            
+                                <div class="alert-detail-tile" ng-repeat="item in slide.items">
                                     <multi-carousel-item style="text-align: center;"
                                                          ng-model="item"></multi-carousel-item>
                                 </div>
-                            </div>
+                            
                         </slide>
                     </carousel>
-                </div>
             </div>
         </div>
         <div class="icon-toolbar footer">
             <ul class="icon-row">
-                <li class="alert"><span class="icon icon-sm icon-small-square"></span>{{model.alerts.hardware.count}}
+                <li class="alert"><span class="icon icon-sm icon-small-triangle"></span>{{model.alerts.hardware.count}}
                 </li>
             </ul>
             <button class="btn icon-btn icon-sm" ng-class="hardwarePanelState.arrow"

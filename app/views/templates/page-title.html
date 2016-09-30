@@ -1,5 +1,5 @@
 <div class="row page-title with-tools page-title-bar">
-        <h1 class="ellipsis" title="{{model.titleTooltip || dataModel.titleTooltip || summaryModel.titleTooltip}}">{{model.title || dataModel.title || summaryModel.title || ''}}</h1>
+        <h1 title="{{model.titleTooltip || dataModel.titleTooltip || summaryModel.titleTooltip}}">{{model.title || dataModel.title || summaryModel.title || ''}}</h1>
         <div class="btn-group icon-toolbar">
             <ng-transclude ng-if="model || dataModel || summaryModel"></ng-transclude>
         </div>   

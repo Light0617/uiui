@@ -1,7 +1,7 @@
-<div class="summary-container-default stage bg-panel summary-panel flex-row expand quarters">
+<div class="summary-container-default summary-panel expand">
     <!-- First-tile-->
     <div class="alert-tile capacity" ng-class="capacityPanelState.state" ng-click="launchMonitoringPage('capacity', summaryModel.alerts.capacity.count)">
-        <div class="status-and-detail-flex">
+        <div class="status-and-detail">
             <div class="tile alert capacity alert-tile-capacity-bkg flex-column"
                  ng-class="summaryModel.alerts.capacity.level" id="capacity">
                 <h2>Capacity</h2>
@@ -33,7 +33,7 @@
         </div>
         <div class="icon-toolbar footer">
             <ul class="icon-row">
-                <li class="alert"><span class="icon icon-sm icon-information"></span>
+                <li class="alert"><span class="icon icon-sm icon-small-triangle"></span>
                     {{summaryModel.alerts.capacity.count}}
                 </li>
             </ul>
@@ -43,7 +43,7 @@
     </div>
     <!-- Second-tile-->
     <div class="alert-tile data-protection" ng-class="dpPanelState.state">
-        <div class="status-and-detail-flex">
+        <div class="status-and-detail">
             <div class="tile alert data-protection alert-tile-data-protection-bkg flex-column"
                  ng-class="summaryModel.alerts.dp.level" id="data-protection">
                 <h2>Data Protection</h2>
@@ -73,20 +73,20 @@
                 </div>
             </div>
             <div class="tile-details">
-                <carousel class="row row-centered" interval="interval">
+                <carousel interval="interval">
                     <slide ng-repeat="slide in summaryModel.slides" active="slide.active">
-                        <div class="carousel-inner">
-                            <div class="col-md-4 col-centered" ng-repeat="item in slide.items">
+                        
+                            <div class="alert-detail-tile" ng-repeat="item in slide.items">
                                 <dp-multi-carousel-item ng-model="item"></dp-multi-carousel-item>
                             </div>
-                        </div>
+                       
                     </slide>
                 </carousel>
             </div>
         </div>
         <div class="icon-toolbar footer">
             <ul class="icon-row">
-                <li class="alert"><span class="icon icon-sm icon-information"></span> {{summaryModel.alerts.dp.count}}
+                <li class="alert"><span class="icon icon-sm icon-small-triangle"></span> {{summaryModel.alerts.dp.count}}
                 </li>
             </ul>
             <button class="btn icon-btn icon-sm" ng-class="dpPanelState.arrow" title="{{dpPanelState.title}}"
@@ -95,7 +95,7 @@
     </div>
     <!-- Third-tile-->
     <div class="alert-tile hardware" ng-class="hardwarePanelState.state" ng-click="launchMonitoringPage('hardware', summaryModel.alerts.hardware.count)">
-        <div class="status-and-detail-flex">
+        <div class="status-and-detail">
             <div class="tile alert hardware alert-tile-hardware-bkg flex-column"
                  ng-class="summaryModel.alerts.hardware.level" id="hardware">
                 <h2>Hardware</h2>
@@ -127,7 +127,7 @@
         </div>
         <div class="icon-toolbar footer">
             <ul class="icon-row">
-                <li class="alert"><span class="icon icon-sm icon-information"></span>
+                <li class="alert"><span class="icon icon-sm icon-small-triangle"></span>
                     {{summaryModel.alerts.hardware.count}}
                 </li>
             </ul>
