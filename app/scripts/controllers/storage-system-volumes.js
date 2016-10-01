@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
-                                                      constantService, resourceTrackerService, replicationService) {
+                                                      constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -125,6 +125,7 @@ angular.module('rainierApp')
                 filter: {
                     freeText: '',
                     volumeType: '',
+                    previousVolumeType: '',
                     provisioningStatus: '',
                     dkcDataSavingType: '',
                     replicationType: [],
@@ -132,7 +133,6 @@ angular.module('rainierApp')
                     snapshotex: false,
                     snapshotfc: false,
                     snapshot: false,
-                    gad: false,
                     clone: false,
                     protected: false,
                     unprotected: false,
@@ -155,36 +155,12 @@ angular.module('rainierApp')
                         max: 100
                     }
                 },
+                fetchPreviousVolumeType: function (previousVolumeType) {
+                  $scope.filterModel.filter.previousVolumeType = previousVolumeType;
+                },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
-                    var queryObject;
-                    // This is used when you need to use 1 click/button to query more than 1 possibilities on 1 attribute.
-                    if (value instanceof Array && arrayClearKey instanceof Array) {
-                        for (var queryParameterIndex = 0 ; queryParameterIndex < value.length; ++queryParameterIndex) {
-                            // The following two ifs are because "GAD" and ("Active primary" or "Active secondary") is querying on the same attribute.
-                            // Need a way to avoid the conflicts, this's only for volume inventory page.
-                            if ($scope.filterModel.filter.gadActivePrimary && key === 'gadSummary.volumeType' &&
-                                arrayClearKey[queryParameterIndex] === 'Active-Primary') {
-                                continue;
-                            }
-                            if ($scope.filterModel.filter.gadActiveSecondary && key === 'gadSummary.volumeType' &&
-                                arrayClearKey[queryParameterIndex] === 'Active-Secondary') {
-                                continue;
-                            }
-
-                            queryObject =
-                                new paginationService.QueryObject(key, type, value[queryParameterIndex], arrayClearKey[queryParameterIndex]);
-                            paginationService.setFilterSearch(queryObject);
-                        }
-                    } else {
-                        // The following if is because "GAD" and ("Active primary" or "Active secondary") is querying on the same attribute.
-                        // Need a way to avoid the conflicts, this's only for volume inventory page.
-                        if (!($scope.filterModel.filter.gad && key === 'gadSummary.volumeType' &&
-                            (arrayClearKey === 'Active-Primary' || arrayClearKey === 'Active-Secondary'))) {
-                            queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                            paginationService.setFilterSearch(queryObject);
-                        }
-                    }
+                    gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });

@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                       objectTransformService, scrollDataSourceBuilderService, ShareDataService,
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
-                                      replicationService) {
+                                      replicationService, gadVolumeTypeSearchService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -362,10 +362,10 @@ angular.module('rainierApp')
             filter: {
                 freeText: '',
                 volumeType: '',
+                previousVolumeType: '',
                 replicationType: [],
                 protectionStatusList: [],
                 snapshot: false,
-                gad: false,
                 clone: false,
                 protected: false,
                 unprotected: false,
@@ -388,32 +388,12 @@ angular.module('rainierApp')
                     max: 100
                 }
             },
+            fetchPreviousVolumeType: function (previousVolumeType) {
+                $scope.filterModel.filter.previousVolumeType = previousVolumeType;
+            },
             arrayType: (new paginationService.SearchType()).ARRAY,
             filterQuery: function (key, value, type, arrayClearKey) {
-                var queryObject;
-                // This is used when you need to use 1 click/button to query more than 1 possibilities on 1 attribute.
-                if (value instanceof Array && arrayClearKey instanceof Array) {
-                    for (var queryParameterIndex = 0 ; queryParameterIndex < value.length; ++queryParameterIndex) {
-                        if ($scope.filterModel.filter.gadActivePrimary && key === 'gadSummary.volumeType' &&
-                            arrayClearKey[queryParameterIndex] === 'Active-Primary') {
-                            continue;
-                        }
-                        if ($scope.filterModel.filter.gadActiveSecondary && key === 'gadSummary.volumeType' &&
-                            arrayClearKey[queryParameterIndex] === 'Active-Secondary') {
-                            continue;
-                        }
-
-                        queryObject =
-                            new paginationService.QueryObject(key, type, value[queryParameterIndex], arrayClearKey[queryParameterIndex]);
-                        paginationService.setFilterSearch(queryObject);
-                    }
-                } else {
-                    if (!($scope.filterModel.filter.gad && key === 'gadSummary.volumeType' &&
-                        (arrayClearKey === 'Active-Primary' || arrayClearKey === 'Active-Secondary'))) {
-                        queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                        paginationService.setFilterSearch(queryObject);
-                    }
-                }
+                gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
                 queryService.setQueryMapEntry('serverId', parseInt(hostId));
                 paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume).then(function (result) {
                         updateResultTotalCounts(result);

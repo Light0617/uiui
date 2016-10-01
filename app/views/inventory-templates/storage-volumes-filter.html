@@ -62,9 +62,6 @@
          slider-min="filterModel.filter.utilization.min" slider-max="filterModel.filter.utilization.max"
          ng-model-min="filterModel.filter.utilization.min" ng-model-max="filterModel.filter.utilization.max"
          stop-event-fn="filterModel.sliderQuery('utilization', filterModel.filter.utilization.min, filterModel.filter.utilization.max)">
-
-        <!--[TODO] TYAO: need to uncomment this to activate filter once backend is added with utilization-->
-         <!--stop-event-fn="filterModel.filterWithSlideKnob()">-->
     </div>
 </div>
 <div class="control-group" ng-if="filterModel.filter.hasOwnProperty('volumeType')">
@@ -88,7 +85,11 @@
     </div>
     <div class="btn-group">
         <label class="btn btn-default" ng-model="filterModel.filter.volumeType" btn-radio="'GAD'" title="GAD"
-               uncheckable ng-click="filterModel.filterQuery('type', 'GAD')">{{'gad-display-type' | translate}}
+               uncheckable
+               ng-click="filterModel.fetchPreviousVolumeType(filterModel.filter.volumeType)"
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', (filterModel.filter.volumeType === 'GAD') ? ['Active-Primary', 'Active-Secondary'] : ['', ''],
+               filterModel.arrayType, ['Active-Primary', 'Active-Secondary'])">
+            {{'gad-display-type' | translate}}
         </label>
     </div>
 </div>
@@ -165,13 +166,6 @@
                ng-init="filterModel.filter.clone=false"
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? filterModel.$replicationRawTypes.CLONE : '', filterModel.arrayType, filterModel.$replicationRawTypes.CLONE)">
         {{'common-filter-clone' | translate}}
-    </label>
-
-    <label class="btn btn-primary">
-        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gad"
-               ng-init="filterModel.filter.gad=false"
-               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gad ? ['Active-Primary', 'Active-Secondary'] : ['', ''], filterModel.arrayType, ['Active-Primary', 'Active-Secondary'])">
-        {{'gad-display-type' | translate}}
     </label>
 </div>
 
