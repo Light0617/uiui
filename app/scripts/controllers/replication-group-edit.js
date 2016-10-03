@@ -49,6 +49,7 @@ angular.module('rainierApp')
         });
 
         function initPage() {
+            var date = new Date();
             $scope.dataModel = {
                 schedule: replicationGroup.schedule ?
                     cronStringConverterService.fromObjectModelToDatePicker(replicationGroup.schedule) : null,
@@ -61,6 +62,7 @@ angular.module('rainierApp')
                 replicationType: replicationGroup.type,
                 replicationName: replicationGroup.name,
                 replicationConsistency: replicationGroup.consistent,
+                currentDate: date,
                 sort: {
                     field: 'id',
                     reverse: false,

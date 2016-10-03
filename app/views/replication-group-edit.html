@@ -164,6 +164,15 @@
                     <p ng-if="dataModel.schedule.type === 'HOURLY' && dataModel.schedule.hourStartMinute === 0 && dataModel.schedule.hourInterval">{{ 'replication-groups-hourly-note-zero' | translate : dataModel }}</p>
                     <p ng-if="dataModel.schedule.type === 'HOURLY' && dataModel.schedule.hourStartMinute && dataModel.schedule.hourInterval">{{ 'replication-groups-hourly-note' | translate : dataModel}}</p>
 
+                    <p ng-if="dataModel.schedule.type === 'DAILY'">
+                        {{ 'replication-groups-daily-note' | translate : dataModel }}</p>
+
+                    <p ng-if="dataModel.schedule.type === 'WEEKLY'">
+                        {{ 'replication-groups-weekly-note' | translate : dataModel }}</p>
+
+                    <p ng-if="dataModel.schedule.type === 'MONTHLY'">
+                        {{ 'replication-groups-monthly-note' | translate : dataModel }}</p>
+
                     <div class="control-row">
                             <h3 class="header-label" title="{{'replication-group-edit-remove-pvol-message' | translate}}">{{'replication-group-edit-remove-pvol-message' | translate}}</h3>
                         
