@@ -1,32 +1,28 @@
 <common-page-header></common-page-header>
 <wizard-page>
     <div ng-if="dataModel">
-        <!--NOTE: This page loads a class of "container-fluid" twice. The first is addded in the div ng-class element. It must be removed.-->
-        <div class="row wizard-header">
-            <div class="col-lg-1 col-md-1 hidden-sm">
+        <div class="wizard-header">
+            <div class="wizard-nav">
                 <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
             </div>
-            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <div class="wizard-title-group">
                 <span class="icon icon-parity-group icon-xlg"></span>
                 <!--TODO: add locale when working on advanced page -->
                 <h1 class="wizard-title">{{'parity-groups-add' | translate }}</h1>
             </div>
         </div>
-
-        <div class="wizard-body">
+        <div class="wizard-body new">
             <!-- if basic -->
             <!-- one wizard -->
-            <div class="header-row" ng-if="model.wizardType === 'basic'">
-                <h2>Storage System <em>{{dataModel.selectedStorageSystemId}}</em></h2>
-            </div>
-
-            <div class="alert alert-warning" role="alert" ng-if="model.wizardType === 'basic' && dataModel.displayPrompt" >
-                <h1>Warning</h1>
-                <p>{{'parity-group-add-basic-prompt' | translate}}</p>
-            </div>
-
-            <div class="scroll-wizard-container single-pane" ng-if="model.wizardType === 'basic' && !dataModel.displayPrompt">
-                
+            <div class="basic" contenteditable="" ng-if="model.wizardType === 'basic'">
+                <div class="header-row" ng-if="model.wizardType === 'basic'">
+                    <h2>Storage System <em>{{dataModel.selectedStorageSystemId}}</em></h2>
+                </div>
+                <div class="alert alert-warning" role="alert" ng-if="model.wizardType === 'basic' && dataModel.displayPrompt" >
+                    <h1>Warning</h1>
+                    <p>{{'parity-group-add-basic-prompt' | translate}}</p>
+                </div>
+                <div class="scroll-wizard-container single-pane" ng-if="model.wizardType === 'basic' && !dataModel.displayPrompt">
                     <div class="tile-view list-view">
                         <!--Header Row-->
                         <parity-group-basic-list-tile ng-model="model"></parity-group-basic-list-tile>
@@ -44,23 +40,22 @@
                             </div>
                         </div>
                     </div>
-               
+                </div>
             </div>
-
             <!-- if advanced -->
             <!-- left column -->
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column start" ng-if="model.wizardType === 'advanced'">
-                <div>
+            <div class="wizard-left" ng-if="model.wizardType === 'advanced'">
+                
                     <parity-group-adv-left-filter ng-model="dataModel"></parity-group-adv-left-filter>
-                </div>
+                
             </div>
 
             <!-- right column -->
-            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right" ng-if="model.wizardType === 'advanced'">
+            <div class="wizard-right" ng-if="model.wizardType === 'advanced'">
                 <div class="header-row">
-                    <h2 ng-if="model.wizardType === 'advanced'" class="pull-left col-lg-9 col-md-9 col-sm 12">Select
+                    <h2 ng-if="model.wizardType === 'advanced'">Select
                         Disks</h2>
-                    <a id="searchDisks" class="text-link pull-right col-lg-3 col-md-3 col-sm-12">Search Disks</a>
+                    <a id="searchDisks" class="text-link">Search Disks</a>
                 </div>
 
                 <!--Update Pool advanced-->
@@ -72,17 +67,19 @@
                 </div>
             </div>
         </div>
-        <!--Fixed footer-->
+        <!--Wizard footer-->
         <div class="row navbar-fixed-bottom footer-container">
             <div class="wizard-footer">
                 <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group btn-group-toggle" role="toggle">
-                        <button type="button" class="btn btn-default btn-lg" title="Basic" ng-model="model.wizardType"
-                                btn-radio="'basic'">Basic
-                        </button>
-                        <button type="button" class="btn btn-lg btn-default" title="Advanced"
-                                ng-model="model.wizardType" btn-radio="'advanced'">Advanced
-                        </button>
+                    <div class="btn-group" role="toggle" data-toggle="buttons">
+                        <label ng-model="model.wizardType" btn-radio="'basic'" class="btn btn-primary" title="Basic">
+                            <input autocomplete="off" checked="" type="radio" />
+                            Basic
+                        </label>
+                        <label ng-model="model.wizardType" btn-radio="'advanced'" class="btn btn-primary" title="Advanced">
+                            <input  autocomplete="off" checked="" type="radio"/>
+                            Advanced
+                        </label>
                     </div>
 
                     <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
@@ -95,7 +92,7 @@
                                 >Submit
                         </button>
                         <!--Advanced Submit Button-->
-                        <div type="button" class="btn btn-default active" id="submit-advanced" title="Submit"
+                        <button type="button" class="btn btn-default active" id="submit-advanced" title="Submit"
                                 ng-click="createParityGroupAdvanced()" ng-if="model.wizardType === 'advanced'"
                                 ng-attr-confirm="{{!itemSelected}}"
                                 confirm-title="{{'parity-group-add-none-selected-message-title' | translate}}"
