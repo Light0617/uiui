@@ -392,6 +392,25 @@ angular.module('rainierApp')
                     replicationTypes.push(replicationService.rawTypes.CLONE);
                 }
                 $scope.dataModel.search.replicationTypes = replicationTypes;
+            },
+            filterProvisionStatus: function (provisioned) {
+                var provisionStatus;
+                if (provisioned) {
+                    if ($scope.dataModel.search.provisionStatus === true) {
+                        provisionStatus = undefined;
+                    }
+                    else {
+                        provisionStatus = true;
+                    }
+                } else {
+                    if ($scope.dataModel.search.provisionStatus === false) {
+                        provisionStatus = undefined;
+                    }
+                    else {
+                        provisionStatus = false;
+                    }
+                }
+                $scope.dataModel.search.provisionStatus = provisionStatus;
             }
         };
         $scope.filterModel = $scope.volumesFilterModel;

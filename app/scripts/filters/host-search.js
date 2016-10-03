@@ -51,6 +51,15 @@ angular.module('rainierApp')
                         _.size(_.intersection(item.dataProtectionSummary.replicationType, search.replicationTypes)) > 0;
                 }
 
+                if (search.provisionStatus === true) {
+                    pass = pass && item.attachedVolumeCount > 0;
+                }
+                else if (search.provisionStatus === false) {
+                    pass = pass && item.attachedVolumeCount === 0;
+                } else {
+                    pass = pass && item.attachedVolumeCount >= 0;
+                }
+
                 pass = item.selected || pass;
 
                 return pass;

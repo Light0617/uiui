@@ -1,14 +1,13 @@
-<div class="btn-group btn-group-toggle-green btn-group-justified">
-    <div class="btn-group">
-        <label class="btn btn-default" ng-model="dataModel.search.status" btn-radio="'Provisioned'" uncheckable>{{'host-filter-provisioned'
-            | translate}}
-        </label>
-    </div>
-    <div class="btn-group">
-        <label class="btn btn-default" ng-model="dataModel.search.status" btn-radio="'Not Provisioned'"
-               uncheckable>{{'host-filter-not-provisioned' | translate}}
-        </label>
-    </div>
+<div class="btn-group btn-group-justified" data-toggle="buttons">
+    <label class="btn btn-primary" input type="radio"
+           ng-model="filterModel.search.provisionStatus" btn-radio="'Provisioned'" uncheckable
+           ng-change="filterModel.filterProvisionStatus(true)">{{'host-filter-provisioned'
+        | translate}}
+    </label>
+    <label class="btn btn-primary" input type="radio"
+           ng-model="filterModel.search.provisionStatus" btn-radio="'Not Provisioned'" uncheckable
+           ng-change="filterModel.filterProvisionStatus(false)">{{'host-filter-not-provisioned' | translate}}
+    </label>
 </div>
 <div class="control-group">
     <h3>OS Type</h3>
