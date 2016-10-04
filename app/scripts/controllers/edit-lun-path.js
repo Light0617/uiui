@@ -22,7 +22,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
     var GET_PORTS_PATH = 'storage-ports';
     var GET_HOST_GROUPS_PATH = 'host-groups';
-    var autoSelect = 'AUTO';
     var idCoordinates = {};
     var volumeIdMap = {};
     var originalPaths;
@@ -118,10 +117,10 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
         queryService.setQueryMapEntry('hbaWwns', queryString);
         paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
             var hostGroups = attachVolumeService.getMatchHostGroups(hostGroupResults, selectedServers, volumeIdMap);
-            var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroups);
+            var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroups, true);
             var originalAllPaths = getPathsFromHostGroups(hostGroups);
             originalPaths = angular.copy(originalAllPaths);
-            $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroups, defaultHostMode);
+            $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroups, defaultHostMode, true);
             $scope.dataModel.attachModel.originalHostMode = $scope.dataModel.attachModel.hostMode;
             $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
@@ -200,7 +199,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     function setAllModels() {
 
         var hostModes = constantService.osType();
-        hostModes.splice(0, 0, autoSelect);
 
         orchestratorService.storageSystemHostModeOptions($scope.dataModel.selectedStorageSystem.storageSystemId).then(function (results) {
             results.shift();
@@ -337,10 +335,9 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                     // Currently the api requires the updates to be some value to find the associated host groups to edit.
                     // So if the updates has no value, we don't call the edit-lun-path api.
                     if (updates && updates.length > 0) {
-                        var hostMode = $scope.dataModel.attachModel.hostMode;
                         var payload = {
                             enableZoning: $scope.dataModel.attachModel.enableZoning,
-                            hostMode: hostMode === autoSelect ? null : hostMode,
+                            hostMode: $scope.dataModel.attachModel.hostMode,
                             hostModeOptions: $scope.dataModel.attachModel.selectedHostModeOption,
                             updates: updates
                         };

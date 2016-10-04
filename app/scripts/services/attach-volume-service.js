@@ -99,7 +99,7 @@ angular.module('rainierApp')
         }
 
         //Function to check if all hostmode options match, if not return default host mode option
-        var getMatchedHostModeOption = function(hostGroups) {
+        var getMatchedHostModeOption = function(hostGroups, isEditLunPath) {
             var defaultHostModeOption = [999];
             var selectedHostModeOptions = defaultHostModeOption;
             if (hostGroups !== null && hostGroups !== undefined && hostGroups.length > 0) {
@@ -107,11 +107,12 @@ angular.module('rainierApp')
                 for (var i = 1; i < hostGroups.length; i++) {
                     var hostGroup = hostGroups[i];
                     if (hostGroup.hostModeOptions.length !== selectedHostModeOptions.length) {
-                        return defaultHostModeOption;
+                        //if edit lun path and the hostmode does not match then return the host mode of the first host mode option
+                        return (isEditLunPath === true) ? selectedHostModeOptions : defaultHostModeOption;
                     } else {
                         for (var j = 0; j < hostGroup.hostModeOptions.length; j++) {
                             if (!isHostModeOptionFound(hostGroup.hostModeOptions[j], selectedHostModeOptions)) {
-                                return defaultHostModeOption;
+                                return isEditLunPath === true ? selectedHostModeOptions : defaultHostModeOption;
                             }
                         }
                     }
@@ -183,14 +184,14 @@ angular.module('rainierApp')
             return false;
         };
 
-        var getMatchedHostMode = function(hostGroups, autoSelectHostMode) {
-            var selectedHostMode = autoSelectHostMode;
+        var getMatchedHostMode = function(hostGroups, defaultHostMode, isEditLunPath) {
+            var selectedHostMode = defaultHostMode;
             if (hostGroups !== null && hostGroups !== undefined && hostGroups.length > 0) {
                 selectedHostMode = hostGroups[0].hostMode;
                 for (var i = 1; i < hostGroups.length; i++) {
                     if (hostGroups[i].hostMode !== selectedHostMode) {
-                        //if the hostmode does not match then use auto select
-                        return autoSelectHostMode;
+                        //if edit lun path and the hostmode does not match then return the host mode of the first hos
+                        return (isEditLunPath === true) ?  selectedHostMode : defaultHostMode;
                     }
                 }
 
