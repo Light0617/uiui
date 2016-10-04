@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('attachVolumeService', function (orchestratorService, viewModelService, resourceTrackerService) {
+    .factory('attachVolumeService', function (orchestratorService, viewModelService, resourceTrackerService, constantService) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
         var wwpnServerIdMap = {};
@@ -157,9 +157,8 @@ angular.module('rainierApp')
                     if (server !== undefined) {
                         // check if host group matches settings
                         // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
-                        // if host mode options not auto (999), then host group host mode options needs to match provided host mode options
                         if (((hostMode === 'AUTO' && hostgroup.hostMode === server.osType) || hostgroup.hostMode === hostMode) &&
-                            (_.isEqual(hostModeOptions, [999]) || _.isEqual(hostModeOptions, hostgroup.hostModeOptions))) {
+                            (isHostModeOptionsMatch(hostModeOptions, hostgroup.hostModeOptions, hostgroup.hostMode))) {
                             allocateLikeFilteredHostGroups.push(hostgroup);
                         }
                     }
@@ -167,6 +166,21 @@ angular.module('rainierApp')
             });
 
             return allocateLikeFilteredHostGroups;
+        };
+
+        var isHostModeOptionsMatch = function(expectedHostModeOptions, actualHostModeOptions, hostMode) {
+            // if host mode options is auto (999) and if host mode matches the default host mode then
+            // host mode option needs to match default host mode options for given host mode
+            if (_.isEqual(expectedHostModeOptions, [999])) {
+                var defaultHostModeOptions = constantService.defaultHostModeWithHostModeOptions[hostMode];
+                if (defaultHostModeOptions !== null && defaultHostModeOptions !== undefined && _.isEqual(defaultHostModeOptions, actualHostModeOptions)) {
+                    return true;
+                }
+            // if host mode options not auto (999), then host mode options needs to match provided host mode options
+            }else if (_.isEqual(expectedHostModeOptions, actualHostModeOptions)) {
+                return true;
+            }
+            return false;
         };
 
         var getMatchedHostMode = function(hostGroups, autoSelectHostMode) {

@@ -9,10 +9,15 @@
  */
 angular.module('rainierApp')
     .factory('constantService', function () {
+        var defaultOsType = ['WIN_EX', 'VMWARE_EX'];
+        var defaultHostModeWithHostModeOptionMap = {};
+        defaultHostModeWithHostModeOptionMap[defaultOsType[0]] = [40,73];
+        defaultHostModeWithHostModeOptionMap[defaultOsType[1]] = [54,63];
         return {
             osType: function () {
                 return ['HP_UX', 'SOLARIS', 'AIX', 'WIN', 'LINUX', 'TRU64', 'OVMS', 'NETWARE', 'VMWARE', 'VMWARE_EX', 'WIN_EX'];
             },
+            defaultHostModeWithHostModeOptions: defaultHostModeWithHostModeOptionMap,
             switchTypes: function () {
                 return ['BROCADE', 'CISCO'];
             },
