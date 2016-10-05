@@ -87,8 +87,8 @@
         <label class="btn btn-default" ng-model="filterModel.filter.volumeType" btn-radio="'GAD'" title="GAD"
                uncheckable
                ng-click="filterModel.fetchPreviousVolumeType(filterModel.filter.volumeType)"
-               ng-change="filterModel.filterQuery('gadSummary.volumeType', (filterModel.filter.volumeType === 'GAD') ? ['Active-Primary', 'Active-Secondary'] : ['', ''],
-               filterModel.arrayType, ['Active-Primary', 'Active-Secondary'])">
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', (filterModel.filter.volumeType === 'GAD') ? ['ACTIVE_PRIMARY', 'ACTIVE_SECONDARY'] : ['', ''],
+               filterModel.arrayType, ['ACTIVE_PRIMARY', 'ACTIVE_SECONDARY'])">
             {{'gad-display-type' | translate}}
         </label>
     </div>
@@ -197,16 +197,16 @@
 <div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring">
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadActivePrimary" ng-init="filterModel.filter.gadActivePrimary=false"
-               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActivePrimary ? 'Active-Primary' : '', filterModel.arrayType, 'Active-Primary')">{{'gad-volume-type-primary' | translate}}
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActivePrimary ? 'ACTIVE_PRIMARY' : '', filterModel.arrayType, 'ACTIVE_PRIMARY')">{{'gad-volume-type-primary' | translate}}
     </label>
 
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadActiveSecondary" ng-init="filterModel.filter.gadActiveSecondary=false"
-               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActiveSecondary ? 'Active-Secondary' : '', filterModel.arrayType, 'Active-Secondary')">{{'gad-volume-type-secondary' | translate}}
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActiveSecondary ? 'ACTIVE_SECONDARY' : '', filterModel.arrayType, 'ACTIVE_SECONDARY')">{{'gad-volume-type-secondary' | translate}}
     </label>
 
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadNotAvailable" ng-init="filterModel.filter.gadNotAvailable=false"
-               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadNotAvailable ? 'SMPL' : '', filterModel.arrayType, 'SMPL')">{{'gad-volume-type-not-available' | translate}}
+               ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadNotAvailable ? 'NOT_AVAILABLE' : '', filterModel.arrayType, 'NOT_AVAILABLE')">{{'gad-volume-type-not-available' | translate}}
     </label>
 </div>

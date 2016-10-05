@@ -132,7 +132,7 @@ angular.module('rainierApp')
         };
 
         var isVolumeGADAware = function (selectedVolume) {
-            var gadVolumeTypes = ['Active-Primary', 'Active-Secondary'];
+            var gadVolumeTypes = ['ACTIVE_PRIMARY', 'ACTIVE_SECONDARY'];
             var gadSummary = selectedVolume.gadSummary;
             if (gadSummary !== null && gadSummary !== undefined && $.inArray(gadSummary.volumeType, gadVolumeTypes) > -1) {
                 return true;

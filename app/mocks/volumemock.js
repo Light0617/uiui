@@ -118,13 +118,13 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
     var getVolumeGADSummary = function getVolumeGADSummary(volType, v) {
         if(volType === 'GAD') {
             return {
-                volumeType: _.sample(['Active-Primary', 'Active-Secondary']),
+                volumeType: _.sample(['ACTIVE_PRIMARY', 'ACTIVE_SECONDARY']),
                 virtualVolumeId: getVirtualVolumeId(v),
                 vsmId: getVirtualStorageMachine()
             };
         } else {
             return {
-                volumeType: _.sample(['SMPL']),
+                volumeType: _.sample(['NOT_AVAILABLE']),
                 virtualVolumeId: null,
                 vsmId: null
             };

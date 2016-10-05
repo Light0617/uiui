@@ -19,7 +19,7 @@ angular.module('rainierApp')
                         // The following two ifs are because "GAD" and ("Active primary" or "Active secondary") is querying on the same attribute.
                         // Need a way to avoid the conflicts, this's only for volume inventory page.
                         if ((filterModel.filter.gadActivePrimary || filterModel.filter.gadActiveSecondary) && key === 'gadSummary.volumeType' &&
-                            (arrayClearKey[queryParameterIndex] === 'Active-Primary' || arrayClearKey[queryParameterIndex] === 'Active-Secondary')) {
+                            (arrayClearKey[queryParameterIndex] === 'ACTIVE_PRIMARY' || arrayClearKey[queryParameterIndex] === 'ACTIVE_SECONDARY')) {
                             continue;
                         }
                         queryObject =
@@ -46,12 +46,12 @@ angular.module('rainierApp')
                 } else if (key === 'type') {
                     if (!filterModel.filter.gadActivePrimary) {
                         queryObject =
-                            new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'Active-Primary');
+                            new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'ACTIVE_PRIMARY');
                         paginationService.setFilterSearch(queryObject);
                     }
                     if (!filterModel.filter.gadActiveSecondary) {
                         queryObject =
-                            new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'Active-Secondary');
+                            new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'ACTIVE_SECONDARY');
                         paginationService.setFilterSearch(queryObject);
                     }
                     queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
@@ -60,24 +60,24 @@ angular.module('rainierApp')
                     // The following if is because "GAD" and ("Active primary" or "Active secondary") is querying on the same attribute.
                     // Need a way to avoid the conflicts, this's only for volume inventory page.
                     if (!(filterModel.filter.volumeType === 'GAD' && key === 'gadSummary.volumeType' &&
-                        (arrayClearKey === 'Active-Primary' || arrayClearKey === 'Active-Secondary'))) {
+                        (arrayClearKey === 'ACTIVE_PRIMARY' || arrayClearKey === 'ACTIVE_SECONDARY'))) {
                         queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                         paginationService.setFilterSearch(queryObject);
                     }
                     else {
                         if (filterModel.filter.gadActivePrimary && !filterModel.filter.gadActiveSecondary) {
-                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'Active-Secondary');
+                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'ACTIVE_SECONDARY');
                             paginationService.setFilterSearch(queryObject);
                         }
                         else if (!filterModel.filter.gadActivePrimary && filterModel.filter.gadActiveSecondary) {
-                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'Active-Primary');
+                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, '', 'ACTIVE_PRIMARY');
                             paginationService.setFilterSearch(queryObject);
                         }
                         else if (!filterModel.filter.gadActivePrimary && !filterModel.filter.gadActiveSecondary) {
                             queryService.removeQueryMapEntry('gadSummary.volumeType');
-                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, 'Active-Primary', 'Active-Primary');
+                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, 'ACTIVE_PRIMARY', 'ACTIVE_PRIMARY');
                             paginationService.setFilterSearch(queryObject);
-                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, 'Active-Secondary', 'Active-Secondary');
+                            queryObject = new paginationService.QueryObject('gadSummary.volumeType', filterModel.arrayType, 'ACTIVE_SECONDARY', 'ACTIVE_SECONDARY');
                             paginationService.setFilterSearch(queryObject);
                         } else {
                             queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
