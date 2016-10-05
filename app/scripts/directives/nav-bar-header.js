@@ -89,6 +89,7 @@ angular.module('rainierApp')
                         // Warnings
                         {
                             buttonIcon: 'icon-warning',
+                            buttonColor: 'warning',
                             showButton: function () {
                                 return scope.pageErrors.length > 0;
                             },
