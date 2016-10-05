@@ -318,6 +318,7 @@
     "virtual-storage-system-id": "Virtual Storage System Id",
     "volume-pair-count": "Volume Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
+    "virtual-volume-id": "Virtual Volume Id",
 
     "gad-display-type": "GAD",
     "gad-volume-type-primary": "Active Primary",

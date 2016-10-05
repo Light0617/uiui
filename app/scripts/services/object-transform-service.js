@@ -398,6 +398,10 @@ angular.module('rainierApp')
                     icons.push(item.alertLink);
                 }
 
+                if (!item.gadSummary.virtualLdevId && item.gadSummary.virtualLdevId != 0) {
+                    item.gadSummary.virtualLdevId = 'N/A';
+                }
+
                 switch (item.dkcDataSavingType) {
                     case 'COMPRESSION':
                         icons.push({
@@ -538,6 +542,10 @@ angular.module('rainierApp')
 
                 item.isUnattached = function () {
                     return (this.provisioningStatus === 'UNATTACHED');
+                };
+
+                item.isUnmanaged = function () {
+                    return (this.provisioningStatus === 'UNMANAGED');
                 };
 
                 item.actions = {

@@ -28,14 +28,23 @@ angular.module('rainierApp')
                 },
                 type: 'id'
 
-            }, {
+            },
+            {
+                title: 'virtual-volume-id',
+                sizeClass: 'sixteenth',
+                sortField: 'gadSummary.virtualLdevId',
+                getDisplayValue: function(item) {
+                    return item.gadSummary.virtualLdevId;
+                }
+
+            },
+            {
                 title: 'storage-systems-serial-number',
                 sizeClass: 'sixteenth',
                 sortField: 'storageSystemId',
                 getDisplayValue: function(item) {
                     return item.storageSystemId;
                 }
-
             }, {
                 title: 'Name',
                 sizeClass: 'twelfth',

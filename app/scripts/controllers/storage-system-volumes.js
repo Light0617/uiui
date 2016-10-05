@@ -295,7 +295,7 @@ angular.module('rainierApp')
                         return dataModel.anySelected() &&
                             _.all(dataModel.getSelectedItems(),
                                 function (vol) {
-                                    return vol.isAttached();
+                                    return vol.isAttached() || vol.isUnmanaged();
                                 });
                     }
                 },
