@@ -277,7 +277,8 @@ angular.module('rainierApp')
                     return false;
                 }
                 if ($scope.dataModel.schedule && $scope.dataModel.schedule.type &&
-                    $scope.dataModel.schedule.type === 'WEEKLY' && !hasDaySelected($scope.dataModel.schedule.days)) {
+                    $scope.dataModel.schedule.type === 'WEEKLY' &&
+                    (!hasDaySelected($scope.dataModel.schedule.days) || !$scope.dataModel.schedule.time)) {
                     return false;
                 }
                 var scheduleString = $scope.dataModel.schedule ?
