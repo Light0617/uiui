@@ -319,6 +319,7 @@
     "volume-pair-count": "GAD Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
     "virtual-volume-id": "Virtual Volume Id",
+    "quorum-Id": "Quorum Id",
 
     "gad-display-type": "GAD",
     "gad-volume-type-primary": "Active Primary",

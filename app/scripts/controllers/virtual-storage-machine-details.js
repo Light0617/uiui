@@ -144,6 +144,15 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: '',
                     getDisplayValue: function (item) {
+                        return item.primary.quorumId;
+                    }
+
+                },
+                {
+                    title: 'gad-pvol-storage-system-id',
+                    sizeClass: 'sixth',
+                    sortField: '',
+                    getDisplayValue: function (item) {
                         return item.primary.storageSystemId;
                     }
 
