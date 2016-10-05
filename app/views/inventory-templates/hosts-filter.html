@@ -104,7 +104,7 @@
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshot"
                ng-init="filterModel.filter.snapshot=false"
-               ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? filterModel.$replicationRawTypes.SNAP : '', filterModel.arrayType, filterModel.$replicationRawTypes.SNAP">
+               ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.snapshot ? filterModel.$replicationRawTypes.SNAP : '', filterModel.arrayType, filterModel.$replicationRawTypes.SNAP)">
         {{'common-filter-snapshot' | translate}}
     </label>
     <label class="btn btn-primary">
