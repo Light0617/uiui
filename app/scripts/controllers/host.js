@@ -151,27 +151,57 @@ angular.module('rainierApp')
             return volumeIdLunIdMap;
         };
 
-        var isVolumeIdsMatch = function (volumeIdLunIdMap, selectedVolumeIds) {
-            for (var i = 0; i < selectedVolumeIds.length; i++) {
-                if (!volumeIdLunIdMap.hasOwnProperty(selectedVolumeIds[i])) {
-                    return false;
+        var findMatchVolume = function (hostGroup, selectedVolumes, volumeIdHostGroupMap) {
+            var volumeIdLunIdMap = getvolumeIdLunIdMap(hostGroup.luns);
+            _.forEach(selectedVolumes, function(volume) {
+                if (volumeIdLunIdMap.hasOwnProperty(volume.volumeId)) {
+                    if (volumeIdHostGroupMap.hasOwnProperty(volume.volumeId)){
+                        volumeIdHostGroupMap[volume.volumeId].push(hostGroup);
+                    } else {
+                        volumeIdHostGroupMap[volume.volumeId] = [hostGroup];
+                    }
                 }
-            }
-            return true;
+            });
         };
 
         var isVolumesPartOfSameHostGroup = function (selectedVolumes) {
             if (isVolumesInSameStorageSystemAndNotGADVolume(selectedVolumes)) {
-                var selectedVolumeIds = [];
+                var volumeIdHostGroupMap = {};
+                var i;
+                var j;
+                var hostGroups;
                 var storageSystemId = selectedVolumes[0].storageSystemId;
-                for (var i = 0; i < selectedVolumes.length; i++) {
-                    selectedVolumeIds[i] = selectedVolumes[i].volumeId;
-                }
+                var firstVolumeHostGroups;
+                var otherVolumeHostGroups;
+                var hostGroupIdHashSet = {};
                 if (hostGroupsInStorageSystem.hasOwnProperty(storageSystemId)) {
-                    var hostGroups = hostGroupsInStorageSystem[storageSystemId];
-                    for (var j = 0; j < hostGroups.length; j++) {
-                        if (isVolumeIdsMatch(getvolumeIdLunIdMap(hostGroups[j].luns), selectedVolumeIds)) {
+                    hostGroups = hostGroupsInStorageSystem[storageSystemId];
+                    for (j = 0; j < hostGroups.length; j++) {
+                        findMatchVolume(hostGroups[j], selectedVolumes, volumeIdHostGroupMap);
+                    }
+
+                    if (!_.isEmpty(volumeIdHostGroupMap)) {
+                        if (selectedVolumes.length === 1){
                             return true;
+                        }
+
+                        firstVolumeHostGroups = volumeIdHostGroupMap[selectedVolumes[0].volumeId];
+                        _.forEach(firstVolumeHostGroups, function(hostGroup) {
+                            hostGroupIdHashSet[hostGroup.hostGroupId] = true;
+                        });
+                        for (i = 1; i < selectedVolumes.length; ++i) {
+                            otherVolumeHostGroups = volumeIdHostGroupMap[selectedVolumes[i].volumeId];
+                            if (otherVolumeHostGroups.length !== firstVolumeHostGroups.length) {
+                                return false;
+                            } else {
+                                for (j = 0; j< otherVolumeHostGroups.length; ++j){
+                                    if (!hostGroupIdHashSet.hasOwnProperty(otherVolumeHostGroups[j].hostGroupId)){
+                                        return false;
+                                    }
+                                }
+
+                                return true;
+                            }
                         }
                     }
                 }
