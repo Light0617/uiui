@@ -133,6 +133,9 @@ angular.module('rainierApp')
                     sortField: 'name',
                     getDisplayValue: function (item) {
                         return item.name;
+                    },
+                    getTooltipValue: function (item) {
+                        return item.name;
                     }
                 },
                 {
@@ -141,13 +144,20 @@ angular.module('rainierApp')
                     sortField: 'type',
                     getDisplayValue: function (item) {
                         return item.type;
-                    }
+                    },
+                    getToolTipValue: function (item) {
+                        return replicationService.tooltip(item.type);
+                    },
+                    type: 'dpType'
                 },
                 {
                     title: 'replication-group-label-consistency',
                     sizeClass: 'twelfth',
                     sortField: 'consistent',
                     getDisplayValue: function (item) {
+                        return item.consistent;
+                    },
+                    getTooltipValue: function (item) {
                         return item.consistent;
                     }
                 },
@@ -158,6 +168,9 @@ angular.module('rainierApp')
                     sortField: 'numberOfCopies',
                     getDisplayValue: function (item) {
                         return item.numberOfCopies;
+                    },
+                    getTooltipValue: function (item) {
+                        return item.numberOfCopies;
                     }
                 },
                 {
@@ -165,6 +178,9 @@ angular.module('rainierApp')
                     sizeClass: 'twelfth',
                     sortField: 'scheduleEnabled',
                     getDisplayValue: function (item) {
+                        return item.status;
+                    },
+                    getTooltipValue: function (item) {
                         return item.status;
                     }
                 },
@@ -174,6 +190,9 @@ angular.module('rainierApp')
                     sortField: 'schedule.recurringUnit',
                     getDisplayValue: function (item) {
                         return item.naturalLanguageSchedule;
+                    },
+                    getTooltipValue: function (item) {
+                        return item.naturalLanguageSchedule;
                     }
                 },
                 {
@@ -181,6 +200,9 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: '',
                     getDisplayValue: function (item) {
+                        return item.comments;
+                    },
+                    getTooltipValue: function (item) {
                         return item.comments;
                     }
                 }

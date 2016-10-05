@@ -206,8 +206,10 @@ angular.module('rainierApp')
                     getDisplayValue: function (item) {
                         return item.displayedDpType;
                     },
-                    getToolTipValue: function(item) {
-                        return item.toolTipDpType;
+                    getToolTipValue: function (item) {
+                        return _.map(item.dataProtectionSummary.replicationType, function (type) {
+                            return replicationService.tooltip(type);
+                        }).join(', ');
                     },
                     type: 'dpType'
 

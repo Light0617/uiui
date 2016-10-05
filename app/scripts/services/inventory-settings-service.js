@@ -16,7 +16,7 @@ angular.module('rainierApp')
             options = angular.extend({
                 canAdd: true
             }, options);
-            
+
 
 
             dataModel.gridSettings = [{
@@ -59,7 +59,13 @@ angular.module('rainierApp')
                 sortField: 'dataProtectionSummary.replicationType',
                 getDisplayValue: function(item) {
                     return item.displayedDpType;
-                }
+                },
+                getToolTipValue: function (item) {
+                    return _.map(item.dataProtectionSummary.replicationType, function(elem){
+                        return replicationService.tooltip(elem);
+                    }).join(', ');
+                },
+                type: 'dpType'
 
             }, {
                 title: 'data-protection-status',
@@ -179,8 +185,13 @@ angular.module('rainierApp')
                         return _.map(item.dataProtectionSummary.replicationType, function(elem){
                             return replicationService.displayReplicationType(elem);
                         }).join(', ');
-                    }
-
+                    },
+                    getToolTipValue: function (item) {
+                        return _.map(item.dataProtectionSummary.replicationType, function(elem){
+                            return replicationService.tooltip(elem);
+                        }).join(', ');
+                    },
+                    type: 'dpType'
                 }
             ];
         };

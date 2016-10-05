@@ -7,7 +7,7 @@
  * # storageSystemVolumeDataVisualization
  */
 angular.module('rainierApp')
-    .directive('storageSystemVolumeDataVisualization', function () {
+    .directive('storageSystemVolumeDataVisualization', function (replicationService) {
         return {
             scope: false,
             templateUrl: 'views/templates/storage-system-volume-data-visualization.html',
@@ -22,7 +22,7 @@ angular.module('rainierApp')
                         tooltipBlock.css('top', event.pageY);
                         tooltipBlock.css('z-index', 10000);
                         tooltipBlock.css('visibility', 'visible');
-                        tooltipBlock.text(title);
+                        tooltipBlock.text(replicationService.tooltip(title));
                     }
                 });
 

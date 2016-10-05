@@ -946,4 +946,9 @@
     "evs-update": "Update Virtual File Server",
     "evs-tooltip": "VFS - Enterprise Virtual Server(EVS)",
     "file-pools-tooltip": "File Pool (NAS Storage Pool)"
+
+    "snap-tooltip": "Snap – Snapshot without cascade capability",
+    "snap-on-snap-tooltip": "Snap on Snap – Snapshot with cascade capability",
+    "snap-clone-tooltip": "Snap Clone – Full copy of snapshot",
+    "clone-tooltip": "Clone – ShadowImage (SI)"
 }

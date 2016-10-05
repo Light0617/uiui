@@ -119,7 +119,7 @@
                 <div ng-attr-class="td {{settings.sizeClass}} cell" ng-repeat="settings in dataModel.gridSettings"
                      ng-switch="settings.type" ng-click="item.onClick()">
                     <a class="text-resize ellipsis" ng-switch-when="id" title="{{settings.getDisplayValue(item)}}">{{settings.getDisplayValue(item)}}</a>
-                    <p class="text-resize ellipsis" ng-switch-default="" title="{{settings.getDisplayValue(item)}}">
+                    <p class="text-resize ellipsis" ng-switch-default="" title="{{settings.getToolTipValue(item)}}">
                         {{settings.getDisplayValue(item)}}</p>
                 </div>
             </div>

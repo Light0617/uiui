@@ -398,7 +398,7 @@ angular.module('rainierApp')
                     icons.push(item.alertLink);
                 }
 
-                if (!item.gadSummary.virtualLdevId && item.gadSummary.virtualLdevId != 0) {
+                if (!item.gadSummary.virtualLdevId && item.gadSummary.virtualLdevId !== 0) {
                     item.gadSummary.virtualLdevId = 'N/A';
                 }
 
@@ -435,7 +435,9 @@ angular.module('rainierApp')
                         left: false,
                         title: item.storageSystemId,
                         details: [item.displayedDpType],
-                        detailsToolTips: [item.toolTipDpType]
+                        detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function(type){
+                            return replicationService.tooltip(type);
+                        }).join(', ')]
                     }
                 ];
 
@@ -1553,7 +1555,9 @@ angular.module('rainierApp')
                     left: false,
                     title: item.osTypeDisplayValue,
                     details: [item.displayedDpType],
-                    detailsToolTips: [item.toolTipDpType]
+                    detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
+                        return replicationService.tooltip(type);
+                    }).join(', ')]
                 }];
 
                 item.itemIcon = 'icon-host';

@@ -21,6 +21,23 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
         SNAP_ON_SNAP: 'SNAP_ON_SNAP',
         SNAP_CLONE: 'SNAP_CLONE'
     };
+    var tooltip = {
+        CLONE: function () {
+            return synchronousTranslateService.translate('clone-tooltip');
+        },
+        SNAP: function () {
+            return synchronousTranslateService.translate('snap-tooltip');
+        },
+        SNAP_ON_SNAP: function () {
+            return synchronousTranslateService.translate('snap-on-snap-tooltip');
+        },
+        SNAP_CLONE: function () {
+            return synchronousTranslateService.translate('snap-clone-tooltip');
+        }
+    };
+    var rawToTooltip = function (raw) {
+        return tooltip[raw]();
+    };
     var rawToDisp = function (type) {
         switch (type) {
             case rawTypeConst.CLONE:
@@ -46,11 +63,11 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
             case dispTypeConst.SNAP_CLONE:
                 return rawTypeConst.SNAP_CLONE;
             default:
-                return type!=='GAD' ? type.toString().toUpperCase(): type;
+                return type !== 'GAD' ? type.toString().toUpperCase() : type;
         }
     };
     return {
-        GadDevice: function GadDevice () {
+        GadDevice: function GadDevice() {
             this.volumeId = 'N/A';
             this.storageSystemId = 'N/A';
             this.ioMode = 'N/A';
@@ -73,10 +90,10 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
             });
 
             // For GAD, there's no difference between raw type and display type, so no need to update rawToDisp() and dispToRaw()
-            if(gadSummary && _.find([synchronousTranslateService.translate('gad-display-type'),
+            if (gadSummary && _.find([synchronousTranslateService.translate('gad-display-type'),
                     synchronousTranslateService.translate('gad-display-type')], function (validGadType) {
-                        return validGadType === gadSummary.volumeType;
-                    }) !== undefined) {
+                    return validGadType === gadSummary.volumeType;
+                }) !== undefined) {
                 displayTypes.push(synchronousTranslateService.translate('gad-display-type'));
             }
             return displayTypes.join(', ');
@@ -99,6 +116,15 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
         isSnapClone: function (type) {
             return type === dispTypeConst.SNAP_CLONE ||
                 type === rawTypeConst.SNAP_CLONE;
+        },
+        tooltip: function (type) {
+            var tooltip = rawToTooltip(dispToRaw(type));
+            if (tooltip) {
+                return tooltip;
+            } else {
+                return type;
+            }
         }
+
     };
 });
