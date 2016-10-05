@@ -184,7 +184,7 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             flags.push(item.isUnattached());
                         });
-                        if(flags.areAllItemsTrue() ) {
+                        if(areAllItemsTrue(flags)) {
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                             $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
                                 '/'));
@@ -465,5 +465,11 @@ angular.module('rainierApp')
                         }],
                 }
             };
+        }
+
+        function areAllItemsTrue(flags){
+            return _.find(flags, function(flag){
+                return flag === false;
+            }) === undefined;
         }
     });
