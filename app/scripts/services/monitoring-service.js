@@ -144,6 +144,9 @@ angular.module('rainierApp')
                     var volumes = [];
 
                     model.totalHostAlertCount = serverResult.length;
+                    _.forEach(serverResult, function (item) {
+                        objectTransformService.transformHost(item);
+                    });
                     model.servers = serverResult;
 
                     paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem, false).then(function(storageSystemResult) {
