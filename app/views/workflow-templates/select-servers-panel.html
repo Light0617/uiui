@@ -1,17 +1,17 @@
-<div class="header-row clearfix">
-    <div>
+<div class="header-row">
         <h2>{{'workflow-title-select-servers' | translate}}</h2>
-    </div>
 </div>
-<div class="scroll-wizard-container split-pane col-lg-11 col-md-11 col-sm-11 col-xs-11">
-    <div class="col-lg-8 col-md-8 col-sm-7 tile-container flex-grid inventory-panel" infinite-scroll='dataModel.loadMore()'
-         infinite-scroll-distance='1' infinite-scroll-container="'.scroll-wizard-container'">
-        <div class="tile resource-tile" ng-repeat="item in dataModel.displayList">
-            <ng-include src="'views/templates/inventory-item-tile.html'"></ng-include>
+<div class="scroll-wizard-container single-pane">
+    <div class="inventory tiles-view">
+        <div class="tile-container flex-grid inventory-panel" infinite-scroll='dataModel.loadMore()'
+             infinite-scroll-distance='1' infinite-scroll-container="'.scroll-wizard-container'">
+            <div class="tile resource-tile" ng-repeat="item in dataModel.displayList">
+                <ng-include src="'views/templates/inventory-item-tile.html'"></ng-include>
+            </div>
+            <div class="tile resource-tile invisible">&nbsp;</div>
         </div>
-        <div class="tile resource-tile invisible">&nbsp;</div>
-    </div>
-    <div class="controls-column col-lg-4 col-md-4 col-sm-5 filter-panel"
-         ng-include="'views/templates/hosts-view-search-panel.html'">
+        <div class="controls-column filter-panel"
+             ng-include="'views/templates/hosts-view-search-panel.html'">
+        </div>
     </div>
 </div>

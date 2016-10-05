@@ -3,12 +3,12 @@
     <wizard-header ng-title="'workflow-title-protect-volumes' | translate"
                    icon-class="icon-data-protection"></wizard-header>
 
-    <div class="wizard-body">
+    <div class="wizard-body new">
         <!--Wizard column left-->
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify" ng-switch="allUseExisting">
+        <div class="wizard-left" ng-switch="allUseExisting">
 
-            <form name="validationForm.leftPanel" class="validation-form" novalidate>
-                <div class="form-group label-value-container">
+            <form name="validationForm.leftPanel" class="fieldset validation-form" novalidate>
+                <div class="label-value-container">
                     <label class="label" for="storage-system">Replication Type</label>
                     <select class="form-control" id="storage-system"
                             ng-disabled="true"
@@ -16,22 +16,25 @@
                         <option value="">Local Replication</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-lg btn-block btn-dark"
-                            ng-model="dataModel.replicationTechnology"
-                            ng-click="dataModel.replicationTechnology = dataModel.$replicationRawTypes.SNAP"
-                            ng-attr-title="{{'snapshot-tooltip' | translate}}"
-                            btn-radio="dataModel.$replicationRawTypes.SNAP">Snapshot
-                    </button>
+                <div class="label-value-container">
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                        <label class="btn btn-primary btn-dark"
+                                ng-model="dataModel.replicationTechnology"
+                                ng-click="dataModel.replicationTechnology = dataModel.$replicationRawTypes.SNAP"
+                                ng-attr-title="{{'snapshot-tooltip' | translate}}"
+                                btn-radio="dataModel.$replicationRawTypes.SNAP">
+                            <input autocomplete="off" checked="" type="radio"/>Snapshot
+                        </label>
 
-                    <button type="button" class="btn btn-lg btn-block btn-dark"
-                            ng-model="dataModel.replicationTechnology"
-                            ng-click="dataModel.replicationTechnology = dataModel.$replicationRawTypes.CLONE"
-                            ng-attr-title="{{'clone-now-tooltip' | translate}}"
-                            btn-radio="dataModel.$replicationRawTypes.CLONE">Clone Now
-                    </button>
+                        <label class="btn btn-primary btn-dark"
+                                ng-model="dataModel.replicationTechnology"
+                                ng-click="dataModel.replicationTechnology = dataModel.$replicationRawTypes.CLONE"
+                                ng-attr-title="{{'clone-now-tooltip' | translate}}"
+                                btn-radio="dataModel.$replicationRawTypes.CLONE">
+                            <input autocomplete="off" checked="" type="radio"/>Clone Now
+                        </label>
+                    </div>
                 </div>
-
                 <div class="form-group label-value-container" ng-if="dataModel.isEnableSnapshot()"
                      ng-switch-when="false">
                     <label class="label">{{ 'number-of-snapshots' | translate }}</label>
@@ -54,47 +57,40 @@
                            ng-disabled="true">
                 </div>
             </form>
-
-            <div class="form-group toggle-control label-value-container" ng-switch-when="false">
+            <div class="form-group label-value-container" ng-switch-when="false">
                 <label class="label">{{'replication-group-label-consistency' | translate}}</label>
-
-                <div class="btn-group btn-group-justified btn-group-toggle-black" role="toggle">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-dark"
-                                ng-class="{'active': dataModel.consistencyGroupNeeded === true}"
-                                ng-click="dataModel.consistencyGroupNeeded = true">{{'yes-button' | translate}}
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-dark"
-                                ng-class="{'active': dataModel.consistencyGroupNeeded === false }"
-                                ng-click="dataModel.consistencyGroupNeeded = false">{{'no-button' | translate}}
-                        </button>
-                    </div>
+                <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary btn-dark"
+                           ng-class="{'active': dataModel.consistencyGroupNeeded === true}"
+                            ng-click="dataModel.consistencyGroupNeeded = true">
+                            <input autocomplete="off" checked="" type="radio"/>{{'yes-button' | translate}}
+                    </label> 
+                    <label class="btn btn-primary btn-dark"
+                            ng-class="{'active': dataModel.consistencyGroupNeeded === false }"
+                            ng-click="dataModel.consistencyGroupNeeded = false">
+                        <input autocomplete="off" checked="" type="radio"/>{{'no-button' | translate}}
+                    </label> 
                 </div>
             </div>
-
-            <div class="form-group toggle-control label-value-container" ng-switch-when="true">
+            <div class="form-group label-value-container" ng-switch-when="true">
                 <label class="label">{{'replication-group-label-consistency' | translate}}</label>
-
-                <div class="btn-group btn-group-justified"
-                     role="toggle">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-dark" ng-class="{'disabled': dataModel.consistencyGroupNeeded === false,
-                                    'active': dataModel.consistencyGroupNeeded === true}">{{'yes-button' | translate}}
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-dark " ng-class="{'active': dataModel.consistencyGroupNeeded === false,
-                                    'disabled': dataModel.consistencyGroupNeeded === true}">{{'no-button' | translate}}
-                        </button>
-                    </div>
+                <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary btn-dark" 
+                           ng-class="{'disabled': dataModel.consistencyGroupNeeded === false,
+                                'active': dataModel.consistencyGroupNeeded === true}">
+                        <input autocomplete="off" checked="" type="radio"/>{{'yes-button' | translate}}
+                    </label>
+                    <label class="btn btn-primary btn-dark" 
+                           ng-class="{'active': dataModel.consistencyGroupNeeded === false,
+                                'disabled': dataModel.consistencyGroupNeeded === true}">
+                        <input autocomplete="off" checked="" type="radio"/>{{'no-button' | translate}}
+                    </label>
                 </div>
             </div>
         </div>
         <!--Wizard column left ends-->
 
-        <div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 wizard-right" ng-if="!volumesSelected">
+        <div class="wizard-right" ng-if="!volumesSelected">
             <div class="alert alert-warning" role="alert">
                 <h1>Warning</h1>
 
@@ -104,7 +100,7 @@
 
 
         <!--Right column-->
-        <div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 wizard-right" ng-if="volumesSelected">
+        <div class="wizard-right" ng-if="volumesSelected">
             <div class="header-row">
                 <h2 ng-if="dataModel.isEnableSnapshot()">Snapshot</h2>
 
@@ -197,21 +193,21 @@
                         </div>
                     </form>
                 </div>
-                <div ng-if="dataModel.isEnableSnapshot()">
-                    <p ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute === 0 && dataModel.hourInterval">
-                        {{ 'replication-groups-hourly-note-zero' | translate : dataModel }}</p>
+                <div class="alert alert-warning" ng-if="dataModel.isEnableSnapshot()">
+                    <h3 ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute === 0 && dataModel.hourInterval">
+                        {{ 'replication-groups-hourly-note-zero' | translate : dataModel }}</h3>
 
-                    <p ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute && dataModel.hourInterval">{{
-                        'replication-groups-hourly-note' | translate : dataModel}}</p>
+                    <h3 ng-if="dataModel.schedule === 'HOURLY' && dataModel.scheduleMinute && dataModel.hourInterval">{{
+                        'replication-groups-hourly-note' | translate : dataModel}}</h3>
 
-                    <p ng-if="dataModel.schedule === 'DAILY'">
-                        {{ 'replication-groups-daily-note' | translate : dataModel }}</p>
+                    <h3 ng-if="dataModel.schedule === 'DAILY'">
+                        {{ 'replication-groups-daily-note' | translate : dataModel }}</h3>
 
-                    <p ng-if="dataModel.schedule === 'WEEKLY'">
-                        {{ 'replication-groups-weekly-note' | translate : dataModel }}</p>
+                    <h3 ng-if="dataModel.schedule === 'WEEKLY'">
+                        {{ 'replication-groups-weekly-note' | translate : dataModel }}</h3>
 
-                    <p ng-if="dataModel.schedule === 'MONTHLY'">
-                        {{ 'replication-groups-monthly-note' | translate : dataModel }}</p>
+                    <h3 ng-if="dataModel.schedule === 'MONTHLY'">
+                        {{ 'replication-groups-monthly-note' | translate : dataModel }}</h3>
                 </div>
 
                 <div class="label-value-container" ng-switch="allUseExisting">
