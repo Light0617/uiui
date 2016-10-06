@@ -63,10 +63,11 @@ preImageBuildSetup() {
   then
     bower install --allow-root
   fi
-
+  
+  grunt switch-brand --brand $brand
+  
   if (! $skipGrunt)
   then
-    grunt switch-brand --brand $brand
     grunt build
   fi
 }
