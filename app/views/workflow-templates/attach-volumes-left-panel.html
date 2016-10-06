@@ -28,40 +28,32 @@
 
 <div class="fieldset">
     <div class="label-value-container" ng-if="dataModel.attachModel.enableLunUnification !== undefined">
-        <label class="label" for="LUN-unification" ng-attr-title="{{'lun-alignment-tooltip' | translate}}">LUN Alignment</label>
-
+        <label class="label" for="LUN-unification" ng-attr-title="{{'lun-alignment-tooltip' | translate}}">LUN
+            Alignment</label>
         <div id="LUN-unification" class="btn-group btn-group-justified" data-toggle="buttons" role="toggle">
-            <label class="btn btn-primary btn-dark">
-                <input  type="radio"
-                            autocomplete="off"
-                            ng-class="{'active': dataModel.attachModel.enableLunUnification}"
-                            ng-click="dataModel.attachModel.enableLunUnification = true"/>Yes
+            <label class="btn btn-primary btn-dark" ng-model="dataModel.attachModel"
+                   ng-click="dataModel.attachModel.setEnableZoning(true)">
+                <input type="radio" autocomplete="off"/>Yes
             </label>
-            <label class="btn btn-primary btn-dark">
-                <input type="radio"
-                       autcomplete="off"
-                        ng-class="{'active': !dataModel.attachModel.enableLunUnification}"
-                        ng-click="dataModel.attachModel.enableLunUnification = false"/>No
+            <label class="btn btn-primary btn-dark active" ng-model="dataModel.attachModel"
+                   ng-click="dataModel.attachModel.setEnableZoning(false)">
+                <input type="radio" autcomplete="off"/>No
             </label>
         </div>
     </div>
 
 
     <div class="label-value-container toggle-control">
-        <label class="label" for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto Create Zone</label>
-
+        <label class="label" for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto
+            Create Zone</label>
         <div id="auto-create-zone" class="btn-group btn-group-justified" data-toggle="buttons" role="toggle">
-            <label class="btn btn-primary btn-dark">
-                <input type="radio"
-                       autocomplete="off"
-                       ng-class="{'active': dataModel.attachModel.enableZoning}"
-                        ng-click="dataModel.attachModel.enableZoning = true"/>Yes
+            <label class="btn btn-primary btn-dark" ng-model="dataModel.attachModel"
+                   ng-click="dataModel.attachModel.setEnableLunUnification(true)">
+                <input type="radio" autocomplete="off"/>Yes
             </label>
-            <label class="btn btn-primary btn-dark">
-                <input type="radio"
-                       autocomplete="off"
-                       ng-class="{'active': !dataModel.attachModel.enableZoning}"
-                        ng-click="dataModel.attachModel.enableZoning = false"/>No
+            <label class="btn btn-primary btn-dark active" ng-model="dataModel.attachModel"
+                   ng-click="dataModel.attachModel.setEnableLunUnification(false)">
+                <input type="radio" autocomplete="off"/>No
             </label>
         </div>
     </div>
