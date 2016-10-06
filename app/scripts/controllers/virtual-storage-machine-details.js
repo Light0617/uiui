@@ -140,7 +140,7 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'gad-pvol-storage-system-id',
+                    title: 'quorum-Id',
                     sizeClass: 'sixth',
                     sortField: '',
                     getDisplayValue: function (item) {
