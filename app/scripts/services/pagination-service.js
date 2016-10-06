@@ -224,7 +224,7 @@ angular.module('rainierApp')
                                 listOfSearch.push(qo.key + ':' + getPartialSearchQueryString(qo.value));
                             }
                         });
-                        return listOfSearch.join(' OR ');
+                        return listOfSearch;
                     };
                     queryService.setQueryObject(queryObject);
                 }
