@@ -190,6 +190,7 @@ angular.module('rainierApp')
                 return;
             }
 
+            var date = new Date();
             var protectModel = {
                 $replicationRawTypes: replicationService.rawTypes,
                 replicationTechnology: replicationService.rawTypes.SNAP,
@@ -199,6 +200,7 @@ angular.module('rainierApp')
                 storageSystemSelectable: false,
                 copyGroupName: '',
                 schedule: viewModelService.newScheduleModel(),
+                currentDate: date,
 
                 submit: function() {
                     $scope.dataModel.goNext();
