@@ -401,7 +401,7 @@ angular.module('rainierApp')
                 if (!item.gadSummary) {
                     item.gadSummary = {
                         virtualLdevId: 'N/A'
-                    }
+                    };
                 } else if (item.gadSummary && !item.gadSummary.virtualLdevId && item.gadSummary.virtualLdevId !== 0) {
                     item.gadSummary.virtualLdevId = 'N/A';
                 }
