@@ -14,15 +14,17 @@
         <div class="wizard-body new">
             <!-- if basic -->
             <!-- one wizard -->
-            <div class="basic" contenteditable="" ng-if="model.wizardType === 'basic'">
+            <div class="basic" ng-if="model.wizardType === 'basic'">
                 <div class="header-row" ng-if="model.wizardType === 'basic'">
                     <h2>Storage System <em>{{dataModel.selectedStorageSystemId}}</em></h2>
                 </div>
-                <div class="alert alert-warning" role="alert" ng-if="model.wizardType === 'basic' && dataModel.displayPrompt" >
+                <div class="alert alert-warning" role="alert"
+                     ng-if="model.wizardType === 'basic' && dataModel.displayPrompt">
                     <h1>Warning</h1>
                     <p>{{'parity-group-add-basic-prompt' | translate}}</p>
                 </div>
-                <div class="scroll-wizard-container single-pane" ng-if="model.wizardType === 'basic' && !dataModel.displayPrompt">
+                <div class="scroll-wizard-container single-pane"
+                     ng-if="model.wizardType === 'basic' && !dataModel.displayPrompt">
                     <div class="tile-view list-view">
                         <!--Header Row-->
                         <parity-group-basic-list-tile ng-model="model"></parity-group-basic-list-tile>
@@ -31,10 +33,12 @@
                         <div class="pull-right margin-T-B-15" class="btn-group-xs btn-group-toggle btn-group-justified">
                             <div class="btn-group-xs">
                                 <label>{{'parity-group-encryption'|translate}}</label>
-                                <button type="button" class="btn btn-xs btn-default btn-white" ng-model="dataModel.basicEncryption"
+                                <button type="button" class="btn btn-xs btn-default btn-white"
+                                        ng-model="dataModel.basicEncryption"
                                         btn-radio="true">ON
                                 </button>
-                                <button type="button" class="btn btn-xs btn-default btn-white" ng-model="dataModel.basicEncryption"
+                                <button type="button" class="btn btn-xs btn-default btn-white"
+                                        ng-model="dataModel.basicEncryption"
                                         btn-radio="false">OFF
                                 </button>
                             </div>
