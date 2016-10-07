@@ -319,6 +319,7 @@
     "virtual-volume-id": "Virtual Volume Id",
     "quorum-Id": "Quorum Id",
 
+    "gad-pairs": "GAD pairs",
     "gad-display-type": "GAD",
     "gad-volume-type-primary": "Active Primary",
     "gad-volume-type-secondary": "Active Secondary",

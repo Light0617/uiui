@@ -43,6 +43,10 @@
                         <p class="value" ng-attr-title="{{model.label}}">{{model.label}}</p>
                     </div>
                     <div class="label-value-container">
+                        <p class="label">{{ 'virtual-volume-id' | translate}}</p>
+                        <p class="value" ng-attr-title="{{model.gadSummary.virtualLdevId}}">{{model.gadSummary.virtualLdevId}}</p>
+                    </div>
+                    <div class="label-value-container">
                         <p class="label" ng-if="model.poolId">{{ 'storage-pool-id' | translate}}</p>
                         <p class="value" ng-if="model.poolId">{{model.poolId}}</p>
                         </div>
