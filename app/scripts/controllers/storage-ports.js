@@ -277,6 +277,14 @@ angular.module('rainierApp')
                     getDisplayValue: function (item) {
                         return item.securitySwitchEnabled ? 'Enabled' : 'Disabled';
                     }
+                },
+                {
+                    title: 'VSM Port',
+                    sizeClass: 'twelfth',
+                    sortField: 'isVsmPort',
+                    getDisplayValue: function (item) {
+                        return item.isVsmPort ? 'Yes' : 'No';
+                    }
                 }
             ];
             if (constantService.isR800Series($scope.storageSystemModel)){
