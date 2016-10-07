@@ -8,6 +8,12 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('dpAlertService', function (monitoringService, synchronousTranslateService) {
+    var updateCounts = function () {
+        monitoringService.getDpAlerts(function (result) {
+            service.alertCount = result.total;
+            service.infoCount = result.total;
+        });
+    };
     var service = {
         alertCount: 0,
         infoCount: 0,
@@ -17,12 +23,9 @@ angular.module('rainierApp').factory('dpAlertService', function (monitoringServi
         tooltip: synchronousTranslateService.translate('dp-alerts-tooltip'),
         clickAction: function () {
             monitoringService.launchDpMonitoring(service.alertCount);
-        }
+        },
+        update: updateCounts
     };
 
-    monitoringService.getDpAlerts(function (result) {
-        service.alertCount = result.total;
-        service.infoCount = result.total;
-    });
     return service;
 });

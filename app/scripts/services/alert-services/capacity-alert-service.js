@@ -8,6 +8,12 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('capacityAlertService', function (monitoringService, synchronousTranslateService) {
+    var updateCounts = function () {
+        monitoringService.getSummaryStatus(function (result) {
+            service.alertCount = result.capacityAlertTotals.totalComponentWiseCapacityAlerts;
+            service.infoCount = result.capacityAlertTotals.totalComponentWiseCapacityAlerts;
+        });
+    };
     var service = {
         alertCount: 0,
         infoCount: 0,
@@ -17,13 +23,10 @@ angular.module('rainierApp').factory('capacityAlertService', function (monitorin
         tooltip: synchronousTranslateService.translate('capacity-alerts-tooltip'),
         clickAction: function () {
             monitoringService.launchMonitoring('capacity', service.alertCount);
-        }
+        },
+        update: updateCounts
     };
 
-    monitoringService.getSummaryStatus(function (result) {
-        service.alertCount = result.capacityAlertTotals.totalComponentWiseCapacityAlerts;
-        service.infoCount = result.capacityAlertTotals.totalComponentWiseCapacityAlerts;
-    });
 
     return service;
 });

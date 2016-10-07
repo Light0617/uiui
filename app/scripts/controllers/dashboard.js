@@ -58,7 +58,10 @@ angular.module('rainierApp')
             job: jobsAlertService,
             hw: hwAlertService
         };
-        
+        _.each($scope.services, function(service){
+            service.update();
+        });
+
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEM_PATH, true, null, objectTransformService.transformStorageSystem).then(function (result) {
             unified = _.find(result, function (storageSystem) {
                 return storageSystem.unified && storageSystem.accessible;

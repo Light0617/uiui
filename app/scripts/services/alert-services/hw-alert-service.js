@@ -8,6 +8,12 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('hwAlertService', function (monitoringService, synchronousTranslateService) {
+    var updateCounts = function () {
+        monitoringService.getSummaryStatus(function (result) {
+            service.alertCount = result.hardwareAlertTotals.totalComponentWiseHardwareAlerts;
+            service.infoCount = result.hardwareAlertTotals.totalComponentWiseHardwareAlerts;
+        });
+    };
     var service = {
         alertCount: 0,
         infoCount: 0,
@@ -17,12 +23,9 @@ angular.module('rainierApp').factory('hwAlertService', function (monitoringServi
         tooltip: synchronousTranslateService.translate('hardware-alerts-tooltip'),
         clickAction: function () {
             monitoringService.launchMonitoring('hardware', service.alertCount);
-        }
+        },
+        update: updateCounts
     };
 
-    monitoringService.getSummaryStatus(function (result) {
-        service.alertCount = result.hardwareAlertTotals.totalComponentWiseHardwareAlerts;
-        service.infoCount = result.hardwareAlertTotals.totalComponentWiseHardwareAlerts;
-    });
     return service;
 });

@@ -27,6 +27,9 @@ angular.module('rainierApp')
             job: jobsAlertService,
             hw: hwAlertService
         };
+        _.each($scope.services, function(service){
+            service.update();
+        });
 
         function getUnifiedInformation() {
             orchestratorService.filePools(storageSystemId).then(function (result) {
