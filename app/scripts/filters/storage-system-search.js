@@ -29,9 +29,11 @@ angular.module('rainierApp')
                     item.total.value <= totalMaxSize.value;
 
                 var matchedSymbol = item.storageSystemId.toString().indexOf(search.freeText) > -1 ||
-                    item.svpIpAddress.toString().indexOf(search.freeText) > -1 ||
-                    item.storageSystemName.toString().toLowerCase().indexOf(search.freeText.toString().toLowerCase()) > -1 ||
-                    item.model.toString().toLowerCase().indexOf(search.freeText.toString().toLowerCase()) > -1;
+                    (item.svpIpAddress !== null ? item.svpIpAddress.toString().indexOf(search.freeText) > -1 : false) ||
+                    (item.storageSystemName !== null ? item.storageSystemName.toString().toLowerCase().indexOf(
+                        search.freeText.toString().toLowerCase()) > -1 : false) ||
+                    (item.model !== null ? item.model.toString().toLowerCase().indexOf(
+                        search.freeText.toString().toLowerCase()) > -1 : false);
 
                 return item.selected || (matchedCapacity && matchedSymbol);
             });
