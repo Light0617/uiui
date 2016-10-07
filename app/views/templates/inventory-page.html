@@ -63,7 +63,7 @@
                     <sort-column-header field="{{settings.sortField}}" label="{{ settings.title  | translate }}"
                                         ng-model="dataModel.sort" title="{{ settings.title  | translate }}"></sort-column-header>
                 </div>
-                <div class="sixth cell text-resize" ng-if="dataModel.displayList[0].usage">
+                <div class="eighth cell text-resize" ng-if="dataModel.displayList[0].usage">
                     <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
                 </div>
             </div>
@@ -138,10 +138,10 @@
                 </div>
 
 
-                <div class="td sixth data cell" ng-if="item.usage && !item.fileCapacity" ng-click="item.onClick()">
+                <div class="td eighth data cell" ng-if="item.usage && !item.fileCapacity" ng-click="item.onClick()">
                     <usage-indicator-bar class="data-viz bar bar-container" ng-model="item"></usage-indicator-bar>
                 </div>
-                <div class="td sixth resource data cell data-viz" ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()">
+                <div class="td eighth resource data cell data-viz" ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()">
                     <usage-indicator-bar class="double-bar-list-view data-viz bar bar-container" ng-model="item" ng-if="item.usage"
                                          ng-click="item.onClick()"></usage-indicator-bar>
                     <usage-indicator-bar class="double-bar-list-view data-viz bar bar-container file" ng-model="item.fileCapacity"

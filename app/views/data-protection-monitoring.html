@@ -55,8 +55,8 @@
                     <sort-column-header field="{{settings.sortField}}" label="{{ settings.title  | translate }}"
                                         ng-model="dataModel.sort" title="{{ settings.title  | translate }}"></sort-column-header>
                 </div>
-                <div class="sixth cell text-resize" ng-if="dataModel.displayList[0].usage">
-                    &nbsp;
+                <div class="tenth cell text-resize" ng-if="dataModel.displayList[0].usage">
+                    <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
                 </div>
             </div>
 
@@ -93,9 +93,8 @@
 
                     <p ng-switch-default="" title="{{settings.getDisplayValue(item)}}">{{settings.getDisplayValue(item)}}</p>
                 </div>
-                <div class="td sixth data cell" ng-if="item.usage">
-                    <usage-indicator-bar class="double-bar-list-view" ng-model="item" ng-click="item.onClick()"></usage-indicator-bar>
-
+                <div class="td tenth data cell" ng-if="item.usage">
+                    <usage-indicator-bar class="data-viz bar bar-container" ng-model="item" ng-click="item.onClick()"></usage-indicator-bar>
                 </div>
 
             </div>
