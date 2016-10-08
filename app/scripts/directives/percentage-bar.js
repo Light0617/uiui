@@ -36,8 +36,8 @@ angular.module('rainierApp')
         var bar = svg
             .attr('version', '1.1')
             .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('transform', 'scale(1,1)')
+            .attr('preserveAspectRatio', 'xMidYMin slice')
+            .attr('style', 'padding-bottom:' + svgHeight/svgWidth*100 + '%')
             .attr('class', 'bdv');
 
         bar.append('rect')
@@ -62,7 +62,7 @@ angular.module('rainierApp')
 
         bar.append('text')
             .attr('class', textClass)
-            .attr('x', percentageValue + '%')
+            .attr('x', percentageValue + 1 + '%')
             .attr('y', 0)
             .attr('dy', '68%')
             .attr('text-anchor', textAnchor)
