@@ -298,6 +298,7 @@ angular.module('rainierApp')
                 dataModel.capacityAlert = capacityAlertService;
 
                 $scope.dataModel = dataModel;
+                $scope.dataModel.capacityAlert.update();
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storagePools, 'storagePoolSearch');
             });
         });

@@ -22,6 +22,9 @@ angular.module('rainierApp')
             job: jobsAlertService,
             hw: hwAlertService
         };
+        _.each($scope.services, function(service){
+            service.update();
+        });
 
         function transformService(fileSummary) {
             orchestratorService.tiers().then(function (result) {

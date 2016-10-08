@@ -270,8 +270,8 @@ angular
                 controller: 'EditLunPathCtrl',
                 breadcrumbOptions: {
                     labelKey: 'workflow-title-edit-lun-paths-edit'
-                }
-                //TODO: Devan - add help context
+                },
+                helpContext: 'T_EDIT_LUN_PATH'
             })
             .when('/login', {
                 templateUrl: 'views/login.html',

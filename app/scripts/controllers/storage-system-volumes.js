@@ -62,6 +62,7 @@ angular.module('rainierApp')
             summaryModel.dpAlert = dpAlertService;
             summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
+            $scope.summaryModel.dpAlert.update();
         });
 
         var volumeUnprotectActions = function (selectedVolume) {

@@ -53,6 +53,7 @@ angular.module('rainierApp')
             summaryModel.hwAlert = hwAlertService;
             summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
+            $scope.summaryModel.hwAlert.update();
 
             var dataModel = {
 

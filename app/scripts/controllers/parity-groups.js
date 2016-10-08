@@ -397,7 +397,7 @@ angular.module('rainierApp')
 
             dataModel.hwAlert = hwAlertService;
             $scope.dataModel = dataModel;
-
+            $scope.dataModel.hwAlert.update();
             scrollDataSourceBuilderService.setupDataLoader($scope, parityGroups, 'parityGroupsSearch');
         });
 

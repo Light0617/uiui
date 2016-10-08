@@ -41,6 +41,7 @@ angular.module('rainierApp')
             summaryModel.dpAlert = dpAlertService;
             summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
+            $scope.summaryModel.dpAlert.update();
         });
 
         replicationGroupsService.getReplicationGroups(null, storageSystemId, 'initialResult').then(function (result) {
