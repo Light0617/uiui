@@ -97,10 +97,6 @@ angular.module('rainierApp')
                 }
             };
 
-            var hasGadVolume = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
-            };
-
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -122,7 +118,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems());
+                        return dataModel.onlyOneSelected();
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
