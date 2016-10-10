@@ -10,6 +10,10 @@
 angular.module('rainierApp').factory('jobsAlertService', function ($location, orchestratorService, synchronousTranslateService) {
 
     var updateCounts = function () {
+        service.alertCount = 0;
+        service.infoCount = 0;
+        service.errorCount = 0;
+        service.warnCount = 0;
         var now = new Date();
         var nowMinusOneDay = new Date();
         nowMinusOneDay.setDate(nowMinusOneDay.getDate() - 1);
