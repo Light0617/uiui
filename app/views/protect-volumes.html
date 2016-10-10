@@ -23,7 +23,7 @@
                                 ng-click="dataModel.replicationTechnology = dataModel.$replicationRawTypes.SNAP"
                                 ng-attr-title="{{'snapshot-tooltip' | translate}}"
                                 btn-radio="dataModel.$replicationRawTypes.SNAP">
-                            <input autocomplete="off" checked="" type="radio"/>Snapshot
+                            <input autocomplete="off" checked="" type="radio"/>Snap
                         </label>
 
                         <label class="btn btn-primary btn-dark"
@@ -102,7 +102,7 @@
         <!--Right column-->
         <div class="wizard-right" ng-if="volumesSelected">
             <div class="header-row">
-                <h2 ng-if="dataModel.isEnableSnapshot()">Snapshot</h2>
+                <h2 ng-if="dataModel.isEnableSnapshot()">Snap</h2>
 
                 <h2 ng-if="dataModel.isEnableClone()">Clone Now</h2>
             </div>

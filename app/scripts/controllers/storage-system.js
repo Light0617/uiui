@@ -181,7 +181,7 @@ angular.module('rainierApp')
                             replicationGroupCountByType.count++;
                         }
                     } else if (replicationService.isSnap(replicationGroupCountByType.replicationType)) {
-                        replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-snapshot');
+                        replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-snap');
                         replicationGroupCountByType.count += externalVolumePairExist.snapshot ? 1 : 0;
                         replicationGroupCountByType.count += externalVolumePairExist.snapshotEx ? 1 : 0;
                         replicationGroupCountByType.count += externalVolumePairExist.snapshotFc ? 1 : 0;
