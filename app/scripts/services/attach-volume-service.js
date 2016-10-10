@@ -152,6 +152,7 @@ angular.module('rainierApp')
             });
 
             var allocateLikeFilteredHostGroups = [];
+            var hostGroupIdMap = {};
             _.forEach(hostGroups, function(hostgroup) {
                 _.forEach(hostgroup.hbaWwns, function(hbaWwn) {
                     var server = wwpnToServerMap[hbaWwn];
@@ -160,7 +161,10 @@ angular.module('rainierApp')
                         // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
                         if (((hostMode === 'AUTO' && hostgroup.hostMode === server.osType) || hostgroup.hostMode === hostMode) &&
                             (isHostModeOptionsMatch(hostModeOptions, hostgroup.hostModeOptions, hostgroup.hostMode))) {
-                            allocateLikeFilteredHostGroups.push(hostgroup);
+                            if (!hostGroupIdMap.hasOwnProperty(hostgroup.hostGroupId)) {
+                                allocateLikeFilteredHostGroups.push(hostgroup);
+                                hostGroupIdMap[hostgroup.hostGroupId] = true;
+                            }
                         }
                     }
                 });
