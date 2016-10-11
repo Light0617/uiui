@@ -3,57 +3,55 @@
     <div ng-if="model">
     <form novalidate ng-submit="payload.submit()">
         <div class="wizard-header">
-            <div class="col-lg-1 col-md-1 hidden-sm">
+            <div class="wizard-nav">
                 <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
             </div>
-            <div class="wizard-title-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <div class="wizard-title-group">
                 <span class="icon icon-volume icon-xlg"></span>
                 <h1 class="wizard-title">{{'storage-volume-detach'| translate}}</h1>
             </div>
         </div>
-        <div class="wizard-body">
+        <div class="wizard-body new">
             <!--Wizard column left-->
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 wizard-left flex-column justify">
-                <div class="flex-tile-group">
-                    <div class="form-group">
-                        <label for="volume-label">{{'storage-volume-update-label' | translate}}</label>
-                        <input type="name" class="form-control form-lg" id="volume-label" ng-model="model.volumeLabel" ng-disabled=true>
+            <div class="wizard-left">
+                <div class="fieldset">
+                    <div class="label-value-container">
+                        <label class="label" for="volume-label">{{'storage-volume-update-label' | translate}}</label>
+                        <input type="text" class="value form-control form-control-large" id="volume-label" ng-model="model.volumeLabel" ng-disabled=true>
                     </div>
-                    <div class="form-group">
-                        <label for="volume-id">{{'storage-volume-id' | translate}}</label>
-                        <input type="name" class="form-control form-lg" id="volume-id" ng-model="model.volumeId" ng-disabled=true>
+                    <div class="label-value-container">
+                        <label class="label" for="volume-id">{{'storage-volume-id' | translate}}</label>
+                        <input type="text" class="value form-control" id="volume-id" ng-model="model.volumeId" ng-disabled=true>
                     </div>
-                    <div class="form-group">
-                        <label for="storage-system">{{'storage-pools-storage-system' | translate}}</label>
-                        <input type="name" class="form-control form-lg" id="storage-system" ng-model="model.storageSystemId" ng-disabled=true>
+                    <div class="label-value-container">
+                        <label class="label" for="storage-system">{{'storage-pools-storage-system' | translate}}</label>
+                        <input type="text" class="value form-control" id="storage-system" ng-model="model.storageSystemId" ng-disabled=true>
                     </div>
-                    <div class="form-group">
-                        <label for="storage-volume-detach-remove-zone">{{ 'storage-volume-detach-remove-zone' | translate}}</label>
+                    <div class="label-value-container">
+                        <label class="label" for="storage-volume-detach-remove-zone">{{ 'storage-volume-detach-remove-zone' | translate}}</label>
 
-                        <div id="storage-volume-detach-remove-zone" class="btn-group btn-group-toggle-black btn-group-justified">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-lg btn-default" ng-model="model.removeZone"
-                                        btn-radio="true">Yes
-                                </button>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-lg btn-default" ng-model="model.removeZone"
-                                        btn-radio="false">No
-                                </button>
-                            </div>
+                        <div id="storage-volume-detach-remove-zone" class="btn-group btn-group-justified" data-toggle="buttons">     
+                            <label class="btn btn-primary btn-dark" ng-model="model.removeZone"
+                                    btn-radio="true">
+                                <input autocomplete="off" checked="" type="radio"/>Yes
+                            </label>
+                            <label class="btn btn-primary btn-dark" ng-model="model.removeZone"
+                                    btn-radio="false">
+                                <input autocomplete="off" checked="" type="radio"/>No
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
             <!--Right column-->
-            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right three-rows-wizard">
+            <div class="wizard-right">
                 <!--Server Inventory-->
                 <wizard-single-panel-content panel-template="views/workflow-templates/select-servers-panel.html"
                                              ng-model="dataModel" filter-model="filterModel"></wizard-single-panel-content>
             </div>
         </div>
         <!--Fixed footer-->
-        <div class="row navbar-fixed-bottom footer-container">
+        <div class="navbar-fixed-bottom footer-container">
             <div class="wizard-footer">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
