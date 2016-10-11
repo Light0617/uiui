@@ -8,7 +8,7 @@
 'use strict';
 
 angular.module('rainierApp')
-    .directive('wizardSvgPage', function ($timeout, d3service, wwnService, attachVolumeService, orchestratorService) {
+    .directive('wizardSvgPage', function ($timeout, d3service, wwnService, attachVolumeService, orchestratorService,$modal) {
 
         var builder;
         var selectedColor = '#265cb3';
@@ -26,7 +26,7 @@ angular.module('rainierApp')
             var path;
             for(i = 0; i< pathModel.paths.length; i++) {
                 path = pathModel.paths[i];
-                if (path.selected === true && path.deleted !== true){
+                if (path.selected === true && path.deleted !== true && !path.isVsmPort){
                     path.deleted = true;
 
                     d3.select('path[path-index="' + i + '"]').remove();
@@ -212,6 +212,9 @@ angular.module('rainierApp')
             var cy;
             var line;
             var currentWwn;
+            if(dataModel.pathModel.paths[pathIndex].isVsmPort){
+                return;
+            }
 
             d3.select('path[path-index="' + pathIndex + '"]').remove();
             dataModel.pathModel.paths[pathIndex].selected = false;
@@ -269,6 +272,25 @@ angular.module('rainierApp')
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-wwn
             port = dataModel.pathModel.storagePorts[portIndex];
+            if(port.isVsmPort){
+                var modelInstance = $modal.open({
+                    templateUrl: 'views/templates/error-modal.html',
+                    windowClass: 'modal fade confirmation',
+                    backdropClass: 'modal-backdrop',
+                    controller: function ($scope) {
+                        $scope.error = {};
+                        $scope.error.message = 'Cannot create path for ports assigned to VSM.';
+                        $scope.cancel = function () {
+                            modelInstance.dismiss('cancel');
+                        };
+
+                        modelInstance.result.finally(function() {
+                            modelInstance.dismiss('cancel');
+                        });
+                    }
+                });
+                return;
+            }
 
             recoverPortCircleColor(line, svg);
 
@@ -290,7 +312,8 @@ angular.module('rainierApp')
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
-                    serverWwn: wwnService.removeSymbol(wwnText)
+                    serverWwn: wwnService.removeSymbol(wwnText),
+                    isVsmPort: port.isVsmPort
                 });
             }
 
@@ -306,7 +329,25 @@ angular.module('rainierApp')
             var wwn;
             var pathIndex;
             var path;
+            if(port.isVsmPort){
+                var modelInstance = $modal.open({
+                    templateUrl: 'views/templates/error-modal.html',
+                    windowClass: 'modal fade confirmation',
+                    backdropClass: 'modal-backdrop',
+                    controller: function ($scope) {
+                        $scope.error = {};
+                        $scope.error.message = 'Cannot create path for ports assigned to VSM.';
+                        $scope.cancel = function () {
+                            modelInstance.dismiss('cancel');
+                        };
 
+                        modelInstance.result.finally(function() {
+                            modelInstance.dismiss('cancel');
+                        });
+                    }
+                });
+                return;
+            }
             wwn = line.attr('attr-wwn');
             pathIndex = line.attr('path-index'); // path index of the line-from-wwn
 
@@ -330,7 +371,8 @@ angular.module('rainierApp')
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
-                    serverWwn: wwnService.removeSymbol(wwn)
+                    serverWwn: wwnService.removeSymbol(wwn),
+                    isVsmPort: port.isVsmPort
                 });
             }
 

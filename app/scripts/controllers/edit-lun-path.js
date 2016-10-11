@@ -92,10 +92,18 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                        }
                    });
 
+                   var isVsmPort = false;
+                   _.forEach($scope.dataModel.storagePorts, function(storagePort){
+                       if (storagePort.storagePortId === hostGroup.storagePortId){
+                           isVsmPort = storagePort.isVsmPort;
+                       }
+                   });
+
                    var path = {
                        storagePortId: hostGroup.storagePortId,
                        serverWwn: hbaWwn,
-                       luns: luns
+                       luns: luns,
+                       isVsmPort: isVsmPort
                    };
                    paths.push(path);
                }
@@ -265,7 +273,9 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                     var updates = [];
                     for (i = 0; i<$scope.dataModel.pathModel.paths.length; ++i){
                         var path = $scope.dataModel.pathModel.paths[i];
-
+                        if(path.isVsmPort){
+                            continue;
+                        }
                         for(j = 0; j<selectedVolumes.length; ++j){
 
                             var lunPathDiffPayload = null;

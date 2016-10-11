@@ -239,7 +239,7 @@ angular.module('rainierApp')
                 path = dataModel.pathModel.paths[i];
 
                 // If marked as deleted, it is deleted and should not be added.
-                if (path.deleted === true){
+                if (path.deleted === true || path.isVsmPort){
                     continue;
                 }
 
@@ -256,14 +256,22 @@ angular.module('rainierApp')
             return payload;
         }
 
-        function getPathsFromHostGroups(hostGroups, idCoordinates){
+        function getPathsFromHostGroups(hostGroups, storagePorts, idCoordinates){
             var paths = [];
             _.forEach(hostGroups, function(hostGroup){
                 _.forEach(hostGroup.hbaWwns, function(hbaWwn){
                     if (idCoordinates.hasOwnProperty(hbaWwn)){
+                        var isVsmPort = false;
+                        _.forEach(storagePorts, function(storagePort){
+                            if (storagePort.storagePortId === hostGroup.storagePortId){
+                                isVsmPort = storagePort.isVsmPort;
+                            }
+                        });
+
                         var path = {
                             storagePortId: hostGroup.storagePortId,
-                            serverWwn: hbaWwn
+                            serverWwn: hbaWwn,
+                            isVsmPort: isVsmPort
                         };
                         paths.push(path);
                     }
@@ -315,7 +323,7 @@ angular.module('rainierApp')
             wwpnServerIdMap = {};
             setPortCoordinates(storagePorts, idCoordinates);
             setWwnCoordinates(selectedHosts, hostModeOptions, idCoordinates);
-            var originalAllPaths = getPathsFromHostGroups(hostGroups, idCoordinates);
+            var originalAllPaths = getPathsFromHostGroups(hostGroups,storagePorts, idCoordinates);
 
             dataModel.pathModel = {
                 selectedVolumes: selectedVolumes,
