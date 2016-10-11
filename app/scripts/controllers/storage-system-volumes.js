@@ -276,7 +276,7 @@ angular.module('rainierApp')
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
                                 function (vol) {
                                     return vol.isAttached();
-                                });
+                                }) && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
