@@ -25,24 +25,24 @@
             <p class="sort-column-header">{{'host-volume-list-host-group' | translate}}</p>
         </div>
     </div>
-    <div class="nested-row-tile" ng-repeat="hostGroup in item.hostGroups">
-        <div class="col-md-2 cell text-resize ellipsis" title="{{hostGroup.storagePortId}}">
-            <p>{{hostGroup.storagePortId}}</p>
+    <div class="nested-row-tile" ng-repeat="path in item.paths">
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.storagePortId}}">
+            <p>{{path.storagePortId}}</p>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{hostGroup.hbaWwns.join(',')}}">
-            <p>{{hostGroup.hbaWwns.join(',')}}</p>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.wwns.join(',')}}">
+            <p>{{path.wwns.join(',')}}</p>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{hostGroup.lun}}">
-            <p>{{hostGroup.lun}}</p>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.lun}}">
+            <p>{{path.lun}}</p>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{hostGroup.hostMode}}">
-            <p>{{hostGroup.hostMode}}</p>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostMode}}">
+            <p>{{path.hostMode}}</p>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{hostGroup.hostModeOptions.join(' ')}}">
-            <p>{{hostGroup.hostModeOptions.join(' ')}}</p>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostModeOptions.join(' ')}}">
+            <p>{{path.hostModeOptions.join(' ')}}</p>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{hostGroup.name}}">
-            <p>{{hostGroup.name}}</p>
+        <div class="col-md-2 cell text-resize ellipsis" title="{{path.name}}">
+            <p>{{path.name}}</p>
         </div>
     </div>
 </div>

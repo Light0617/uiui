@@ -367,7 +367,6 @@ angular.module('rainierApp')
                     ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false);
             };
 
-            addHostGroupsToResources(result.resources);
             dataModel.cachedList = result.resources;
             dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
@@ -378,22 +377,6 @@ angular.module('rainierApp')
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);
 
         });
-
-        var addHostGroupsToResources = function (resources) {
-            _.forEach(resources, function(resource) {
-                paginationService.getAllPromises(null, 'host-groups?q=luns.volumeId:' + resource.volumeId, false, resource.storageSystemId, null, false).then(function(hostGroups) {
-
-                    _.forEach(hostGroups, function(hostGroup) {
-                        var lun = _.find(hostGroup.luns, function(lun) {
-                            return lun.volumeId === resource.volumeId;
-                        });
-                        hostGroup.lun = lun.lun;
-                    });
-
-                    resource.hostGroups = hostGroups;
-                });
-            });
-        };
 
         var updateResultTotalCounts = function (result) {
             $scope.dataModel.nextToken = result.nextToken;
