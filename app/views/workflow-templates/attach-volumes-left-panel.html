@@ -32,11 +32,11 @@
             Alignment</label>
         <div id="LUN-unification" class="btn-group btn-group-justified" data-toggle="buttons" role="toggle">
             <label class="btn btn-primary btn-dark" ng-model="dataModel.attachModel"
-                   ng-click="dataModel.attachModel.setEnableZoning(true)">
+                   ng-click="dataModel.attachModel.setEnableLunUnification(true)">
                 <input type="radio" autocomplete="off"/>Yes
             </label>
             <label class="btn btn-primary btn-dark active" ng-model="dataModel.attachModel"
-                   ng-click="dataModel.attachModel.setEnableZoning(false)">
+                   ng-click="dataModel.attachModel.setEnableLunUnification(false)">
                 <input type="radio" autcomplete="off"/>No
             </label>
         </div>
@@ -48,11 +48,11 @@
             Create Zone</label>
         <div id="auto-create-zone" class="btn-group btn-group-justified" data-toggle="buttons" role="toggle">
             <label class="btn btn-primary btn-dark" ng-model="dataModel.attachModel"
-                   ng-click="dataModel.attachModel.setEnableLunUnification(true)">
+                   ng-click="dataModel.attachModel.setEnableZoning(true)">
                 <input type="radio" autocomplete="off"/>Yes
             </label>
             <label class="btn btn-primary btn-dark active" ng-model="dataModel.attachModel"
-                   ng-click="dataModel.attachModel.setEnableLunUnification(false)">
+                ng-click="dataModel.attachModel.setEnableZoning(false)">
                 <input type="radio" autocomplete="off"/>No
             </label>
         </div>

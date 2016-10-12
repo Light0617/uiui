@@ -385,7 +385,12 @@ angular.module('rainierApp')
                         }
 
                     };
-
+                    $scope.dataModel.attachModel.setEnableZoning = function (value) {
+                        dataModel.attachModel.enableZoning = value;
+                    };
+                    $scope.dataModel.attachModel.setEnableLunUnification = function (value) {
+                        dataModel.attachModel.enableLunUnification = value;
+                    };
                 }).finally(function(){
                     paginationService.clearQuery();
                 });

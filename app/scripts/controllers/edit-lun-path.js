@@ -133,7 +133,9 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
             $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
             $scope.dataModel.attachModel.orignalSelectedHostModeOption = angular.copy(hostModeOption);
-
+            $scope.dataModel.attachModel.setEnableZoning = function (value) {
+                $scope.dataModel.attachModel.enableZoning = value;
+            };
             angular.extend($scope.dataModel.pathModel, {
                 paths: originalAllPaths,
                 originalPathLength: originalPaths.length
