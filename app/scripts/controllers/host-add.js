@@ -101,10 +101,12 @@ angular.module('rainierApp')
             });
         };
 
-        dataModel.reset = function () {
+        dataModel.reset = function (whenImport) {
             dataModel.hostsModel.hosts = [];
             dataModel.hostsModel.displayHosts = [];
-            dataModel.addNewHost();
+            if (!whenImport) {
+                dataModel.addNewHost();
+            }
         };
 
         function buildPayload(name, description, ipAddress, osType, wwns) {
@@ -155,7 +157,7 @@ angular.module('rainierApp')
                 return;
             }
             if (hosts.length > 0) {
-                dataModel.reset();
+                dataModel.reset(true);
             }
 
             for(var iHost = 0; iHost < hosts.length; iHost++) {
