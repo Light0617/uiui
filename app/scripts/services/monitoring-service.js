@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('monitoringService', function (orchestratorService, objectTransformService, ShareDataService, paginationService, $routeParams, $location) {
+    .factory('monitoringService', function (orchestratorService, objectTransformService, ShareDataService, paginationService, $routeParams, $location, $q) {
 
         var currentCategory = 'capacity';
         var currentComponent = 'pool';
@@ -142,6 +142,9 @@ angular.module('rainierApp')
 
                     var volumeCount = 0;
                     var volumes = [];
+                    model.total = 0;
+                    model.totalVolumeAlertCount = 0;
+                    model.volumes = [];
 
                     model.totalHostAlertCount = serverResult.length;
                     _.forEach(serverResult, function (item) {
@@ -150,26 +153,25 @@ angular.module('rainierApp')
                     model.servers = serverResult;
 
                     paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem, false).then(function(storageSystemResult) {
-                        _.forEach(storageSystemResult, function (storageSystem, index) {
 
+                        var loopThoughStorageSystemsTask = _.map(storageSystemResult, function (storageSystem) {
                             if (storageSystem.accessible) {
-                                paginationService.getAllPromises(null, 'volumes?q=dataProtectionSummary.hasFailures:true', true, storageSystem.storageSystemId, null, false).then(function(volumeResult) {
-
+                                return  paginationService.getAllPromises(null, 'volumes?q=dataProtectionSummary.hasFailures:true',
+                                    true, storageSystem.storageSystemId, null, false).then(function(volumeResult) {
                                     volumeCount += volumeResult.length;
                                     volumes = volumes.concat(volumeResult);
-
-                                    if (index === storageSystemResult.length - 1) {
-
-                                        _.forEach(volumes, function (item) {
-                                            objectTransformService.transformVolume(item);
-                                        });
-                                        model.total = model.totalHostAlertCount + volumeCount;
-                                        model.totalVolumeAlertCount = volumeCount;
-                                        model.volumes = volumes;
-                                        callback(model);
-                                    }
                                 });
                             }
+                        });
+
+                        $q.all(loopThoughStorageSystemsTask).then(function() {
+                            _.forEach(volumes, function (item) {
+                                objectTransformService.transformVolume(item);
+                            });
+                            model.total = model.totalHostAlertCount + volumeCount;
+                            model.totalVolumeAlertCount = volumeCount;
+                            model.volumes = volumes;
+                            callback(model);
                         });
                     });
                 });
