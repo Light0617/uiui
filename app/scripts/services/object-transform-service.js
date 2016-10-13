@@ -1177,7 +1177,7 @@ angular.module('rainierApp')
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('unallocated-capacity-tooltip'),
-                                capacity: item.total,
+                                capacity: item.unallocatedToPoolsCapacity,
                                 legendDisplay: item.unallocatedToPoolsCapacity,
                                 color: unallocatedColor
                             },
@@ -1279,7 +1279,7 @@ angular.module('rainierApp')
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('unallocated-capacity-tooltip'),
-                            capacity: item.total,
+                            capacity: item.unallocatedToPoolsCapacity,
                             legendDisplay: item.unallocatedToPoolsCapacity,
                             color: unallocatedColor
                         },
@@ -1343,7 +1343,7 @@ angular.module('rainierApp')
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('unallocated-capacity-tooltip'),
-                                capacity: item.total,
+                                capacity: item.unallocatedToPoolsCapacity,
                                 legendDisplay: item.unallocatedToPoolsCapacity,
                                 color: unallocatedColor
                             }
