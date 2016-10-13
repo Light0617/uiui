@@ -170,7 +170,12 @@
                     </div>
                 </div>
             </div>
-            <div class="tile meta-tile half">
+            <div class="tile meta-tile half" ng-if="!poolDataModel.showFmcDetails()">
+                <div class="alert alert-info" role="alert">
+                    <h3>{{'storage-pool-dc2-compression-not-configured' | translate}}</h3>
+                </div>
+            </div>
+            <div class="tile meta-tile half" ng-if="poolDataModel.showFmcDetails()">
                 <div class="two-column-header-row">
                     <h2>FMD DC2 Compression</h2>
                     <p>{{ 'storage-pool-compressed-parity-group-ids' | translate}}

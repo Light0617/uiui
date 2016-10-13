@@ -249,6 +249,7 @@
     "storage-pool-tier-information": "Tier Information",
     "storage-pool-deduplication": "Deduplication",
     "storage-pool-deduplication-enabled": "Deduplication Enabled",
+    "storage-pool-dc2-compression-not-configured": "FMD DC2 Compression is not configured",
 
     "HDP": "Thin",
     "HDT": "Tiered",
