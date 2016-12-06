@@ -329,7 +329,7 @@ angular.module('rainierApp')
                         confirmTitle: 'storage-pool-delete-one-confirmation',
                         confirmMessage: 'storage-pool-delete-current-content',
                         enabled: function () {
-                            return true;
+                            return result.label.indexOf('HSA-reserved') === -1;
                         },
                         onClick: function (orchestratorService) {
 
@@ -348,7 +348,7 @@ angular.module('rainierApp')
                         icon: 'icon-edit',
                         type: 'link',
                         enabled: function () {
-                            return true;
+                            return result.label.indexOf('HSA-reserved') === -1;
                         },
                         onClick: function () {
                             $location.path(['storage-systems', storageSystemId,
