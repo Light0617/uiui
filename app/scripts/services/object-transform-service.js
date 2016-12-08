@@ -304,7 +304,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.storageSystemId,
-                        details: [item.model]
+                        details: [item.productModel]
                     },
                     {
                         left: false,
