@@ -15,6 +15,7 @@ angular.module('rainierApp')
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var GET_FABRICS_PATH = 'san-fabrics';
         var tiers;
+        var capacitySavingsSummary;
         var storageSystemsInCacheCount = 0;
         var virtualStorageMachineCount = 0;
 
@@ -37,6 +38,7 @@ angular.module('rainierApp')
                 }
                 var model = objectTransformService.transformToStorageSummaryModel(result, fileSummary, dataProtection);
                 objectTransformService.transformTierSummary(tiers, result.tierSummaryItems, model);
+                objectTransformService.transformSavingsSummary(capacitySavingsSummary, model);
 
                 $scope.model = model;
                 $scope.model.summary.storageSystemsInCacheCount = storageSystemsInCacheCount;
@@ -83,6 +85,9 @@ angular.module('rainierApp')
             else {
                 transformService(false);
             }
+            return orchestratorService.capacitySavingsSummary();
+        }).then(function (result) {
+            capacitySavingsSummary = result;
         });
 
 

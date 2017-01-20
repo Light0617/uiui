@@ -71,6 +71,18 @@
                                 <span ng-repeat="externalParityGroupId in poolDataModel.externalParityGroupIds track by $index">{{externalParityGroupId}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </div>
 
+                            <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
+                                <p class="label">{{ 'data-reduction-savings-ratio' | translate }}</p>
+                                <span ng-if="poolDataModel.dataReductionSavingsRate !== 0"> {{poolDataModel.dataReductionSavingsRate}} : 1&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <span ng-if="poolDataModel.dataReductionSavingsRate === 0"> - </span>
+                            </div>
+
+                            <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
+                                <p class="label">{{ 'capacity-efficiency-savings-ratio' | translate }}</p>
+                                <span ng-if="poolDataModel.capacityEfficiencyRate !== 0"> {{poolDataModel.capacityEfficiencyRate}} : 1&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <span ng-if="poolDataModel.capacityEfficiencyRate === 0"> - </span>
+                            </div>
+
 
                 </div>
 

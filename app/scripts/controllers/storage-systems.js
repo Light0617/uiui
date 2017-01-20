@@ -12,6 +12,7 @@ angular.module('rainierApp')
                                                 $location, diskSizeService, paginationService, capacityAlertService, dpAlertService, jobsAlertService, hwAlertService) {
 
         var dataProtection;
+        var capacitySavings;
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
         var tiers;
         var unified;
@@ -34,6 +35,7 @@ angular.module('rainierApp')
                 result.unified = unified ? true : false;
                 var summaryModel = objectTransformService.transformToStorageSummaryModel(result, fileSummary, dataProtection);
                 objectTransformService.transformTierSummary(tiers, result.tierSummaryItems, summaryModel);
+                objectTransformService.transformSavingsSummary(capacitySavings, summaryModel);
                 summaryModel.title = synchronousTranslateService.translate('common-storage-systems');
                 $scope.summaryModel = summaryModel;
             });
@@ -72,6 +74,9 @@ angular.module('rainierApp')
                 else {
                     transformService();
                 }
+            });
+            orchestratorService.capacitySavingsSummary().then(function(result) {
+                capacitySavings = result;
             });
             var dataModel = {
                 view: 'tile',

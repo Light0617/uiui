@@ -98,6 +98,7 @@
     "file-physical-capacity-tooltip": "Physical Capacity - Sum of capacities of all the file pools in the system. 0, if there are no file pools",
     "common-label-used-breakdown": "Breakdown of Used Data",
     "common-label-tier-breakdown": "Tier Breakdown",
+    "common-label-savings-breakdown": "Savings Breakdown",
     "common-dashboard": "Dashboard",
     "common-storage-systems": "Storage Systems",
     "common-storage-system": "Storage System",
@@ -961,5 +962,8 @@
     "snap-tooltip": "Snap – Snapshot without cascade capability",
     "snap-on-snap-tooltip": "Snap on Snap – Snapshot with cascade capability",
     "snap-clone-tooltip": "Snap Clone – Full copy of snapshot",
-    "clone-tooltip": "Clone – ShadowImage (SI)"
+    "clone-tooltip": "Clone – ShadowImage (SI)",
+
+    "data-reduction-savings-ratio": "Data Reduction Savings Ratio",
+    "capacity-efficiency-savings-ratio": "Capacity Efficiency Savings Ratio"
 }
