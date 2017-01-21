@@ -965,6 +965,6 @@
     "snap-clone-tooltip": "Snap Clone – Full copy of snapshot",
     "clone-tooltip": "Clone – ShadowImage (SI)",
 
-    "data-reduction-savings-ratio": "Data Reduction Savings Ratio",
-    "capacity-efficiency-savings-ratio": "Capacity Efficiency Savings Ratio"
+    "data-reduction-savings-ratio": "Data Reduction",
+    "capacity-efficiency-savings-ratio": "Capacity Efficiency"
 }
