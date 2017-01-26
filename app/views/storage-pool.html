@@ -69,6 +69,7 @@
                             <div class="label-value-container">
                                 <p class="label">{{ 'storage-pool-external-parity-group-ids' | translate}}</p>
                                 <span ng-repeat="externalParityGroupId in poolDataModel.externalParityGroupIds track by $index">{{externalParityGroupId}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <span ng-if="poolDataModel.externalParityGroupIds.length === 0"> - </span>
                             </div>
 
                             <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
