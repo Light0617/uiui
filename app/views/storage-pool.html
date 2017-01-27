@@ -64,18 +64,21 @@
                                 <span ng-repeat="parityGroup in poolDataModel.parityGroups track by $index">{{parityGroup.id}}<span
                                         class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
                                         title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <p></p>
                             </div>
 
                             <div class="label-value-container">
                                 <p class="label">{{ 'storage-pool-external-parity-group-ids' | translate}}</p>
                                 <span ng-repeat="externalParityGroupId in poolDataModel.externalParityGroupIds track by $index">{{externalParityGroupId}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <span ng-if="poolDataModel.externalParityGroupIds.length === 0"> - </span>
+                                <p></p>
                             </div>
 
                             <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
                                 <p class="label">{{ 'data-reduction-savings-ratio' | translate }}</p>
                                 <span ng-if="poolDataModel.dataReductionSavingsRate !== 0"> {{poolDataModel.dataReductionSavingsRate}} : 1&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <span ng-if="poolDataModel.dataReductionSavingsRate === 0"> - </span>
+                                <p></p>
                             </div>
 
                             <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
