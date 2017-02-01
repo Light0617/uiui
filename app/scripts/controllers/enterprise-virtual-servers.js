@@ -118,6 +118,14 @@ angular.module('rainierApp')
 
             dataModel.gridSettings = [
                 {
+                    title: synchronousTranslateService.translate('header-name'),
+                    sizeClass: 'sixth',
+                    sortField: 'name',
+                    getDisplayValue: function (item) {
+                        return item.name;
+                    }
+                },
+                {
                     title: synchronousTranslateService.translate('status'),
                     sizeClass: 'twelfth',
                     sortField: 'isOnline',
@@ -140,15 +148,6 @@ angular.module('rainierApp')
                     getDisplayValue: function (item) {
                         return item.clusterNodeId;
                     }
-                },
-                {
-                    title: synchronousTranslateService.translate('header-name'),
-                    sizeClass: 'sixth',
-                    sortField: 'name',
-                    getDisplayValue: function (item) {
-                        return item.name;
-                    }
-
                 },
                 {
                     title: synchronousTranslateService.translate('common-ip-address'),
