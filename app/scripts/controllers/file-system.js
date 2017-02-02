@@ -98,6 +98,34 @@ angular.module('rainierApp')
                 }
             };
 
+            dataModel.gridSettings = [
+                {
+                    title: 'Name',
+                    sizeClass: 'twelfth',
+                    sortField: 'name',
+                    getDisplayValue: function (item) {
+                        return item.name;
+                    }
+
+                },
+                {
+                    title: 'Type',
+                    sizeClass: 'twelfth',
+                    sortField: 'type',
+                    getDisplayValue: function (item) {
+                        return item.type;
+                    }
+                },
+                {
+                    title: 'Path',
+                    sizeClass: 'quarter',
+                    sortField: 'fileSystemPath',
+                    getDisplayValue: function (item) {
+                        return item.fileSystemPath;
+                    }
+                }
+            ];
+
             var summaryModelActions = [
                 {
                     icon: 'icon-delete',
