@@ -1251,7 +1251,7 @@ angular.module('rainierApp')
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('free-capacity-tooltip'),
-                                capacity: item.physicalTotal,
+                                capacity: item.physicalFree,
                                 legendDisplay: item.physicalFree,
                                 color: thinFreeColor
                             },
@@ -1325,7 +1325,7 @@ angular.module('rainierApp')
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('free-capacity-tooltip'),
-                            capacity: item.physicalTotal,
+                            capacity: item.physicalFree,
                             legendDisplay: item.physicalFree,
                             color: thinFreeColor
                         }
