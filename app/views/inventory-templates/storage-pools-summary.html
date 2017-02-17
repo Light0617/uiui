@@ -3,8 +3,15 @@
         <div class="alert-panel quarter">
             <alert-tile service="dataModel.capacityAlert"></alert-tile>
         </div>
-    <div class="tile data-viz-container fifth" ng-repeat="usageGraph in dataModel.usageGraphs">
-            <array-polar-data-visualization class="utilization dataviz-legend" ng-model="usageGraph"
-                                            no-break-down="true"></array-polar-data-visualization>        
+    <div class="tile data-viz-container fifth dv-pdv" ng-repeat="usageGraph in dataModel.usageGraphs">
+            <array-polar-data-visualization class="utilization" ng-model="usageGraph"
+                                            no-break-down="true" no-legend-box="true"></array-polar-data-visualization>
+
+            <ul class="legend">
+                <li class="legend-item thin-used" title="{{usageGraph.items[0][0].tooltip}}">{{usageGraph.items[0][0].label}} {{usageGraph.items[0][0].capacity.size}} {{usageGraph.items[0][0].capacity.unit}}</li>
+                <li class="legend-item thin-free" title="{{usageGraph.items[0][1].tooltip}}">{{usageGraph.items[0][1].label}} {{usageGraph.items[0][1].capacity.size}} {{usageGraph.items[0][1].capacity.unit}}</li>
+                <li class="legend-item subscribed-capacity" title="{{usageGraph.items[1][0].tooltip}}">{{usageGraph.items[1][0].label}} {{usageGraph.items[1][0].percentage}}%</li>
+            </ul>
+        
     </div>
 </div>
