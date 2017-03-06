@@ -123,8 +123,8 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title: item.storageSystemId,
-                        details: [item.storageSystemName, item.svpIpAddress]
+                        title: item.storageSystemName,
+                        details: [item.storageSystemId, item.svpIpAddress]
                     },
                     {
                         left: false,
@@ -432,8 +432,8 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title: item.volumeId,
-                        details: [item.label]
+                        title: item.label,
+                        details: [item.volumeId]
                     },
                     {
                         left: false,
@@ -673,8 +673,8 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title: item.storagePoolId,
-                        details: [item.label]
+                        title:   item.label,
+                        details: [item.storagePoolId]
                     },
                     {
                         left: false,
