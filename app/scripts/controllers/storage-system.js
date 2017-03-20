@@ -16,6 +16,7 @@ angular.module('rainierApp')
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
+        var capacitySavings;
         var tierSummary;
         var tiers;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -110,7 +111,10 @@ angular.module('rainierApp')
             });
         }
 
-        orchestratorService.tiers().then(function (result) {
+        orchestratorService.capacitySavingsSummaryForStorageSystem(storageSystemId).then(function (result) {
+            capacitySavings = result;
+            return orchestratorService.tiers();
+        }).then(function (result) {
             tiers = result;
             return orchestratorService.tierSummary(storageSystemId);
         }).then(function (result) {
@@ -129,6 +133,7 @@ angular.module('rainierApp')
                     filePoolsSummary = result;
                     var summaryModel = objectTransformService.transformToStorageSummaryModel($scope.dataModel, filePoolsSummary, dataProtection);
                     objectTransformService.transformTierSummary(tiers, tierSummary, summaryModel);
+                    objectTransformService.transformSavingsSummary(capacitySavings, summaryModel);
                     summaryModel.title = title;
                     $scope.summaryModel = summaryModel;
                 });
@@ -148,6 +153,7 @@ angular.module('rainierApp')
             else {
                 var summaryModel = objectTransformService.transformToStorageSummaryModel(result, false, dataProtection);
                 objectTransformService.transformTierSummary(tiers, tierSummary, summaryModel);
+                objectTransformService.transformSavingsSummary(capacitySavings, summaryModel);
                 summaryModel.title = title;
                 $scope.summaryModel = summaryModel;
             }

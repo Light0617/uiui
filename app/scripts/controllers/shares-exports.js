@@ -28,7 +28,7 @@ angular.module('rainierApp')
                         return input.uuid === shareExport.evsUuid;
                     });
                 })), function (item) {
-                    return { 'label' : item.name };
+                    return { 'label' : item.name, 'obj' : item };
                 }),
                 allItemsSelected: false,
                 search: {

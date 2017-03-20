@@ -106,6 +106,15 @@ angular.module('rainierApp')
                     return result;
                 });
             },
+            capacitySavingsSummaryForStorageSystem: function (storageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('capacity-savings/storage-systems', storageSystemId).one('summary').get());
+            },
+
+            capacitySavingsSummary: function () {
+                return Restangular.one('capacity-savings/summary').get().then(function (result) {
+                    return result;
+                });
+            },
             hosts: function () {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('compute/servers').get().then(function (result) {
                     _.forEach(result.servers, function (item) {

@@ -304,7 +304,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.storageSystemId,
-                        details: [item.model]
+                        details: [item.productModel]
                     },
                     {
                         left: false,
@@ -1109,6 +1109,14 @@ angular.module('rainierApp')
                     }
                 });
             },
+
+            transformSavingsSummary: function(capacitySavingsSummary, model) {
+                model.arrayDataVisualizationModel.savingsBreakdown.push({name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
+                    savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ? capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '});
+                model.arrayDataVisualizationModel.savingsBreakdown.push({name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
+                    savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ? capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '});
+            },
+
             transformStorageSystemsSummary: function (item) {
                 transformStorageSystemsSummary(item);
             },
@@ -1243,7 +1251,7 @@ angular.module('rainierApp')
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('free-capacity-tooltip'),
-                                capacity: item.physicalTotal,
+                                capacity: item.physicalFree,
                                 legendDisplay: item.physicalFree,
                                 color: thinFreeColor
                             },
@@ -1317,7 +1325,7 @@ angular.module('rainierApp')
                             tooltip: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('free-capacity-tooltip'),
-                            capacity: item.physicalTotal,
+                            capacity: item.physicalFree,
                             legendDisplay: item.physicalFree,
                             color: thinFreeColor
                         }
@@ -1390,11 +1398,23 @@ angular.module('rainierApp')
                         tiersBreakdownLabel: (function (key) {
                             return synchronousTranslateService.translate(key);
                         })('common-label-tier-breakdown'),
+                        savingsBreakdownLabel: (function (key) {
+                            return synchronousTranslateService.translate(key);
+                        })('common-label-savings-breakdown'),
                         showTiersBreakDown: function () {
                             this.tiers = true;
+                            this.savings = false;
+                            this.protection = false;
                         },
                         showProtectionBreakDown: function () {
+                            this.protection = true;
                             this.tiers = false;
+                            this.savings = false;
+                        },
+                        showSavingsBreakDown: function () {
+                            this.savings = true;
+                            this.tiers = false;
+                            this.protection = false;
                         },
                         switchToUnified: function () {
                             this.view = 'unified';
@@ -1410,6 +1430,8 @@ angular.module('rainierApp')
                             this.items = fileItems;
                         },
                         tiers: true,
+                        protection: false,
+                        savings: false,
                         view: 'block',
                         unified: item.unified,
                         total: {
@@ -1422,6 +1444,7 @@ angular.module('rainierApp')
                             capacity: item.total
                         },
                         tierBreakdown: [],
+                        savingsBreakdown: [],
                         items: blockItems
                     },
                     alerts: {

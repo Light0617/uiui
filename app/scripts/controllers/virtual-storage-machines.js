@@ -58,9 +58,9 @@ angular.module('rainierApp')
                     {
                         title: synchronousTranslateService.translate('storage-systems-model'),
                         sizeClass: 'sixth',
-                        sortField: 'model',
+                        sortField: 'productModel',
                         getDisplayValue: function (item) {
-                            return item.model;
+                            return item.productModel;
                         }
 
                     },

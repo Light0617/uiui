@@ -11,7 +11,7 @@ window.rainierAppMock = angular.module('rainierAppMock', [
 
 rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSystemMock, dataProtectionMock, storagePoolMock,
                             serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
-                            filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock,
+                            filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock, savingsSummaryMock,
                             parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
                             replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
                             monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock) {
@@ -38,6 +38,7 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
     dataProtectionMock.init();
     ethernetInterfaceMock.init();
     tierSummaryMock.init();
+    savingsSummaryMock.init();
     tiersMock.init();
     parityGroupMock.init();
     externalParityGroupMock.init();
@@ -142,6 +143,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.handle(urlResult);
             case 'data-protection':
                 return authMock.authenticateAndCall(urlResult, dataProtectionMock.handle);
+            case 'capacity-savings':
+                return authMock.authenticateAndCall(urlResult, savingsSummaryMock.handle);
             case 'compute':
             case 'server':
                 return authMock.authenticateAndCall(urlResult, serversMock.handle);
@@ -244,6 +247,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, volumepairmock.handle);
             case 'tiers':
                 return authMock.authenticateAndCall(urlResult, tierSummaryMock.handle);
+            case 'capacity-savings':
+                return authMock.authenticateAndCall(urlResult, savingsSummaryMock.handle);
             //File
             case 'file-pool-summary':
                 return authMock.authenticateAndCall(urlResult, unifiedReportingMock.handle);
