@@ -23,6 +23,7 @@ angular.module('rainierApp')
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
+        var getPortsSort = '?sort=storagePortId:ASC';
         if (!selectedServers || selectedServers.length === 0) {
             $location.path('hosts');
         }
@@ -73,7 +74,7 @@ angular.module('rainierApp')
 
             orchestratorService.storageSystem(selectedStorageSystem.storageSystemId).then(function(result) {
                 $scope.dataModel.storageSystemModel = result.model;
-                paginationService.getAll(null, getPortsPath, true, selectedStorageSystem.storageSystemId, result.model, $scope.dataModel);
+                paginationService.getAll(null, getPortsPath + getPortsSort, true, selectedStorageSystem.storageSystemId, result.model, $scope.dataModel);
             });
 
             paginationService.getAllPromises(null, 'replication-groups', true, selectedStorageSystem.storageSystemId,

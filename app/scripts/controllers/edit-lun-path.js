@@ -21,6 +21,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                                                      attachVolumeService, constantService) {
 
     var GET_PORTS_PATH = 'storage-ports';
+    var GET_PORTS_SORT = '?sort=storagePortId:ASC';
     var GET_HOST_GROUPS_PATH = 'host-groups';
     var idCoordinates = {};
     var volumeIdMap = {};
@@ -42,7 +43,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
     orchestratorService.storageSystem(storageSystemId).then(function(result) {
         $scope.dataModel.storageSystemModel = result.model;
-        paginationService.getAll(null, GET_PORTS_PATH, true, storageSystemId, result.model, $scope.dataModel);
+        paginationService.getAll(null, GET_PORTS_PATH + GET_PORTS_SORT, true, storageSystemId, result.model, $scope.dataModel);
     });
 
     var dataModel = viewModelService.newWizardViewModel(['attach', 'paths']);
