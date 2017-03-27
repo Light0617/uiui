@@ -1,6 +1,6 @@
 <div ng-class="atTop ? 'inline right' : 'inline left'" ng-if="action.type  === 'dropdown'"
      ng-repeat-start="action in  dataModel.getActions()" ng-disabled="!action.enabled()" dropdown>
-        <button type="button" class="btn icon-btn icon-sm nopadding" dropdown-toggle ng-attr-title="{{action.tooltip | translate }}">
+        <button type="button" class="btn icon-btn icon-sm nopadding" dropdown-toggle ng-attr-title="{{action.tooltip | translate }}" ng-disabled="!action.enabled()">
             <span ng-attr-class="{{action.icon}}"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
