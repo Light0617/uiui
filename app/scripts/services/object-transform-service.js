@@ -1533,7 +1533,7 @@ angular.module('rainierApp')
                         items: [
                             {
                                 type: 'link',
-                                title: 'storage-attach-volumes',
+                                title: 'host-attach-existing-volumes',
                                 onClick: function () {
                                     ShareDataService.push('selectedServers', [item]);
                                     $location.path('/hosts/attach-volumes');
