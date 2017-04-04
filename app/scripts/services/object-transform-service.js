@@ -31,23 +31,33 @@ angular.module('rainierApp')
         var capacity = function (usedCapacity, freeCapacity) {
             return [
                 {
+                    capacity: usedCapacity,
                     label: (function (key) {
                         return synchronousTranslateService.translate(key);
                     })('common-label-used'),
                     tooltip: (function (key) {
-                        return synchronousTranslateService.translate(key);
+                        var usedCapacityObject = usedCapacity;
+                        var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                        var variable = {
+                            usedCapacity: usedCapacityAmount
+                        };
+                        return synchronousTranslateService.translate(key, variable);
                     })('used-capacity-tooltip'),
-                    capacity: usedCapacity,
                     color: thinUsedColor
                 },
                 {
+                    capacity: freeCapacity,
                     label: (function (key) {
                         return synchronousTranslateService.translate(key);
                     })('common-label-free'),
                     tooltip: (function (key) {
-                        return synchronousTranslateService.translate(key);
+                        var freeCapacityObject = freeCapacity;
+                        var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
+                        var variable = {
+                            freeCapacity: freeCapacityAmount
+                        };
+                        return synchronousTranslateService.translate(key, variable);
                     })('free-capacity-tooltip'),
-                    capacity: freeCapacity,
                     color: thinFreeColor
                 }
             ];
@@ -1165,7 +1175,7 @@ angular.module('rainierApp')
                                 })('file-physical-capacity-tooltip'),
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
-                                })('common-label-physical-capacity'),
+                                })('common-label-file-physical-capacity'),
                                 color: physicalCapacityColor
                             },
                             {
@@ -1203,13 +1213,18 @@ angular.module('rainierApp')
                         ],
                         [
                             {
+                                capacity: item.physicalUsed,
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-used'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var usedCapacityObject = item.physicalUsed;
+                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                    var variable = {
+                                        usedCapacity: usedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('used-capacity-tooltip'),
-                                capacity: item.physicalUsed,
                                 breakdownLabel: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-used-breakdown'),
@@ -1245,13 +1260,18 @@ angular.module('rainierApp')
                                 ]
                             },
                             {
+                                capacity: item.physicalFree,
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-free'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var freeCapacityObject = item.physicalFree;
+                                    var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
+                                    var variable = {
+                                        freeCapacity: freeCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('free-capacity-tooltip'),
-                                capacity: item.physicalFree,
                                 legendDisplay: item.physicalFree,
                                 color: thinFreeColor
                             },
@@ -1271,47 +1291,51 @@ angular.module('rainierApp')
                 var blockItems = [
                     [
                         {
+                            capacity: item.poolCapacity,
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-allocated'),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var allocatedCapacityObject = item.poolCapacity;
+                                var allocatedCapacityAmount = allocatedCapacityObject.size + allocatedCapacityObject.unit;
+                                var variable = {
+                                    allocatedCapacity: allocatedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('allocated-capacity-tooltip'),
-                            capacity: item.poolCapacity,
                             color: allocatedColor
                         },
                         {
+                            capacity: item.unallocatedToPoolsCapacity,
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-unallocated'),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var unallocatedCapacityObject = item.unallocatedToPoolsCapacity;
+                                var unallocatedCapacityAmount = unallocatedCapacityObject.size + unallocatedCapacityObject.unit;
+                                var variable = {
+                                    unallocatedCapacity: unallocatedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('unallocated-capacity-tooltip'),
-                            capacity: item.unallocatedToPoolsCapacity,
                             legendDisplay: item.unallocatedToPoolsCapacity,
                             color: unallocatedColor
-                        },
-                        {
-                            percentage: item.subscribedCapacityPercentage,
-                            capacity: diskSizeService.getDisplaySize(item.subscribedCapacity),
-                            tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
-                            })('subscription-capacity-tooltip'),
-                            label: (function (key) {
-                                return synchronousTranslateService.translate(key);
-                            })('common-label-subscription'),
-                            color: subscribedCapacityColor
                         }
                     ],
                     [
                         {
+                            capacity: item.physicalUsed,
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-used'),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var usedCapacityObject = item.physicalUsed;
+                                var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                var variable = {
+                                    usedCapacity: usedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('used-capacity-tooltip'),
-                            capacity: item.physicalUsed,
                             breakdownLabel: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-used-breakdown'),
@@ -1319,15 +1343,51 @@ angular.module('rainierApp')
                             color: thinUsedColor
                         },
                         {
+                            capacity: item.physicalFree,
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-free'),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var freeCapacityObject = item.physicalFree;
+                                var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
+                                var variable = {
+                                    freeCapacity: freeCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('free-capacity-tooltip'),
-                            capacity: item.physicalFree,
                             legendDisplay: item.physicalFree,
                             color: thinFreeColor
+                        }
+                    ],
+                    [
+                        {
+                            percentage: item.subscribedCapacityPercentage,
+                            tooltip: (function (key) {
+                                var subscribedCapacityAmount = item.subscribedCapacityPercentage.toString() + '%';
+                                var variable = {
+                                    subscribedCapacity: subscribedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
+                            })('subscription-capacity-tooltip'),
+                            label: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('common-label-subscription'),
+                            color: subscribedCapacityColor
+                        },
+                        {
+                            capacity: diskSizeService.getDisplaySize(item.totalUsableCapacity),
+                            tooltip: (function (key) {
+                                var physicalCapacityObject = diskSizeService.getDisplaySize(item.totalUsableCapacity);
+                                var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
+                                var variable = {
+                                    physicalCapacity: physicalCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
+                            })('physical-capacity-tooltip'),
+                            label: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('common-label-physical-capacity'),
+                            color: physicalCapacityColor
                         }
                     ]
                 ];
@@ -1335,13 +1395,18 @@ angular.module('rainierApp')
                     var fileItems = [
                         [
                             {
+                                capacity: item.poolCapacity,
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-allocated'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var allocatedCapacityObject = item.poolCapacity;
+                                    var allocatedCapacityAmount = allocatedCapacityObject.size + allocatedCapacityObject.unit;
+                                    var variable = {
+                                        allocatedCapacity: allocatedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('allocated-capacity-tooltip'),
-                                capacity: item.poolCapacity,
                                 color: allocatedColor
                             },
                             {
@@ -1349,7 +1414,12 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-unallocated'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var unallocatedCapacityObject = item.unallocatedToPoolsCapacity;
+                                    var unallocatedCapacityAmount = unallocatedCapacityObject.size + unallocatedCapacityObject.unit;
+                                    var variable = {
+                                        unallocatedCapacity: unallocatedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('unallocated-capacity-tooltip'),
                                 capacity: item.unallocatedToPoolsCapacity,
                                 legendDisplay: item.unallocatedToPoolsCapacity,
@@ -1371,7 +1441,7 @@ angular.module('rainierApp')
                             {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
-                                })('common-label-physical-capacity'),
+                                })('common-label-file-physical-capacity'),
                                 tooltip: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('file-physical-capacity-tooltip'),
@@ -1651,7 +1721,11 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-subscription'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var subscribedCapacityAmount = storageSystem.subscribedCapacityPercentage.toString() + '%';
+                                    var variable = {
+                                        subscribedCapacity: subscribedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('subscription-capacity-tooltip'),
                                 percentage: storageSystem.subscribedCapacityPercentage,
                                 capacity: diskSizeService.getDisplaySize(storageSystem.subscribedCapacity),
@@ -1662,7 +1736,12 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-unallocated'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var unallocatedCapacityObject = diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity);
+                                    var unallocatedCapacityAmount = unallocatedCapacityObject.size + unallocatedCapacityObject.unit;
+                                    var variable = {
+                                        unallocatedCapacity: unallocatedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('unallocated-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity),
                                 color: unallocatedColor
@@ -1835,7 +1914,13 @@ angular.module('rainierApp')
                             })('common-label-subscription'),
                             color: allocatedColor,
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var percentageValue = (item.totalCapacity.value === 0) ? 0 : Math.round(
+                                    item.usedSubscribedCapacity * 100 / item.totalCapacity.value);
+                                var subscribedCapacityAmount = percentageValue + '%';
+                                var variable = {
+                                    subscribedCapacity: subscribedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('subscription-capacity-tooltip')
                         },
                         {
@@ -1893,7 +1978,8 @@ angular.module('rainierApp')
                                 {
                                     percentage: 100,
                                     color: unallocatedColor
-                                }],
+                                }
+                            ],
                             newPageAssignment: tier.bufferSpace.newPageAssignment,
                             tierRelocation: tier.bufferSpace.tierRelocation,
                             performanceUtilization: tier.performanceUtilization
@@ -1909,12 +1995,16 @@ angular.module('rainierApp')
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var subscribedCapacityAmount = item.usedSubscription.toString() + '%';
+                                var variable = {
+                                    subscribedCapacity: subscribedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('subscription-capacity-tooltip'),
                             color: allocatedColor
                         },
                         {
-                            percentage: item.subscriptionLimit.value,
+                            percentage: item.subscriptionLimit.value ? item.subscriptionLimit.value : 100,
                             color: unallocatedColor
                         }
                     ]);

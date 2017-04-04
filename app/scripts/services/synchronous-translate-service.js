@@ -14,8 +14,8 @@ angular.module('rainierApp')
         var translateFilter = $filter('translate');
 
         return {
-            translate: function (key) {
-                return translateFilter(key);
+            translate: function (key, args) {
+                return translateFilter(key, args);
             }
         };
     });
