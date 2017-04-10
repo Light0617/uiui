@@ -16,6 +16,7 @@ angular.module('rainierApp')
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
         var physicalCapacityColor = '#66A2FF';
+        var availableParityGroupCapacityColor = '#6F7CA8';
         var fileUsedCapacityColor = '#3D84F5';
         var fileFreeCapacityColor = '#265CB3';
         var thinUsedColor = '#7BC242';
@@ -1387,7 +1388,7 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-physical-capacity'),
-                            color: physicalCapacityColor
+                            color: availableParityGroupCapacityColor
                         }
                     ]
                 ];
