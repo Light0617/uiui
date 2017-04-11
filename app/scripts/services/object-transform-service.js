@@ -1735,15 +1735,15 @@ angular.module('rainierApp')
                             {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
-                                })('common-label-unallocated'),
+                                })('common-label-physical-capacity'),
                                 tooltip: (function (key) {
-                                    var unallocatedCapacityObject = diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity);
-                                    var unallocatedCapacityAmount = unallocatedCapacityObject.size + unallocatedCapacityObject.unit;
+                                    var physicalCapacityObject = diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity);
+                                    var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
                                     var variable = {
-                                        unallocatedCapacity: unallocatedCapacityAmount
+                                        physicalCapacity: physicalCapacityAmount
                                     };
                                     return synchronousTranslateService.translate(key, variable);
-                                })('unallocated-capacity-tooltip'),
+                                })('physical-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity),
                                 color: unallocatedColor
                             }
