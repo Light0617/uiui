@@ -1140,7 +1140,12 @@ angular.module('rainierApp')
                         {
                             capacity: diskSizeService.getDisplaySize(dataProtection.protectedCapacity),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var protectedCapacityObject = diskSizeService.getDisplaySize(dataProtection.protectedCapacity);
+                                var protectedCapacityAmount = protectedCapacityObject.size + protectedCapacityObject.unit;
+                                var variable = {
+                                    protectedCapacity: protectedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('protected-capacity-tooltip'),
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
@@ -1149,7 +1154,12 @@ angular.module('rainierApp')
                         {
                             capacity: diskSizeService.getDisplaySize(dataProtection.unprotectedCapacity),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var unprotectedCapacityObject = diskSizeService.getDisplaySize(dataProtection.unprotectedCapacity);
+                                var unprotectedCapacityAmount = unprotectedCapacityObject.size + unprotectedCapacityObject.unit;
+                                var variable = {
+                                    unprotectedCapacity: unprotectedCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('unprotected-capacity-tooltip'),
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
@@ -1158,7 +1168,12 @@ angular.module('rainierApp')
                         {
                             capacity: diskSizeService.getDisplaySize(dataProtection.secondaryCapacity),
                             tooltip: (function (key) {
-                                return synchronousTranslateService.translate(key);
+                                var secondaryCapacityObject = diskSizeService.getDisplaySize(dataProtection.secondaryCapacity);
+                                var secondaryCapacityAmount = secondaryCapacityObject.size + secondaryCapacityObject.unit;
+                                var variable = {
+                                    secondaryCapacity: secondaryCapacityAmount
+                                };
+                                return synchronousTranslateService.translate(key, variable);
                             })('secondary-capacity-tooltip'),
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
@@ -1172,7 +1187,12 @@ angular.module('rainierApp')
                             {
                                 capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var physicalCapacityObject = diskSizeService.getDisplaySize(file.physicalCapacity);
+                                    var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
+                                    var variable = {
+                                        filePhysicalCapacity: physicalCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('file-physical-capacity-tooltip'),
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
@@ -1184,7 +1204,11 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-allocated'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var poolCapacityAmount = item.poolCapacity.size + item.poolCapacity.unit;
+                                    var variable = {
+                                        allocatedCapacity: poolCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('allocated-capacity-tooltip'),
                                 capacity: item.poolCapacity,
                                 color: allocatedColor
@@ -1194,22 +1218,15 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-unallocated'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var unallocatedToPoolsCapacityAmount = item.unallocatedToPoolsCapacity.size + item.unallocatedToPoolsCapacity.unit;
+                                    var variable = {
+                                        unallocatedCapacity: unallocatedToPoolsCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('unallocated-capacity-tooltip'),
                                 capacity: item.unallocatedToPoolsCapacity,
                                 legendDisplay: item.unallocatedToPoolsCapacity,
                                 color: unallocatedColor
-                            },
-                            {
-                                percentage: item.subscribedCapacityPercentage,
-                                capacity: diskSizeService.getDisplaySize(item.subscribedCapacity),
-                                tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
-                                })('subscription-capacity-tooltip'),
-                                label: (function (key) {
-                                    return synchronousTranslateService.translate(key);
-                                })('common-label-subscription'),
-                                color: subscribedCapacityColor
                             }
                         ],
                         [
@@ -1234,7 +1251,12 @@ angular.module('rainierApp')
                                     {
                                         capacity: diskSizeService.getDisplaySize(dataProtection.protectedCapacity),
                                         tooltip: (function (key) {
-                                            return synchronousTranslateService.translate(key);
+                                            var protectedCapacityObject = diskSizeService.getDisplaySize(dataProtection.protectedCapacity);
+                                            var protectedCapacityAmount = protectedCapacityObject.size + protectedCapacityObject.unit;
+                                            var variable = {
+                                                protectedCapacity: protectedCapacityAmount
+                                            };
+                                            return synchronousTranslateService.translate(key, variable);
                                         })('protected-capacity-tooltip'),
                                         label: (function (key) {
                                             return synchronousTranslateService.translate(key);
@@ -1243,7 +1265,12 @@ angular.module('rainierApp')
                                     {
                                         capacity: diskSizeService.getDisplaySize(dataProtection.unprotectedCapacity),
                                         tooltip: (function (key) {
-                                            return synchronousTranslateService.translate(key);
+                                            var unprotectedCapacityObject = diskSizeService.getDisplaySize(dataProtection.unprotectedCapacity);
+                                            var unprotectedCapacityAmount = unprotectedCapacityObject.size + unprotectedCapacityObject.unit;
+                                            var variable = {
+                                                unprotectedCapacity: unprotectedCapacityAmount
+                                            };
+                                            return synchronousTranslateService.translate(key, variable);
                                         })('unprotected-capacity-tooltip'),
                                         label: (function (key) {
                                             return synchronousTranslateService.translate(key);
@@ -1252,7 +1279,12 @@ angular.module('rainierApp')
                                     {
                                         capacity: diskSizeService.getDisplaySize(dataProtection.secondaryCapacity),
                                         tooltip: (function (key) {
-                                            return synchronousTranslateService.translate(key);
+                                            var secondaryCapacityObject = diskSizeService.getDisplaySize(dataProtection.secondaryCapacity);
+                                            var secondaryCapacityAmount = secondaryCapacityObject.size + secondaryCapacityObject.unit;
+                                            var variable = {
+                                                secondaryCapacity: secondaryCapacityAmount
+                                            };
+                                            return synchronousTranslateService.translate(key, variable);
                                         })('secondary-capacity-tooltip'),
                                         label: (function (key) {
                                             return synchronousTranslateService.translate(key);
@@ -1281,10 +1313,46 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-file-pool-used'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var usedCapacityObject = diskSizeService.getDisplaySize(file.usedCapacity);
+                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                    var variable = {
+                                        fileUsedCapacity: usedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('file-used-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(file.usedCapacity),
                                 color: fileUsedCapacityColor
+                            }
+                        ],
+                        [
+                            {
+                                percentage: item.subscribedCapacityPercentage,
+                                tooltip: (function (key) {
+                                    var subscribedCapacityAmount = item.subscribedCapacityPercentage.toString() + '%';
+                                    var variable = {
+                                        subscribedCapacity: subscribedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('subscription-capacity-tooltip'),
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-subscription'),
+                                color: subscribedCapacityColor
+                            },
+                            {
+                                capacity: diskSizeService.getDisplaySize(item.totalUsableCapacity),
+                                tooltip: (function (key) {
+                                    var physicalCapacityObject = diskSizeService.getDisplaySize(item.totalUsableCapacity);
+                                    var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
+                                    var variable = {
+                                        physicalCapacity: physicalCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('physical-capacity-tooltip'),
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-physical-capacity'),
+                                color: availableParityGroupCapacityColor
                             }
                         ]
                     ];
@@ -1433,7 +1501,12 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-file-pool-used'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var usedCapacityObject = diskSizeService.getDisplaySize(file.usedCapacity);
+                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                    var variable = {
+                                        fileUsedCapacity: usedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('file-used-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(file.usedCapacity),
                                 breakdown: 'none',
@@ -1444,7 +1517,12 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-file-physical-capacity'),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var physicalCapacityObject = diskSizeService.getDisplaySize(file.physicalCapacity);
+                                    var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
+                                    var variable = {
+                                        filePhysicalCapacity: physicalCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('file-physical-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
                                 color: fileFreeCapacityColor
@@ -1453,7 +1531,12 @@ angular.module('rainierApp')
                                 percentage: parseInt(file.physicalCapacity > 0 ? file.overcommitCapacity * 100 / file.physicalCapacity : 0),
                                 capacity: diskSizeService.getDisplaySize(file.overcommitCapacity),
                                 tooltip: (function (key) {
-                                    return synchronousTranslateService.translate(key);
+                                    var overcommitCapacityObject = diskSizeService.getDisplaySize(file.overcommitCapacity);
+                                    var overcommitCapacityAmount = overcommitCapacityObject.size + overcommitCapacityObject.unit;
+                                    var variable = {
+                                        overcommitCapacity: overcommitCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
                                 })('overcommit-capacity-tooltip'),
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
