@@ -36,6 +36,7 @@ angular.module('rainierApp')
         var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
         var INVALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-invalid-tooltip');
         var getPortsPath = 'storage-ports';
+        var getPortsSort = '?sort=storagePortId:ASC'
         var getVolumesPath = 'volumes';
         ShareDataService.showProvisioningStatus = true;
         $scope.canSubmit = true;
@@ -190,7 +191,7 @@ angular.module('rainierApp')
             paginationService.get(null, 'volumes', objectTransformService.transformVolume, false, s.storageSystemId).then(updateVolumes);
             orchestratorService.storageSystem(s.storageSystemId).then(function(result) {
                 $scope.dataModel.storageSystemModel = result.model;
-                paginationService.getAll(null, getPortsPath, true, s.storageSystemId, result.model, $scope.dataModel);
+                paginationService.getAll(null, getPortsPath + getPortsSort, true, s.storageSystemId, result.model, $scope.dataModel);
             });
 
             $scope.filterModel = {

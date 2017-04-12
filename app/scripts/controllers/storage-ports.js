@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                               scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
                                               queryService, wwnService, hwAlertService, storageNavigatorSessionService,constantService) {
         var storageSystemId = $routeParams.storageSystemId;
-        var getStoragePortsPath = 'storage-ports';
+        var getSortedStoragePortsPath = 'storage-ports' + '?sort=storagePortId:ASC';
 
         var typeNames = [ { name: 'FIBRE', caption: 'Fibre' },
             { name: 'ENAS', caption: 'Enas' },
@@ -46,7 +46,7 @@ angular.module('rainierApp')
         };
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             $scope.storageSystemModel = result.model;
-            return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId);
+            return paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, true, storageSystemId);
         }).then(function (result) {
             var summaryModel = objectTransformService.transformToPortSummary(result.resources, typeNames);
             summaryModel.title = synchronousTranslateService.translate('common-storage-system-ports');
@@ -74,7 +74,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                            paginationService.getQuery(getSortedStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -94,13 +94,13 @@ angular.module('rainierApp')
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                     paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
+                    paginationService.getQuery(getSortedStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 sliderQuery: function(key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
+                    paginationService.getQuery(getSortedStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
@@ -108,7 +108,7 @@ angular.module('rainierApp')
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject('storagePortId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
+                    paginationService.getQuery(getSortedStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 }
@@ -211,7 +211,7 @@ angular.module('rainierApp')
             };
 
             dataModel.getResources = function(){
-                return paginationService.get(null, getStoragePortsPath, objectTransformService.transformPort, false, storageSystemId);
+                return paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, false, storageSystemId);
             };
 
             dataModel.gridSettings = [
