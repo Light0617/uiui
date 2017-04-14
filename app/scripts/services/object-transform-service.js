@@ -1914,7 +1914,12 @@ angular.module('rainierApp')
                                         {
                                             capacity: diskSizeService.getDisplaySize(item.protectedCapacity),
                                             tooltip: (function (key) {
-                                                return synchronousTranslateService.translate(key);
+                                                var protectedCapacityObject = diskSizeService.getDisplaySize(item.protectedCapacity);
+                                                var protectedCapacityAmount = protectedCapacityObject.size + protectedCapacityObject.unit;
+                                                var variable = {
+                                                    protectedCapacity: protectedCapacityAmount
+                                                };
+                                                return synchronousTranslateService.translate(key, variable);
                                             })('protected-capacity-tooltip'),
                                             label: (function (key) {
                                                 return synchronousTranslateService.translate(key);
@@ -1923,7 +1928,12 @@ angular.module('rainierApp')
                                         {
                                             capacity: diskSizeService.getDisplaySize(item.unprotectedCapacity),
                                             tooltip: (function (key) {
-                                                return synchronousTranslateService.translate(key);
+                                                var unprotectedCapacityObject = diskSizeService.getDisplaySize(item.unprotectedCapacity);
+                                                var unprotectedCapacityAmount = unprotectedCapacityObject.size + unprotectedCapacityObject.unit;
+                                                var variable = {
+                                                    unprotectedCapacity: unprotectedCapacityAmount
+                                                };
+                                                return synchronousTranslateService.translate(key, variable);
                                             })('unprotected-capacity-tooltip'),
                                             label: (function (key) {
                                                 return synchronousTranslateService.translate(key);
@@ -1932,7 +1942,12 @@ angular.module('rainierApp')
                                         {
                                             capacity: diskSizeService.getDisplaySize(item.secondaryCapacity),
                                             tooltip: (function (key) {
-                                                return synchronousTranslateService.translate(key);
+                                                var secondaryCapacityObject = diskSizeService.getDisplaySize(item.secondaryCapacity);
+                                                var secondaryCapacityAmount = secondaryCapacityObject.size + secondaryCapacityObject.unit;
+                                                var variable = {
+                                                    secondaryCapacity: secondaryCapacityAmount
+                                                };
+                                                return synchronousTranslateService.translate(key, variable);
                                             })('secondary-capacity-tooltip'),
                                             label: (function (key) {
                                                 return synchronousTranslateService.translate(key);
@@ -1996,7 +2011,7 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
-                            color: allocatedColor,
+                            color: subscribedCapacityColor,
                             tooltip: (function (key) {
                                 var percentageValue = (item.totalCapacity.value === 0) ? 0 : Math.round(
                                     item.usedSubscribedCapacity * 100 / item.totalCapacity.value);
@@ -2169,6 +2184,14 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(
                                         key);
                                 })('common-label-used'),
+                                tooltip: (function (key) {
+                                    var usedCapacityObject = item.usedCapacity;
+                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                    var variable = {
+                                        usedCapacity: usedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('used-capacity-tooltip'),
                                 capacity: item.usedCapacity,
                                 color: thinUsedColor
                             },
@@ -2177,6 +2200,14 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(
                                         key);
                                 })('common-label-free'),
+                                tooltip: (function (key) {
+                                    var freeCapacityObject = item.availableCapacity;
+                                    var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
+                                    var variable = {
+                                        freeCapacity: freeCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('free-capacity-tooltip'),
                                 capacity: item.availableCapacity,
                                 color: thinFreeColor
                             }]
