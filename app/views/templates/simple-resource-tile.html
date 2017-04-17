@@ -66,8 +66,6 @@
 
 <div class="tile-row related-resources controls-row">
     <div class="btn-group btn-group-justified" data-toggle="buttons" ng-repeat="link in item.displayLinks">
-       <label class="btn btn-primary btn-light btn-sm">
-          <input checked="" autocomplete="off" type="radio" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}} 
-       </label> 
+        <a class="btn btn-primary btn-light btn-sm" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}}</a>
     </div>
 </div>
