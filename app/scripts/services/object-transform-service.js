@@ -2100,7 +2100,7 @@ angular.module('rainierApp')
                                 };
                                 return synchronousTranslateService.translate(key, variable);
                             })('subscription-capacity-tooltip'),
-                            color: allocatedColor
+                            color: subscribedCapacityColor
                         },
                         {
                             percentage: item.subscriptionLimit.value ? item.subscriptionLimit.value : 100,
