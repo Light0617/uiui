@@ -229,8 +229,12 @@ angular.module('rainierApp')
                 confirmMessage: 'parity-group-compress-selected-content',
                 enabled: function () {
                     return dataModel.anySelected() && !_.find(dataModel.getSelectedItems(), function(item) {
-                            return item.encryption || item.diskSpec.type === 'SAS' || item.diskSpec.type === 'SSD' || item.diskSpec.type === 'FMD' ||
-                                item.status !== 'AVAILABLE' || item.compression || item.nasBoot; });
+                            return item.encryption ||
+                                item.diskSpec.type === 'SAS' ||
+                                item.diskSpec.type === 'SSD' ||
+                                item.diskSpec.type === 'FMD' ||
+                                item.compression ||
+                                item.nasBoot; });
                 },
                 onClick: function () {
                     // Build reserved resources
