@@ -123,7 +123,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'external-parity-group-storage',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'seventh',
                     sortField: 'externalStorageSystemId',
                     getDisplayValue: function (item) {
                         return item.externalStorageSystemId;
@@ -132,7 +132,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'external-parity-group-vendor',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'seventh',
                     sortField: 'externalStorageVendor',
                     getDisplayValue: function (item) {
                         return item.externalStorageVendor;
@@ -141,7 +141,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: 'external-parity-group-model',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'seventh',
                     sortField: 'externalStorageProduct',
                     getDisplayValue: function (item) {
                         return item.externalStorageProduct;
@@ -155,26 +155,6 @@ angular.module('rainierApp')
                     sortField: 'item.capacity',
                     getDisplayValue: function (item) {
                         return item.total;
-                    },
-                    type: 'size'
-
-                },
-                {
-                    title: 'common-label-free',
-                    sizeClass: 'twelfth',
-                    sortField: 'availableCapacity',
-                    getDisplayValue: function (item) {
-                        return item.free;
-                    },
-                    type: 'size'
-
-                },
-                {
-                    title: 'common-label-used',
-                    sizeClass: 'twelfth',
-                    sortField: 'usedCapacity',
-                    getDisplayValue: function (item) {
-                        return item.used;
                     },
                     type: 'size'
 

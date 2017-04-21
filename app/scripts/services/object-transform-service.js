@@ -809,6 +809,8 @@ angular.module('rainierApp')
                 item.capacity = diskSizeService.getDisplaySize(item.capacity);
                 item.selected = false;
                 item.noSelection = true;
+                item.status = 'EXTERNALIZED';
+                item.totalVirtual = item.capacity;
                 if(item.externalStorageVendor===null){
                     item.externalStorageVendor = '';
                 }

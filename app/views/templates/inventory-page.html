@@ -63,7 +63,7 @@
                     <sort-column-header field="{{settings.sortField}}" label="{{ settings.title  | translate }}"
                                         ng-model="dataModel.sort" title="{{ settings.title  | translate }}"></sort-column-header>
                 </div>
-                <div class="eighth cell text-resize" ng-if="dataModel.displayList[0].usage">
+                <div class="eighth cell text-resize" ng-if="dataModel.displayList[0].usage && dataModel.displayList[0].status !== 'EXTERNALIZED'">
                     <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
                 </div>
             </div>
@@ -137,10 +137,10 @@
                     <p ng-switch-default="" title="{{settings.getDisplayValue(item)}}" ng-click="item.onClick()">{{settings.getDisplayValue(item)}}</p>
                 </div>
 
-
-                <div class="td eighth data cell" ng-if="item.usage && !item.fileCapacity" ng-click="item.onClick()">
+                <div class="td eighth data cell" ng-if="item.usage && !item.fileCapacity && item.status !== 'EXTERNALIZED'" ng-click="item.onClick()">
                     <usage-indicator-bar class="data-viz bar bar-container" ng-model="item"></usage-indicator-bar>
                 </div>
+
                 <div class="td eighth resource data cell data-viz" ng-if="item.usage && item.fileCapacity" ng-click="item.onClick()">
                     <usage-indicator-bar class="double-bar-list-view data-viz bar bar-container" ng-model="item" ng-if="item.usage"
                                          ng-click="item.onClick()"></usage-indicator-bar>
@@ -150,6 +150,7 @@
             </div>
             <ng-include src="listDetailsTemplate" ng-show="item.opened" ng-if="listDetailsTemplate" ng-repeat-end></ng-include>
         </div>
+
         <div class="col-lg-3 col-md-4 hidden-sm hidden-xs controls-column">
             <div class="form-group search" ng-if="listDetailsTemplate && dataModel.singleView">
                 <input type="text" class="form-control" placeholder="Search" ng-model="filterModel.filter.freeText"
