@@ -2264,7 +2264,7 @@ angular.module('rainierApp')
                     if(link.rel.indexOf('poolId') !== -1){
                         var storagePoolId = _.last(link.href.split('/'));
                         item.displayLinks.push({
-                            href: link.href.replace('/file', '').replace('v1', '#'),
+                            href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                             icon: 'icon-pools',
                             label: synchronousTranslateService.translate('hdp-pool') + ' ' + storagePoolId
                         });
@@ -2419,14 +2419,14 @@ angular.module('rainierApp')
                         if (link.rel.indexOf('vfs') !== -1) {
                             var uuid = _.last(link.href.split('/'));
                             item.displayLinks.push({
-                                href: link.href.replace('/file', '').replace('v1', '#'),
+                                href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                 icon: 'icon-virtual-file-server',
                                 label: synchronousTranslateService.translate('vfs') + ' ' + uuid
                             });
                         }
                         else if (link.rel.indexOf('file') !== -1) {
                             item.displayLinks.push({
-                                href: link.href.replace('/file/', '/').replace('v1', '#'),
+                                href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                 icon: 'icon-pools',
                                 label: synchronousTranslateService.translate('file-pool') + ' ' + _.last(link.href.split('/'))
                             });
@@ -2615,7 +2615,7 @@ angular.module('rainierApp')
                             storageSystemId = _.first(link.href.split('storage-systems/')[1].split('/'));
                             if(item.fileSystemId !== '00000000000000000000000000000000') {
                                 item.displayLinks.push({
-                                    href: link.href.replace('/file/', '/').replace('v1', '#'),
+                                    href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                     icon: 'icon-filesystem',
                                     label: synchronousTranslateService.translate('common-storage-system-file-system') + ' ' + item.fileSystemId
                                 });
@@ -2624,7 +2624,7 @@ angular.module('rainierApp')
                         else if (link.rel.indexOf('vfs') !== -1) {
                             item.evsUuid = _.last(link.href.split('/'));
                             item.displayLinks.push({
-                                href: link.href.replace('/file', '').replace('v1', '#'),
+                                href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                 icon: 'icon-virtual-file-server',
                                 label: synchronousTranslateService.translate('vfs') + ' ' + item.evsUuid
                             });
@@ -2699,7 +2699,7 @@ angular.module('rainierApp')
                             storageSystemId = _.first(link.href.split('storage-systems/')[1].split('/'));
                             if(item.fileSystemId !== '00000000000000000000000000000000') {
                                 item.displayLinks.push({
-                                    href: link.href.replace('/file/', '/').replace('v1', '#'),
+                                    href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                     icon: 'icon-filesystem',
                                     label: synchronousTranslateService.translate('common-storage-system-file-system') + ' ' + item.fileSystemId
                                 });
@@ -2708,7 +2708,7 @@ angular.module('rainierApp')
                         else if (link.rel.indexOf('vfs') !== -1) {
                             item.evsUuid = _.last(link.href.split('/'));
                             item.displayLinks.push({
-                                href: link.href.replace('/file', '').replace('v1', '#'),
+                                href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                 icon: 'icon-virtual-file-server',
                                 label: synchronousTranslateService.translate('vfs') + ' ' + item.evsUuid
                             });
