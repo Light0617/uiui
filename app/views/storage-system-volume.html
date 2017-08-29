@@ -11,7 +11,7 @@
         </a>
 
         <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-delete-volumes' | translate}}"
-           ng-if="!model.disabledCheckBox && !model.isGadVolume()"
+           ng-if="!model.disabledCheckBox && !model.isGadVolume() && !model.isPrevalidationForDeleting()"
            confirm
            confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"
            confirm-message="{{ 'storage-volume-delete-current-content' | translate}}"

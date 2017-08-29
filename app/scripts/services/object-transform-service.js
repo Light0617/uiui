@@ -506,6 +506,12 @@ angular.module('rainierApp')
                         item.itemIcon = 'icon-volume';
                 }
 
+
+                item.isPrevalidationForDeleting = function () {
+                    if(this.provisioningStatus === 'ATTACHED'||this.provisioningStatus === 'UNMANAGED') return true;
+                    else return false;
+                }
+
                 item.isGadVolume = function () {
                     if(this.gadSummary) {
                         return (this.gadSummary.volumeType === constantService.gadVolumeType.ACTIVE_PRIMARY ||
