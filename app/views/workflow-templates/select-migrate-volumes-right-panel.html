@@ -1,0 +1,19 @@
+<div class="header-row">
+    <div class="view">
+        <h2>Select Source Volume(s)</h2>
+    </div>
+    <!--<div class="pull-right margin-L-R view-side" ng-if="dataModel.storageSystems.length">-->
+        <!--<select class="form-control smallEmMarginLeft" ng-model="dataModel.selectedStorageSystem"-->
+                <!--ng-options="ss.storageSystemId for ss in dataModel.storageSystems">-->
+        <!--</select>-->
+    <!--</div>-->
+</div>
+
+
+<inventory-page ng-model="dataModel"
+                summary-model="summaryModel"
+                filter-model="filterModel"
+                summary-template="views/inventory-templates/storage-volumes-summary.html"
+                list-count-summary-title="storage-volumes-showing-x-of-y"
+                filter-template="views/inventory-templates/storage-volumes-filter.html">
+</inventory-page>

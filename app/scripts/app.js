@@ -73,6 +73,15 @@ angular
                 },
                 helpContext: 'T_ADD_HOSTS'
             })
+            .when('/hosts/migrate-volumes', {
+                templateUrl: 'views/migrate-volumes.html',
+                controller: 'MigrateVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'migrate-volumes'
+                }
+                //TODO:Help context
+                // helpContext: 'C_CREATE_ATTACH'
+            })
             .when('/hosts/create-and-attach-volumes', {
                 templateUrl: 'views/create-and-attach-volumes.html',
                 controller: 'CreateAndAttachVolumesCtrl',
