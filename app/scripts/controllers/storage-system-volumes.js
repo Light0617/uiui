@@ -235,6 +235,22 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    icon: 'icon-migrate-volume',
+                    tooltip: 'action-tooltip-migrate-volumes',
+                    type: 'link',
+                    enabled: function () {
+                        return !hasGadVolume(dataModel.getSelectedItems()) && !_.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return !vol.isUnprotected();
+                            });
+                    },
+                    onClick: function () {
+                        // maximum number of volumes to migrate is 14
+                        ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 14);
+                        $location.path(['hosts','migrate-volumes'].join('/'));
+                    }
+                },
+                {
                     icon: 'icon-attach-volume',
                     tooltip: 'action-tooltip-attach-volumes',
                     type: 'link',
