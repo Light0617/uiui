@@ -16,10 +16,11 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('CreateAndAttachVolumesCtrl', function($scope, orchestratorService, viewModelService, ShareDataService,
-                                                       paginationService, queryService, objectTransformService,
-                                                       cronStringConverterService, attachVolumeService, replicationService,
-                                                       volumeService, constantService, $location, $timeout) {
+    .controller('CreateAndAttachVolumesCtrl', function ($scope, orchestratorService, viewModelService, ShareDataService,
+                                                        paginationService, queryService, objectTransformService,
+                                                        cronStringConverterService, attachVolumeService, replicationService,
+                                                        volumeService, constantService, storageSystemCapabilitiesService,
+                                                        synchronousTranslateService, $location, $timeout) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -100,6 +101,11 @@ angular.module('rainierApp')
                 volumesGroupsModel: viewModelService.newCreateVolumeModel(pools)
             };
 
+            var filteredPools = filterStoragePools($scope.dataModel.selectedStorageSystem, pools);
+            $scope.dataModel.snapshotPoolModel = {
+                targetPool: filteredPools[0],
+                filteredPools: filteredPools
+            };
         });
 
         var autoSelect = 'AUTO';
@@ -280,7 +286,8 @@ angular.module('rainierApp')
                         replicationGroupName : protectModel.copyGroupName,
                         replicationGroupId : null,
                         schedule : null,
-                        numberOfBackups : null
+                        numberOfBackups : null,
+                        targetPoolId: $scope.dataModel.snapshotPoolModel.targetPool.storagePoolId
                     };
                     payload.replicationGroupName = protectModel.copyGroupName;
                     if (replicationService.isSnap(protectModel.replicationTechnology)) {
@@ -387,4 +394,21 @@ angular.module('rainierApp')
             };
         });
 
+        function filterStoragePools(storageSystem, pools) {
+            var filteredPools = [{
+                displayLabel: synchronousTranslateService.translate('common-auto-selected'),
+                storagePoolId: null
+            }];
+            var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(
+                storageSystem.model, storageSystem.firmwareVersion);
+
+            _.forEach(pools, function(pool) {
+                if (_.include(poolTypes, pool.type)){
+                    pool.displayLabel = pool.snapshotPoolLabel();
+                    filteredPools.push(pool);
+                }
+            });
+
+            return filteredPools;
+        }
     });

@@ -804,6 +804,21 @@ angular.module('rainierApp')
                 };
 
                 item.alerts = 0;
+
+                item.snapshotPoolLabel = function () {
+                    if(item.storagePoolId === null) {
+                        return item.label;
+                    }
+
+                    return [
+                        item.label, ' (',
+                        synchronousTranslateService.translate(item.type), ': ',
+                        item.availableCapacityInBytes.size, ' ',
+                        item.availableCapacityInBytes.unit, '/',
+                        item.capacityInBytes.size, ' ',
+                        item.capacityInBytes.unit, ')'
+                    ].join('');
+                };
             },
             transformExternalParityGroup: function (item) {
                 var used = item.capacity - item.availableCapacity;

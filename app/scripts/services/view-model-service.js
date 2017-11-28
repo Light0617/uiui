@@ -196,10 +196,10 @@ angular.module('rainierApp')
 
                 return [
                     pool.label, '(',
-                    pool.capacityInBytes.size, ' ',
-                    pool.capacityInBytes.unit, '/',
                     pool.availableCapacityInBytes.size, ' ',
-                    pool.availableCapacityInBytes.unit, ')'
+                    pool.availableCapacityInBytes.unit, '/',
+                    pool.capacityInBytes.size, ' ',
+                    pool.capacityInBytes.unit, ')'
                 ].join('');
             };
 
