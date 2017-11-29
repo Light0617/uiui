@@ -23,11 +23,13 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
     
     var generateMockVolume = function (v) {
         var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
+        var migrationStatus = _.sample([true, false]);
         return {
             volumeId: v + '',
             storageSystemId: 'REPLACE',
             poolId: '001',
             label: 'Volume' + v,
+            scheduledForMigration: migrationStatus,
             size: mockUtils.getCapacity(100, 200),
             usedCapacity: mockUtils.getCapacity(10, 25),
             availableCapacity: mockUtils.getCapacity(50, 75),
