@@ -26,6 +26,8 @@ angular.module('rainierApp')
         var vspX200IdentifierPrefix = '/dev/storage/832000';
         var vspX400X600IdentifierPrefix = '/dev/storage/834000';
         var vspX800IdentifierPrefix = '/dev/storage/836000';
+        var vspX350IdentifierPrefix = '/dev/storage/882000';
+        var vspX370X700X900IdentifierPrefix = '/dev/storage/886000';
         var vspG1000Identifier = '/sanproject';
         var sessionScopeEncryptionKeys = 'encryption-keys';
 
@@ -97,22 +99,34 @@ angular.module('rainierApp')
         function transformHdvmSnLaunchUrl(item) {
             var identifier = '';
             switch (item.model) {
-                case constantService.storageModel.VPS_G200:
+                case constantService.storageModel.HM800.G200:
                     identifier = vspX200IdentifierPrefix+ item.storageSystemId;
                     break;
-                case constantService.storageModel.VPS_G400:
-                case constantService.storageModel.VSP_F400:
-                case constantService.storageModel.VSP_G600:
-                case constantService.storageModel.VSP_F600:
+                case constantService.storageModel.HM800.G400:
+                case constantService.storageModel.HM800.F400:
+                case constantService.storageModel.HM800.G600:
+                case constantService.storageModel.HM800.F600:
                     identifier = vspX400X600IdentifierPrefix + item.storageSystemId;
                     break;
-                case constantService.storageModel.VSP_G800:
-                case constantService.storageModel.VSP_F800:
+                case constantService.storageModel.HM800.G800:
+                case constantService.storageModel.HM800.F800:
                     identifier = vspX800IdentifierPrefix + item.storageSystemId;
                     break;
-                case constantService.storageModel.VSP_G1000:
-                case constantService.storageModel.VSP_G1500:
-                case constantService.storageModel.VSP_F1500:
+                case constantService.storageModel.HM850.G350:
+                case constantService.storageModel.HM850.F350:
+                    identifier = vspX350IdentifierPrefix + item.storageSystemId;
+                    break;
+                case constantService.storageModel.HM850.G370:
+                case constantService.storageModel.HM850.F370:
+                case constantService.storageModel.HM850.G700:
+                case constantService.storageModel.HM850.F700:
+                case constantService.storageModel.HM850.G900:
+                case constantService.storageModel.HM850.F900:
+                    identifier = vspX370X700X900IdentifierPrefix + item.storageSystemId;
+                    break;
+                case constantService.storageModel.Rx00.G1000:
+                case constantService.storageModel.Rx00.G1500:
+                case constantService.storageModel.Rx00.F1500:
                     identifier = vspG1000Identifier;
                     break;
             }

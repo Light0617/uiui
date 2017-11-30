@@ -1,4 +1,4 @@
 REVIEWBOARD_URL = "http://rb.mcp.com"
 REPOSITORY = "ui-rainier"
-BRANCH = "bolt"
-LAND_DEST_BRANCH = "bolt"
+BRANCH = "db10"
+LAND_DEST_BRANCH = "db10"

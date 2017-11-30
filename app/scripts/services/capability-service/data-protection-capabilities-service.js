@@ -18,7 +18,7 @@ angular.module('rainierApp')
                     return [constantService.poolType.HTI];
                 }
                 else if (constantService.isR800Series(storageSystemModel)) {
-                    if (versionService.isEqualOrGreaterVersion(versionService.firmwareVersionPrefix.SVOS720_R800, firmwareVersion)) {
+                    if (versionService.isEqualOrGreaterVersion(versionService.firmwareVersionPrefix.SVOS720_Rx00, firmwareVersion)) {
                         return [constantService.poolType.HTI, constantService.poolType.HDP];
                     }
                     return [constantService.poolType.HTI];
