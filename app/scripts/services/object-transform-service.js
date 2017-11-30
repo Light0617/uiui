@@ -13,6 +13,7 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService) {
 
+        var transforms;
         var allocatedColor = '#DADBDF';
         var unallocatedColor = '#595B5B';
         var physicalCapacityColor = '#66A2FF';
@@ -100,7 +101,7 @@ angular.module('rainierApp')
             var identifier = '';
             switch (item.model) {
                 case constantService.storageModel.HM800.G200:
-                    identifier = vspX200IdentifierPrefix+ item.storageSystemId;
+                    identifier = vspX200IdentifierPrefix + item.storageSystemId;
                     break;
                 case constantService.storageModel.HM800.G400:
                 case constantService.storageModel.HM800.F400:
@@ -138,7 +139,7 @@ angular.module('rainierApp')
             }
         }
 
-        var transforms = {
+        transforms = {
 
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
@@ -173,7 +174,7 @@ angular.module('rainierApp')
                 };
                 item.topTotal = item.total;
                 item.topSize = item.physicalUsed;
-                if(item.unified) {
+                if (item.unified) {
                     item.itemIcon = 'icon-cluster';
                 }
                 else {
@@ -264,21 +265,21 @@ angular.module('rainierApp')
                 item.volumePairs = [];
                 item.opened = false;
 
-                for(var property in item) {
+                for (var property in item) {
                     if (item.hasOwnProperty(property)) {
                         if (item[property] === null) {
                             item[property] = 'N/A';
                         }
                     }
                 }
-                if(item.comments === '') {
+                if (item.comments === '') {
                     item.comments = 'N/A';
                 }
                 item.naturalLanguageSchedule = cronStringConverterService.fromObjectModelToNaturalLanguage(item.schedule);
             },
             transformVolumePairs: function (item) {
                 if (!item.primaryVolume) {
-                    item.primaryVolume =  {
+                    item.primaryVolume = {
                         id: 'N/A',
                         status: 'N/A',
                         storageSystemId: 'N/A'
@@ -290,12 +291,12 @@ angular.module('rainierApp')
                     };
                 }
 
-                if(item.primaryVolume.status.indexOf('SMPL') === 0) {
+                if (item.primaryVolume.status.indexOf('SMPL') === 0) {
                     item.disabledCheckBox = true;
-                 }
+                }
 
                 if (!item.secondaryVolume) {
-                    item.secondaryVolume =  {
+                    item.secondaryVolume = {
                         id: 'N/A',
                         status: 'N/A',
                         storageSystemId: 'N/A'
@@ -310,11 +311,11 @@ angular.module('rainierApp')
                 if (item.splitTime !== undefined && item.splitTime !== null) {
                     item.originalSplitTime = item.splitTime;
                     var splitTime = new Date(item.splitTime);
-                    item.splitTime = addZero(splitTime.getUTCMonth()+1) + '/'+ addZero(splitTime.getUTCDate()) +
+                    item.splitTime = addZero(splitTime.getUTCMonth() + 1) + '/' + addZero(splitTime.getUTCDate()) +
                         ' ' + addZero(splitTime.getUTCHours()) + ':' + addZero(splitTime.getUTCMinutes());
                 }
 
-                for(var property in item) {
+                for (var property in item) {
                     if (item.hasOwnProperty(property)) {
                         if (property !== 'primaryVolume' && property !== 'secondaryVolume' && item[property] === null) {
                             item[property] = 'N/A';
@@ -370,7 +371,7 @@ angular.module('rainierApp')
                 item.noSelection = true;
                 item.itemIcon = 'icon-deduplication';
 
-                for(var property in item) {
+                for (var property in item) {
                     if (item.hasOwnProperty(property)) {
                         if (property !== 'primary' && property !== 'secondary' && item[property] === null) {
                             item[property] = 'N/A';
@@ -391,7 +392,7 @@ angular.module('rainierApp')
                 item.open = false;
                 item.storagePoolId = parseInt(item.poolId);
 
-                if(item.label && item.label.indexOf('HSA-reserved-') === 0) {
+                if (item.label && item.label.indexOf('HSA-reserved-') === 0) {
                     item.disabledCheckBox = true;
                 }
 
@@ -464,13 +465,13 @@ angular.module('rainierApp')
                         left: false,
                         title: item.storageSystemId,
                         details: [item.displayedDpType],
-                        detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function(type){
+                        detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
                             return replicationService.tooltip(type);
                         }).join(', ')]
                     }
                 ];
 
-                if(ShareDataService.showProvisioningStatus === true) {
+                if (ShareDataService.showProvisioningStatus === true) {
                     item.metaData.push(
                         {
                             left: true,
@@ -522,14 +523,13 @@ angular.module('rainierApp')
 
 
                 item.isPrevalidationForDeleting = function () {
-                    if(this.provisioningStatus === 'ATTACHED'||this.provisioningStatus === 'UNMANAGED') return true;
-                    else return false;
-                }
+                    return this.provisioningStatus === 'ATTACHED' || this.provisioningStatus === 'UNMANAGED';
+                };
 
                 item.isGadVolume = function () {
-                    if(this.gadSummary) {
+                    if (this.gadSummary) {
                         return (this.gadSummary.volumeType === constantService.gadVolumeType.ACTIVE_PRIMARY ||
-                        this.gadSummary.volumeType === constantService.gadVolumeType.ACTIVE_SECONDARY);
+                            this.gadSummary.volumeType === constantService.gadVolumeType.ACTIVE_SECONDARY);
                     } else {
                         return false;
                     }
@@ -609,7 +609,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-update',
                         type: 'link',
                         onClick: function () {
-                            if(ShareDataService.showPoolBreadCrumb === true) {
+                            if (ShareDataService.showPoolBreadCrumb === true) {
                                 $location.path(['storage-systems', item.storageSystemId, 'storage-pools',
                                     item.storagePoolId, 'volumes',
                                     item.volumeId, 'update'
@@ -644,7 +644,7 @@ angular.module('rainierApp')
                         type: 'link',
                         onClick: function () {
                             ShareDataService.push('selectedVolumes', [item]);
-                            if(ShareDataService.showPoolBreadCrumb === true) {
+                            if (ShareDataService.showPoolBreadCrumb === true) {
                                 $location.path(['storage-systems', item.storageSystemId, 'storage-pools',
                                     item.storagePoolId, 'volumes',
                                     item.volumeId, 'detach'
@@ -690,12 +690,14 @@ angular.module('rainierApp')
                     return this.externalParityGroupIds && this.externalParityGroupIds.length > 0;
                 };
 
-                if(item.label.indexOf('HSA-reserved-') === 0 || item.isUsingExternalStorage()) {
+                if (item.label.indexOf('HSA-reserved-') === 0 || item.isUsingExternalStorage()) {
                     item.disabledCheckBox = true;
                 }
 
                 var activeFlashTitle = '';
-                if(_.find(item.tiers, function(tier) { return tier.tier === 'Platinum'; })) {
+                if (_.find(item.tiers, function (tier) {
+                        return tier.tier === 'Platinum';
+                    })) {
                     item.containsPlatinum = true;
                     activeFlashTitle = synchronousTranslateService.translate('pool-active-flash') +
                         ': ' + commonConverterService.convertBooleanToString(item.activeFlashEnabled);
@@ -704,7 +706,7 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title:   item.label,
+                        title: item.label,
                         details: [item.storagePoolId]
                     },
                     {
@@ -730,7 +732,7 @@ angular.module('rainierApp')
                 ];
 
                 var icons = [];
-                if (item.logicalUtilization >= item.utilizationThreshold1){
+                if (item.logicalUtilization >= item.utilizationThreshold1) {
                     var alertTitle = 'utilization at ' + item.logicalUtilization + '%';
                     if (item.logicalUtilization < item.utilizationThreshold2 && item.type !== 'HTI') {
                         icons.push({
@@ -765,10 +767,10 @@ angular.module('rainierApp')
                 };
                 item.topTotal = item.capacityInBytes;
                 item.topSize = item.usedCapacityInBytes;
-                if(_.first(item.tiers).tier === 'External') {
+                if (_.first(item.tiers).tier === 'External') {
                     item.itemIcon = 'icon-external-pool';
                 }
-                else if(item.encrypted === 'YES') {
+                else if (item.encrypted === 'YES') {
                     item.itemIcon = 'icon-encrypted-pools';
                 } else {
                     item.itemIcon = 'icon-pools';
@@ -819,8 +821,15 @@ angular.module('rainierApp')
 
                 item.alerts = 0;
 
+                item.snapshotPoolLabelWithPoolId = function () {
+                    if (item.storagePoolId === null) {
+                        return item.label;
+                    }
+                    return String(item.storagePoolId) + ': ' + item.snapshotPoolLabel();
+                };
+
                 item.snapshotPoolLabel = function () {
-                    if(item.storagePoolId === null) {
+                    if (item.storagePoolId === null) {
                         return item.label;
                     }
 
@@ -846,10 +855,10 @@ angular.module('rainierApp')
                 item.noSelection = true;
                 item.status = 'EXTERNALIZED';
                 item.totalVirtual = item.capacity;
-                if(item.externalStorageVendor===null){
+                if (item.externalStorageVendor === null) {
                     item.externalStorageVendor = '';
                 }
-                if(item.externalStorageProduct===null){
+                if (item.externalStorageProduct === null) {
                     item.externalStorageProduct = '';
                 }
                 item.metaData = [
@@ -863,8 +872,7 @@ angular.module('rainierApp')
                     return [];
                 };
 
-                item.actions = {
-                };
+                item.actions = {};
 
                 item.getActions = function () {
                     return _.map(item.actions);
@@ -929,7 +937,7 @@ angular.module('rainierApp')
                 }
 
                 var newAttributes = [];
-                _.each(item.attributes, function(attribute) {
+                _.each(item.attributes, function (attribute) {
                     switch (attribute) {
                         case 'TARGET_PORT':
                             newAttributes.push('Target');
@@ -947,18 +955,18 @@ angular.module('rainierApp')
                 });
                 item.attributes = newAttributes;
             },
-            transformToPortSummary : function(storagePorts, typeNames) {
+            transformToPortSummary: function (storagePorts, typeNames) {
                 // Only support for fibre port and iscsi port for now
-                var filteredPorts = _.filter(storagePorts, function(sp) {
+                var filteredPorts = _.filter(storagePorts, function (sp) {
                     return sp.type === 'FIBRE' || sp.type === 'ISCSI';
                 });
 
                 var summaryModel = {chartData: []};
-                var typeCount = _.countBy(filteredPorts, function(filteredPort){
+                var typeCount = _.countBy(filteredPorts, function (filteredPort) {
                     return filteredPort.type;
                 });
 
-                _.each (typeNames, function (typeName) {
+                _.each(typeNames, function (typeName) {
                     if (typeCount[typeName.name]) {
                         summaryModel.chartData.push({
                             name: synchronousTranslateService.translate(typeName.name),
@@ -985,7 +993,7 @@ angular.module('rainierApp')
                 item.compressionUsageBar = {
                     physicalCapacity: item.physicalCapacity,
                     total: diskSizeService.getDisplaySize(item.totalCapacityInBytes),
-                    tooltip: compressionPercent +  '% ' + synchronousTranslateService.translate('storage-pool-physical-capacity'),
+                    tooltip: compressionPercent + '% ' + synchronousTranslateService.translate('storage-pool-physical-capacity'),
                     usagePercentage: compressionPercent
                 };
 
@@ -1078,7 +1086,7 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if(item.encryption === true) {
+                if (item.encryption === true) {
                     item.itemIcon = 'icon-encrypted-parity-group';
                 } else {
                     item.itemIcon = 'icon-parity-group';
@@ -1142,27 +1150,41 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-fabric-switch';
                 item.alerts = 0;
             },
-            transformTierSummary: function(tiers, tierSummaryItems, model) {
-                _.each(tiers.tiers, function(tier) {
-                    var currentTier = _.find(tierSummaryItems, function (summary) { return summary.tierName === tier.tier; });
-                    if(currentTier) {
+            transformTierSummary: function (tiers, tierSummaryItems, model) {
+                _.each(tiers.tiers, function (tier) {
+                    var currentTier = _.find(tierSummaryItems, function (summary) {
+                        return summary.tierName === tier.tier;
+                    });
+                    if (currentTier) {
                         var usedCapacity = currentTier.totalCapacity - currentTier.freeCapacity;
                         var percent = usedCapacity / currentTier.totalCapacity * 100;
                         var total = diskSizeService.getDisplaySize(currentTier.totalCapacity);
                         var used = diskSizeService.getDisplaySize(usedCapacity);
-                        model.arrayDataVisualizationModel.tierBreakdown.push({ name: tier.tier, percent: parseInt(percent), toolTip: used.size + ' ' + used.unit + ' Used / ' + total.size + ' ' + total.unit + ' Total' });
+                        model.arrayDataVisualizationModel.tierBreakdown.push({
+                            name: tier.tier,
+                            percent: parseInt(percent),
+                            toolTip: used.size + ' ' + used.unit + ' Used / ' + total.size + ' ' + total.unit + ' Total'
+                        });
                     }
                     else {
-                        model.arrayDataVisualizationModel.tierBreakdown.push({ name: tier.tier, percent: 0, toolTip: '0 GB Used / 0 GB Total'});
+                        model.arrayDataVisualizationModel.tierBreakdown.push({
+                            name: tier.tier,
+                            percent: 0,
+                            toolTip: '0 GB Used / 0 GB Total'
+                        });
                     }
                 });
             },
 
-            transformSavingsSummary: function(capacitySavingsSummary, model) {
-                model.arrayDataVisualizationModel.savingsBreakdown.push({name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
-                    savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ? capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '});
-                model.arrayDataVisualizationModel.savingsBreakdown.push({name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
-                    savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ? capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '});
+            transformSavingsSummary: function (capacitySavingsSummary, model) {
+                model.arrayDataVisualizationModel.savingsBreakdown.push({
+                    name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
+                    savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ? capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '
+                });
+                model.arrayDataVisualizationModel.savingsBreakdown.push({
+                    name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
+                    savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ? capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '
+                });
             },
 
             transformStorageSystemsSummary: function (item) {
@@ -1780,10 +1802,10 @@ angular.module('rainierApp')
 
                 item.itemIcon = 'icon-host';
                 item.alerts = 0;
-                
+
                 item.displayWWNs = wwnService.displayWWNs(item.wwpns);
             },
-            transformFailedServer: function(item) {
+            transformFailedServer: function (item) {
                 var types = [];
                 _.each(item.dataProtectionSummary.replicationType, function (type) {
                     types.push(replicationService.displayReplicationType(type));
@@ -1818,7 +1840,7 @@ angular.module('rainierApp')
                                     window.history.back();
                                 }
                             });
-                       }
+                        }
                     },
                     'edit': {
                         onClick: function () {
@@ -2043,7 +2065,7 @@ angular.module('rainierApp')
                     items.push([
                         {
                             percentage: (item.totalCapacity.value === 0) ? 0 : Math.round(
-                                    item.usedSubscribedCapacity * 100 / item.totalCapacity.value
+                                item.usedSubscribedCapacity * 100 / item.totalCapacity.value
                             ),
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
@@ -2232,22 +2254,22 @@ angular.module('rainierApp')
                                 capacity: item.usedCapacity,
                                 color: thinUsedColor
                             },
-                            {
-                                label: (function (key) {
-                                    return synchronousTranslateService.translate(
-                                        key);
-                                })('common-label-free'),
-                                tooltip: (function (key) {
-                                    var freeCapacityObject = item.availableCapacity;
-                                    var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
-                                    var variable = {
-                                        freeCapacity: freeCapacityAmount
-                                    };
-                                    return synchronousTranslateService.translate(key, variable);
-                                })('free-capacity-tooltip'),
-                                capacity: item.availableCapacity,
-                                color: thinFreeColor
-                            }]
+                                {
+                                    label: (function (key) {
+                                        return synchronousTranslateService.translate(
+                                            key);
+                                    })('common-label-free'),
+                                    tooltip: (function (key) {
+                                        var freeCapacityObject = item.availableCapacity;
+                                        var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
+                                        var variable = {
+                                            freeCapacity: freeCapacityAmount
+                                        };
+                                        return synchronousTranslateService.translate(key, variable);
+                                    })('free-capacity-tooltip'),
+                                    capacity: item.availableCapacity,
+                                    color: thinFreeColor
+                                }]
                         ]
                     },
                     alerts: {
@@ -2295,8 +2317,8 @@ angular.module('rainierApp')
 
                 var tierInfo = synchronousTranslateService.translate(item.tiered ? 'tiered' : 'untiered');
                 item.tierNameDisplay = item.tierNames.join(', ');
-                _.each(item.links, function(link){
-                    if(link.rel.indexOf('poolId') !== -1){
+                _.each(item.links, function (link) {
+                    if (link.rel.indexOf('poolId') !== -1) {
                         var storagePoolId = _.last(link.href.split('/'));
                         item.displayLinks.push({
                             href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
@@ -2330,18 +2352,17 @@ angular.module('rainierApp')
                         .join('/'));
                 };
 
-                item.actions = {
-                };
+                item.actions = {};
 
                 item.getActions = function () {
                     return _.map(item.actions);
                 };
             },
-            transformEVS : function(item) {
+            transformEVS: function (item) {
                 item.displayLinks = [];
                 item.file = true;
                 var storageSystemPath = '';
-                if(item.links) {
+                if (item.links) {
                     _.each(item.links, function (link) {
                         if (link.rel.indexOf('filesystem') !== -1) {
                             storageSystemPath = _.first(link.href.split('/vfs')).replace('/file', '').replace('v1', '#');
@@ -2354,8 +2375,7 @@ angular.module('rainierApp')
                     item.listOfIps += ip.ip + '-' + ip.prefixLength + '\n';
                 });
                 item.listOfIps = item.listOfIps.replace(/\n$/, '');
-                item.actions = {
-                };
+                item.actions = {};
                 item.getActions = function () {
                     return _.map(item.actions);
                 };
@@ -2401,7 +2421,7 @@ angular.module('rainierApp')
                     }
                 ];
 
-                item.onClickStorageArray = function(){
+                item.onClickStorageArray = function () {
                     $location.path(['storage-systems', item.storageSystemId].join('/'));
                 };
 
@@ -2422,18 +2442,17 @@ angular.module('rainierApp')
                 item.storageSystemId = storageSystemId;
                 item.displayLinks = [];
                 item.usageBare = 0;
-                if(item.availableCapacityInBytes.size !== 0) {
+                if (item.availableCapacityInBytes.size !== 0) {
                     item.usageBare = Math.round(item.usedCapacityInBytes.size * 100 / item.capacityInBytes.size);
                 }
                 item.usagePercentage = item.usageBare;
                 item.usage = item.usageBare + '%';
                 var icons = [];
 
-                if(item.blockSize.size === '4.00')
-                {
+                if (item.blockSize.size === '4.00') {
                     item.blockSizeDisplay = '4K';
                 }
-                else{
+                else {
                     item.blockSizeDisplay = '32K';
                 }
 
@@ -2449,7 +2468,7 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if(item.links) {
+                if (item.links) {
                     _.each(item.links, function (link) {
                         if (link.rel.indexOf('vfs') !== -1) {
                             var uuid = _.last(link.href.split('/'));
@@ -2479,19 +2498,18 @@ angular.module('rainierApp')
                         .join('/'));
                 };
 
-                item.actions = {
-                };
+                item.actions = {};
 
                 item.getActions = function () {
                     return _.map(item.actions);
                 };
             },
-            transformFilePoolSummaryModel: function(item) {
+            transformFilePoolSummaryModel: function (item) {
                 item.usedLegend = item.usedCapacityInBytes.size + ' ' + item.usedCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-used-capacity');
                 item.allocatedLegend = item.physicalCapacityInBytes.size + ' ' + item.physicalCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-allocated-capacity');
                 item.overCommitLegend = item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-over-commit-capacity');
             },
-            transformFilePoolsSummaryModel: function(item) {
+            transformFilePoolsSummaryModel: function (item) {
                 item.capacityInBytes = diskSizeService.getDisplaySize(item.filePoolSummary.overcommitCapacity);
                 item.usedCapacityInBytes = diskSizeService.getDisplaySize(item.filePoolSummary.usedCapacity);
                 item.physicalCapacityInBytes = diskSizeService.getDisplaySize(item.filePoolSummary.physicalCapacity);
@@ -2499,13 +2517,13 @@ angular.module('rainierApp')
                 item.allocatedLegend = item.physicalCapacityInBytes.size + ' ' + item.physicalCapacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-allocated-capacity');
                 item.overCommitLegend = item.capacityInBytes.size + ' ' + item.capacityInBytes.unit + ' ' + synchronousTranslateService.translate('file-pool-over-commit-capacity');
             },
-            transformFilePoolCapacitySummaryModel: function(item, selectedCapacity, unit) {
-                if(!selectedCapacity){
+            transformFilePoolCapacitySummaryModel: function (item, selectedCapacity, unit) {
+                if (!selectedCapacity) {
                     selectedCapacity = 0;
                 }
                 var selectedDisplayCapacity = diskSizeService.createDisplaySize(selectedCapacity, unit);
                 var freeCapacity = parseInt(item.freeCapacity) - selectedDisplayCapacity.value;
-                if(freeCapacity < 1){
+                if (freeCapacity < 1) {
                     freeCapacity = 1;
                 }
                 return {
@@ -2536,16 +2554,16 @@ angular.module('rainierApp')
                     }
                 };
             },
-            transformCreateTieredFilePoolCapacitySummaryModel: function(vals, overCommit) {
+            transformCreateTieredFilePoolCapacitySummaryModel: function (vals, overCommit) {
                 var items = [];
                 var totalCapacity = 0;
 
-                _.each(vals, function(item){
-                    if(item && item.requestedCapacity) {
+                _.each(vals, function (item) {
+                    if (item && item.requestedCapacity) {
                         totalCapacity = totalCapacity + item.requestedCapacity.value;
                     }
                 });
-                var overCommitCapacity = totalCapacity * (overCommit/100);
+                var overCommitCapacity = totalCapacity * (overCommit / 100);
 
                 items.push(capacity(diskSizeService.getDisplaySize(totalCapacity),
                     diskSizeService.getDisplaySize(totalCapacity)));
@@ -2574,19 +2592,19 @@ angular.module('rainierApp')
                     }
                 };
             },
-            transformPermission: function(item){
+            transformPermission: function (item) {
                 var icons = [];
                 item.getIcons = function () {
                     return icons;
                 };
                 var detail;
-                if(item.permissionType.fullControl){
+                if (item.permissionType.fullControl) {
                     detail = synchronousTranslateService.translate('share-full-control');
                 }
-                else if(item.permissionType.changeAndRead){
+                else if (item.permissionType.changeAndRead) {
                     detail = synchronousTranslateService.translate('share-change-read');
                 }
-                else if(item.permissionType.readOnly){
+                else if (item.permissionType.readOnly) {
                     detail = synchronousTranslateService.translate('share-read-only');
                 }
                 else {
@@ -2602,7 +2620,7 @@ angular.module('rainierApp')
 
                 item.itemIcon = 'icon-share';
             },
-            transformAccessConfiguration: function(item){
+            transformAccessConfiguration: function (item) {
                 var icons = [];
                 item.getIcons = function () {
                     return icons;
@@ -2619,7 +2637,7 @@ angular.module('rainierApp')
             },
             transformCluster: function (item) {
                 var nodeStatus = ['Invalid', 'Unknown', 'Up', 'Online', 'Not Up', 'Dead', 'Dormant'];
-                _.each(item.clusterNodes, function(node) {
+                _.each(item.clusterNodes, function (node) {
                     node.displayStatus = nodeStatus[node.status];
                 });
             },
@@ -2640,15 +2658,15 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if(item.name === 'C$') {
+                if (item.name === 'C$') {
                     item.disabledCheckBox = true;
                 }
 
-                if(item.links) {
+                if (item.links) {
                     _.each(item.links, function (link) {
                         if (link.rel.indexOf('filesystem') !== -1) {
                             storageSystemId = _.first(link.href.split('storage-systems/')[1].split('/'));
-                            if(item.fileSystemId !== '00000000000000000000000000000000') {
+                            if (item.fileSystemId !== '00000000000000000000000000000000') {
                                 item.displayLinks.push({
                                     href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                     icon: 'icon-filesystem',
@@ -2673,13 +2691,13 @@ angular.module('rainierApp')
                         return icons;
                     };
                     var detail;
-                    if(permission.permissionType.allowFullControl){
+                    if (permission.permissionType.allowFullControl) {
                         detail = synchronousTranslateService.translate('share-full-control');
                     }
-                    else if(permission.permissionType.allowChange){
+                    else if (permission.permissionType.allowChange) {
                         detail = synchronousTranslateService.translate('share-change-read');
                     }
-                    else if(permission.permissionType.allowRead){
+                    else if (permission.permissionType.allowRead) {
                         detail = synchronousTranslateService.translate('share-read-only');
                     }
                     else {
@@ -2704,8 +2722,7 @@ angular.module('rainierApp')
                         .join('/'));
                 };
 
-                item.actions = {
-                };
+                item.actions = {};
 
                 item.getActions = function () {
                     return _.map(item.actions);
@@ -2728,11 +2745,11 @@ angular.module('rainierApp')
                     }
                 ];
 
-                if(item.links) {
+                if (item.links) {
                     _.each(item.links, function (link) {
                         if (link.rel.indexOf('filesystem') !== -1) {
                             storageSystemId = _.first(link.href.split('storage-systems/')[1].split('/'));
-                            if(item.fileSystemId !== '00000000000000000000000000000000') {
+                            if (item.fileSystemId !== '00000000000000000000000000000000') {
                                 item.displayLinks.push({
                                     href: '/#' + _.last(link.href.replace('/file', '').split('/v1')),
                                     icon: 'icon-filesystem',
@@ -2758,8 +2775,7 @@ angular.module('rainierApp')
                         .join('/'));
                 };
 
-                item.actions = {
-                };
+                item.actions = {};
 
                 item.getActions = function () {
                     return _.map(item.actions);
@@ -2768,17 +2784,17 @@ angular.module('rainierApp')
             transformToHostModeOptions: function (items) {
                 var hostModeOptions = [];
                 hostModeOptions.push({
-                   id: 999,
-                   name: 'AutoSelect',
-                   displayName: 'AutoSelect'
+                    id: 999,
+                    name: 'AutoSelect',
+                    displayName: 'AutoSelect'
                 });
-                
-                _.each(items.resources, function(item) {
+
+                _.each(items.resources, function (item) {
                     hostModeOptions.push({
                         id: item.storageSystemHostModeOptionId,
-                        name : item.storageSystemHostModeOptionName,
-                        displayName : item.storageSystemHostModeOptionId + ' - ' + item.storageSystemHostModeOptionName
-                        });
+                        name: item.storageSystemHostModeOptionName,
+                        displayName: item.storageSystemHostModeOptionId + ' - ' + item.storageSystemHostModeOptionName
+                    });
 
                 });
                 return hostModeOptions;

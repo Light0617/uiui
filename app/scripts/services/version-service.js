@@ -10,6 +10,7 @@
 angular.module('rainierApp')
     .factory('versionService', function () {
         return {
+            /* jshint ignore:start */
             firmwareVersionPrefix: {
                 // SVOS820_HM8x0: '88-0X-X', TODO: add firmware version for HM series v8.2 after version fixed
                 SVOS820_Rx00:  '80-07-0', // TODO: update firmware version after version fixed
@@ -33,6 +34,7 @@ angular.module('rainierApp')
                 SVOS640_HM800: '83-03-0',
                 SVOS640_Rx00:  '80-04-0'
             },
+            /* jshint ignore:end */
 
             isStorageSystemVersionSupported: function (version) {
                 if(_.isEmpty(version)){

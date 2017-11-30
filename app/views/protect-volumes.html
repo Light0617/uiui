@@ -9,7 +9,7 @@
 
             <form name="validationForm.leftPanel" class="fieldset validation-form" novalidate>
                 <div class="label-value-container">
-                    <label class="label" for="storage-system">Replication Type</label>
+                    <label class="label" for="storage-system">{{'data-protection-type' | translate}}</label>
                     <select class="form-control" id="storage-system"
                             ng-disabled="true"
                             ng-options="Local Replication">
@@ -235,7 +235,7 @@
                         </div>
                         <div class="col-md-6 form-horizontal">
                             <div class="form-group label-value-container" ng-switch-when="false">
-                                <label class="label">Comments</label>
+                                <label class="label">{{'replication-group-label-comments' | translate}}</label>
                                 <input type="text" name="comments" class="form-control"
                                        placeholder="Comments (optional)"
                                        ng-model="dataModel.comments" tabindex="2"
@@ -243,7 +243,7 @@
                             </div>
 
                             <div class="form-group label-value-container" ng-switch-when="true">
-                                <label class="label">Comments</label>
+                                <label class="label">{{'replication-group-label-comments' | translate}}</label>
                                 <input type="text" name="comments" class="form-control"
                                        placeholder="Comments (optional)" tabindex="2" ng-disabled="true">
                             </div>
@@ -252,60 +252,95 @@
                 </div>
 
 
+                <!-- Select snapshot pool for each storageSystem -->
+                <div class="list-view seventyPercentWidth" ng-if="!dataModel.isEnableClone() && allUseExisting === false">
+                    <label>{{'target-snapshot-pool' | translate }}</label>
+                    <div class="row-tile column-headers">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell col-margin"
+                             ng-click="orderByField='storageSystemIdForPool'; reverseSort = !reverseSort">
+                            <a class="sort-column-header">{{'storage-system-id' | translate}}<span class="caret"
+                                                                                                   ng-show="orderByField === 'storageSystemIdForPool'"></span></a>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 cell col-margin"
+                             ng-click="orderByField='snapshotPool'; reverseSort = !reverseSort">
+                            <a class="sort-column-header">{{'storage-pool' | translate}}<span class="caret"
+                                                                                              ng-show="orderByField === 'snapshotPool'"></span></a>
+                        </div>
+                    </div>
+                    <div class="row-grey"
+                         ng-repeat="snapshotPool in dataModel.arraySnapshotPooList | orderBy:orderByField:reverseSort"
+                         track by arraySnapshotPooList.storageSystemId
+                         ng-if="showArraySnapshotPool(snapshotPool.storageSystemId)">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
+                            <input type="text" ng-model="snapshotPool.storageSystemId" ng-disabled=true
+                                   class="form-control text inline"
+                                   name="storageSystemIdForPool" title="{{snapshotPool.storageSystemId}}"
+                                   value="snapshotPool.storageSystemId">
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 cell control">
+                            <select id="poolSelect" class="dropdown inline cell" id="targetSnapshotPool"
+                                    ng-model="snapshotPool.selectedPool"
+                                    ng-options="pool.displayLabel for pool in snapshotPool.snapshotPools">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <!--End fixed rows -->
                 <div class="list-view content-grow-vertically">
+                    <label>{{'volumes-to-be-protected' | translate }}</label>
                     <div class="row-tile column-headers">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell col-margin"
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin"
                              ng-click="orderByField='volumeId'; reverseSort = !reverseSort">
-                            <a class="sort-column-header">ID <span class="caret"
+                            <a class="sort-column-header">{{'external-parity-group-id' | translate}}<span class="caret"
                                                                    ng-show="orderByField == 'volumeId'"></span></a>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell col-margin"
                              ng-click="orderByField='label'; reverseSort = !reverseSort">
-                            <a class="sort-column-header">Label <span class="caret"
+                            <a class="sort-column-header">{{'storage-volume-label' | translate}}<span class="caret"
                                                                       ng-show="orderByField == 'label'"></span></a>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin"
                              ng-click="orderByField='poolId'; reverseSort = !reverseSort">
-                            <a class="sort-column-header">Pool ID <span class="caret"
+                            <a class="sort-column-header">{{'storage-pool-id' | translate}}<span class="caret"
                                                                         ng-show="orderByField == 'poolId'"></span></a>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell col-margin"
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin"
                              ng-click="orderByField='storageSystemId'; reverseSort = !reverseSort">
-                            <a class="sort-column-header">Storage System ID <span class="caret"
+                            <a class="sort-column-header">{{'storage-system-id' | translate}}<span class="caret"
                                                                                   ng-show="orderByField == 'storageSystemId'"></span></a>
                         </div>
                     </div>
                     <div class="row-grey"
                          ng-repeat="volumeRow in dataModel.volumeRows | orderBy:orderByField:reverseSort" track by
                          volumeRow.volumeId>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
                             <input type="text" ng-disabled=true class="form-control text inline" name="volumeId"
-                                   title="{{'storage-volume-id' | translate}}" ng-model="volumeRow.volumeId"
+                                   title="{{volumeRow.volumeId}}" ng-model="volumeRow.volumeId"
                                    value="volumeRow.volumeId">
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
                             <input type="text" ng-model="volumeRow.label" ng-disabled=true
                                    class="form-control text inline"
-                                   name="volumeLabel" title="{{'storage-volume-label' | translate}}"
+                                   name="volumeLabel" title="{{volumeRow.label}}"
                                    value="volumeRow.label">
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
                             <input type="text" ng-model="volumeRow.poolId" ng-disabled=true
                                    class="form-control text inline"
-                                   name="poolId" title="{{'storage-pool-id' | translate}}" value="volumeRow.poolId">
+                                   name="poolId" title="{{volumeRow.poolId}}" value="volumeRow.poolId">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
                             <input type="text" ng-model="volumeRow.storageSystemId" ng-disabled=true
                                    class="form-control text inline"
-                                   name="storageSystemId" title="{{'storage-system-id' | translate}}"
+                                   name="storageSystemId" title="{{volumeRow.storageSystemId}}"
                                    value="volumeRow.storageSystemId">
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell control"
                              ng-if="dataModel.showDropDownColumn">
                             <select id="select" class="dropdown inline cell" id="copyGroupName"
                                     ng-model="volumeRow.CGSelection"
-                                    ng-options="o.name for o in volumeRow.copyGroupNames" ng-change="CGChanged()">
+                                    ng-options="o.name for o in volumeRow.copyGroupNames" ng-change="CGChanged(volumeRow.storageSystemId)">
                                 <option value="" selected>Use New</option>
                             </select>
                         </div>

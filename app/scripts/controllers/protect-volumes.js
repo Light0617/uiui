@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('ProtectVolumesCtrl', function ($scope, $routeParams, $timeout, $window, $filter, $q,
                                                 orchestratorService, diskSizeService, ShareDataService, replicationService,
-                                                cronStringConverterService, paginationService, objectTransformService) {
+                                                cronStringConverterService, paginationService, objectTransformService,
+                                                synchronousTranslateService, storageSystemCapabilitiesService) {
 
         $scope.numberOfSnapshotsValidation = false;
         $scope.copyGroupNameValidation = false;
@@ -19,6 +20,7 @@ angular.module('rainierApp')
         $scope.minuteValidation = false;
         $scope.hourIntervalValidation = false;
         $scope.allUseExisting = false;
+        $scope.arrayUseExisting = {};
         $scope.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
         $scope.decimalNumberRegexp = /^[^.]+$/;
         $scope.orderByField = 'volumeId';
@@ -39,15 +41,43 @@ angular.module('rainierApp')
 
         var allCopyGroups = {};
 
-        var tasks = _.map(storageSystemIds, function (storageSystemId) {
+        var getReplicationTasks = _.map(storageSystemIds, function (storageSystemId) {
             return paginationService.getAllPromises(null, 'replication-groups', true, storageSystemId,
                 objectTransformService.transformReplicationGroup).then(function (result) {
-                    allCopyGroups[storageSystemId] = result;
-                }, function () {
-                    allCopyGroups[storageSystemId] = [];
-                });
+                allCopyGroups[storageSystemId] = result;
+            }, function () {
+                allCopyGroups[storageSystemId] = [];
+            });
         });
 
+        var storageSystems = {};
+        var getStorageSystemsTask = paginationService.get(null, 'storage-systems', null, true, null)
+            .then(function (result) {
+                _.forEach(result.resources, function (item) {
+                    objectTransformService.transformStorageSystem(item);
+                });
+                storageSystems = _.filter(result.resources, function (storageSystem) {
+                    return _.include(storageSystemIds, storageSystem.storageSystemId);
+                });
+                _.forEach(storageSystems, function (storageSystem) {
+                    $scope.arrayUseExisting[storageSystem.storageSystemId] = false;
+                });
+            }, function () {
+                window.history.back();
+            });
+
+        var allStoragePools = {};
+
+        var getPoolsTasks = _.map(storageSystemIds, function (storageSystemId) {
+            return paginationService.getAllPromises(null, 'storage-pools', true, storageSystemId,
+                objectTransformService.transformPool).then(function (result) {
+                allStoragePools[storageSystemId] = result;
+            }, function () {
+                allStoragePools[storageSystemId] = [];
+            });
+        });
+
+        var tasks = getReplicationTasks.concat(getPoolsTasks.concat(getStorageSystemsTask));
         $q.all(tasks).then(function () {
             initPage();
         });
@@ -121,6 +151,19 @@ angular.module('rainierApp')
             $scope.dataModel.scheduleTimeMins = 0;
             $scope.dataModel.scheduleMinute = 0;
 
+            $scope.dataModel.arraySnapshotPooList = [];
+            _.map(storageSystems, function (storageSystem) {
+                var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(storageSystem.model, storageSystem.firmwareVersion);
+                var snapshotPools = filterSnapshotPools(storageSystem.storageSystemId, poolTypes);
+
+                var arraySnapshotPool = {
+                    storageSystemId: storageSystem.storageSystemId,
+                    selectedPool: snapshotPools[0],
+                    snapshotPools: snapshotPools
+                };
+
+                $scope.dataModel.arraySnapshotPooList.push(arraySnapshotPool);
+            });
 
             function populateCopyGroupsToVolumes() {
                 var technology = $scope.dataModel.replicationTechnology;
@@ -157,6 +200,16 @@ angular.module('rainierApp')
                 $scope.allUseExisting = false;
                 _.forEach($scope.dataModel.volumeRows, function (volume) {
                     volume.CGSelection = {};
+                });
+
+                for (var key in $scope.arrayUseExisting) {
+                    if (Object.prototype.hasOwnProperty.call($scope.arrayUseExisting, key)) {
+                        $scope.arrayUseExisting[key] = false;
+                    }
+                }
+
+                _.forEach($scope.dataModel.arraySnapshotPooList, function (snapshotPool) {
+                    snapshotPool.selectedPool = snapshotPool.snapshotPools[0];
                 });
             });
 
@@ -362,17 +415,31 @@ angular.module('rainierApp')
                 return Object.keys(obj).length === 0;
             }
 
-            $scope.CGChanged = function () {
+            $scope.CGChanged = function (storageSystemId) {
                 $scope.allUseExisting = true;
                 for (var i = 0; i < $scope.dataModel.volumeRows.length; ++i) {
-                    if (!$scope.dataModel.volumeRows[i].hasOwnProperty('CGSelection') ||
-                        ($scope.dataModel.volumeRows[i].CGSelection && !$scope.dataModel.volumeRows[i].CGSelection.hasOwnProperty('name')) ||
-                        $scope.dataModel.volumeRows[i].CGSelection === null ||
-                        isEmpty($scope.dataModel.volumeRows[i].CGSelection)) {
+                    if (isUseExisting($scope.dataModel.volumeRows[i])) {
                         $scope.allUseExisting = false;
                         break;
                     }
                 }
+
+                var arrayVolumeRows = _.filter($scope.dataModel.volumeRows, function (volumeRows) {
+                    return volumeRows.storageSystemId === storageSystemId;
+                });
+                $scope.arrayUseExisting[storageSystemId] = true;
+                _.forEach(arrayVolumeRows, function (volumeRow) {
+                    if (isUseExisting(volumeRow)) {
+                        $scope.arrayUseExisting[storageSystemId] = false;
+                    }
+                });
+            };
+
+            var isUseExisting = function (volumeRow) {
+                return (!volumeRow.hasOwnProperty('CGSelection') ||
+                    (volumeRow.CGSelection && !volumeRow.CGSelection.hasOwnProperty('name')) ||
+                    volumeRow.CGSelection === null ||
+                    isEmpty(volumeRow.CGSelection));
             };
 
             $scope.validationForm = {};
@@ -486,6 +553,14 @@ angular.module('rainierApp')
                                         parseInt(rg), {primaryVolumeIds: replicationGroupIdVolumeIdMap[rg]}));
                                 }
                             }
+
+                            for (var i = 0; i < $scope.dataModel.arraySnapshotPooList.length; i++) {
+                                var snapshotPool = $scope.dataModel.arraySnapshotPooList[i];
+                                if (!_.isEmpty(snapshotPool) && snapshotPool.storageSystemId === ss) {
+                                    snapshotCreatePayload.targetPoolId = snapshotPool.selectedPool.storagePoolId;
+                                    break;
+                                }
+                            }
                         }
                     }
                     $q.all(snapshotTasks).then(function () {
@@ -597,5 +672,28 @@ angular.module('rainierApp')
             }, true);
 
             $scope.filterCopyGroups();
+
+            /**
+             * @return {boolean}
+             */
+            $scope.showArraySnapshotPool = function (storageSystemId) {
+                return !$scope.arrayUseExisting[storageSystemId];
+            };
+
+            function filterSnapshotPools(storageSystemId, poolTypes) {
+                var snapshotPools = [{
+                    displayLabel: synchronousTranslateService.translate('common-auto-selected'),
+                    storagePoolId: null
+                }];
+                var storagePools = allStoragePools[storageSystemId];
+                _.forEach(storagePools, function (pool) {
+                    if (_.include(poolTypes, pool.type)) {
+                        pool.displayLabel = pool.snapshotPoolLabelWithPoolId();
+                        snapshotPools.push(pool);
+                    }
+                });
+
+                return snapshotPools;
+            }
         }
     });
