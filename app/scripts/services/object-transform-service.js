@@ -272,6 +272,9 @@ angular.module('rainierApp')
                     } else if (!item.hasOwnProperty('isExternal')) {
                         item.status = 'Active';
                     }
+                    if (item.targetPoolId === null){
+                        item.targetPoolId = synchronousTranslateService.translate('common-auto-selected');
+                    }
                 } else {
                     item.schedule = 'N/A';
                     item.status = 'N/A';

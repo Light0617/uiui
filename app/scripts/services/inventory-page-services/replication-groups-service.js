@@ -30,6 +30,7 @@ angular.module('rainierApp')
                 this.noSelection = true;
                 this.volumePairs = [];
                 this.naturalLanguageSchedule = 'N/A';
+                this.targetPoolId = 'N/A';
             },
             getVolumePairsForOneReplicationGroup: function (token, storageSystemId, replicationGroup, volumeId) {
                 var queryParams = {q: ['type:' + replicationService.rawReplicationType(replicationGroup.type)]};

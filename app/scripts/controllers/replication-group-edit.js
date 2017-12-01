@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('replicationGroupEditCtrl', function ($scope, orchestratorService, objectTransformService,
                                                       $routeParams, $q, $timeout, cronStringConverterService,
                                                       ShareDataService, $filter, paginationService, queryService,
-                                                      storageSystemVolumeService, replicationService) {
+                                                      storageSystemVolumeService, replicationService,
+                                                      synchronousTranslateService, storageSystemCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
         var replicationGroup = _.first(ShareDataService.selectedReplicationGroup);
         var primaryVolumes = [];
@@ -44,7 +45,22 @@ angular.module('rainierApp')
             });
         });
 
-        $q.all(getLabelAndNumberOfSVolForEachPVolTasks).then(function () {
+        var selectedStorageSystems = {};
+        var storagePools = [];
+        var tasks = getLabelAndNumberOfSVolForEachPVolTasks;
+        if (replicationService.isSnap(replicationGroup.type)) {
+            var getPoolsTask = orchestratorService.storageSystem(storageSystemId).then(function (result) {
+                selectedStorageSystems = result;
+                return paginationService
+                    .get(null, 'storage-pools', objectTransformService.transformPool, true, storageSystemId)
+                    .then(function (result) {
+                        storagePools = result.resources;
+                    });
+            });
+            tasks = getLabelAndNumberOfSVolForEachPVolTasks.concat(getPoolsTask);
+        }
+
+        $q.all(tasks).then(function () {
             initPage();
         });
 
@@ -78,6 +94,26 @@ angular.module('rainierApp')
                     }
                 }
             };
+
+
+            if(replicationService.isSnap($scope.dataModel.replicationType)) {
+                var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(selectedStorageSystems.model, selectedStorageSystems.firmwareVersion);
+                $scope.dataModel.snapshotTargetPools = [{
+                    displayLabel: synchronousTranslateService.translate('common-auto-selected'),
+                    storagePoolId: null
+                }];
+                $scope.dataModel.targetSnapshotPool = $scope.dataModel.snapshotTargetPools[0];
+
+                _.filter(storagePools, function(pool) {
+                    return _.contains(poolTypes, pool.type);
+                }).forEach(function (p) {
+                    p.displayLabel = p.snapshotPoolLabel();
+                    $scope.dataModel.snapshotTargetPools.push(p);
+                    if(p.storagePoolId === replicationGroup.targetPoolId){
+                        $scope.dataModel.targetSnapshotPool = p;
+                    }
+                });
+            }
 
             $scope.$watch('dataModel.schedule.hourStartMinute', function(value) {
                 $scope.dataModel.minuteDisplay = cronStringConverterService.addSuffix(value);
@@ -197,7 +233,8 @@ angular.module('rainierApp')
                         snapshotPayload.schedule = currentScheduleString;
                     }
 
-                    if (!_.isEmpty(snapshotPayload)) {
+                    if (!_.isEmpty(snapshotPayload) || isChangeTargetPool()) {
+                        snapshotPayload.targetPoolId = $scope.dataModel.targetSnapshotPool.storagePoolId;
                         snapshotTasks.push(orchestratorService.editReplicationGroup(storageSystemId,
                             replicationGroup.id, snapshotPayload));
                     }
@@ -206,6 +243,13 @@ angular.module('rainierApp')
                     });
                 }
             };
+
+            function isChangeTargetPool() {
+                if (replicationGroup.targetPoolId === synchronousTranslateService.translate('common-auto-selected')) {
+                    return $scope.dataModel.targetSnapshotPool.storagePoolId !== null;
+                }
+                return replicationGroup.targetPoolId !== $scope.dataModel.targetSnapshotPool.storagePoolId;
+            }
 
             $scope.isSnap = replicationService.isSnap;
             $scope.isClone = replicationService.isClone;
@@ -292,7 +336,8 @@ angular.module('rainierApp')
                     $scope.dataModel.numberOfSnapshots !== replicationGroup.numberOfCopies ||
                     (isValidSchedule() &&
                     !cronStringConverterService.isEqualForObjectModel(scheduleString, replicationGroup.schedule)) ||
-                    $scope.anyPrimaryVolumeSelected;
+                    $scope.anyPrimaryVolumeSelected ||
+                    isChangeTargetPool();
             }
         }
     });

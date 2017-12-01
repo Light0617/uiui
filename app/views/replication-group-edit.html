@@ -173,6 +173,17 @@
                     <p ng-if="dataModel.schedule.type === 'MONTHLY'">
                         {{ 'replication-groups-monthly-note' | translate : dataModel }}</p>
 
+                    <div ng-if="isSnap" class="smallMarginTop">
+                        <form role="form" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
+                            <div class="form-group label-value-container">
+                                <label class="label">{{'target-snapshot-pool' | translate }}</label>
+                                <select class="form-control" ng-model="dataModel.targetSnapshotPool"
+                                        ng-options="p.displayLabel for p in dataModel.snapshotTargetPools">
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="control-row">
                             <h3 class="header-label" title="{{'replication-group-edit-remove-pvol-message' | translate}}">{{'replication-group-edit-remove-pvol-message' | translate}}</h3>
                         

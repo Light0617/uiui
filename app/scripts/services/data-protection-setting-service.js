@@ -196,6 +196,17 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    title: 'target-snapshot-pool',
+                    sizeClass: 'twelfth',
+                    sortField: 'targetPoolId',
+                    getDisplayValue: function (item) {
+                        return item.targetPoolId;
+                    },
+                    getTooltipValue: function (item) {
+                        return item.targetPoolId;
+                    }
+                },
+                {
                     title: 'replication-group-label-comments',
                     sizeClass: 'sixth',
                     sortField: '',
