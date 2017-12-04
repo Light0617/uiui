@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService,
                                                  storagePoolService, objectTransformService, paginationService,
-                                                 resourceTrackerService, storageSystemCapabilitiesService) {
+                                                 resourceTrackerService, storageSystemCapabilitiesService, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -41,12 +41,16 @@ angular.module('rainierApp')
                     $scope.model.utilizationThreshold1 = parseInt(result.utilizationThreshold1);
                     defaultLow = parseInt(result.utilizationThreshold1);
                     $scope.model.utilizationThreshold2 = parseInt(result.utilizationThreshold2);
+
                     $scope.model.subscriptionLimit = result.subscriptionLimit;
-                    defaultSubscriptionLimitValue = result.subscriptionLimit.value;
-                    defaultSubscriptionLimitUnlimited = result.subscriptionLimit.unlimited;
+                    if (!utilService.isNullOrUndef(result.subscriptionLimit)) {
+                        defaultSubscriptionLimitValue = result.subscriptionLimit.value;
+                        defaultSubscriptionLimitUnlimited = result.subscriptionLimit.unlimited;
+                    }
+                    $scope.model.templateSubscriptionLimit = result.subscriptionLimit;
+
                     $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
                     $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
-                    $scope.model.templateSubscriptionLimit = result.subscriptionLimit;
                 });
             
             orchestratorService.licenses(val.storageSystemId).then(function (result) {
@@ -123,14 +127,18 @@ angular.module('rainierApp')
         $scope.$watch('model.poolType', function (val) {
             $scope.model.disableUtilization = val === 'HTI' && $scope.model.wizardType === 'advanced';
             $scope.model.utilizationThreshold1 = defaultLow;
-            $scope.model.subscriptionLimit.value = defaultSubscriptionLimitValue;
-            $scope.model.subscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
+            if (!utilService.isNullOrUndef($scope.model.subscriptionLimit)) {
+                $scope.model.subscriptionLimit.value = defaultSubscriptionLimitValue;
+                $scope.model.subscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
+            }
         });
 
         $scope.$watch('model.htiPool', function () {
             $scope.model.templateUtilizationThreshold1 = defaultLow;
-            $scope.model.templateSubscriptionLimit.value = defaultSubscriptionLimitValue;
-            $scope.model.templateSubscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
+            if (!utilService.isNullOrUndef($scope.model.templateSubscriptionLimit)) {
+                $scope.model.templateSubscriptionLimit.value = defaultSubscriptionLimitValue;
+                $scope.model.templateSubscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
+            }
         });
 
         function  dataVizModelForAdvanced(pgs) {
@@ -254,7 +262,11 @@ angular.module('rainierApp')
                         if($scope.model.poolType){
                             isHtiPool = ($scope.model.poolType === 'HTI');
                         }
-                        isInvalid = !storagePoolService.isSubscriptionLimitValid(isHtiPool, $scope.model.subscriptionLimit.unlimited, $scope.model.subscriptionLimit.value);    
+                        isInvalid = !utilService.isNullOrUndef($scope.model.subscriptionLimit) &&
+                            !storagePoolService.isSubscriptionLimitValid(
+                                isHtiPool,
+                                $scope.model.subscriptionLimit.unlimited,
+                                $scope.model.subscriptionLimit.value);
                     }
                     if (!isInvalid) {
                         if ($scope.model.wizardType === 'basic') {

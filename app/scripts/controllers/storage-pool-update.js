@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StoragePoolUpdateCtrl', function ($modal, $scope, $routeParams, $timeout, orchestratorService,
                                                    diskSizeService, storagePoolService, paginationService,
                                                    objectTransformService, resourceTrackerService,
-                                                   storageSystemCapabilitiesService) {
+                                                   storageSystemCapabilitiesService, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var poolId = $routeParams.storagePoolId;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -156,10 +156,13 @@ angular.module('rainierApp')
                             $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
                             $scope.model.originalTemplateUtilizationThreshold1 = $scope.model.templateUtilizationThreshold1;
                             $scope.model.originalTemplateUtilizationThreshold2 = $scope.model.templateUtilizationThreshold2;
-                            $scope.model.templateSubscriptionLimit = {
-                                unlimited: result.subscriptionLimit.unlimited,
-                                value: result.subscriptionLimit.value
-                            };
+
+                            if (!utilService.isNullOrUndef(result.subscriptionLimit)) {
+                                $scope.model.templateSubscriptionLimit = {
+                                    unlimited: result.subscriptionLimit.unlimited,
+                                    value: result.subscriptionLimit.value
+                                };
+                            }
                             $scope.model.originalTemplateSubscriptionLimit = result.subscriptionLimit;
                         });
 
@@ -259,26 +262,38 @@ angular.module('rainierApp')
                                 return false;
                             }
                             var subscriptionCheckResult = false;
+                            var isChangedSubscriptionLimit = function (before, after) {
+                                return !utilService.isNullOrUndef(before) && !utilService.isNullOrUndef(after) &&
+                                    (before.unlimited !== after.unlimited || before.value !== after.value);
+                            };
                             if ($scope.model.wizardType === 'basic') {
-                                subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.htiPool,
-                                    $scope.model.templateSubscriptionLimit.unlimited, $scope.model.templateSubscriptionLimit.value);
-                                return (($scope.model.originalLabel !== $scope.model.label) || getActualSelectedTierSizes().length > 0 ||
+                                if (!utilService.isNullOrUndef($scope.model.templateSubscriptionLimit)) {
+                                    subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.htiPool,
+                                        $scope.model.templateSubscriptionLimit.unlimited, $scope.model.templateSubscriptionLimit.value);
+                                }
+
+                                return ($scope.model.originalLabel !== $scope.model.label || getActualSelectedTierSizes().length > 0 ||
                                     $scope.model.originalHtiPool !== $scope.model.htiPool ||
                                     $scope.model.templateUtilizationThreshold1 !== $scope.model.originalTemplateUtilizationThreshold1 ||
                                     $scope.model.templateUtilizationThreshold2 !== $scope.model.originalTemplateUtilizationThreshold2 ||
-                                    $scope.model.templateSubscriptionLimit.unlimited !== $scope.model.originalTemplateSubscriptionLimit.unlimited ||
-                                    $scope.model.templateSubscriptionLimit.value !== $scope.model.originalTemplateSubscriptionLimit.value) && subscriptionCheckResult;
+                                    isChangedSubscriptionLimit(
+                                        $scope.model.templateSubscriptionLimit,
+                                        $scope.model.originalTemplateSubscriptionLimit)
+                                ) && subscriptionCheckResult;
                             } else {
                                 subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.poolType === 'HTI',
                                     $scope.model.subscriptionLimit.unlimited, $scope.model.subscriptionLimit.value);
 
-                                return (($scope.model.originalLabel !== $scope.model.label) || ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
+                                return (($scope.model.originalLabel !== $scope.model.label) ||
+                                    ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
                                     $scope.model.selectedParityGroups.length > 0 ||
                                     $scope.model.originalPoolType !== $scope.model.poolType ||
                                     $scope.model.utilizationThreshold1 !== $scope.model.originalUtilizationThreshold1 ||
                                     $scope.model.utilizationThreshold2 !== $scope.model.originalUtilizationThreshold2 ||
-                                    $scope.model.subscriptionLimit.unlimited !== $scope.model.originalSubscriptionLimit.unlimited ||
-                                    $scope.model.subscriptionLimit.value !== $scope.model.originalSubscriptionLimit.value) && subscriptionCheckResult;
+                                    isChangedSubscriptionLimit(
+                                        $scope.model.subscriptionLimit,
+                                        $scope.model.originalSubscriptionLimit)
+                                ) && subscriptionCheckResult;
                             }
                         }
                     };
