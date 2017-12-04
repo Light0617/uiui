@@ -8,8 +8,9 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService, storagePoolService,
-                                                 objectTransformService, paginationService, resourceTrackerService) {
+    .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService,
+                                                 storagePoolService, objectTransformService, paginationService,
+                                                 resourceTrackerService, storageSystemCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -179,11 +180,20 @@ angular.module('rainierApp')
                 hasHdpLicense: false,
                 hasHdtLicense: false,
                 hasHtiLicense: false,
-                hasActiveFlashLicense: false
+                hasActiveFlashLicense: false,
+                editableSubscriptionLimit:
+                    storageSystemCapabilitiesService.editableSubscriptionLimit(storageSystem.model)
             };
 
             $scope.payload = {
                 submit: function () {
+
+                    var setSubscriptionLimit = function (payload, subscriptionLimit) {
+                        if ($scope.model.editableSubscriptionLimit) {
+                            payload['subscriptionLimit'] = subscriptionLimit;
+                        }
+                    };
+
                     if ($scope.model.wizardType === 'basic') {
                         var poolTemplateSubTiers = _.map($scope.model.selectedTiers, function (st) {
                             return {
@@ -197,9 +207,10 @@ angular.module('rainierApp')
                             label: $scope.model.label,
                             utilizationThreshold1: $scope.model.templateUtilizationThreshold1,
                             utilizationThreshold2: $scope.model.templateUtilizationThreshold2,
-                            subscriptionLimit: $scope.model.templateSubscriptionLimit,
                             poolTemplateSubTiers: poolTemplateSubTiers
                         };
+                        setSubscriptionLimit(deployPayload, $scope.model.templateSubscriptionLimit);
+
                         orchestratorService.deployPoolTemplate($scope.model.storageSystem.storageSystemId, deployPayload).then(function () {
                             window.history.back();
                         });
@@ -210,9 +221,10 @@ angular.module('rainierApp')
                             activeFlashEnabled: $scope.model.activeFlashEnabled,
                             utilizationThreshold1: $scope.model.utilizationThreshold1,
                             utilizationThreshold2: $scope.model.utilizationThreshold2,
-                            subscriptionLimit: $scope.model.subscriptionLimit,
                             parityGroupIds: $scope.model.selectedParityGroups
                         };
+
+                        setSubscriptionLimit(createPoolPayload, $scope.model.subscriptionLimit);
 
                         // Get selected parity groups on the pool
                         $scope.poolPgIds = [];
@@ -231,9 +243,8 @@ angular.module('rainierApp')
                             'Create Pool Confirmation', $scope.model.storageSystem.storageSystemId, null, createPoolPayload, orchestratorService.createStoragePool);
 
                     }
-
-
                 },
+
                 isInvalid: function () {
                     var isInvalid = !$scope.model || !$scope.model.storageSystem || !$scope.model.label ||
                         _.isEmpty($scope.model.label) ||  !$scope.model.availablePoolTypes || $scope.model.availablePoolTypes.length === 0;

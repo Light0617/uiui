@@ -10,41 +10,46 @@
 angular.module('rainierApp')
     .controller('StoragePoolUpdateCtrl', function ($modal, $scope, $routeParams, $timeout, orchestratorService,
                                                    diskSizeService, storagePoolService, paginationService,
-                                                   objectTransformService, resourceTrackerService) {
+                                                   objectTransformService, resourceTrackerService,
+                                                   storageSystemCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
         var poolId = $routeParams.storagePoolId;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
         var parityGroups;
 
-        orchestratorService.storagePool(storageSystemId, poolId)
-            .then(function (pool) {
-                $scope.model = pool;
-                $scope.poolPgs = pool.parityGroups;
-                $scope.model.originalActiveFlash = pool.activeFlashEnabled;
-                $scope.model.originalLabel = pool.label;
-                $scope.model.originalPoolType = pool.type;
-                $scope.model.poolType = pool.type;
-                $scope.model.availablePoolTypes = [pool.type];
-                $scope.model.wizardType = 'basic';
-                $scope.model.originalHtiPool = (pool.type === 'HTI');
-                $scope.model.disableUtilization = pool.type === 'HTI';
-                $scope.model.htiPool = $scope.model.originalHtiPool;
-                $scope.model.originalUtilizationThreshold1 = $scope.model.utilizationThreshold1;
-                $scope.model.originalUtilizationThreshold2 = $scope.model.utilizationThreshold2;
-                $scope.model.originalSubscriptionLimit = {
-                    unlimited: pool.subscriptionLimit.unlimited,
+        orchestratorService.storageSystem(storageSystemId).then(function (storageSystem) {
+            orchestratorService.storagePool(storageSystemId, poolId)
+                .then(function (pool) {
+                    $scope.model = pool;
+                    $scope.poolPgs = pool.parityGroups;
+                    $scope.model.originalActiveFlash = pool.activeFlashEnabled;
+                    $scope.model.originalLabel = pool.label;
+                    $scope.model.originalPoolType = pool.type;
+                    $scope.model.poolType = pool.type;
+                    $scope.model.availablePoolTypes = [pool.type];
+                    $scope.model.wizardType = 'basic';
+                    $scope.model.originalHtiPool = (pool.type === 'HTI');
+                    $scope.model.disableUtilization = pool.type === 'HTI';
+                    $scope.model.htiPool = $scope.model.originalHtiPool;
+                    $scope.model.originalUtilizationThreshold1 = $scope.model.utilizationThreshold1;
+                    $scope.model.originalUtilizationThreshold2 = $scope.model.utilizationThreshold2;
+                    $scope.model.originalSubscriptionLimit = {
+                        unlimited: pool.subscriptionLimit.unlimited,
                         value: pool.subscriptionLimit.value
-                };
-                $scope.model.templateSubscriptionLimit = {};
-                $scope.model.originalTemplateSubscriptionLimit = {};
-                $scope.model.hasHdpLicense = false;
-                $scope.model.hasHdtLicense = false;
-                $scope.model.hasHtiLicense = false;
-                $scope.model.activeFlashAllowed = false;
-                $scope.model.hasActiveFlashLicense = pool.activeFlashEnabled;
-                $scope.model.originalActiveFlashEnabled = false;
-                paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId,
-                    objectTransformService.transformParityGroup).then(function(result) {
+                    };
+                    $scope.model.templateSubscriptionLimit = {};
+                    $scope.model.originalTemplateSubscriptionLimit = {};
+                    $scope.model.hasHdpLicense = false;
+                    $scope.model.hasHdtLicense = false;
+                    $scope.model.hasHtiLicense = false;
+                    $scope.model.activeFlashAllowed = false;
+                    $scope.model.hasActiveFlashLicense = pool.activeFlashEnabled;
+                    $scope.model.originalActiveFlashEnabled = false;
+                    $scope.model.editableSubscriptionLimit =
+                        storageSystemCapabilitiesService.editableSubscriptionLimit(storageSystem.model);
+
+                    paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId,
+                        objectTransformService.transformParityGroup).then(function (result) {
                         parityGroups = result;
                         orchestratorService.tiers().then(function (result) {
                             var diskTypeSpeedToTier = {};
@@ -88,7 +93,9 @@ angular.module('rainierApp')
                             // raid level, disk speed, we set the initial filter as them for the parity groups
                             // to be selected.
                             _.forEach($scope.model.parityGroups, function (pg) {
-                                if (_.find(pool.parityGroups, function(parityGroup) { return parityGroup.id === pg.parityGroupId; })) {
+                                if (_.find(pool.parityGroups, function (parityGroup) {
+                                        return parityGroup.id === pg.parityGroupId;
+                                    })) {
                                     if (!diskType && !raidLayout && !raidLevel && !diskSpeed) {
                                         diskType = pg.diskSpec.type;
                                         raidLayout = pg.raidLayout;
@@ -116,157 +123,167 @@ angular.module('rainierApp')
                             $scope.model.parityGroups = usableParityGroups;
 
                             $scope.model.search = isUnified ?
-                            {
-                                freeText: '',
-                                diskSpec: {
-                                    type: diskType,
-                                    speed: diskSpeed
-                                },
-                                raidLayout: raidLayout,
-                                raidLevel: raidLevel
-                            }
+                                {
+                                    freeText: '',
+                                    diskSpec: {
+                                        type: diskType,
+                                        speed: diskSpeed
+                                    },
+                                    raidLayout: raidLayout,
+                                    raidLevel: raidLevel
+                                }
                                 :
-                            {
-                                freeText: '',
-                                diskSpec: {
-                                    type: null,
-                                    speed: null
-                                },
-                                raidLayout: null,
-                                raidLevel: null
-                            };
+                                {
+                                    freeText: '',
+                                    diskSpec: {
+                                        type: null,
+                                        speed: null
+                                    },
+                                    raidLayout: null,
+                                    raidLevel: null
+                                };
                         });
                     });
 
-                orchestratorService.tiers().then(function (result) {
-                    $scope.tierKeys = _.pluck(result.tiers, 'tier');
-                });
-
-                orchestratorService.getUpdatePoolTemplate(storageSystemId, poolId)
-                    .then(function (result) {
-                        $scope.model.poolTemplate = result;
-                        $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
-                        $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
-                        $scope.model.originalTemplateUtilizationThreshold1 = $scope.model.templateUtilizationThreshold1;
-                        $scope.model.originalTemplateUtilizationThreshold2 = $scope.model.templateUtilizationThreshold2;
-                        $scope.model.templateSubscriptionLimit = {
-                            unlimited: result.subscriptionLimit.unlimited,
-                                value: result.subscriptionLimit.value
-                        };
-                        $scope.model.originalTemplateSubscriptionLimit = result.subscriptionLimit;
+                    orchestratorService.tiers().then(function (result) {
+                        $scope.tierKeys = _.pluck(result.tiers, 'tier');
                     });
 
-                orchestratorService.licenses(storageSystemId).then(function (result) {
-                    _.forEach(result.licenseSettings, function(license){
-                            if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true){
-                                $scope.model.hasActiveFlashLicense = true;
-                            } else if (license.productName.toUpperCase() === 'DYNAMIC TIERING' && license.installed === true) {
-                                if ($scope.model.availablePoolTypes.length === 1 &&  $scope.model.availablePoolTypes[0] === 'HDP'){
-                                    $scope.model.availablePoolTypes.push('HDT');
+                    orchestratorService.getUpdatePoolTemplate(storageSystemId, poolId)
+                        .then(function (result) {
+                            $scope.model.poolTemplate = result;
+                            $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
+                            $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
+                            $scope.model.originalTemplateUtilizationThreshold1 = $scope.model.templateUtilizationThreshold1;
+                            $scope.model.originalTemplateUtilizationThreshold2 = $scope.model.templateUtilizationThreshold2;
+                            $scope.model.templateSubscriptionLimit = {
+                                unlimited: result.subscriptionLimit.unlimited,
+                                value: result.subscriptionLimit.value
+                            };
+                            $scope.model.originalTemplateSubscriptionLimit = result.subscriptionLimit;
+                        });
+
+                    orchestratorService.licenses(storageSystemId).then(function (result) {
+                        _.forEach(result.licenseSettings, function (license) {
+                                if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true) {
+                                    $scope.model.hasActiveFlashLicense = true;
+                                } else if (license.productName.toUpperCase() === 'DYNAMIC TIERING' && license.installed === true) {
+                                    if ($scope.model.availablePoolTypes.length === 1 && $scope.model.availablePoolTypes[0] === 'HDP') {
+                                        $scope.model.availablePoolTypes.push('HDT');
+                                    }
+                                    $scope.model.hasHdtLicense = true;
                                 }
-                                $scope.model.hasHdtLicense = true;
                             }
-                        }
-                    );
-                });
+                        );
+                    });
 
-                $scope.payload = {
-                    submit: function () {
-                        var reservedResourcesList;
-                        var updatedLabel = ($scope.model.originalLabel === $scope.model.label) ? null : $scope.model.label;
-                        if ($scope.model.wizardType === 'basic') {
+                    $scope.payload = {
+                        submit: function () {
+                            var reservedResourcesList;
+                            var updatedLabel = ($scope.model.originalLabel === $scope.model.label) ? null : $scope.model.label;
 
-                            var poolTemplateSubTiers = getActualSelectedTierSizes();
-                            var deployPayload = {
-                                htiPool: $scope.model.htiPool,
-                                label: updatedLabel,
-                                utilizationThreshold1: $scope.model.templateUtilizationThreshold1,
-                                utilizationThreshold2: $scope.model.templateUtilizationThreshold2,
-                                subscriptionLimit: $scope.model.templateSubscriptionLimit,
-                                poolTemplateSubTiers: poolTemplateSubTiers
+                            var setSubscriptionLimit = function (payload, subscriptionLimit) {
+                                if ($scope.model.editableSubscriptionLimit) {
+                                    payload['subscriptionLimit'] = subscriptionLimit;
+                                }
                             };
-                            if($scope.model.htiPool && ($scope.model.templateUtilizationThreshold1 < 1 || $scope.model.templateUtilizationThreshold2 < 1)) {
-                                deployPayload.utilizationThreshold1 = 1;
-                                deployPayload.subscriptionLimit.value = 1;
+
+                            if ($scope.model.wizardType === 'basic') {
+
+                                var poolTemplateSubTiers = getActualSelectedTierSizes();
+                                var deployPayload = {
+                                    htiPool: $scope.model.htiPool,
+                                    label: updatedLabel,
+                                    utilizationThreshold1: $scope.model.templateUtilizationThreshold1,
+                                    utilizationThreshold2: $scope.model.templateUtilizationThreshold2,
+                                    poolTemplateSubTiers: poolTemplateSubTiers
+                                };
+                                setSubscriptionLimit(deployPayload, $scope.model.templateSubscriptionLimit);
+
+                                if ($scope.model.htiPool && ($scope.model.templateUtilizationThreshold1 < 1 || $scope.model.templateUtilizationThreshold2 < 1)) {
+                                    deployPayload.utilizationThreshold1 = 1;
+                                    deployPayload.subscriptionLimit.value = 1;
+                                }
+
+                                // Build reserved resources
+                                reservedResourcesList = [];
+                                reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+                                _.forEach($scope.poolPgIds, function (poolPgId) {
+                                    reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
+                                });
+
+                                // Show popup if resource is present in resource tracker else submit
+                                resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                    'Update Pool Confirmation', storageSystemId, poolId, deployPayload,
+                                    orchestratorService.updatePoolTemplate);
+                            } else {
+                                var updatePoolPayload = {
+                                    label: updatedLabel,
+                                    activeFlashEnabled: $scope.model.activeFlashEnabled,
+                                    poolType: $scope.model.poolType,
+                                    utilizationThreshold1: $scope.model.utilizationThreshold1,
+                                    utilizationThreshold2: $scope.model.utilizationThreshold2,
+                                    parityGroupIds: ($scope.model.selectedParityGroups.length === 0) ? null : $scope.model.selectedParityGroups
+                                };
+                                setSubscriptionLimit(updatePoolPayload, $scope.model.subscriptionLimit);
+
+                                if ($scope.model.poolType === 'HTI' && ($scope.model.utilizationThreshold1 < 1 || $scope.model.subscriptionLimit < 1)) {
+                                    updatePoolPayload.utilizationThreshold1 = 1;
+                                    updatePoolPayload.subscriptionLimit.value = 1;
+                                }
+
+                                // Get selected and existing parity groups on the pool
+                                $scope.poolPgIds = [];
+                                _.forEach($scope.poolPgs, function (poolPg) {
+                                    $scope.poolPgIds.push(poolPg.id);
+                                });
+                                _.forEach($scope.model.selectedParityGroups, function (selectedPg) {
+                                    $scope.poolPgIds.push(selectedPg);
+                                });
+
+                                // Build reserved resources
+                                reservedResourcesList = [];
+                                reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+                                _.forEach($scope.poolPgIds, function (poolPgId) {
+                                    reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
+                                });
+
+                                // Show popup if resource is present in resource tracker else submit
+                                resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                                    'Update Pool Confirmation', storageSystemId, poolId, updatePoolPayload,
+                                    orchestratorService.updateStoragePool);
                             }
-
-                            // Build reserved resources
-                            reservedResourcesList = [];
-                            reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
-                            _.forEach($scope.poolPgIds, function (poolPgId) {
-                                reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
-                            });
-
-                            // Show popup if resource is present in resource tracker else submit
-                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                                'Update Pool Confirmation', storageSystemId, poolId, deployPayload,
-                                orchestratorService.updatePoolTemplate);
-                        } else {
-                            var updatePoolPayload = {
-                                label: updatedLabel,
-                                activeFlashEnabled: $scope.model.activeFlashEnabled,
-                                poolType: $scope.model.poolType,
-                                utilizationThreshold1: $scope.model.utilizationThreshold1,
-                                utilizationThreshold2: $scope.model.utilizationThreshold2,
-                                subscriptionLimit: $scope.model.subscriptionLimit,
-                                parityGroupIds: ($scope.model.selectedParityGroups.length === 0) ? null : $scope.model.selectedParityGroups
-                            };
-                            if($scope.model.poolType === 'HTI' && ($scope.model.utilizationThreshold1 < 1 || $scope.model.subscriptionLimit < 1)) {
-                                updatePoolPayload.utilizationThreshold1 = 1;
-                                updatePoolPayload.subscriptionLimit.value = 1;
+                        },
+                        isValid: function () {
+                            if (!$scope.model) {
+                                return false;
                             }
-
-                            // Get selected and existing parity groups on the pool
-                            $scope.poolPgIds = [];
-                            _.forEach($scope.poolPgs, function (poolPg) {
-                                $scope.poolPgIds.push(poolPg.id);
-                            });
-                            _.forEach($scope.model.selectedParityGroups, function (selectedPg) {
-                                $scope.poolPgIds.push(selectedPg);
-                            });
-
-                            // Build reserved resources
-                            reservedResourcesList = [];
-                            reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
-                            _.forEach($scope.poolPgIds, function (poolPgId) {
-                                reservedResourcesList.push(poolPgId + '=' + resourceTrackerService.parityGroup());
-                            });
-
-                            // Show popup if resource is present in resource tracker else submit
-                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                                'Update Pool Confirmation', storageSystemId, poolId, updatePoolPayload,
-                                orchestratorService.updateStoragePool);
-                        }
-                    },
-                    isValid: function () {
-                        if (!$scope.model) {
-                            return false;
-                        }
-                        var subscriptionCheckResult = false;
-                        if ($scope.model.wizardType === 'basic') {
-                             subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.htiPool, 
-                                     $scope.model.templateSubscriptionLimit.unlimited, $scope.model.templateSubscriptionLimit.value);
-                            return (($scope.model.originalLabel !== $scope.model.label) || getActualSelectedTierSizes().length > 0 ||
-                                $scope.model.originalHtiPool !== $scope.model.htiPool ||
-                                $scope.model.templateUtilizationThreshold1 !== $scope.model.originalTemplateUtilizationThreshold1 ||
-                                $scope.model.templateUtilizationThreshold2 !== $scope.model.originalTemplateUtilizationThreshold2 ||
-                                $scope.model.templateSubscriptionLimit.unlimited !== $scope.model.originalTemplateSubscriptionLimit.unlimited ||
-                                $scope.model.templateSubscriptionLimit.value !== $scope.model.originalTemplateSubscriptionLimit.value) && subscriptionCheckResult;
-                        } else {
-                             subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.poolType === 'HTI',
+                            var subscriptionCheckResult = false;
+                            if ($scope.model.wizardType === 'basic') {
+                                subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.htiPool,
+                                    $scope.model.templateSubscriptionLimit.unlimited, $scope.model.templateSubscriptionLimit.value);
+                                return (($scope.model.originalLabel !== $scope.model.label) || getActualSelectedTierSizes().length > 0 ||
+                                    $scope.model.originalHtiPool !== $scope.model.htiPool ||
+                                    $scope.model.templateUtilizationThreshold1 !== $scope.model.originalTemplateUtilizationThreshold1 ||
+                                    $scope.model.templateUtilizationThreshold2 !== $scope.model.originalTemplateUtilizationThreshold2 ||
+                                    $scope.model.templateSubscriptionLimit.unlimited !== $scope.model.originalTemplateSubscriptionLimit.unlimited ||
+                                    $scope.model.templateSubscriptionLimit.value !== $scope.model.originalTemplateSubscriptionLimit.value) && subscriptionCheckResult;
+                            } else {
+                                subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.poolType === 'HTI',
                                     $scope.model.subscriptionLimit.unlimited, $scope.model.subscriptionLimit.value);
 
-                          return (($scope.model.originalLabel !== $scope.model.label) || ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
-                                $scope.model.selectedParityGroups.length > 0 ||
-                                $scope.model.originalPoolType !== $scope.model.poolType ||
-                                $scope.model.utilizationThreshold1 !== $scope.model.originalUtilizationThreshold1 ||
-                                $scope.model.utilizationThreshold2 !== $scope.model.originalUtilizationThreshold2 ||
-                                $scope.model.subscriptionLimit.unlimited !== $scope.model.originalSubscriptionLimit.unlimited ||
-                                $scope.model.subscriptionLimit.value !== $scope.model.originalSubscriptionLimit.value) && subscriptionCheckResult;
+                                return (($scope.model.originalLabel !== $scope.model.label) || ($scope.model.activeFlashEnabled !== $scope.model.originalActiveFlash) ||
+                                    $scope.model.selectedParityGroups.length > 0 ||
+                                    $scope.model.originalPoolType !== $scope.model.poolType ||
+                                    $scope.model.utilizationThreshold1 !== $scope.model.originalUtilizationThreshold1 ||
+                                    $scope.model.utilizationThreshold2 !== $scope.model.originalUtilizationThreshold2 ||
+                                    $scope.model.subscriptionLimit.unlimited !== $scope.model.originalSubscriptionLimit.unlimited ||
+                                    $scope.model.subscriptionLimit.value !== $scope.model.originalSubscriptionLimit.value) && subscriptionCheckResult;
+                            }
                         }
-                    }
-                };
-            });
+                    };
+                });
+        });
 
         function getActualSelectedTierSizes() {
             var poolTemplateSubTiers = [];

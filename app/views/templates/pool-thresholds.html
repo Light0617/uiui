@@ -46,7 +46,7 @@
             </div>
             </div>
         </div>
-        <div class="form-group" ng-if="model.wizardType==='basic'">
+        <div class="form-group" ng-if="model.wizardType === 'basic' && model.editableSubscriptionLimit">
             <label>Subscription Limit %</label>
             <div class="input-combined margin-T-B-L" >
                 <input type="checkbox" ng-model="model.templateSubscriptionLimit.unlimited" ng-disabled="model.htiPool">
@@ -54,7 +54,7 @@
                 <input type="number" ng-model="model.templateSubscriptionLimit.value" required="true" min="0" max="65535" ng-show="!model.templateSubscriptionLimit.unlimited" ng-disabled="model.htiPool">
             </div>
         </div>
-        <div class="form-group" ng-if="model.wizardType==='advanced'">
+        <div class="form-group" ng-if="model.wizardType==='advanced' && model.editableSubscriptionLimit">
             <label>Subscription Limit %</label>
             <div class="input-combined margin-T-B-L">
                 <input type="checkbox" ng-model="model.subscriptionLimit.unlimited" ng-disabled="model.disableUtilization">
