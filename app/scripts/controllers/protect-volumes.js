@@ -181,6 +181,7 @@ angular.module('rainierApp')
                                 (_.isEmpty(scheduleString) || cronStringConverterService.isEqualForObjectModel(scheduleString, cg.schedule));
                         });
                         volume.CGSelection = {};
+                        initArraySnapshot();
                     });
                 } else if (technology === CLONE) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
@@ -202,16 +203,18 @@ angular.module('rainierApp')
                     volume.CGSelection = {};
                 });
 
-                for (var key in $scope.arrayUseExisting) {
-                    if (Object.prototype.hasOwnProperty.call($scope.arrayUseExisting, key)) {
-                        $scope.arrayUseExisting[key] = false;
-                    }
-                }
+                initArraySnapshot();
+            });
+
+            function initArraySnapshot() {
+                _.map($scope.arrayUseExisting, function(val, key){
+                    $scope.arrayUseExisting[key] = false;
+                });
 
                 _.forEach($scope.dataModel.arraySnapshotPooList, function (snapshotPool) {
                     snapshotPool.selectedPool = snapshotPool.snapshotPools[0];
                 });
-            });
+            }
 
             $scope.filterCopyGroups = function () {
                 $scope.dataModel.showDropDownColumn = false;
@@ -416,27 +419,20 @@ angular.module('rainierApp')
             }
 
             $scope.CGChanged = function (storageSystemId) {
-                $scope.allUseExisting = true;
-                for (var i = 0; i < $scope.dataModel.volumeRows.length; ++i) {
-                    if (isUseExisting($scope.dataModel.volumeRows[i])) {
-                        $scope.allUseExisting = false;
-                        break;
-                    }
-                }
+                $scope.allUseExisting = _.every($scope.dataModel.volumeRows, function (volumeRow) {
+                    return isUseExisting(volumeRow);
+                });
 
                 var arrayVolumeRows = _.filter($scope.dataModel.volumeRows, function (volumeRows) {
                     return volumeRows.storageSystemId === storageSystemId;
                 });
-                $scope.arrayUseExisting[storageSystemId] = true;
-                _.forEach(arrayVolumeRows, function (volumeRow) {
-                    if (isUseExisting(volumeRow)) {
-                        $scope.arrayUseExisting[storageSystemId] = false;
-                    }
+                $scope.arrayUseExisting[storageSystemId] = _.every(arrayVolumeRows, function (volumeRow) {
+                    return isUseExisting(volumeRow);
                 });
             };
 
             var isUseExisting = function (volumeRow) {
-                return (!volumeRow.hasOwnProperty('CGSelection') ||
+                return !(!volumeRow.hasOwnProperty('CGSelection') ||
                     (volumeRow.CGSelection && !volumeRow.CGSelection.hasOwnProperty('name')) ||
                     volumeRow.CGSelection === null ||
                     isEmpty(volumeRow.CGSelection));
