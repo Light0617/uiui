@@ -139,11 +139,45 @@ angular.module('rainierApp')
             }
         }
 
+        function transformHsaEmbeddedLaunchUrl(item) {
+            item.hsaEmbeddedLaunchUrlForGum1 = ['https://', item.gum1IpAddress].join('');
+            item.hsaEmbeddedLaunchUrlForGum2 = ['https://', item.gum2IpAddress].join('');
+        }
+
+        function transformStorageSystemSettings(item) {
+            var result = [];
+
+            result.push(storageNavigatorSessionService.getNavigatorSessionAction(
+                item.storageSystemId, sessionScopeEncryptionKeys));
+
+            if (constantService.isHM850Series(item.model)) {
+                result.push({
+                    type: 'hyperlink',
+                    title: 'storage-system-launch-hsae-1',
+                    href: item.hsaEmbeddedLaunchUrlForGum1
+                });
+                result.push({
+                    type: 'hyperlink',
+                    title: 'storage-system-launch-hsae-2',
+                    href: item.hsaEmbeddedLaunchUrlForGum2
+                });
+            }
+
+            result.push({
+                type: 'hyperlink',
+                title: 'storage-system-launch-hdvm',
+                href: item.hdvmSnLaunchUrl
+            });
+
+            return result;
+        }
+
         transforms = {
 
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
                 transformHdvmSnLaunchUrl(item);
+                transformHsaEmbeddedLaunchUrl(item);
 
                 item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
                 item.metaData = [
@@ -216,14 +250,7 @@ angular.module('rainierApp')
                         icon: 'icon-settings',
                         tooltip: 'action-tooltip-settings',
                         type: 'dropdown',
-                        items: [
-                            {
-                                type: 'hyperlink',
-                                title: 'storage-system-launch-hdvm',
-                                href: item.hdvmSnLaunchUrl
-                            },
-                            storageNavigatorSessionService.getNavigatorSessionAction(item.storageSystemId, sessionScopeEncryptionKeys)
-                        ],
+                        items: transformStorageSystemSettings(item),
                         enabled: function () {
                             return true;
                         }
