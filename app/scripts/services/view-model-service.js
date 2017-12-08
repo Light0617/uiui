@@ -124,7 +124,7 @@ angular.module('rainierApp')
 
             self.getDataSavingTypes = function () {
                 var type = (self.pool ? self.pool.type : self.poolType);
-                return dataSavingTypes.slice(1, type === 'HDP' ? 3 : 1);
+                return dataSavingTypes.slice(1, type === 'HDP' || type === 'HDT' ? 3 : 1);
             };
         }
 
@@ -135,7 +135,7 @@ angular.module('rainierApp')
 
             builder.getDataSavingTypes = function () {
                 var type = (builder.pool ? builder.pool.type : builder.poolType);
-                return dataSavingTypes.slice(0, type === 'HDP' ? 3 : 1);
+                return dataSavingTypes.slice(0, type === 'HDP' || type === 'HDT' ? 3 : 1);
             };
 
             builder.setSizeUnit = function(unit) {
