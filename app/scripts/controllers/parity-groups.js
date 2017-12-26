@@ -8,10 +8,11 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, 
-                                              diskSizeService, scrollDataSourceBuilderService,
-                                              storageNavigatorSessionService,
-                                              $location, paginationService, hwAlertService, constantService, resourceTrackerService) {
+    .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService,
+                                              objectTransformService, synchronousTranslateService, diskSizeService,
+                                              scrollDataSourceBuilderService, storageNavigatorSessionService, $location,
+                                              paginationService, hwAlertService, constantService,
+                                              resourceTrackerService, storageSystemCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
         var getParityGroupsPath = 'parity-groups';
@@ -294,7 +295,7 @@ angular.module('rainierApp')
             };
 
 
-            if (constantService.isHM800Series($scope.storageSystemModel)) {
+            if (storageSystemCapabilitiesService.addableParityGroup($scope.storageSystemModel)) {
                 dataModel.addAction = function () {
                     $location.path(['storage-systems', storageSystemId, 'parity-groups', 'add'].join('/'));
                 };

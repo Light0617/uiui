@@ -13,6 +13,15 @@ angular.module('rainierApp')
         var defaultHostModeWithHostModeOptionMap = {};
         defaultHostModeWithHostModeOptionMap[defaultOsType[0]] = [40,73];
         defaultHostModeWithHostModeOptionMap[defaultOsType[1]] = [54,63];
+        var isR800SeriesFunc = function (storageModel) {
+            return storageModel === this.storageModel.Rx00.G1000 ||
+                storageModel === this.storageModel.Rx00.G1500 ||
+                storageModel === this.storageModel.Rx00.F1500;
+        };
+        var isRaidSeriesFunc = function (storageModel) {
+            return isR800SeriesFunc.call(this, storageModel);
+        };
+
         return {
             osType: function () {
                 return ['HP_UX', 'SOLARIS', 'AIX', 'WIN', 'LINUX', 'TRU64', 'OVMS', 'NETWARE', 'VMWARE', 'VMWARE_EX', 'WIN_EX'];
@@ -33,11 +42,8 @@ angular.module('rainierApp')
             hostModeOptions: function () {
                 return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83, 96, 97, 100, 102];
             },
-            isR800Series: function (storageModel) {
-                return storageModel === this.storageModel.Rx00.G1000 ||
-                    storageModel === this.storageModel.Rx00.G1500 ||
-                    storageModel === this.storageModel.Rx00.F1500;
-            },
+            isR800Series: isR800SeriesFunc,
+            isRaidSeries: isRaidSeriesFunc,
             isHM800Series: function (storageModel) {
                 return storageModel === this.storageModel.HM800.G100 ||
                     storageModel === this.storageModel.HM800.G200 ||

@@ -187,7 +187,7 @@ angular.module('rainierApp')
 
                             var setSubscriptionLimit = function (payload, subscriptionLimit) {
                                 if ($scope.model.editableSubscriptionLimit) {
-                                    payload['subscriptionLimit'] = subscriptionLimit;
+                                    payload.subscriptionLimit = subscriptionLimit;
                                 }
                             };
 

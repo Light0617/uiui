@@ -16,6 +16,9 @@ angular.module('rainierApp')
             },
             editableSubscriptionLimit: function (storageSystemModel) {
                 return !constantService.isHM850Series(storageSystemModel);
+            },
+            addableParityGroup: function (storageSystemModel) {
+                return constantService.isRaidSeries(storageSystemModel) === false;
             }
         }
     });
