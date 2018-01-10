@@ -51,6 +51,7 @@ angular.module('rainierApp')
 
                     $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
                     $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
+                    $scope.model.templateSuspendSnapshot = result.suspendSnapshot;
                 });
             
             orchestratorService.licenses(val.storageSystemId).then(function (result) {
@@ -61,6 +62,8 @@ angular.module('rainierApp')
                 $scope.model.hasActiveFlashLicense = false;
                 $scope.model.activeFlashEnabled = false;
                 $scope.model.activeFlashAllowed = false;
+                $scope.model.suspendSnapshot = false;
+                $scope.model.isShowSuspendSnapshot = false;
                 _.forEach(result.licenseSettings, function(license){
                         if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true){
                             $scope.model.hasActiveFlashLicense = true;
@@ -125,11 +128,22 @@ angular.module('rainierApp')
         $scope.$watch('model.diskSizesByTier', dataVizModelForBasic, true);
 
         $scope.$watch('model.poolType', function (val) {
-            $scope.model.disableUtilization = val === 'HTI' && $scope.model.wizardType === 'advanced';
+            var poolType = val;
+            $scope.model.disableUtilization = poolType === 'HTI' && $scope.model.wizardType === 'advanced';
             $scope.model.utilizationThreshold1 = defaultLow;
             if (!utilService.isNullOrUndef($scope.model.subscriptionLimit)) {
                 $scope.model.subscriptionLimit.value = defaultSubscriptionLimitValue;
                 $scope.model.subscriptionLimit.unlimited = defaultSubscriptionLimitUnlimited;
+            }
+
+            var supportPoolTypes = storageSystemCapabilitiesService.integratedSnapshotPoolType(
+                $scope.model.storageSystem.model, $scope.model.storageSystem.firmwareVersion);
+            if(_.contains(supportPoolTypes, poolType)) {
+                $scope.model.suspendSnapshot = true;
+                $scope.model.isShowSuspendSnapshot = true;
+            } else {
+                $scope.model.suspendSnapshot = null;
+                $scope.model.isShowSuspendSnapshot = false;
             }
         });
 
@@ -189,6 +203,7 @@ angular.module('rainierApp')
                 hasHdtLicense: false,
                 hasHtiLicense: false,
                 hasActiveFlashLicense: false,
+                suspendSnapshot: null,
                 editableSubscriptionLimit:
                     storageSystemCapabilitiesService.editableSubscriptionLimit(storageSystem.model)
             };
@@ -215,7 +230,8 @@ angular.module('rainierApp')
                             label: $scope.model.label,
                             utilizationThreshold1: $scope.model.templateUtilizationThreshold1,
                             utilizationThreshold2: $scope.model.templateUtilizationThreshold2,
-                            poolTemplateSubTiers: poolTemplateSubTiers
+                            poolTemplateSubTiers: poolTemplateSubTiers,
+                            suspendSnapshot: $scope.model.templateSuspendSnapshot
                         };
                         setSubscriptionLimit(deployPayload, $scope.model.templateSubscriptionLimit);
 
@@ -223,13 +239,17 @@ angular.module('rainierApp')
                             window.history.back();
                         });
                     } else {
+                        var isSuspendSnapshot = _.isBoolean($scope.model.suspendSnapshot) ?
+                            $scope.model.suspendSnapshot : null;
+
                         var createPoolPayload = {
                             type: $scope.model.poolType,
                             label: $scope.model.label,
                             activeFlashEnabled: $scope.model.activeFlashEnabled,
                             utilizationThreshold1: $scope.model.utilizationThreshold1,
                             utilizationThreshold2: $scope.model.utilizationThreshold2,
-                            parityGroupIds: $scope.model.selectedParityGroups
+                            parityGroupIds: $scope.model.selectedParityGroups,
+                            suspendSnapshot: isSuspendSnapshot
                         };
 
                         setSubscriptionLimit(createPoolPayload, $scope.model.subscriptionLimit);

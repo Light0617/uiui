@@ -221,6 +221,7 @@
     "storage-pool-utilization-threshold-high": "Utilization Threshold (High) %",
     "storage-pool-utilization-threshold-low": "Utilization Threshold (Low) %",
     "storage-pool-subscription-limit": "Subscription Limit",
+    "storage-pool-suspend-snapshot-description": "Snapshots will collapse to keep capacity for user data when this threshold is exceeded.",
 
     "storage-pool-list-parity-groups": "List of Parity Groups:",
     "storage-pool-delete-confirmation": "Delete Pools Confirmation",

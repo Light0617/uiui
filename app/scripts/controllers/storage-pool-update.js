@@ -21,6 +21,7 @@ angular.module('rainierApp')
             orchestratorService.storagePool(storageSystemId, poolId)
                 .then(function (pool) {
                     $scope.model = pool;
+                    $scope.model.storageSystem = storageSystem;
                     $scope.poolPgs = pool.parityGroups;
                     $scope.model.originalActiveFlash = pool.activeFlashEnabled;
                     $scope.model.originalLabel = pool.label;
@@ -37,6 +38,9 @@ angular.module('rainierApp')
                         unlimited: pool.subscriptionLimit.unlimited,
                         value: pool.subscriptionLimit.value
                     };
+                    $scope.model.suspendSnapshot = pool.suspendSnapshot;
+                    $scope.model.originalSuspendSnapshot = pool.suspendSnapshot;
+                    $scope.model.isShowSuspendSnapshot = _.isBoolean(pool.suspendSnapshot);
                     $scope.model.templateSubscriptionLimit = {};
                     $scope.model.originalTemplateSubscriptionLimit = {};
                     $scope.model.hasHdpLicense = false;
@@ -156,6 +160,8 @@ angular.module('rainierApp')
                             $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
                             $scope.model.originalTemplateUtilizationThreshold1 = $scope.model.templateUtilizationThreshold1;
                             $scope.model.originalTemplateUtilizationThreshold2 = $scope.model.templateUtilizationThreshold2;
+                            $scope.model.templateSuspendSnapshot = result.suspendSnapshot;
+                            $scope.model.originalTemplateSuspendSnapshot = result.suspendSnapshot;
 
                             if (!utilService.isNullOrUndef(result.subscriptionLimit)) {
                                 $scope.model.templateSubscriptionLimit = {
@@ -199,7 +205,8 @@ angular.module('rainierApp')
                                     label: updatedLabel,
                                     utilizationThreshold1: $scope.model.templateUtilizationThreshold1,
                                     utilizationThreshold2: $scope.model.templateUtilizationThreshold2,
-                                    poolTemplateSubTiers: poolTemplateSubTiers
+                                    poolTemplateSubTiers: poolTemplateSubTiers,
+                                    suspendSnapshot: $scope.model.templateSuspendSnapshot
                                 };
                                 setSubscriptionLimit(deployPayload, $scope.model.templateSubscriptionLimit);
 
@@ -226,7 +233,8 @@ angular.module('rainierApp')
                                     poolType: $scope.model.poolType,
                                     utilizationThreshold1: $scope.model.utilizationThreshold1,
                                     utilizationThreshold2: $scope.model.utilizationThreshold2,
-                                    parityGroupIds: ($scope.model.selectedParityGroups.length === 0) ? null : $scope.model.selectedParityGroups
+                                    parityGroupIds: ($scope.model.selectedParityGroups.length === 0) ? null : $scope.model.selectedParityGroups,
+                                    suspendSnapshot: _.isBoolean($scope.model.suspendSnapshot) ? $scope.model.suspendSnapshot : null
                                 };
                                 setSubscriptionLimit(updatePoolPayload, $scope.model.subscriptionLimit);
 
@@ -267,15 +275,19 @@ angular.module('rainierApp')
                                     (before.unlimited !== after.unlimited || before.value !== after.value);
                             };
                             if ($scope.model.wizardType === 'basic') {
-                                if (!utilService.isNullOrUndef($scope.model.templateSubscriptionLimit)) {
+                                if (!utilService.isNullOrUndef($scope.model.templateSubscriptionLimit) &&
+                                    !_.isEmpty($scope.model.templateSubscriptionLimit)) {
                                     subscriptionCheckResult = storagePoolService.isSubscriptionLimitValid($scope.model.htiPool,
                                         $scope.model.templateSubscriptionLimit.unlimited, $scope.model.templateSubscriptionLimit.value);
+                                } else {
+                                    subscriptionCheckResult = true;
                                 }
 
                                 return ($scope.model.originalLabel !== $scope.model.label || getActualSelectedTierSizes().length > 0 ||
                                     $scope.model.originalHtiPool !== $scope.model.htiPool ||
                                     $scope.model.templateUtilizationThreshold1 !== $scope.model.originalTemplateUtilizationThreshold1 ||
                                     $scope.model.templateUtilizationThreshold2 !== $scope.model.originalTemplateUtilizationThreshold2 ||
+                                    $scope.model.templateSuspendSnapshot !== $scope.model.originalTemplateSuspendSnapshot ||
                                     isChangedSubscriptionLimit(
                                         $scope.model.templateSubscriptionLimit,
                                         $scope.model.originalTemplateSubscriptionLimit)
@@ -290,6 +302,7 @@ angular.module('rainierApp')
                                     $scope.model.originalPoolType !== $scope.model.poolType ||
                                     $scope.model.utilizationThreshold1 !== $scope.model.originalUtilizationThreshold1 ||
                                     $scope.model.utilizationThreshold2 !== $scope.model.originalUtilizationThreshold2 ||
+                                    $scope.model.suspendSnapshot !== $scope.model.originalSuspendSnapshot ||
                                     isChangedSubscriptionLimit(
                                         $scope.model.subscriptionLimit,
                                         $scope.model.originalSubscriptionLimit)
@@ -385,5 +398,21 @@ angular.module('rainierApp')
         }
 
         $scope.$watch('model.parityGroups', dataVizModelForAdvanced, true);
+
+        $scope.$watch('model.poolType', function (val) {
+            if (utilService.isNullOrUndef($scope.model) || !_.has($scope.model, 'storageSystem')){
+                return;
+            }
+            var supportPoolTypes = storageSystemCapabilitiesService.integratedSnapshotPoolType(
+                $scope.model.storageSystem.model, $scope.model.storageSystem.firmwareVersion);
+            if(_.contains(supportPoolTypes, val)) {
+                $scope.model.suspendSnapshot = _.isBoolean($scope.model.originalSuspendSnapshot) ?
+                    $scope.model.originalSuspendSnapshot : true;
+                $scope.model.isShowSuspendSnapshot = true;
+            } else {
+                $scope.model.suspendSnapshot = null;
+                $scope.model.isShowSuspendSnapshot = false;
+            }
+        });
 
     });

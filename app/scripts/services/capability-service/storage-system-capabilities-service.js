@@ -14,6 +14,9 @@ angular.module('rainierApp')
             supportSnapshotPoolType: function (storageSystemModel, firmwareVersion) {
                 return dataProtectionCapabilitiesService.supportSnapshotPoolType(storageSystemModel, firmwareVersion);
             },
+            integratedSnapshotPoolType: function (storageSystemModel, firmwareVersion) {
+                return dataProtectionCapabilitiesService.integratedSnapshotPoolType(storageSystemModel, firmwareVersion);
+            },
             editableSubscriptionLimit: function (storageSystemModel) {
                 return !constantService.isHM850Series(storageSystemModel);
             },

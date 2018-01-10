@@ -116,7 +116,17 @@ angular.module('rainierApp')
                     .attr('style','text-transform: uppercase')
                     .text(synchronousTranslateService.translate('threshold2') + ' ' + model.utilizationThreshold2);
 
+            if ( model.suspendSnapshot === true) {
                 bar.append('text')
+                    .attr('x', thresholdBarX + baseWidth + arrowWidth + 1)
+                    .attr('y', (thresholdBarY + y2 - arrowHeight/2 - 0.3))
+                    .attr('font-size', '12.5%')
+                    .text(synchronousTranslateService.translate('storage-pool-suspend-snapshot-description'))
+                    .append('title')
+                    .text(synchronousTranslateService.translate('storage-pool-suspend-snapshot-description'));
+            }
+
+            bar.append('text')
                     .attr('x', thresholdBarX + baseWidth + arrowWidth + 1)
                     .attr('y', (thresholdBarY + y1 + arrowHeight/2 - 0.3))
                     .attr('font-size', '12.5%')

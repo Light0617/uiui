@@ -1,0 +1,40 @@
+/*
+   Define common selectors that are not related to branding
+ */
+
+.thresholds .input-group.flex-row .form-group {
+  @media (min-width: $screen-md-min) {
+    width: 30%;
+  }
+}
+
+.checkbox-group {
+  overflow: hidden;
+  position: relative;
+  input:first-child {
+    float: left;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  .break-line-label {
+    overflow-wrap: break-word;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: visible;
+    margin-left: 20px;
+  }
+}
+
+.seventyPercentWidth {
+  width: 70%;
+}
+
+.tenPercentWidth {
+  width: 10%;
+}
+
+.bigWidth {
+  width: 100%;
+}

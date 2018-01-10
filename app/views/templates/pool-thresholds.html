@@ -1,7 +1,7 @@
 <div class="thresholds fixed-control">
     <div class="input-group flex-row">
         <div class="form-group" ng-if="model.wizardType==='basic'">
-            <label>Utilization Threshold (Low) %</label>
+            <label>{{'storage-pool-utilization-threshold-low' | translate}}</label>
             <div class="row margin-T-B-L">
             <div class="col-sm-1">
             <input  type="text" class="slider-input" ng-model="model.templateUtilizationThreshold1" required="true" min="0" max="100" ng-disabled="model.htiPool">
@@ -34,9 +34,14 @@
             <input type="range" class="slider-range range-slider-control" ng-model="model.templateUtilizationThreshold2" required="true" min="0" max="100">
             </div>
             </div>
+            <div class="checkbox-group input-combined">
+                <input type="checkbox" ng-model="model.templateSuspendSnapshot">
+                <div class="break-line-label" title="{{'storage-pool-suspend-snapshot-description' | translate}}">
+                    {{'storage-pool-suspend-snapshot-description' | translate}}</div>
+            </div>
         </div>
         <div class="form-group" ng-if="model.wizardType==='advanced'">
-            <label>Utilization Threshold (High) %</label>
+            <label>{{'storage-pool-utilization-threshold-high' | translate}}</label>
             <div class="row margin-T-B-L">
             <div class="col-sm-1">
             <input type="text" class="slider-input" ng-model="model.utilizationThreshold2" required="true" min="0" max="100">
@@ -45,20 +50,25 @@
             <input type="range" class="slider-range range-slider-control" ng-model="model.utilizationThreshold2" required="true" min="0" max="100">
             </div>
             </div>
+            <div class="checkbox-group input-combined" ng-if="model.isShowSuspendSnapshot" >
+                <input type="checkbox" ng-model="model.suspendSnapshot">
+                <div class="break-line-label" title="{{'storage-pool-suspend-snapshot-description' | translate}}">
+                    {{'storage-pool-suspend-snapshot-description' | translate}}</div>
+            </div>
         </div>
         <div class="form-group" ng-if="model.wizardType === 'basic' && model.editableSubscriptionLimit">
-            <label>Subscription Limit %</label>
+            <label>{{'storage-pool-subscription-limit' | translate}}</label>
             <div class="input-combined margin-T-B-L" >
                 <input type="checkbox" ng-model="model.templateSubscriptionLimit.unlimited" ng-disabled="model.htiPool">
-                <label ng-show="model.templateSubscriptionLimit.unlimited">Unlimited</label>
+                <label ng-show="model.templateSubscriptionLimit.unlimited">{{'common-label-unlimited' | translate}}</label>
                 <input type="number" ng-model="model.templateSubscriptionLimit.value" required="true" min="0" max="65535" ng-show="!model.templateSubscriptionLimit.unlimited" ng-disabled="model.htiPool">
             </div>
         </div>
         <div class="form-group" ng-if="model.wizardType==='advanced' && model.editableSubscriptionLimit">
-            <label>Subscription Limit %</label>
+            <label>{{'storage-pool-subscription-limit' | translate}}</label>
             <div class="input-combined margin-T-B-L">
                 <input type="checkbox" ng-model="model.subscriptionLimit.unlimited" ng-disabled="model.disableUtilization">
-                <label ng-show="model.subscriptionLimit.unlimited">Unlimited</label>
+                <label ng-show="model.subscriptionLimit.unlimited">{{'common-label-unlimited' | translate}}</label>
                 <input type="number" ng-model="model.subscriptionLimit.value" required="true" min="0" max="65535" ng-show="!model.subscriptionLimit.unlimited" ng-disabled="model.disableUtilization">
             </div>
         </div>
