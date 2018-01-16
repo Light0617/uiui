@@ -150,12 +150,15 @@ angular.module('rainierApp')
             },
             SearchType: SearchType,
             getPartialSearchQueryString: getPartialSearchQueryString,
-            get: function (token, path, transform, isFirstCall, storageSystemId, prefix, prefixId) {
+            get: function (token, path, transform, isFirstCall, storageSystemId, prefix, prefixId, queryObject) {
                 if (isFirstCall) {
                     clearQuery();
                 }
                 $log.debug('token: ', token);
 
+                if(queryObject) {
+                    this.setFilterSearch(queryObject);
+                }
                 var queryParams = queryService.getQueryParameters(true);
 
                 if (token !== undefined) {

@@ -192,9 +192,17 @@ angular.module('rainierApp')
 
        };
 
-       scope.$watch('chartData', function() {
+        scope.$watch('chartData', function() {
             drawChart();
         },true);
+
+        scope.$watch('model.chartData', function() {
+            drawChart();
+        },true);
+
+        scope.$watch('dataModel.chartData', function() {
+            drawChart();
+        }, true);
 
     }
     return {

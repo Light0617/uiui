@@ -11,7 +11,9 @@ http://git.mcp.com/ui/shasta
 
 ## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
+Run `grunt` for building.
+
+Run `grunt serve --proxy-host=localhost --proxy-use-https=true` for preview with a local rainier server.
 
 Run `grunt servemock` for preview with ui mock data.
 

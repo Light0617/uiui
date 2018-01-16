@@ -1,0 +1,12 @@
+<div class="resource-row" ng-if="tabModel && tabModel.tabs && tabModel.tabs.length > 0">
+    <div class="resource-detail">
+        <div class="btn-group btn-group-justified">
+            <label class="btn btn-primary"
+                   ng-click="tabModel.selected = tab; tabModel.onChange(tab);"
+                   ng-class="{'active': tab === tabModel.selected}"
+                   ng-repeat="tab in tabModel.tabs track by $index">
+                {{ tab }}
+            </label>
+        </div>
+    </div>
+</div>

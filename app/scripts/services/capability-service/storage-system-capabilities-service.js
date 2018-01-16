@@ -22,6 +22,9 @@ angular.module('rainierApp')
             },
             addableParityGroup: function (storageSystemModel) {
                 return constantService.isRaidSeries(storageSystemModel) === false;
+            },
+            supportPortAttribute: function(storageSystemModel) {
+                return constantService.isR800Series(storageSystemModel);
             }
         }
     });

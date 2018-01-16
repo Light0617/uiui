@@ -5,6 +5,9 @@
         </page-title>
         <ng-include src="summaryTemplate" ng-if="summaryTemplate"></ng-include>
     </div>
+
+    <inventory-tab ng-model="tabModel"></inventory-tab>
+
     <div class="inventory tiles-view clearfix" ng-if="dataModel">
         <h2 ng-if="dataModel.showRelatedResourcesHeader">{{ 'related-resources' | translate }}</h2>
         <div class="row page-title">

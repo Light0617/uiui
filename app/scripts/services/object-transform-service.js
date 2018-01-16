@@ -172,6 +172,33 @@ angular.module('rainierApp')
             return result;
         }
 
+        function metadataDetailsOfPort(item) {
+            if(item.type === 'FIBRE') {
+                var result = [item.speed, item.fabric, item.connectionType];
+                if(item.wwn) {
+                    result.push(wwnService.appendColon(item.wwn));
+                }
+                return result;
+            } else if(item.type==='ISCSI' && item.iscsiInformation) {
+                var result = [item.speed, item.iscsiInformation.portIscsiName];
+
+                if(item.iscsiInformation.ipv4Information) {
+                    result.push(item.iscsiInformation.ipv4Information.address);
+                }
+                if(item.iscsiInformation.ipv6Enabled) {
+                    result.push('IPv6 Enable');
+                } else {
+                    result.push('IPv6 Disable');
+                }
+                if(item.iscsiInformation.ipv6Information) {
+                    result.push(item.iscsiInformation.ipv6Information.linklocalAddress);
+                    result.push(item.iscsiInformation.ipv6Information.globalAddress);
+                }
+                return result;
+            }
+            return [];
+        }
+
         transforms = {
 
             transformStorageSystem: function (item) {
@@ -930,12 +957,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.storagePortId,
-                        details: [item.speed, item.fabric, item.connectionType]
-                    },
-                    {
-                        left: false,
-                        title: item.type,
-                        details: [item.wwn ? wwnService.appendColon(item.wwn) : null]
+                        details: metadataDetailsOfPort(item)
                     }
                 ];
 

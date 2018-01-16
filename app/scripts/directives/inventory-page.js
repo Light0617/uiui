@@ -41,6 +41,7 @@ angular.module('rainierApp')
                 listCountSummaryTitle : '@',
                 listCountTooltip : '@',
                 summaryModel : '=',
+                tabModel: '=',
                 filterModel : '=',
                 summaryTemplate: '@',
                 tileItemTemplate :'@',

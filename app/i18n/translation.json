@@ -5,6 +5,8 @@
     "header-name": "Name",
     "common-information": "Information",
 
+    "id": "ID",
+
     "login-username-placeholder": "Username",
     "login-password-placeholder": "Password",
     "login-common-error": "Login failed!",
@@ -178,6 +180,16 @@
     "storage-port-enable-security-title": "Modify Security",
     "storage-port-enable-security-content": "Modify security for the {{getSelectedCount()}} selected ports to:",
 
+    "storage-port-fc-wwn": "WWN",
+    "storage-port-fc-speed": "Speed",
+    "storage-port-fc-fabric": "Fabric",
+    "storage-port-fc-connection-type": "Connection Type",
+
+    "storage-port-id": "Type",
+    "storage-port-security": "Security",
+    "storage-port-vsm": "VSM Port",
+    "storage-port-attribute": "Attribute",
+
     "storage-port-enable-security": "Enable Security",
     "storage-port-not-enable-security": "Disable Security",
     "storage-port-update": "Update Storage Port",
@@ -186,6 +198,10 @@
     "storage-port-update-port-speed": "Port Speed",
     "storage-port-update-port-fabric": "Port Fabric",
     "storage-port-update-port-connection-type": "Port Connection Type",
+
+    "storage-port-iscsi-name": "iSCSI Name",
+    "storage-port-iscsi-ipv4": "IPv4",
+    "storage-port-iscsi-ipv6": "IPv6(Link Local) / IPv6(Global)",
 
     "nav-bar-header-jobs": "Jobs",
     "nav-bar-header-monitoring": "Monitoring",
