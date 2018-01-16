@@ -63,8 +63,8 @@
                                         ng-model="dataModel.sort" ng-if="!dataModel.file"></sort-column-header>
                 </div>
                 <div ng-attr-class="{{settings.sizeClass}} cell text-resize" ng-repeat="settings in dataModel.gridSettings">
-                    <sort-column-header field="{{settings.sortField}}" label="{{ settings.title  | translate }}"
-                                        ng-model="dataModel.sort" title="{{ settings.title  | translate }}"></sort-column-header>
+                    <sort-column-header field="{{settings.sortField}}" label="{{settings.title}}"
+                                        ng-model="dataModel.sort"></sort-column-header>
                 </div>
                 <div class="eighth cell text-resize" ng-if="dataModel.displayList[0].usage && dataModel.displayList[0].status !== 'EXTERNALIZED'">
                     <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
@@ -137,7 +137,14 @@
 
                     <p ng-switch-when="dpType" title="{{settings.getToolTipValue(item)}}" ng-click="item.onClick()">{{settings.getDisplayValue(item)}}</p>
 
+                    <p ng-switch-when="array" title="{{settings.getDisplayValue(item).join('\n')}}">
+                        <span ng-repeat="i in settings.getDisplayValue(item)">
+                            {{i}}<br ng-if="!$last">
+                        </span>
+                    </p>
+
                     <p ng-switch-default="" title="{{settings.getDisplayValue(item)}}" ng-click="item.onClick()">{{settings.getDisplayValue(item)}}</p>
+
                 </div>
 
                 <div class="td eighth data cell" ng-if="item.usage && !item.fileCapacity && item.status !== 'EXTERNALIZED'" ng-click="item.onClick()">

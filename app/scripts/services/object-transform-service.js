@@ -173,14 +173,15 @@ angular.module('rainierApp')
         }
 
         function metadataDetailsOfPort(item) {
+            var result = [];
             if(item.type === 'FIBRE') {
-                var result = [item.speed, item.fabric, item.connectionType];
+                result = [item.speed, item.fabric, item.connectionType];
                 if(item.wwn) {
                     result.push(wwnService.appendColon(item.wwn));
                 }
                 return result;
             } else if(item.type==='ISCSI' && item.iscsiInformation) {
-                var result = [item.speed, item.iscsiInformation.portIscsiName];
+                result = [item.speed, item.iscsiInformation.portIscsiName];
 
                 if(item.iscsiInformation.ipv4Information) {
                     result.push(item.iscsiInformation.ipv4Information.address);
@@ -191,8 +192,8 @@ angular.module('rainierApp')
                     result.push('IPv6 Disable');
                 }
                 if(item.iscsiInformation.ipv6Information) {
-                    result.push(item.iscsiInformation.ipv6Information.linklocalAddress);
                     result.push(item.iscsiInformation.ipv6Information.globalAddress);
+                    result.push(item.iscsiInformation.ipv6Information.linklocalAddress);
                 }
                 return result;
             }

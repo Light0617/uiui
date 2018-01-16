@@ -201,7 +201,8 @@
 
     "storage-port-iscsi-name": "iSCSI Name",
     "storage-port-iscsi-ipv4": "IPv4",
-    "storage-port-iscsi-ipv6": "IPv6(Link Local) / IPv6(Global)",
+    "storage-port-iscsi-ipv6-global": "IPv6(Global)",
+    "storage-port-iscsi-ipv6-local": "IPv6(Link Local)",
 
     "nav-bar-header-jobs": "Jobs",
     "nav-bar-header-monitoring": "Monitoring",

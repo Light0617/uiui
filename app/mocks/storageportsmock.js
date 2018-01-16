@@ -36,7 +36,7 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
     var iscsiInformation = function () {
         var raw = iscsiIPInfo();
         return Object.assign({
-            portIscsiName: 'hitachi:rsd.hds.12271d.' + _.random(1, 1024).toString(16).toUpperCase()
+            portIscsiName: 'jp.com.hitachi:rsd.hitachi.vantara.314159265.' + _.random(1, 1024).toString(16).toUpperCase()
         }, raw);
     };
 

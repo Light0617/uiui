@@ -1,3 +1,11 @@
+/*
+ * ========================================================================
+ *
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
+ *
+ * ========================================================================
+ */
+
 'use strict';
 
 /**
@@ -156,9 +164,10 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'storage-port-iscsi-ipv6',
+                    title: ['storage-port-iscsi-ipv6-global', 'storage-port-iscsi-ipv6-local'],
                     sizeClass: 'twelfth',
-                    sortField: 'iscsiInformaiton.ipv6Informaiton.linkLocalAddress',
+                    sortField: 'iscsiInformaiton.ipv6Informaiton.globalAddress',
+                    type: 'array',
                     getDisplayValue: function(item) {
                         if(
                             _.isEmpty(item.iscsiInformation) ||
@@ -169,10 +178,9 @@ angular.module('rainierApp')
                             return '';
                         }
                         return [
-                            item.iscsiInformation.ipv6Information.linklocalAddress,
-                            ' / ',
-                            item.iscsiInformation.ipv6Information.globalAddress
-                        ].join('');
+                            item.iscsiInformation.ipv6Information.globalAddress,
+                            item.iscsiInformation.ipv6Information.linklocalAddress
+                        ];
                     }
                 }
             ], model);

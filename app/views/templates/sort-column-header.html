@@ -1,3 +1,7 @@
 <a class="sort-column-header" ng-click="field && sortModel.setSort(field)"
-   ng-class="{ dropup :!sortModel.reverse}">{{label}}<span class="caret"></span>
+   ng-class="{ dropup :!sortModel.reverse}" title="{{labels.join('\n')}}">
+    <span ng-repeat="l in labels">
+        {{l}}<br ng-if="labels.length > 1 && !$last">
+    </span>
+    <span class="caret"></span>
 </a>
