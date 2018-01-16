@@ -668,12 +668,16 @@
     "host-delete-currect-content": "The current server will be deleted. Do you want to proceed?",
     "hosts-label": "Server Label",
     "hosts-volume-count": "Volume Count",
+    "hosts-protocol": "Protocol",
     "hosts-data-protection-type": "Replication Type",
     "hosts-id": "Server Id",
     "hosts-ip-address": "Server IP Address",
     "hosts-ip-address-not-specified": "Not Specified",
     "hosts-name": "Server Name",
     "hosts-wwn": "Server WWN",
+    "hosts-iscsi-name": "Initiator iSCSI Name",
+    "hosts-chap-user": "Chap User",
+    "hosts-mutual-chap-user": "Mutual Chap User",
 
     "tier-management": "Tier Management",
 

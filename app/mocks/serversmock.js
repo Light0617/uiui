@@ -13,19 +13,51 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
         }
         mockVolumes = volumeMock.getMock();
     };
+    var getIscsiNames = function() {
+        var list = [];
+        var rand = _.random(1,2);
+        for(var i=1; i<=rand; i++) {
+            const name = 'hitachi:rsd.hds.12271d.' + _.random(1, 1024).toString(16).toUpperCase();
+            list.push(name);
+        }
+        return list;
+    };
 
-    var generateMockHost = function (v) {
+    var commonServerProperties = function(id) {
         return {
-            serverId: v,
+            serverId: id,
             serverName: 'MOCKUP HOST',
             description: 'TEST',
-            ipAddress: '10.1.91.' + v,
-            wwpns: mockUtils.getWWN(),
+            ipAddress: '10.1.91.' + id,
             osType: _.sample(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'NETWARE', 'OVMS']),
             dpStatus: _.sample(['Failed', 'Success']),
             dataProtectionSummary:{replicationType: randomReplicationType()},
             attachedVolumeCount: 7
         };
+    };
+
+    var fibreServer = function(id) {
+        var result = commonServerProperties(id);
+        result.protocol = 'FIBRE';
+        result.wwpns = mockUtils.getWWN();
+        return result;
+    };
+
+    var iscsiServer = function(id) {
+        var result = commonServerProperties(id);
+        result.protocol = 'ISCSI';
+        result.iscsiNames = getIscsiNames();
+        result.chapUser = 'user1';
+        result.mutualChapUser = 'user2';
+        return result;
+    };
+
+    var generateMockHost = function (id) {
+        if(_.sample([true, false])) {
+            return fibreServer(id);
+        } else {
+            return iscsiServer(id);
+        }
     };
 
     var randomReplicationType = function () {

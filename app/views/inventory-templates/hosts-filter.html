@@ -1,4 +1,4 @@
-<div class="btn-group btn-group-toggle-green btn-group-justified">
+<div class="btn-group btn-group-toggle btn-group-justified">
     <div class="btn-group">
         <label class="btn btn-default" ng-model="filterModel.filter.status" btn-radio="'Provisioned'" uncheckable
                ng-change="filterModel.filterQuery('attachedVolumeCount', '[1 TO *]')">{{'host-filter-provisioned'
@@ -12,6 +12,25 @@
         </label>
     </div>
 </div>
+
+<div class="control-group" ng-if="filterModel.showAllFilters==true">
+    <h3>{{'hosts-protocol' | translate}}</h3>
+</div>
+<div class="btn-group btn-group-toggle btn-group-justified" ng-if="filterModel.showAllFilters==true">
+    <div class="btn-group">
+        <label class="btn btn-default" ng-model="filterModel.filter.protocol" btn-radio="'FIBRE'" uncheckable
+               ng-click="filterModel.filterQuery('protocol', 'FIBRE')">
+            {{'FIBRE' | translate}}
+        </label>
+    </div>
+    <div class="btn-group">
+        <label class="btn btn-default" ng-model="filterModel.filter.protocol" btn-radio="'ISCSI'" uncheckable
+               ng-click="filterModel.filterQuery('protocol', 'ISCSI')">
+            {{'ISCSI' | translate}}
+        </label>
+    </div>
+</div>
+
 <div class="control-group" ng-if="filterModel.showAllFilters==true">
     <h3>OS Type</h3>
 </div>

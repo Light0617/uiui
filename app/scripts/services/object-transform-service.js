@@ -1840,10 +1840,12 @@ angular.module('rainierApp')
                 item.osTypeDisplayValue = synchronousTranslateService.translate('host-mode-' + item
                     .osType);
 
+                item.protocolDisplayValue = synchronousTranslateService.translate(item.protocol);
+
                 item.metaData = [{
                     left: true,
                     title: item.serverId,
-                    details: [item.serverName, item.ipAddress]
+                    details: [item.serverName, item.ipAddress, item.protocolDisplayValue]
                 }, {
                     left: false,
                     title: item.osTypeDisplayValue,
@@ -1856,7 +1858,8 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-host';
                 item.alerts = 0;
 
-                item.displayWWNs = wwnService.displayWWNs(item.wwpns);
+                item.displayWWNs = item.wwpns ? wwnService.displayWWNs(item.wwpns) : undefined;
+                item.displayIscsiNames = item.iscsiNames ? item.iscsiNames.join(',') : undefined;
             },
             transformFailedServer: function (item) {
                 var types = [];

@@ -13,8 +13,24 @@
             <p class="value">{{summaryModel.server.serverName}}</p>
         </div>
         <div class="label-value-container">
+            <p class="label">{{'hosts-protocol' | translate}}</p>
+            <p class="value">{{summaryModel.server.protocol | translate}}</p>
+        </div>
+        <div class="label-value-container" ng-if="summaryModel.server.protocol==='FIBRE'">
             <p class="label">{{'hosts-wwn' | translate}}</p>
             <p class="value">{{summaryModel.server.displayWWNs.toString()}}</p>
+        </div>
+        <div class="label-value-container" ng-if="summaryModel.server.protocol==='ISCSI'">
+            <p class="label">{{'hosts-iscsi-name' | translate}}</p>
+            <p class="value">{{summaryModel.server.displayIscsiNames.toString()}}</p>
+        </div>
+        <div class="label-value-container" ng-if="summaryModel.server.protocol==='ISCSI'">
+            <p class="label">{{'hosts-chap-user' | translate}}</p>
+            <p class="value">{{summaryModel.server.chapUser}}</p>
+        </div>
+        <div class="label-value-container" ng-if="summaryModel.server.protocol==='ISCSI'">
+            <p class="label">{{'hosts-mutual-chap-user' | translate}}</p>
+            <p class="value">{{summaryModel.server.mutualChapUser}}</p>
         </div>
     </div>
     <div class="tile data-viz-container third">

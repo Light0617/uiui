@@ -190,6 +190,14 @@ angular.module('rainierApp')
 
                 },
                 {
+                    title: 'hosts-protocol',
+                    sizeClass: 'sixth',
+                    sortField: 'protocol',
+                    getDisplayValue: function (item) {
+                        return item.protocolDisplayValue;
+                    }
+                },
+                {
                     title: 'hosts-volume-count',
                     sizeClass: 'twelfth',
 
@@ -264,6 +272,7 @@ angular.module('rainierApp')
             filter: {
                 freeText: '',
                 status: '',
+                protocol: null,
                 osType: null,
                 replicationType: null,
                 snapshot: false,
