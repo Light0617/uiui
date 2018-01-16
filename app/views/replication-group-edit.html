@@ -173,7 +173,7 @@
                     <p ng-if="dataModel.schedule.type === 'MONTHLY'">
                         {{ 'replication-groups-monthly-note' | translate : dataModel }}</p>
 
-                    <div ng-if="isSnap" class="smallMarginTop">
+                    <div ng-if="isSnap(dataModel.replicationType)" class="smallMarginTop">
                         <form role="form" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
                             <div class="form-group label-value-container">
                                 <label class="label">{{'target-snapshot-pool' | translate }}</label>
