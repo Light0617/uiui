@@ -211,11 +211,4 @@ angular.module('rainierApp')
             }
         });
 
-        //user can only select one pool
-        $scope.$watch('selectedCount', function (count) {
-            _.map($scope.dataModel.displayList, function (storagePool) {
-                storagePool.disabledCheckBox = !(count === 0 || (count === 1 && storagePool.storagePoolId === $scope.dataModel.getSelectedItems()[0].storagePoolId));
-            });
-        });
-
     });
