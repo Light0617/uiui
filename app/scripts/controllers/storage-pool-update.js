@@ -51,6 +51,7 @@ angular.module('rainierApp')
                     $scope.model.originalActiveFlashEnabled = false;
                     $scope.model.editableSubscriptionLimit =
                         storageSystemCapabilitiesService.editableSubscriptionLimit(storageSystem.model);
+                    $scope.model.isSupportDpTiIntegration = _.isBoolean($scope.model.originalSuspendSnapshot);
 
                     paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId,
                         objectTransformService.transformParityGroup).then(function (result) {

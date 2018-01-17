@@ -22,6 +22,9 @@ angular.module('rainierApp')
             },
             addableParityGroup: function (storageSystemModel) {
                 return constantService.isRaidSeries(storageSystemModel) === false;
+            },
+            isSupportDpTiPoolIntegrationVersion: function (storageSystemModel, firmwareVersion) {
+                return dataProtectionCapabilitiesService.isSupportDpTiPoolIntegrationVersion(storageSystemModel, firmwareVersion);
             }
         }
     });
