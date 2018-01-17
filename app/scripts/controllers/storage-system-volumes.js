@@ -247,7 +247,7 @@ angular.module('rainierApp')
                         return !hasGadVolume(dataModel.getSelectedItems()) && !_.some(dataModel.getSelectedItems(),
                             function (vol) {
                                 return !vol.isUnprotected();
-                            }) && $scope.selectedCount > 0;
+                            });
                     },
                     onClick: function () {
                         // maximum number of volumes to migrate is 14
