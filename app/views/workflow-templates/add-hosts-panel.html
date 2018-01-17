@@ -1,70 +1,151 @@
+<h2>CSV Import</h2>
 <div class="row">
     <csv-file-upload ng-model="dataModel.importedHosts" ng-title="Drop CSV here!!" ng-attr-title="{{'add-host-tool-tip' | translate}}"></csv-file-upload>
 </div>
-<div class="tile-view list-view" infinite-scroll='dataModel.loadMore()'
-     infinite-scroll-distance='1'
-     infinite-scroll-disabled='dataModel.busy === true || dataModel.hostsModel.displayHosts.length === dataModel.hostsModel.hosts.length'
-     infinite-scroll-container="'.scroll-wizard-container'">
-    <!--Header Row-->
-    <div class="tile row row-tile column-headers">
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
-            <p>{{'add-host-server-name'| translate}}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
-            <p>{{'add-host-description'| translate}}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
-            <p>{{'add-host-ip-address'| translate}}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
-            <p>{{'add-host-os-type'| translate}}</p>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 cell">
-            <p>{{'add-host-wwn'| translate}}</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
-            <p>&nbsp;</p>
+<h2>Fibre Servers</h2>
+<div class="tile control-tile add-button-hack" ng-click="dataModel.addNewFibreHost()">
+    <div class="tile-button add-resource">
+        <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
+                <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 ">
+                </polygon>
+            </svg>
+    </div>
+</div>
+<div class="add-resource-pattern add-resource-row" ng-repeat="host in dataModel.hostsModel.fibreHosts track by $index">
+    <div class="input-panel validation-scope">
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Host Name</label>
+            <input type="text" ng-model="host.name"
+                   class="form-control"
+                   title="name" placeholder="Host Name">
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Description</label>
+            <input type="text" ng-model="host.description"
+                   class="form-control"
+                   title="description" placeholder="Description">
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">IP Address</label>
+            <input type="text" ng-model="host.ipAddress"
+                   class="form-control"
+                   title="ipAddress" placeholder="IP Address">
+        </fieldset>
+
+        <fieldset class="fieldset label-value-container">
+            <label class="label">OS Type</label>
+            <div class="dropdown">
+                <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{host.osType}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="type in dataModel.osTypes">
+                        <a ng-click="host.osType = type">{{type}}</a>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+
+        <div class="input-panel validation-scope">
+            <fieldset class="fieldset label-value-container">
+                <label class="label">WWN</label>
+                <input type="text" ng-model="host.wwns"
+                       class="form-control"
+                       title="wwn" placeholder="50:00:00:00:00:00:00:00, 50:00:00:00:00:00:00:01">
+            </fieldset>
         </div>
     </div>
-    <!--Standard Row-->
-    <div class="tile row row-tile" ng-repeat="host in dataModel.hostsModel.displayHosts track by $index">
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell">
+    <div class="tile control-tile add-button-hack">
+        <button class="btn icon-btn icon-sm icon-delete-item add-resource-deletion"
+                title="delete"
+                ng-click="host.delete($index)"></button>
+    </div>
+</div>
+
+<h2>iSCSI Servers</h2>
+<div class="tile control-tile add-button-hack" ng-click="dataModel.addNewIscsiHost()">
+    <div class="tile-button add-resource">
+        <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
+                <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 ">
+                </polygon>
+            </svg>
+    </div>
+</div>
+<div class="add-resource-pattern add-resource-row" ng-repeat="host in dataModel.hostsModel.iscsiHosts track by $index">
+    <div class="input-panel validation-scope">
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Host Name</label>
             <input type="text" ng-model="host.name"
-                   class="form-control text inline" name="name"
+                   class="form-control"
                    title="name" placeholder="Host Name">
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Description</label>
             <input type="text" ng-model="host.description"
-                   class="form-control text inline" name="description"
+                   class="form-control"
                    title="description" placeholder="Description">
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs cell">
+        </fieldset>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">IP Address</label>
             <input type="text" ng-model="host.ipAddress"
-                   class="form-control text inline" name="ipAddress"
+                   class="form-control"
                    title="ipAddress" placeholder="IP Address">
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 cell control">
+        </fieldset>
 
-            <select class="dropdown inline" name="osType" title="OS Type"
-                    ng-model="host.osType"
-                    ng-options="'host-mode-' + mode | translate for mode in dataModel.osTypes">
-            </select>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 cell">
-            <input type="text" ng-model="host.wwns"
-                   class="form-control text inline" name="wwns"
-                   title="wwn" placeholder="50:00:00:00:00:00:00:00, 50:00:00:00:00:00:00:01">
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="!$first">
-            <button class="btn icon-btn icon-sm icon-delete-item"
-                    ng-click="host.delete($index)"></button>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">OS Type</label>
+            <div class="dropdown">
+                <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{host.osType}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="type in dataModel.osTypes">
+                        <a ng-click="host.osType = type">{{type}}</a>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
 
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="$first">
-            <button class="btn icon-btn icon-sm icon-add"
-                    ng-click="dataModel.addNewHost()"></button>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Chap User</label>
+            <input type="text" ng-model="host.chapUserName"
+                   class="form-control"
+                   title="Chap User" placeholder="user1">
+        </fieldset>
 
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Chap Secret</label>
+            <input type="password" ng-model="host.chapUserSecret"
+                   class="form-control"
+                   title="Chap Secret">
+        </fieldset>
 
-        </div>
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Mutual Chap User</label>
+            <input type="text" ng-model="host.mutualChapUserName"
+                   class="form-control"
+                   title="Mutual Chap User" placeholder="mutual_user1">
+        </fieldset>
+
+        <fieldset class="fieldset label-value-container">
+            <label class="label">Mutual Chap Secret</label>
+            <input type="password" ng-model="host.mutualChapUserSecret"
+                   class="form-control"
+                   title="Mutual Chap Secret">
+        </fieldset>
+
+        <fieldset class="fieldset label-value-container">
+            <label class="label">iSCSI Names</label>
+            <input type="text" ng-model="host.iscsiNames"
+                   class="form-control"
+                   title="iscsiNames" placeholder="iqn.1992-01.com.company:server">
+        </fieldset>
+    </div>
+    <div class="tile control-tile add-button-hack">
+        <button class="btn icon-btn icon-sm icon-delete-item add-resource-deletion"
+                title="delete"
+                ng-click="host.delete($index)"></button>
     </div>
 </div>

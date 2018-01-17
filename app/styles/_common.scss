@@ -38,3 +38,30 @@
 .bigWidth {
   width: 100%;
 }
+
+.add-resource-row {
+  background-color: $neutral03;
+  margin-top: 0.5rem;
+  & * > .form-control {
+    border-color: transparent;
+    border-bottom-color: $neutral01;
+  }
+  & > .input-panel {
+    padding: 1rem;
+  }
+  & > .add-button-hack {
+    margin: 0;
+    height: 12rem;
+    background-color: $neutral03;
+    display: flex;
+  }
+  & * > .add-resource {
+    max-height: initial !important;
+  }
+  & * > .add-resource-deletion {
+    height: initial;
+    width: initial;
+    vertical-align: middle;
+    margin: auto !important;
+  }
+}

@@ -11,21 +11,24 @@ angular.module('rainierApp')
     .controller('HostAddCtrl', function ($scope, $filter, orchestratorService, constantService, $timeout, wwnService) {
 
         var osTypes = constantService.osType();
-        var pageSize = 25;
+        var getEmptyHost = function () {
+            return {
+                name: '',
+                description: '',
+                ipAddress: '',
+                osType: osTypes[0]
+            };
+        };
         var dataModel = {
             hostsModel: {
-                hosts: [], // All the hosts
-                displayHosts: [], // Paginated hosts
-                addHost: function (hosts, h, insertIndex) {
+                fibreHosts: [], // Paginated hosts
+                iscsiHosts: [],
+                addFibreHost: function (h, insertIndex) {
                     var self = this;
-                    var host = {
-                        name: '',
-                        description: '',
-                        ipAddress: '',
-                        osType: osTypes[0],
-                        wwns: ''
 
-                    };
+                    var host = getEmptyHost();
+                    host.wwns = '';
+
                     angular.extend(host, h);
 
                     host.isValid = function () {
@@ -33,67 +36,66 @@ angular.module('rainierApp')
                     };
                     host.delete = function (hostIndex) {
                         $timeout(function () {
-                            self.hosts.splice(hostIndex, 1);
-                            self.displayHosts.splice(hostIndex, 1);
+                            self.fibreHosts.splice(hostIndex, 1);
                         });
                     };
+                    self.fibreHosts.splice(insertIndex, 0, host);
+                },
+                addIscsiHost: function (h, insertIndex) {
+                    var self = this;
 
-                    hosts.splice(insertIndex, 0, host);
+                    var host = getEmptyHost();
+                    host.chapUser = '';
+                    host.mutualChapUser = '';
+                    host.iscsiNames = '';
+
+                    angular.extend(host, h);
+
+                    host.isValid = function () {
+                        return !_.isEmpty(host.name) && !_.isEmpty(host.osType) && !_.isEmpty(host.iscsiNames);
+                    };
+                    host.delete = function (hostIndex) {
+                        $timeout(function () {
+                            self.iscsiHosts.splice(hostIndex, 1);
+                        });
+                    };
+                    self.iscsiHosts.splice(insertIndex, 0, host);
                 }
+
             },
             osTypes: osTypes
         };
 
-        dataModel.addNewHost = function() {
-            dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, {}, 0);
-            dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, {}, 0);
+        dataModel.addNewFibreHost = function () {
+            dataModel.hostsModel.addFibreHost({}, 0);
         };
-        dataModel.addNewHost();
+        dataModel.addNewIscsiHost = function () {
+            dataModel.hostsModel.addIscsiHost({}, 0);
+        };
 
         dataModel.canSubmit = function () {
-            if (dataModel.busy === true){
-                return dataModel.currentCanSubmit;
-            }
-            var iHost;
-            var cHosts = dataModel.hostsModel.displayHosts.length;
-            var h;
-            // include the first row when validating the submit button
-            for (iHost = 0; iHost < cHosts; ++iHost) {
-                h = dataModel.hostsModel.displayHosts[iHost];
-                if( !h.isValid()){
-                    dataModel.currentCanSubmit = false;
-                    return false;
-                }
-            }
+            var valid = function (h) {
+                return h.isValid();
+            };
 
-            dataModel.currentCanSubmit = true;
-            return true;
+            return dataModel.hostsModel.fibreHosts.length + dataModel.hostsModel.iscsiHosts.length > 0 &&
+                _.every(dataModel.hostsModel.fibreHosts, valid) &&
+                _.every(dataModel.hostsModel.iscsiHosts, valid);
         };
-        dataModel.busy = false;
-        dataModel.currentCanSubmit = false;
 
         dataModel.submit = function () {
             var hostsPayload = {
                 servers: []
             };
-            var iHost;
-            var hosts = [];
-            // including the first row
-            for (iHost = 0; iHost < dataModel.hostsModel.displayHosts.length; ++iHost) {
-                var h = dataModel.hostsModel.displayHosts[iHost];
-                hosts.push(h);
-            }
 
-            if (dataModel.hostsModel.hosts.length > dataModel.hostsModel.displayHosts.length){
-                _.chain(dataModel.hostsModel.hosts)
-                    .rest(dataModel.hostsModel.displayHosts.length)
-                    .forEach(function (item) {
-                        hosts.push(item);
-                    });
-            }
-
-            _.forEach (hosts, function(h) {
-                hostsPayload.servers.push(buildPayload(h.name, h.description, h.ipAddress, h.osType, h.wwns));
+            _.forEach(dataModel.hostsModel.fibreHosts, function (h) {
+                hostsPayload.servers.push(buildFibrePayload(h.name, h.description, h.ipAddress, h.osType, h.wwns));
+            });
+            _.forEach(dataModel.hostsModel.iscsiHosts, function (h) {
+                hostsPayload.servers.push(buildIscsiPayload(
+                    h.name, h.description, h.ipAddress, h.osType, h.iscsiNames,
+                    h.chapUserName, h.chapUserSecret, h.mutualChapUserName, h.mutualChapUserSecret
+                ));
             });
 
             orchestratorService.createServers(hostsPayload).then(function () {
@@ -101,15 +103,39 @@ angular.module('rainierApp')
             });
         };
 
-        dataModel.reset = function (whenImport) {
-            dataModel.hostsModel.hosts = [];
-            dataModel.hostsModel.displayHosts = [];
-            if (!whenImport) {
-                dataModel.addNewHost();
-            }
+        dataModel.reset = function () {
+            dataModel.hostsModel.fibreHosts = [];
+            dataModel.hostsModel.iscsiHosts = [];
         };
 
-        function buildPayload(name, description, ipAddress, osType, wwns) {
+        function buildIscsiPayload(
+            name, description, ipAddress, osType, iscsiNames,
+            chapUserName, chapUserSecret, mutualChapUserName, mutualChapUserSecret
+        ) {
+            var chapUser = chapUserName || chapUserSecret ? {
+                userName: chapUserName,
+                secret: chapUserSecret
+            } : undefined;
+            var mutualChapUser = mutualChapUserName || mutualChapUserSecret ? {
+                userName: mutualChapUserName,
+                secret: mutualChapUserSecret
+            } : undefined;
+            return {
+                protocol: 'ISCSI',
+                serverName: name,
+                description: description,
+                ipAddress: ipAddress,
+                osType: osType,
+                iscsiNames: _.map(iscsiNames.split(','), function (n) {
+                    return n.trim();
+                }),
+                chapUser: chapUser,
+                mutualChapUser: mutualChapUser
+            };
+
+        }
+
+        function buildFibrePayload(name, description, ipAddress, osType, wwns) {
             var wwnList = [];
             _.forEach(wwns.split(','), function (w) {
                 w = w.trim();
@@ -118,6 +144,7 @@ angular.module('rainierApp')
             });
 
             return {
+                protocol: 'FIBRE',
                 serverName: name,
                 description: description,
                 ipAddress: ipAddress,
@@ -131,25 +158,30 @@ angular.module('rainierApp')
             description: 'description',
             ipaddress: 'ipAddress',
             ostype: 'osType',
-            wwns: 'wwns'
+            wwns: 'wwns',
+            iscsinames: 'iscsiNames',
+            chapusername: 'chapUserName',
+            chapusersecret: 'chapUserSecret',
+            mutualchapusername: 'mutualChapUserName',
+            mutualchapusersecret: 'mutualChapUserSecret'
         };
 
-        dataModel.loadMore = function () {
-            _.chain(dataModel.hostsModel.hosts)
-                .rest(dataModel.hostsModel.displayHosts.length)
-                .first(pageSize)
-                .forEach(function (item) {
-                    dataModel.hostsModel.displayHosts.push(item);
-                });
-
-            dataModel.busy = true;
-
-            // The ultimate fix should be to defind a callback function where busy is set to false. The callback
-            // function is called after the newly added servers are rendered in this page. Because we can't afford to
-            // investigate how to do that in Aura release, we just add a timeout of 1 second to render the servers.
-            $timeout(function () {
-                $scope.dataModel.busy = false;
-            }, 1000);
+        var convertCsvToHost = function (csvRow) {
+            var mappedHost = {};
+            var empty = true;
+            for (var property in csvRow) {
+                var mappedProperty = csvFieldMappings[property.toLowerCase()];
+                if (mappedProperty) {
+                    empty = false;
+                    if (mappedProperty === 'osType') {
+                        // For osType, we need to convert it to upper case so that it can be recognized.
+                        mappedHost[mappedProperty] = csvRow[property].toUpperCase();
+                    } else {
+                        mappedHost[mappedProperty] = csvRow[property];
+                    }
+                }
+            }
+            return empty ? undefined : mappedHost;
         };
 
         $scope.$watch('dataModel.importedHosts', function (hosts) {
@@ -160,31 +192,21 @@ angular.module('rainierApp')
                 dataModel.reset(true);
             }
 
-            for(var iHost = 0; iHost < hosts.length; iHost++) {
-                var h = hosts[iHost];
-                var mappedHost = {};
-                var hasAnyProperties = false;
-                for (var property in h) {
-                    var mappedProperty = csvFieldMappings[property.toLowerCase()];
-                    if (mappedProperty) {
-                        if (mappedProperty === 'osType'){
-                            // For osType, we need to convert it to upper case so that it can be recognized.
-                            mappedHost[mappedProperty] = h[property].toUpperCase();
-                        } else {
-                            mappedHost[mappedProperty] = h[property];
-                        }
-                        hasAnyProperties = true;
-                    }
-                }
-                if (hasAnyProperties && !_.isEmpty(mappedHost.name)) {
-                    dataModel.hostsModel.addHost(dataModel.hostsModel.hosts, mappedHost, iHost);
-                    if (iHost < pageSize){
-                        dataModel.hostsModel.addHost(dataModel.hostsModel.displayHosts, mappedHost, dataModel.hostsModel.displayHosts.length);
-                    }
-                }
+            var iscsiIndex = 0;
+            var fibreIndex = 0;
 
-            }
+            _.each(hosts, function (host) {
+                var converted = convertCsvToHost(host);
 
+                if (_.isEmpty(host)) {
+                    return;
+                }
+                if (converted.wwns) {
+                    dataModel.hostsModel.addFibreHost(converted, fibreIndex++);
+                } else if (converted.iscsiNames) {
+                    dataModel.hostsModel.addIscsiHost(converted, iscsiIndex++);
+                }
+            });
         });
 
         $scope.dataModel = dataModel;
