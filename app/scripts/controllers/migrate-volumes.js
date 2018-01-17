@@ -76,6 +76,7 @@ angular.module('rainierApp')
                     storageSystems: $scope.dataModel.storageSystems,
                     selectedSource: $scope.dataModel.selectedSource,
                     selectedTarget: $scope.dataModel.selectedTarget,
+                    //mock data of the selected volumes
                     selectedVolumes: $scope.dataModel.selectedVolumes,
                     busy: false,
                     sort: {
@@ -184,8 +185,12 @@ angular.module('rainierApp')
             $scope.dataModel.selectedSource = _.first($scope.dataModel.storageSystems);
             $scope.dataModel.selectedTarget = _.first($scope.dataModel.storageSystems);
             var storageSystemId = $scope.dataModel.selectedSource.storageSystemId;
-            //Selected volumes from the volume inventory page
-            $scope.dataModel.selectedVolumes = ShareDataService.selectedMigrateVolumes;
+            //mock data of the selected volumes
+            $scope.dataModel.selectedVolumes = [
+                {volumeId: 3, storageSystemId: '410031', poolId: null, label: '1-TB-volume'},
+                {volumeId: 6, storageSystemId: '410031', poolId: '0', label: 'AutoVolume'},
+                {volumeId: 9, storageSystemId: '410031', poolId: '0', label: 'DP_dkc-dedup_compression'}
+                ],
             getPool(storageSystemId);
         });
 
@@ -210,5 +215,6 @@ angular.module('rainierApp')
                 getPool(newValue.storageSystemId);
             }
         });
+
 
     });
