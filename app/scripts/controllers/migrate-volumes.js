@@ -47,7 +47,7 @@ angular.module('rainierApp')
         var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
         //var INVALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-invalid-tooltip');
 
-        var getStoragePoolsPath = 'storage-pools';
+        var GET_VOLUMES_PATH = 'volumes';
 
         var updateResultTotalCounts = function(result) {
             $scope.dataModel.nextToken = result.nextToken;
@@ -59,13 +59,13 @@ angular.module('rainierApp')
             };
         };
 
-        var getPool = function(storageSystemId) {
-            paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true,
-                storageSystemId).then(function (result) {
+        var getVolumes = function(storageSystemId) {
+            paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true, storageSystemId).then(function (result) {
                 paginationService.clearQuery();
+
                 //add for button
                 var noAvailableArray = false;
-                var storagePools = result.resources;
+
                 var dataModel = {
                     onlyOperation: true,
                     view: 'tile',
@@ -76,23 +76,21 @@ angular.module('rainierApp')
                     storageSystems: $scope.dataModel.storageSystems,
                     selectedSource: $scope.dataModel.selectedSource,
                     selectedTarget: $scope.dataModel.selectedTarget,
-                    //mock data of the selected volumes
-                    selectedVolumes: $scope.dataModel.selectedVolumes,
                     busy: false,
                     sort: {
-                        field: 'name',
+                        field: 'volumeId',
                         reverse: false,
                         setSort: function (f) {
                             $timeout(function () {
                                 if ($scope.dataModel.sort.field === f) {
-                                    queryService.setSort(f, !$scope.dataModelPool.sort.reverse);
-                                    $scope.dataModel.sort.reverse = !$scope.dataModelPool.sort.reverse;
+                                    queryService.setSort(f, !$scope.dataModel.sort.reverse);
+                                    $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
                                 } else {
                                     $scope.dataModel.sort.field = f;
                                     queryService.setSort(f, false);
                                     $scope.dataModel.sort.reverse = false;
                                 }
-                                paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                                paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                                     updateResultTotalCounts(result);
                                 });
                             });
@@ -100,33 +98,109 @@ angular.module('rainierApp')
                     }
                 };
 
-                angular.extend(dataModel, viewModelService.newWizardViewModel(['selectPool']));
+                // Todo: add 'selectPort'
+                angular.extend(dataModel, viewModelService.newWizardViewModel(['selectVolumes', 'selectPool']));
 
-                // Todo: next step of confirmation needs further discussion
-                dataModel.selectPoolModel = {
+
+                // Todo: Add for footer button
+                dataModel.selectVolumesModel = {
                     noAvailableArray: noAvailableArray,
-                    confirmTitle: synchronousTranslateService.translate('storage-pool-migrate-confirmation'),
-                    confirmMessage: synchronousTranslateService.translate('storage-pool-migrate-zero-selected'),
+                    confirmTitle: synchronousTranslateService.translate('storage-volume-migrate-confirmation'),
+                    confirmMessage: synchronousTranslateService.translate('storage-volume-migrate-zero-selected'),
                     canGoNext: function () {
                         return _.some(dataModel.displayList, 'selected');
                     },
 
                     //TODO: next step of confirmation needs further discussion
+                    // showPopUpOnAnyAttachedVolume: function () {
+                    //     if(dataModel.selectVolumesModel.areAllSelectedVolumesUnattached()) {
+                    //         return true;
+                    //     } else {
+                    //         var modelInstance = $modal.open({
+                    //             templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
+                    //             windowClass: 'modal fade confirmation',
+                    //             backdropClass: 'modal-backdrop',
+                    //             controller: function ($scope) {
+                    //                 $scope.cancel = function () {
+                    //                     modelInstance.dismiss('cancel');
+                    //                 };
+                    //
+                    //                 $scope.ok = function() {
+                    //                     $timeout(function () {
+                    //                         dataModel.attachModel.selectedVolumes = _.where(dataModel.displayList, 'selected');
+                    //                         _.forEach(dataModel.attachModel.selectedVolumes, function(volume) {
+                    //                             volume.lun = null;
+                    //                             volume.decimalNumberRegexp = /^[^.]+$/;
+                    //                             volume.hasDuplicatedLun = false;
+                    //                             volume.validationTooltip = VALID_TOOLTIP;
+                    //                         });
+                    //                     });
+                    //                     dataModel.goNext();
+                    //                     modelInstance.close(true);
+                    //                 };
+                    //
+                    //                 modelInstance.result.finally(function() {
+                    //                     $scope.cancel();
+                    //                 });
+                    //             }
+                    //         });
+                    //     }
+                    // },
+
+                    //TODO: next step of confirmation needs further discussion
+                    // areAllSelectedVolumesUnattached: function() {
+                    //     var flags = [];
+                    //     _.forEach(dataModel.getSelectedItems(), function (item) {
+                    //         flags.push(item.isUnattached());
+                    //     });
+                    //     return flags.areAllItemsTrue();
+                    // },
+
                     next: function () {
-                        if (dataModel.selectPoolModel.canGoNext && dataModel.selectPoolModel.canGoNext()) {
+                        //TODO: next step of confirmation needs further discussion
+                        // if(!dataModel.selectVolumesModel.showPopUpOnAnyAttachedVolume()) {
+                        //     return;
+                        // }
+                        if (dataModel.selectVolumesModel.canGoNext && dataModel.selectVolumesModel.canGoNext()) {
+                            $timeout(function () {
+                                dataModel.attachModel.selectedVolumes = _.where(dataModel.displayList, 'selected');
+                                _.forEach(dataModel.attachModel.selectedVolumes, function (volume) {
+                                    volume.lun = null;
+                                    volume.decimalNumberRegexp = /^[^.]+$/;
+                                    volume.hasDuplicatedLun = false;
+                                    volume.validationTooltip = VALID_TOOLTIP;
+                                });
+                            });
                             dataModel.goNext();
                         }
-                    },
-                    previous: function() {
-                        dataModel.goBack();
                     },
                     validation: true,
                     itemSelected: false
                 };
 
+
+
+
                 $scope.filterModel = {
+                    $replicationRawTypes: replicationService.rawTypes,
                     filter: {
                         freeText: '',
+                        volumeType: '',
+                        previousVolumeType: '',
+                        provisioningStatus: '',
+                        dkcDataSavingType: '',
+                        replicationType: [],
+                        protectionStatusList: [],
+                        snapshotex: false,
+                        snapshotfc: false,
+                        snapshot: false,
+                        clone: false,
+                        protected: false,
+                        unprotected: false,
+                        secondary: false,
+                        gadActivePrimary: false,
+                        gadActiveSecondary: false,
+                        gadNotAvailable: false,
                         freeCapacity: {
                             min: 0,
                             max: 1000,
@@ -136,85 +210,66 @@ angular.module('rainierApp')
                             min: 0,
                             max: 1000,
                             unit: 'PB'
+                        },
+                        utilization: {
+                            min: 0,
+                            max: 100
                         }
                     },
+                    fetchPreviousVolumeType: function (previousVolumeType) {
+                        $scope.filterModel.filter.previousVolumeType = previousVolumeType;
+                    },
+                    arrayType: (new paginationService.SearchType()).ARRAY,
                     filterQuery: function (key, value, type, arrayClearKey) {
-                        var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                        paginationService.setFilterSearch(queryObject);
-                        paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                        gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
+                        paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                             updateResultTotalCounts(result);
                         });
                     },
-                    sliderQuery: function(key, start, end, unit) {
+                    sliderQuery: function (key, start, end, unit) {
                         paginationService.setSliderSearch(key, start, end, unit);
-                        paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                        paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                             updateResultTotalCounts(result);
                         });
                     },
                     searchQuery: function (value) {
                         var queryObjects = [];
-                        queryObjects.push(new paginationService.QueryObject('storagePoolId', new paginationService.SearchType().INT, value));
+                        queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().STRING, value));
                         queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                         paginationService.setTextSearch(queryObjects);
-                        paginationService.getQuery(getStoragePoolsPath, objectTransformService.transformPool, storageSystemId).then(function(result) {
+                        paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                             updateResultTotalCounts(result);
                         });
                     }
                 };
 
-                dataModel.cachedList = storagePools;
-                dataModel.displayList = storagePools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+                inventorySettingsService.setVolumesGridSettings(dataModel);
+
+                dataModel.cachedList = result.resources;
+                dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
                 dataModel.getResources = function () {
-                    return paginationService.get($scope.dataModel.nextToken, getStoragePoolsPath, objectTransformService.transformPool, false, storageSystemId);
+                    return paginationService.get($scope.dataModel.nextToken, GET_VOLUMES_PATH, objectTransformService.transformVolume, false, storageSystemId);
                 };
                 $scope.dataModel = dataModel;
 
-                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storagePools, 'storagePoolSearch');
-
-
-            }, function() {
-                $scope.dataModel.displayList = [];
-                $scope.dataModel.itemCounts = 0;
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
             });
         };
 
-
-        paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result){
+        paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
             $scope.dataModel.storageSystems = result;
+            $scope.dataModel.storageSystems.push({storageSystemId: -1, storageSystemName: 'External'});
             $scope.dataModel.selectedSource = _.first($scope.dataModel.storageSystems);
-            $scope.dataModel.selectedTarget = _.first($scope.dataModel.storageSystems);
+            $scope.dataModel.selectedTarget = _.last($scope.dataModel.storageSystems);
             var storageSystemId = $scope.dataModel.selectedSource.storageSystemId;
-            //mock data of the selected volumes
-            $scope.dataModel.selectedVolumes = [
-                {volumeId: 3, storageSystemId: '410031', poolId: null, label: '1-TB-volume'},
-                {volumeId: 6, storageSystemId: '410031', poolId: '0', label: 'AutoVolume'},
-                {volumeId: 9, storageSystemId: '410031', poolId: '0', label: 'DP_dkc-dedup_compression'}
-                ],
-            getPool(storageSystemId);
+            getVolumes(storageSystemId);
         });
 
-        $scope.$watch(function ($scope) {
-            if ($scope.dataModel && $scope.dataModel.displayList) {
-                return $scope.dataModel.displayList.map(function (item) {
-                    return item.selected;
-                });
-            }
-        }, function (newValue) {
-            if (!newValue) {
-                return;
-            }
-            var itemSelected = false;
-            itemSelected = _.find($scope.dataModel.displayList, function(item){ return item.selected;}) ? true : false;
 
-            $scope.dataModel.selectPoolModel.itemSelected = itemSelected;
-        }, true);
-
-        $scope.$watch('dataModel.selectedTarget', function(newValue) {
+        $scope.$watch('dataModel.selectedSource', function(newValue) {
             if(newValue) {
-                getPool(newValue.storageSystemId);
+                getVolumes(newValue.storageSystemId);
             }
         });
-
-
     });

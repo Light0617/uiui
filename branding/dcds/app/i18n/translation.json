@@ -974,7 +974,9 @@
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
 
     "migrate-volumes": "Migrate Volumes",
+    "workflow-title-select-port": "Select Port",
+    "workflow-title-select-volumes": "Select Volumes",
     "workflow-title-select-target-pool": "Select Target Pool",
-    "storage-pool-migrate-confirmation": "No pool selected",
-    "storage-pool-migrate-zero-selected": "Select one pool to migrate."
+    "storage-volume-migrate-confirmation": "No volumes selected",
+    "storage-volume-migrate-zero-selected": "Select at least one volume to migrate."
 }
