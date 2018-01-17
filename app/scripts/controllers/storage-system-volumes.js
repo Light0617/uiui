@@ -203,12 +203,7 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-volume-delete-confirmation',
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected() &&
-                            !hasGadVolume(dataModel.getSelectedItems()) && !hasPrevalidationForDeleting(dataModel.getSelectedItems()) &&
-                            //block deleting if the migration status is true
-                            !_.some(dataModel.getSelectedItems(), function (vol) {
-                                return vol.scheduledForMigration;
-                            });
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) && !hasPrevalidationForDeleting(dataModel.getSelectedItems());
                     },
                     onClick: function () {
 
