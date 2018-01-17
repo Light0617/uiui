@@ -27,6 +27,8 @@
                         <p class="value"> {{ dataModel.replicationType }}</p>
                     </div>
                 </div>
+                <div>
+                    <label ng-if="dataModel.snapshotTargetPoolsSize > 1">{{'replication-group-description-for-target-pool' | translate}}</label>
                     <div class="form-group toggle-control label-value-container">
                         <label class="label">{{'replication-group-label-consistency' | translate}}</label>
                         <div class="btn-group btn-group-justified" role="toggle">
@@ -42,6 +44,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
             <!--Right column-->
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">

@@ -676,7 +676,14 @@ angular.module('rainierApp')
                 return !$scope.arrayUseExisting[storageSystemId];
             };
 
-            function filterSnapshotPools(storageSystemId, poolTypes) {
+            $scope.isShowTargetPoolDescription = function() {
+                return _.some($scope.dataModel.arraySnapshotPooList, function (arraySnapshotPool) {
+                    return !$scope.arrayUseExisting[arraySnapshotPool.storageSystemId] &&
+                        _.size(arraySnapshotPool.snapshotPools) > 1;
+                });
+            };
+
+                function filterSnapshotPools(storageSystemId, poolTypes) {
                 var snapshotPools = [{
                     displayLabel: synchronousTranslateService.translate('common-auto-selected'),
                     storagePoolId: null

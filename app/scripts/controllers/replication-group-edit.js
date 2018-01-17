@@ -113,6 +113,7 @@ angular.module('rainierApp')
                         $scope.dataModel.targetSnapshotPool = p;
                     }
                 });
+                $scope.dataModel.snapshotTargetPoolsSize = _.size($scope.dataModel.snapshotTargetPools);
             }
 
             $scope.$watch('dataModel.schedule.hourStartMinute', function(value) {

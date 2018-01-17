@@ -104,7 +104,8 @@ angular.module('rainierApp')
             var filteredPools = filterStoragePools($scope.dataModel.selectedStorageSystem, pools);
             $scope.dataModel.snapshotPoolModel = {
                 targetPool: filteredPools[0],
-                filteredPools: filteredPools
+                filteredPools: filteredPools,
+                filteredPoolsSize: _.size(filteredPools)
             };
         });
 

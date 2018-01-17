@@ -87,6 +87,10 @@
                     </label>
                 </div>
             </div>
+            <div>
+                <label ng-if="!dataModel.isEnableClone() && allUseExisting === false && isShowTargetPoolDescription()">
+                    {{'replication-group-description-for-target-pool' | translate}}</label>
+            </div>
         </div>
         <!--Wizard column left ends-->
 
