@@ -283,7 +283,7 @@
     "storage-volume-update-current-size": "Current Size",
     "storage-volume-update-updated-size": "Updated Size",
     "storage-volume-update-new-size": "New Size",
-    "storage-volume-update-change-compression": "Change Compression Type",
+    "storage-volume-update-change-compression": "Change Capacity Saving",
     "storage-volume-update-compression-current": "Current Type",
     "storage-volume-update-compression-new": "New Type",
     "storage-volume-protected-cannot-expand": "This volume is protected and can't be expanded",
