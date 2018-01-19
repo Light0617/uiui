@@ -29,26 +29,55 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         'numberOfVolumes': 64
     };
 
-    var wwns = function() {
-        var randomLengthArray = _.range(0, _.random(1,1));
-        return _.chain(randomLengthArray).map(storagePortsMock.wwn());
+    var wwns = function () {
+        var randomLengthArray = _.range(0, _.random(1, 2));
+        return _.chain(randomLengthArray).map(storagePortsMock.wwn).value();
     };
 
-    var iscsiTargetInformation = function() {
-        var randomLengthArray = _.range(0, _.random(1,10));
-        return {
+    var iscsiTargetInformation = function () {
+        var randomLengthArray = _.range(0, _.random(1, 2));
+        var r = {
             iscsiTargetName: storagePortsMock.iscsi(),
-            initiatoriSCSINames: _.chain(randomLengthArray).map(storagePortsMock.iscsi()),
+            initiatoriSCSINames: _.chain(randomLengthArray).map(storagePortsMock.iscsi).value(),
             mutualChapUser: 'UserMutual',
             chapUsers: ['Chap1', 'Chap2', 'Chap3'],
             authenticationMode: _.sample(['CHAP', 'BOTH', 'NONE'])
         };
+        return r;
     };
+
+    function path(protocol) {
+        var iscsi = _.sample([true, false]);
+        if(protocol==='FIBRE') {
+            iscsi = false;
+        } else if(protocol === 'ISCSI') {
+            iscsi = true;
+        }
+
+        return {
+            'storagePortId': 'CL1-D',
+            'storageSystemId': '410266',
+            'lun': 5,
+            'name': 'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
+            'hostMode': 'LINUX',
+            'wwns': iscsi ? undefined : wwns(),
+            'iscsiTargetInformation': iscsi ? iscsiTargetInformation() : undefined,
+            'hostModeOptions': [71, 72]
+        };
+    }
+
+    function paths() {
+        var array = _.range(0, _.random(1, 3));
+        var protocol = _.sample(['ISCSI', 'FIBRE', undefined]);
+        return _.chain(array).map(function() {
+            return path(protocol);
+        }).value();
+    }
 
     var generateMockVolume = function (v) {
         var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
         var migrationStatus = _.sample([true, false]);
-        var iscsi = _.sample([false, false]);
+        var iscsi = _.sample([true, false]);
         return {
             volumeId: v + '',
             storageSystemId: 'REPLACE',
@@ -103,17 +132,8 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             }
         ],
             utilization: 0,
-            paths: [{
-                'storagePortId': 'CL1-D',
-                'storageSystemId': '410266',
-                'lun': 5,
-                'name': 'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
-                'hostMode': 'LINUX',
-                'wwns': ['1059273981505633'],
-                'hostModeOptions': [71, 72]
-            }]
+            paths: paths()
         };
-        return result;
     };
 
     var getReplicationGroupIdMap = function () {

@@ -73,3 +73,8 @@
 .nested-row-tile.column-headers:hover {
   background-color: transparent;
 }
+
+.nested-row-tile.panel-body {
+  padding-left: 0;
+  padding-right: 0;
+}
