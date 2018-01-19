@@ -1,6 +1,14 @@
+/*
+ * ========================================================================
+ *
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
+ *
+ * ========================================================================
+ */
+
 'use strict';
 
-rainierAppMock.factory('volumeMock', function (mockUtils) {
+rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
     var volumes = [];
 
     var generateMockVolumes = function () {
@@ -13,17 +21,34 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
     };
 
     var volumeSummaryMock = {
-        'volumeCountByType':{
-            'HDP':30,
-            'HTI':2,
-            'HDT':30
+        'volumeCountByType': {
+            'HDP': 30,
+            'HTI': 2,
+            'HDT': 30
         },
-        'numberOfVolumes':64
+        'numberOfVolumes': 64
     };
-    
+
+    var wwns = function() {
+        var randomLengthArray = _.range(0, _.random(1,1));
+        return _.chain(randomLengthArray).map(storagePortsMock.wwn());
+    };
+
+    var iscsiTargetInformation = function() {
+        var randomLengthArray = _.range(0, _.random(1,10));
+        return {
+            iscsiTargetName: storagePortsMock.iscsi(),
+            initiatoriSCSINames: _.chain(randomLengthArray).map(storagePortsMock.iscsi()),
+            mutualChapUser: 'UserMutual',
+            chapUsers: ['Chap1', 'Chap2', 'Chap3'],
+            authenticationMode: _.sample(['CHAP', 'BOTH', 'NONE'])
+        };
+    };
+
     var generateMockVolume = function (v) {
         var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
         var migrationStatus = _.sample([true, false]);
+        var iscsi = _.sample([false, false]);
         return {
             volumeId: v + '',
             storageSystemId: 'REPLACE',
@@ -49,9 +74,8 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
                         'lun':5,
                         'name':'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
                         'hostMode':'LINUX',
-                        'wwns':[
-                            '1059273981505633'
-                        ],
+                        'wwns': iscsi ? undefined : wwns(),
+                        'iscsiTargetInformation': iscsi ? iscsiTargetInformation() : undefined,
                         'hostModeOptions':[
                             71,
                             72
@@ -68,9 +92,8 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
                         'lun':4,
                         'name':'HID_CL1-E_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
                         'hostMode':'LINUX',
-                        'wwns':[
-                            '1059273981505633'
-                        ],
+                        'wwns': iscsi ? undefined : wwns(),
+                        'iscsiTargetInformation': iscsi ? iscsiTargetInformation() : undefined,
                         'hostModeOptions':[
                             71,
                             72
@@ -80,8 +103,17 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
             }
         ],
             utilization: 0,
-            paths: [{'storagePortId':'CL1-D','storageSystemId':'410266','lun':5,'name':'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec','hostMode':'LINUX','wwns':['1059273981505633'],'hostModeOptions':[71,72]}]
+            paths: [{
+                'storagePortId': 'CL1-D',
+                'storageSystemId': '410266',
+                'lun': 5,
+                'name': 'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
+                'hostMode': 'LINUX',
+                'wwns': ['1059273981505633'],
+                'hostModeOptions': [71, 72]
+            }]
         };
+        return result;
     };
 
     var getReplicationGroupIdMap = function () {
@@ -118,7 +150,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
     };
 
     var getVolumeGADSummary = function getVolumeGADSummary(volType, v) {
-        if(volType === 'GAD') {
+        if (volType === 'GAD') {
             return {
                 volumeType: _.sample(['ACTIVE_PRIMARY', 'ACTIVE_SECONDARY']),
                 virtualVolumeId: getVirtualVolumeId(v),
@@ -134,10 +166,10 @@ rainierAppMock.factory('volumeMock', function (mockUtils) {
     };
 
     var handleGetRequest = function (urlResult) {
-        _.each(volumes, function(volume) {
+        _.each(volumes, function (volume) {
             volume.storageSystemId = urlResult.resourceId + '';
         });
-        if(urlResult.subResourceId === 'summary') {
+        if (urlResult.subResourceId === 'summary') {
             return mockUtils.response.ok(volumeSummaryMock);
         }
         else if (urlResult.subResourceId) {

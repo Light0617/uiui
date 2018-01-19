@@ -1,3 +1,11 @@
+/*
+ * ========================================================================
+ *
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
+ *
+ * ========================================================================
+ */
+
 'use strict';
 
 rainierAppMock.factory('storagePortsMock', function (mockUtils) {
@@ -36,7 +44,7 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
     var iscsiInformation = function () {
         var raw = iscsiIPInfo();
         return Object.assign({
-            portIscsiName: 'jp.com.hitachi:rsd.hitachi.vantara.314159265.' + _.random(1, 1024).toString(16).toUpperCase()
+            portIscsiName: iscsi()
         }, raw);
     };
 
@@ -63,6 +71,10 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
             wwn: wwn(),
             securitySwitchEnabled: _.sample([true, false])
         }, port(index));
+    };
+
+    var iscsi = function () {
+        return 'jp.com.hitachi:rsd.hitachi.vantara.314159265.' + _.random(1, 1024).toString(16).toUpperCase();
     };
 
     var wwn = function () {
@@ -119,6 +131,8 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
                 default:
                     return mockUtils.response.methodNotAllowed(urlResult.url);
             }
-        }
+        },
+        iscsi: iscsi,
+        wwn: wwn
     };
 });

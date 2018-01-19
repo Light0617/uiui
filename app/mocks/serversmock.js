@@ -1,3 +1,11 @@
+/*
+ * ========================================================================
+ *
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
+ *
+ * ========================================================================
+ */
+
 'use strict';
 
 rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
