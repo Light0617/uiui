@@ -143,6 +143,17 @@ angular.module('rainierApp')
             return serverWwpns;
         };
 
+        var getSelectedServerIscsiNames = function(selectedServers) {
+            var iscsiNames = _.chain(selectedServers)
+                .filter(function (server) {
+                    return server.iscsiNames && server.iscsiNames.length > 0;
+                })
+                .map(function (server) {
+                    return server.iscsiNames;
+                }).flatten().value();
+            return iscsiNames;
+        };
+
         var getAllocateLikeFilteredHostGroups = function(servers, hostGroups, hostMode,  hostModeOptions) {
             var wwpnToServerMap = {};
             _.forEach(servers, function(server) {
@@ -402,6 +413,7 @@ angular.module('rainierApp')
             },
             getMatchedHostModeOption: getMatchedHostModeOption,
             getSelectedServerWwpns: getSelectedServerWwpns,
+            getSelectedServerIscsiNames: getSelectedServerIscsiNames,
             getAllocateLikeFilteredHostGroups: getAllocateLikeFilteredHostGroups,
             getMatchedHostMode: getMatchedHostMode,
             setEditLunPage: setEditLunPage,

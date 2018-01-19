@@ -45,11 +45,24 @@ angular.module('rainierApp')
 
             host.metaData[0].details.push(host.attachedVolumeCount + ' volume(s)');
         }
-        function setHostModeAndHostModeOptions(selectedServers, defaultHostMode, ports) {
+
+        function registerGetHostGroupsQuery(selectedServers) {
+            var iscsiNames = attachVolumeService.getSelectedServerIscsiNames(selectedServers);
             var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
-            var queryString = paginationService.getQueryStringForList(wwpns);
             paginationService.clearQuery();
-            queryService.setQueryMapEntry('hbaWwns', queryString);
+            if(wwnps.length > 0) {
+                var queryString = paginationService.getQueryStringForList(wwpns);
+                queryService.setQueryMapEntry('hbaWwns', queryString);
+            }
+            if (iscsiNames.length > 0) {
+                var queryString = paginationService.getQueryStringForList(iscsiNames);
+                queryService.setQueryMapEntry('iscsiNames', queryString);
+            }
+        }
+
+        function setHostModeAndHostModeOptions(selectedServers, defaultHostMode, ports) {
+            registerGetHostGroupsQuery(selectedServers);
+
             paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
                 var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
                 $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
@@ -166,7 +179,7 @@ angular.module('rainierApp')
             dataModel.process = function(resources, token){
                 // Only support for fibre port for now
                 resources = _.filter(resources, function(storagePort) {
-                    return storagePort.type === 'FIBRE';
+                    return storagePort.type === 'FIBRE' || storagePort.type === 'FIBRE';
                 });
                 _.forEach(resources, function (item) {
                     item.storageSystemModel = dataModel.storageSystemModel;

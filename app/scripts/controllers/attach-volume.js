@@ -159,7 +159,7 @@ angular.module('rainierApp')
             dataModel.process = function(resources){
                 // Only support for fibre port for now
                 resources = _.filter(resources, function(storagePort) {
-                    return storagePort.type === 'FIBRE';
+                    return storagePort.type === 'FIBRE' || 'ISCSI';
                 });
                 _.forEach(resources, function (item) {
                     item.storageSystemModel = dataModel.storageSystemModel;
