@@ -169,7 +169,11 @@ angular.module('rainierApp')
                         return;
                     }
                     var selectedServers = _.where(dataModel.displayList, 'selected');
-                    attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers);
+
+                    if(!attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers)) {
+                        return;
+                    };
+
                     dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
                     setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode, dataModel.attachModel.storagePorts);
                     dataModel.goNext();

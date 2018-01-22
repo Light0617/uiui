@@ -13,8 +13,8 @@ rainierAppMock.factory('hostGroupsMock', function (mockUtils) {
         getMock: function() {
             return [];
         },
-        handle: function(urlResult) {
-            return mockUtils.response.ok(urlResult.url);
+        handle: function() {
+            return mockUtils.response.ok(mockUtils.singlePageCollectionResponse([]));
         }
     };
 });

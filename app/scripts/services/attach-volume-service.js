@@ -134,16 +134,11 @@ angular.module('rainierApp')
         };
 
         var getSelectedServerWwpns = function(selectedServers) {
-            var serverWwpns = [];
-            if (selectedServers !== null && selectedServers !== undefined) {
-                for (var i = 0; i < selectedServers.length; i++) {
-                    var selectedServer = selectedServers[i];
-                    for (var j = 0; j < selectedServer.wwpns.length; j++) {
-                        serverWwpns.push(selectedServer.wwpns[j]);
-                    }
-                }
-            }
-            return serverWwpns;
+            return _.chain(selectedServers)
+                .map(function(s) {return s.wwns;})
+                .filter(function(wwns) {return wwns && wwns.length})
+                .flatten()
+                .value();
         };
 
         var getSelectedServerIscsiNames = function(selectedServers) {
@@ -400,9 +395,11 @@ angular.module('rainierApp')
 
             if(numOfProtocols > 1) {
                 openAttachMultipleProtocolServersErrorModal();
+                return false;
             } else if(url) {
                 ShareDataService.push('selectedServers', servers);
                 $location.path(url);
+                return true;
             }
         };
 
