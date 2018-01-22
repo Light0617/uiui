@@ -8,7 +8,10 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('attachVolumeService', function (orchestratorService, viewModelService, resourceTrackerService, constantService) {
+    .factory('attachVolumeService', function (
+        orchestratorService, viewModelService, resourceTrackerService, constantService,
+        ShareDataService, $location, $modal, synchronousTranslateService
+    ) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
         var wwpnServerIdMap = {};
@@ -387,6 +390,43 @@ angular.module('rainierApp')
             }
         };
 
+        var invokeServerProtocolCheckAndOpen = function(servers, url) {
+            var numOfProtocols = _.chain(servers)
+                .map(function(s) {return s.protocol;})
+                .indexBy()
+                .keys()
+                .value()
+                .length;
+
+            if(numOfProtocols > 1) {
+                openAttachMultipleProtocolServersErrorModal();
+            } else if(url) {
+                ShareDataService.push('selectedServers', servers);
+                $location.path(url);
+            }
+        };
+
+        var openAttachMultipleProtocolServersErrorModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('error-message-title'),
+                        message: 'Cannot attach volumes for different protocol servers.'
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss('cancel');
+                    };
+
+                    modalInstance.result.finally(function() {
+                        modalInstance.dismiss('cancel');
+                    });
+                }
+            });
+        };
+
         return {
             checkSelectedHostModeOptions: function (dataModel) {
                 var selectedHostModeOptions = dataModel.attachModel.selectedHostModeOption;
@@ -421,6 +461,7 @@ angular.module('rainierApp')
             getAllHostModeOptionsString: getAllHostModeOptionsString,
             createPath: createPath,
             getViewBoxHeight: getViewBoxHeight,
-            getMatchHostGroups: getMatchHostGroups
+            getMatchHostGroups: getMatchHostGroups,
+            invokeServerProtocolCheckAndOpen: invokeServerProtocolCheckAndOpen
         };
     });

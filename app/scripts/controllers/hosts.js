@@ -8,9 +8,12 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService,
-                                       scrollDataSourceBuilderServiceNew, ShareDataService, queryService,
-                                       paginationService, constantService, $location, donutService, replicationService) {
+    .controller('HostsCtrl', function (
+        $scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService,
+        scrollDataSourceBuilderServiceNew, ShareDataService, queryService,
+        paginationService, constantService, $location, donutService, replicationService,
+        attachVolumeService
+    ) {
 
         $scope.operatingSystemType = {};
         $scope.operatingSystems = constantService.osType();
@@ -137,16 +140,20 @@ angular.module('rainierApp')
                             type: 'link',
                             title: 'host-attach-existing-volumes',
                             onClick: function () {
-                                ShareDataService.push('selectedServers', dataModel.getSelectedItems());
-                                $location.path('/hosts/attach-volumes');
+                                attachVolumeService.invokeServerProtocolCheckAndOpen(
+                                    dataModel.getSelectedItems(),
+                                    'hosts/attach-volumes'
+                                );
                             }
                         },
                         {
                             type: 'link',
                             title: 'host-create-attach-protect-volumes',
                             onClick: function () {
-                                ShareDataService.push('selectedServers', dataModel.getSelectedItems());
-                                $location.path('hosts/create-and-attach-volumes');
+                                attachVolumeService.invokeServerProtocolCheckAndOpen(
+                                    dataModel.getSelectedItems(),
+                                    'hosts/create-and-attach-volumes'
+                                );
                             }
                         }
                     ]

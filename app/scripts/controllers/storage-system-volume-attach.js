@@ -49,13 +49,14 @@ angular.module('rainierApp')
         function registerGetHostGroupsQuery(selectedServers) {
             var iscsiNames = attachVolumeService.getSelectedServerIscsiNames(selectedServers);
             var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
+            var queryString;
             paginationService.clearQuery();
-            if(wwnps.length > 0) {
-                var queryString = paginationService.getQueryStringForList(wwpns);
+            if(wwpns.length > 0) {
+                queryString = paginationService.getQueryStringForList(wwpns);
                 queryService.setQueryMapEntry('hbaWwns', queryString);
             }
             if (iscsiNames.length > 0) {
-                var queryString = paginationService.getQueryStringForList(iscsiNames);
+                queryString = paginationService.getQueryStringForList(iscsiNames);
                 queryService.setQueryMapEntry('iscsiNames', queryString);
             }
         }
@@ -168,6 +169,7 @@ angular.module('rainierApp')
                         return;
                     }
                     var selectedServers = _.where(dataModel.displayList, 'selected');
+                    attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers);
                     dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
                     setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode, dataModel.attachModel.storagePorts);
                     dataModel.goNext();

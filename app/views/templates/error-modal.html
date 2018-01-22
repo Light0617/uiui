@@ -1,7 +1,9 @@
 <div class="confirmation">
     <div class="modal-header">
-        <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{
-            'error-message-title' | translate }}</h1>
+        <h1 class="modal-title">
+            <span class="icon icon-warning warning-state"></span>
+            {{ error.title || 'error-message-title' | translate }}
+        </h1>
     </div>
     <div class="modal-body">
         <p>{{ error.message || 'common-error-message' | translate }}</p>
