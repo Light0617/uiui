@@ -399,8 +399,8 @@ angular.module('rainierApp')
             } else if(url) {
                 ShareDataService.push('selectedServers', servers);
                 $location.path(url);
-                return true;
             }
+            return true;
         };
 
         var openAttachMultipleProtocolServersErrorModal = function() {
