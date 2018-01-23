@@ -14,7 +14,7 @@ angular.module('rainierApp')
     ) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
-        var wwpnServerIdMap = {};
+        var endPointServerIdMap = {};
         var hostModeOptionAutoSelect = 999;
 
         function setPortCoordinates(storagePorts, idCoordinates) {
@@ -72,7 +72,7 @@ angular.module('rainierApp')
                     idCoordinates[wwpn] = point;
                     wwnCoordinates.push(point);
 
-                    wwpnServerIdMap[wwpn] = host.serverId;
+                    endPointServerIdMap[wwpn] = host.serverId;
                 }
                 host.wwnCoordinates = wwnCoordinates;
             });
@@ -81,6 +81,11 @@ angular.module('rainierApp')
         function getViewBoxHeight(hosts, storagePorts){
             var lastHost = hosts[hosts.length - 1];
             var hostHeight = lastHost.startHeight + ((lastHost.wwpns.length <= 4) ? 100 : (lastHost.wwpns.length * 25)) + 10;
+
+            if(_.isEmpty(storagePorts)) {
+                return hostHeight;
+            }
+
             var portHeight = storagePorts[storagePorts.length - 1].coordinate.y + 30;
 
             return Math.max(hostHeight, portHeight);
@@ -122,6 +127,18 @@ angular.module('rainierApp')
             return selectedHostModeOptions;
         };
 
+        var setEnableZoningFn = function(servers, attachModel) {
+            if (servers[0].protocol === 'FIBRE') {
+                attachModel.enableZoning = false;
+                return function (value) {
+                    attachModel.enableZoning = value;
+                }
+            } else {
+                attachModel.enableZoning = undefined;
+                return undefined;
+            }
+        };
+
         var isHostModeOptionFound = function(hostModeOption, selectedHostModeOptions) {
             for (var k = 0; k < selectedHostModeOptions.length; k++) {
                 if (hostModeOption === selectedHostModeOptions[k]) {
@@ -142,7 +159,7 @@ angular.module('rainierApp')
         var getSelectedServerIscsiNames = function(selectedServers) {
             var iscsiNames = _.chain(selectedServers)
                 .filter(function (server) {
-                    return server.iscsiNames && server.iscsiNames.length > 0;
+                    return !_.isEmpty(server.iscsiNames);
                 })
                 .map(function (server) {
                     return server.iscsiNames;
@@ -251,7 +268,7 @@ angular.module('rainierApp')
                 }
 
                 ports.push({
-                        serverId: wwpnServerIdMap[path.serverWwn],
+                        serverId: endPointServerIdMap[path.serverWwn],
                         serverWwns: [path.serverWwn],
                         portIds: [path.storagePortId]
                     }
@@ -288,6 +305,38 @@ angular.module('rainierApp')
             return paths;
         }
 
+        function getMatchHostGroupsByIscsi(hostGrups, servers, volumeIdMap) {
+            var result = [];
+            var iscsiNameMap = _.chain(servers)
+                .map(function(s) {return s.iscsiNames;})
+                .filter(function(iscsis) {return iscsis && iscsis.length;})
+                .flatten()
+                .indexBy()
+                .value();
+
+            _.chain(hostGroups)
+                .filter(function(hg) {
+                    return hg.iscsiTargetInformation &&
+                        hg.iscsiTargetInformation.iscsiInitiatorNames &&
+                        hg.iscsiTargetInformation.iscsiInitiatorNames.length;
+                })
+                .filter(function (hg) {
+                    return _.some(
+                        hg.iscsiTargetInformation.iscsiInitiatorNames,
+                        function(name) {return iscsiNameMap[name];}
+                    );
+                })
+                .filter(function(hg) {
+                    return !_.isEmpty(hg.luns);
+                })
+                .filter(function (hg) {
+                    return _.some(hg.luns, function(lun) { return volumeIdMap[lun.volumeId]; });
+                })
+                .forEach(function (hg) {result.push(hg);});
+
+            return result;
+        }
+
         function getMatchHostGroups(hostGroups, servers, volumeIdMap){
             var resultHostGroups = [];
             var serverWwnMap = {};
@@ -321,34 +370,20 @@ angular.module('rainierApp')
                 }
             });
 
-            var iscsiNames = _.chain(servers)
-                .map(function(s) {return s.iscsiNames;})
-                .filter(function(iscsis) {return iscsis && iscsis.length;})
-                .flatten()
-                .indexBy()
-                .value();
+            resultHostGroups.push(getMatchHostGroupsByIscsi(hostGroups, servers, volumeIdMap));
 
-            _.chain(hostGroups)
-                .filter(function(hg) {
-                    return hg.iscsiTargetInformation &&
-                        hg.iscsiTargetInformation.iscsiInitiatorNames &&
-                        hg.iscsiTargetInformation.iscsiInitiatorNames.length;
-                })
-                .filter(function (hg) {
-                    return _.some(
-                        hg.iscsiTargetInformation.iscsiInitiatorNames,
-                        function(name) {return iscsiNames[name];}
-                    );
-                })
-                .forEach(function (hg) {resultHostGroups.push(hg);});
+            return _.flatten(resultHostGroups);
+        }
 
-            return resultHostGroups;
+        function filterPorts(ports, selectedHosts) {
+            return _.filter(ports, function (p) {return p.type === selectedHosts[0].protocol;});
         }
 
         var setEditLunPage = function(dataModel, storageSystemId, selectedVolumes, selectedHosts,
                                       hostModeOptions, storagePorts, hostGroups, isCreateAndAttach) {
+            storagePorts = filterPorts(storagePorts, selectedHosts);
             idCoordinates = {};
-            wwpnServerIdMap = {};
+            endPointServerIdMap = {};
             setPortCoordinates(storagePorts, idCoordinates);
             setEndPointCoordinates(selectedHosts, hostModeOptions, idCoordinates);
             var originalAllPaths = getPathsFromHostGroups(hostGroups,storagePorts, idCoordinates);
@@ -477,6 +512,7 @@ angular.module('rainierApp')
             createPath: createPath,
             getViewBoxHeight: getViewBoxHeight,
             getMatchHostGroups: getMatchHostGroups,
-            invokeServerProtocolCheckAndOpen: invokeServerProtocolCheckAndOpen
+            invokeServerProtocolCheckAndOpen: invokeServerProtocolCheckAndOpen,
+            setEnableZoningFn: setEnableZoningFn
         };
     });

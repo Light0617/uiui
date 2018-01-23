@@ -1859,7 +1859,7 @@ angular.module('rainierApp')
                 item.alerts = 0;
 
                 item.displayWWNs = item.wwpns ? wwnService.displayWWNs(item.wwpns) : undefined;
-                item.displayIscsiNames = item.iscsiNames ? item.iscsiNames.join(',') : undefined;
+                item.displayIscsiNames = item.iscsiNames ? item.iscsiNames : undefined;
             },
             transformFailedServer: function (item) {
                 var types = [];

@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
                                                            paginationService, queryService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
                                                            ShareDataService, $location, $routeParams, viewModelService,
-                                                           attachVolumeService, constantService, replicationService) {
+                                                           attachVolumeService, constantService, replicationService
+    ) {
 
         var storageSystemId = $routeParams.storageSystemId;
         $scope.canSubmit = true;
@@ -25,7 +26,7 @@ angular.module('rainierApp')
         var enableSelectPageNextButton = false;
 
         var selectedVolumes = ShareDataService.pop('selectedVolumes') || [];
-        _.forEach(selectedVolumes, function(volume) {
+        _.forEach(selectedVolumes, function (volume) {
             volume.lun = null;
             volume.decimalNumberRegexp = /^[^.]+$/;
             volume.hasDuplicatedLun = false;
@@ -50,7 +51,7 @@ angular.module('rainierApp')
             var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
             var queryString;
             paginationService.clearQuery();
-            if(wwpns.length > 0) {
+            if (wwpns.length > 0) {
                 queryString = paginationService.getQueryStringForList(wwpns);
                 queryService.setQueryMapEntry('hbaWwns', queryString);
             }
@@ -63,14 +64,12 @@ angular.module('rainierApp')
         function setHostModeAndHostModeOptions(selectedServers, defaultHostMode, ports) {
             registerGetHostGroupsQuery(selectedServers);
 
-            paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+            paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function (hostGroupResults) {
                 var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
                 $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
                 $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;
                 $scope.dataModel.attachModel.selectedHostModeOption = hostModeOption;
-                $scope.dataModel.attachModel.setEnableZoning = function (value) {
-                    dataModel.attachModel.enableZoning = value;
-                };
+                $scope.dataModel.attachModel.setEnableZoning = attachVolumeService.setEnableZoningFn(selectedServers, dataModel.attachModel);
                 $scope.dataModel.attachModel.setEnableLunUnification = function (value) {
                     dataModel.attachModel.enableLunUnification = value;
                 };
@@ -99,14 +98,14 @@ angular.module('rainierApp')
                     $scope.dataModel.goNext();
                 };
 
-            }).finally(function(){
+            }).finally(function () {
                 paginationService.clearQuery();
             });
         }
 
         paginationService.get(null, GET_HOSTS_PATH, handleHost, true).then(function (result) {
 
-            orchestratorService.storageSystem(storageSystemId).then(function(result) {
+            orchestratorService.storageSystem(storageSystemId).then(function (result) {
                 $scope.dataModel.storageSystemModel = result.model;
                 paginationService.getAll(null, GET_PORTS_PATH + GET_PORTS_SORT, true, storageSystemId, result.model, $scope.dataModel);
             });
@@ -169,7 +168,7 @@ angular.module('rainierApp')
                     }
                     var selectedServers = _.where(dataModel.displayList, 'selected');
 
-                    if(!attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers)) {
+                    if (!attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers)) {
                         return;
                     }
 
@@ -181,9 +180,9 @@ angular.module('rainierApp')
                 itemSelected: false
             };
 
-            dataModel.process = function(resources, token){
+            dataModel.process = function (resources, token) {
                 // Only support for fibre port for now
-                resources = _.filter(resources, function(storagePort) {
+                resources = _.filter(resources, function (storagePort) {
                     return storagePort.type === 'FIBRE' || storagePort.type === 'ISCSI';
                 });
                 _.forEach(resources, function (item) {
@@ -198,7 +197,7 @@ angular.module('rainierApp')
                 }
             };
             dataModel.storagePorts = [];
-            dataModel.getResources = function(){
+            dataModel.getResources = function () {
                 return paginationService.get($scope.dataModel.nextToken, GET_HOSTS_PATH, handleHost, false);
             };
             dataModel.cachedList = result.resources;
@@ -208,7 +207,7 @@ angular.module('rainierApp')
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, hosts, 'hostSearch');
         });
 
-        var updateResultTotalCounts = function(result) {
+        var updateResultTotalCounts = function (result) {
             $scope.dataModel.nextToken = result.nextToken;
             $scope.dataModel.cachedList = result.resources;
             $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
@@ -254,7 +253,7 @@ angular.module('rainierApp')
             filterQuery: function (key, value, type, arrayClearKey) {
                 var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                 paginationService.setFilterSearch(queryObject);
-                paginationService.getQuery(GET_HOSTS_PATH, handleHost).then(function(result) {
+                paginationService.getQuery(GET_HOSTS_PATH, handleHost).then(function (result) {
                     updateResultTotalCounts(result);
                 });
             },
@@ -263,7 +262,7 @@ angular.module('rainierApp')
                 queryObjects.push(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, value));
                 queryObjects.push(new paginationService.QueryObject('serverName', new paginationService.SearchType().STRING, value));
                 paginationService.setTextSearch(queryObjects);
-                paginationService.getQuery(GET_HOSTS_PATH, handleHost).then(function(result) {
+                paginationService.getQuery(GET_HOSTS_PATH, handleHost).then(function (result) {
                     updateResultTotalCounts(result);
                 });
             }
@@ -303,7 +302,7 @@ angular.module('rainierApp')
                 enableSelectPageNextButton = true;
 
             });
-            dataModel.checkSelectedHostModeOptions = function() {
+            dataModel.checkSelectedHostModeOptions = function () {
                 attachVolumeService.checkSelectedHostModeOptions(dataModel);
             };
 
@@ -368,7 +367,7 @@ angular.module('rainierApp')
                     }
                 });
             }
-        },true);
+        }, true);
 
         $scope.$watch('dataModel.attachModel.selectedVolumes', function (newValue, oldValue) {
             if (!newValue || !oldValue) {
