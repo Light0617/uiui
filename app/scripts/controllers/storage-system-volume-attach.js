@@ -39,7 +39,6 @@ angular.module('rainierApp')
         $scope.operatingSystemType = {};
         $scope.operatingSystems = constantService.osType();
 
-
         function handleHost(host) {
             objectTransformService.transformHost(host);
 
@@ -172,7 +171,7 @@ angular.module('rainierApp')
 
                     if(!attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers)) {
                         return;
-                    };
+                    }
 
                     dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
                     setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode, dataModel.attachModel.storagePorts);
@@ -185,7 +184,7 @@ angular.module('rainierApp')
             dataModel.process = function(resources, token){
                 // Only support for fibre port for now
                 resources = _.filter(resources, function(storagePort) {
-                    return storagePort.type === 'FIBRE' || storagePort.type === 'FIBRE';
+                    return storagePort.type === 'FIBRE' || storagePort.type === 'ISCSI';
                 });
                 _.forEach(resources, function (item) {
                     item.storageSystemModel = dataModel.storageSystemModel;
