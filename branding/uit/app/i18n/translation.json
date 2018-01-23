@@ -582,6 +582,12 @@
     "host-volume-list-host-mode-options": "Host Mode Options",
     "host-volume-list-host-group": "Host Group",
 
+    "host-volume-list-iscsi-initiator-names": "iSCSI Initiator Names",
+    "host-volume-list-iscsi-target-name": "iSCSI Target Name",
+    "host-volume-list-auth-method": "Auth Method",
+    "host-volume-list-chap-users": "Chap Users",
+    "host-volume-list-mutual-chap-user": "Mutual Chap User",
+
     "rest-api": "REST API",
 
     "fabric-switches": "Fabric Switches",
