@@ -1858,8 +1858,22 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-host';
                 item.alerts = 0;
 
+
+                if(item.protocol === 'FIBRE') {
+                    item.endPoints = item.wwpns;
+                } else if (item.protocol === 'ISCSI') {
+                    item.endPoints = item.iscsiNames;
+                }
+
                 item.displayWWNs = item.wwpns ? wwnService.displayWWNs(item.wwpns) : undefined;
                 item.displayIscsiNames = item.iscsiNames ? item.iscsiNames : undefined;
+            },
+            transformHostGroups: function (item) {
+                if(item.protocol==='FIBRE') {
+                    item.endPoints = item.hbaWwns;
+                } else if(item.protocol==='ISCSI' && item.iscsiTargetInformation) {
+                    item.endPoints = item.iscsiTargetInformation.iscsiInitiatorNames;
+                }
             },
             transformFailedServer: function (item) {
                 var types = [];

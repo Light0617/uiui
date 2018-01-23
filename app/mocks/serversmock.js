@@ -17,7 +17,7 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
         var list = [];
         var rand = _.random(1,2);
         for(var i=1; i<=rand; i++) {
-            const name = 'hitachi:rsd.hds.12271d.' + _.random(1, 1024).toString(16).toUpperCase();
+            const name = 'iqn.' + _.range(0, 223).map(mockUtils.randomChar).join('');
             list.push(name);
         }
         return list;

@@ -64,7 +64,14 @@ angular.module('rainierApp')
         function setHostModeAndHostModeOptions(selectedServers, defaultHostMode, ports) {
             registerGetHostGroupsQuery(selectedServers);
 
-            paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function (hostGroupResults) {
+            paginationService.getAllPromises(
+                null,
+                GET_HOST_GROUPS_PATH,
+                false,
+                $scope.dataModel.selectedStorageSystem.storageSystemId,
+                objectTransformService.transformHostGroups,
+                false
+            ).then(function (hostGroupResults) {
                 var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
                 $scope.dataModel.attachModel.hostMode = attachVolumeService.getMatchedHostMode(hostGroupResults, defaultHostMode);
                 $scope.dataModel.attachModel.lastSelectedHostModeOption = hostModeOption;

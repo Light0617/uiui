@@ -45,42 +45,39 @@ angular.module('rainierApp')
             return allHostModeOptionString;
         }
 
+        function setEndPointCoordinate(host, idCoordinates) {
+            var endPointCoordinatesMap = {};
+            _.forEach(host.endPoints, function(endPoint, i) {
+                var point = {
+                    x: 232,
+                    y: host.startHeight + 13 + i * 25
+                };
+
+                idCoordinates[endPoint] = point;
+                endPointCoordinatesMap[endPoint] = point;
+                endPointServerIdMap[endPoint] = host.serverId;
+            });
+            host.endPointCoordinatesMap = endPointCoordinatesMap;
+        }
+
         function setEndPointCoordinates(selectedHosts, hostModeOptions, idCoordinates){
             var previousHeight = 0;
             var bufferHeight = 5;
             _.forEach(selectedHosts, function(host){
-                var j;
-                var wwpn;
-                var wwnCoordinates = [];
-                var length = host.wwpns.length;
-
                 host.allHostModeOptionsString = getAllHostModeOptionsString(hostModeOptions);
                 host.startHeight = previousHeight;
                 previousHeight += ((length && length > 4) ? length* 25 : 100) + bufferHeight;
 
                 host.isSelected = false;
 
-                // Calculate the coordinates of all the wwn icons of each host so that the html can easily use it.
-
-                for (j = 0; j < length; ++j) {
-                    wwpn = host.wwpns[j];
-                    var point = {
-                        x: 232,
-                        y: host.startHeight + 13 + j*25
-                    };
-
-                    idCoordinates[wwpn] = point;
-                    wwnCoordinates.push(point);
-
-                    endPointServerIdMap[wwpn] = host.serverId;
-                }
-                host.wwnCoordinates = wwnCoordinates;
+                // Calculate the coordinates of all the endPoint icons of each host so that the html can easily use it.
+                _.chain(selectedHosts).forEach(function(h) {return setEndPointCoordinate(h, idCoordinates);});
             });
         }
 
         function getViewBoxHeight(hosts, storagePorts){
             var lastHost = hosts[hosts.length - 1];
-            var hostHeight = lastHost.startHeight + ((lastHost.wwpns.length <= 4) ? 100 : (lastHost.wwpns.length * 25)) + 10;
+            var hostHeight = lastHost.startHeight + ((lastHost.endPoints.length <= 4) ? 100 : (lastHost.endPoints.length * 25)) + 10;
 
             if(_.isEmpty(storagePorts)) {
                 return hostHeight;
@@ -132,7 +129,7 @@ angular.module('rainierApp')
                 attachModel.enableZoning = false;
                 return function (value) {
                     attachModel.enableZoning = value;
-                }
+                };
             } else {
                 attachModel.enableZoning = undefined;
                 return undefined;
@@ -305,7 +302,7 @@ angular.module('rainierApp')
             return paths;
         }
 
-        function getMatchHostGroupsByIscsi(hostGrups, servers, volumeIdMap) {
+        function getMatchHostGroupsByIscsi(hostGroups, servers, volumeIdMap) {
             var result = [];
             var iscsiNameMap = _.chain(servers)
                 .map(function(s) {return s.iscsiNames;})
@@ -315,7 +312,7 @@ angular.module('rainierApp')
                 .value();
 
             _.chain(hostGroups)
-                .filter(function(hg) {
+                .filter(function (hg) {
                     return hg.iscsiTargetInformation &&
                         hg.iscsiTargetInformation.iscsiInitiatorNames &&
                         hg.iscsiTargetInformation.iscsiInitiatorNames.length;
@@ -326,13 +323,15 @@ angular.module('rainierApp')
                         function(name) {return iscsiNameMap[name];}
                     );
                 })
-                .filter(function(hg) {
+                .filter(function (hg) {
                     return !_.isEmpty(hg.luns);
                 })
                 .filter(function (hg) {
                     return _.some(hg.luns, function(lun) { return volumeIdMap[lun.volumeId]; });
                 })
-                .forEach(function (hg) {result.push(hg);});
+                .forEach(function (hg) {
+                    result.push(hg);
+                });
 
             return result;
         }
@@ -513,6 +512,7 @@ angular.module('rainierApp')
             getViewBoxHeight: getViewBoxHeight,
             getMatchHostGroups: getMatchHostGroups,
             invokeServerProtocolCheckAndOpen: invokeServerProtocolCheckAndOpen,
-            setEnableZoningFn: setEnableZoningFn
+            setEnableZoningFn: setEnableZoningFn,
+            setEndPointCoordinates: setEndPointCoordinates
         };
     });

@@ -360,7 +360,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                     window.history.back();
                 }
             });
-            attachVolumeService.setWwnCoordinates($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.selectedHostModeOption, idCoordinates);
+            attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.selectedHostModeOption, idCoordinates);
             setHostModeAndHostModeOptions($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.defaultHostMode);
             $scope.dataModel.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight($scope.dataModel.pathModel.selectedHosts,
                 $scope.dataModel.pathModel.storagePorts);

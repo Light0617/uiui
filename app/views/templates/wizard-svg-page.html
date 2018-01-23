@@ -12,7 +12,7 @@
         <g ng-repeat="host in dataModel.pathModel.selectedHosts track by $index" ng-if="dataModel.pathModel.selectedHosts">
             <g ng-if="host.startHeight !== undefined">
                 <rect class="tile-base" ng-class="{'active': host.isSelected === true}" x="5" ng-attr-y="{{host.startHeight}}" width="235"
-                      ng-attr-height="{{host.wwpns.length <= 4 ? 100 : host.wwpns.length * 25}}" rx="10" ry="10"
+                      ng-attr-height="{{host.endPoints.length <= 4 ? 100 : host.endPoints.length * 25}}" rx="10" ry="10"
                       ng-click="dataModel.pathModel.toggleSelected(host, $event)" />
 
                 <use xlink:href="#server-icon" x="30" ng-attr-y="{{host.startHeight + 10}}"/>
@@ -22,12 +22,13 @@
                 <text class="host-mode-options md-label" x="10" ng-attr-y="{{host.startHeight + 75}}">{{host.allHostModeOptionsString.length > 10 ? host.allHostModeOptionsString.substring(0,9) + '...' : host.allHostModeOptionsString}}
                     <title>{{host.allHostModeOptionsString}}</title>
                 </text>
-                <g title="server-wwn" ng-repeat="wwn in host.displayWWNs" attr-wwn="{{wwn}}">
-                    <!--WWN icon-->
-                    <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{host.wwnCoordinates[$index].x}}" ng-attr-cy="{{host.wwnCoordinates[$index].y}}" r="6"/>
+                <g title="server-endpoint" ng-repeat="endPoint in host.endPoints" attr-endpoint="{{endPoint}}">
+                    <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{host.endPointCoordinatesMap[endPoint].x}}" ng-attr-cy="{{host.endPointCoordinatesMap[endPoint].y}}" r="6"/>
                     <rect class="port-icon-plug" x="232" ng-attr-y="{{host.startHeight + 11 + $index*25}}" width="16" height="4" rx="2" ry="2"/>
-
-                    <text class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{wwn}}</text>
+                    <title ng-if="host.protocol==='FIBRE'">{{displayWwn(endPoint)}}</title>
+                    <text ng-if="host.protocol==='FIBRE'" class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(displayWwn(endPoint))}}</text>
+                    <title ng-if="host.protocol==='ISCSI'">{{endPoint}}</title>
+                    <text ng-if="host.protocol==='ISCSI'" class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(endPoint)}}</text>
                 </g>
 
             </g>

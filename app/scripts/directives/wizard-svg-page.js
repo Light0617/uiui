@@ -241,7 +241,7 @@ angular.module('rainierApp')
                     .attr('stroke', selectedColor);
             } else {
                 currentWwn = wwnService.appendColon(dataModel.pathModel.paths[pathIndex].serverWwn);
-                portGroup = svg.select('g[attr-wwn="' + currentWwn + '"]');
+                portGroup = svg.select('g[attr-endpoint="' + currentWwn + '"]');
                 circle = portGroup.select('circle');
                 circle.attr('stroke', selectedColor);
                 cx = circle.attr('cx');
@@ -253,7 +253,7 @@ angular.module('rainierApp')
                     .attr('y1', cy)
                     .attr('x2', parseInt(cx) + 100)
                     .attr('y2', cy)
-                    .attr('attr-wwn', currentWwn)
+                    .attr('attr-endpoint', currentWwn)
                     .attr('path-index', pathIndex)
                     .attr('attr-port-index', portIndex)
                     .attr('stroke-dasharray', '10,10')
@@ -348,7 +348,7 @@ angular.module('rainierApp')
                 });
                 return;
             }
-            wwn = line.attr('attr-wwn');
+            wwn = line.attr('attr-endpoint');
             pathIndex = line.attr('path-index'); // path index of the line-from-wwn
 
             recoverWwnCircleColor(line, svg);
@@ -405,8 +405,8 @@ angular.module('rainierApp')
         }
 
         function recoverWwnCircleColor(line, svg) {
-            var wwn = line.attr('attr-wwn');
-            svg.select('g[attr-wwn="' + wwn + '"]')
+            var wwn = line.attr('attr-endpoint');
+            svg.select('g[attr-endpoint="' + wwn + '"]')
                 .select('circle')
                 .attr('stroke', originalPortColor);
         }
@@ -511,7 +511,7 @@ angular.module('rainierApp')
                 setPathAttrs(allPaths, dataModel, false, svg);
 
                 // Draw the wwn side of the new path
-                svg.selectAll('g[title="server-wwn"]').on('click', function(){
+                svg.selectAll('g[title="server-endpoint"]').on('click', function(){
                     var excludedIndex;
                     circle = d3.select(this).select('circle');
                     wwnText = d3.select(this).select('text').text();
@@ -564,14 +564,14 @@ angular.module('rainierApp')
                         cx = circle.attr('cx');
                         cy = circle.attr('cy');
 
-                        // Add "attr-wwn" attribute so that it is easy to find which wwn it is from
+                        // Add "attr-endpoint" attribute so that it is easy to find which wwn it is from
                         line = svg.append('line')
                             .attr('title', 'line-from-wwn')
                             .attr('x1', cx)
                             .attr('y1', cy)
                             .attr('x2', parseInt(cx) + 100)
                             .attr('y2', cy)
-                            .attr('attr-wwn', wwnText)
+                            .attr('attr-endpoint', wwnText)
                             .attr('stroke-dasharray', '10,10')
                             .attr('stroke-width', 2)
                             .attr('stroke', selectedColor);
@@ -614,7 +614,7 @@ angular.module('rainierApp')
                             // But if we are modifying a path to its original path, we should allow it. excludedIndex is
                             // the index of the selected path which should be excluded for existence check.
                             excludedIndex = line.attr('path-index');
-                            if (pathExists(dataModel, wwnService.removeSymbol(line.attr('attr-wwn')), port.storagePortId, parseInt(excludedIndex))) {
+                            if (pathExists(dataModel, wwnService.removeSymbol(line.attr('attr-endpoint')), port.storagePortId, parseInt(excludedIndex))) {
                                 return;
                             }
 
@@ -661,13 +661,24 @@ angular.module('rainierApp')
             }
         };
 
+        var ellipsis = function (str) {
+            if(str.length > 24) {
+                return str.slice(0,24) + '…';
+            }
+            return str;
+        };
+
         return {
             scope: {
-                dataModel: '=ngModel'
+                dataModel: '=ngModel',
+                ellipsis: '&',
+                displayWwn: '&'
             },
             templateUrl: 'views/templates/wizard-svg-page.html',
             restrict: 'E',
             link: function postLink(scope) {
+                scope.displayWwn = wwnService.appendColon;
+                scope.ellipsis = ellipsis;
                 scope.dataModel.pathModel.deleteSelected = deleteSelected;
                 scope.dataModel.pathModel.selectNone = selectNone;
                 scope.dataModel.pathModel.showSuggest = showSuggest;
