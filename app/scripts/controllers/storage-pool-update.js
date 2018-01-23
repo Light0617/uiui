@@ -198,6 +198,12 @@ angular.module('rainierApp')
                                 }
                             };
 
+                            var setConstantValueToSubscriptionLimit = function (payload) {
+                                if (!utilService.isNullOrUndef(payload.subscriptionLimit)){
+                                    payload.subscriptionLimit.value = 1;
+                                }
+                            };
+
                             if ($scope.model.wizardType === 'basic') {
 
                                 var poolTemplateSubTiers = getActualSelectedTierSizes();
@@ -213,7 +219,7 @@ angular.module('rainierApp')
 
                                 if ($scope.model.htiPool && ($scope.model.templateUtilizationThreshold1 < 1 || $scope.model.templateUtilizationThreshold2 < 1)) {
                                     deployPayload.utilizationThreshold1 = 1;
-                                    deployPayload.subscriptionLimit.value = 1;
+                                    setConstantValueToSubscriptionLimit(deployPayload);
                                 }
 
                                 // Build reserved resources
@@ -241,7 +247,7 @@ angular.module('rainierApp')
 
                                 if ($scope.model.poolType === 'HTI' && ($scope.model.utilizationThreshold1 < 1 || $scope.model.subscriptionLimit < 1)) {
                                     updatePoolPayload.utilizationThreshold1 = 1;
-                                    updatePoolPayload.subscriptionLimit.value = 1;
+                                    setConstantValueToSubscriptionLimit(updatePoolPayload);
                                 }
 
                                 // Get selected and existing parity groups on the pool
