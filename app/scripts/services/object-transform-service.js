@@ -731,6 +731,14 @@ angular.module('rainierApp')
                 };
 
 
+                item.hasFibrePath = _.some(item.paths, function (p) {
+                    return p.wwns && p.wwns.length > 0;
+                });
+
+                item.hasIscsiPath = _.some(item.paths, function(p) {
+                    return p.iscsiTargetInformation;
+                });
+
                 item.getActions = function () {
                     return _.map(item.actions);
                 };

@@ -1,48 +1,137 @@
-<div class="nested-row-container expanded" >
-    <div class="nested-row-tile column-headers">
-        <div class="col-md-2 cell text-resize ellipsis"
-             title="{{'host-volume-list-port' | translate}}">
-            <p class="sort-column-header">{{'host-volume-list-port' | translate}}</p>
+<div>
+    <div class="list-view panel-collapse in nested-row-container" ng-if="item.hasFibrePath">
+        <div class="tile nested-row-tile column-headers">
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-port' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-port' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-wwns' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-wwns' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-lun-id' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-lun-id' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-host-mode' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-host-mode' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-host-mode-options' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-host-mode-options' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-host-group' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-host-group' | translate}}</p>
+            </div>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis"
-             title="{{'host-volume-list-wwns' | translate}}">
-            <p class="sort-column-header">{{'host-volume-list-wwns' | translate}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis"
-             title="{{'host-volume-list-lun-id' | translate}}">
-            <p class="sort-column-header">{{'host-volume-list-lun-id' | translate}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis"
-             title="{{'host-volume-list-host-mode' | translate}}">
-            <p class="sort-column-header">{{'host-volume-list-host-mode' | translate}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis"
-             title="{{'host-volume-list-host-mode-options' | translate}}">
-            <p class="sort-column-header">{{'host-volume-list-host-mode-options' | translate}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis"
-             title="{{'host-volume-list-host-group' | translate}}">
-            <p class="sort-column-header">{{'host-volume-list-host-group' | translate}}</p>
+        <div class="tile row-tile nested-row-tile panel-body"
+             ng-repeat="path in item.paths" ng-if="path.wwns && path.wwns.length>0">
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.storagePortId}}">
+                <p>{{path.storagePortId}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.wwns.join(',')}}">
+                <p>{{path.wwns.join(',')}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.lun}}">
+                <p>{{path.lun}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.hostMode}}">
+                <p>{{path.hostMode}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.hostModeOptions.join(' ')}}">
+                <p>{{path.hostModeOptions.join(' ')}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.name}}">
+                <p>{{path.name}}</p>
+            </div>
         </div>
     </div>
-    <div class="nested-row-tile" ng-repeat="path in item.paths">
-        <div class="col-md-2 cell text-resize ellipsis" title="{{path.storagePortId}}">
-            <p>{{path.storagePortId}}</p>
+
+    <div class="list-view panel-collapse in nested-row-container" ng-if="item.hasIscsiPath">
+        <div class="tile nested-row-tile column-headers">
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-port' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-port' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'iSCSI Initiator Names' | translate}}">
+                <p class="sort-column-header">{{'iSCSI Initiator Names' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-lun-id' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-lun-id' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-host-mode' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-host-mode' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'host-volume-list-host-mode-options' | translate}}">
+                <p class="sort-column-header">{{'host-volume-list-host-mode-options' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'iSCSI Target Name'}}">
+                <p class="sort-column-header">{{'iSCSI Target Name' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'Auth Method'}}">
+                <p class="sort-column-header">{{'Auth Method' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'Chap Users'}}">
+                <p class="sort-column-header">{{'Chap Users' | translate}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{'Mutual Chap User'}}">
+                <p class="sort-column-header">{{'Mutual Chap User' | translate}}</p>
+            </div>
         </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{path.wwns.join(',')}}">
-            <p>{{path.wwns.join(',')}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{path.lun}}">
-            <p>{{path.lun}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostMode}}">
-            <p>{{path.hostMode}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{path.hostModeOptions.join(' ')}}">
-            <p>{{path.hostModeOptions.join(' ')}}</p>
-        </div>
-        <div class="col-md-2 cell text-resize ellipsis" title="{{path.name}}">
-            <p>{{path.name}}</p>
+        <div class="tile row-tile nested-row-tile panel-body"
+             ng-repeat="path in item.paths" ng-if="path.iscsiTargetInformation">
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.storagePortId}}">
+                <p>{{path.storagePortId}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.iscsiTargetInformation.iscsiInitiatorNames.join(',')}}">
+                <p>{{path.iscsiTargetInformation.iscsiInitiatorNames.join(',')}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.lun}}">
+                <p>{{path.lun}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.hostMode}}">
+                <p>{{path.hostMode}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.hostModeOptions.join(' ')}}">
+                <p>{{path.hostModeOptions.join(' ')}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.iscsiTargetInformation.iscsiTargetName}}">
+                <p>{{path.iscsiTargetInformation.iscsiTargetName}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.iscsiTargetInformation.authenticationMode}}">
+                <p>{{path.iscsiTargetInformation.authenticationMode}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.iscsiTargetInformation.chapUsers.join(',')}}">
+                <p>{{path.iscsiTargetInformation.chapUsers.join(',')}}</p>
+            </div>
+            <div class="twelfth cell text-resize ellipsis"
+                 title="{{path.iscsiTargetInformation.mutualChapUser}}">
+                <p>{{path.iscsiTargetInformation.mutualChapUser}}</p>
+            </div>
         </div>
     </div>
 </div>
