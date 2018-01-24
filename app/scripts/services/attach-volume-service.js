@@ -225,7 +225,7 @@ angular.module('rainierApp')
         };
 
         function getPath(path){
-            return createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
+            return createPath(idCoordinates[path.serverEndPoint].x, idCoordinates[path.serverEndPoint].y,
                 idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
         }
 
@@ -265,8 +265,8 @@ angular.module('rainierApp')
                 }
 
                 ports.push({
-                        serverId: endPointServerIdMap[path.serverWwn],
-                        serverWwns: [path.serverWwn],
+                        serverId: endPointServerIdMap[path.serverEndPoint],
+                        serverWwns: [path.serverEndPoint],
                         portIds: [path.storagePortId]
                     }
                 );
@@ -291,7 +291,7 @@ angular.module('rainierApp')
 
                         var path = {
                             storagePortId: hostGroup.storagePortId,
-                            serverWwn: hbaWwn,
+                            serverEndPoint: hbaWwn,
                             isVsmPort: isVsmPort
                         };
                         paths.push(path);
@@ -375,7 +375,7 @@ angular.module('rainierApp')
         }
 
         function filterPorts(ports, selectedHosts) {
-            return _.filter(ports, function (p) {return p.type === selectedHosts[0].protocol;});
+            return _.filter(ports, function (p) {return p.type === selectedHosts[0].protocol;}).filter(function(p) {return !p.isVsmPort;});
         }
 
         var setEditLunPage = function(dataModel, storageSystemId, selectedVolumes, selectedHosts,

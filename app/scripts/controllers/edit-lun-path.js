@@ -102,7 +102,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
                    var path = {
                        storagePortId: hostGroup.storagePortId,
-                       serverWwn: hbaWwn,
+                       serverEndPoint: hbaWwn,
                        luns: luns,
                        isVsmPort: isVsmPort
                    };
@@ -171,12 +171,12 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     $scope.dataModel = dataModel;
 
     function getPath(path){
-        return attachVolumeService.createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
+        return attachVolumeService.createPath(idCoordinates[path.serverEndPoint].x, idCoordinates[path.serverEndPoint].y,
             idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
     }
 
     function differentPaths(path1, path2) {
-        if (path1.serverWwn !== path2.serverWwn || path1.storagePortId !== path2.storagePortId){
+        if (path1.serverEndPoint!== path2.serverEndPoint|| path1.storagePortId !== path2.storagePortId){
             return true;
         }
 
@@ -291,7 +291,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                     lun: volume.lun,
                                     currentPath: null,
                                     newPath: {
-                                        serverWwn: path.serverWwn,
+                                        serverWwn: path.serverEndPoint,
                                         storagePort: path.storagePortId
                                     }
                                 };
@@ -307,7 +307,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                             volumeId: volume.volumeId,
                                             lun: volume.lun,
                                             currentPath: {
-                                                serverWwn: originalPath.serverWwn,
+                                                serverWwn: originalPath.serverEndPoint,
                                                 storagePort: originalPath.storagePortId
                                             },
                                             newPath: null
@@ -326,11 +326,11 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                                             volumeId: volume.volumeId,
                                             lun: volume.lun,
                                             currentPath: {
-                                                serverWwn: originalPath.serverWwn,
+                                                serverWwn: originalPath.serverEndPoint,
                                                 storagePort: originalPath.storagePortId
                                             },
                                             newPath: {
-                                                    serverWwn: path.serverWwn,
+                                                    serverWwn: path.serverEndPoint,
                                                     storagePort: path.storagePortId
                                             }
                                         };

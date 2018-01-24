@@ -26,9 +26,9 @@
                     <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{host.endPointCoordinatesMap[endPoint].x}}" ng-attr-cy="{{host.endPointCoordinatesMap[endPoint].y}}" r="6"/>
                     <rect class="port-icon-plug" x="232" ng-attr-y="{{host.startHeight + 11 + $index*25}}" width="16" height="4" rx="2" ry="2"/>
                     <title ng-if="host.protocol==='FIBRE'">{{displayWwn(endPoint)}}</title>
-                    <text ng-if="host.protocol==='FIBRE'" class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(displayWwn(endPoint))}}</text>
+                    <text ng-if="host.protocol==='FIBRE'" attr-raw={{endPoint}} class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(displayWwn(endPoint))}}</text>
                     <title ng-if="host.protocol==='ISCSI'">{{endPoint}}</title>
-                    <text ng-if="host.protocol==='ISCSI'" class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(endPoint)}}</text>
+                    <text ng-if="host.protocol==='ISCSI'" attr-raw={{endPoint}} class="sm-label" x="220" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(endPoint)}}</text>
                 </g>
 
             </g>

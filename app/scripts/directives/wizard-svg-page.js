@@ -65,7 +65,7 @@ angular.module('rainierApp')
                 if (path.deleted === true){
                     return;
                 }
-                key = path.serverWwn + ',' + path.storagePortId;
+                key = path.serverEndPoint + ',' + path.storagePortId;
                 if (!pathMap.hasOwnProperty(key)){
                     pathMap[key] = true;
                 }
@@ -100,23 +100,23 @@ angular.module('rainierApp')
                         return;
                     }
 
-                    var wwnPoint = dataModel.pathModel.idCoordinates[pathResource.serverWwn];
-                    var portPoint = dataModel.pathModel.idCoordinates[pathResource.portId];
-                    var newPath = d3.select('g[title="path-wwn-port"]')
+                    var endPointCoordinate = dataModel.pathModel.idCoordinates[pathResource.serverWwn];
+                    var portCoordinate = dataModel.pathModel.idCoordinates[pathResource.portId];
+                    var newPath = d3.select('g[title="path-endpoint-port"]')
                         .append('path')
                         .attr('d', function () {
                             return dataModel.pathModel.createPath(
-                                wwnPoint.x,
-                                wwnPoint.y,
-                                portPoint.x,
-                                portPoint.y);
+                                endPointCoordinate.x,
+                                endPointCoordinate.y,
+                                portCoordinate.x,
+                                portCoordinate.y);
                         })
                         .attr('path-index', dataModel.pathModel.paths.length);
                     setPathAttrs(newPath, dataModel, true, svg);
 
                     dataModel.pathModel.paths.push({
                         storagePortId: pathResource.portId,
-                        serverWwn: pathResource.serverWwn
+                        serverEndPoint: pathResource.serverWwn
                     });
 
                 });
@@ -159,7 +159,7 @@ angular.module('rainierApp')
                     if (!line.empty()){
                         return;
                     } else {
-                        line = svg.select('line[title="line-from-wwn"]');
+                        line = svg.select('line[title="line-from-endpoint"]');
                         if (!line.empty()){
                             return;
                         }
@@ -205,13 +205,13 @@ angular.module('rainierApp')
             return pathIndex;
         }
 
-        function removeOneSide(dataModel, svg, pathIndex, modifyWwn, portIndex){
+        function removeOneSide(dataModel, svg, pathIndex, modifyEndpoint, portIndex){
             var portGroup;
             var circle;
             var cx;
             var cy;
             var line;
-            var currentWwn;
+            var currentEndpoint;
             if(dataModel.pathModel.paths[pathIndex].isVsmPort){
                 return;
             }
@@ -219,7 +219,7 @@ angular.module('rainierApp')
             d3.select('path[path-index="' + pathIndex + '"]').remove();
             dataModel.pathModel.paths[pathIndex].selected = false;
 
-            if (modifyWwn) {
+            if (modifyEndpoint) {
                 portGroup = svg.select('g[port-id="' + dataModel.pathModel.paths[pathIndex].storagePortId + '"]');
                 circle = portGroup.select('circle:nth-child(2)');
                 portGroup.select('circle:nth-child(1)').attr('stroke', selectedColor);
@@ -240,20 +240,20 @@ angular.module('rainierApp')
                     .attr('stroke-width', 2)
                     .attr('stroke', selectedColor);
             } else {
-                currentWwn = wwnService.appendColon(dataModel.pathModel.paths[pathIndex].serverWwn);
-                portGroup = svg.select('g[attr-endpoint="' + currentWwn + '"]');
+                currentEndpoint = dataModel.pathModel.paths[pathIndex].serverEndPoint;
+                portGroup = svg.select('g[attr-endpoint="' + currentEndpoint + '"]');
                 circle = portGroup.select('circle');
                 circle.attr('stroke', selectedColor);
                 cx = circle.attr('cx');
                 cy = circle.attr('cy');
 
                 line = svg.append('line')
-                    .attr('title', 'line-from-wwn')
+                    .attr('title', 'line-from-endpoint')
                     .attr('x1', cx)
                     .attr('y1', cy)
                     .attr('x2', parseInt(cx) + 100)
                     .attr('y2', cy)
-                    .attr('attr-endpoint', currentWwn)
+                    .attr('attr-endpoint', currentEndpoint)
                     .attr('path-index', pathIndex)
                     .attr('attr-port-index', portIndex)
                     .attr('stroke-dasharray', '10,10')
@@ -263,14 +263,14 @@ angular.module('rainierApp')
 
         }
 
-        function finishLineToWwn(circle, line, wwnText, dataModel, svg){
+        function finishLineToEndPoint(circle, line, endPoint, dataModel, svg){
             var portIndex;
             var pathIndex;
             var port;
             var portGroup;
             var path;
             portIndex = parseInt(line.attr('attr-port-index'));
-            pathIndex = line.attr('path-index'); // path index of the line-from-wwn
+            pathIndex = line.attr('path-index'); // path index of the line-from-endpoint
             port = dataModel.pathModel.storagePorts[portIndex];
             if(port.isVsmPort){
                 var modelInstance = $modal.open({
@@ -294,7 +294,7 @@ angular.module('rainierApp')
 
             recoverPortCircleColor(line, svg);
 
-            path = d3.select('g[title="path-wwn-port"]')
+            path = d3.select('g[title="path-endpoint-port"]')
                 .append('path')
                 .attr('d', function () {
                     return dataModel.pathModel.createPath(
@@ -308,11 +308,11 @@ angular.module('rainierApp')
 
             // If 'path-index' attribute is set, we are modifying a path.
             if (pathIndex){
-                dataModel.pathModel.paths[pathIndex].serverWwn = wwnText;
+                dataModel.pathModel.paths[pathIndex].serverEndPoint = endPoint;
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
-                    serverWwn: wwnService.removeSymbol(wwnText),
+                    serverEndPoint: endPoint,
                     isVsmPort: port.isVsmPort
                 });
             }
@@ -326,7 +326,7 @@ angular.module('rainierApp')
         }
 
         function finishLineToPort(circle, line, port, dataModel, svg){
-            var wwn;
+            var endPoint;
             var pathIndex;
             var path;
             if(port.isVsmPort){
@@ -348,12 +348,12 @@ angular.module('rainierApp')
                 });
                 return;
             }
-            wwn = line.attr('attr-endpoint');
-            pathIndex = line.attr('path-index'); // path index of the line-from-wwn
+            endPoint = line.attr('attr-endpoint');
+            pathIndex = line.attr('path-index'); // path index of the line-from-endpoint
 
-            recoverWwnCircleColor(line, svg);
+            recoverEndPointCircleColor(line, svg);
 
-            path = d3.select('g[title="path-wwn-port"]')
+            path = d3.select('g[title="path-endpoint-port"]')
                 .append('path')
                 .attr('d', function () {
                     return dataModel.pathModel.createPath(
@@ -371,7 +371,7 @@ angular.module('rainierApp')
             } else {
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
-                    serverWwn: wwnService.removeSymbol(wwn),
+                    serverEndPoint: endPoint,
                     isVsmPort: port.isVsmPort
                 });
             }
@@ -379,7 +379,7 @@ angular.module('rainierApp')
             line.remove();
         }
 
-        function pathExists(dataModel, wwn, portId, excludedIndex){
+        function pathExists(dataModel, endPoint, portId, excludedIndex){
             var path;
             var i;
             for (i = 0; i < dataModel.pathModel.paths.length; ++i){
@@ -387,7 +387,7 @@ angular.module('rainierApp')
                     break;
                 }
                 path = dataModel.pathModel.paths[i];
-                if (wwn === path.serverWwn && portId === path.storagePortId){
+                if (endPoint === path.serverEndPoint && portId === path.storagePortId){
                     return true;
                 }
             }
@@ -404,9 +404,9 @@ angular.module('rainierApp')
                 .attr('fill', originalPortColor);
         }
 
-        function recoverWwnCircleColor(line, svg) {
-            var wwn = line.attr('attr-endpoint');
-            svg.select('g[attr-endpoint="' + wwn + '"]')
+        function recoverEndPointCircleColor(line, svg) {
+            var endPoint = line.attr('attr-endpoint');
+            svg.select('g[attr-endpoint="' + endPoint + '"]')
                 .select('circle')
                 .attr('stroke', originalPortColor);
         }
@@ -417,9 +417,9 @@ angular.module('rainierApp')
             var pathIndex;
 
             // If Esc key is pressed, we should cancel the previous operation.
-            // If we are in the middle of creating a path, the starting line (from wwn or from port)
+            // If we are in the middle of creating a path, the starting line (from server end point or from port)
             // is removed. If we are in the middle of editing a path, this path is
-            line = svg.select('line[title="line-from-wwn"]');
+            line = svg.select('line[title="line-from-endpoint"]');
             if (line.empty()) {
                 line = svg.select('line[title="line-from-port"]');
                 isLineFromPort = true;
@@ -429,17 +429,17 @@ angular.module('rainierApp')
                 // recover the path.
                 pathIndex = line.attr('path-index');
                 if (pathIndex){
-                    var shortedWwn = wwnService.removeSymbol(dataModel.pathModel.paths[parseInt(pathIndex)].serverWwn);
-                    var wwnPoint = dataModel.pathModel.idCoordinates[shortedWwn];
-                    var portPoint = dataModel.pathModel.idCoordinates[dataModel.pathModel.paths[parseInt(pathIndex)].storagePortId];
-                    var newPath = d3.select('g[title="path-wwn-port"]')
+                    var endPoint = dataModel.pathModel.paths[parseInt(pathIndex)].serverEndPoint;
+                    var endPointCoordinate = dataModel.pathModel.idCoordinates[endPoint];
+                    var portCoordinate = dataModel.pathModel.idCoordinates[dataModel.pathModel.paths[parseInt(pathIndex)].storagePortId];
+                    var newPath = d3.select('g[title="path-endpoint-port"]')
                         .append('path')
                         .attr('d', function () {
                             return dataModel.pathModel.createPath(
-                                wwnPoint.x,
-                                wwnPoint.y,
-                                portPoint.x,
-                                portPoint.y);
+                                endPointCoordinate.x,
+                                endPointCoordinate.y,
+                                portCoordinate.x,
+                                portCoordinate.y);
                         })
                         .attr('path-index', pathIndex);
                     setPathAttrs(newPath, dataModel, parseInt(pathIndex) >= dataModel.pathModel.originalPathLength, svg);
@@ -449,7 +449,7 @@ angular.module('rainierApp')
                 if (isLineFromPort) {
                     recoverPortCircleColor(line, svg);
                 } else {
-                    recoverWwnCircleColor(line, svg);
+                    recoverEndPointCircleColor(line, svg);
                 }
 
                 // remove the dashed line
@@ -464,7 +464,6 @@ angular.module('rainierApp')
                 var cx;
                 var cy;
                 var line;
-                var wwnText;
                 var portIndex;
                 var port;
                 var portGroup;
@@ -480,7 +479,7 @@ angular.module('rainierApp')
                 svg.attr('viewBox', '0, 0, 1000, ' + dataModel.pathModel.viewBoxHeight)
                     .attr('style', 'padding-bottom: ' + dataModel.pathModel.viewBoxHeight/10 + '%');
                 g = svg.append('g')
-                    .attr('title', 'path-wwn-port');
+                    .attr('title', 'path-endpoint-port');
 
                 d3.select('body')
                     .on('keydown', function(){
@@ -510,68 +509,68 @@ angular.module('rainierApp')
 
                 setPathAttrs(allPaths, dataModel, false, svg);
 
-                // Draw the wwn side of the new path
+                // Draw the end point side of the new path
                 svg.selectAll('g[title="server-endpoint"]').on('click', function(){
                     var excludedIndex;
                     circle = d3.select(this).select('circle');
-                    wwnText = d3.select(this).select('text').text();
+                    var endPoint = d3.select(this).select('text').attr('attr-raw');
                     pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
                     if (pathIndex !== null) {
-                        if (pathIndex !== MULTI_SELECTED && wwnService.removeSymbol(wwnText) === wwnService.removeSymbol(dataModel.pathModel.paths[pathIndex].serverWwn)) {
+                        if (pathIndex !== MULTI_SELECTED && endPoint === dataModel.pathModel.paths[pathIndex].serverEndPoint) {
                             // modify existing path.
-                            // Remove the wwn side of the path.
+                            // Remove the end point side of the path.
                             removeOneSide(dataModel, svg, pathIndex, true);
                         }
 
-                        // If one path is selected and the wwn is clicked, we do nothing.
-                        // If multiple paths are selected and any wwn is clicked, we do nothing either.
+                        // If one path is selected and the end point is clicked, we do nothing.
+                        // If multiple paths are selected and any end point is clicked, we do nothing either.
                         return;
 
                     }
 
                     line = svg.select('line[title="line-from-port"]');
                     if (!line.empty()){
-                        // If we already have the path with the selected wwn and port id, we do nothing.
+                        // If we already have the path with the selected end point and port id, we do nothing.
                         // But if we are modifying a path to its original path, we should allow it. excludedIndex is
                         // the index of the selected path which should be excluded for existence check.
                         portIndexInLine = line.attr('attr-port-index');
                         excludedIndex = line.attr('path-index');
-                        if (pathExists(dataModel, wwnService.removeSymbol(wwnText), dataModel.pathModel.storagePorts[portIndexInLine].storagePortId, parseInt(excludedIndex))){
+                        if (pathExists(dataModel, endPoint, dataModel.pathModel.storagePorts[portIndexInLine].storagePortId, parseInt(excludedIndex))){
                             return;
                         }
 
                         // Finish the path
-                        finishLineToWwn(circle, line, wwnText, dataModel, svg);
+                        finishLineToEndPoint(circle, line, endPoint, dataModel, svg);
                     } else {
-                        line = svg.select('line[title="line-from-wwn"]');
+                        line = svg.select('line[title="line-from-endpoint"]');
                         if (!line.empty()) {
-                            // If we are modifying a path and in the middle of modifying the port, we can't modify wwn.
+                            // If we are modifying a path and in the middle of modifying the port, we can't modify end point.
                             // So we just return.
                             if (line.attr('path-index')){
                                 return;
                             }
 
                             // remove the dashed line before adding one.
-                            recoverWwnCircleColor(line, svg);
+                            recoverEndPointCircleColor(line, svg);
 
                             line.remove();
                         }
 
-                        // Find the wwn and start the line
+                        // Find the end point and start the line
                         //
                         circle.attr('stroke', selectedColor);
 
                         cx = circle.attr('cx');
                         cy = circle.attr('cy');
 
-                        // Add "attr-endpoint" attribute so that it is easy to find which wwn it is from
+                        // Add "attr-endpoint" attribute so that it is easy to find which end point it is from
                         line = svg.append('line')
-                            .attr('title', 'line-from-wwn')
+                            .attr('title', 'line-from-endpoint')
                             .attr('x1', cx)
                             .attr('y1', cy)
                             .attr('x2', parseInt(cx) + 100)
                             .attr('y2', cy)
-                            .attr('attr-endpoint', wwnText)
+                            .attr('attr-endpoint', endPoint)
                             .attr('stroke-dasharray', '10,10')
                             .attr('stroke-width', 2)
                             .attr('stroke', selectedColor);
@@ -593,7 +592,7 @@ angular.module('rainierApp')
                         portIndex = parseInt(portGroup.attr('port-index'));
                         port = dataModel.pathModel.storagePorts[portIndex];
                         circle = portGroup.select('circle:nth-child(1)');
-                        line = svg.select('line[title="line-from-wwn"]');
+                        line = svg.select('line[title="line-from-endpoint"]');
 
                         pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
                         if (pathIndex !== null) {
@@ -610,11 +609,11 @@ angular.module('rainierApp')
 
 
                         if (!line.empty()) {
-                            // If we already have the path with the selected wwn and port id, we do nothing.
+                            // If we already have the path with the selected end point and port id, we do nothing.
                             // But if we are modifying a path to its original path, we should allow it. excludedIndex is
                             // the index of the selected path which should be excluded for existence check.
                             excludedIndex = line.attr('path-index');
-                            if (pathExists(dataModel, wwnService.removeSymbol(line.attr('attr-endpoint')), port.storagePortId, parseInt(excludedIndex))) {
+                            if (pathExists(dataModel, line.attr('attr-endpoint'), port.storagePortId, parseInt(excludedIndex))) {
                                 return;
                             }
 
@@ -626,7 +625,7 @@ angular.module('rainierApp')
 
                             line = svg.select('line[title="line-from-port"]');
                             if (!line.empty()){
-                                // If we are modifying a path and in the middle of modifying the wwn, we can't modify port.
+                                // If we are modifying a path and in the middle of modifying the end point, we can't modify port.
                                 // So we just return.
                                 if (line.attr('path-index')){
                                     return;
