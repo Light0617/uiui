@@ -264,9 +264,14 @@ angular.module('rainierApp')
                     continue;
                 }
 
+                var protocol = dataModel.pathModel.selectedHosts[0].protocol;
+                var serverWwns =  protocol === 'FIBRE' ? [path.serverEndPoint] : undefined;
+                var iscsiInitiatorNames = protocol === 'ISCSI' ? [path.serverEndPoint] : undefined;
+
                 ports.push({
                         serverId: endPointServerIdMap[path.serverEndPoint],
-                        serverWwns: [path.serverEndPoint],
+                        serverWwns: serverWwns,
+                        iscsiInitiatorNames: iscsiInitiatorNames,
                         portIds: [path.storagePortId]
                     }
                 );
