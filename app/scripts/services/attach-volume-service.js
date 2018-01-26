@@ -147,7 +147,7 @@ angular.module('rainierApp')
 
         var getSelectedServerWwpns = function(selectedServers) {
             return _.chain(selectedServers)
-                .map(function(s) {return s.wwns;})
+                .map(function(s) {return s.wwpns;})
                 .filter(function(wwns) {return wwns && wwns.length;})
                 .flatten()
                 .value();
@@ -162,6 +162,21 @@ angular.module('rainierApp')
                     return server.iscsiNames;
                 }).flatten().value();
             return iscsiNames;
+        };
+
+        var registerHostGroupsQuery = function (queryService, paginationService, selectedServers) {
+            var iscsiNames = getSelectedServerIscsiNames(selectedServers);
+            var wwpns = getSelectedServerWwpns(selectedServers);
+            var queryString;
+            paginationService.clearQuery();
+            if (wwpns.length > 0) {
+                queryString = paginationService.getQueryStringForList(wwpns);
+                queryService.setQueryMapEntry('hbaWwns', queryString);
+            }
+            if (iscsiNames.length > 0) {
+                queryString = paginationService.getQueryStringForList(iscsiNames);
+                queryService.setQueryMapEntry('iscsiNames', queryString);
+            }
         };
 
         var getAllocateLikeFilteredHostGroups = function(servers, hostGroups, hostMode,  hostModeOptions) {
@@ -508,7 +523,7 @@ angular.module('rainierApp')
             },
             getMatchedHostModeOption: getMatchedHostModeOption,
             getSelectedServerWwpns: getSelectedServerWwpns,
-            getSelectedServerIscsiNames: getSelectedServerIscsiNames,
+            registerHostGroupsQuery: registerHostGroupsQuery,
             getAllocateLikeFilteredHostGroups: getAllocateLikeFilteredHostGroups,
             getMatchedHostMode: getMatchedHostMode,
             setEditLunPage: setEditLunPage,

@@ -46,23 +46,8 @@ angular.module('rainierApp')
             host.metaData[0].details.push(host.attachedVolumeCount + ' volume(s)');
         }
 
-        function registerGetHostGroupsQuery(selectedServers) {
-            var iscsiNames = attachVolumeService.getSelectedServerIscsiNames(selectedServers);
-            var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
-            var queryString;
-            paginationService.clearQuery();
-            if (wwpns.length > 0) {
-                queryString = paginationService.getQueryStringForList(wwpns);
-                queryService.setQueryMapEntry('hbaWwns', queryString);
-            }
-            if (iscsiNames.length > 0) {
-                queryString = paginationService.getQueryStringForList(iscsiNames);
-                queryService.setQueryMapEntry('iscsiNames', queryString);
-            }
-        }
-
         function setHostModeAndHostModeOptions(selectedServers, defaultHostMode, ports) {
-            registerGetHostGroupsQuery(selectedServers);
+            attachVolumeService.registerHostGroupsQuery(queryService, paginationService, selectedServers);
 
             paginationService.getAllPromises(
                 null,

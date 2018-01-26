@@ -118,11 +118,16 @@ angular.module('rainierApp')
             var hostModes = constantService.osType().sort();
             hostModes.splice(0, 0, autoSelect);
             orchestratorService.storageSystemHostModeOptions($scope.dataModel.selectedStorageSystem.storageSystemId).then(function (results) {
-                var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
-                var queryString = paginationService.getQueryStringForList(wwpns);
-                paginationService.clearQuery();
-                queryService.setQueryMapEntry('hbaWwns', queryString);
-                paginationService.getAllPromises(null, 'host-groups', false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+                attachVolumeService.registerHostGroupsQuery(queryService, paginationService, selectedServers);
+
+                paginationService.getAllPromises(
+                    null,
+                    'host-groups',
+                    false,
+                    $scope.dataModel.selectedStorageSystem.storageSystemId,
+                    objectTransformService.transformHostGroups,
+                    false
+                ).then(function(hostGroupResults) {
                     var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroupResults);
                     var attachModel = {
                         lastSelectedHostModeOption: hostModeOption,
@@ -168,9 +173,7 @@ angular.module('rainierApp')
                         }
                     };
                     $scope.dataModel.attachModel = attachModel;
-                    $scope.dataModel.attachModel.setEnableZoning = function (value) {
-                        $scope.dataModel.attachModel.enableZoning = value;
-                    };
+                    $scope.dataModel.attachModel.setEnableZoning = attachVolumeService.setEnableZoningFn(selectedServers, dataModel.attachModel);
                     $scope.dataModel.attachModel.setEnableLunUnification = function (value) {
                         $scope.dataModel.attachModel.enableLunUnification = value;
                     };
