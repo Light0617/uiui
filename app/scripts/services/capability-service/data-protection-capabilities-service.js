@@ -38,6 +38,22 @@ angular.module('rainierApp')
                     return false;
                 }
                 return true;
+            },
+
+            isSupportSnapOnSnapCreation: function (storageSystemModel, firmwareVersion) {
+                if (constantService.isHM800Series(storageSystemModel)) {
+                    if (versionService.isEqualOrGreaterVersion(versionService.firmwareVersionPrefix.SVOS710_HM800, firmwareVersion)) {
+                        return true;
+                    }
+                    return false;
+                }
+                else if (constantService.isR800Series(storageSystemModel)) {
+                    if (versionService.isEqualOrGreaterVersion(versionService.firmwareVersionPrefix.SVOS700_Rx00, firmwareVersion)) {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
             }
         }
     });

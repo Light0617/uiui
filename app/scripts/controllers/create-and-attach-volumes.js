@@ -292,11 +292,11 @@ angular.module('rainierApp')
                     };
                     payload.replicationGroupName = protectModel.copyGroupName;
                     if (replicationService.isSnap(protectModel.replicationTechnology)) {
-                        var isSupportDpTiPoolIntegrationVersion = storageSystemCapabilitiesService.isSupportDpTiPoolIntegrationVersion(
+                        var isSupportSnapOnSnapCreation = storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
                             $scope.dataModel.selectedStorageSystem.model,
                             $scope.dataModel.selectedStorageSystem.firmwareVersion
                         );
-                        payload.replicationType = isSupportDpTiPoolIntegrationVersion ? replicationService.rawTypes.SNAP_ON_SNAP : replicationService.rawTypes.SNAP;
+                        payload.replicationType = isSupportSnapOnSnapCreation ? replicationService.rawTypes.SNAP_ON_SNAP : replicationService.rawTypes.SNAP;
                         payload.numberOfBackups = protectModel.noOfSnapshots;
                         payload.schedule = cronStringConverterService.fromDatePickerToObjectModel(
                             $scope.dataModel.protectModel.schedule.type, $scope.dataModel.protectModel.schedule.time,
