@@ -667,8 +667,8 @@ angular.module('rainierApp')
         };
 
         var ellipsis = function (str) {
-            if(str.length > 24) {
-                return str.slice(0,24) + '…';
+            if (str.length > 16) {
+                return '…' + str.slice(str.length - 16, str.length);
             }
             return str;
         };
