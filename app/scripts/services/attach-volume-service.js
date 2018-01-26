@@ -165,18 +165,18 @@ angular.module('rainierApp')
         };
 
         var getAllocateLikeFilteredHostGroups = function(servers, hostGroups, hostMode,  hostModeOptions) {
-            var wwpnToServerMap = {};
+            var endPointToServerMap = {};
             _.forEach(servers, function(server) {
-                _.forEach(server.wwpns, function(wwpn) {
-                    wwpnToServerMap[wwpn] = server;
+                _.forEach(server.endPoints, function(endPoint) {
+                    endPointToServerMap[endPoint] = server;
                 });
             });
 
             var allocateLikeFilteredHostGroups = [];
             var hostGroupIdMap = {};
             _.forEach(hostGroups, function(hostgroup) {
-                _.forEach(hostgroup.hbaWwns, function(hbaWwn) {
-                    var server = wwpnToServerMap[hbaWwn];
+                _.forEach(hostgroup.endPoints, function(endPoint) {
+                    var server = endPointToServerMap[endPoint];
                     if (server !== undefined) {
                         // check if host group matches settings
                         // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
@@ -285,8 +285,8 @@ angular.module('rainierApp')
         function getPathsFromHostGroups(hostGroups, storagePorts, idCoordinates){
             var paths = [];
             _.forEach(hostGroups, function(hostGroup){
-                _.forEach(hostGroup.hbaWwns, function(hbaWwn){
-                    if (idCoordinates.hasOwnProperty(hbaWwn)){
+                _.forEach(hostGroup.endPoints, function(endPoint){
+                    if (idCoordinates.hasOwnProperty(endPoint)){
                         var isVsmPort = false;
                         _.forEach(storagePorts, function(storagePort){
                             if (storagePort.storagePortId === hostGroup.storagePortId){
@@ -296,7 +296,7 @@ angular.module('rainierApp')
 
                         var path = {
                             storagePortId: hostGroup.storagePortId,
-                            serverEndPoint: hbaWwn,
+                            serverEndPoint: endPoint,
                             isVsmPort: isVsmPort
                         };
                         paths.push(path);
