@@ -16,7 +16,7 @@ angular.module('rainierApp')
                 SVOS820_Rx00:  '80-07-0', // TODO: update firmware version after version fixed
                 SVOS810_HM850: '88-0[01]-[0-9]', // TODO: update firmware version after version fixed
                 SVOS740_HM800: '83-05-2', // TODO: update firmware version after version fixed
-                SVOS740_Rx00:  '80-06-0', // TODO: update firmware version after version fixed
+                SVOS740_Rx00:  '80-06-2', // TODO: update firmware version after version fixed
                 SVOS731_HM800: '83-05-0',
                 SVOS731_Rx00:  '80-06-0',
                 SVOS730_HM800: '83-04-6',
