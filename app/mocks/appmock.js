@@ -15,7 +15,7 @@ rainierAppMock.run(function(
     filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock, savingsSummaryMock,
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
     replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
-    monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock
+    monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock
 ) {
 
 
@@ -164,6 +164,8 @@ rainierAppMock.run(function(
                 return authMock.authenticateAndCall(urlResult, virtualStorageMachineMock.handle);
             case 'resource-tracker':
                 return resourceTrackerReservedResources(urlResult);
+            case 'volume-manager':
+                return authMock.authenticateAndCall(urlResult, volumeManagerMock.handle);
         }
     };
 

@@ -13,7 +13,7 @@ rainierAppMock.factory('commonMock', function () {
         randomChar: function() {
             return _.sample('ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'.split(''));
         },
-        getRandomWWN: function (num) {
+        getWwn: function (num) {
             if(_.isUndefined(num)) {
                 num = 0;
             }
@@ -30,18 +30,20 @@ rainierAppMock.factory('commonMock', function () {
 
             return hex;
         },
-        getWWN: function () {
+        getWwns: function () {
             var rand = _.random(1, 5);
-            var wwnList = _.range(0, rand).map(this.getRandomWWN);
+            var wwnList = _.range(0, rand).map(this.getWwn);
             return wwnList;
+        },
+        getIscsiName: function() {
+            // max length would be 223
+            return 'iqn.' + _.range(0, 100).map(this.randomChar).join('');
         },
         getIscsiNames: function () {
             var list = [];
             var rand = _.random(2,2);
             for(var i=1; i<=rand; i++) {
-                // max length 223
-                const name = 'iqn.' + _.range(0, 100).map(this.randomChar).join('');
-                list.push(name);
+                list.push(this.getIscsiName());
             }
             return list;
         },

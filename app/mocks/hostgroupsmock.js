@@ -22,7 +22,7 @@ rainierAppMock.factory('hostGroupsMock', function (mockUtils, commonMock) {
     var iscsiHostGroup = function () {
         return _.assign({
             protocol: 'FIBRE',
-            hbaWwns: commonMock.getWWN()
+            hbaWwns: commonMock.getWwns()
         }, hostGroup());
     };
 

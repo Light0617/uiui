@@ -30,7 +30,7 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock, commonMoc
     var fibreServer = function(id) {
         var result = commonServerProperties(id);
         result.protocol = 'FIBRE';
-        result.wwpns = commonMock.getWWN();
+        result.wwpns = commonMock.getWwns();
         return result;
     };
 

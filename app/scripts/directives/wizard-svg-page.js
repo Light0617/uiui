@@ -94,14 +94,20 @@ angular.module('rainierApp')
                 var pathMap = getPathMap(dataModel.pathModel.paths);
 
                 _.forEach(result.pathResources, function(pathResource){
+                    pathResource.endPoint = pathResource.serverWwn ? pathResource.serverWwn : pathResource.iscsiInitiatorName;
                     // When the suggested path already exists in the existing path, the suggested path is not added into
                     // the dataModel.pathModel.paths.
-                    if (pathMap.hasOwnProperty(pathResource.serverWwn + ',' + pathResource.portId)){
+                    if (pathMap.hasOwnProperty(pathResource.endPoint + ',' + pathResource.portId)){
                         return;
                     }
 
-                    var endPointCoordinate = dataModel.pathModel.idCoordinates[pathResource.serverWwn];
+                    var endPointCoordinate = dataModel.pathModel.idCoordinates[pathResource.endPoint];
                     var portCoordinate = dataModel.pathModel.idCoordinates[pathResource.portId];
+
+                    if(_.isUndefined(endPointCoordinate) || _.isUndefined(portCoordinate)) {
+                        return;
+                    }
+
                     var newPath = d3.select('g[title="path-endpoint-port"]')
                         .append('path')
                         .attr('d', function () {
@@ -116,7 +122,7 @@ angular.module('rainierApp')
 
                     dataModel.pathModel.paths.push({
                         storagePortId: pathResource.portId,
-                        serverEndPoint: pathResource.serverWwn
+                        serverEndPoint: pathResource.endPoint
                     });
 
                 });
