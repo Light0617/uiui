@@ -1866,7 +1866,7 @@ angular.module('rainierApp')
                 }
 
                 item.displayWWNs = item.wwpns ? wwnService.displayWWNs(item.wwpns) : undefined;
-                item.displayIscsiNames = item.iscsiNames ? item.iscsiNames : undefined;
+                item.displayIscsiNames = item.iscsiNames ? item.iscsiNames.join(',') : undefined;
             },
             transformHostGroups: function (item) {
                 if(item.protocol==='FIBRE') {
