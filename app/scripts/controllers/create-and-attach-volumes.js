@@ -296,7 +296,8 @@ angular.module('rainierApp')
                             $scope.dataModel.selectedStorageSystem.model,
                             $scope.dataModel.selectedStorageSystem.firmwareVersion
                         );
-                        payload.replicationType = isSupportSnapOnSnapCreation ? replicationService.rawTypes.SNAP_ON_SNAP : replicationService.rawTypes.SNAP;
+                        payload.replicationType = isSupportSnapOnSnapCreation === false ?
+                            replicationService.rawTypes.SNAP : replicationService.rawTypes.SNAP_ON_SNAP;
                         payload.numberOfBackups = protectModel.noOfSnapshots;
                         payload.schedule = cronStringConverterService.fromDatePickerToObjectModel(
                             $scope.dataModel.protectModel.schedule.type, $scope.dataModel.protectModel.schedule.time,

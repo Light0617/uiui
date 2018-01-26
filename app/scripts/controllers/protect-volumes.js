@@ -536,7 +536,7 @@ angular.module('rainierApp')
                                 comments: comments,
                                 consistent: consistencyGroupNeeded
                             };
-                            snapshotCreatePayload.type = $scope.arraySupportSnapOnSnapCreation[ss] ? SNAP_ON_SNAP : SNAPSHOT;
+                            snapshotCreatePayload.type = $scope.arraySupportSnapOnSnapCreation[ss] === false ? SNAPSHOT : SNAP_ON_SNAP;
                             snapshotCreatePayload.numberOfCopies = $scope.dataModel.numberOfCopiesInput;
                             snapshotCreatePayload.primaryVolumeIds = primaryVolumeIdsForCreate;
                             snapshotCreatePayload.schedule =
