@@ -48,7 +48,7 @@ angular.module('rainierApp')
         var selectedStorageSystems = {};
         var storagePools = [];
         var tasks = getLabelAndNumberOfSVolForEachPVolTasks;
-        if (replicationService.isSnap(replicationGroup.type)) {
+        if (replicationService.isSnapShotType(replicationGroup.type)) {
             var getPoolsTask = orchestratorService.storageSystem(storageSystemId).then(function (result) {
                 selectedStorageSystems = result;
                 return paginationService
@@ -96,7 +96,7 @@ angular.module('rainierApp')
             };
 
 
-            if(replicationService.isSnap($scope.dataModel.replicationType)) {
+            if(replicationService.isSnapShotType($scope.dataModel.replicationType)) {
                 var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(selectedStorageSystems.model, selectedStorageSystems.firmwareVersion);
                 $scope.dataModel.snapshotTargetPools = [{
                     displayLabel: synchronousTranslateService.translate('common-auto-selected'),
@@ -128,7 +128,7 @@ angular.module('rainierApp')
                         (replicationGroup.comments !== 'N/A' ? replicationGroup.comments : ''));
                 }
 
-                if (replicationService.isSnap($scope.dataModel.replicationType)) {
+                if (replicationService.isSnapShotType($scope.dataModel.replicationType)) {
                     return canSubmitSnapshot();
                 }
             };
@@ -195,7 +195,7 @@ angular.module('rainierApp')
                     });
                 }
 
-                if (replicationService.isSnap($scope.dataModel.replicationType)) {
+                if (replicationService.isSnapShotType($scope.dataModel.replicationType)) {
                     var snapshotTasks = [];
                     if ($scope.anyPrimaryVolumeSelected) {
                         var snapshotPayLoadPrimaryVolumeIds = [];
@@ -253,6 +253,7 @@ angular.module('rainierApp')
             }
 
             $scope.isSnap = replicationService.isSnap;
+            $scope.isSnapShotType = replicationService.isSnapShotType;
             $scope.isClone = replicationService.isClone;
 
             function hasDaySelected(days) {

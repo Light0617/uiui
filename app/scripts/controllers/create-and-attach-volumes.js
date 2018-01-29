@@ -357,7 +357,7 @@ angular.module('rainierApp')
                 noOfCopiesInput = parseInt($scope.dataModel.protectModel.noOfSnapshots);
                 _.forEach($scope.dataModel.copyGroups, function (cg) {
                     var cgConsistent = cg.consistent === 'On';
-                    if (replicationService.isSnap(cg.type) &&
+                    if ((replicationService.isSnapShotType(cg.type)) &&
                         (!_.isFinite(noOfCopiesInput) || noOfCopiesInput === 0 || noOfCopiesInput === cg.numberOfCopies) &&
                         (cronStringConverterService.isEqualForObjectModel(currentSchedule, cg.schedule)) &&
                         ($scope.dataModel.protectModel.consistencyGroup === cgConsistent)) {
