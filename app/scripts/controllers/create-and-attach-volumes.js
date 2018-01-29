@@ -281,8 +281,15 @@ angular.module('rainierApp')
                 var payload;
 
                 if (protectModel.copyGroup.useNew) {
+                    var isSupportSnapOnSnapCreation = storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
+                        $scope.dataModel.selectedStorageSystem.model,
+                        $scope.dataModel.selectedStorageSystem.firmwareVersion
+                    );
+                    var replicationType =
+                        replicationService.isSnap(protectModel.replicationTechnology) && isSupportSnapOnSnapCreation === true ?
+                            replicationService.rawTypes.SNAP_ON_SNAP : protectModel.replicationTechnology;
                     payload = {
-                        replicationType: protectModel.replicationTechnology,
+                        replicationType: replicationType,
                         consistencyGroupNeeded: protectModel.consistencyGroup,
                         replicationGroupName : protectModel.copyGroupName,
                         replicationGroupId : null,
@@ -292,12 +299,6 @@ angular.module('rainierApp')
                     };
                     payload.replicationGroupName = protectModel.copyGroupName;
                     if (replicationService.isSnap(protectModel.replicationTechnology)) {
-                        var isSupportSnapOnSnapCreation = storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
-                            $scope.dataModel.selectedStorageSystem.model,
-                            $scope.dataModel.selectedStorageSystem.firmwareVersion
-                        );
-                        payload.replicationType = isSupportSnapOnSnapCreation === false ?
-                            replicationService.rawTypes.SNAP : replicationService.rawTypes.SNAP_ON_SNAP;
                         payload.numberOfBackups = protectModel.noOfSnapshots;
                         payload.schedule = cronStringConverterService.fromDatePickerToObjectModel(
                             $scope.dataModel.protectModel.schedule.type, $scope.dataModel.protectModel.schedule.time,
