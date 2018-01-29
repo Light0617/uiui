@@ -25,6 +25,9 @@ angular.module('rainierApp')
             },
             isSupportDpTiPoolIntegrationVersion: function (storageSystemModel, firmwareVersion) {
                 return dataProtectionCapabilitiesService.isSupportDpTiPoolIntegrationVersion(storageSystemModel, firmwareVersion);
+            },
+            isSupportSnapOnSnapCreation: function (storageSystemModel, firmwareVersion) {
+                return dataProtectionCapabilitiesService.isSupportSnapOnSnapCreation(storageSystemModel, firmwareVersion);
             }
         }
     });

@@ -281,8 +281,15 @@ angular.module('rainierApp')
                 var payload;
 
                 if (protectModel.copyGroup.useNew) {
+                    var isSupportSnapOnSnapCreation = storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
+                        $scope.dataModel.selectedStorageSystem.model,
+                        $scope.dataModel.selectedStorageSystem.firmwareVersion
+                    );
+                    var replicationType =
+                        replicationService.isSnap(protectModel.replicationTechnology) && isSupportSnapOnSnapCreation === true ?
+                            replicationService.rawTypes.SNAP_ON_SNAP : protectModel.replicationTechnology;
                     payload = {
-                        replicationType: protectModel.replicationTechnology,
+                        replicationType: replicationType,
                         consistencyGroupNeeded: protectModel.consistencyGroup,
                         replicationGroupName : protectModel.copyGroupName,
                         replicationGroupId : null,
