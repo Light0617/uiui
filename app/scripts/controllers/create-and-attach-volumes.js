@@ -173,7 +173,7 @@ angular.module('rainierApp')
                         }
                     };
                     $scope.dataModel.attachModel = attachModel;
-                    $scope.dataModel.attachModel.setEnableZoning = attachVolumeService.setEnableZoningFn(selectedServers, dataModel.attachModel);
+                    $scope.dataModel.attachModel.setEnableZoning = attachVolumeService.setEnableZoningFn(selectedServers, $scope.dataModel.attachModel);
                     $scope.dataModel.attachModel.setEnableLunUnification = function (value) {
                         $scope.dataModel.attachModel.enableLunUnification = value;
                     };

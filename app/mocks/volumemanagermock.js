@@ -12,7 +12,7 @@ rainierAppMock.factory('volumeManagerMock', function (mockUtils, commonMock) {
     var pathResoruce = function () {
         return {
             portId: 'CL1-A',
-            hsotMode: 'LINUX',
+            hostMode: 'LINUX',
             hostModeOptions: [999]
         };
     };
