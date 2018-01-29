@@ -1012,8 +1012,10 @@
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
 
     "migrate-volumes": "Migrate Volumes",
+    "shred-volumes": "Shred Volumes",
     "workflow-title-select-target-pool": "Select Target Pool",
     "storage-pool-migrate-confirmation": "No pool selected",
     "storage-pool-migrate-zero-selected": "Select one pool to migrate.",
     "action-tooltip-migrate-volumes": "Migrate Volumes"
+
 }

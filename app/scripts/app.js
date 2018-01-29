@@ -82,6 +82,13 @@ angular
                 //TODO:Help context
                 // helpContext: 'C_CREATE_ATTACH'
             })
+            .when('/hosts/shred-volumes', {
+                templateUrl: 'views/shred-volumes.html',
+                controller: 'ShredVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'shred-volumes'
+                }
+            })
             .when('/hosts/create-and-attach-volumes', {
                 templateUrl: 'views/create-and-attach-volumes.html',
                 controller: 'CreateAndAttachVolumesCtrl',

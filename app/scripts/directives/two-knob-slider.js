@@ -14,32 +14,54 @@ angular.module('rainierApp')
                 modelMax: '=ngModelMax',
                 min: '=sliderMin',
                 max: '=sliderMax',
-                stopEventFn: '&'
+                singleSlider: '=singleSlider',
+                stopEventFn: '&',
             },
             restrict: 'A',
             link: function postLink(scope, element) {
-
                 scope.onSlide = function (event, ui) {
                     $timeout(function () {
-                        scope.modelMin = ui.values[0];
-                        scope.modelMax = ui.values[1];
+                        if(scope.singleSlider){
+                            scope.modelMin = ui.value;
+                        }
+                        else{
+                            scope.modelMin = ui.values[0];
+                            scope.modelMax = ui.values[1];
+                        }
                     });
                 };
 
-                $timeout(function () {
-                    $(element).slider({
-                        range: true,
-                        min: scope.min,
-                        max: scope.max,
-                        values: [scope.min, scope.max],
-                        slide: scope.onSlide,
-                        stop: function() {
-                            if (scope.stopEventFn && _.isFunction(scope.stopEventFn)) {
-                                scope.stopEventFn();
-                            }
-                        }
+                if(scope.singleSlider) {
+                    $timeout(function () {
+                        $(element).slider({
+                            min: scope.min,
+                            max: scope.max,
+                            value: scope.min,
+                            slide: scope.onSlide,
+                            stop: function () {
+                                if (scope.stopEventFn && _.isFunction(scope.stopEventFn)) {
+                                    scope.stopEventFn();
+                                }
+                            },
+                        });
                     });
-                });
+                }
+                else {
+                    $timeout(function () {
+                        $(element).slider({
+                            range: true,
+                            min: scope.min,
+                            max: scope.max,
+                            values: [scope.min, scope.max],
+                            slide: scope.onSlide,
+                            stop: function () {
+                                if (scope.stopEventFn && _.isFunction(scope.stopEventFn)) {
+                                    scope.stopEventFn();
+                                }
+                            }
+                        });
+                    });
+                }
             }
         };
     });

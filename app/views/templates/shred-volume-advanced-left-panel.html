@@ -1,0 +1,27 @@
+<div name="validationForm.rightPanel" class="fieldset validation-form" novalidate>
+    <div class="label-value-container">
+        <label class="label">Shredding Mode</label>
+        <div class="btn-group btn-group-justified">
+            <label ng-disabled="model.wizardType === 'advanced'" ng-model="model.advEncryption"
+                   btn-radio="true" class="btn btn-primary btn-dark">
+                <input autocomplete="off" type="radio" checked=""/>Basic
+            </label>
+            <label ng-model="model.advEncryption"
+                   btn-radio="false" class="btn btn-primary btn-dark">
+                <input autocomplete="off" type="radio" checked=""/>Advanced
+            </label>
+        </div>
+    </div>
+
+    <!--Get all selected volumes and show as button groups-->
+    <div class="label-value-container">
+        <label class="label">{{model.selectedVolumes.length}} Selected Volumes</label>
+        <div class="btn-group">
+            <div class="btn-group" ng-repeat="volume in model.selectedVolumes">
+                <button type="button" class="btn btn-dark ng-pristine ng-untouched ng-valid" ng-model="model.currentVolume" btn-radio="'{{volume.label}}'" ng-click="model.selectVolume(volume.label)" tooltip="POOL ID: \n{{volume.poolId}}">
+                    {{volume.label}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
