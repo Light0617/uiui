@@ -503,6 +503,13 @@ angular
                 },
                 helpContext: 'T_ENABLE_PORT_SECURITY'
             })
+            .when('/storage-systems/:storageSystemId/storage-ports/:storagePortId/edit-iscsi-port', {
+                templateUrl: 'views/edit-iscsi-port.html',
+                controller: 'EditIscsiPortCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'edit-iscsi-port'
+                }
+            })
             .when('/storage-systems/:storageSystemId/parity-groups', {
                 templateUrl: 'views/parity-groups.html',
                 controller: 'ParityGroupsCtrl',

@@ -32,18 +32,13 @@ angular.module('rainierApp')
             model.sort.setSort(idKey);
         };
 
-        function tabModel() {
-            var tabs = ['Fibre', 'iSCSI'];
-            return {
-                tabs: tabs,
-                selected: tabs[0],
-                onChange: function (tabName) {
-                    if (tabName === 'Fibre') {
-                        initFibre().then(defaultSort);
-                    } else if (tabName === 'iSCSI') {
-                        initIscsi().then(defaultSort);
-                    }
-                }
+        function updateResultTotalCounts(result) {
+            $scope.dataModel.nextToken = result.nextToken;
+            $scope.dataModel.cachedList = result.resources;
+            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            $scope.dataModel.itemCounts = {
+                filtered: $scope.dataModel.displayList.length,
+                total: $scope.dataModel.total
             };
         }
 
@@ -82,6 +77,7 @@ angular.module('rainierApp')
             return dataModel;
         }
 
+
         function generateFilterModel() {
             return {
                 filter: {
@@ -111,16 +107,6 @@ angular.module('rainierApp')
                         updateResultTotalCounts(result);
                     });
                 }
-            };
-        }
-
-        function updateResultTotalCounts(result) {
-            $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.cachedList = result.resources;
-            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-            $scope.dataModel.itemCounts = {
-                filtered: $scope.dataModel.displayList.length,
-                total: $scope.dataModel.total
             };
         }
 
@@ -168,15 +154,7 @@ angular.module('rainierApp')
                                 var attribute = null;
 
                                 if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
-                                    if (this.dialogSettings.itemAttribute.value === portAttributes.target) {
-                                        attribute = 'TARGET_PORT';
-                                    } else if (this.dialogSettings.itemAttribute.value === portAttributes.initiator) {
-                                        attribute = 'MCU_INITIATOR_PORT';
-                                    } else if (this.dialogSettings.itemAttribute.value === portAttributes.rcuTarget) {
-                                        attribute = 'RCU_TARGET_PORT';
-                                    } else if (this.dialogSettings.itemAttribute.value === portAttributes.external) {
-                                        attribute = 'EXTERNAL_INITIATOR_PORT';
-                                    }
+                                    attribute = storagePortsService.displayTargetToRawTarget(this.dialogSettings.itemAttribute.value);
                                 }
 
                                 _.forEach(dataModel.getSelectedItems(), function (storagePort) {
@@ -255,11 +233,31 @@ angular.module('rainierApp')
                     dataModel.cachedList = result.resources;
                     dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
+                    var actions = storagePortsService.iscsiActions(dataModel);
+                    dataModel.getActions = function () {
+                        return actions;
+                    };
+
                     $scope.dataModel = dataModel;
                     $scope.filterModel = generateFilterModel();
                     scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storagePortSearch', true);
                     return dataModel;
                 });
+        }
+
+        function tabModel() {
+            var tabs = ['Fibre', 'iSCSI'];
+            return {
+                tabs: tabs,
+                selected: tabs[0],
+                onChange: function (tabName) {
+                    if (tabName === 'Fibre') {
+                        initFibre().then(defaultSort);
+                    } else if (tabName === 'iSCSI') {
+                        initIscsi().then(defaultSort);
+                    }
+                }
+            };
         }
 
         function select(tabName) {

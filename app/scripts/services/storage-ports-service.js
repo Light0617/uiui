@@ -42,13 +42,25 @@ angular.module('rainierApp')
             external: 'External'
         };
 
+        var rawToDisplayAttributes = {
+            'TARGET_PORT': portAttributes.target,
+            'MCU_INITIATOR_PORT': portAttributes.initiator,
+            'RCU_TARGET_PORT': portAttributes.rcuTarget,
+            'EXTERNAL_INITIATOR_PORT': portAttributes.external
+        };
+
+        var addressingMode = {
+            auto: 'AUTO',
+            manual: 'MANUAL'
+        };
+
         var summaryActions = [];
 
-        function init() {
-            initSummaryActions();
-        }
+        var storageSystemId = function () {
+            return $routeParams.storageSystemId;
+        };
 
-        function initSummaryActions() {
+        var initSummaryActions = function () {
             var sn2Action = storageNavigatorSessionService
                 .getNavigatorSessionAction(storageSystemId(), constantService.sessionScope.PORTS);
             sn2Action.icon = 'icon-storage-navigator-settings';
@@ -61,13 +73,13 @@ angular.module('rainierApp')
                     'SN2': sn2Action
                 });
             };
-        }
+        };
 
-        function storageSystemId() {
-            return $routeParams.storageSystemId;
-        }
+        var init = function () {
+            initSummaryActions();
+        };
 
-        function commonGridSettings(specificSettings, model) {
+        var commonGridSettings = function (specificSettings, model) {
             var result = _.union(
                 [
                     {
@@ -112,7 +124,7 @@ angular.module('rainierApp')
                 });
             }
             return result;
-        }
+        };
 
         var initSummary = function (hwAlertService) {
             return paginationService
@@ -140,27 +152,27 @@ angular.module('rainierApp')
                 {
                     title: 'storage-port-iscsi-name',
                     sizeClass: 'twelfth',
-                    sortField: 'iscsiInformation.portIscsiName',
+                    sortField: 'iscsiPortInformation.portIscsiName',
                     getDisplayValue: function (item) {
-                        if (_.isEmpty(item.iscsiInformation) || _.isEmpty(item.iscsiInformation.portIscsiName)) {
+                        if (_.isEmpty(item.iscsiPortInformation) || _.isEmpty(item.iscsiPortInformation.portIscsiName)) {
                             return '';
                         }
-                        return item.iscsiInformation.portIscsiName;
+                        return item.iscsiPortInformation.portIscsiName;
                     }
                 },
                 {
                     title: 'storage-port-iscsi-ipv4',
                     sizeClass: 'twelfth',
-                    sortField: 'iscsiInformation.ipv4Information.address',
+                    sortField: 'iscsiPortInformation.ipv4Information.address',
                     getDisplayValue: function (item) {
                         if (
-                            _.isEmpty(item.iscsiInformation) ||
-                            _.isEmpty(item.iscsiInformation.ipv4Information) ||
-                            _.isEmpty(item.iscsiInformation.ipv4Information.address)
+                            _.isEmpty(item.iscsiPortInformation) ||
+                            _.isEmpty(item.iscsiPortInformation.ipv4Information) ||
+                            _.isEmpty(item.iscsiPortInformation.ipv4Information.address)
                         ) {
                             return '';
                         }
-                        return item.iscsiInformation.ipv4Information.address;
+                        return item.iscsiPortInformation.ipv4Information.address;
                     }
                 },
                 {
@@ -168,18 +180,18 @@ angular.module('rainierApp')
                     sizeClass: 'twelfth',
                     sortField: 'iscsiInformaiton.ipv6Informaiton.globalAddress',
                     type: 'array',
-                    getDisplayValue: function(item) {
-                        if(
-                            _.isEmpty(item.iscsiInformation) ||
-                            _.isEmpty(item.iscsiInformation.ipv6Information) ||
-                            _.isEmpty(item.iscsiInformation.ipv6Information.linklocalAddress) ||
-                            _.isEmpty(item.iscsiInformation.ipv6Information.globalAddress)
+                    getDisplayValue: function (item) {
+                        if (
+                            _.isEmpty(item.iscsiPortInformation) ||
+                            _.isEmpty(item.iscsiPortInformation.ipv6Information) ||
+                            _.isEmpty(item.iscsiPortInformation.ipv6Information.linklocalAddress) ||
+                            _.isEmpty(item.iscsiPortInformation.ipv6Information.globalAddress)
                         ) {
                             return '';
                         }
                         return [
-                            item.iscsiInformation.ipv6Information.globalAddress,
-                            item.iscsiInformation.ipv6Information.linklocalAddress
+                            item.iscsiPortInformation.ipv6Information.globalAddress,
+                            item.iscsiPortInformation.ipv6Information.linklocalAddress
                         ];
                     }
                 }
@@ -228,15 +240,52 @@ angular.module('rainierApp')
             ], model);
         };
 
+        var iscsiActions = function (dataModel) {
+            return [
+                {
+                    icon: 'icon-edit',
+                    tooltip: 'edit-iscsi-port',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.getSelectedItems().length === 1;
+                    },
+                    onClick: function () {
+                        var item = _.first(dataModel.getSelectedItems());
+                        $location.path([
+                            'storage-systems', item.storageSystemId, 'storage-ports',
+                            item.storagePortId, 'edit-iscsi-port'
+                        ].join('/'));
+                    }
+                }
+            ];
+        };
+
+        var displayTargetToRawTarget = function (displayTargetType) {
+            if (displayTargetType === portAttributes.target) {
+                return 'TARGET_PORT';
+            } else if (displayTargetType === portAttributes.initiator) {
+                return 'MCU_INITIATOR_PORT';
+            } else if (displayTargetType === portAttributes.rcuTarget) {
+                return 'RCU_TARGET_PORT';
+            } else if (displayTargetType === portAttributes.external) {
+                return 'EXTERNAL_INITIATOR_PORT';
+            }
+            return undefined;
+        };
+
         init();
 
         return {
             portAttributes: portAttributes,
+            addressingMode: addressingMode,
+            rawToDisplayAttributes: rawToDisplayAttributes,
             initSummary: initSummary,
             storageSystemModel: storageSystemModel,
             iscsiGridSettings: iscsiGridSettings,
             fibreGridSettings: fibreGridSettings,
             getStoragePortsPath: getStoragePortsPath,
+            displayTargetToRawTarget: displayTargetToRawTarget,
+            iscsiActions: iscsiActions,
             idKey: 'storagePortId'
         };
     });
