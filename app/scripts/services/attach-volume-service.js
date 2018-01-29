@@ -8,10 +8,13 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('attachVolumeService', function (orchestratorService, viewModelService, resourceTrackerService, constantService) {
+    .factory('attachVolumeService', function (
+        orchestratorService, viewModelService, resourceTrackerService, constantService,
+        ShareDataService, $location, $modal, synchronousTranslateService
+    ) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
-        var wwpnServerIdMap = {};
+        var endPointServerIdMap = {};
         var hostModeOptionAutoSelect = 999;
 
         function setPortCoordinates(storagePorts, idCoordinates) {
@@ -42,44 +45,44 @@ angular.module('rainierApp')
             return allHostModeOptionString;
         }
 
-        function setWwnCoordinates(selectedHosts, hostModeOptions, idCoordinates){
+        function setEndPointCoordinate(host, idCoordinates) {
+            var endPointCoordinatesMap = {};
+            _.forEach(host.endPoints, function(endPoint, i) {
+                var point = {
+                    x: 232,
+                    y: host.startHeight + 13 + i * 25
+                };
+
+                idCoordinates[endPoint] = point;
+                endPointCoordinatesMap[endPoint] = point;
+                endPointServerIdMap[endPoint] = host.serverId;
+            });
+            host.endPointCoordinatesMap = endPointCoordinatesMap;
+        }
+
+        function setEndPointCoordinates(selectedHosts, hostModeOptions, idCoordinates){
             var previousHeight = 0;
             var bufferHeight = 5;
             _.forEach(selectedHosts, function(host){
-                var j;
-                var wwpn;
-                var wwnCoordinates = [];
-                var length = host.wwpns.length;
-
                 host.allHostModeOptionsString = getAllHostModeOptionsString(hostModeOptions);
                 host.startHeight = previousHeight;
                 previousHeight += ((length && length > 4) ? length* 25 : 100) + bufferHeight;
 
                 host.isSelected = false;
 
-                // Calculate the coordinates of all the wwn icons of each host so that the html can easily use it.
-
-                for (j = 0; j < length; ++j) {
-                    wwpn = host.wwpns[j];
-                    var point = {
-                        x: 232,
-                        y: host.startHeight + 13 + j*25
-                    };
-
-                    idCoordinates[wwpn] = point;
-                    wwnCoordinates.push(point);
-
-                    wwpnServerIdMap[wwpn] = host.serverId;
-                }
-                host.wwnCoordinates = wwnCoordinates;
-
-
+                // Calculate the coordinates of all the endPoint icons of each host so that the html can easily use it.
+                _.chain(selectedHosts).forEach(function(h) {return setEndPointCoordinate(h, idCoordinates);});
             });
         }
 
         function getViewBoxHeight(hosts, storagePorts){
             var lastHost = hosts[hosts.length - 1];
-            var hostHeight = lastHost.startHeight + ((lastHost.wwpns.length <= 4) ? 100 : (lastHost.wwpns.length * 25)) + 10;
+            var hostHeight = lastHost.startHeight + ((lastHost.endPoints.length <= 4) ? 100 : (lastHost.endPoints.length * 25)) + 10;
+
+            if(_.isEmpty(storagePorts)) {
+                return hostHeight;
+            }
+
             var portHeight = storagePorts[storagePorts.length - 1].coordinate.y + 30;
 
             return Math.max(hostHeight, portHeight);
@@ -121,6 +124,18 @@ angular.module('rainierApp')
             return selectedHostModeOptions;
         };
 
+        var setEnableZoningFn = function(servers, attachModel) {
+            if (servers[0].protocol === 'FIBRE') {
+                attachModel.enableZoning = false;
+                return function (value) {
+                    attachModel.enableZoning = value;
+                };
+            } else {
+                attachModel.enableZoning = undefined;
+                return undefined;
+            }
+        };
+
         var isHostModeOptionFound = function(hostModeOption, selectedHostModeOptions) {
             for (var k = 0; k < selectedHostModeOptions.length; k++) {
                 if (hostModeOption === selectedHostModeOptions[k]) {
@@ -131,31 +146,52 @@ angular.module('rainierApp')
         };
 
         var getSelectedServerWwpns = function(selectedServers) {
-            var serverWwpns = [];
-            if (selectedServers !== null && selectedServers !== undefined) {
-                for (var i = 0; i < selectedServers.length; i++) {
-                    var selectedServer = selectedServers[i];
-                    for (var j = 0; j < selectedServer.wwpns.length; j++) {
-                        serverWwpns.push(selectedServer.wwpns[j]);
-                    }
-                }
+            return _.chain(selectedServers)
+                .map(function(s) {return s.wwpns;})
+                .filter(function(wwns) {return wwns && wwns.length;})
+                .flatten()
+                .value();
+        };
+
+        var getSelectedServerIscsiNames = function(selectedServers) {
+            var iscsiNames = _.chain(selectedServers)
+                .filter(function (server) {
+                    return !_.isEmpty(server.iscsiNames);
+                })
+                .map(function (server) {
+                    return server.iscsiNames;
+                }).flatten().value();
+            return iscsiNames;
+        };
+
+        var registerHostGroupsQuery = function (queryService, paginationService, selectedServers) {
+            var iscsiNames = getSelectedServerIscsiNames(selectedServers);
+            var wwpns = getSelectedServerWwpns(selectedServers);
+            var queryString;
+            paginationService.clearQuery();
+            if (wwpns.length > 0) {
+                queryString = paginationService.getQueryStringForList(wwpns);
+                queryService.setQueryMapEntry('hbaWwns', queryString);
             }
-            return serverWwpns;
+            if (iscsiNames.length > 0) {
+                queryString = paginationService.getQueryStringForList(iscsiNames);
+                queryService.setQueryMapEntry('iscsiInitiatorNames', queryString);
+            }
         };
 
         var getAllocateLikeFilteredHostGroups = function(servers, hostGroups, hostMode,  hostModeOptions) {
-            var wwpnToServerMap = {};
+            var endPointToServerMap = {};
             _.forEach(servers, function(server) {
-                _.forEach(server.wwpns, function(wwpn) {
-                    wwpnToServerMap[wwpn] = server;
+                _.forEach(server.endPoints, function(endPoint) {
+                    endPointToServerMap[endPoint] = server;
                 });
             });
 
             var allocateLikeFilteredHostGroups = [];
             var hostGroupIdMap = {};
             _.forEach(hostGroups, function(hostgroup) {
-                _.forEach(hostgroup.hbaWwns, function(hbaWwn) {
-                    var server = wwpnToServerMap[hbaWwn];
+                _.forEach(hostgroup.endPoints, function(endPoint) {
+                    var server = endPointToServerMap[endPoint];
                     if (server !== undefined) {
                         // check if host group matches settings
                         // if host mode is auto, host group needs to match server type, else host group needs to match provided host mode
@@ -204,7 +240,7 @@ angular.module('rainierApp')
         };
 
         function getPath(path){
-            return createPath(idCoordinates[path.serverWwn].x, idCoordinates[path.serverWwn].y,
+            return createPath(idCoordinates[path.serverEndPoint].x, idCoordinates[path.serverEndPoint].y,
                 idCoordinates[path.storagePortId].x, idCoordinates[path.storagePortId].y);
         }
 
@@ -243,9 +279,14 @@ angular.module('rainierApp')
                     continue;
                 }
 
+                var protocol = dataModel.pathModel.selectedHosts[0].protocol;
+                var serverWwns =  protocol === 'FIBRE' ? [path.serverEndPoint] : undefined;
+                var iscsiInitiatorNames = protocol === 'ISCSI' ? [path.serverEndPoint] : undefined;
+
                 ports.push({
-                        serverId: wwpnServerIdMap[path.serverWwn],
-                        serverWwns: [path.serverWwn],
+                        serverId: endPointServerIdMap[path.serverEndPoint],
+                        serverWwns: serverWwns,
+                        iscsiInitiatorNames: iscsiInitiatorNames,
                         portIds: [path.storagePortId]
                     }
                 );
@@ -259,8 +300,8 @@ angular.module('rainierApp')
         function getPathsFromHostGroups(hostGroups, storagePorts, idCoordinates){
             var paths = [];
             _.forEach(hostGroups, function(hostGroup){
-                _.forEach(hostGroup.hbaWwns, function(hbaWwn){
-                    if (idCoordinates.hasOwnProperty(hbaWwn)){
+                _.forEach(hostGroup.endPoints, function(endPoint){
+                    if (idCoordinates.hasOwnProperty(endPoint)){
                         var isVsmPort = false;
                         _.forEach(storagePorts, function(storagePort){
                             if (storagePort.storagePortId === hostGroup.storagePortId){
@@ -270,7 +311,7 @@ angular.module('rainierApp')
 
                         var path = {
                             storagePortId: hostGroup.storagePortId,
-                            serverWwn: hbaWwn,
+                            serverEndPoint: endPoint,
                             isVsmPort: isVsmPort
                         };
                         paths.push(path);
@@ -279,6 +320,40 @@ angular.module('rainierApp')
             });
 
             return paths;
+        }
+
+        function getMatchHostGroupsByIscsi(hostGroups, servers, volumeIdMap) {
+            var result = [];
+            var iscsiNameMap = _.chain(servers)
+                .map(function(s) {return s.iscsiNames;})
+                .filter(function(iscsis) {return iscsis && iscsis.length;})
+                .flatten()
+                .indexBy()
+                .value();
+
+            _.chain(hostGroups)
+                .filter(function (hg) {
+                    return hg.iscsiTargetInformation &&
+                        hg.iscsiTargetInformation.iscsiInitiatorNames &&
+                        hg.iscsiTargetInformation.iscsiInitiatorNames.length;
+                })
+                .filter(function (hg) {
+                    return _.some(
+                        hg.iscsiTargetInformation.iscsiInitiatorNames,
+                        function(name) {return iscsiNameMap[name];}
+                    );
+                })
+                .filter(function (hg) {
+                    return !_.isEmpty(hg.luns);
+                })
+                .filter(function (hg) {
+                    return _.some(hg.luns, function(lun) { return volumeIdMap[lun.volumeId]; });
+                })
+                .forEach(function (hg) {
+                    result.push(hg);
+                });
+
+            return result;
         }
 
         function getMatchHostGroups(hostGroups, servers, volumeIdMap){
@@ -314,15 +389,22 @@ angular.module('rainierApp')
                 }
             });
 
-            return resultHostGroups;
+            resultHostGroups.push(getMatchHostGroupsByIscsi(hostGroups, servers, volumeIdMap));
+
+            return _.flatten(resultHostGroups);
+        }
+
+        function filterPorts(ports, selectedHosts) {
+            return _.filter(ports, function (p) {return p.type === selectedHosts[0].protocol;}).filter(function(p) {return !p.isVsmPort;});
         }
 
         var setEditLunPage = function(dataModel, storageSystemId, selectedVolumes, selectedHosts,
                                       hostModeOptions, storagePorts, hostGroups, isCreateAndAttach) {
+            storagePorts = filterPorts(storagePorts, selectedHosts);
             idCoordinates = {};
-            wwpnServerIdMap = {};
+            endPointServerIdMap = {};
             setPortCoordinates(storagePorts, idCoordinates);
-            setWwnCoordinates(selectedHosts, hostModeOptions, idCoordinates);
+            setEndPointCoordinates(selectedHosts, hostModeOptions, idCoordinates);
             var originalAllPaths = getPathsFromHostGroups(hostGroups,storagePorts, idCoordinates);
 
             dataModel.pathModel = {
@@ -376,6 +458,45 @@ angular.module('rainierApp')
             }
         };
 
+        var invokeServerProtocolCheckAndOpen = function(servers, url) {
+            var numOfProtocols = _.chain(servers)
+                .map(function(s) {return s.protocol;})
+                .indexBy()
+                .keys()
+                .value()
+                .length;
+
+            if(numOfProtocols > 1) {
+                openAttachMultipleProtocolServersErrorModal();
+                return false;
+            } else if(url) {
+                ShareDataService.push('selectedServers', servers);
+                $location.path(url);
+            }
+            return true;
+        };
+
+        var openAttachMultipleProtocolServersErrorModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('error-message-title'),
+                        message: 'Cannot attach volumes for different protocol servers.'
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss('cancel');
+                    };
+
+                    modalInstance.result.finally(function() {
+                        modalInstance.dismiss('cancel');
+                    });
+                }
+            });
+        };
+
         return {
             checkSelectedHostModeOptions: function (dataModel) {
                 var selectedHostModeOptions = dataModel.attachModel.selectedHostModeOption;
@@ -402,13 +523,16 @@ angular.module('rainierApp')
             },
             getMatchedHostModeOption: getMatchedHostModeOption,
             getSelectedServerWwpns: getSelectedServerWwpns,
+            registerHostGroupsQuery: registerHostGroupsQuery,
             getAllocateLikeFilteredHostGroups: getAllocateLikeFilteredHostGroups,
             getMatchedHostMode: getMatchedHostMode,
             setEditLunPage: setEditLunPage,
-            setWwnCoordinates: setWwnCoordinates,
             getAllHostModeOptionsString: getAllHostModeOptionsString,
             createPath: createPath,
             getViewBoxHeight: getViewBoxHeight,
-            getMatchHostGroups: getMatchHostGroups
+            getMatchHostGroups: getMatchHostGroups,
+            invokeServerProtocolCheckAndOpen: invokeServerProtocolCheckAndOpen,
+            setEnableZoningFn: setEnableZoningFn,
+            setEndPointCoordinates: setEndPointCoordinates
         };
     });

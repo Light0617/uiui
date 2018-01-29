@@ -8,7 +8,7 @@
 
 'use strict';
 
-rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
+rainierAppMock.factory('serversMock', function (mockUtils, volumeMock, commonMock) {
     var mockHosts = [];
     var mockVolumes = [];
 
@@ -20,15 +20,6 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
             mockHosts.push(mockHost);
         }
         mockVolumes = volumeMock.getMock();
-    };
-    var getIscsiNames = function() {
-        var list = [];
-        var rand = _.random(1,2);
-        for(var i=1; i<=rand; i++) {
-            const name = 'hitachi:rsd.hds.12271d.' + _.random(1, 1024).toString(16).toUpperCase();
-            list.push(name);
-        }
-        return list;
     };
 
     var commonServerProperties = function(id) {
@@ -47,14 +38,14 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock) {
     var fibreServer = function(id) {
         var result = commonServerProperties(id);
         result.protocol = 'FIBRE';
-        result.wwpns = mockUtils.getWWN();
+        result.wwpns = commonMock.getWwns();
         return result;
     };
 
     var iscsiServer = function(id) {
         var result = commonServerProperties(id);
         result.protocol = 'ISCSI';
-        result.iscsiNames = getIscsiNames();
+        result.iscsiNames = commonMock.getIscsiNames();
         result.chapUser = 'user1';
         result.mutualChapUser = 'user2';
         return result;

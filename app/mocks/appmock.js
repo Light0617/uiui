@@ -9,12 +9,14 @@ window.rainierAppMock = angular.module('rainierAppMock', [
     'belMock'
 ]);
 
-rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSystemMock, dataProtectionMock, storagePoolMock,
-                            serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
-                            filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock, savingsSummaryMock,
-                            parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
-                            replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
-                            monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock) {
+rainierAppMock.run(function(
+    $window, $httpBackend, authMock, jobMock, storageSystemMock, dataProtectionMock, storagePoolMock,
+    serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
+    filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock, savingsSummaryMock,
+    parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
+    replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
+    monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock
+) {
 
 
     console.log('!! mocking Rainier backend APIs !!');
@@ -162,6 +164,8 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, virtualStorageMachineMock.handle);
             case 'resource-tracker':
                 return resourceTrackerReservedResources(urlResult);
+            case 'volume-manager':
+                return authMock.authenticateAndCall(urlResult, volumeManagerMock.handle);
         }
     };
 
@@ -300,6 +304,10 @@ rainierAppMock.run(function($window, $httpBackend, authMock, jobMock, storageSys
                 return authMock.authenticateAndCall(urlResult, dataProtectionMock.handle);
             case 'ethernet-interfaces':
                 return authMock.authenticateAndCall(urlResult, ethernetInterfaceMock.handle);
+            case 'host-mode-options':
+                return authMock.authenticateAndCall(urlResult, hostModeOptionsMock.handle);
+            case 'host-groups':
+                return authMock.authenticateAndCall(urlResult, hostGroupsMock.handle);
 
         }
     };
