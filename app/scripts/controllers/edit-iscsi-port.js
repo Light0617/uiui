@@ -79,7 +79,7 @@ angular.module('rainierApp')
         var submit = function (model) {
             var payload = {
                 securitySwitchEnabled: model.securitySwitchEnabled,
-                attribute: model.attribute,
+                attribute: storagePortsService.displayTargetToRawTarget(model.attribute),
                 iscsiPortInformation: {
                     ipv6Enabled: model.ipv6Enabled,
                     ipv4Information: {
@@ -91,14 +91,14 @@ angular.module('rainierApp')
             };
             if (payload.iscsiPortInformation.ipv6Enabled) {
                 payload.iscsiPortInformation.ipv6Information = {
-                    linklocalAddressingMode: model.linklocalManual ? storagePortsService.addressingMode.manual : storagePortsService.addressingMode.auto,
-                    globalAddressingMode: model.globalManual ? storagePortsService.addressingMode.manual : storagePortsService.addressingMode.auto,
+                    linklocalAddressingMode: model.ipv6.linklocalManual ? storagePortsService.addressingMode.manual : storagePortsService.addressingMode.auto,
+                    globalAddressingMode: model.ipv6.globalManual ? storagePortsService.addressingMode.manual : storagePortsService.addressingMode.auto,
                     defaultGateway: model.ipv6.defaultGateway
                 };
-                if (model.linklocalManual) {
+                if (model.ipv6.linklocalManual) {
                     payload.iscsiPortInformation.ipv6Information.linklocalAddress = model.ipv6.linklocalAddress;
                 }
-                if (model.globalManual) {
+                if (model.ipv6.globalManual) {
                     payload.iscsiPortInformation.ipv6Information.globalAddress = model.ipv6.globalAddress;
                 }
             }
