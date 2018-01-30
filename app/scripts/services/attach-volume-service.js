@@ -484,14 +484,14 @@ angular.module('rainierApp')
                 controller: function ($scope) {
                     $scope.error = {
                         title: synchronousTranslateService.translate('error-message-title'),
-                        message: 'Cannot attach volumes for different protocol servers.'
+                        message: synchronousTranslateService.translate('storage-volume-attach-different-protocol-servers')
                     };
                     $scope.cancel = function () {
-                        modalInstance.dismiss('cancel');
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
                     };
 
                     modalInstance.result.finally(function() {
-                        modalInstance.dismiss('cancel');
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
                     });
                 }
             });

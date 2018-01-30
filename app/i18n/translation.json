@@ -436,6 +436,7 @@
     "host-attach-zero-selected": "Select at least one host to attach selected volumes to.",
     "storage-volume-attach-valid-tooltip": "LUN",
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
+    "storage-volume-attach-different-protocol-servers": "Cannot attach volumes for different protocol servers.",
     "no-servers-onboarded": "No servers have been added yet.",
 
     "attach-volumes-number-of-volume": "# of Vol.",
