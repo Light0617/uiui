@@ -178,7 +178,7 @@ angular.module('rainierApp')
                 {
                     title: ['storage-port-iscsi-ipv6-global', 'storage-port-iscsi-ipv6-local'],
                     sizeClass: 'twelfth',
-                    sortField: 'iscsiInformaiton.ipv6Informaiton.globalAddress',
+                    sortField: 'iscsiPortInformation.ipv6Information.globalAddress',
                     type: 'array',
                     getDisplayValue: function (item) {
                         if (
