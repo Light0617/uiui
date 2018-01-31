@@ -260,14 +260,14 @@ angular.module('rainierApp')
             ];
         };
 
-        var displayTargetToRawTarget = function (displayTargetType) {
-            if (displayTargetType === portAttributes.target) {
+        var getRawPortAttribute = function (displayPortAttribute) {
+            if (displayPortAttribute === portAttributes.target) {
                 return 'TARGET_PORT';
-            } else if (displayTargetType === portAttributes.initiator) {
+            } else if (displayPortAttribute === portAttributes.initiator) {
                 return 'MCU_INITIATOR_PORT';
-            } else if (displayTargetType === portAttributes.rcuTarget) {
+            } else if (displayPortAttribute === portAttributes.rcuTarget) {
                 return 'RCU_TARGET_PORT';
-            } else if (displayTargetType === portAttributes.external) {
+            } else if (displayPortAttribute === portAttributes.external) {
                 return 'EXTERNAL_INITIATOR_PORT';
             }
             return undefined;
@@ -284,7 +284,7 @@ angular.module('rainierApp')
             iscsiGridSettings: iscsiGridSettings,
             fibreGridSettings: fibreGridSettings,
             getStoragePortsPath: getStoragePortsPath,
-            displayTargetToRawTarget: displayTargetToRawTarget,
+            getRawPortAttribute: getRawPortAttribute,
             iscsiActions: iscsiActions,
             idKey: 'storagePortId'
         };

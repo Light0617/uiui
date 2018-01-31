@@ -154,7 +154,7 @@ angular.module('rainierApp')
                                 var attribute = null;
 
                                 if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
-                                    attribute = storagePortsService.displayTargetToRawTarget(this.dialogSettings.itemAttribute.value);
+                                    attribute = storagePortsService.getRawPortAttribute(this.dialogSettings.itemAttribute.value);
                                 }
 
                                 _.forEach(dataModel.getSelectedItems(), function (storagePort) {

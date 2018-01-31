@@ -29,12 +29,12 @@
         </div>
     </div>
 
-    <!-- Target Mode -->
-    <div class="label-value-container" ng-if="dataModel.model.supportTargetMode">
-        <label class="label">Target Mode</label>
+    <!-- Port Attribute (Target Mode) -->
+    <div class="label-value-container" ng-if="dataModel.model.supportPortAttribute">
+        <label class="label">Port Attribute</label>
         <select class="form-control"
                 ng-model="dataModel.model.attribute"
-                ng-options="targetMode for targetMode in dataModel.targetModeOptions">
+                ng-options="portAttribute for portAttribute in dataModel.portAttributeOptions">
         </select>
     </div>
 

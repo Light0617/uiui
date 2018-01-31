@@ -37,7 +37,7 @@ angular.module('rainierApp')
                 storagePortId: port.storagePortId,
                 storageSystemId: port.storageSystemId,
                 securitySwitchEnabled: port.securitySwitchEnabled,
-                attribute: port.attributes[0],
+                attribute: storagePortsService.rawToDisplayAttributes[port.attributes[0]],
                 ipv6Enabled: port.iscsiPortInformation ? port.iscsiPortInformation.ipv6Enabled : false,
                 ipv4: {
                     address: portIpv4.address,
@@ -76,10 +76,10 @@ angular.module('rainierApp')
             return !_.isUndefined(model.ipv4) && !_.isEmpty(model.ipv4.address);
         };
 
-        var submit = function (model) {
+        var generatePayload = function (model) {
             var payload = {
                 securitySwitchEnabled: model.securitySwitchEnabled,
-                attribute: storagePortsService.displayTargetToRawTarget(model.attribute),
+                attribute: storagePortsService.getRawPortAttribute(model.attribute),
                 iscsiPortInformation: {
                     ipv6Enabled: model.ipv6Enabled,
                     ipv4Information: {
@@ -102,7 +102,11 @@ angular.module('rainierApp')
                     payload.iscsiPortInformation.ipv6Information.globalAddress = model.ipv6.globalAddress;
                 }
             }
+            return payload;
+        };
 
+        var submit = function (model) {
+            var payload = generatePayload(model);
             orchestratorService.updateStoragePort(model.storageSystemId, model.storagePortId, payload).then(back);
         };
 
@@ -114,12 +118,16 @@ angular.module('rainierApp')
                         submit($scope.dataModel.model);
                     },
                     canSubmit: function () {
-                        return validateAddressingMode($scope.dataModel.model) &&
+                        var before = generatePayload($scope.dataModel.before);
+                        var after = generatePayload($scope.dataModel.model);
+                        return !_.isEqual(before, after) &&
+                            validateAddressingMode($scope.dataModel.model) &&
                             validateIpv4Address($scope.dataModel.model);
                     }
                 },
-                targetModeOptions: _.values(storagePortsService.portAttributes),
-                model: model(storagePort)
+                portAttributeOptions: _.values(storagePortsService.portAttributes),
+                model: model(storagePort),
+                before: model(storagePort)
             };
         };
 
@@ -130,7 +138,7 @@ angular.module('rainierApp')
             $scope.dataModel = generateDataModel(storagePort);
             return orchestratorService.storageSystem(storageSystemId);
         }).then(function (storageSystem) {
-            $scope.dataModel.supportTargetMode =
+            $scope.dataModel.supportPortAttribute =
                 storageSystemCapabilitiesService.supportPortAttribute(storageSystem.storageSystemModel);
             if (_.isUndefined(storageSystem) || _.isUndefined($scope.dataModel.port)) {
                 back();
