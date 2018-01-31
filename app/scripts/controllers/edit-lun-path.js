@@ -1,7 +1,7 @@
 /*
  * ========================================================================
  *
- * Copyright (c) by Hitachi Data Systems, 2016. All rights reserved.
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
  *
  * ========================================================================
  */
@@ -15,10 +15,12 @@
  * # EditLunPathCtrl
  * Controller of the rainierApp
  */
-angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orchestratorService, objectTransformService,
-                                                                     paginationService, queryService,
-                                                                     ShareDataService, viewModelService,
-                                                                     attachVolumeService, constantService) {
+angular.module('rainierApp').controller('EditLunPathCtrl', function (
+    $scope, orchestratorService, objectTransformService,
+    paginationService, queryService,
+    ShareDataService, viewModelService,
+    attachVolumeService, constantService
+) {
 
     var GET_PORTS_PATH = 'storage-ports';
     var GET_PORTS_SORT = '?sort=storagePortId:ASC';
@@ -83,8 +85,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
             if (foundLun === false) {
                 return;
             }
-           _.forEach(hostGroup.hbaWwns, function(hbaWwn){
-               if (idCoordinates.hasOwnProperty(hbaWwn)){
+           _.forEach(hostGroup.endPoints, function(endPoint){
+               if (idCoordinates.hasOwnProperty(endPoint)){
                    // Only store the luns, which contain any selected volumeId, in the path.
 
                    _.forEach(hostGroup.luns, function(lun){
@@ -102,7 +104,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
 
                    var path = {
                        storagePortId: hostGroup.storagePortId,
-                       serverEndPoint: hbaWwn,
+                       serverEndPoint: endPoint,
                        luns: luns,
                        isVsmPort: isVsmPort
                    };
@@ -120,11 +122,15 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     });
 
     var setHostModeAndHostModeOptions = function(selectedServers, defaultHostMode) {
-        var wwpns = attachVolumeService.getSelectedServerWwpns(selectedServers);
-        var queryString = paginationService.getQueryStringForList(wwpns);
-        paginationService.clearQuery();
-        queryService.setQueryMapEntry('hbaWwns', queryString);
-        paginationService.getAllPromises(null, GET_HOST_GROUPS_PATH, false, $scope.dataModel.selectedStorageSystem.storageSystemId, null, false).then(function(hostGroupResults) {
+        attachVolumeService.registerHostGroupsQuery(queryService, paginationService, selectedServers);
+        paginationService.getAllPromises(
+            null,
+            GET_HOST_GROUPS_PATH,
+            false,
+            $scope.dataModel.selectedStorageSystem.storageSystemId,
+            null,
+            false
+        ).then(function(hostGroupResults) {
             var hostGroups = attachVolumeService.getMatchHostGroups(hostGroupResults, selectedServers, volumeIdMap);
             var hostModeOption = attachVolumeService.getMatchedHostModeOption(hostGroups, true);
             var originalAllPaths = getPathsFromHostGroups(hostGroups);
@@ -150,7 +156,10 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
     dataModel.process = function(resources, token){
         // Only support for fibre port for now
         resources = _.filter(resources, function(storagePort) {
-            return storagePort.type === 'FIBRE';
+            if (storagePort.isVsmPort) {
+                return false;
+            }
+            return storagePort.type === selectedHosts[0].protocol;
         });
         _.forEach(resources, function (item) {
             item.storageSystemModel = dataModel.storageSystemModel;
@@ -225,7 +234,6 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                 defaultHostMode: hostModes[0],
                 hostMode: hostModes[0],
                 hostModeOptions: results,
-                serverPortMapperModel: viewModelService.newServerPortMapperModel(dataModel.storagePorts, selectedHosts),
                 selectedHostModeOption: [],
                 enableZoning: false,
                 canGoNext: function () {
@@ -370,7 +378,4 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
             attachVolumeService.checkSelectedHostModeOptions(dataModel);
         };
     }
-
-
-
 });

@@ -84,8 +84,9 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             return mockUtils.response.ok(summary);
         }
         if (urlResult.resourceId) {
-            var storageSystem = mockUtils.fromCollection(storageSystems, urlResult.resourceId, 'storageSystemId');
-            return (storageSystem) ? mockUtils.response.ok(storageSystem) : mockUtils.response.notFound('Unable to find endpoint with matching Id.');
+            // var storageSystem = mockUtils.fromCollection(storageSystems, urlResult.resourceId, 'storageSystemId');
+            // return (storageSystem) ? mockUtils.response.ok(storageSystem) : mockUtils.response.notFound('Unable to find endpoint with matching Id.');
+            return mockUtils.response.ok(storageSystems[0]);
         }
         var paginatedStorageSystems = {
             resources: storageSystems,
