@@ -348,9 +348,6 @@ angular.module('rainierApp')
             detachVolume: function (detachVolumePayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/detach').post(detachVolumePayload));
             },
-            createAndAttachVolumes: function (payload) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/create-attach').post(payload));
-            },
             createAttachProtectVolumes: function (payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/create-attach-protect').post(payload));
             },
