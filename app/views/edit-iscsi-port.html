@@ -1,0 +1,13 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <wizard-header ng-title="'Edit Port' | translate" icon-class="icon-ports">
+    </wizard-header>
+    <single-step-wizard-body
+        ng-title="iSCSI port settings"
+        left-panel-template="views/workflow-templates/edit-iscsi-port-left-panel.html"
+        right-panel-template="views/workflow-templates/edit-iscsi-port-right-panel.html"
+        ng-model="dataModel">
+    </single-step-wizard-body>
+    <wizard-footer ng-model="dataModel.updateModel" ng-if="dataModel.updateModel">
+    </wizard-footer>
+</wizard-page>

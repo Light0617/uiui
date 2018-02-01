@@ -1,0 +1,65 @@
+<div class="fieldset">
+    <div class="label-value-container">
+        <label class="label">Port</label>
+        <label class="value">{{dataModel.port.storagePortId}}</label>
+    </div>
+
+    <!-- Security -->
+    <div class="label-value-container">
+        <label class="label">Security</label>
+        <div class="btn-group btn-group-justified">
+            <label class="btn btn-primary btn-dark"
+                   title="{{ 'action-tooltip-enable' | translate }}"
+                   ng-class="{'active': dataModel.model.securitySwitchEnabled}">
+                <input hidden type="radio"
+                       ng-model="dataModel.model.securitySwitchEnabled"
+                       auto-complete="off"
+                       ng-value="true">
+                {{ 'action-tooltip-enable' | translate }}
+            </label>
+            <label class="btn btn-primary btn-dark"
+                   title="{{ 'action-tooltip-disable' | translate }}"
+                   ng-class="{'active': !dataModel.model.securitySwitchEnabled}">
+                <input hidden type="radio"
+                       ng-model="dataModel.model.securitySwitchEnabled"
+                       auto-complete="off"
+                       ng-value="false">
+                {{ 'action-tooltip-disable' | translate }}
+            </label>
+        </div>
+    </div>
+
+    <!-- Port Attribute (Target Mode) -->
+    <div class="label-value-container" ng-if="dataModel.model.supportPortAttribute">
+        <label class="label">Port Attribute</label>
+        <select class="form-control"
+                ng-model="dataModel.model.attribute"
+                ng-options="portAttribute for portAttribute in dataModel.portAttributeOptions">
+        </select>
+    </div>
+
+    <!-- IPv6 -->
+    <div class="label-value-container">
+        <label class="label">IPv6</label>
+        <div class="btn-group btn-group-justified">
+            <label class="btn btn-primary btn-dark"
+                   title="{{ 'action-tooltip-enable' | translate }}"
+                   ng-class="{'active': dataModel.model.ipv6Enabled}">
+                <input hidden type="radio"
+                       ng-model="dataModel.model.ipv6Enabled"
+                       auto-complete="off"
+                       ng-value="true">
+                {{ 'action-tooltip-enable' | translate }}
+            </label>
+            <label class="btn btn-primary btn-dark"
+                   title="{{ 'action-tooltip-disable' | translate }}"
+                   ng-class="{'active': !dataModel.model.ipv6Enabled}">
+                <input hidden type="radio"
+                       ng-model="dataModel.model.ipv6Enabled"
+                       auto-complete="off"
+                       ng-value="false">
+                {{ 'action-tooltip-disable' | translate }}
+            </label>
+        </div>
+    </div>
+</div>

@@ -180,20 +180,20 @@ angular.module('rainierApp')
                     result.push(wwnService.appendColon(item.wwn));
                 }
                 return result;
-            } else if(item.type==='ISCSI' && item.iscsiInformation) {
-                result = [item.speed, item.iscsiInformation.portIscsiName];
+            } else if(item.type==='ISCSI' && item.iscsiPortInformation) {
+                result = [item.speed, item.iscsiPortInformation.portIscsiName];
 
-                if(item.iscsiInformation.ipv4Information) {
-                    result.push(item.iscsiInformation.ipv4Information.address);
+                if(item.iscsiPortInformation.ipv4Information) {
+                    result.push(item.iscsiPortInformation.ipv4Information.address);
                 }
-                if(item.iscsiInformation.ipv6Enabled) {
+                if(item.iscsiPortInformation.ipv6Enabled) {
                     result.push('IPv6 Enable');
                 } else {
                     result.push('IPv6 Disable');
                 }
-                if(item.iscsiInformation.ipv6Information) {
-                    result.push(item.iscsiInformation.ipv6Information.globalAddress);
-                    result.push(item.iscsiInformation.ipv6Information.linklocalAddress);
+                if(item.iscsiPortInformation.ipv6Information) {
+                    result.push(item.iscsiPortInformation.ipv6Information.globalAddress);
+                    result.push(item.iscsiPortInformation.ipv6Information.linklocalAddress);
                 }
                 return result;
             }
