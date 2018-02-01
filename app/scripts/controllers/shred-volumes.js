@@ -26,14 +26,14 @@ angular.module('rainierApp')
 
         $scope.updateNumOfPass = function(){
             $scope.dataModel.itemList=_.range($scope.dataModel.minPass);
-        }
+        };
 
         $scope.updateNumOfPassByInput = function(input){
             $scope.dataModel.itemList=_.range(input);
-        }
+        };
 
         $scope.resetSlider = function() {
             $scope.dataModel.minPass = 1;
             $scope.updateNumOfPass();
-        }
+        };
     });
