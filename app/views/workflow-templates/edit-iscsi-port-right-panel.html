@@ -2,17 +2,17 @@
     <div class="fieldset">
         <!-- IPv4 -->
         <ng-container>
-            <label>IPv4 Information</label>
+            <label>{{ 'edit-iscsi-port-ipv4-info' | translate }}</label>
             <div class="label-value-container">
                 <label class="label">IPv4 Address</label>
                 <input class="form-control" ng-model="dataModel.model.ipv4.address">
             </div>
             <div class="label-value-container">
-                <label class="label">Subnet Mask</label>
+                <label class="label">{{ 'subnet-mask' | translate }}</label>
                 <input class="form-control" ng-model="dataModel.model.ipv4.subnetMask">
             </div>
             <div class="label-value-container">
-                <label class="label">IPv4 Default Gateway</label>
+                <label class="label">{{ 'edit-iscsi-port-ipv4-default-gateway' | translate }}</label>
                 <input class="form-control" ng-model="dataModel.model.ipv4.defaultGateway">
             </div>
         </ng-container>
@@ -20,11 +20,11 @@
         <!-- IPv6 -->
         <ng-container ng-if="dataModel.model.ipv6Enabled">
             <hr>
-            <label>IPv6 Information</label>
+            <label>{{ 'edit-iscsi-port-ipv6-info' | translate }}</label>
 
             <!-- Link Local -->
             <div class="label-value-container">
-                <label class="label">Link Local Address Mode</label>
+                <label class="label">{{ 'edit-iscsi-port-linklocal-mode' | translate }}</label>
                 <div class="form-control-btn btn-group-sm btn-group-justified">
                     <label class="btn btn-primary"
                            ng-class="{'active': !dataModel.model.ipv6.linklocalManual}">
@@ -32,7 +32,7 @@
                                ng-model="dataModel.model.ipv6.linklocalManual"
                                auto-complete="off"
                                ng-value="false">
-                        Auto
+                        {{ 'edit-iscsi-port-mode-auto' | translate }}
                     </label>
                     <label class="btn btn-primary"
                            ng-class="{'active': dataModel.model.ipv6.linklocalManual}">
@@ -40,18 +40,18 @@
                                ng-model="dataModel.model.ipv6.linklocalManual"
                                auto-complete="off"
                                ng-value="true">
-                        Manual
+                        {{ 'edit-iscsi-port-mode-manual' | translate }}
                     </label>
                 </div>
             </div>
             <div class="label-value-container" ng-if="dataModel.model.ipv6.linklocalManual">
-                <label class="label">Link Local Address</label>
+                <label class="label">{{ 'edit-iscsi-port-linklocal-address' | translate }}</label>
                 <input class="form-control" ng-model="dataModel.model.ipv6.linklocalAddress">
             </div>
 
             <!-- Global -->
             <div class="label-value-container">
-                <label class="label">Global Address Mode</label>
+                <label class="label">{{ 'edit-iscsi-port-global-mode' | translate }}</label>
                 <div class="form-control-btn btn-group-sm btn-group-justified">
                     <label class="btn btn-primary"
                            ng-class="{'active': !dataModel.model.ipv6.globalManual}">
@@ -59,7 +59,7 @@
                                ng-model="dataModel.model.ipv6.globalManual"
                                auto-complete="off"
                                ng-value="false">
-                        Auto
+                        {{ 'edit-iscsi-port-mode-auto' | translate }}
                     </label>
                     <label class="btn btn-primary"
                            ng-class="{'active': dataModel.model.ipv6.globalManual}">
@@ -67,18 +67,18 @@
                                ng-model="dataModel.model.ipv6.globalManual"
                                auto-complete="off"
                                ng-value="true">
-                        Manual
+                        {{ 'edit-iscsi-port-mode-manual' | translate }}
                     </label>
                 </div>
             </div>
             <div class="label-value-container" ng-if="dataModel.model.ipv6.globalManual">
-                <label class="label">Global Address</label>
+                <label class="label">{{ 'edit-iscsi-port-global-address' | translate }}</label>
                 <input class="form-control" ng-model="dataModel.model.ipv6.globalAddress">
             </div>
 
             <!-- Gateway -->
             <div class="label-value-container">
-                <label class="label">IPv6 Default Gateway</label>
+                <label class="label">{{ 'edit-iscsi-port-ipv6-default-gateway' | translate }}</label>
                 <input class="form-control" ng-model="dataModel.model.ipv6.defaultGateway">
             </div>
         </ng-container>

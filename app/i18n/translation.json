@@ -182,6 +182,20 @@
     "storage-port-enable-security-title": "Modify Security",
     "storage-port-enable-security-content": "Modify security for the {{getSelectedCount()}} selected ports to:",
 
+    "edit-iscsi-port": "Edit iSCSI Port",
+    "edit-iscsi-port-settings": "iSCSI port settings",
+    "edit-iscsi-port-ipv4-info": "IPv4 Information",
+    "edit-iscsi-port-ipv4-address": "IPv4 Address",
+    "edit-iscsi-port-ipv4-default-gateway": "IPv4 Default Gateway",
+    "edit-iscsi-port-ipv6-info": "IPv6 Information",
+    "edit-iscsi-port-mode-auto": "Auto",
+    "edit-iscsi-port-mode-manual": "Manual",
+    "edit-iscsi-port-linklocal-mode": "Link Local Address Mode",
+    "edit-iscsi-port-linklocal-address": "Link Local Address",
+    "edit-iscsi-port-global-mode": "Global Address Mode",
+    "edit-iscsi-port-global-address": "Global Address",
+    "edit-iscsi-port-ipv6-default-gateway": "IPv6 Default Gateway",
+
     "storage-port-fc-wwn": "WWN",
     "storage-port-fc-speed": "Speed",
     "storage-port-fc-fabric": "Fabric",
@@ -203,6 +217,7 @@
 
     "storage-port-iscsi-name": "iSCSI Name",
     "storage-port-iscsi-ipv4": "IPv4",
+    "storage-port-iscsi-ipv6": "IPv6",
     "storage-port-iscsi-ipv6-global": "IPv6(Global)",
     "storage-port-iscsi-ipv6-local": "IPv6(Link Local)",
 

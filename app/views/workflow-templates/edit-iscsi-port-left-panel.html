@@ -1,12 +1,12 @@
 <div class="fieldset">
     <div class="label-value-container">
-        <label class="label">Port</label>
+        <label class="label">{{ 'port' | translate }}</label>
         <label class="value">{{dataModel.port.storagePortId}}</label>
     </div>
 
     <!-- Security -->
     <div class="label-value-container">
-        <label class="label">Security</label>
+        <label class="label">{{ 'storage-port-security' | translate }}</label>
         <div class="btn-group btn-group-justified">
             <label class="btn btn-primary btn-dark"
                    title="{{ 'action-tooltip-enable' | translate }}"
@@ -31,7 +31,7 @@
 
     <!-- Port Attribute (Target Mode) -->
     <div class="label-value-container" ng-if="dataModel.model.supportPortAttribute">
-        <label class="label">Port Attribute</label>
+        <label class="label">{{ 'storage-port-attribute' | translate }}</label>
         <select class="form-control"
                 ng-model="dataModel.model.attribute"
                 ng-options="portAttribute for portAttribute in dataModel.portAttributeOptions">
@@ -40,7 +40,7 @@
 
     <!-- IPv6 -->
     <div class="label-value-container">
-        <label class="label">IPv6</label>
+        <label class="label">{{ 'storage-port-iscsi-ipv6' | translate }}</label>
         <div class="btn-group btn-group-justified">
             <label class="btn btn-primary btn-dark"
                    title="{{ 'action-tooltip-enable' | translate }}"
