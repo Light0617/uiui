@@ -189,7 +189,7 @@
     "storage-port-enable-security-content": "Modify security for the {{getSelectedCount()}} selected ports to:",
 
     "edit-iscsi-port": "Edit iSCSI Port",
-    "edit-iscsi-port-settings": "iSCSI port settings",
+    "edit-iscsi-port-settings": "iSCSI Port Settings",
     "edit-iscsi-port-ipv4-info": "IPv4 Information",
     "edit-iscsi-port-ipv4-address": "IPv4 Address",
     "edit-iscsi-port-ipv4-default-gateway": "IPv4 Default Gateway",
