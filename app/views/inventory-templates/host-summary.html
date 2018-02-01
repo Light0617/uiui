@@ -18,15 +18,19 @@
         </div>
         <div class="label-value-container" ng-if="summaryModel.server.protocol==='FIBRE'">
             <p class="label">{{'hosts-wwn' | translate}}</p>
-            <p class="value" title="{{summaryModel.server.displayWWNs.toString()}}">
-                {{summaryModel.server.displayWWNs.toString()}}
-            </p>
+            <ul class="value scrollable-summary-value">
+                <li title="{{name}}" ng-repeat="name in summaryModel.server.displayWWNs">
+                    {{name}}
+                </li>
+            </ul>
         </div>
         <div class="label-value-container" ng-if="summaryModel.server.protocol==='ISCSI'">
             <p class="label">{{'hosts-iscsi-name' | translate}}</p>
-            <p class="value" title="{{summaryModel.server.displayIscsiNames.toString()}}">
-                {{summaryModel.server.displayIscsiNames.toString()}}
-            </p>
+            <ul class="value scrollable-summary-value">
+                <li title="{{name}}" ng-repeat="name in summaryModel.server.displayIscsiNames">
+                    {{name}}
+                </li>
+            </ul>
         </div>
         <div class="label-value-container" ng-if="summaryModel.server.protocol==='ISCSI'">
             <p class="label">{{'hosts-chap-user' | translate}}</p>

@@ -217,7 +217,7 @@ angular.module('rainierApp')
                 {
                     title: 'hosts-data-protection-type',
                     sizeClass: 'sixth',
-                    sortField: 'displayedDpType',
+                    sortField: 'dataProtectionSummary.replicationType',
                     getDisplayValue: function (item) {
                         return item.displayedDpType;
                     },
