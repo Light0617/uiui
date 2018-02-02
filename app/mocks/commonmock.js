@@ -47,6 +47,9 @@ rainierAppMock.factory('commonMock', function () {
                 return 'iqn.' + _.range(0, 100).map(this.randomChar).join('');
             }
         },
+        getIscsiNameByIndex: function (index) {
+            return 'iqn.' + index;
+        },
         getIscsiNames: function () {
             var list = [];
             var rand = _.random(2, 2);

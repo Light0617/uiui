@@ -128,7 +128,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
             GET_HOST_GROUPS_PATH,
             false,
             $scope.dataModel.selectedStorageSystem.storageSystemId,
-            null,
+            objectTransformService.transformHostGroups,
             false
         ).then(function(hostGroupResults) {
             var hostGroups = attachVolumeService.getMatchHostGroups(hostGroupResults, selectedServers, volumeIdMap);
@@ -216,6 +216,16 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
         return false;
     }
 
+    function generatePathPayload (path, host) {
+        var serverWwn = host.protocol === 'FIBRE' ? path.serverEndPoint : undefined;
+        var iscsiInitiatorName = host.protocol === 'ISCSI' ? path.serverEndPoint : undefined;
+        return {
+            serverWwn: serverWwn,
+            iscsiInitiatorName: iscsiInitiatorName,
+            storagePort: path.storagePortId
+        };
+    }
+
     function setAllModels() {
 
         var hostModes = constantService.osType();
@@ -282,6 +292,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
 
                     var settingsChanged = checkSettingsChange($scope.dataModel);
                     var updates = [];
+                    var host = $scope.dataModel.pathModel.selectedHosts[0];
                     for (i = 0; i<$scope.dataModel.pathModel.paths.length; ++i){
                         var path = $scope.dataModel.pathModel.paths[i];
                         if(path.isVsmPort){
@@ -298,10 +309,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                                     volumeId: volume.volumeId,
                                     lun: volume.lun,
                                     currentPath: null,
-                                    newPath: {
-                                        serverWwn: path.serverEndPoint,
-                                        storagePort: path.storagePortId
-                                    }
+                                    newPath: generatePathPayload(path, host)
                                 };
                             } else {
                                 var originalPath = originalPaths[i];
@@ -314,10 +322,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                                             storageSystemId: storageSystemId,
                                             volumeId: volume.volumeId,
                                             lun: volume.lun,
-                                            currentPath: {
-                                                serverWwn: originalPath.serverEndPoint,
-                                                storagePort: originalPath.storagePortId
-                                            },
+                                            currentPath: generatePathPayload(originalPath, host),
                                             newPath: null
                                         };
                                     }
@@ -333,14 +338,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                                             storageSystemId: storageSystemId,
                                             volumeId: volume.volumeId,
                                             lun: volume.lun,
-                                            currentPath: {
-                                                serverWwn: originalPath.serverEndPoint,
-                                                storagePort: originalPath.storagePortId
-                                            },
-                                            newPath: {
-                                                    serverWwn: path.serverEndPoint,
-                                                    storagePort: path.storagePortId
-                                            }
+                                            currentPath: generatePathPayload(originalPath, host),
+                                            newPath: generatePathPayload(path, host)
                                         };
                                     }
                                 }
