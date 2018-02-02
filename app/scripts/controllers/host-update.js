@@ -8,23 +8,26 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostUpdateCtrl', function ($scope, $routeParams, orchestratorService, wwnService, constantService) {
+    .controller('HostUpdateCtrl', function (
+        $scope, $routeParams, $q, orchestratorService, wwnService, constantService
+    ) {
         var hostId = $routeParams.hostId;
 
-        var addedWwns = [{value:''}];
+        var addedEndPoints = [{value: ''}];
 
-        function setWwnValues(wwns){
-            var wwnObjects = [];
-            _.forEach(wwns, function(wwn){
-                wwnObjects.push({value:wwn});
+        function setEndPointValues(host) {
+            var endPoints = [];
+            _.forEach(host.endPoints, function (endPoint) {
+                var val = host.protocol === 'FIBRE' ? wwnService.appendColon(endPoint) : endPoint;
+                endPoints.push({value: val});
             });
 
-            return wwnObjects;
+            return endPoints;
         }
 
-        function hasValueWwns(wwns){
-            for(var i = 0; i < wwns.length; i++){
-                if (!_.isEmpty(wwns[i].value)){
+        function hasValueEndPoint(endPoints) {
+            for (var i = 0; i < endPoints.length; i++) {
+                if (!_.isEmpty(endPoints[i].value)) {
                     return true;
                 }
             }
@@ -32,111 +35,139 @@ angular.module('rainierApp')
             return false;
         }
 
-        orchestratorService.host(hostId).then(function(result) {
+        orchestratorService.host(hostId).then(function (result) {
 
             $scope.dataModel = {
+                protocol: result.protocol,
                 originalHost: result,
                 updatedHostName: result.serverName,
                 updatedDescription: result.description,
                 updatedIpAddress: result.ipAddress,
                 updatedOsType: result.osType,
-                updatedWwns: setWwnValues(result.displayWWNs),
-                addedWwns: addedWwns,
+                updatedEndPoints: setEndPointValues(result),
+                addedEndPoints: addedEndPoints,
                 applyChangesToAttachedVolumes: false,
-                existingWwnsChanged: function(){
-                    return differentWwns($scope.dataModel.originalHost.wwpns, $scope.dataModel.updatedWwns);
+                existingEndPointsChanged: function () {
+                    return differentEndPoints($scope.dataModel.originalHost.endPoints, $scope.dataModel.updatedEndPoints);
                 },
                 requireSelection: false,
                 osTypes: constantService.osType(),
                 isValid: function () {
-                    return !_.isEmpty(this.updatedHostName) && !_.isEmpty(this.updatedOsType) && !_.isEmpty(this.updatedWwns) && (result.serverName !== $scope.dataModel
-                        .updatedHostName || result.description !== $scope.dataModel.updatedDescription || result.ipAddress !== $scope.dataModel.updatedIpAddress ||
+                    return !_.isEmpty(this.updatedHostName) && !_.isEmpty(this.updatedOsType) && !_.isEmpty(this.updatedEndPoints) && (result.serverName !== $scope.dataModel
+                            .updatedHostName || result.description !== $scope.dataModel.updatedDescription || result.ipAddress !== $scope.dataModel.updatedIpAddress ||
                         result.osType !== $scope.dataModel.updatedOsType ||
-                        hasValueWwns($scope.dataModel.addedWwns) ||
-                        differentWwns($scope.dataModel.originalHost.wwpns, $scope.dataModel.updatedWwns));
+                        hasValueEndPoint($scope.dataModel.addedEndPoints) ||
+                        differentEndPoints($scope.dataModel.originalHost.endPoints, $scope.dataModel.updatedEndPoints));
                 },
-                deleteWwn: function(wwnIndex) {
-                    $scope.dataModel.addedWwns.splice(wwnIndex, 1);
+                deleteEndPoint: function (index) {
+                    $scope.dataModel.addedEndPoints.splice(index, 1);
                 },
-                addNewWwn: function(){
-                    $scope.dataModel.addedWwns.splice(0,0, {value: ''});
+                addNewEndPoint: function () {
+                    $scope.dataModel.addedEndPoints.splice(0, 0, {value: ''});
                 }
             };
 
-            $scope.updateHost = function() {
-                if (!$scope.dataModel.isValid()){
+            $scope.updateHost = function () {
+                if (!$scope.dataModel.isValid()) {
                     return;
                 }
-                updateHostWwns();
-                updateHostFields();
-                window.history.back();
+
+                Promise.all([
+                    updateHostEndPoints(),
+                    updateHostFields()
+                ]).then(function () {
+                    window.history.back();
+                });
             };
         });
 
-        function differentWwns(originaWwns, updatedWwns){
-            if (originaWwns.length !== updatedWwns.length){
+        function invokeTrim(endPoint) {
+            var result = endPoint.trim();
+            if ($scope.dataModel.protocol === 'FIBRE') {
+                result = wwnService.removeSymbol(result);
+            }
+            return result;
+        }
+
+        function differentEndPoints(originaEndPoints, updatedEndPoints) {
+            if (originaEndPoints.length !== updatedEndPoints.length) {
                 return true;
             }
-            for (var i = 0; i < originaWwns.length; ++i){
-                var updatedWwn = updatedWwns[i].value.trim();
-                updatedWwn = wwnService.removeSymbol(updatedWwn);
-                if (originaWwns[i] !== updatedWwn){
+            for (var i = 0; i < originaEndPoints.length; ++i) {
+                var updatedEndPoint = invokeTrim(updatedEndPoints[i].value);
+                if (originaEndPoints[i] !== updatedEndPoint) {
                     return true;
                 }
             }
 
             return false;
         }
+        
+        function postFibreEndPoint(hostId, endPointPayload) {
+            // In UI, when users want to update the attached volumes, we also update the zones.
+            return orchestratorService.updateHostWwn(hostId, {
+                'updates': endPointPayload,
+                'updateAttachedVolumes': $scope.dataModel.applyChangesToAttachedVolumes,
+                'updateZones': $scope.dataModel.applyChangesToAttachedVolumes
+            });
+        }
 
-        function updateHostWwns() {
+        function postIscsiEndPoint(hostId, endPointPayload) {
+            return orchestratorService.updateHostIscsi(hostId, {
+                updateAttachedVolumes: $scope.dataModel.applyChangesToAttachedVolumes,
+                iscsiNameUpdates: endPointPayload
+                // TODO impl for chap auth
+            });
+        }
 
-            var updatedWwns = [];
-            var wwpnDiffPayload = [];
-            _.forEach($scope.dataModel.updatedWwns, function(w) {
-                var updatedWwn = w.value.trim();
-                updatedWwn = wwnService.removeSymbol(updatedWwn);
-                updatedWwns.push(updatedWwn);
+        function invokeEndPointPost(hostId, endPointPayload) {
+            if ($scope.dataModel.protocol === 'FIBRE') {
+                return postFibreEndPoint(hostId, endPointPayload);
+            } else if ($scope.dataModel.protocol === 'ISCSI') {
+                return postIscsiEndPoint(hostId, endPointPayload);
+            }
+            return Promise.resolve();
+        }
+
+        function updateHostEndPoints() {
+
+            var updatedEndPoints = [];
+            var endPointDiffPayload = [];
+            _.forEach($scope.dataModel.updatedEndPoints, function (e) {
+                var updatedEndPoint = invokeTrim(e.value);
+                updatedEndPoints.push(updatedEndPoint);
             });
 
-            _.forEach($scope.dataModel.addedWwns, function(w) {
-                var addedWwn = w.value;
-                if (!_.isEmpty(addedWwn)){
-                    addedWwn = addedWwn.trim();
-                    addedWwn = wwnService.removeSymbol(addedWwn);
-                    if (!_.isEmpty(addedWwn)) {
-                        wwpnDiffPayload.push(
-                            {
-                                'currentValue': null,
-                                'newValue': addedWwn
-                            }
-                        );
-                    }
-                }
-
-            });
-
-            var originalWwns = $scope.dataModel.originalHost.wwpns;
-            for (var i = 0; i < originalWwns.length; ++i){
-                var originalWwn = originalWwns[i];
-                var updatedWwn = updatedWwns[i];
-                if (originalWwn !== updatedWwn){
-                    wwpnDiffPayload.push(
+            _.forEach($scope.dataModel.addedEndPoints, function (e) {
+                var addedEndPoint = invokeTrim(e.value);
+                if (!_.isEmpty(addedEndPoint)) {
+                    endPointDiffPayload.push(
                         {
-                            'currentValue': originalWwn,
-                            'newValue': _.isEmpty(updatedWwn) ? null : updatedWwn
+                            'currentValue': null,
+                            'newValue': addedEndPoint
+                        }
+                    );
+                }
+            });
+
+            var originalEndPoints = $scope.dataModel.originalHost.endPoints;
+            for (var i = 0; i < originalEndPoints.length; ++i) {
+                var original = originalEndPoints[i];
+                var updated = updatedEndPoints[i];
+                if (original !== updated) {
+                    endPointDiffPayload.push(
+                        {
+                            'currentValue': original,
+                            'newValue': _.isEmpty(updated) ? null : updated
                         }
                     );
                 }
             }
 
-            if (wwpnDiffPayload.length > 0) {
-                // In UI, when users want to update the attached volumes, we also update the zones.
-                orchestratorService.updateHostWwn(hostId, {
-                    'updates': wwpnDiffPayload,
-                    'updateAttachedVolumes': $scope.dataModel.applyChangesToAttachedVolumes,
-                    'updateZones': $scope.dataModel.applyChangesToAttachedVolumes
-                });
+            if (endPointDiffPayload.length > 0) {
+                return invokeEndPointPost(hostId, endPointDiffPayload);
             }
+            return Promise.resolve();
 
         }
 
@@ -161,7 +192,8 @@ angular.module('rainierApp')
             }
 
             if (payload.serverName || payload.description || payload.ipAddress || payload.osType) {
-                orchestratorService.updateHost(hostId, payload);
+                return orchestratorService.updateHost(hostId, payload);
             }
+            return Promise.resolve();
         }
     });
