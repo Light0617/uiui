@@ -35,9 +35,23 @@ angular.module('rainierApp')
             return false;
         }
 
+        function generateChap(host) {
+            return {
+                chapUser: host.chapUser,
+                mutualUser: host.mutualChapUser,
+                chapEnabled: !_.isEmpty(host.chapUser),
+                mutualEnabled: !_.isEmpty(host.mutualChapUser),
+                chapSecret: '',
+                mutualChapSecret: ''
+            };
+        }
+
         orchestratorService.host(hostId).then(function (result) {
 
             $scope.dataModel = {
+                chap: generateChap(result),
+                updateChapSecret: false,
+                updateMutualSecret: false,
                 protocol: result.protocol,
                 originalHost: result,
                 updatedHostName: result.serverName,

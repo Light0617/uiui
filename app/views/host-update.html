@@ -62,7 +62,7 @@
 
             <!-- Fibre -->
             <ng-container ng-if="dataModel.protocol === 'FIBRE'">
-                <div class="header-row">
+                <div class="header-row label-value-container-title">
                     <h2>{{ 'host-update-existing-wwns'| translate }}</h2>
                 </div>
                 <div class="tile-view list-view">
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <div class="header-row">
+                <div class="header-row label-value-container-title">
                     <h2>{{ 'host-update-add-wwns'| translate }}</h2>
                 </div>
                 <div class="tile-view list-view">
@@ -98,7 +98,7 @@
 
             <!-- iSCSI -->
             <ng-container ng-if="dataModel.protocol === 'ISCSI'">
-                <div class="header-row">
+                <div class="header-row label-value-container-title">
                     <h2>{{ 'Modify Existing iSCSI Names' || 'host-update-existing-iscsi'| translate}}</h2>
                 </div>
                 <div class="tile-view list-view">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
 
-                <div class="header-row">
+                <div class="header-row label-value-container-title">
                     <h2>{{ 'Add new iSCSI Names' || 'host-update-add-iscsi-names'| translate }}</h2>
                 </div>
                 <div class="tile-view list-view">
@@ -132,6 +132,93 @@
                 </div>
 
                 <!-- Chap -->
+                <div class="header-row label-value-container-title">
+                    <h2>{{ 'Chap Settings' || 'host-update-chap-settings' | translate }}</h2>
+                </div>
+
+                <!-- Chap Auth -->
+                <div class="label-value-container">
+                    <label class="label">{{ 'Chap Auth' || 'host-update-chap-auth' | translate }}</label>
+                    <div class="form-control-btn btn-group btn-group-justified">
+                        <label class="btn btn-primary"
+                               ng-class="{'active': !dataModel.chap.chapEnabled}">
+                            <input hidden type="radio"
+                                   ng-model="dataModel.chap.chapEnabled"
+                                   auto-complete="off"
+                                   ng-value="false">
+                            {{ 'Disable' || 'disable' | translate }}
+                        </label>
+                        <label class="btn btn-primary"
+                               ng-class="{'active': dataModel.chap.chapEnabled}">
+                            <input hidden type="radio"
+                                   ng-model="dataModel.chap.chapEnabled"
+                                   auto-complete="off"
+                                   ng-value="true">
+                            {{ 'Enable' || 'enable' | translate }}
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Chap Credentials-->
+                <ng-container ng-if="dataModel.chap.chapEnabled">
+                    <div class="label-value-container">
+                        <label class="label">{{ 'add-host-chap-user' | translate }}</label>
+                        <input class="form-control" ng-model="dataModel.chap.chapUser">
+                    </div>
+                    <label class="label-value-container checkbox-label">
+                        <input type="checkbox" ng-model="dataModel.updateChapSecret">
+                        Update Chap Secret
+                    </label>
+                    <div class="label-value-container" ng-if="dataModel.updateChapSecret">
+                        <label class="label">{{ 'New Chap Secret' || 'add-host-chap-secret' | translate }}</label>
+                        <input type="password" class="form-control" ng-model="dataModel.chap.chapSecret">
+                    </div>
+                </ng-container>
+
+                <!-- Mutual Chap Auth -->
+                <ng-container ng-if="dataModel.chap.chapEnabled">
+                    <div class="header-row label-value-container-title">
+                        <h2>{{ 'Mutual Chap Settings' || 'host-update-mutual-chap-settings' | translate }}</h2>
+                    </div>
+                    <div class="label-value-container">
+                        <label class="label">{{ 'Mutual Chap Auth' || 'host-update-mutual-chap-auth' | translate }}</label>
+                        <div class="form-control-btn btn-group btn-group-justified">
+                            <label class="btn btn-primary"
+                                   ng-class="{'active': !dataModel.chap.mutualEnabled}">
+                                <input hidden type="radio"
+                                       ng-model="dataModel.chap.mutualEnabled"
+                                       auto-complete="off"
+                                       ng-value="false">
+                                {{ 'Disable' || 'disable' | translate }}
+                            </label>
+                            <label class="btn btn-primary"
+                                   ng-class="{'active': dataModel.chap.mutualEnabled}">
+                                <input hidden type="radio"
+                                       ng-model="dataModel.chap.mutualEnabled"
+                                       auto-complete="off"
+                                       ng-value="true">
+                                {{ 'Enable' || 'enable' | translate }}
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Mutual Chap Credentials -->
+                    <ng-container ng-if="dataModel.chap.mutualEnabled">
+                        <div class="label-value-container">
+                            <label class="label">{{ 'add-host-mutual-chap-user' | translate }}</label>
+                            <input class="form-control" ng-model="dataModel.chap.mutualUser">
+                        </div>
+                        <label class="label-value-container checkbox-label">
+                            <input type="checkbox" ng-model="dataModel.updateMutualSecret">
+                            Update Chap Secret
+                        </label>
+                        <div class="label-value-container" ng-if="dataModel.updateMutualSecret">
+                            <label class="label">{{ 'add-host-mutual-chap-secret' | translate }}</label>
+                            <input type="password" class="form-control" ng-model="dataModel.chap.mutualChapSecret">
+                        </div>
+                    </ng-container>
+
+                </ng-container>
 
             </ng-container>
 
