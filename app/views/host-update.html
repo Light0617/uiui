@@ -161,18 +161,20 @@
 
                 <!-- Chap Credentials-->
                 <ng-container ng-if="dataModel.chap.chapEnabled">
-                    <div class="label-value-container">
-                        <label class="label">{{ 'add-host-chap-user' | translate }}</label>
-                        <input class="form-control" ng-model="dataModel.chap.chapUser">
-                    </div>
-                    <label class="label-value-container checkbox-label">
-                        <input type="checkbox" ng-model="dataModel.updateChapSecret">
-                        Update Chap Secret
+                    <label class="label-value-container checkbox-label" ng-if="dataModel.originalChap.chapEnabled">
+                        <input type="checkbox" ng-model="dataModel.chap.updateChapCredential">
+                        {{ 'Update Chap Credential' || 'host-update-update-chap-credential' | translate }}
                     </label>
-                    <div class="label-value-container" ng-if="dataModel.updateChapSecret">
-                        <label class="label">{{ 'New Chap Secret' || 'add-host-chap-secret' | translate }}</label>
-                        <input type="password" class="form-control" ng-model="dataModel.chap.chapSecret">
-                    </div>
+                    <ng-container ng-if="dataModel.chap.updateChapCredential">
+                        <div class="label-value-container">
+                            <label class="label">{{ 'New Chap User' || 'host-update-chap-user' | translate }}</label>
+                            <input class="form-control" ng-model="dataModel.chap.chapUser">
+                        </div>
+                        <div class="label-value-container">
+                            <label class="label">{{ 'New Chap Secret' || 'host-update-chap-secret' | translate }}</label>
+                            <input type="password" class="form-control" ng-model="dataModel.chap.chapSecret">
+                        </div>
+                    </ng-container>
                 </ng-container>
 
                 <!-- Mutual Chap Auth -->
@@ -204,18 +206,20 @@
 
                     <!-- Mutual Chap Credentials -->
                     <ng-container ng-if="dataModel.chap.mutualEnabled">
-                        <div class="label-value-container">
-                            <label class="label">{{ 'add-host-mutual-chap-user' | translate }}</label>
-                            <input class="form-control" ng-model="dataModel.chap.mutualUser">
-                        </div>
-                        <label class="label-value-container checkbox-label">
-                            <input type="checkbox" ng-model="dataModel.updateMutualSecret">
-                            Update Chap Secret
+                        <label class="label-value-container checkbox-label" ng-if="dataModel.originalChap.mutualEnabled">
+                            <input type="checkbox" ng-model="dataModel.chap.updateMutualCredential">
+                            {{ 'Update Mutual Chap Credential' || '' | translate }}
                         </label>
-                        <div class="label-value-container" ng-if="dataModel.updateMutualSecret">
-                            <label class="label">{{ 'add-host-mutual-chap-secret' | translate }}</label>
-                            <input type="password" class="form-control" ng-model="dataModel.chap.mutualChapSecret">
-                        </div>
+                        <ng-container ng-if="dataModel.chap.updateMutualCredential">
+                            <div class="label-value-container">
+                                <label class="label">{{ 'New Mutual Chap User' || 'update-host-mutual-chap-user' | translate }}</label>
+                                <input class="form-control" ng-model="dataModel.chap.mutualUser">
+                            </div>
+                            <div class="label-value-container">
+                                <label class="label">{{ 'New Mutual Chap Secret' || 'update-host-mutual-chap-secret' | translate }}</label>
+                                <input type="password" class="form-control" ng-model="dataModel.chap.mutualSecret">
+                            </div>
+                        </ng-container>
                     </ng-container>
 
                 </ng-container>

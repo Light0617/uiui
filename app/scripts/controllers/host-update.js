@@ -36,22 +36,66 @@ angular.module('rainierApp')
         }
 
         function generateChap(host) {
+            if (host.protocol !== 'ISCSI') {
+                return undefined;
+            }
             return {
-                chapUser: host.chapUser,
-                mutualUser: host.mutualChapUser,
                 chapEnabled: !_.isEmpty(host.chapUser),
                 mutualEnabled: !_.isEmpty(host.mutualChapUser),
+                chapUser: host.chapUser,
+                mutualUser: host.mutualChapUser,
                 chapSecret: '',
-                mutualChapSecret: ''
+                mutualSecret: '',
+                updateChapCredential: _.isEmpty(host.chapUser),
+                updateMutualCredential: _.isEmpty(host.mutualChapUser)
             };
         }
+
+        var chapPayload = function (chap) {
+            // CHAP PAYLOAD RULES
+            //1. DISABLE CHAP > empty object
+            //2. ENABLE BUT KEEP CREDENTIAL > undefined (null)
+            //3. ENABLE AND UPDATE CREDENTIAL > fill object with userName and secret
+            //4. IF CHAP IS DISABLED, MUTUAL CHAP SHOULD BE DISABLED
+
+            if (!chap.chapEnabled) {
+                return {
+                    chapUser: {},
+                    mutualChapUser: {}
+                };
+            }
+
+
+            var result = {};
+
+            if (chap.updateChapCredential) {
+                result.chapUser = {
+                    userName: chap.chapUser,
+                    secret: chap.chapSecret
+                };
+            }
+
+            if (!chap.mutualEnabled) {
+                result.mutualChapUser = {};
+                return result;
+            }
+
+            if (chap.updateMutualCredential) {
+                result.mutualChapUser = {
+                    userName: chap.mutualUser,
+                    secret: chap.mutualSecret
+                };
+            }
+
+            return result;
+        };
+
 
         orchestratorService.host(hostId).then(function (result) {
 
             $scope.dataModel = {
                 chap: generateChap(result),
-                updateChapSecret: false,
-                updateMutualSecret: false,
+                originalChap: generateChap(result),
                 protocol: result.protocol,
                 originalHost: result,
                 updatedHostName: result.serverName,
@@ -67,11 +111,19 @@ angular.module('rainierApp')
                 requireSelection: false,
                 osTypes: constantService.osType(),
                 isValid: function () {
-                    return !_.isEmpty(this.updatedHostName) && !_.isEmpty(this.updatedOsType) && !_.isEmpty(this.updatedEndPoints) && (result.serverName !== $scope.dataModel
-                            .updatedHostName || result.description !== $scope.dataModel.updatedDescription || result.ipAddress !== $scope.dataModel.updatedIpAddress ||
-                        result.osType !== $scope.dataModel.updatedOsType ||
+                    var valid = !_.isEmpty(this.updatedHostName) &&
+                        !_.isEmpty(this.updatedOsType) &&
+                        !_.isEmpty(this.updatedEndPoints) &&
+                        validChap($scope.dataModel.chap, $scope.dataModel.originalChap);
+
+                    var different = differentEndPoints($scope.dataModel.originalHost.endPoints, $scope.dataModel.updatedEndPoints) ||
                         hasValueEndPoint($scope.dataModel.addedEndPoints) ||
-                        differentEndPoints($scope.dataModel.originalHost.endPoints, $scope.dataModel.updatedEndPoints));
+                        differentChapPayload($scope.dataModel.chap, $scope.dataModel.originalChap) ||
+                        result.serverName !== $scope.dataModel.updatedHostName ||
+                        result.description !== $scope.dataModel.updatedDescription ||
+                        result.ipAddress !== $scope.dataModel.updatedIpAddress ||
+                        result.osType !== $scope.dataModel.updatedOsType;
+                    return valid && different;
                 },
                 deleteEndPoint: function (index) {
                     $scope.dataModel.addedEndPoints.splice(index, 1);
@@ -80,6 +132,8 @@ angular.module('rainierApp')
                     $scope.dataModel.addedEndPoints.splice(0, 0, {value: ''});
                 }
             };
+
+            $scope.chapPayload = chapPayload;
 
             $scope.updateHost = function () {
                 if (!$scope.dataModel.isValid()) {
@@ -116,7 +170,51 @@ angular.module('rainierApp')
 
             return false;
         }
-        
+
+        function differentChapPayload(after, before) {
+            if (_.isUndefined(after) && _.isUndefined(before)) {
+                return false;
+            }
+
+            if (
+                (after.chapEnabled && after.updateChapCredential) ||
+                (after.chapEnabled && after.mutualEnabled && after.updateMutualCredential)
+            ) {
+                return true;
+            }
+            return !_.isEqual($scope.chapPayload(after), chapPayload(before));
+
+        }
+
+        function validChap(chap) {
+            if (_.isUndefined(chap)) {
+                return true;
+            }
+            if (chap.chapEnabled && _.isEmpty(chap.chapUser)) {
+                return false;
+            }
+
+            if (
+                chap.chapEnabled && chap.updateChapCredential &&
+                (_.isEmpty(chap.chapUser) || _.isEmpty(chap.chapSecret))
+            ) {
+                return false;
+            }
+
+            if (
+                chap.chapEnabled && chap.mutualEnabled && chap.updateMutualCredential &&
+                (_.isEmpty(chap.mutualUser) || _.isEmpty(chap.mutualSecret))
+            ) {
+                return false;
+            }
+
+            if (chap.chapEnabled && chap.mutualEnabled && chap.updateMutualCredential && _.isEmpty(chap.mutualSecret)) {
+                return false;
+            }
+
+            return true;
+        }
+
         function postFibreEndPoint(hostId, endPointPayload) {
             // In UI, when users want to update the attached volumes, we also update the zones.
             return orchestratorService.updateHostWwn(hostId, {
@@ -127,10 +225,12 @@ angular.module('rainierApp')
         }
 
         function postIscsiEndPoint(hostId, endPointPayload) {
+            var chapPayload = $scope.chapPayload($scope.dataModel.chap);
             return orchestratorService.updateHostIscsi(hostId, {
                 updateAttachedVolumes: $scope.dataModel.applyChangesToAttachedVolumes,
-                iscsiNameUpdates: endPointPayload
-                // TODO impl for chap auth
+                iscsiNameUpdates: endPointPayload,
+                chapUser: chapPayload.chapUser,
+                mutualChapUser: chapPayload.mutualChapUser
             });
         }
 
@@ -178,11 +278,7 @@ angular.module('rainierApp')
                 }
             }
 
-            if (endPointDiffPayload.length > 0) {
-                return invokeEndPointPost(hostId, endPointDiffPayload);
-            }
-            return Promise.resolve();
-
+            return invokeEndPointPost(hostId, endPointDiffPayload);
         }
 
         function updateHostFields() {
