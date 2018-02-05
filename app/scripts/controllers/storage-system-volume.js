@@ -159,7 +159,7 @@ angular.module('rainierApp')
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = true;
             }
-            return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotExtendableAndRGNameExisting(volumeId, storageSystemId);
+            return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotOnSnapAndRGNameExisting(volumeId, storageSystemId);
         }).then(function (result) {
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {

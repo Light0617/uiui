@@ -252,7 +252,6 @@ angular.module('rainierApp')
                 return replicationGroup.targetPoolId !== $scope.dataModel.targetSnapshotPool.storagePoolId;
             }
 
-            $scope.isSnap = replicationService.isSnap;
             $scope.isSnapShotType = replicationService.isSnapShotType;
             $scope.isClone = replicationService.isClone;
 
