@@ -21,6 +21,7 @@ angular.module('rainierApp')
         $scope.hourIntervalValidation = false;
         $scope.allUseExisting = false;
         $scope.arrayUseExisting = {};
+        $scope.arraySupportSnapOnSnapCreation = {};
         $scope.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
         $scope.decimalNumberRegexp = /^[^.]+$/;
         $scope.orderByField = 'volumeId';
@@ -61,6 +62,9 @@ angular.module('rainierApp')
                 });
                 _.forEach(storageSystems, function (storageSystem) {
                     $scope.arrayUseExisting[storageSystem.storageSystemId] = false;
+                    $scope.arraySupportSnapOnSnapCreation[storageSystem.storageSystemId] =
+                        storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
+                            storageSystem.model, storageSystem.firmwareVersion);
                 });
             }, function () {
                 window.history.back();
@@ -89,6 +93,7 @@ angular.module('rainierApp')
             var MONTHLY_KEY = 'MONTHLY';
             var WEEKLY_KEY = 'WEEKLY';
             var SNAPSHOT = replicationService.rawTypes.SNAP;
+            var SNAP_ON_SNAP = replicationService.rawTypes.SNAP_ON_SNAP;
             var CLONE = replicationService.rawTypes.CLONE;
             var date = new Date();
 
@@ -531,7 +536,7 @@ angular.module('rainierApp')
                                 comments: comments,
                                 consistent: consistencyGroupNeeded
                             };
-                            snapshotCreatePayload.type = SNAPSHOT;
+                            snapshotCreatePayload.type = $scope.arraySupportSnapOnSnapCreation[ss] === false ? SNAPSHOT : SNAP_ON_SNAP;
                             snapshotCreatePayload.numberOfCopies = $scope.dataModel.numberOfCopiesInput;
                             snapshotCreatePayload.primaryVolumeIds = primaryVolumeIdsForCreate;
                             snapshotCreatePayload.schedule =

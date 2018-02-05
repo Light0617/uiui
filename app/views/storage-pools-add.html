@@ -36,7 +36,7 @@
                             <option value="">Pool Type</option>
                         </select>
                     </div>
-                    <div class="form-group" ng-if="model.wizardType === 'basic'">
+                    <div class="form-group" ng-if="model.wizardType === 'basic' && model.isSupportDpTiIntegration === false">
                         <label for="pool-type">{{ 'storage-pools-basic-question' | translate}}</label>
     
                         <div id="pool-type" class="btn-group btn-group-toggle-black btn-group-justified">
