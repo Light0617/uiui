@@ -496,8 +496,7 @@
     "storage-system-delete-zero-selected": "Select at least one storage system for deletion!",
     "storage-system-onboarding-prompt": "There is no storage system. Onboard the storage system by clicking the button below:",
     "storage-system-launch-hdvm": "Launch HDvM-SN",
-    "storage-system-launch-hsae-1": "Launch Storage Advisor Embedded (CTL1)",
-    "storage-system-launch-hsae-2": "Launch Storage Advisor Embedded (CTL2)",
+    "storage-system-launch-hsae": "Launch Storage Advisor Embedded",
     "storage-system-launch-smu": "Launch HNAS SMU",
     "storage-system-settings": "Initial Setup Wizard (Settings)",
     "storage-systems-update": "Update Storage System",
@@ -526,6 +525,11 @@
     "common-api-get-message": "Failed to get data from API. Try again.",
     "job-started-title": "Job Started: ",
     "resource-tracker-error-message": "One or more requested resources are being worked on by currently running Jobs. Do you want to proceed?",
+    "navigator-session-loding": "Loading storage navigator...",
+
+    "hsae-session-modal-error": "Storage Advisor Embedded is not accessible. Please verify network connectivity and credentials used to onboard Storage System.",
+    "hsae-session-html-error": "Storage Advisor Embedded is not accessible. Please close this page and verify network connectivity and credentials used to onboard Storage System.",
+    "hsae-session-loding": "Loading storage advisor embedded...",
 
     "host-filter-provisioned": "Provisioned",
     "host-filter-not-provisioned": "Not Provisioned",
