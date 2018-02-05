@@ -15,7 +15,8 @@ angular.module('rainierApp')
                             // Update the url of the opened tab with storage navigator session url
                             var url = result.launchServletUrl;
                             redirectWindow.location.href = url;
-                        }, function (error) {
+                        }, function () {
+                            // Currently always show network error.
                             redirectWindow.document.body.innerText = synchronousTranslateService.translate('hsae-session-html-error');
                             modalDialogService.showDialog('', 'hsae-session-modal-error', 'warning');
                         });
