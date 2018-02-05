@@ -25,7 +25,7 @@ angular.module('rainierApp')
 
                             // Open a pop-up message if not configure encryption key
                             if (sessionPageScope !== 'encryption-keys') {
-                                showDialog('', 'navigator-session-message', 'information');
+                                modalDialogService.showDialog('', 'navigator-session-message', 'information');
                             }
                         }, function (error) {
                             if (error.status === 403) {
