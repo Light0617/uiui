@@ -527,7 +527,6 @@
     "common-api-get-message": "Failed to get data from API. Try again.",
     "job-started-title": "Job Started: ",
     "resource-tracker-error-message": "One or more requested resources are being worked on by currently running Jobs. Do you want to proceed?",
-    "navigator-session-loading": "Loading Storage Navigator...",
 
     "hsae-session-modal-error": "Storage Advisor Embedded is not accessible. Please verify network connectivity.",
     "hsae-session-html-error": "Storage Advisor Embedded is not accessible. Please close this page and verify network connectivity.",
