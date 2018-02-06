@@ -789,6 +789,26 @@
     "host-update-apply-change": "Apply changes to attached volumes",
     "host-update-confirmation-title": "Update Servers Confirmation",
     "host-update-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. If there are zones on the fabric switches that were created automatically by HSA, these zones will also be updated (manually created zones will not be affected). Are you sure you want to proceed?",
+    "host-update-server-name": "Server Name",
+    "host-update-description": "Description",
+    "host-update-ip-address": "IP Address",
+    "host-update-os-type": "OS Type",
+
+    "host-update-existing-iscsi": "Modify Existing iSCSI Names",
+    "host-update-iscsi-name": "iSCSI Name",
+    "host-update-add-iscsi-names": "Add New iSCSI Names",
+
+    "host-update-chap-settings": "Chap Settings",
+    "host-update-chap-auth": "Chap Auth",
+    "host-update-chap-credential": "Update Chap Credential",
+    "host-update-chap-user": "New Chap User",
+    "host-update-chap-secret": "New Chap Secret",
+
+    "host-update-mutual-chap-settings": "Mutual Chap Settings",
+    "host-update-mutual-chap-auth": "Mutual Chap Auth",
+    "host-update-mutual-chap-credential": "Update Mutual Chap Credential",
+    "host-update-mutual-chap-secret": "New Mutual Chap Secret",
+    "host-update-mutual-chap-user": "New Mutual Chap User",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",
