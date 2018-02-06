@@ -8,10 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ProtectVolumesCtrl', function ($scope, $routeParams, $timeout, $window, $filter, $q,
+    .controller('ProtectVolumesCtrl', function ($scope, $routeParams, $timeout, $window, $filter, $q, $modal,
                                                 orchestratorService, diskSizeService, ShareDataService, replicationService,
                                                 cronStringConverterService, paginationService, objectTransformService,
-                                                synchronousTranslateService, storageSystemCapabilitiesService) {
+                                                synchronousTranslateService, storageSystemCapabilitiesService, storageSystemVolumeService) {
 
         $scope.numberOfSnapshotsValidation = false;
         $scope.copyGroupNameValidation = false;
@@ -22,6 +22,7 @@ angular.module('rainierApp')
         $scope.allUseExisting = false;
         $scope.arrayUseExisting = {};
         $scope.arraySupportSnapOnSnapCreation = {};
+        $scope.volumeExistingProtectionTypeAsPVol = {};
         $scope.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
         $scope.decimalNumberRegexp = /^[^.]+$/;
         $scope.orderByField = 'volumeId';
@@ -41,6 +42,23 @@ angular.module('rainierApp')
         var storageSystemIds = _.uniq(_.pluck(volumesList, 'storageSystemId'));
 
         var allCopyGroups = {};
+
+        var getProtectionTypeAsPVolTasks = _.forEach(volumesList, function(volume) {
+            var storageSystemId = volume.storageSystemId;
+            var volumeId = volume.volumeId;
+
+            var protectionTypesAsPvol = [];
+            storageSystemVolumeService.getVolumePairsAsPVol(null, volumeId, storageSystemId).then(function (result) {
+                protectionTypesAsPvol = _.map(result.resources, function(volumePair) {
+                    return volumePair.type;
+                });
+
+                if (!(storageSystemId in $scope.volumeExistingProtectionTypeAsPVol)) {
+                    $scope.volumeExistingProtectionTypeAsPVol[storageSystemId] = {};
+                }
+                $scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId] = _.uniq(protectionTypesAsPvol);
+            });
+        });
 
         var getReplicationTasks = _.map(storageSystemIds, function (storageSystemId) {
             return paginationService.getAllPromises(null, 'replication-groups', true, storageSystemId,
@@ -81,7 +99,7 @@ angular.module('rainierApp')
             });
         });
 
-        var tasks = getReplicationTasks.concat(getPoolsTasks.concat(getStorageSystemsTask));
+        var tasks = getProtectionTypeAsPVolTasks.concat(getReplicationTasks.concat(getPoolsTasks.concat(getStorageSystemsTask)));
         $q.all(tasks).then(function () {
             initPage();
         });
@@ -179,8 +197,14 @@ angular.module('rainierApp')
 
                 if (replicationService.isSnap(technology)) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
+                        var existingProtectionTypesAsPvol = $scope.volumeExistingProtectionTypeAsPVol[volume.storageSystemId][volume.volumeId];
+                        var isSnapOnSnapCreationSupported = $scope.arraySupportSnapOnSnapCreation[volume.storageSystemId];
                         volume.copyGroupNames = _.where(allCopyGroups[volume.storageSystemId], function (cg) {
-                            return (replicationService.isSnapShotType(cg.type)) &&
+                            var isCopyGroupTypeMatch = _.every(existingProtectionTypesAsPvol, function(type){
+                                    return replicationService.displayReplicationType(type) === cg.type;
+                                }) && (isSnapOnSnapCreationSupported === false ?
+                                    replicationService.isSnap(cg.type) : replicationService.isSnapShotType(cg.type));
+                            return isCopyGroupTypeMatch &&
                                 (consistencyGroupNeeded === cg.consistent) &&
                                 (!_.isFinite(numberOfCopiesInput) || numberOfCopiesInput === cg.numberOfCopies) &&
                                 (_.isEmpty(scheduleString) || cronStringConverterService.isEqualForObjectModel(scheduleString, cg.schedule));
@@ -443,6 +467,78 @@ angular.module('rainierApp')
                     isEmpty(volumeRow.CGSelection));
             };
 
+            var getAvailableSnapTypesForCreate = function (storageSystemId, primaryVolumeIdsForCreate) {
+                /**
+                 * Return available snap shot types for the specified volumes.
+                 * Return empty if no available snap shot types can be found.
+                 */
+                var isSnapOnSnapCreationSupported = $scope.arraySupportSnapOnSnapCreation[storageSystemId];
+                var availableSnapTypes = isSnapOnSnapCreationSupported === true ? [SNAPSHOT, SNAP_ON_SNAP] : [SNAPSHOT];
+                var existingSnapTypes =
+                    _.chain(primaryVolumeIdsForCreate).map(function(volumeId) {
+                        return $scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId];
+                    }).reject(function(type) {
+                        return type === CLONE;
+                    }).flatten().uniq().value();
+
+                if (existingSnapTypes.length > 1) {
+                    return [];
+                } else if (existingSnapTypes.length === 1) {
+                    if (_.contains(availableSnapTypes, existingSnapTypes[0])) {
+                        return existingSnapTypes;
+                    } else {
+                        return [];
+                    }
+                } else {
+                    return availableSnapTypes;
+                }
+            };
+
+            var getSuitableSnapTypesForCreate = function (storageSystemId, availableSnapTypes) {
+                /**
+                 * Return suitable snap shot types for the specified storageSystem.
+                 * Return null if no snap shot types suitable.
+                 */
+                var isSnapOnSnapCreationSupported = $scope.arraySupportSnapOnSnapCreation[storageSystemId];
+                return (isSnapOnSnapCreationSupported === true && _.contains(availableSnapTypes, SNAP_ON_SNAP)) ? SNAP_ON_SNAP :
+                    _.contains(availableSnapTypes, SNAPSHOT) ? SNAPSHOT : null;
+            };
+
+            var popUpCreateReplicationGroupError = function (storageSystemId, primaryVolumeIdsForCreate) {
+                var modelInstance = $modal.open({
+                    templateUrl: 'views/templates/error-modal.html',
+                    windowClass: 'modal fade confirmation',
+                    backdropClass: 'modal-backdrop',
+                    controller: function ($scope) {
+                        $scope.error = {};
+                        $scope.error.message = (function (key) {
+                            var variable = {
+                                volumeIds: primaryVolumeIdsForCreate
+                            };
+                            return synchronousTranslateService.translate(key, variable);
+                        })('replication-group-can-not-create-multiple-replication-types-message');
+                        $scope.cancel = function () {
+                            modelInstance.dismiss('cancel');
+                        };
+
+                        modelInstance.result.finally(function() {
+                            $scope.cancel();
+                        });
+                    }
+                });
+            };
+
+            $scope.getExistingPairsTypeDisplayNames = function (storageSystemId, volumeId) {
+                if (_.isEmpty($scope.volumeExistingProtectionTypeAsPVol[storageSystemId]) ||
+                    _.isEmpty($scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId])) {
+                    return '';
+                } else {
+                    return _.map($scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId], function(type) {
+                            return replicationService.displayReplicationType(type);
+                        }).join(',');
+                }
+            };
+
             $scope.validationForm = {};
             $scope.submitProtectVolumes = function () {
 
@@ -515,52 +611,79 @@ angular.module('rainierApp')
                 populateArrayVolumeMap();
 
                 if ($scope.dataModel.replicationTechnology === SNAPSHOT) {
+                    var primaryVolumeIdsForCreateForStorages = {};
+                    var replicationGroupIdVolumeIdMapForStorages = {};
+                    var suitableSnapShotTypesForCreateForStorages = {};
+                    // Check all create new submittable
+                    for (var storageSystemId in $scope.arrayVolumeMap) {
+                        if (!$scope.arrayVolumeMap.hasOwnProperty(storageSystemId)) {
+                            continue;
+                        }
+                        primaryVolumeIdsForCreateForStorages[storageSystemId] = [];
+                        replicationGroupIdVolumeIdMapForStorages[storageSystemId] = {};
+                        suitableSnapShotTypesForCreateForStorages[storageSystemId] = '';
+
+                        for (var volume in $scope.arrayVolumeMap[storageSystemId]) {
+                            if ($scope.arrayVolumeMap[storageSystemId].hasOwnProperty(volume)) {
+                                if ($scope.arrayVolumeMap[storageSystemId][volume] === 'Use New') {
+                                    primaryVolumeIdsForCreateForStorages[storageSystemId].push(parseInt(volume));
+                                } else if (volume) {
+                                    var volumeIds = replicationGroupIdVolumeIdMapForStorages[storageSystemId][parseInt($scope.arrayVolumeMap[storageSystemId][volume])] || [];
+                                    volumeIds.push(parseInt(volume));
+                                    replicationGroupIdVolumeIdMapForStorages[storageSystemId][parseInt($scope.arrayVolumeMap[storageSystemId][volume])] = volumeIds;
+                                }
+                            }
+                        }
+
+                        if (!_.isEmpty(primaryVolumeIdsForCreateForStorages[storageSystemId])) {
+                            var availableSnapShotTypesForCreate = getAvailableSnapTypesForCreate(storageSystemId, primaryVolumeIdsForCreateForStorages[storageSystemId]);
+                            suitableSnapShotTypesForCreateForStorages[storageSystemId] = getSuitableSnapTypesForCreate(storageSystemId, availableSnapShotTypesForCreate);
+                            if (_.isEmpty(availableSnapShotTypesForCreate) || _.isNull(suitableSnapShotTypesForCreateForStorages[storageSystemId])) {
+                                // Halt submit if any of replication group can not be created.
+                                popUpCreateReplicationGroupError(storageSystemId, primaryVolumeIdsForCreateForStorages[storageSystemId]);
+                                return;
+                            }
+                        }
+                    }
+
                     var snapshotTasks = [];
                     for (var ss in $scope.arrayVolumeMap) {
-                        var primaryVolumeIdsForCreate = [];
-                        var replicationGroupIdVolumeIdMap = {};
-                        if ($scope.arrayVolumeMap.hasOwnProperty(ss)) {
-                            for (var volume in $scope.arrayVolumeMap[ss]) {
-                                if ($scope.arrayVolumeMap[ss].hasOwnProperty(volume)) {
-                                    if ($scope.arrayVolumeMap[ss][volume] === 'Use New') {
-                                        primaryVolumeIdsForCreate.push(parseInt(volume));
-                                    } else if (volume) {
-                                        var volumeIds = replicationGroupIdVolumeIdMap[parseInt($scope.arrayVolumeMap[ss][volume])] || [];
-                                        volumeIds.push(parseInt(volume));
-                                        replicationGroupIdVolumeIdMap[parseInt($scope.arrayVolumeMap[ss][volume])] = volumeIds;
-                                    }
-                                }
-                            }
-                            var snapshotCreatePayload = {
-                                name: replicationGroupName,
-                                comments: comments,
-                                consistent: consistencyGroupNeeded
-                            };
-                            snapshotCreatePayload.type = $scope.arraySupportSnapOnSnapCreation[ss] === false ? SNAPSHOT : SNAP_ON_SNAP;
-                            snapshotCreatePayload.numberOfCopies = $scope.dataModel.numberOfCopiesInput;
-                            snapshotCreatePayload.primaryVolumeIds = primaryVolumeIdsForCreate;
-                            snapshotCreatePayload.schedule =
-                                cronStringConverterService.fromDatePickerToObjectModel($scope.dataModel.schedule,
-                                    $scope.dataModel.scheduleTime, $scope.dataModel.scheduleDate, getDaysStr(),
-                                    $scope.dataModel.hourInterval, $scope.dataModel.scheduleMinute);
+                        if (!$scope.arrayVolumeMap.hasOwnProperty(ss)) {
+                            continue;
+                        }
+                        var primaryVolumeIdsForCreate = primaryVolumeIdsForCreateForStorages[ss];
+                        var replicationGroupIdVolumeIdMap = replicationGroupIdVolumeIdMapForStorages[ss];
+                        var suitableSnapShotTypesForCreate = suitableSnapShotTypesForCreateForStorages[ss];
 
-                            if (!_.isEmpty(snapshotCreatePayload.primaryVolumeIds)) {
-                                snapshotTasks.push(orchestratorService.createReplicationGroup(ss, snapshotCreatePayload));
-                            }
+                        var snapshotCreatePayload = {
+                            name: replicationGroupName,
+                            comments: comments,
+                            consistent: consistencyGroupNeeded
+                        };
+                        snapshotCreatePayload.type = suitableSnapShotTypesForCreate;
+                        snapshotCreatePayload.numberOfCopies = $scope.dataModel.numberOfCopiesInput;
+                        snapshotCreatePayload.primaryVolumeIds = primaryVolumeIdsForCreate;
+                        snapshotCreatePayload.schedule =
+                            cronStringConverterService.fromDatePickerToObjectModel($scope.dataModel.schedule,
+                                $scope.dataModel.scheduleTime, $scope.dataModel.scheduleDate, getDaysStr(),
+                                $scope.dataModel.hourInterval, $scope.dataModel.scheduleMinute);
 
-                            for (var rg in replicationGroupIdVolumeIdMap) {
-                                if (replicationGroupIdVolumeIdMap.hasOwnProperty(rg)) {
-                                    snapshotTasks.push(orchestratorService.protectVolumes(parseInt(ss),
-                                        parseInt(rg), {primaryVolumeIds: replicationGroupIdVolumeIdMap[rg]}));
-                                }
-                            }
+                        if (!_.isEmpty(snapshotCreatePayload.primaryVolumeIds)) {
+                            snapshotTasks.push(orchestratorService.createReplicationGroup(ss, snapshotCreatePayload));
+                        }
 
-                            for (var i = 0; i < $scope.dataModel.arraySnapshotPooList.length; i++) {
-                                var snapshotPool = $scope.dataModel.arraySnapshotPooList[i];
-                                if (!_.isEmpty(snapshotPool) && snapshotPool.storageSystemId === ss) {
-                                    snapshotCreatePayload.targetPoolId = snapshotPool.selectedPool.storagePoolId;
-                                    break;
-                                }
+                        for (var rg in replicationGroupIdVolumeIdMap) {
+                            if (replicationGroupIdVolumeIdMap.hasOwnProperty(rg)) {
+                                snapshotTasks.push(orchestratorService.protectVolumes(parseInt(ss),
+                                    parseInt(rg), {primaryVolumeIds: replicationGroupIdVolumeIdMap[rg]}));
+                            }
+                        }
+
+                        for (var i = 0; i < $scope.dataModel.arraySnapshotPooList.length; i++) {
+                            var snapshotPool = $scope.dataModel.arraySnapshotPooList[i];
+                            if (!_.isEmpty(snapshotPool) && snapshotPool.storageSystemId === ss) {
+                                snapshotCreatePayload.targetPoolId = snapshotPool.selectedPool.storagePoolId;
+                                break;
                             }
                         }
                     }

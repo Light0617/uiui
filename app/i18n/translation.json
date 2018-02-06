@@ -953,6 +953,8 @@
     "replication-group-actions-restore-confirmation-title": "Restore Volume Pairs Confirmation",
     "replication-group-actions-restore-confirmation-message": "The selected primary volumes will be restored by using corresponding secondary volumes. Do you want to continue?",
     "replication-group-description-for-target-pool": "Note: For volumes which already have one or more snapshots, new snapshots will be stored in the same pool as existing snapshots.",
+    "replication-group-can-not-create-multiple-replication-types-message": "Can not create a replication group. Confirm that all existing pairs of selected volumes {{volumeIds}} have a same replication type, and the type is 'Snap' or 'Snap on Snap'.",
+    "existing-replication-types": "Existing replication types",
     "restore-confirmation-message": "Select from the following secondary volumes to restore current primary volume:",
     "product-name": "Hitachi Storage Advisor",
     "product-copy-right": "© {{getCurrentYear()}} Hitachi, Ltd. All rights reserved.",

@@ -294,7 +294,7 @@
                 <div class="list-view content-grow-vertically">
                     <label>{{'volumes-to-be-protected' | translate }}</label>
                     <div class="row-tile column-headers">
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin"
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell col-margin"
                              ng-click="orderByField='volumeId'; reverseSort = !reverseSort">
                             <a class="sort-column-header">{{'external-parity-group-id' | translate}}<span class="caret"
                                                                    ng-show="orderByField == 'volumeId'"></span></a>
@@ -304,7 +304,7 @@
                             <a class="sort-column-header">{{'storage-volume-label' | translate}}<span class="caret"
                                                                       ng-show="orderByField == 'label'"></span></a>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin"
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell col-margin"
                              ng-click="orderByField='poolId'; reverseSort = !reverseSort">
                             <a class="sort-column-header">{{'storage-pool-id' | translate}}<span class="caret"
                                                                         ng-show="orderByField == 'poolId'"></span></a>
@@ -314,11 +314,16 @@
                             <a class="sort-column-header">{{'storage-system-id' | translate}}<span class="caret"
                                                                                   ng-show="orderByField == 'storageSystemId'"></span></a>
                         </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell col-margin"
+                             ng-click="orderByField='existingReplicationTypes'; reverseSort = !reverseSort">
+                            <a class="sort-column-header">{{'existing-replication-types' | translate}}<span class="caret"
+                                                                                                   ng-show="orderByField == 'existingReplicationTypes'"></span></a>
+                        </div>
                     </div>
                     <div class="row-grey"
                          ng-repeat="volumeRow in dataModel.volumeRows | orderBy:orderByField:reverseSort" track by
                          volumeRow.volumeId>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
                             <input type="text" ng-disabled=true class="form-control text inline" name="volumeId"
                                    title="{{volumeRow.volumeId}}" ng-model="volumeRow.volumeId"
                                    value="volumeRow.volumeId">
@@ -329,7 +334,7 @@
                                    name="volumeLabel" title="{{volumeRow.label}}"
                                    value="volumeRow.label">
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">
                             <input type="text" ng-model="volumeRow.poolId" ng-disabled=true
                                    class="form-control text inline"
                                    name="poolId" title="{{volumeRow.poolId}}" value="volumeRow.poolId">
@@ -337,8 +342,15 @@
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
                             <input type="text" ng-model="volumeRow.storageSystemId" ng-disabled=true
                                    class="form-control text inline"
-                                   name="storageSystemId" title="{{volumeRow.storageSystemId}}"
+                                   name="storageSystemId" title="{{}}"
                                    value="volumeRow.storageSystemId">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
+                            <input type="text" ng-model="getExistingPairsTypeDisplayNames(volumeRow.storageSystemId, volumeRow.volumeId)"
+                                   ng-disabled=true
+                                   class="form-control text inline"
+                                   name="storageSystemId" title="{{getExistingPairsTypeDisplayNames(volumeRow.storageSystemId, volumeRow.volumeId)}}"
+                                   value="getExistingPairsTypeDisplayNames(volumeRow.storageSystemId, volumeRow.volumeId)">
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell control"
                              ng-if="dataModel.showDropDownColumn">
