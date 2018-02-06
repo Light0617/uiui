@@ -371,7 +371,7 @@ angular.module('rainierApp')
             });
 
             _.forEach(hostGroups, function(hostGroup) {
-                for (i = 0; i < hostGroup.hbaWwns.length; ++i) {
+                for (i = 0; i < hostGroup.hbaWwns && hostGroup.hbaWwns.length; ++i) {
                     if (serverWwnMap.hasOwnProperty(hostGroup.hbaWwns[i])) {
                         foundMatch = false;
                         for (j = 0; j < hostGroup.luns.length; ++j) {

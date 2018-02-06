@@ -82,7 +82,7 @@ angular.module('rainierApp')
                     attachVolumeService.setEditLunPage(
                         $scope.dataModel, storageSystemId,
                         selectedVolumes,
-                        $scope.dataModel.attachModel.serverPortMapperModel.servers,
+                        selectedServers,
                         attachVolumeService.getSelectedHostMode($scope.dataModel),
                         ports,
                         $scope.dataModel.attachModel.hostGroups);
@@ -164,7 +164,6 @@ angular.module('rainierApp')
                         return;
                     }
 
-                    dataModel.attachModel.serverPortMapperModel = viewModelService.newServerPortMapperModel(dataModel.attachModel.storagePorts, selectedServers);
                     setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode, dataModel.attachModel.storagePorts);
                     dataModel.goNext();
                 },
