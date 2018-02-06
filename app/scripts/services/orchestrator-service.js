@@ -197,6 +197,12 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            storageAdvisorEmbeddedUrl: function (storageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('storage-advisor-emb-resource')
+                    .get().then(function (result) {
+                        return result;
+                    }));
+            },
             deleteStorageSystem: function (storageSystemId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).remove());
             },

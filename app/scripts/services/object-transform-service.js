@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService, commonConverterService, volumeService) {
+                                                 constantService, commonConverterService, volumeService,
+                                                 storageAdvisorEmbeddedSessionService) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -139,11 +140,6 @@ angular.module('rainierApp')
             }
         }
 
-        function transformHsaEmbeddedLaunchUrl(item) {
-            item.hsaEmbeddedLaunchUrlForGum1 = ['https://', item.gum1IpAddress].join('');
-            item.hsaEmbeddedLaunchUrlForGum2 = ['https://', item.gum2IpAddress].join('');
-        }
-
         function transformStorageSystemSettings(item) {
             var result = [];
 
@@ -151,16 +147,7 @@ angular.module('rainierApp')
                 item.storageSystemId, sessionScopeEncryptionKeys));
 
             if (constantService.isHM850Series(item.model)) {
-                result.push({
-                    type: 'hyperlink',
-                    title: 'storage-system-launch-hsae-1',
-                    href: item.hsaEmbeddedLaunchUrlForGum1
-                });
-                result.push({
-                    type: 'hyperlink',
-                    title: 'storage-system-launch-hsae-2',
-                    href: item.hsaEmbeddedLaunchUrlForGum2
-                });
+                result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
             }
 
             result.push({
@@ -177,7 +164,6 @@ angular.module('rainierApp')
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
                 transformHdvmSnLaunchUrl(item);
-                transformHsaEmbeddedLaunchUrl(item);
 
                 item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
                 item.metaData = [
