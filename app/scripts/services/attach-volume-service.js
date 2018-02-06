@@ -28,6 +28,17 @@ angular.module('rainierApp')
             }
         }
 
+        function setSourcePortCoordinates(storagePorts, idCoordinates) {
+            for (var i =0; i< storagePorts.length; ++i){
+                var point = {
+                    x: 232,
+                    y: 10 + i * 25
+                };
+                storagePorts[i].coordinate = point;
+                idCoordinates[storagePorts[i].storagePortId] = point;
+            }
+        }
+
         function getAllHostModeOptionsString(hostModeOptions) {
             var allHostModeOptionString = '';
             _.forEach(hostModeOptions, function(hostModeOption) {
@@ -528,11 +539,14 @@ angular.module('rainierApp')
             getMatchedHostMode: getMatchedHostMode,
             setEditLunPage: setEditLunPage,
             getAllHostModeOptionsString: getAllHostModeOptionsString,
+            getPath: getPath,
             createPath: createPath,
             getViewBoxHeight: getViewBoxHeight,
             getMatchHostGroups: getMatchHostGroups,
             invokeServerProtocolCheckAndOpen: invokeServerProtocolCheckAndOpen,
             setEnableZoningFn: setEnableZoningFn,
-            setEndPointCoordinates: setEndPointCoordinates
+            setEndPointCoordinates: setEndPointCoordinates,
+            setPortCoordiantes: setPortCoordinates,
+            setSourcePortCoordinates: setSourcePortCoordinates
         };
     });

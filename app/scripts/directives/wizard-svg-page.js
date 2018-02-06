@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .directive('wizardSvgPage', function ($timeout, d3service, wwnService, attachVolumeService, orchestratorService,$modal) {
 
         var builder;
-        var selectedColor = '#265cb3';
+        var selectedColor = '#00b3a2';
         var unselectedColor = '#c0d667';
         var highlightedColor = 'orange';
         var originalPortColor = 'black';
@@ -20,18 +20,20 @@ angular.module('rainierApp')
         var autoSelect = 'AUTO';
         var MULTI_SELECTED = -1;
         var svg;
+        var linkScope;
 
         var deleteSelected = function(pathModel){
             var i;
             var path;
             for(i = 0; i< pathModel.paths.length; i++) {
                 path = pathModel.paths[i];
+                console.log('The path to be deleted is : ', path);
                 if (path.selected === true && path.deleted !== true && !path.isVsmPort){
                     path.deleted = true;
-
                     d3.select('path[path-index="' + i + '"]').remove();
                 }
             }
+            //pathModel.paths = _.reject(pathModel.paths, function(path) { return path.selected; });
         };
 
         var selectNone = function(dataModel){
@@ -141,7 +143,7 @@ angular.module('rainierApp')
 
         function setPathAttrs(path, dataModel, isNewPath, svg){
             var selectedPath;
-            path.attr('stroke-width', 3)
+            path.attr('stroke-width', 5)
                 .attr('stroke', isNewPath ? newPathColor : unselectedColor)
                 .attr('fill', 'none')
                 .on('mouseover', function () {
@@ -378,7 +380,12 @@ angular.module('rainierApp')
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
-                    isVsmPort: port.isVsmPort
+                    //serverWwn: wwnService.removeSymbol(wwn),
+                    isVsmPort: port.isVsmPort,
+                    preVirtualizePayload: {
+                        //srcPort: wwn,
+                        targetWwn: port.wwn
+                    }
                 });
             }
 
@@ -403,7 +410,12 @@ angular.module('rainierApp')
 
         function recoverPortCircleColor(line, svg) {
             var portIndexInLine = line.attr('attr-port-index');
-            var previousPortGroup = svg.select('g[port-index="'+ portIndexInLine +'"]');
+            var previousPortGroup = svg.select('g[port-index="'+ portIndexInLine +'"]').select('g');
+            previousPortGroup.select('circle:nth-child(1)')
+                .attr('stroke', originalPortColor);
+            previousPortGroup.select('circle:nth-child(2)')
+                .attr('fill', originalPortColor);
+            previousPortGroup = svg.select('g[port-index="'+ portIndexInLine +'"][title="storage-port"').select('g');
             previousPortGroup.select('circle:nth-child(1)')
                 .attr('stroke', originalPortColor);
             previousPortGroup.select('circle:nth-child(2)')
@@ -465,7 +477,7 @@ angular.module('rainierApp')
         }
 
         builder = {
-            _buildTopologicalEditor: function (d3, selectedSvg, dataModel) {
+            _buildTopologicalEditor: function (d3, selectedSvg, dataModel, redrawLines) {
                 var circle;
                 var cx;
                 var cy;
@@ -478,9 +490,9 @@ angular.module('rainierApp')
                 var innerCircle;
                 var allPaths;
                 var g;
-                if (!d3.select('path[path-index]').empty()) {
-                    return;
-                }
+                // if (!d3.select('path[path-index]').empty()) {
+                //     return;
+                // }
                 svg = selectedSvg;
                 svg.attr('viewBox', '0, 0, 1000, ' + dataModel.pathModel.viewBoxHeight)
                     .attr('style', 'padding-bottom: ' + dataModel.pathModel.viewBoxHeight/10 + '%');
@@ -500,10 +512,11 @@ angular.module('rainierApp')
                     }
                 });
 
-                allPaths = g.selectAll('path')
-                    .data(dataModel.pathModel.paths.filter(function(d){
-                        return d.deleted !== true;
-                    }))
+                if(redrawLines) {
+                    allPaths = g.selectAll('path')
+                        .data(dataModel.pathModel.paths.filter(function(d){
+                            return d.deleted !== true;
+                        }))
                     .enter()
                     .append('path')
                     .attr('d', function (d){
@@ -512,6 +525,13 @@ angular.module('rainierApp')
                     .attr('path-index', function(d, i){
                         return i;
                     });
+                }
+                else {
+                    allPaths = g.selectAll('path')
+                        .data(dataModel.pathModel.paths.filter(function(d){
+                            return d.deleted !== true;
+                        }));
+                }
 
                 setPathAttrs(allPaths, dataModel, false, svg);
 
@@ -591,8 +611,7 @@ angular.module('rainierApp')
                     }
                 });
 
-                svg.selectAll('g[title="storage-port"]')
-                    .on('click', function(){
+                svg.selectAll('g[title="storage-port"]').on('click', function(){
                         var excludedIndex;
                         portGroup = d3.select(this);
                         portIndex = parseInt(portGroup.attr('port-index'));
@@ -689,29 +708,37 @@ angular.module('rainierApp')
             link: function postLink(scope) {
                 scope.displayWwn = wwnService.appendColon;
                 scope.ellipsis = ellipsis;
+                linkScope = scope;
                 scope.dataModel.pathModel.deleteSelected = deleteSelected;
                 scope.dataModel.pathModel.selectNone = selectNone;
                 scope.dataModel.pathModel.showSuggest = showSuggest;
+                scope.dataModel.pathModel.builder = function() {
+                    d3service.d3().then(function(d3) {
 
-                d3service.d3().then(function (d3) {
+                        var selectedSvg = d3.select('#topology-editor');
 
-                    var selectedSvg = d3.select('#topology-editor');
+                        scope.$watch(function() {
+                            return scope.dataModel;
+                        }, function () {
+                            scope.render(scope.dataModel);
+                        }, true);
+                        scope.render = function(dataModel) {
+                            // If we don't pass any data, return out of the element
+                            if (!dataModel) {
+                                return;
+                            }
+                            builder._buildTopologicalEditor(d3, selectedSvg, dataModel);
+                        };
+                    });
+                };
+                scope.dataModel.pathModel.builder();
+                scope.dataModel.build = function(redrawLines) {
+                    d3service.d3().then(function(d3) {
+                        var selectedSvg = d3.select('#topology-editor');
+                        builder._buildTopologicalEditor(d3, selectedSvg, linkScope.dataModel, redrawLines);
+                    });
+                };
 
-                    scope.$watch(function () {
-                        return scope.dataModel;
-                    }, function () {
-                        scope.render(scope.dataModel);
-                    }, true);
-                    scope.render = function (dataModel) {
-
-                        // If we don't pass any data, return out of the element
-                        if (!dataModel) {
-                            return;
-                        }
-
-                        builder._buildTopologicalEditor(d3, selectedSvg, dataModel);
-                    };
-                });
             }
         };
     });

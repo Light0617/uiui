@@ -1,0 +1,83 @@
+<common-page-header></common-page-header>
+
+<wizard-page>
+
+    <wizard-header ng-title="'virtualize-volumes' | translate " icon-class="icon-migrate-volume"></wizard-header>
+
+    <wizard-body>
+        <wizard-advanced-stepper>
+            <wizard-advanced-stepper-button ng-title="'workflow-title-create-path-from-source' | translate"
+                                            step-completed="dataModel.isStepCompleted('selectSourcePort')"
+                                            step-active="dataModel.isStepActive('selectSourcePort')">
+            </wizard-advanced-stepper-button>
+
+            <wizard-advanced-stepper-button ng-title="'workflow-title-select-discovered-volumes' | translate"
+                                            step-completed="dataModel.isStepCompleted('selectDiscoveredVolumes')"
+                                            step-active="dataModel.isStepActive('selectDiscoveredVolumes')">
+            </wizard-advanced-stepper-button>
+
+            <wizard-advanced-stepper-button ng-title="'workflow-title-select-server' | translate"
+                                            step-completed="dataModel.isStepCompleted('selectServer')"
+                                            step-active="dataModel.isStepActive('selectServer')">
+            </wizard-advanced-stepper-button>
+
+            <wizard-advanced-stepper-button ng-title="'workflow-title-edit-lun-paths' | translate"
+                                            step-completed="dataModel.isStepCompleted('paths')"
+                                            step-active="dataModel.isStepActive('paths')">
+            </wizard-advanced-stepper-button>
+        </wizard-advanced-stepper>
+
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectSourcePort')"
+                                   ng-title="'workflow-title-create-path-from-source' | translate"
+                                   left-panel-template="views/workflow-templates/select-virtualize-volumes-left-panel.html"
+                                   right-panel-template="views/workflow-templates/select-virtualize-volumes-right-panel.html"
+                                   ng-model="dataModel"
+                                   page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
+
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectDiscoveredVolumes')"
+                                   ng-title="'workflow-title-select-discovered-volumes' | translate"
+                                   left-panel-template="views/workflow-templates/select-discovered-volumes-left-panel.html"
+                                   right-panel-template="views/workflow-templates/select-discovered-volumes-right-panel.html"
+                                   ng-model="dataModel"
+                                   filter-model="filterModel"
+                                   page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
+
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectServer')"
+                                   ng-title="'workflow-title-select-server' | translate"
+                                   left-panel-template="views/workflow-templates/select-server-left-panel.html"
+                                   right-panel-template="views/workflow-templates/select-server-right-panel.html"
+                                   ng-model="dataModel"
+                                   filter-model="filterModel"
+                                   page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
+
+        <wizard-left-right-content ng-if="dataModel.isStepActive('paths')"
+                                   ng-title="'workflow-title-create-paths' | translate"
+                                   left-panel-template="views/workflow-templates/select-path-left-panel.html"
+                                   right-panel-template="views/workflow-templates/select-path-right-panel.html"
+                                   ng-model="dataModel"
+                                   filter-model="filterModel"
+                                   page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
+
+    </wizard-body>
+
+    <wizard-footer ng-if="dataModel.isStepActive('selectSourcePort')"
+                   ng-model="dataModel.selectModel">
+    </wizard-footer>
+
+    <wizard-footer ng-if="dataModel.isStepActive('selectDiscoveredVolumes')"
+                   ng-model="dataModel.volumeDataModel">
+    </wizard-footer>
+
+    <wizard-footer ng-if="dataModel.isStepActive('selectServer')"
+                   ng-model="dataModel.serverModel">
+    </wizard-footer>
+
+    <wizard-footer ng-if="dataModel.isStepActive('paths')"
+                   ng-model="dataModel.createPathModel">
+    </wizard-footer>
+
+</wizard-page>

@@ -31,7 +31,6 @@ angular.module('rainierApp')
         replicationService,
         $timeout) {
 
-
         var selectedServers = ShareDataService.pop('selectedServers') || [];
         var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
         var INVALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-invalid-tooltip');
@@ -60,6 +59,7 @@ angular.module('rainierApp')
             }
 
             var dataModel = {
+                selectServerPath: true,
                 canSubmit: true,
                 view: 'tile',
                 selectedStorageSystem: selectedStorageSystem,
@@ -80,7 +80,6 @@ angular.module('rainierApp')
                         });
                     }
                 }
-
             };
             angular.extend(dataModel, viewModelService.newWizardViewModel(['select', 'attach', 'paths']));
 
@@ -375,6 +374,7 @@ angular.module('rainierApp')
                                 hostGroupResults,
                                 $scope.dataModel.attachModel.hostMode,
                                 $scope.dataModel.attachModel.selectedHostModeOption);
+
 
                             attachVolumeService.setEditLunPage(dataModel,
                                 dataModel.selectedStorageSystem.storageSystemId,

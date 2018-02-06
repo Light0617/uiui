@@ -79,14 +79,19 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes'
                 }
-                //TODO:Help context
-                // helpContext: 'C_CREATE_ATTACH'
             })
             .when('/hosts/shred-volumes', {
                 templateUrl: 'views/shred-volumes.html',
                 controller: 'ShredVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'shred-volumes'
+                }
+            })
+            .when('/hosts/virtualize-volumes', {
+                templateUrl: 'views/virtualize-volumes.html',
+                controller: 'VirtualizeVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'virtualize-volumes'
                 }
             })
             .when('/hosts/create-and-attach-volumes', {
