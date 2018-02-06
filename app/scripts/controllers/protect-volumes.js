@@ -180,7 +180,7 @@ angular.module('rainierApp')
                 if (replicationService.isSnap(technology)) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
                         volume.copyGroupNames = _.where(allCopyGroups[volume.storageSystemId], function (cg) {
-                            return (replicationService.isSnap(cg.type)) &&
+                            return (replicationService.isSnapShotType(cg.type)) &&
                                 (consistencyGroupNeeded === cg.consistent) &&
                                 (!_.isFinite(numberOfCopiesInput) || numberOfCopiesInput === cg.numberOfCopies) &&
                                 (_.isEmpty(scheduleString) || cronStringConverterService.isEqualForObjectModel(scheduleString, cg.schedule));

@@ -49,7 +49,7 @@
             <!--Right column-->
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-md-offset-3 wizard-right">
                 <div class="header-row" ng-if="!dataModel.noPrimaryVolume">
-                    <h2 ng-if="isSnap(dataModel.replicationType)">
+                    <h2 ng-if="isSnapShotType(dataModel.replicationType)">
                         {{'replication-group-edit-snapshot-message' | translate}}</h2>
 
                     <h2 ng-if="isClone(dataModel.replicationType)">
@@ -60,7 +60,7 @@
 
                     <div class="control-row">
                         <form name="validationForm.rightPanel" role="form"
-                              ng-class="isSnap(dataModel.replicationType) ? 'validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal' : 'validation-form col-lg-12 col-md-12 col-sm-12 col-xs-12 form-horizontal'">
+                              ng-class="isSnapShotType(dataModel.replicationType) ? 'validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal' : 'validation-form col-lg-12 col-md-12 col-sm-12 col-xs-12 form-horizontal'">
                             <div class="form-group label-value-container">
                                 <label class="label">{{'replication-group-label-comments' | translate}}</label>
                                 <input class="form-control" id="comments" ng-model="dataModel.comments"
@@ -71,7 +71,7 @@
 
                         <form name="validationForm.rightPanel" role="form"
                               class="validation-form col-lg-6 col-md-6 col-sm-12 col-xs-12 form-horizontal"
-                              ng-if="isSnap(dataModel.replicationType)">
+                              ng-if="isSnapShotType(dataModel.replicationType)">
                             <div class="form-group label-value-container">
                                 <label class="label">{{'number-of-snapshots' | translate }}</label>
                                 <input type="number" ng-min="1" ng-max="1024"
@@ -82,7 +82,7 @@
                         </form>
                     </div>
 
-                    <div class="control-row" ng-if="isSnap(dataModel.replicationType)">
+                    <div class="control-row" ng-if="isSnapShotType(dataModel.replicationType)">
                         <div class="btn-group btn-group-toggle btn-group-justified">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default refine" ng-model="dataModel.schedule.type"
@@ -108,7 +108,7 @@
                     </div>
 
                     <div class="btn-group checkbox-btn-array clearfix sevenths control-row"
-                         ng-if="isSnap(dataModel.replicationType) && dataModel.schedule.type === 'WEEKLY'">
+                         ng-if="isSnapShotType(dataModel.replicationType) && dataModel.schedule.type === 'WEEKLY'">
                         <!--Days checkboxes start  -->
                         <div class="btn-group-justified">
                             <label class="btn btn-default refine" ng-model="dataModel.schedule.days.Sun"
@@ -128,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="row control-row" ng-if="isSnap(dataModel.replicationType)">
+                    <div class="row control-row" ng-if="isSnapShotType(dataModel.replicationType)">
                         <form name="validationForm.timePicker" class="validation-form" novalidate>
                             <div class="form-group form-group-lg form-horizontal" ng-if="dataModel.schedule.type !== 'HOURLY'"
                                  ng-class="{'col-md-4': dataModel.schedule.type === 'MONTHLY', 'col-md-8': dataModel.schedule.type === 'DAILY' || dataModel.schedule.type === 'WEEKLY'}">
@@ -176,7 +176,7 @@
                     <p ng-if="dataModel.schedule.type === 'MONTHLY'">
                         {{ 'replication-groups-monthly-note' | translate : dataModel }}</p>
 
-                    <div ng-if="isSnap(dataModel.replicationType)" class="smallMarginTop">
+                    <div ng-if="isSnapShotType(dataModel.replicationType)" class="smallMarginTop">
                         <form role="form" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal">
                             <div class="form-group label-value-container">
                                 <label class="label">{{'target-snapshot-pool' | translate }}</label>
