@@ -46,8 +46,11 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         return r;
     };
 
-    var virtualStorageMachineInformation = function () {
-        return {
+    var virtualStorageMachineInformation = function (actualId) {
+        return _.sample([true, false]) ? {
+            storageSystemId: actualId,
+            model: 'VSP G800'
+        } : {
             virtualStorageMachineId: '123456VSPG800',
             storageSystemId: '123456',
             model: 'VSP G800',
@@ -87,7 +90,6 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
         var migrationStatus = _.sample([true, false]);
         var iscsi = _.sample([true, false]);
-        var vsm = _.sample([true, false]);
 
         return {
             volumeId: v + '',
@@ -104,7 +106,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             gadSummary: getVolumeGADSummary(volType, v),
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             dkcDataSavingType: _.sample(['NONE', 'COMPRESSION', 'DEDUPLICATION_AND_COMPRESSION']),
-            virtualStorageMachineInformation: vsm ? virtualStorageMachineInformation() : undefined,
+            virtualStorageMachineInformation: virtualStorageMachineInformation('REPLACE'),
             attachedVolumeServerSummary:[
             {
                 serverId: null,

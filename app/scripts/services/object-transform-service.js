@@ -202,11 +202,9 @@ angular.module('rainierApp')
 
         function registerDisplayStorageSystemId(item) {
             var displayStorageSystemId = item.storageSystemId;
-            if(
-                item.virtualStorageMachineInformation &&
-                !_.isUndefined(item.virtualStorageMachineInformation.storageSystemId)
-            ) {
-                displayStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ':' +
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(!_.isUndefined(item.virtualStorageMachineInformation.storageSystemId)) {
+                displayStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
                     item.virtualStorageMachineInformation.storageSystemId + ')';
             }
             return displayStorageSystemId;
@@ -215,14 +213,11 @@ angular.module('rainierApp')
         function registerDisplayVolumeId (item) {
             var displayVolumeId = item.volumeId;
 
-            if (!item.virtualStorageMachineInformation) {
-                item.virtualStorageMachineInformation = {
-                    virtualVolumeId: 'N/A'
-                };
-            } else if(_.isUndefined(item.virtualStorageMachineInformation)) {
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(_.isUndefined(item.virtualStorageMachineInformation.virtualVolumeId)) {
                 item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
             } else {
-                displayVolumeId += ' (' + synchronousTranslateService.translate('virtual')  + ':' +
+                displayVolumeId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
                     item.virtualStorageMachineInformation.virtualVolumeId + ')';
             }
             return displayVolumeId;
