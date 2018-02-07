@@ -602,8 +602,8 @@
     "host-volume-list-iscsi-initiator-names": "iSCSI Initiator Names",
     "host-volume-list-iscsi-target-name": "iSCSI Target Name",
     "host-volume-list-auth-method": "Auth Method",
-    "host-volume-list-chap-users": "Chap Users",
-    "host-volume-list-mutual-chap-user": "Mutual Chap User",
+    "host-volume-list-chap-users": "CHAP Users",
+    "host-volume-list-mutual-chap-user": "Mutual CHAP User",
 
     "rest-api": "REST API",
 
@@ -700,8 +700,8 @@
     "hosts-name": "Server Name",
     "hosts-wwn": "Server WWN",
     "hosts-iscsi-name": "Initiator iSCSI Name",
-    "hosts-chap-user": "Chap User",
-    "hosts-mutual-chap-user": "Mutual Chap User",
+    "hosts-chap-user": "CHAP User",
+    "hosts-mutual-chap-user": "Mutual CHAP User",
 
     "tier-management": "Tier Management",
 
@@ -781,10 +781,10 @@
     "add-host-ip-address": "IP Address",
     "add-host-os-type": "OS Type",
     "add-host-wwn": "WWN",
-    "add-host-chap-user": "Chap User",
-    "add-host-chap-secret": "Chap Secret",
-    "add-host-mutual-chap-user": "Mutual Chap User",
-    "add-host-mutual-chap-secret": "Mutual Chap Secret",
+    "add-host-chap-user": "CHAP User",
+    "add-host-chap-secret": "CHAP Secret",
+    "add-host-mutual-chap-user": "Mutual CHAP User",
+    "add-host-mutual-chap-secret": "Mutual CHAP Secret",
     "add-host-iscsi-names": "iSCSI Names",
 
     "host-update-existing-wwns": "Modify Existing WWNs",
@@ -792,6 +792,26 @@
     "host-update-apply-change": "Apply changes to attached volumes",
     "host-update-confirmation-title": "Update Servers Confirmation",
     "host-update-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. If there are zones on the fabric switches that were created automatically by HSA, these zones will also be updated (manually created zones will not be affected). Are you sure you want to proceed?",
+    "host-update-server-name": "Server Name",
+    "host-update-description": "Description",
+    "host-update-ip-address": "IP Address",
+    "host-update-os-type": "OS Type",
+
+    "host-update-existing-iscsi": "Modify Existing iSCSI Names",
+    "host-update-iscsi-name": "iSCSI Name",
+    "host-update-add-iscsi-names": "Add New iSCSI Names",
+
+    "host-update-chap-settings": "CHAP Settings",
+    "host-update-chap-auth": "CHAP Auth",
+    "host-update-chap-credential": "Update CHAP Credential",
+    "host-update-chap-user": "New CHAP User",
+    "host-update-chap-secret": "New CHAP Secret",
+
+    "host-update-mutual-chap-settings": "Mutual CHAP Settings",
+    "host-update-mutual-chap-auth": "Mutual CHAP Auth",
+    "host-update-mutual-chap-credential": "Update Mutual CHAP Credential",
+    "host-update-mutual-chap-secret": "New Mutual CHAP Secret",
+    "host-update-mutual-chap-user": "New Mutual CHAP User",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",
