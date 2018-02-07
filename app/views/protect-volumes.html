@@ -346,11 +346,11 @@
                                    value="volumeRow.storageSystemId">
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cell">
-                            <input type="text" ng-model="getExistingPairsTypeDisplayNames(volumeRow.storageSystemId, volumeRow.volumeId)"
+                            <input type="text" ng-model="volumeExistingProtectionTypeAsPVolDisplayName[volumeRow.storageSystemId][volumeRow.volumeId]"
                                    ng-disabled=true
                                    class="form-control text inline"
-                                   name="storageSystemId" title="{{getExistingPairsTypeDisplayNames(volumeRow.storageSystemId, volumeRow.volumeId)}}"
-                                   value="getExistingPairsTypeDisplayNames(volumeRow.storageSystemId, volumeRow.volumeId)">
+                                   name="existingReplicationTypes" title="{{volumeExistingProtectionTypeAsPVolDisplayName[volumeRow.storageSystemId][volumeRow.volumeId]}}"
+                                   value="volumeExistingProtectionTypeAsPVolDisplayName[volumeRow.storageSystemId][volumeRow.volumeId]">
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 cell control"
                              ng-if="dataModel.showDropDownColumn">

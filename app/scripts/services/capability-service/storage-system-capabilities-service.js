@@ -28,6 +28,9 @@ angular.module('rainierApp')
             },
             isSupportSnapOnSnapCreation: function (storageSystemModel, firmwareVersion) {
                 return dataProtectionCapabilitiesService.isSupportSnapOnSnapCreation(storageSystemModel, firmwareVersion);
+            },
+            supportReplicationSnapshotTypes: function (storageSystemModel, firmwareVersion) {
+               return dataProtectionCapabilitiesService.supportReplicationSnapshotTypes(storageSystemModel, firmwareVersion);
             }
         }
     });

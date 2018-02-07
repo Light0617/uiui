@@ -10,8 +10,8 @@
 angular.module('rainierApp')
     .controller('ProtectVolumesCtrl', function ($scope, $routeParams, $timeout, $window, $filter, $q, $modal,
                                                 orchestratorService, diskSizeService, ShareDataService, replicationService,
-                                                cronStringConverterService, paginationService, objectTransformService,
-                                                synchronousTranslateService, storageSystemCapabilitiesService, storageSystemVolumeService) {
+                                                cronStringConverterService, paginationService, queryService, objectTransformService,
+                                                synchronousTranslateService, storageSystemCapabilitiesService) {
 
         $scope.numberOfSnapshotsValidation = false;
         $scope.copyGroupNameValidation = false;
@@ -22,7 +22,9 @@ angular.module('rainierApp')
         $scope.allUseExisting = false;
         $scope.arrayUseExisting = {};
         $scope.arraySupportSnapOnSnapCreation = {};
+        $scope.arraySupportSnapshotTypes = {};
         $scope.volumeExistingProtectionTypeAsPVol = {};
+        $scope.volumeExistingProtectionTypeAsPVolDisplayName = {};
         $scope.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
         $scope.decimalNumberRegexp = /^[^.]+$/;
         $scope.orderByField = 'volumeId';
@@ -43,20 +45,34 @@ angular.module('rainierApp')
 
         var allCopyGroups = {};
 
-        var getProtectionTypeAsPVolTasks = _.forEach(volumesList, function(volume) {
+        var getProtectionTypeAsPVolTasks = _.map(volumesList, function(volume) {
             var storageSystemId = volume.storageSystemId;
             var volumeId = volume.volumeId;
-
-            var protectionTypesAsPvol = [];
-            storageSystemVolumeService.getVolumePairsAsPVol(null, volumeId, storageSystemId).then(function (result) {
-                protectionTypesAsPvol = _.map(result.resources, function(volumePair) {
+            paginationService.clearQuery();
+            queryService.setQueryMapEntry('primaryVolume.id', parseInt(volumeId));
+            return paginationService.getAllPromises(null, 'volume-pairs', false, storageSystemId,
+                objectTransformService.transformVolumePairs).then(function (result) {
+                var protectionTypesAsPVol = _.map(result, function(volumePair) {
                     return volumePair.type;
                 });
 
-                if (!(storageSystemId in $scope.volumeExistingProtectionTypeAsPVol)) {
-                    $scope.volumeExistingProtectionTypeAsPVol[storageSystemId] = {};
+                var volumeExistingProtectionType = $scope.volumeExistingProtectionTypeAsPVol[storageSystemId] || {};
+                volumeExistingProtectionType[volumeId] = _.uniq(protectionTypesAsPVol);
+                $scope.volumeExistingProtectionTypeAsPVol[storageSystemId] = volumeExistingProtectionType;
+
+                var volumeExistingProtectionTypeDisplayName = $scope.volumeExistingProtectionTypeAsPVolDisplayName[storageSystemId] || {};
+                if (_.isEmpty($scope.volumeExistingProtectionTypeAsPVol[storageSystemId]) ||
+                    _.isEmpty($scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId])) {
+                    volumeExistingProtectionTypeDisplayName[volumeId] = '';
+                } else {
+                    volumeExistingProtectionTypeDisplayName[volumeId] =
+                        _.map($scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId], function(type) {
+                        return replicationService.displayReplicationType(type);
+                    }).join(',');
                 }
-                $scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId] = _.uniq(protectionTypesAsPvol);
+                $scope.volumeExistingProtectionTypeAsPVolDisplayName[storageSystemId] = volumeExistingProtectionTypeDisplayName;
+            }, function() {
+                window.history.back();
             });
         });
 
@@ -82,6 +98,9 @@ angular.module('rainierApp')
                     $scope.arrayUseExisting[storageSystem.storageSystemId] = false;
                     $scope.arraySupportSnapOnSnapCreation[storageSystem.storageSystemId] =
                         storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
+                            storageSystem.model, storageSystem.firmwareVersion);
+                    $scope.arraySupportSnapshotTypes[storageSystem.storageSystemId] =
+                        storageSystemCapabilitiesService.supportReplicationSnapshotTypes(
                             storageSystem.model, storageSystem.firmwareVersion);
                 });
             }, function () {
@@ -111,7 +130,6 @@ angular.module('rainierApp')
             var MONTHLY_KEY = 'MONTHLY';
             var WEEKLY_KEY = 'WEEKLY';
             var SNAPSHOT = replicationService.rawTypes.SNAP;
-            var SNAP_ON_SNAP = replicationService.rawTypes.SNAP_ON_SNAP;
             var CLONE = replicationService.rawTypes.CLONE;
             var date = new Date();
 
@@ -467,41 +485,25 @@ angular.module('rainierApp')
                     isEmpty(volumeRow.CGSelection));
             };
 
-            var getAvailableSnapTypesForCreate = function (storageSystemId, primaryVolumeIdsForCreate) {
+            var selectSnapTypesForCreate = function (storageSystemId, primaryVolumeIdsForCreate) {
                 /**
-                 * Return available snap shot types for the specified volumes.
-                 * Return empty if no available snap shot types can be found.
+                 * Return a suitable snapshotType for the specified volumes.
+                 * Return null if no available snap shot types can be found.
                  */
-                var isSnapOnSnapCreationSupported = $scope.arraySupportSnapOnSnapCreation[storageSystemId];
-                var availableSnapTypes = isSnapOnSnapCreationSupported === true ? [SNAPSHOT, SNAP_ON_SNAP] : [SNAPSHOT];
                 var existingSnapTypes =
                     _.chain(primaryVolumeIdsForCreate).map(function(volumeId) {
                         return $scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId];
                     }).reject(function(type) {
                         return type === CLONE;
                     }).flatten().uniq().value();
-
-                if (existingSnapTypes.length > 1) {
-                    return [];
+                if (_.isEmpty(existingSnapTypes)) {
+                    return $scope.arraySupportSnapshotTypes[storageSystemId][0];
                 } else if (existingSnapTypes.length === 1) {
-                    if (_.contains(availableSnapTypes, existingSnapTypes[0])) {
-                        return existingSnapTypes;
-                    } else {
-                        return [];
+                    if(_.contains($scope.arraySupportSnapshotTypes[storageSystemId], existingSnapTypes[0])) {
+                        return existingSnapTypes[0];
                     }
-                } else {
-                    return availableSnapTypes;
                 }
-            };
-
-            var getSuitableSnapTypesForCreate = function (storageSystemId, availableSnapTypes) {
-                /**
-                 * Return suitable snap shot types for the specified storageSystem.
-                 * Return null if no snap shot types suitable.
-                 */
-                var isSnapOnSnapCreationSupported = $scope.arraySupportSnapOnSnapCreation[storageSystemId];
-                return (isSnapOnSnapCreationSupported === true && _.contains(availableSnapTypes, SNAP_ON_SNAP)) ? SNAP_ON_SNAP :
-                    _.contains(availableSnapTypes, SNAPSHOT) ? SNAPSHOT : null;
+                return null;
             };
 
             var popUpCreateReplicationGroupError = function (storageSystemId, primaryVolumeIdsForCreate) {
@@ -526,17 +528,6 @@ angular.module('rainierApp')
                         });
                     }
                 });
-            };
-
-            $scope.getExistingPairsTypeDisplayNames = function (storageSystemId, volumeId) {
-                if (_.isEmpty($scope.volumeExistingProtectionTypeAsPVol[storageSystemId]) ||
-                    _.isEmpty($scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId])) {
-                    return '';
-                } else {
-                    return _.map($scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId], function(type) {
-                            return replicationService.displayReplicationType(type);
-                        }).join(',');
-                }
             };
 
             $scope.validationForm = {};
@@ -636,9 +627,9 @@ angular.module('rainierApp')
                         }
 
                         if (!_.isEmpty(primaryVolumeIdsForCreateForStorages[storageSystemId])) {
-                            var availableSnapShotTypesForCreate = getAvailableSnapTypesForCreate(storageSystemId, primaryVolumeIdsForCreateForStorages[storageSystemId]);
-                            suitableSnapShotTypesForCreateForStorages[storageSystemId] = getSuitableSnapTypesForCreate(storageSystemId, availableSnapShotTypesForCreate);
-                            if (_.isEmpty(availableSnapShotTypesForCreate) || _.isNull(suitableSnapShotTypesForCreateForStorages[storageSystemId])) {
+                            suitableSnapShotTypesForCreateForStorages[storageSystemId] =
+                                selectSnapTypesForCreate(storageSystemId, primaryVolumeIdsForCreateForStorages[storageSystemId]);
+                            if (_.isNull(suitableSnapShotTypesForCreateForStorages[storageSystemId])) {
                                 // Halt submit if any of replication group can not be created.
                                 popUpCreateReplicationGroupError(storageSystemId, primaryVolumeIdsForCreateForStorages[storageSystemId]);
                                 return;
