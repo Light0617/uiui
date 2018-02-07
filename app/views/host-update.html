@@ -72,7 +72,7 @@
                     <div class="tile row row-tile" ng-repeat="endPoint in dataModel.updatedEndPoints track by $index">
                         <input type="text" ng-model="endPoint.value"
                                class="form-control text inline" name="{{ 'add-host-wwn' | translate }}"
-                               title="{{ 'add-host-wwn' | translate }}">
+                               title="{{ endPoint.value }}">
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                         <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 cell">
                             <input type="text" ng-model="addedEndPoint.value"
                                    class="form-control text inline" name="{{ 'add-host-wwn' | translate }}"
-                                   title="{{ 'add-host-wwn' | translate }}" placeholder="50:00:00:00:00:00:00:00">
+                                   title="{{ addedEndPoint.value }}" placeholder="50:00:00:00:00:00:00:00">
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="!$first">
                             <button class="btn icon-btn icon-sm icon-delete-item"
@@ -108,7 +108,7 @@
                     <div class="tile row row-tile" ng-repeat="endPoint in dataModel.updatedEndPoints track by $index">
                         <input type="text" ng-model="endPoint.value"
                                class="form-control text inline" name="{{ 'host-update-iscsi-name' | translate }}"
-                               title="{{ 'host-update-iscsi-name' | translate }}">
+                               title="{{ endPoint.value }}">
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@
                         <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 cell">
                             <input type="text" ng-model="addedEndPoint.value"
                                    class="form-control text inline" name="{{ 'host-update-iscsi-name' | translate }}"
-                                   title="{{ 'host-update-iscsi-name' | translate }}" placeholder="iqn.1992-01.com.company:app">
+                                   title="{{ addedEndPoint.value }}" placeholder="iqn.1992-01.com.company:app">
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell" ng-if="!$first">
                             <button class="btn icon-btn icon-sm icon-delete-item"
@@ -140,7 +140,7 @@
                 </div>
 
                 <!-- Chap Auth -->
-                <div class=" label-value-container">
+                <div class="label-value-container">
                     <label class="label form-label">{{ 'host-update-chap-auth' | translate }}</label>
                     <div class="form-control-btn btn-group btn-group-justified">
                         <label class="btn btn-primary"
@@ -164,16 +164,16 @@
 
                 <!-- Chap Credentials-->
                 <ng-container ng-if="dataModel.chap.chapEnabled">
-                    <label class=" label-value-container checkbox-label" ng-if="dataModel.originalChap.chapEnabled">
+                    <label class="label-value-container checkbox-label" ng-if="dataModel.originalChap.chapEnabled">
                         <input type="checkbox" ng-model="dataModel.chap.updateChapCredential">
                         {{ 'host-update-chap-credential' | translate }}
                     </label>
                     <ng-container ng-if="dataModel.chap.updateChapCredential">
-                        <div class=" label-value-container">
+                        <div class="label-value-container">
                             <label class="label form-label">{{ 'host-update-chap-user' | translate }}</label>
                             <input class="form-control" ng-model="dataModel.chap.chapUser">
                         </div>
-                        <div class=" label-value-container">
+                        <div class="label-value-container">
                             <label class="label form-label">{{ 'host-update-chap-secret' | translate }}</label>
                             <input type="password" class="form-control" ng-model="dataModel.chap.chapSecret">
                         </div>
@@ -185,7 +185,7 @@
                     <div class="header-row label-value-container-title">
                         <h2>{{ 'host-update-mutual-chap-settings' | translate }}</h2>
                     </div>
-                    <div class=" label-value-container">
+                    <div class="label-value-container">
                         <label class="label form-label">{{ 'host-update-mutual-chap-auth' | translate }}</label>
                         <div class="form-control-btn btn-group btn-group-justified">
                             <label class="btn btn-primary"
@@ -209,16 +209,16 @@
 
                     <!-- Mutual Chap Credentials -->
                     <ng-container ng-if="dataModel.chap.mutualEnabled">
-                        <label class=" label-value-container checkbox-label" ng-if="dataModel.originalChap.mutualEnabled">
+                        <label class="label-value-container checkbox-label" ng-if="dataModel.originalChap.mutualEnabled">
                             <input type="checkbox" ng-model="dataModel.chap.updateMutualCredential">
                             {{ 'host-update-mutual-chap-credential' | translate }}
                         </label>
                         <ng-container ng-if="dataModel.chap.updateMutualCredential">
-                            <div class=" label-value-container">
+                            <div class="label-value-container">
                                 <label class="label form-label">{{ 'host-update-mutual-chap-user' | translate }}</label>
                                 <input class="form-control" ng-model="dataModel.chap.mutualUser">
                             </div>
-                            <div class=" label-value-container">
+                            <div class="label-value-container">
                                 <label class="label form-label">{{ 'host-update-mutual-chap-secret' | translate }}</label>
                                 <input type="password" class="form-control" ng-model="dataModel.chap.mutualSecret">
                             </div>
