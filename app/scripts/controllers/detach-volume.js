@@ -11,15 +11,17 @@ angular.module('rainierApp')
     .controller('DetachVolumeCtrl', function ($scope, $routeParams, $timeout, orchestratorService,
                                               diskSizeService, storagePoolService, objectTransformService,
                                               paginationService, viewModelService, scrollDataSourceBuilderServiceNew,
-                                              resourceTrackerService, replicationService) {
+                                              resourceTrackerService, replicationService, detachVolumeService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
         var GET_HOSTS_PATH = 'compute/servers';
         $scope.model = {
             storageSystemId : storageSystemId,
             volumeId: volumeId,
-            removeZone: false
+            removeZone: undefined,
+            zoneEnable: false
         };
+
         var serverIds = [];
         orchestratorService.volume(storageSystemId, volumeId).then(function (result) {
             $scope.model.volumeLabel = result.label;
@@ -74,17 +76,26 @@ angular.module('rainierApp')
 
                 dataModel.selectModel = {
                     canSubmit: function () {
+                        updateZoneState(dataModel);
                         return dataModel.anySelected();
                     },
                     submit: function () {
                         var payloads = [];
                         var selectedServers = _.where(dataModel.displayList, 'selected');
+
+                        if(
+                            _.chain(selectedServers).indexBy('protocol').values().value().length > 1
+                        ) {
+                            detachVolumeService.openDetachMultipleProtocolServersErrorModal();
+                            return;
+                        }
+
                         _.forEach(selectedServers, function(selectedServer) {
                             payloads.push({
                                 storageSystemId: storageSystemId,
                                 volumeId: volumeId,
                                 serverId: selectedServer.serverId,
-                                removeConnection: $scope.model.removeZone
+                                removeConnection: $scope.model.zoneEnable ? $scope.model.removeZone : undefined
                             });
                         });
 
@@ -165,6 +176,14 @@ angular.module('rainierApp')
                 }
             };
         });
+
+        function updateZoneState(dataModel) {
+            var fibreExists = _.chain(dataModel.displayList)
+                .filter(function (d) {return d.selected;})
+                .some(function (s) {return s.protocol==='FIBRE';})
+                .value();
+            $scope.model.zoneEnable = fibreExists;
+        }
 
         function handleHost(host) {
             objectTransformService.transformHost(host);

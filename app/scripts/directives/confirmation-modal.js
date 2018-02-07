@@ -18,6 +18,7 @@ angular.module('rainierApp')
                 trueText: '@trueText',
                 falseText: '@falseText',
                 requireSelection: '&',
+                disableRadioButton: '=',
                 itemAttribute: '=',
                 itemAttributes: '='
             },

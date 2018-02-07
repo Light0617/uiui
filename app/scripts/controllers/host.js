@@ -58,12 +58,11 @@ angular.module('rainierApp')
         };
 
         orchestratorService.host(hostId).then(function (host) {
-
-            var totalVolumesCapacity = 0;
-            var usedVolumesCapacity = 0;
-            var availableVolumesCapacity = 0;
             $scope.dataModel.host = host;
             orchestratorService.hostVolumes(host.serverId).then(function (result) {
+                var totalVolumesCapacity = 0;
+                var usedVolumesCapacity = 0;
+                var availableVolumesCapacity = 0;
                 _.forEach(result.dpVolResouce, function (volume) {
                     totalVolumesCapacity += volume.totalCapacity.value;
                     usedVolumesCapacity = usedVolumesCapacity + volume.usedCapacity.value;
@@ -85,6 +84,179 @@ angular.module('rainierApp')
                     $scope.summaryModel = summaryModel;
                     $scope.attachedVolumes = {};
                 });
+            });
+            return Promise.resolve(host);
+        }).then(function (host) {
+            paginationService.clearQuery();
+            queryService.setQueryMapEntry('serverId', parseInt(hostId));
+            paginationService.get(null, ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false).then(function (result) {
+                getHostGroupsForStorageSystems(result);
+                updateToggleId(result.resources);
+                var dataModel = {
+                    view: 'list',
+                    hostId: hostId,
+                    removeConnection: true,
+                    hasDetach: true,
+                    hasIconAndExpandingRows: true,
+                    nextToken: result.nextToken,
+                    total: result.total,
+                    currentPageCount: 0,
+                    busy: false,
+                    sort: {
+                        field: 'volumeId',
+                        reverse: false,
+                        setSort: function (f) {
+                            $timeout(function () {
+                                if ($scope.dataModel.sort.field === f) {
+                                    queryService.setSort(f, !$scope.dataModel.sort.reverse);
+                                    $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
+                                } else {
+                                    $scope.dataModel.sort.field = f;
+                                    queryService.setSort(f, false);
+                                    $scope.dataModel.sort.reverse = false;
+                                }
+                                queryService.setQueryMapEntry('serverId', parseInt(hostId));
+                                paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume)
+                                    .then(function (result) {
+                                        updateResultTotalCounts(result);
+                                    });
+                            });
+                        }
+                    }
+                };
+
+                inventorySettingsService.setVolumesGridSettings(dataModel, {
+                    canAdd: false
+                });
+
+                var zoneEnabled = host.protocol === 'FIBRE';
+
+                var actions = [
+                    {
+                        icon: 'icon-edit',
+                        tooltip: 'action-tooltip-edit',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() &&
+                                _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
+                        },
+                        onClick: function () {
+                            var item = _.first(dataModel.getSelectedItems());
+                            item.actions.edit.onClick();
+
+                        }
+                    },
+                    {
+                        icon: 'icon-paths',
+                        tooltip: 'action-tooltip-edit-lun-path',
+                        type: 'link',
+                        enabled: function () {
+                            return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                            ShareDataService.push('selectedHost', [$scope.dataModel.host]);
+                            $location.path(['volume-manager', 'edit-lun-path'].join(
+                                '/'));
+                        }
+                    },
+                    {
+                        icon: 'icon-detach-volume',
+                        tooltip: 'action-tooltip-detach-volumes',
+                        type: 'confirmation-modal',
+                        dialogSettings: {
+                            id: 'detachVolumeConfirmation',
+                            title: 'storage-volume-detach-confirmation',
+                            content: 'storage-volume-detach-selected-content',
+                            trueText: 'storage-volume-detach-remove-zone',
+                            falseText: 'storage-volume-detach-not-remove-zone',
+                            disableRadioButton: !zoneEnabled,
+                            switchEnabled: {
+                                value: false
+                            }
+                        },
+                        enabled: function () {
+                            return dataModel.anySelected() &&
+                                _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
+                        },
+                        confirmClick: function () {
+                            $('#' + this.dialogSettings.id).modal('hide');
+                            var enabled = zoneEnabled ? this.dialogSettings.switchEnabled.value : undefined;
+                            _.forEach(dataModel.getSelectedItems(), function (volume) {
+
+                                var detachVolumePayload = {
+                                    storageSystemId: volume.storageSystemId,
+                                    serverId: hostId,
+                                    volumeId: volume.volumeId,
+                                    removeConnection: enabled
+                                };
+
+                                orchestratorService.detachVolume(detachVolumePayload);
+                            });
+                        }
+                    },
+                    {
+                        icon: 'icon-data-protection',
+                        tooltip: 'action-tooltip-protect-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            ShareDataService.volumesList = dataModel.getSelectedItems();
+
+                            $location.path('/hosts/' + hostId + '/protect');
+
+                        },
+                        enabled: function () {
+                            return dataModel.anySelected();
+                        }
+                    },
+                    {
+                        icon: 'icon-remove-volume',
+                        tooltip: 'action-tooltip-unprotect-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            volumeUnprotectActions(dataModel.getSelectedItems());
+                        },
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isUnprotected();
+                                });
+                        }
+                    },
+                    {
+                        icon: 'icon-refresh',
+                        tooltip: 'action-tooltip-restore-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            volumeRestoreAction('restore', dataModel.getSelectedItems());
+                        },
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return volumeService.restorable(vol);
+                                });
+                        }
+                    }
+                ];
+
+                dataModel.getActions = function () {
+                    return actions;
+                };
+
+                dataModel.getResources = function () {
+                    return paginationService.get($scope.dataModel.nextToken,
+                        ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false);
+                };
+
+                dataModel.cachedList = result.resources;
+                dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
+                // In case the getHost call returns earlier than this backend api call, we should restore the "host".
+                dataModel.host = $scope.dataModel.host;
+                $scope.dataModel = dataModel;
+
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);
+
             });
         });
 
@@ -208,175 +380,6 @@ angular.module('rainierApp')
             }
             return false;
         };
-
-        paginationService.clearQuery();
-        queryService.setQueryMapEntry('serverId', parseInt(hostId));
-        paginationService.get(null, ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false).then(function (result) {
-            getHostGroupsForStorageSystems(result);
-            updateToggleId(result.resources);
-            var dataModel = {
-                view: 'list',
-                hostId: hostId,
-                removeConnection: true,
-                hasDetach: true,
-                hasIconAndExpandingRows: true,
-                nextToken: result.nextToken,
-                total: result.total,
-                currentPageCount: 0,
-                busy: false,
-                sort: {
-                    field: 'volumeId',
-                    reverse: false,
-                    setSort: function (f) {
-                        $timeout(function () {
-                            if ($scope.dataModel.sort.field === f) {
-                                queryService.setSort(f, !$scope.dataModel.sort.reverse);
-                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            } else {
-                                $scope.dataModel.sort.field = f;
-                                queryService.setSort(f, false);
-                                $scope.dataModel.sort.reverse = false;
-                            }
-                            queryService.setQueryMapEntry('serverId', parseInt(hostId));
-                            paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume)
-                                .then(function (result) {
-                                    updateResultTotalCounts(result);
-                                });
-                        });
-                    }
-                }
-            };
-
-            inventorySettingsService.setVolumesGridSettings(dataModel, {
-                canAdd: false
-            });
-
-            var actions = [
-                {
-                    icon: 'icon-edit',
-                    tooltip: 'action-tooltip-edit',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() &&
-                            _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
-                    },
-                    onClick: function () {
-                        var item = _.first(dataModel.getSelectedItems());
-                        item.actions.edit.onClick();
-
-                    }
-                },
-                {
-                    icon: 'icon-paths',
-                    tooltip: 'action-tooltip-edit-lun-path',
-                    type: 'link',
-                    enabled: function () {
-                        return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems());
-                    },
-                    onClick: function () {
-                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        ShareDataService.push('selectedHost', [$scope.dataModel.host]);
-                        $location.path(['volume-manager', 'edit-lun-path'].join(
-                            '/'));
-                    }
-                },
-                {
-                    icon: 'icon-detach-volume',
-                    tooltip: 'action-tooltip-detach-volumes',
-                    type: 'confirmation-modal',
-                    dialogSettings: {
-                        id: 'detachVolumeConfirmation',
-                        title: 'storage-volume-detach-confirmation',
-                        content: 'storage-volume-detach-selected-content',
-                        trueText: 'storage-volume-detach-remove-zone',
-                        falseText: 'storage-volume-detach-not-remove-zone',
-                        switchEnabled: {
-                            value: false
-                        }
-                    },
-                    enabled: function () {
-                        return dataModel.anySelected() &&
-                            _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
-                    },
-                    confirmClick: function () {
-                        $('#' + this.dialogSettings.id).modal('hide');
-                        var enabled = this.dialogSettings.switchEnabled.value;
-                        _.forEach(dataModel.getSelectedItems(), function (volume) {
-
-                            var detachVolumePayload = {
-                                storageSystemId: volume.storageSystemId,
-                                serverId: hostId,
-                                volumeId: volume.volumeId,
-                                removeConnection: enabled
-                            };
-
-                            orchestratorService.detachVolume(detachVolumePayload);
-                        });
-                    }
-                },
-                {
-                    icon: 'icon-data-protection',
-                    tooltip: 'action-tooltip-protect-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        ShareDataService.volumesList = dataModel.getSelectedItems();
-
-                        $location.path('/hosts/' + hostId + '/protect');
-
-                    },
-                    enabled: function () {
-                        return dataModel.anySelected();
-                    }
-                },
-                {
-                    icon: 'icon-remove-volume',
-                    tooltip: 'action-tooltip-unprotect-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        volumeUnprotectActions(dataModel.getSelectedItems());
-                    },
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
-                                function (vol) {
-                                    return vol.isUnprotected();
-                                });
-                    }
-                },
-                {
-                    icon: 'icon-refresh',
-                    tooltip: 'action-tooltip-restore-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        volumeRestoreAction('restore', dataModel.getSelectedItems());
-                    },
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                                function (vol) {
-                                    return volumeService.restorable(vol);
-                                });
-                    }
-                }
-            ];
-
-            dataModel.getActions = function () {
-                return actions;
-            };
-
-            dataModel.getResources = function () {
-                return paginationService.get($scope.dataModel.nextToken,
-                    ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false);
-            };
-
-            dataModel.cachedList = result.resources;
-            dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-
-            // In case the getHost call returns earlier than this backend api call, we should restore the "host".
-            dataModel.host = $scope.dataModel.host;
-            $scope.dataModel = dataModel;
-
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);
-
-        });
 
         var updateResultTotalCounts = function (result) {
             $scope.dataModel.nextToken = result.nextToken;
