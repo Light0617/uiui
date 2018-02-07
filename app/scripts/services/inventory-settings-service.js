@@ -32,9 +32,9 @@ angular.module('rainierApp')
             {
                 title: 'virtual-volume-id',
                 sizeClass: 'sixteenth',
-                sortField: 'gadSummary.virtualLdevId',
+                sortField: 'virtualStorageMachineInformation.virtualVolumeId',
                 getDisplayValue: function(item) {
-                    return item.gadSummary.virtualLdevId;
+                    return item.virtualStorageMachineInformation.virtualVolumeId;
                 }
 
             },
@@ -43,7 +43,7 @@ angular.module('rainierApp')
                 sizeClass: 'sixteenth',
                 sortField: 'storageSystemId',
                 getDisplayValue: function(item) {
-                    return item.storageSystemId;
+                    return item.displayStorageSystemId;
                 }
             }, {
                 title: 'Name',
