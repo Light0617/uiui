@@ -200,6 +200,29 @@ angular.module('rainierApp')
             return [];
         }
 
+        function registerDisplayStorageSystemId(item) {
+            var displayStorageSystemId = item.storageSystemId;
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(!_.isUndefined(item.virtualStorageMachineInformation.storageSystemId)) {
+                displayStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId + ')';
+            }
+            return displayStorageSystemId;
+        }
+
+        function registerDisplayVolumeId (item) {
+            var displayVolumeId = item.volumeId;
+
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(_.isUndefined(item.virtualStorageMachineInformation.virtualVolumeId)) {
+                item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
+            } else {
+                displayVolumeId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.virtualVolumeId + ')';
+            }
+            return displayVolumeId;
+        }
+
         transforms = {
 
             transformStorageSystem: function (item) {
@@ -513,15 +536,18 @@ angular.module('rainierApp')
                     return icons;
                 };
 
+                item.displayStorageSystemId = registerDisplayStorageSystemId(item);
+                item.displayVolumeId = registerDisplayVolumeId(item);
+
                 item.metaData = [
                     {
                         left: true,
                         title: item.label,
-                        details: [item.volumeId]
+                        details: [item.displayVolumeId]
                     },
                     {
                         left: false,
-                        title: item.storageSystemId,
+                        title: item.displayStorageSystemId,
                         details: [item.displayedDpType],
                         detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
                             return replicationService.tooltip(type);

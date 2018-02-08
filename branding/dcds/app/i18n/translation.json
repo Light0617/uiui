@@ -881,6 +881,7 @@
     "file-server": "File Server",
     "vfs": "VFS",
     "vfs-label": "VFS Label",
+    "virtual": "Virtual",
     "virtual-file-servers": "Virtual File Servers",
     "virtual-file-server": "Virtual File Server",
     "virtual-file-server-filter": "Select Virtual File Server",
