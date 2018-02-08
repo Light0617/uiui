@@ -28,8 +28,7 @@ angular.module('rainierApp')
                     controller: function ($scope) {
                         $scope.error = {
                             title: synchronousTranslateService.translate('error-message-title'),
-                            // message: synchronousTranslateService.translate('storage-volume-detach-different-protocol-servers')
-                            message: 'Cannot detach volumes from different protocol servers.'
+                            message: synchronousTranslateService.translate('storage-volume-detach-different-protocol-servers')
                         };
                         $scope.cancel = function () {
                             modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
