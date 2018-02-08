@@ -272,7 +272,7 @@ angular.module('rainierApp')
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-wwn
             port = dataModel.pathModel.storagePorts[portIndex];
-            if(port.isVsmPort){
+            if(port.vsmPort){
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -313,7 +313,7 @@ angular.module('rainierApp')
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverWwn: wwnService.removeSymbol(wwnText),
-                    isVsmPort: port.isVsmPort
+                    isVsmPort: port.vsmPort
                 });
             }
 
@@ -329,7 +329,7 @@ angular.module('rainierApp')
             var wwn;
             var pathIndex;
             var path;
-            if(port.isVsmPort){
+            if(port.vsmPort){
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -372,7 +372,7 @@ angular.module('rainierApp')
                 dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverWwn: wwnService.removeSymbol(wwn),
-                    isVsmPort: port.isVsmPort
+                    isVsmPort: port.vsmPort
                 });
             }
 
