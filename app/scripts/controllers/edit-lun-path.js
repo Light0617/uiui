@@ -96,7 +96,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function ($scope, orc
                    var isVsmPort = false;
                    _.forEach($scope.dataModel.storagePorts, function(storagePort){
                        if (storagePort.storagePortId === hostGroup.storagePortId){
-                           isVsmPort = storagePort.isVsmPort;
+                           isVsmPort = storagePort.vsmPort;
                        }
                    });
 

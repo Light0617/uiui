@@ -282,9 +282,9 @@ angular.module('rainierApp')
                 {
                     title: 'VSM Port',
                     sizeClass: 'twelfth',
-                    sortField: 'isVsmPort',
+                    sortField: 'vsmPort',
                     getDisplayValue: function (item) {
-                        return item.isVsmPort ? 'Yes' : 'No';
+                        return item.vsmPort ? 'Yes' : 'No';
                     }
                 }
             ];
