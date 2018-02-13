@@ -209,7 +209,7 @@ angular.module('rainierApp')
                     itemSelected: false
                 };
 
-                $scope.filterModel = {
+                $scope.getVolumeFilterModel = {
                     $replicationRawTypes: replicationService.rawTypes,
                     filter: {
                         freeText: '',
@@ -245,11 +245,11 @@ angular.module('rainierApp')
                         }
                     },
                     fetchPreviousVolumeType: function (previousVolumeType) {
-                        $scope.filterModel.filter.previousVolumeType = previousVolumeType;
+                        $scope.getVolumeFilterModel.filter.previousVolumeType = previousVolumeType;
                     },
                     arrayType: (new paginationService.SearchType()).ARRAY,
                     filterQuery: function (key, value, type, arrayClearKey) {
-                        gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
+                        gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.getVolumeFilterModel);
                         paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                             updateResultTotalCounts(result);
                         });
@@ -394,6 +394,7 @@ angular.module('rainierApp')
                             var idCoordinates = {};
                             attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.hostModeOptions, idCoordinates);
                             $scope.dataModel.selectServerPath = true;
+                            $scope.dataModel.selectedServer = $scope.dataModel.getSelectedItems();
                             $scope.dataModel.goNext();
                             $timeout(function () {
                                 $scope.dataModel.build(true);
@@ -402,13 +403,17 @@ angular.module('rainierApp')
                     },
                     previous: function () {
                         $scope.dataModel.selectServerPath = false;
-                        $scope.dataModel.selectedServer = $scope.dataModel.getSelectedItems();
+
                         $scope.dataModel.serverDisplayList = $scope.dataModel.displayList;
                         $scope.dataModel.displayList = $scope.dataModel.volumeDisplayList;
                         $scope.dataModel.serverCachedList = $scope.dataModel.cachedList;
                         $scope.dataModel.cachedList = $scope.dataModel.volumeCachedList;
                         $scope.dataModel.getResources = $scope.dataModel.getVolumeResources;
                         $scope.dataModel.nextToken = null;
+                        $scope.dataModel.itemCounts = {
+                            filtered: $scope.dataModel.displayList.length,
+                            total: $scope.dataModel.volumeCachedList.length
+                        };
                         $scope.dataModel.goBack();
                     },
                     validation: true,

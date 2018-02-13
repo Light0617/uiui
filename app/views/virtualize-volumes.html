@@ -27,7 +27,7 @@
             </wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('selectSourcePort')"
+        <wizard-left-right-content class="virtualize-volume-wizard" ng-if="dataModel.isStepActive('selectSourcePort')"
                                    ng-title="'workflow-title-create-path-from-source' | translate"
                                    left-panel-template="views/workflow-templates/select-virtualize-volumes-left-panel.html"
                                    right-panel-template="views/workflow-templates/select-virtualize-volumes-right-panel.html"
@@ -35,16 +35,16 @@
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('selectDiscoveredVolumes')"
+        <wizard-left-right-content class="virtualize-volume-wizard" ng-if="dataModel.isStepActive('selectDiscoveredVolumes')"
                                    ng-title="'workflow-title-select-discovered-volumes' | translate"
                                    left-panel-template="views/workflow-templates/select-discovered-volumes-left-panel.html"
                                    right-panel-template="views/workflow-templates/select-discovered-volumes-right-panel.html"
                                    ng-model="dataModel"
-                                   filter-model="filterModel"
+                                   filter-model="getVolumeFilterModel"
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('selectServer')"
+        <wizard-left-right-content class="virtualize-volume-wizard" ng-if="dataModel.isStepActive('selectServer')"
                                    ng-title="'workflow-title-select-server' | translate"
                                    left-panel-template="views/workflow-templates/select-server-left-panel.html"
                                    right-panel-template="views/workflow-templates/select-server-right-panel.html"
@@ -53,7 +53,7 @@
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('paths')"
+        <wizard-left-right-content class="virtualize-volume-wizard" ng-if="dataModel.isStepActive('paths')"
                                    ng-title="'workflow-title-create-paths' | translate"
                                    left-panel-template="views/workflow-templates/select-path-left-panel.html"
                                    right-panel-template="views/workflow-templates/select-path-right-panel.html"

@@ -1035,5 +1035,6 @@
     "virtualize-volumes": "Virtualize Volumes",
     "workflow-title-create-path-from-source": "Create Path From Source",
     "workflow-title-select-discovered-volumes": "Select Discovered Volumes",
-    "workflow-title-select-server": "Select Server"
+    "workflow-title-select-server": "Select Server",
+    "workflow-title-create-paths": "Create Paths"
 }
