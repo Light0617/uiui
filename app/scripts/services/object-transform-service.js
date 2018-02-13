@@ -383,24 +383,17 @@ angular.module('rainierApp')
             },
             transformVirtualStorageMachine: function (item) {
                 item.noSelection = true;
-                item.displayPhysicalStorageSystems = item.physicalStorageSystems.join(', ');
                 item.metaData = [
                     {
                         left: true,
                         title: item.storageSystemId,
-                        details: [item.productModel]
-                    },
-                    {
-                        left: false,
-                        title: item.pairHACount,
-                        details: [item.displayPhysicalStorageSystems]
+                        details: [item.model]
                     }
                 ];
                 item.itemIcon = 'icon-vsm';
                 item.onClick = function () {
                     ShareDataService.virtualStorageMachine = item;
-                    $location.path(['virtual-storage-machines', item.serialModelNumber].join(
-                        '/'));
+                    $location.path(['virtual-storage-machines', item.serialModelNumber].join('/'));
                 };
             },
             transformGadPair: function (item) {
