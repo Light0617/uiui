@@ -60,7 +60,8 @@ angular.module('rainierApp')
                 case 'suspend':
                     if (replicationService.isSnapShotType(selectedReplicationGroup.type)) {
                         payload = {
-                            'scheduleEnabled': false
+                            'scheduleEnabled': false,
+                            'targetPoolId': selectedReplicationGroup.targetPoolId
                         };
                         orchestratorService.editReplicationGroup(storageSystemId, selectedReplicationGroup.id, payload).then(function () {
                             window.history.back();
@@ -74,7 +75,8 @@ angular.module('rainierApp')
                 case 'resume':
                     if (replicationService.isSnapShotType(selectedReplicationGroup.type)) {
                         payload = {
-                            'scheduleEnabled': true
+                            'scheduleEnabled': true,
+                            'targetPoolId': selectedReplicationGroup.targetPoolId
                         };
                         orchestratorService.editReplicationGroup(storageSystemId, selectedReplicationGroup.id, payload).then(function () {
                             window.history.back();
