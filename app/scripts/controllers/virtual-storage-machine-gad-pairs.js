@@ -33,9 +33,10 @@ angular.module('rainierApp')
         $scope.summaryModel = summaryModel;
         $scope.summaryModel.services.dp.update();
 
-        paginationService.get(null, getGadPairsPath, objectTransformService.transformGadPair, true,
-            null, getVirtualStorageMachinesPath, serialModelNumber)
-            .then(function (result) {
+        paginationService.get(
+            null, getGadPairsPath, objectTransformService.transformGadPair, true,
+            null, getVirtualStorageMachinesPath, serialModelNumber
+        ).then(function (result) {
             var dataModel = {
                 title: 'Virtual storage machine ' + serialModelNumber,
                 singleViewAndPaged: true,
