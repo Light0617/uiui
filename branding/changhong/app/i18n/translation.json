@@ -466,6 +466,7 @@
     "storage-volume-detach-remove-zone": "Remove Zone",
     "storage-volume-detach-not-remove-zone": "Not Remove Zone",
     "storage-volume-detach": "Detach Volume",
+    "storage-volume-detach-different-protocol-servers": "Cannot detach volumes from different protocol servers.",
 
     "parity-group-raid-configuration": "RAID Type:",
     "parity-group-disk-type": "Disk Type:",
@@ -878,6 +879,7 @@
     "file-server": "File Server",
     "vfs": "VFS",
     "vfs-label": "VFS Label",
+    "virtual": "Virtual",
     "virtual-file-servers": "Virtual File Servers",
     "virtual-file-server": "Virtual File Server",
     "virtual-file-server-filter": "Select Virtual File Server",

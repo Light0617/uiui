@@ -200,6 +200,29 @@ angular.module('rainierApp')
             return [];
         }
 
+        function registerDisplayStorageSystemId(item) {
+            var displayStorageSystemId = item.storageSystemId;
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(!_.isUndefined(item.virtualStorageMachineInformation.storageSystemId)) {
+                displayStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId + ')';
+            }
+            return displayStorageSystemId;
+        }
+
+        function registerDisplayVolumeId (item) {
+            var displayVolumeId = item.volumeId;
+
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(_.isUndefined(item.virtualStorageMachineInformation.virtualVolumeId)) {
+                item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
+            } else {
+                displayVolumeId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.virtualVolumeId + ')';
+            }
+            return displayVolumeId;
+        }
+
         function storageSystemIcon(item) {
             if (item.unified) {
                 return 'icon-cluster';

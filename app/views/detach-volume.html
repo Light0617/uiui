@@ -27,10 +27,10 @@
                         <label class="label" for="storage-system">{{'storage-pools-storage-system' | translate}}</label>
                         <input type="text" class="value form-control" id="storage-system" ng-model="model.storageSystemId" ng-disabled=true>
                     </div>
-                    <div class="label-value-container">
+                    <div class="label-value-container" ng-if="model.zoneEnable">
                         <label class="label" for="storage-volume-detach-remove-zone">{{ 'storage-volume-detach-remove-zone' | translate}}</label>
 
-                        <div id="storage-volume-detach-remove-zone" class="btn-group btn-group-justified" data-toggle="buttons">     
+                        <div id="storage-volume-detach-remove-zone" class="btn-group btn-group-justified" data-toggle="buttons">
                             <label class="btn btn-primary btn-dark" ng-model="model.removeZone"
                                     btn-radio="true">
                                 <input autocomplete="off" checked="" type="radio"/>Yes
