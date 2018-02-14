@@ -1,0 +1,41 @@
+<!-- TODO NEWRAIN-8104: Layout, appearance and labels. Input field for comments. -->
+<form role="form" class="input-panel">
+    <fieldset class="fieldset label-value-container">
+        <label class="label">{{ 'migrate-volumes-label' | translate}}</label>
+        <div class="form-h-align">
+            <input type="text" class="form-control"
+                   ng-model="dataModel.settingModel.migrationTaskName">
+        </div>
+    </fieldset>
+</form>
+
+<form class="input-panel">
+    <fieldset class="fieldset label-value-container">
+        <label class="label">{{ 'migrate-volumes-schedule' | translate}}</label>
+        <div class="form-h-align">
+            <div class="btn-group btn-group-toggle date-time-control">
+                <button type="button" class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
+                        btn-radio="'Immediately'" ng-checked="dataModel.settingModel.scheduleType !== 'Scheduled'">
+                    Immediately
+                </button>
+                <button type="button" class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
+                        btn-radio="'Scheduled'" ng-checked="dataModel.settingModel.scheduleType === 'Scheduled'">
+                    Scheduled
+                </button>
+            </div>
+            <div class="dropdown" ng-if="dataModel.settingModel.scheduleType === 'Scheduled'">
+                <div class="dropdown-toggle" id="startDateFromCalendar" role="button" data-toggle="dropdown">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="From"
+                               data-ng-model="dataModel.settingModel.scheduleDate">
+                        <span class="input-group-addon"><i class="icon icon-dashboard"></i></span>
+                    </div>
+                </div>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="dataModel.settingModel.scheduleDate"
+                                    data-datetimepicker-config="{ dropdownSelector: '#startDateFromCalendar' }"/>
+                </ul>
+            </div>
+        </div>
+    </fieldset>
+</form>

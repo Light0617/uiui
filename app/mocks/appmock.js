@@ -15,7 +15,8 @@ rainierAppMock.run(function(
     filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock, savingsSummaryMock,
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
     replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
-    monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock
+    monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock,
+    migrationTaskMock
 ) {
 
 
@@ -50,6 +51,7 @@ rainierAppMock.run(function(
     virtualStorageMachineMock.init();
     fabricmock.init();
     serversMock.init();
+    migrationTaskMock.init();
 
 
     var parseUrl = function(method, url, data, headers) {
@@ -308,6 +310,10 @@ rainierAppMock.run(function(
                 return authMock.authenticateAndCall(urlResult, hostModeOptionsMock.handle);
             case 'host-groups':
                 return authMock.authenticateAndCall(urlResult, hostGroupsMock.handle);
+            case 'migration-tasks':
+                return authMock.authenticateAndCall(urlResult, migrationTaskMock.handle);
+            case 'migration-pairs':
+                return authMock.authenticateAndCall(urlResult, migrationTaskMock.handlePairs);
 
         }
     };

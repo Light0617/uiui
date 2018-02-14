@@ -210,6 +210,25 @@ angular.module('rainierApp')
                         }
                     },
                     {
+                        icon: 'icon-migrate-volume',
+                        tooltip: 'action-tooltip-migrate-volumes',
+                        type: 'link',
+                        enabled: function () {
+                            // TODO NEWRAIN-8104: Enable or disable control.
+                            return isVolumesInSameStorageSystemAndNotGADVolume(dataModel.getSelectedItems())
+                                && !_.some(dataModel.getSelectedItems(), function (vol) {
+                                        return !vol.isUnprotected();
+                                    });
+                        },
+                        onClick: function () {
+                            // Maximum number of volumes to migrate in one migration group is 300.
+                            // TODO NEWRAIN-8104: If number of vols is over 300, what should be done?
+                            ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 300);
+                            var storageSystemId = ShareDataService.selectedMigrateVolumes[0].storageSystemId;
+                            $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
+                        }
+                    },
+                    {
                         icon: 'icon-remove-volume',
                         tooltip: 'action-tooltip-unprotect-volumes',
                         type: 'link',

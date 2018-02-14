@@ -10,6 +10,15 @@
             </div>
         </div>
 
+        <div class="label-value-container">
+            <label class="label">Target Pool</label>
+            <div class="btn-group" role="group">
+                <div class="btn-group" role="group" ng-repeat="pool in dataModel.getSelectedItems()">
+                    <a class="btn btn-default btn-dark" tooltip="{{pool.label}}">{{pool.label}}</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>

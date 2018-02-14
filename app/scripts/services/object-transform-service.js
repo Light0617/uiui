@@ -2902,6 +2902,60 @@ angular.module('rainierApp')
 
                 });
                 return hostModeOptions;
+            },
+
+            transformMigrationTask: function (item) {
+                // Update schedule info
+                if (item.schedule && item.schedule.datetime) {
+                    item.scheduleDate = item.schedule.datetime;
+                } else {
+                    item.scheduleDate = 'N/A';
+                }
+                item.jobStartDate = !item.jobStartDate ? 'N/A' : item.jobStartDate;
+                item.jobEndDate = !item.jobEndDate ? 'N/A' : item.jobEndDate;
+
+                // Set default sort value
+                if (item.jobEndDate !== 'N/A') {
+                    item.defaultSortKey = -1 * Date.parse(item.jobEndDate);
+                } else if (item.jobStartDate !== 'N/A') {
+                    item.defaultSortKey = -1 * Date.parse(item.jobStartDate) + 1000000000000;
+                } else if (item.scheduleDate !== 'N/A') {
+                    item.defaultSortKey = Date.parse(item.scheduleDate);
+                } else {
+                    item.defaultSortKey = Number.MAX_VALUE;
+                }
+            },
+            transformMigrationPair: function (item) {
+                // Resource links
+                // TODO When the source volume is external, where is the destination?
+                item.launchSourceVol = function () {
+                    var path = ['storage-systems', item.storageSystemId, 'volumes', item.sourceVolumeId].join('/');
+                    $location.path(path);
+                };
+                if (item.sourcePoolId !== 'N/A') {
+                    item.launchSourcePool = function () {
+                        var path = ['storage-systems', item.storageSystemId, 'storage-pools', item.sourcePoolId].join('/');
+                        $location.path(path);
+                    };
+                }
+                if (item.sourceParityGroupId !== 'N/A') {
+                    item.launchSourceParityGroup = function () {
+                        var path = ['storage-systems', item.storageSystemId, 'external-parity-groups', item.sourceParityGroupId].join('/');
+                        $location.path(path);
+                    };
+                }
+                if (item.targetVolumeId === undefined) {
+                    item.launchTargetVol = function () {
+                        var path = ['storage-systems', item.storageSystemId, 'volumes', item.targetVolumeId].join('/');
+                        $location.path(path);
+                    };
+                }
+                if (item.targetPoolId !== 'N/A') {
+                    item.launchTargetPool = function () {
+                        var path = ['storage-systems', item.storageSystemId, 'storage-pools', item.targetPoolId].join('/');
+                        $location.path(path);
+                    };
+                }
             }
         };
 

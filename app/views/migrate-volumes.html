@@ -2,13 +2,17 @@
 
 <wizard-page>
 
-    <wizard-header ng-title="'migrate-volumes' | translate " icon-class="icon-migrate-volume"></wizard-header>
+    <wizard-header ng-title="dataModel.title | translate " icon-class="icon-migrate-volume"></wizard-header>
 
     <wizard-body>
         <wizard-advanced-stepper>
             <wizard-advanced-stepper-button ng-title="'workflow-title-select-target-pool' | translate"
                                             step-completed="dataModel.isStepCompleted('selectPool')"
                                             step-active="dataModel.isStepActive('selectPool')">
+            </wizard-advanced-stepper-button>
+            <wizard-advanced-stepper-button ng-title="'workflow-title-set-migrate-setting' | translate"
+                                            step-completed="dataModel.isStepCompleted('setting')"
+                                            step-active="dataModel.isStepActive('setting')">
             </wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
@@ -18,12 +22,23 @@
                                    right-panel-template="views/workflow-templates/select-migrate-pool-right-panel.html"
                                    ng-model="dataModel"
                                    filter-model="filterModel"
-                                   page-name="create-and-attach-volumes">
-        </wizard-left-right-content>
+                                   page-name="create-and-attach-volumes"
+                                   class="two-panel"></wizard-left-right-content>
+
+        <wizard-left-right-content ng-if="dataModel.isStepActive('setting')"
+                                   ng-title="'workflow-title-set-migrate-setting' | translate"
+                                   left-panel-template="views/workflow-templates/migrate-volumes-setting-left-panel.html"
+                                   right-panel-template="views/workflow-templates/migrate-volumes-setting-right-panel.html"
+                                   ng-model="dataModel"
+                                   filter-model="filterModel"
+                                   class="two-panel"></wizard-left-right-content>
     </wizard-body>
 
     <wizard-footer ng-if="dataModel.isStepActive('selectPool')"
                    ng-model="dataModel.selectPoolModel">
+    </wizard-footer>
+    <wizard-footer ng-if="dataModel.isStepActive('setting')"
+                   ng-model="dataModel.settingModel">
     </wizard-footer>
 
 </wizard-page>

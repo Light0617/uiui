@@ -20,7 +20,8 @@
                 </div>
                 <inventory-actions ng-model="dataModel"></inventory-actions>
             </div>
-            <div class="btn-toolbar horizontal pull-right" ng-if="(!dataModel.singleView && !dataModel.singleViewAndPaged)">
+            <div class="btn-toolbar horizontal pull-right"
+                 ng-if="(!dataModel.singleView && !dataModel.singleViewAndPaged && !dataModel.noViewSwitch)">
                 <div class="btn-group icon-btn-group-toggle">
                     <span class="btn icon-btn icon-sm icon-tile-view" ng-class="{active : dataModel.view=== 'tile'}"
                           title="Tile View" ng-click="dataModel.view ='tile'"></span>
@@ -123,7 +124,7 @@
                 </div>
 
                 <div ng-attr-class="td {{settings.sizeClass}} cell text-resize ellipsis" ng-repeat="settings in dataModel.gridSettings"
-                     ng-switch="settings.type">
+                     ng-switch="settings.type !== undefined ? settings.type : settings.getType(item)">
 
                     <p ng-switch-when="size" title="{{settings.getDisplayValue(item).size}} {{settings.getDisplayValue(item).unit}}" ng-click="item.onClick()">
                         {{settings.getDisplayValue(item).size}}<sup>{{settings.getDisplayValue(item).unit}}</sup>
