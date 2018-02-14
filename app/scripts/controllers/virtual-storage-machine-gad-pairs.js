@@ -20,12 +20,8 @@ angular.module('rainierApp')
         if (!ShareDataService.virtualStorageMachine) {
             window.history.back();
         }
-        var currentVirtualStorageMachine = ShareDataService.virtualStorageMachine;
 
         var summaryModel = {
-            pairCount: currentVirtualStorageMachine.pairHACount,
-            leftPhysicalStorageSystem: currentVirtualStorageMachine.physicalStorageSystems[0],
-            rightPhysicalStorageSystem: currentVirtualStorageMachine.physicalStorageSystems[1],
             services: {
                 dp: dpAlertService
             }
@@ -33,10 +29,29 @@ angular.module('rainierApp')
         $scope.summaryModel = summaryModel;
         $scope.summaryModel.services.dp.update();
 
+        function gadStorageSystemId(resources) {
+            var first = _.chain(resources)
+                .filter(function (r) {return r.primary && r.primary.storageSystemId;})
+                .filter(function (r) {return r.secondary && r.secondary.storageSystemId;})
+                .value()[0];
+            return {
+                left: first.primary.storageSystemId,
+                right: first.secondary.storageSystemId
+            };
+        }
+
+        function updateSummaryModel(result) {
+            $scope.summaryModel.pairCount = result.total;
+            var summaryStorageIds = gadStorageSystemId(result.resources);
+            $scope.summaryModel.leftPhysicalStorageSystem = summaryStorageIds.left;
+            $scope.summaryModel.rightPhysicalStorageSystem = summaryStorageIds.right;
+        }
+
         paginationService.get(
             null, getGadPairsPath, objectTransformService.transformGadPair, true,
             null, getVirtualStorageMachinesPath, serialModelNumber
         ).then(function (result) {
+            updateSummaryModel(result);
             var dataModel = {
                 title: 'Virtual storage machine ' + serialModelNumber,
                 singleViewAndPaged: true,
@@ -101,7 +116,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-pvolid',
                     sizeClass: 'twelfth',
-                    sortField: '',
+                    sortField: 'primary.volumeId',
                     getDisplayValue: function (item) {
                         return item.primary.volumeId;
                     },
@@ -114,7 +129,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-svolid',
                     sizeClass: 'twelfth',
-                    sortField: '',
+                    sortField: 'secondary.volumeId',
                     getDisplayValue: function (item) {
                         return item.secondary.volumeId;
                     },
@@ -128,7 +143,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-pvol-status',
                     sizeClass: 'twelfth',
-                    sortField: '',
+                    sortField: 'primary.status',
                     getDisplayValue: function (item) {
                         return item.primary.status;
                     }
@@ -137,7 +152,7 @@ angular.module('rainierApp')
                 {
                     title: 'repliaction-group-volume-list-svol-status',
                     sizeClass: 'twelfth',
-                    sortField: '',
+                    sortField: 'secondary.status',
                     getDisplayValue: function (item) {
                         return item.secondary.status;
                     }
@@ -146,7 +161,7 @@ angular.module('rainierApp')
                 {
                     title: 'quorum-Id',
                     sizeClass: 'sixth',
-                    sortField: '',
+                    sortField: 'primary.quorumId',
                     getDisplayValue: function (item) {
                         return item.primary.quorumId;
                     }
@@ -155,7 +170,7 @@ angular.module('rainierApp')
                 {
                     title: 'gad-pvol-storage-system-id',
                     sizeClass: 'sixth',
-                    sortField: '',
+                    sortField: 'primary.storageSystemId',
                     getDisplayValue: function (item) {
                         return item.primary.storageSystemId;
                     }
@@ -164,7 +179,7 @@ angular.module('rainierApp')
                 {
                     title: 'gad-svol-storage-system-id',
                     sizeClass: 'sixth',
-                    sortField: '',
+                    sortField: 'secondary.storageSystemId',
                     getDisplayValue: function (item) {
                         return item.secondary.storageSystemId;
                     }

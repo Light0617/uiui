@@ -24,8 +24,33 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
         };
     };
 
-    var handleGetRequest = function () {
-        return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(virtualStorageMachines));
+    var gadPairs = [
+        {
+            volumePairGroup: 'RL-Multiple-snaps-123',
+            primary: {
+                volumeId: '1',
+                storageSystemId: '921931',
+                status: 'PSUS',
+                quorumId: 10
+            },
+            secondary: {
+                volumeId: '2',
+                storageSystemId: '410031',
+                status: 'SSUS',
+                quorumId: 10
+            },
+            splitTime: 1462441131000,
+            type: 'SNAP',
+            state: 'NORMAL'
+        }
+    ];
+
+    var handleGetRequest = function (urlResult) {
+        if(urlResult.url.match('gad-pairs$')) {
+            return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(gadPairs));
+        } else {
+            return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(virtualStorageMachines));
+        }
     };
 
     return {
