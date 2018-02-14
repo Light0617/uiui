@@ -12,11 +12,9 @@ angular.module('rainierApp')
         return {
             /* jshint ignore:start */
             firmwareVersionPrefix: {
-                // SVOS820_HM8x0: '88-0X-X', TODO: add firmware version for HM series v8.2 after version fixed
-                SVOS820_Rx00:  '80-07-0', // TODO: update firmware version after version fixed
-                SVOS810_HM850: '88-0[01]-[0-9]', // TODO: update firmware version after version fixed
-                SVOS740_HM800: '83-05-2', // TODO: update firmware version after version fixed
-                SVOS740_Rx00:  '80-06-2', // TODO: update firmware version after version fixed
+                SVOS810_HM850: '88-01-0',
+                SVOS740_HM800: '83-05-2',
+                SVOS740_Rx00:  '80-06-2',
                 SVOS731_HM800: '83-05-0',
                 SVOS731_Rx00:  '80-06-0',
                 SVOS730_HM800: '83-04-6',
@@ -44,8 +42,7 @@ angular.module('rainierApp')
                 version = version.substring(0, 7);
                 for (var key in this.firmwareVersionPrefix) {
                     if (Object.prototype.hasOwnProperty.call(this.firmwareVersionPrefix, key)) {
-                        var pattern = new RegExp('^' + this.firmwareVersionPrefix[key]);
-                        if (pattern.test(version)) {
+                        if (this.firmwareVersionPrefix[key] === version) {
                             return true;
                         }
                     }
