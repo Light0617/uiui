@@ -17,10 +17,12 @@
  */
 angular.module('rainierApp')
     .controller('VirtualStorageMachineDetailsCtrl', function (
-        $scope, $routeParams, $timeout, $window, objectTransformService,
+        $scope, $routeParams, $location, $timeout, $window, objectTransformService,
         paginationService, ShareDataService, queryService,
         scrollDataSourceBuilderService, rainierQueryService
     ) {
+        var openGadAction;
+
         var storageSystemIds = function () {
             return ShareDataService.virtualStorageMachine.physicalStorageSystems;
         };
@@ -32,7 +34,7 @@ angular.module('rainierApp')
         var generateSetSortFn = function () {
             return function (f) {
                 $timeout(function () {
-                    if($scope.dataModel.sort.field === f) {
+                    if ($scope.dataModel.sort.field === f) {
                         queryService.setSort(f, !$scope.dataModel.sort.reverse);
                         $scope.dataModel.sort.reverse = true;
                     } else {
@@ -87,6 +89,7 @@ angular.module('rainierApp')
 
         var generateDataModel = function (result) {
             var dataModel = {
+                title: 'Virtual Storage Machine ' + $routeParams.serialModelNumber,
                 view: 'tile',
                 nextToken: result.nextToken,
                 total: result.total,
@@ -105,18 +108,52 @@ angular.module('rainierApp')
             return dataModel;
         };
 
+        var initActions = function () {
+            openGadAction = {
+                openGad: {
+                    type: 'link',
+                    title: 'Open GAD Pairs',
+                    icon: 'icon-storage-navigator-settings',
+                    tooltip: 'Open GAD Pairs',
+                    onClick: function () {
+                        $location.path([
+                            'virtual-storage-machines',
+                            ShareDataService.virtualStorageMachine.serialModelNumber,
+                            'gad-pairs'
+                        ].join('/'));
+                    },
+                    enabled: function () {
+                        return true;
+                    }
+                }
+            };
+        };
+
+
+        var getSummaryActions = function () {
+            return _.map(openGadAction);
+        };
+
+        var generateSummaryModel = function (vsm) {
+            var model = vsm;
+            model.getActions = getSummaryActions;
+            return model;
+        };
+
         var initModel = function () {
             getResources().then(function (result) {
                 $scope.dataModel = generateDataModel(result);
                 scrollDataSourceBuilderService.setupDataLoader(
                     $scope, result.resources, 'virtualStorageMachineDetailsSearch'
                 );
+                $scope.summaryModel = generateSummaryModel(ShareDataService.virtualStorageMachine);
             });
         };
 
         if (!ShareDataService.virtualStorageMachine || storageSystemIds().length === 0) {
             window.history.back();
         } else {
+            initActions();
             initModel();
         }
     });

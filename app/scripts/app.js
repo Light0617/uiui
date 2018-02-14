@@ -582,6 +582,9 @@ angular
             .when('/virtual-storage-machines/:serialModelNumber/gad-pairs', {
                 templateUrl: 'views/virtual-storage-machine-gad-pairs.html',
                 controller: 'VirtualStorageMachineGadPairsCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'gad-pairs'
+                },
                 helpContext: 'R_VSM_INVENTORY'
             })
             .when('/virtual-storage-machines/:serialModelNumber', {

@@ -1,2 +1,16 @@
-<div class="summary-container-default" id="top-info" ng-if="summaryModel">
+<div class="summary-container-default">
+    <div class="tile meta-tile third">
+        <div class="label-value-container">
+            <p class="label">Serial Model Number</p>
+            <p class="value">{{ summaryModel.serialModelNumber }}</p>
+        </div>
+        <div class="label-value-container">
+            <p class="label">Storage System Id</p>
+            <p class="value">{{ summaryModel.storageSystemId }}</p>
+        </div>
+        <div class="label-value-container">
+            <p class="label">Model</p>
+            <p class="value">{{ summaryModel.model }}</p>
+        </div>
+    </div>
 </div>
