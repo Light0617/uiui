@@ -43,7 +43,7 @@ angular.module('rainierApp')
                         $scope.dataModel.sort.reverse = false;
                     }
                     paginationService.getQuery(
-                        getStorageSystemPath(), objectTransformService.transformStorageSystem
+                        getStorageSystemPath(), objectTransformService.transformVSMStorageSystems
                     );
                 });
             };
@@ -51,7 +51,7 @@ angular.module('rainierApp')
 
         var getResources = function () {
             return paginationService.get(
-                null, getStorageSystemPath(), objectTransformService.transformStorageSystem
+                null, getStorageSystemPath(), objectTransformService.transformVSMStorageSystems
             );
         };
 
@@ -90,6 +90,7 @@ angular.module('rainierApp')
         var generateDataModel = function (result) {
             var dataModel = {
                 title: 'Virtual Storage Machine ' + $routeParams.serialModelNumber,
+                onlyOperation: true,
                 view: 'tile',
                 nextToken: result.nextToken,
                 total: result.total,
