@@ -353,11 +353,13 @@
 
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
+    "common-virtual-storage-machine-id": "Virtual Storage Machine ID",
     "virtual-storage-system-id": "Virtual Storage System Id",
     "volume-pair-count": "GAD Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
     "virtual-volume-id": "Virtual Volume Id",
     "quorum-Id": "Quorum Id",
+    "open-gad-pairs": "Open GAD Pairs",
 
     "gad-pairs": "GAD pairs",
     "gad-display-type": "GAD",
