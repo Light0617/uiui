@@ -117,7 +117,7 @@ angular.module('rainierApp')
                 openGad: {
                     type: 'link',
                     title: 'Open GAD Pairs',
-                    icon: 'icon-storage-navigator-settings',
+                    icon: 'icon-open',
                     tooltip: 'Open GAD Pairs',
                     onClick: function () {
                         $location.path([
