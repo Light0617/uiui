@@ -60,25 +60,7 @@ angular.module('rainierApp')
                         sizeClass: 'sixth',
                         sortField: 'productModel',
                         getDisplayValue: function (item) {
-                            return item.productModel;
-                        }
-
-                    },
-                    {
-                        title: synchronousTranslateService.translate('volume-pair-count'),
-                        sizeClass: 'sixth',
-                        sortField: 'pairHACount',
-                        getDisplayValue: function (item) {
-                            return item.pairHACount;
-                        }
-
-                    },
-                    {
-                        title: synchronousTranslateService.translate('physical-storage-systems'),
-                        sizeClass: 'quarter',
-                        sortField: 'displayPhysicalStorageSystems',
-                        getDisplayValue: function (item) {
-                            return item.displayPhysicalStorageSystems;
+                            return item.model;
                         }
 
                     }
