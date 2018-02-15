@@ -223,6 +223,20 @@ angular.module('rainierApp')
             return displayVolumeId;
         }
 
+        function storageSystemIcon(item) {
+            if (item.unified) {
+                return 'icon-cluster';
+            } else {
+                return 'icon-storage-system';
+            }
+        }
+
+        function storageSystemOnClick(item) {
+            return function () {
+                $location.path(['storage-systems', item.storageSystemId].join('/'));
+            };
+        }
+
         transforms = {
 
             transformStorageSystem: function (item) {
@@ -257,19 +271,12 @@ angular.module('rainierApp')
                 item.getIcons = function () {
                     return [this.alertLink];
                 };
+                item.itemIcon = storageSystemIcon(item);
                 item.topTotal = item.total;
                 item.topSize = item.physicalUsed;
-                if (item.unified) {
-                    item.itemIcon = 'icon-cluster';
-                }
-                else {
-                    item.itemIcon = 'icon-storage-system';
-                }
                 item.topPostFix = 'common-label-total';
                 item.bottomPostFix = 'common-label-used';
-                item.onClick = function () {
-                    $location.path(['storage-systems', item.storageSystemId].join('/'));
-                };
+                item.onClick = storageSystemOnClick(item);
 
                 item.actions = {
                     'delete': {
@@ -406,25 +413,40 @@ angular.module('rainierApp')
             },
             transformVirtualStorageMachine: function (item) {
                 item.noSelection = true;
-                item.displayPhysicalStorageSystems = item.physicalStorageSystems.join(', ');
                 item.metaData = [
                     {
                         left: true,
                         title: item.storageSystemId,
-                        details: [item.productModel]
-                    },
-                    {
-                        left: false,
-                        title: item.pairHACount,
-                        details: [item.displayPhysicalStorageSystems]
+                        details: [item.model]
                     }
                 ];
                 item.itemIcon = 'icon-vsm';
                 item.onClick = function () {
                     ShareDataService.virtualStorageMachine = item;
-                    $location.path(['virtual-storage-machines', item.serialModelNumber].join(
-                        '/'));
+                    $location.path(['virtual-storage-machines', item.virtualStorageMachineId].join('/'));
                 };
+            },
+            transformVSMStorageSystems: function (item) {
+                item.noSelection = true;
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.storageSystemName,
+                        details: [item.storageSystemId, item.svpIpAddress]
+                    },
+                    {
+                        left: false,
+                        title: item.model,
+                        details: []
+                    }
+                ];
+                item.itemIcon = storageSystemIcon(item);
+                item.onClick = storageSystemOnClick(item);
+                item.displayLinks = [{
+                    href: transformHdvmSnLaunchUrl(item),
+                    icon: 'icon-storage-navigator-settings',
+                    label: synchronousTranslateService.translate('storage-system-launch-hdvm')
+                }];
             },
             transformGadPair: function (item) {
                 if (item.primary) {
@@ -536,18 +558,15 @@ angular.module('rainierApp')
                     return icons;
                 };
 
-                item.displayStorageSystemId = registerDisplayStorageSystemId(item);
-                item.displayVolumeId = registerDisplayVolumeId(item);
-
                 item.metaData = [
                     {
                         left: true,
                         title: item.label,
-                        details: [item.displayVolumeId]
+                        details: [item.volumeId]
                     },
                     {
                         left: false,
-                        title: item.displayStorageSystemId,
+                        title: item.storageSystemId,
                         details: [item.displayedDpType],
                         detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
                             return replicationService.tooltip(type);
