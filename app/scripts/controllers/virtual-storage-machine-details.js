@@ -24,7 +24,10 @@ angular.module('rainierApp')
         var openGadAction;
 
         var storageSystemIds = function () {
-            return ShareDataService.virtualStorageMachine.physicalStorageSystems;
+            return _.map(
+                ShareDataService.virtualStorageMachine.physicalStorageSystems,
+                function(s) { return s.storageSystemId; }
+            );
         };
 
         var getStorageSystemPath = function () {
