@@ -4,7 +4,7 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
     var virtualStorageMachines = [];
 
     var generateMockVirtualStorageMachines = function () {
-        var total = 20;
+        var total = 1;
 
         while (total-- !== 0) {
             var mockVirtualStorageMachines = generateVirtualStorageMachines(total);
@@ -16,11 +16,17 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
         var virtualStorageSystemId = '41000' + v;
         var physicalStorageSystemId = '41000' + _.random(1, 20);
         return {
-            serialModelNumber: '6cad-a341-ac61-90a5',
+            virtualStorageMachineId: '6cad-a341-ac61-90a5',
             storageSystemId: virtualStorageSystemId,
             model: 'HM800',
             pairHACount: _.random(1, 50),
-            physicalStorageSystems: [virtualStorageSystemId, physicalStorageSystemId]
+            physicalStorageSystems: [{
+                storageSystemId: virtualStorageSystemId
+            }, {
+                storageSystemId: physicalStorageSystemId
+            }, {
+                storageSystemId: '220063'
+            }]
         };
     };
 
