@@ -423,7 +423,7 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-vsm';
                 item.onClick = function () {
                     ShareDataService.virtualStorageMachine = item;
-                    $location.path(['virtual-storage-machines', item.serialModelNumber].join('/'));
+                    $location.path(['virtual-storage-machines', item.virtualStorageMachineId].join('/'));
                 };
             },
             transformVSMStorageSystems: function (item) {

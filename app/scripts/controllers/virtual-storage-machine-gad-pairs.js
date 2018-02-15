@@ -14,7 +14,7 @@ angular.module('rainierApp')
         scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
         queryService, wwnService, dpAlertService
     ) {
-        var serialModelNumber = $routeParams.serialModelNumber;
+        var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
         var getGadPairsPath = 'gad-pairs';
         var getVirtualStorageMachinesPath = 'virtual-storage-machines';
         if (!ShareDataService.virtualStorageMachine) {
@@ -49,11 +49,11 @@ angular.module('rainierApp')
 
         paginationService.get(
             null, getGadPairsPath, objectTransformService.transformGadPair, true,
-            null, getVirtualStorageMachinesPath, serialModelNumber
+            null, getVirtualStorageMachinesPath, virtualStorageMachineId
         ).then(function (result) {
             updateSummaryModel(result);
             var dataModel = {
-                title: 'Virtual storage machine ' + serialModelNumber,
+                title: 'Virtual storage machine ' + virtualStorageMachineId,
                 singleViewAndPaged: true,
                 view: 'list',
                 onlyOperation: true,
@@ -74,7 +74,7 @@ angular.module('rainierApp')
                                 $scope.dataModel.sort.reverse = false;
                             }
                             paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
-                                null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
+                                null, getVirtualStorageMachinesPath, virtualStorageMachineId).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -91,7 +91,7 @@ angular.module('rainierApp')
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
-                        null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
+                        null, getVirtualStorageMachinesPath, virtualStorageMachineId).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 }
@@ -109,7 +109,7 @@ angular.module('rainierApp')
 
             dataModel.getResources = function(){
                 return paginationService.get(null, getGadPairsPath, objectTransformService.transformGadPair, false,
-                    null, getVirtualStorageMachinesPath, serialModelNumber);
+                    null, getVirtualStorageMachinesPath, virtualStorageMachineId);
             };
 
             dataModel.gridSettings = [

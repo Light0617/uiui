@@ -89,7 +89,7 @@ angular.module('rainierApp')
 
         var generateDataModel = function (result) {
             var dataModel = {
-                title: 'Virtual Storage Machine ' + $routeParams.serialModelNumber,
+                title: 'Virtual Storage Machine ' + $routeParams.virtualStorageMachineId,
                 onlyOperation: true,
                 view: 'tile',
                 nextToken: result.nextToken,
@@ -119,7 +119,7 @@ angular.module('rainierApp')
                     onClick: function () {
                         $location.path([
                             'virtual-storage-machines',
-                            ShareDataService.virtualStorageMachine.serialModelNumber,
+                            ShareDataService.virtualStorageMachine.virtualStorageMachineId,
                             'gad-pairs'
                         ].join('/'));
                     },
