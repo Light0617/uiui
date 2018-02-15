@@ -558,15 +558,18 @@ angular.module('rainierApp')
                     return icons;
                 };
 
+                item.displayStorageSystemId = registerDisplayStorageSystemId(item);
+                item.displayVolumeId = registerDisplayVolumeId(item);
+
                 item.metaData = [
                     {
                         left: true,
                         title: item.label,
-                        details: [item.volumeId]
+                        details: [item.displayVolumeId]
                     },
                     {
                         left: false,
-                        title: item.storageSystemId,
+                        title: item.displayStorageSystemId,
                         details: [item.displayedDpType],
                         detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
                             return replicationService.tooltip(type);
