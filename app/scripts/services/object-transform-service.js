@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService, commonConverterService, volumeService) {
+                                                 constantService, commonConverterService, volumeService, $window) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -442,11 +442,17 @@ angular.module('rainierApp')
                 ];
                 item.itemIcon = storageSystemIcon(item);
                 item.onClick = storageSystemOnClick(item);
-                item.displayLinks = [{
-                    href: transformHdvmSnLaunchUrl(item),
-                    icon: 'icon-storage-navigator-settings',
-                    label: synchronousTranslateService.translate('storage-system-launch-hdvm')
-                }];
+                transformHdvmSnLaunchUrl(item);
+                item.hdvmSnLaunchUrl;
+                item.displayLinks = [
+                    {
+                        onClick: function() {
+                            $window.open(item.hdvmSnLaunchUrl);
+                        },
+                        icon: 'icon-storage-navigator-settings',
+                        label: synchronousTranslateService.translate('storage-system-launch-hdvm')
+                    }
+                ];
             },
             transformGadPair: function (item) {
                 if (item.primary) {
