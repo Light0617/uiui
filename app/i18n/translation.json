@@ -349,6 +349,7 @@
 
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
+    "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
     "volume-pair-count": "GAD Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
