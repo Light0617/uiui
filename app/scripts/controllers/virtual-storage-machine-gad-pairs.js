@@ -53,7 +53,7 @@ angular.module('rainierApp')
         ).then(function (result) {
             updateSummaryModel(result);
             var dataModel = {
-                title: 'Virtual storage machine ' + virtualStorageMachineId,
+                title: synchronousTranslateService.translate('common-virtual-storage-machine') + ' ' + virtualStorageMachineId,
                 singleViewAndPaged: true,
                 view: 'list',
                 onlyOperation: true,

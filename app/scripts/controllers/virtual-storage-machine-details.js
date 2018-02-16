@@ -19,7 +19,8 @@ angular.module('rainierApp')
     .controller('VirtualStorageMachineDetailsCtrl', function (
         $scope, $routeParams, $location, $timeout, $window, objectTransformService,
         paginationService, ShareDataService, queryService,
-        scrollDataSourceBuilderService, rainierQueryService
+        scrollDataSourceBuilderService, rainierQueryService,
+        synchronousTranslateService
     ) {
         var openGadAction;
 
@@ -92,7 +93,7 @@ angular.module('rainierApp')
 
         var generateDataModel = function (result) {
             var dataModel = {
-                title: 'Virtual Storage Machine ' + $routeParams.virtualStorageMachineId,
+                title: synchronousTranslateService.translate('common-virtual-storage-machine') + ' ' + $routeParams.virtualStorageMachineId,
                 onlyOperation: true,
                 view: 'tile',
                 nextToken: result.nextToken,
@@ -116,9 +117,9 @@ angular.module('rainierApp')
             openGadAction = {
                 openGad: {
                     type: 'link',
-                    title: 'Open GAD Pairs',
+                    title: synchronousTranslateService.translate('open-gad-pairs'),
                     icon: 'icon-open',
-                    tooltip: 'Open GAD Pairs',
+                    tooltip: synchronousTranslateService.translate('open-gad-pairs'),
                     onClick: function () {
                         $location.path([
                             'virtual-storage-machines',
