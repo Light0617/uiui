@@ -17,14 +17,10 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
         var physicalStorageSystemId = '41000' + _.random(1, 20);
         return {
             virtualStorageMachineId: '6cad-a341-ac61-90a5',
-            storageSystemId: virtualStorageSystemId,
+            storageSystemId: '220063',
             model: 'HM800',
             pairHACount: _.random(1, 50),
             physicalStorageSystems: [{
-                storageSystemId: virtualStorageSystemId
-            }, {
-                storageSystemId: physicalStorageSystemId
-            }, {
                 storageSystemId: '220063'
             }]
         };

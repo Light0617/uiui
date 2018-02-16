@@ -18,7 +18,7 @@ angular.module('rainierApp').constant('STORAGE_SYSTEM_VOLUMES_LIST_HEADER_COLUMN
         {
             titleKey: 'storage-systems-serial-number',
             sort: true,
-            sortProperty: 'displayStorageSystemId',
+            sortProperty: 'storageSystemId',
             styles: 'col-lg-1 col-md-1 col-sm-1 col-xs-1 ellipsis cell td'
         },
         {

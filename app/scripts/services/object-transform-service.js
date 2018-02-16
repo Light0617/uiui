@@ -200,27 +200,46 @@ angular.module('rainierApp')
             return [];
         }
 
-        function registerDisplayStorageSystemId(item) {
-            var displayStorageSystemId = item.storageSystemId;
-            // note that property "virtualStorageMachineInformation" is non-nullable
-            if(!_.isUndefined(item.virtualStorageMachineInformation.storageSystemId)) {
-                displayStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+        function registerDisplayVirtualStorageSystemId(item) {
+            var displayVirtualStorageSystemId = null;
+
+            // note that property "virtualStorageMachineInformation" and "storageSystemId" are non-nullable
+            if(item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                displayVirtualStorageSystemId = '(' + synchronousTranslateService.translate('virtual')  + ': ' +
                     item.virtualStorageMachineInformation.storageSystemId + ')';
             }
-            return displayStorageSystemId;
+            return displayVirtualStorageSystemId;
         }
 
-        function registerDisplayVolumeId (item) {
-            var displayVolumeId = item.volumeId;
+        function registerDisplayPhysicalVirtualStorageSystemId(item) {
+            var displayPhysicalVirtualStorageSystemId = item.storageSystemId;
+
+            // note that property "virtualStorageMachineInformation" and "storageSystemId" are non-nullable
+            if(item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                displayPhysicalVirtualStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId + ')';
+            }
+            return displayPhysicalVirtualStorageSystemId;
+        }
+
+        function registerDisplayVirtualVolumeId (item, hasBrackets) {
+            var displayVirtualVolumeId = null;
 
             // note that property "virtualStorageMachineInformation" is non-nullable
-            if(_.isUndefined(item.virtualStorageMachineInformation.virtualVolumeId)) {
+            if(!item.virtualStorageMachineInformation.virtualVolumeId) {
                 item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
-            } else {
-                displayVolumeId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
-                    item.virtualStorageMachineInformation.virtualVolumeId + ')';
             }
-            return displayVolumeId;
+            if(item.volumeId !== item.virtualStorageMachineInformation.virtualVolumeId ||
+                item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                if(hasBrackets === true) {
+                    displayVirtualVolumeId = '(' + synchronousTranslateService.translate('virtual') + ': ' +
+                        item.virtualStorageMachineInformation.virtualVolumeId + ')';
+                } else {
+                    displayVirtualVolumeId = item.virtualStorageMachineInformation.virtualVolumeId;
+                }
+
+            }
+            return displayVirtualVolumeId;
         }
 
         function storageSystemIcon(item) {
@@ -558,18 +577,24 @@ angular.module('rainierApp')
                     return icons;
                 };
 
-                item.displayStorageSystemId = registerDisplayStorageSystemId(item);
-                item.displayVolumeId = registerDisplayVolumeId(item);
+                item.displayVirtualStorageSystemId = registerDisplayVirtualStorageSystemId(item);
+                item.displayPhysicalVirtualStorageSystemId = registerDisplayPhysicalVirtualStorageSystemId(item);
+                item.displayVirtualVolumeIdWithBrackets = registerDisplayVirtualVolumeId(item, true);
+                item.displayVirtualVolumeId = registerDisplayVirtualVolumeId(item, false);
 
                 item.metaData = [
                     {
                         left: true,
                         title: item.label,
-                        details: [item.displayVolumeId]
+                        details: [item.volumeId, item.displayVirtualVolumeIdWithBrackets]
                     },
                     {
                         left: false,
-                        title: item.displayStorageSystemId,
+                        title: item.storageSystemId,
+                        details: [item.displayVirtualStorageSystemId]
+                    },
+                    {
+                        left: false,
                         details: [item.displayedDpType],
                         detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
                             return replicationService.tooltip(type);
