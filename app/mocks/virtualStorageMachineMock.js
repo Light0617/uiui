@@ -4,7 +4,7 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
     var virtualStorageMachines = [];
 
     var generateMockVirtualStorageMachines = function () {
-        var total = 20;
+        var total = 1;
 
         while (total-- !== 0) {
             var mockVirtualStorageMachines = generateVirtualStorageMachines(total);
@@ -24,6 +24,8 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
                 storageSystemId: virtualStorageSystemId
             }, {
                 storageSystemId: physicalStorageSystemId
+            }, {
+                storageSystemId: '220063'
             }]
         };
     };
