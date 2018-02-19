@@ -227,6 +227,7 @@
     "storage-pool-utilization-threshold-high": "Utilization Threshold (High) %",
     "storage-pool-utilization-threshold-low": "Utilization Threshold (Low) %",
     "storage-pool-subscription-limit": "Subscription Limit",
+    "storage-pool-suspend-snapshot-description": "If this threshold is exceeded, snapshots will be disabled to ensure there is enough capacity for user data.",
 
     "storage-pool-list-parity-groups": "List of Parity Groups:",
     "storage-pool-delete-confirmation": "Delete Pools Confirmation",
@@ -952,8 +953,8 @@
     "replication-group-actions-delete-snapshot-confirmation-message": "The selected replication group will be deleted. No volume pairs will be affected. Do you want to continue?",
     "replication-group-actions-restore-confirmation-title": "Restore Volume Pairs Confirmation",
     "replication-group-actions-restore-confirmation-message": "The selected primary volumes will be restored by using corresponding secondary volumes. Do you want to continue?",
-    "replication-group-description-for-target-pool": "Note: For volumes which already have one or more snapshots, new snapshots will be stored in the same pool as existing snapshots.",
-    "replication-group-can-not-create-multiple-replication-types-message": "Can not create a replication group. Confirm that all existing pairs of selected volumes {{volumeIds}} have a same replication excluding 'Clone', and the type is 'Snap' or 'Snap on Snap'.",
+    "replication-group-description-for-target-pool": "Note: For volumes that already contain one or more snapshots, new snapshots will be saved in the same pool as the existing snapshots.",
+    "replication-group-can-not-create-multiple-replication-types-message": "A replication group cannot be created. For pairs (other than 'Clone') in the selected volumes {{volumeIDs}}, confirm that all pairs were replicated by using 'SNAP' or 'SNAP on SNAP'.",
     "existing-replication-types": "Existing replication types",
     "restore-confirmation-message": "Select from the following secondary volumes to restore current primary volume:",
     "product-name": "Changhong Storage Advisor",
