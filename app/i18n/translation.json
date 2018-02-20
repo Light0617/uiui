@@ -331,6 +331,7 @@
     "storage-volume-pool": "Pool",
     "storage-volume-attach-settings": "Attach Settings",
     "storage-volume-attach": "Attach Volumes",
+    "storage-volume-attach-settings": "Attach Settings",
 
     "storage-volume-filter-protected": "Protected",
     "storage-volume-filter-unprotected": "Unprotected",
@@ -725,6 +726,7 @@
     "workflow-title-edit-lun-paths-edit": "Edit Paths",
     "workflow-title-protect-volumes": "Protect Volumes",
     "workflow-title-select-servers": "Select Servers",
+    "workflow-title-create-paths": "Create Paths",
 
     "virtual-storage-machines-showing-x-of-y": "Showing {{filtered}} of {{total}} Virtual Storage Machines",
     "storage-systems-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Systems",
