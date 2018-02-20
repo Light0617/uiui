@@ -53,6 +53,12 @@
 
     "common-list-header-details": "Details",
 
+    "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
+    "tooltip-configure-storage-pools": "Open the Pools page in Storage Navigator",
+    "tooltip-configure-storage-system-volumes": "Open the Logical Devices page in Storage Navigator",
+    "tooltip-configure-storage-ports": "Open the Ports/Host Groups/iSCSI Targets page in Storage Navigator",
+    "tooltip-configure-replication-groups": "Open the Local Replication page in Storage Navigator",
+
     "capacity-alerts-tooltip": "Total number of managed elements with capacity alerts.",
     "dp-alerts-tooltip": "Total number of volumes and servers with data protection alerts",
     "jobs-alerts-tooltip": "Total number of failed job alerts in the last 24 hours.",
@@ -333,6 +339,8 @@
     "storage-volume-filter-thin": "Thin",
     "storage-volume-filter-tiered": "Tiered",
     "storage-volume-filter-snap": "Snap",
+    "storage-volume-filter-free-space": "Free Space",
+    "storage-volume-filter-size-of-volume": "Size of Volume",
     "storage-volume-filter-attached": "Attached",
     "storage-volume-filter-unattached": "Unattached",
     "storage-volume-filter-unmanaged": "Unmanaged",
@@ -1042,6 +1050,7 @@
     "evs-update": "Update Virtual File Server",
     "evs-tooltip": "VFS - Enterprise Virtual Server(EVS)",
     "file-pools-tooltip": "File Pool (NAS Storage Pool)",
+    "volume-provisioning-status":"Provisioning Status",
 
     "snap-tooltip": "Snap – Snapshot without cascade capability",
     "snap-on-snap-tooltip": "Snap on Snap – Snapshot with cascade capability",
