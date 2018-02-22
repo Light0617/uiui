@@ -2,5 +2,8 @@
     "brand-company": "UIT",
     "brand-rainier": "Storage Advisor",
     "product-name": "UIT Storage Advisor",
-    "product-copy-right": "{{getCurrentYear()}}"
+    "product-copy-right": "{{getCurrentYear()}}",
+
+    "select-port-wwn-tooltip": "Optional inputs - Select the storage port and Server WWN to be used for create one or more path between the Server and Storage system. If not selected, Storage Advisor will auto select the best port and WWN to be used",
+    "navigator-session-permission-html-error": "You do not have sufficient permissions to launch this page of Storage Navigator. Please close this page and log on to Storage Advisor with a different user who has sufficient permissions."
 }
