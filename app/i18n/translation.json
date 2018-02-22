@@ -331,7 +331,6 @@
     "storage-volume-pool": "Pool",
     "storage-volume-attach-settings": "Attach Settings",
     "storage-volume-attach": "Attach Volumes",
-    "storage-volume-attach-settings": "Attach Settings",
 
     "storage-volume-filter-protected": "Protected",
     "storage-volume-filter-unprotected": "Unprotected",
@@ -345,8 +344,6 @@
     "storage-volume-filter-attached": "Attached",
     "storage-volume-filter-unattached": "Unattached",
     "storage-volume-filter-unmanaged": "Unmanaged",
-    "storage-volume-filter-free-space": "Free Space",
-    "storage-volume-filter-size-of-volume": "Size of Volume",
     "storage-volume-filter-utilization": "Utilization (%)",
     "storage-volume-filter-protection-type": "Protection Type",
     "storage-volume-filter-data-protection": "Data Protection",
@@ -406,12 +403,6 @@
     "lun-existing-label": "Existing",
     "lun-new-label": "New",
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
-
-    "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
-    "tooltip-configure-storage-pools": "Open the Pools page in Storage Navigator",
-    "tooltip-configure-storage-system-volumes": "Open the Logical Devices page in Storage Navigator",
-    "tooltip-configure-storage-ports": "Open the Ports/Host Groups/iSCSI Targets page in Storage Navigator",
-    "tooltip-configure-replication-groups": "Open the Local Replication page in Storage Navigator",
 
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volumes",
 
@@ -1052,7 +1043,6 @@
     "evs-update": "Update Virtual File Server",
     "evs-tooltip": "VFS - Enterprise Virtual Server(EVS)",
     "file-pools-tooltip": "File Pool (NAS Storage Pool)",
-    "volume-provisioning-status":"Provisioning Status",
 
     "snap-tooltip": "Snap – Snapshot without cascade capability",
     "snap-on-snap-tooltip": "Snap on Snap – Snapshot with cascade capability",
