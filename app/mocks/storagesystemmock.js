@@ -22,7 +22,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'storageSystemId': '2200' + v,
             'storageSystemName': 'Storage' + v,
             'unified': mockUtils.trueOrFalse(),
-            'model': 'VSP G400',
+            'model': 'VSP G1000',
             'svpIpAddress': '10.20.90.1' + v,
             'gum1IpAddress': '10.20.90.2' + v,
             'gum2IpAddress': '10.20.90.3' + v,
