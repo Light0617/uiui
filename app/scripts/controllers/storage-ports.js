@@ -110,6 +110,98 @@ angular.module('rainierApp')
             };
         }
 
+        function generateEditFibrePortDialogSettings() {
+            var dialogSettings = {
+                id: 'securityEnableDisableConfirmation',
+                title: 'storage-port-enable-security-title',
+                content: 'storage-port-enable-security-content',
+                trueText: 'storage-port-enable-security',
+                falseText: 'storage-port-not-enable-security',
+                switchEnabled: {
+                    value: false
+                }
+            };
+
+            if (
+                $scope.storageSystemModel &&
+                storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)
+            ) {
+                dialogSettings.itemAttribute = {
+                    value: function () {
+                        if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
+                            return portAttributes.target;
+                        } else {
+                            return null;
+                        }
+                    }
+                };
+                dialogSettings.itemAttributes = [
+                    portAttributes.target,
+                    portAttributes.initiator,
+                    portAttributes.rcuTarget,
+                    portAttributes.external
+                ];
+            }
+
+            return dialogSettings;
+        }
+
+        function generateEditFibrePortAction(dataModel) {
+            return {
+                icon: 'icon-edit',
+                type: 'confirmation-modal',
+                tooltip: 'action-tooltip-toggle-security',
+                dialogSettings: generateEditFibrePortDialogSettings(),
+                enabled: function () {
+                    return dataModel.anySelected();
+                },
+                confirmClick: function () {
+                    $('#' + this.dialogSettings.id).modal('hide');
+                    var enabled = this.dialogSettings.switchEnabled.value;
+                    var attribute = null;
+
+                    if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
+                        attribute = storagePortsService.getRawPortAttribute(this.dialogSettings.itemAttribute.value);
+                    }
+
+                    _.forEach(dataModel.getSelectedItems(), function (storagePort) {
+                        var payload = {
+                            securitySwitchEnabled: enabled,
+                            attribute: attribute
+                        };
+                        orchestratorService.updateStoragePort(storagePort.storageSystemId, storagePort.storagePortId, payload);
+                    });
+
+                    this.dialogSettings.switchEnabled.value = false;
+                    this.dialogSettings.itemAttribute.value = function () {
+                        if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
+                            return portAttributes.target;
+                        } else {
+                            return null;
+                        }
+                    };
+                },
+                onClick: function () {
+
+                    var firstItem = _.first(dataModel.getSelectedItems());
+
+                    var isAllSameSecuritySwitchEnabled = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                        return storagePort.securitySwitchEnabled === this.securitySwitchEnabled;
+                    }, firstItem);
+
+                    this.dialogSettings.switchEnabled.value = isAllSameSecuritySwitchEnabled ? firstItem.securitySwitchEnabled : false;
+
+                    if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
+                        var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                            return storagePort.attributes[0] === this.attributes[0];
+                        }, firstItem);
+
+                        this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
+                    }
+                }
+            }
+        };
+
         function initFibre() {
             var queryObject = new paginationService.QueryObject('type', undefined, 'FIBRE');
             return paginationService
@@ -119,83 +211,9 @@ angular.module('rainierApp')
                 )
                 .then(function (result) {
                     var dataModel = generateDataModel(result);
-
-                    var actions = [
-                        {
-                            icon: 'icon-edit',
-                            type: 'confirmation-modal',
-                            tooltip: 'action-tooltip-toggle-security',
-                            dialogSettings: {
-                                id: 'securityEnableDisableConfirmation',
-                                title: 'storage-port-enable-security-title',
-                                content: 'storage-port-enable-security-content',
-                                trueText: 'storage-port-enable-security',
-                                falseText: 'storage-port-not-enable-security',
-                                switchEnabled: {
-                                    value: false
-                                },
-                                itemAttribute: {
-                                    value: function () {
-                                        if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
-                                            return portAttributes.target;
-                                        } else {
-                                            return null;
-                                        }
-                                    },
-                                },
-                                itemAttributes: [portAttributes.target, portAttributes.initiator, portAttributes.rcuTarget, portAttributes.external]
-                            },
-                            enabled: function () {
-                                return dataModel.anySelected();
-                            },
-                            confirmClick: function () {
-                                $('#' + this.dialogSettings.id).modal('hide');
-                                var enabled = this.dialogSettings.switchEnabled.value;
-                                var attribute = null;
-
-                                if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
-                                    attribute = storagePortsService.getRawPortAttribute(this.dialogSettings.itemAttribute.value);
-                                }
-
-                                _.forEach(dataModel.getSelectedItems(), function (storagePort) {
-                                    var payload = {
-                                        securitySwitchEnabled: enabled,
-                                        attribute: attribute
-                                    };
-                                    orchestratorService.updateStoragePort(storagePort.storageSystemId, storagePort.storagePortId, payload);
-                                });
-
-                                this.dialogSettings.switchEnabled.value = false;
-                                this.dialogSettings.itemAttribute.value = function () {
-                                    if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
-                                        return portAttributes.target;
-                                    } else {
-                                        return null;
-                                    }
-                                };
-                            },
-                            onClick: function () {
-
-                                var firstItem = _.first(dataModel.getSelectedItems());
-
-                                var isAllSameSecuritySwitchEnabled = _.all(dataModel.getSelectedItems(), function (storagePort) {
-                                    return storagePort.securitySwitchEnabled === this.securitySwitchEnabled;
-                                }, firstItem);
-
-                                this.dialogSettings.switchEnabled.value = isAllSameSecuritySwitchEnabled ? firstItem.securitySwitchEnabled : false;
-
-                                if (storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel)) {
-                                    var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
-                                        return storagePort.attributes[0] === this.attributes[0];
-                                    }, firstItem);
-
-                                    this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
-                                }
-                            }
-                        }
-                    ];
+                    var editFibrePortAction = generateEditFibrePortAction(dataModel);
                     dataModel.getActions = function () {
-                        return actions;
+                        return [editFibrePortAction];
                     };
                     dataModel.getResources = function () {
                         return paginationService.get(
