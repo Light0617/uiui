@@ -53,6 +53,12 @@
 
     "common-list-header-details": "Details",
 
+    "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
+    "tooltip-configure-storage-pools": "Open the Pools page in Storage Navigator",
+    "tooltip-configure-storage-system-volumes": "Open the Logical Devices page in Storage Navigator",
+    "tooltip-configure-storage-ports": "Open the Ports/Host Groups/iSCSI Targets page in Storage Navigator",
+    "tooltip-configure-replication-groups": "Open the Local Replication page in Storage Navigator",
+
     "capacity-alerts-tooltip": "Total number of managed elements with capacity alerts.",
     "dp-alerts-tooltip": "Total number of volumes and servers with data protection alerts",
     "jobs-alerts-tooltip": "Total number of failed job alerts in the last 24 hours.",
@@ -333,11 +339,11 @@
     "storage-volume-filter-thin": "Thin",
     "storage-volume-filter-tiered": "Tiered",
     "storage-volume-filter-snap": "Snap",
+    "storage-volume-filter-free-space": "Free Space",
+    "storage-volume-filter-size-of-volume": "Size of Volume",
     "storage-volume-filter-attached": "Attached",
     "storage-volume-filter-unattached": "Unattached",
     "storage-volume-filter-unmanaged": "Unmanaged",
-    "storage-volume-filter-free-space": "Free Space",
-    "storage-volume-filter-size-of-volume": "Size of Volume",
     "storage-volume-filter-utilization": "Utilization (%)",
     "storage-volume-filter-protection-type": "Protection Type",
     "storage-volume-filter-data-protection": "Data Protection",
@@ -349,11 +355,14 @@
 
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
+    "common-virtual-storage-machine-id": "Virtual Storage Machine ID",
+    "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
     "volume-pair-count": "GAD Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
     "virtual-volume-id": "Virtual Volume Id",
     "quorum-Id": "Quorum Id",
+    "open-gad-pairs": "Open GAD Pairs",
 
     "gad-pairs": "GAD pairs",
     "gad-display-type": "GAD",
@@ -394,12 +403,6 @@
     "lun-existing-label": "Existing",
     "lun-new-label": "New",
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
-
-    "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
-    "tooltip-configure-storage-pools": "Open the Pools page in Storage Navigator",
-    "tooltip-configure-storage-system-volumes": "Open the Logical Devices page in Storage Navigator",
-    "tooltip-configure-storage-ports": "Open the Ports/Host Groups/iSCSI Targets page in Storage Navigator",
-    "tooltip-configure-replication-groups": "Open the Local Replication page in Storage Navigator",
 
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volumes",
 
@@ -714,6 +717,7 @@
     "workflow-title-edit-lun-paths-edit": "Edit Paths",
     "workflow-title-protect-volumes": "Protect Volumes",
     "workflow-title-select-servers": "Select Servers",
+    "workflow-title-create-paths": "Create Paths",
 
     "virtual-storage-machines-showing-x-of-y": "Showing {{filtered}} of {{total}} Virtual Storage Machines",
     "storage-systems-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Systems",

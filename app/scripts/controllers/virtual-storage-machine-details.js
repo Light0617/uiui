@@ -1,3 +1,11 @@
+/*
+ * ========================================================================
+ *
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
+ *
+ * ========================================================================
+ */
+
 'use strict';
 
 /**
@@ -8,174 +16,149 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('VirtualStorageMachineDetailsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
-                                              objectTransformService, synchronousTranslateService, $location,
-                                              scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
-                                              queryService, wwnService, dpAlertService) {
-        var serialModelNumber = $routeParams.serialModelNumber;
-        var getGadPairsPath = 'gad-pairs';
-        var getVirtualStorageMachinesPath = 'virtual-storage-machines';
-        if (!ShareDataService.virtualStorageMachine) {
-            window.history.back();
-        }
-        var currentVirtualStorageMachine = ShareDataService.virtualStorageMachine;
+    .controller('VirtualStorageMachineDetailsCtrl', function (
+        $scope, $routeParams, $location, $timeout, $window, objectTransformService,
+        paginationService, ShareDataService, queryService,
+        scrollDataSourceBuilderService, rainierQueryService,
+        synchronousTranslateService
+    ) {
+        var openGadAction;
 
-        var summaryModel = {
-            pairCount: currentVirtualStorageMachine.pairHACount,
-            leftPhysicalStorageSystem: currentVirtualStorageMachine.physicalStorageSystems[0],
-            rightPhysicalStorageSystem: currentVirtualStorageMachine.physicalStorageSystems[1],
-            services: {
-                dp: dpAlertService
-            }
+        var storageSystemIds = function () {
+            return _.map(
+                ShareDataService.virtualStorageMachine.physicalStorageSystems,
+                function(s) { return s.storageSystemId; }
+            );
         };
-        $scope.summaryModel = summaryModel;
-        $scope.summaryModel.services.dp.update();
 
-        paginationService.get(null, getGadPairsPath, objectTransformService.transformGadPair, true,
-            null, getVirtualStorageMachinesPath, serialModelNumber)
-            .then(function (result) {
-            var dataModel = {
-                title: 'Virtual storage machine ' + serialModelNumber,
-                singleViewAndPaged: true,
-                view: 'list',
-                onlyOperation: true,
-                nextToken: result.nextToken,
-                total: result.total,
-                currentPageCount: 0,
-                sort: {
-                    field: 'primary.volumeId',
-                    reverse: false,
-                    setSort: function (f) {
-                        $timeout(function () {
-                            if ($scope.dataModel.sort.field === f) {
-                                queryService.setSort(f, !$scope.dataModel.sort.reverse);
-                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            } else {
-                                $scope.dataModel.sort.field = f;
-                                queryService.setSort(f, false);
-                                $scope.dataModel.sort.reverse = false;
-                            }
-                            paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
-                                null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
-                                updateResultTotalCounts(result);
-                            });
-                        });
+        var getStorageSystemPath = function () {
+            return 'storage-systems' + rainierQueryService.and('storageSystemId', storageSystemIds());
+        };
+
+        var generateSetSortFn = function () {
+            return function (f) {
+                $timeout(function () {
+                    if ($scope.dataModel.sort.field === f) {
+                        queryService.setSort(f, !$scope.dataModel.sort.reverse);
+                        $scope.dataModel.sort.reverse = true;
+                    } else {
+                        $scope.dataModel.sort.field = f;
+                        queryService.setSort(f, false);
+                        $scope.dataModel.sort.reverse = false;
                     }
-                }
+                    paginationService.getQuery(
+                        getStorageSystemPath(), objectTransformService.transformVSMStorageSystems
+                    );
+                });
             };
+        };
 
-            $scope.filterModel = {
-                filter: {
-                    freeText: '',
-                },
-                searchQuery: function (value) {
-                    var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().STRING, value));
-                    paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getGadPairsPath, objectTransformService.transformGadPair,
-                        null, getVirtualStorageMachinesPath, serialModelNumber).then(function (result) {
-                        updateResultTotalCounts(result);
-                    });
-                }
-            };
+        var getResources = function () {
+            return paginationService.get(
+                null, getStorageSystemPath(), objectTransformService.transformVSMStorageSystems
+            );
+        };
 
-            var updateResultTotalCounts = function(result) {
-                $scope.dataModel.nextToken = result.nextToken;
-                $scope.dataModel.cachedList = result.resources;
-                $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-                $scope.dataModel.itemCounts = {
-                    filtered: $scope.dataModel.displayList.length,
-                    total: $scope.dataModel.total
-                };
-            };
-
-            dataModel.getResources = function(){
-                return paginationService.get(null, getGadPairsPath, objectTransformService.transformGadPair, false,
-                    null, getVirtualStorageMachinesPath, serialModelNumber);
-            };
-
-            dataModel.gridSettings = [
+        var gridSettings = function () {
+            return [
                 {
-                    title: 'repliaction-group-volume-list-pvolid',
-                    sizeClass: 'twelfth',
-                    sortField: '',
+                    title: 'storage-systems-serial-number',
+                    sizeClass: 'sixth',
+                    sortFiled: 'storageSystemId',
                     getDisplayValue: function (item) {
-                        return item.primary.volumeId;
+                        return item.storageSystemId;
                     },
-                    type: 'hyperLink',
-                    onClick: function (item) {
-                        var path = ['storage-systems', item.primary.storageSystemId, 'volumes', item.primary.volumeId].join('/');
-                        $location.path(path);
-                    }
+                    type: 'id'
                 },
                 {
-                    title: 'repliaction-group-volume-list-svolid',
-                    sizeClass: 'twelfth',
-                    sortField: '',
-                    getDisplayValue: function (item) {
-                        return item.secondary.volumeId;
-                    },
-                    type: 'hyperLink',
-                    onClick: function (item) {
-                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
-                        $location.path(path);
-                    }
-
-                },
-                {
-                    title: 'repliaction-group-volume-list-pvol-status',
-                    sizeClass: 'twelfth',
-                    sortField: '',
-                    getDisplayValue: function (item) {
-                        return item.primary.status;
-                    }
-
-                },
-                {
-                    title: 'repliaction-group-volume-list-svol-status',
-                    sizeClass: 'twelfth',
-                    sortField: '',
-                    getDisplayValue: function (item) {
-                        return item.secondary.status;
-                    }
-
-                },
-                {
-                    title: 'quorum-Id',
+                    title: 'storage-systems-svp-ip-address',
                     sizeClass: 'sixth',
-                    sortField: '',
+                    sortField: 'svpIpAddress',
                     getDisplayValue: function (item) {
-                        return item.primary.quorumId;
+                        return item.svpIpAddress;
                     }
 
                 },
                 {
-                    title: 'gad-pvol-storage-system-id',
-                    sizeClass: 'sixth',
-                    sortField: '',
+                    title: 'storage-systems-model',
+                    sizeClass: 'twelfth',
+                    sortField: 'model',
                     getDisplayValue: function (item) {
-                        return item.primary.storageSystemId;
-                    }
-
-                },
-                {
-                    title: 'gad-svol-storage-system-id',
-                    sizeClass: 'sixth',
-                    sortField: '',
-                    getDisplayValue: function (item) {
-                        return item.secondary.storageSystemId;
+                        return item.model;
                     }
 
                 }
             ];
+        };
 
-            dataModel.cachedList = result.resources;
-            dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+        var generateDataModel = function (result) {
+            var dataModel = {
+                title: synchronousTranslateService.translate('common-virtual-storage-machine') + ' ' + $routeParams.virtualStorageMachineId,
+                onlyOperation: true,
+                view: 'tile',
+                nextToken: result.nextToken,
+                total: result.total,
+                currentPageCount: 0,
+                sort: {
+                    field: 'storageSystemId',
+                    reverse: true,
+                    setSort: generateSetSortFn()
+                },
+                search: {
+                    freeText: ''
+                },
+                getResources: getResources,
+                gridSettings: gridSettings()
+            };
+            return dataModel;
+        };
 
-            $scope.dataModel = dataModel;
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, null, true);
-        });
+        var initActions = function () {
+            openGadAction = {
+                openGad: {
+                    type: 'link',
+                    title: synchronousTranslateService.translate('open-gad-pairs'),
+                    icon: 'icon-open',
+                    tooltip: synchronousTranslateService.translate('open-gad-pairs'),
+                    onClick: function () {
+                        $location.path([
+                            'virtual-storage-machines',
+                            ShareDataService.virtualStorageMachine.virtualStorageMachineId,
+                            'gad-pairs'
+                        ].join('/'));
+                    },
+                    enabled: function () {
+                        return true;
+                    }
+                }
+            };
+        };
 
 
+        var getSummaryActions = function () {
+            return _.map(openGadAction);
+        };
 
+        var generateSummaryModel = function (vsm) {
+            var model = vsm;
+            model.getActions = getSummaryActions;
+            return model;
+        };
+
+        var initModel = function () {
+            getResources().then(function (result) {
+                $scope.dataModel = generateDataModel(result);
+                scrollDataSourceBuilderService.setupDataLoader(
+                    $scope, result.resources, 'virtualStorageMachineDetailsSearch'
+                );
+                $scope.summaryModel = generateSummaryModel(ShareDataService.virtualStorageMachine);
+            });
+        };
+
+        if (!ShareDataService.virtualStorageMachine || storageSystemIds().length === 0) {
+            window.history.back();
+        } else {
+            initActions();
+            initModel();
+        }
     });
