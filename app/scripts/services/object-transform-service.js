@@ -8,7 +8,7 @@
  * Provider in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location,
+    .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location, $filter,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService, $window) {
@@ -2958,25 +2958,88 @@ angular.module('rainierApp')
             },
 
             transformMigrationTask: function (item) {
+                item.id = item.migrationTaskId;
                 // Update schedule info
                 if (item.schedule && item.schedule.datetime) {
                     item.scheduleDate = item.schedule.datetime;
                 } else {
-                    item.scheduleDate = 'N/A';
+                    item.scheduleDate = constantService.notAvailable;
                 }
-                item.jobStartDate = !item.jobStartDate ? 'N/A' : item.jobStartDate;
-                item.jobEndDate = !item.jobEndDate ? 'N/A' : item.jobEndDate;
+                item.jobStartDate = !item.jobStartDate ? constantService.notAvailable : item.jobStartDate;
+                item.jobEndDate = !item.jobEndDate ? constantService.notAvailable : item.jobEndDate;
 
                 // Set default sort value
-                if (item.jobEndDate !== 'N/A') {
+                if (item.jobEndDate !== constantService.notAvailable) {
                     item.defaultSortKey = -1 * Date.parse(item.jobEndDate);
-                } else if (item.jobStartDate !== 'N/A') {
+                } else if (item.jobStartDate !== constantService.notAvailable) {
                     item.defaultSortKey = -1 * Date.parse(item.jobStartDate) + 1000000000000;
-                } else if (item.scheduleDate !== 'N/A') {
+                } else if (item.scheduleDate !== constantService.notAvailable) {
                     item.defaultSortKey = Date.parse(item.scheduleDate);
                 } else {
                     item.defaultSortKey = Number.MAX_VALUE;
                 }
+
+                // status
+//                switch (item.status) {
+//                    case 'SCHEDULED':
+//                        item.displayStatus = 'migration-task-status-scheduled';
+//                        break;
+//                    case 'IN_PROGRESS':
+//                        item.displayStatus = 'migration-task-status-in-progress';
+//                        break;
+//                    case 'SUCCESS':
+//                        item.displayStatus = 'migration-task-status-success';
+//                        break;
+//                    case 'FAILED':
+//                        item.displayStatus = 'migration-task-status-failed';
+//                        break;
+//                    case 'SUCCESS_WITH_ERRORS':
+//                        item.displayStatus = 'migration-task-status-success-with-errors';
+//                        break;
+//                    default:
+//                        item.displayStatus = this.status.charAt(0).toUpperCase() + item.status.toLowerCase().slice(1);
+//                        break;
+//                }
+                item.toDisplayStatus = function () {
+                    switch (this.status) {
+                        case 'SCHEDULED':
+                            return synchronousTranslateService.translate('migration-task-status-scheduled');
+                        case 'IN_PROGRESS':
+                            return synchronousTranslateService.translate('migration-task-status-in-progress');
+                        case 'SUCCESS':
+                            return synchronousTranslateService.translate('migration-task-status-success');
+                        case 'FAILED':
+                            return synchronousTranslateService.translate('migration-task-status-failed');
+                        case 'SUCCESS_WITH_ERRORS':
+                            return synchronousTranslateService.translate('migration-task-status-success-with-errors');
+                        default:
+                            if (this.status) {
+                                return item.status.charAt(0).toUpperCase() + item.status.toLowerCase().slice(1);
+                            }
+                            return constantService.notAvailable;
+                    }
+                };
+                item.isScheduled = function () {
+                    return this.status === 'SCHEDULED';
+                };
+                item.isInProgress = function () {
+                    return this.status === 'IN_PROGRESS';
+                },
+                item.isSuccess = function () {
+                    return this.status === 'SUCCESS';
+                },
+                item.isFailed = function () {
+                    return this.status === 'FAILED';
+                },
+                item.isSuccessWithErrors = function () {
+                    return this.status === 'SUCCESS_WITH_ERRORS';
+                },
+                item.toDisplayDate = function (isoDate) {
+                    if (isoDate && isoDate !== constantService.notAvailable) {
+                        return $filter('date')(isoDate, 'MMM d, y h:mm:ss a');
+                    }
+                    return constantService.notAvailable;
+                };
             },
             transformMigrationPair: function (item) {
                 // Resource links
@@ -2985,13 +3048,13 @@ angular.module('rainierApp')
                     var path = ['storage-systems', item.storageSystemId, 'volumes', item.sourceVolumeId].join('/');
                     $location.path(path);
                 };
-                if (item.sourcePoolId !== 'N/A') {
+                if (item.sourcePoolId !== constantService.notAvailable) {
                     item.launchSourcePool = function () {
                         var path = ['storage-systems', item.storageSystemId, 'storage-pools', item.sourcePoolId].join('/');
                         $location.path(path);
                     };
                 }
-                if (item.sourceParityGroupId !== 'N/A') {
+                if (item.sourceParityGroupId !== constantService.notAvailable) {
                     item.launchSourceParityGroup = function () {
                         var path = ['storage-systems', item.storageSystemId, 'external-parity-groups', item.sourceParityGroupId].join('/');
                         $location.path(path);
@@ -3003,12 +3066,28 @@ angular.module('rainierApp')
                         $location.path(path);
                     };
                 }
-                if (item.targetPoolId !== 'N/A') {
+                if (item.targetPoolId !== constantService.notAvailable) {
                     item.launchTargetPool = function () {
                         var path = ['storage-systems', item.storageSystemId, 'storage-pools', item.targetPoolId].join('/');
                         $location.path(path);
                     };
                 }
+
+                // status display
+                item.toDisplayStatus = function () {
+                    switch (item.status) {
+                        case 'NOT_MIGRATED':
+                            return synchronousTranslateService.translate('migration-pair-status-not_migrated');
+                        case 'MIGRATED':
+                            return synchronousTranslateService.translate('migration-pair-status-migrating');
+                        case 'MIGRATING':
+                            return synchronousTranslateService.translate('migration-pair-status-migrated');
+                        case 'INVALID':
+                            return synchronousTranslateService.translate('migration-pair-status-invalid');
+                        default:
+                            return item.status.charAt(0).toUpperCase() + item.status.toLowerCase().slice(1);
+                    }
+                };
             }
         };
 

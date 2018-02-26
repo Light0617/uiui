@@ -145,8 +145,8 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
         var storageSystem = _.find(storageSystems, function (item) {
             return item.storageSystemId === storageSystemId;
         });
-        var numOfGroups = storageSystem && storageSystem.migrationGroupCount !== undefined ?
-                storageSystem.migrationGroupCount : 10;
+        var numOfGroups = storageSystem && storageSystem.migrationTaskCount !== undefined ?
+                storageSystem.migrationTaskCount : 10;
         var mgs = [];
         _.each(migrationTasks, function(vm) {
             if (mgs.length < numOfGroups) {

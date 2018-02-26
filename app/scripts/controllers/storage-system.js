@@ -282,7 +282,7 @@ angular.module('rainierApp')
                     // TODO NEWRAIN-8105: Should statues have the order?
                     migrationTasksByStatus : _.map(_.groupBy(mgs, 'status'), function (g){
                         return {
-                            status : _.first(g).status,
+                            status : _.first(g).toDisplayStatus(),
                             count : g.length
                         };
                     })

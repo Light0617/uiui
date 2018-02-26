@@ -197,7 +197,7 @@ angular.module('rainierApp')
                             schedule.datetime = dataModel.settingModel.scheduleDate.toISOString();
                         }
                         var payload = {
-                            targetPoolId: targetPool.poolId,
+                            targetPoolId: targetPool.storagePoolId,
                             migrationTaskName: dataModel.settingModel.migrationTaskName,
                             schedule: schedule
                         };

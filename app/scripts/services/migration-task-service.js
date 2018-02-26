@@ -36,56 +36,6 @@ angular.module('rainierApp')
         FAILED: 'FAILED',
         SUCCESS_WITH_ERRORS: 'SUCCESS_WITH_ERRORS'
     };
-    // TODO Is tooltip needed? If so, resource definition required.
-//    var tooltip = {
-//        SCHEDULED: function () {
-//            return synchronousTranslateService.translate('volume-migration-scheduled-tooltip');
-//        },
-//        IN_PROGRESS: function () {
-//            return synchronousTranslateService.translate('volume-migration-inProgress-tooltip');
-//        },
-//        SUCCESS: function () {
-//            return synchronousTranslateService.translate('volume-migration-success-tooltip');
-//        },
-//        FAILED: function () {
-//            return synchronousTranslateService.translate('volume-migration-failed-tooltip');
-//        }
-//    };
-//    var rawToTooltip = function (raw) {
-//        return tooltip[raw]();
-//    };
-    var rawToDisp = function (status) {
-        switch (status) {
-            case rawStatusConst.SCHEDULED:
-                return dispStatusConst.SCHEDULED;
-            case rawStatusConst.IN_PROGRESS:
-                return dispStatusConst.IN_PROGRESS;
-            case rawStatusConst.SUCCESS:
-                return dispStatusConst.SUCCESS;
-            case rawStatusConst.FAILED:
-                return dispStatusConst.FAILED;
-            case rawStatusConst.SUCCESS_WITH_ERRORS:
-                return dispStatusConst.SUCCESS_WITH_ERRORS;
-            default:
-                return status.charAt(0).toUpperCase() + status.toLowerCase().slice(1);
-        }
-    };
-    var dispToRaw = function (status) {
-        switch (status) {
-            case dispStatusConst.SCHEDULED:
-                return rawStatusConst.SCHEDULED;
-            case dispStatusConst.IN_PROGRESS:
-                return rawStatusConst.IN_PROGRESS;
-            case dispStatusConst.SUCCESS:
-                return rawStatusConst.SUCCESS;
-            case dispStatusConst.FAILED:
-                return rawStatusConst.FAILED;
-            case dispStatusConst.SUCCESS_WITH_ERRORS:
-                return rawStatusConst.SUCCESS_WITH_ERRORS;
-            default:
-                return status.toString().toUpperCase();
-        }
-    };
 
     var mergeJobInfo = function (resources) {
         var tasks = [];
@@ -96,7 +46,6 @@ angular.module('rainierApp')
                         item.status = job.status;
                         item.jobStartDate = job.startDate;
                         item.jobEndDate = job.endDate;
-                        objectTransformService.transformMigrationTask(item);
                     })));
             } else {
                 item.status = rawStatusConst.SCHEDULED;
@@ -104,6 +53,9 @@ angular.module('rainierApp')
         });
 
         return $q.all(tasks).then(function () {
+            _.forEach(resources, function (item) {
+                objectTransformService.transformMigrationTask(item);
+            });
             return resources;
         });
     };
@@ -130,41 +82,28 @@ angular.module('rainierApp')
     };
 
     return {
-        toDisplayStatus: rawToDisp,
-        toRawStatus: dispToRaw,
-        displayStatuses: dispStatusConst,
-        rawStatuses: rawStatusConst,
-        isScheduled: function (status) {
-            return status === dispStatusConst.SCHEDULED ||
-                status === rawStatusConst.SCHEDULED;
-        },
-        isInProgress: function (status) {
-            return status === dispStatusConst.IN_PROGRESS ||
-                status === rawStatusConst.IN_PROGRESS;
-        },
-        isSuccess: function (status) {
-            return status === dispStatusConst.SUCCESS ||
-                status === rawStatusConst.SUCCESS;
-        },
-        isFailed: function (status) {
-            return status === dispStatusConst.FAILED ||
-                status === rawStatusConst.FAILED;
-        },
-        isSuccessWithErrors: function (status) {
-            return status === dispStatusConst.SUCCESS_WITH_ERRORS ||
-                status === rawStatusConst.SUCCESS_WITH_ERRORS;
-        },
+//        isScheduled: function (status) {
+//            return status === dispStatusConst.SCHEDULED ||
+//                status === rawStatusConst.SCHEDULED;
+//        },
+//        isInProgress: function (status) {
+//            return status === dispStatusConst.IN_PROGRESS ||
+//                status === rawStatusConst.IN_PROGRESS;
+//        },
+//        isSuccess: function (status) {
+//            return status === dispStatusConst.SUCCESS ||
+//                status === rawStatusConst.SUCCESS;
+//        },
+//        isFailed: function (status) {
+//            return status === dispStatusConst.FAILED ||
+//                status === rawStatusConst.FAILED;
+//        },
+//        isSuccessWithErrors: function (status) {
+//            return status === dispStatusConst.SUCCESS_WITH_ERRORS ||
+//                status === rawStatusConst.SUCCESS_WITH_ERRORS;
+//        },
         getMigrationPairs: getMigrationPairs,
         getAllMigrationPairs: getAllMigrationPairs,
         mergeJobInfo: mergeJobInfo
-//        tooltip: function (type) {
-//            var tooltip = rawToTooltip(dispToRaw(type));
-//            if (tooltip) {
-//                return tooltip;
-//            } else {
-//                return type;
-//            }
-//        }
-
     };
 });

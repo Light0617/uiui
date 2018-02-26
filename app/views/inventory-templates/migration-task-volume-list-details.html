@@ -38,7 +38,7 @@
         </div>
     </div>
     <!--Nested List Tile-->
-    <div ng-if="item.migrationPairs" class="tile row-tile nested-row-tile panel-body" ng-repeat="vp in item.migrationPairs">
+    <div ng-if="item.volumePairs" class="tile row-tile nested-row-tile panel-body" ng-repeat="vp in item.volumePairs">
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourceVol()"
            title="{{vp.sourceVolumeId}}"><p>{{vp.sourceVolumeId}}</p>
         </a>
@@ -67,7 +67,7 @@
              title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>
         </div>
 
-        <div class="twelfth cell text-resize ellipsis" title="{{vp.status}}"><p>{{vp.status}}</p>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.status}}"><p>{{vp.toDisplayStatus()}}</p>
         </div>
         <div class="twelfth cell text-resize ellipsis" title="{{vp.copyProgress}}">
             <p>{{vp.copyProgress}}</p>

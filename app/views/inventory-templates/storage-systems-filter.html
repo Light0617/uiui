@@ -56,11 +56,11 @@
 <div class="btn-group btn-group-toggle btn-group-justified">
     <label class="btn btn-primary" ng-model="dataModel.search.hasMigrationTasks"
            ng-change="filterModel.filterQuery('hasMigrationTasks', 'False')"
-           btn-radio="'False'" uncheckable>False
+           btn-radio="'False'" uncheckable>{{'migration-tasks-not-exist' | translate}}
     </label>
 
     <label class="btn btn-primary" ng-model="dataModel.search.hasMigrationTasks"
            ng-change="filterModel.filterQuery('hasMigrationTasks', 'True')"
-           btn-radio="'True'" uncheckable>True
+           btn-radio="'True'" uncheckable>{{'migration-tasks-exist' | translate}}
     </label>
 </div>

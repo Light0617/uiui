@@ -36,8 +36,8 @@ angular.module('rainierApp')
                         search.freeText.toString().toLowerCase()) > -1 : false);
 
                 var matchedMigrationTasks = !search.hasMigrationTasks ||
-                    search.hasMigrationTasks === 'True' && parseInt(item.migrationGroupCount) > 0 ||
-                    search.hasMigrationTasks === 'False' && (!item.migrationGroupCount || parseInt(item.migrationGroupCount) == 0);
+                    search.hasMigrationTasks === 'True' && parseInt(item.migrationTaskCount) > 0 ||
+                    search.hasMigrationTasks === 'False' && (!item.migrationTaskCount || parseInt(item.migrationTaskCount) == 0);
 
                 return item.selected || (matchedCapacity && matchedSymbol && matchedMigrationTasks);
             });

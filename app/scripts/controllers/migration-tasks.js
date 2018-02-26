@@ -36,7 +36,7 @@ angular.module('rainierApp')
             // Get and merge job info
             return migrationTaskService.mergeJobInfo(result);
         }).then(function (result) {
-            // Migration groups result
+            // Migration tasks result
             var migrationTasks = result;
 
             var dataModel = {
@@ -78,7 +78,7 @@ angular.module('rainierApp')
                 fetchFirstPageChildren: function (item) {
                     if (item.opened) {
                         migrationTaskService.getMigrationPairs(0, storageSystemId, item).then(function (result) {
-                            item.migrationPairs = result.resources;
+                            item.volumePairs = result.resources;
                             $scope.dataModel.childrenToken = result.nextToken;
                         });
                     } else {
@@ -87,14 +87,14 @@ angular.module('rainierApp')
                     paginationService.clearQuery();
                 },
                 loadMoreChildren: function (item) {
-                    if (item.hasOwnProperty('migrationPairs') &&
-                        item.migrationPairs.length >= paginationService.PAGE_SIZE &&
+                    if (item.hasOwnProperty('volumePairs') &&
+                        item.volumePairs.length >= paginationService.PAGE_SIZE &&
                         $scope.dataModel.childrenToken !== null && !$scope.dataModel.busyLoadingMoreChildren) {
                         $scope.dataModel.busyLoadingMoreChildren = true;
 
                         migrationTaskService.getMigrationPairs($scope.dataModel.childrenToken, storageSystemId,
                             item).then(function (result) {
-                                item.migrationPairs = item.migrationPairs.concat(result.resources);
+                                item.volumePairs = item.volumePairs.concat(result.resources);
                                 $scope.dataModel.childrenToken = result.nextToken;
                                 //Add a short time delay to avoid multiple backend calls
                                 setTimeout(function() {
@@ -123,8 +123,8 @@ angular.module('rainierApp')
                     type: 'link',
                     enabled: function () {
                         return dataModel.onlyOneSelected() &&
-                            _.every(dataModel.getSelectedItems(), function (mg) {
-                                return migrationTaskService.isScheduled(mg.status);
+                            _.every(dataModel.getSelectedItems(), function (item) {
+                                return item.isScheduled();
                             });
                     },
                     onClick: function () {
@@ -175,13 +175,6 @@ angular.module('rainierApp')
                 return actions;
             };
 
-            var dateDisplayFormat = function (isoDate) {
-                if (isoDate && isoDate !== 'N/A') {
-                    return $filter('date')(isoDate, 'MMM d, y h:mm:ss a');
-                }
-                return 'N/A';
-            };
-
             dataModel.gridSettings = [
                 {
                     title: 'Name',
@@ -196,7 +189,7 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'scheduleDate',
                     getDisplayValue: function (item) {
-                        return dateDisplayFormat(item.scheduleDate);
+                        return item.toDisplayDate(item.scheduleDate);
                     }
                 },
                 {
@@ -204,10 +197,10 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'status',
                     getDisplayValue: function (item) {
-                        return migrationTaskService.toDisplayStatus(item.status);
+                        return item.toDisplayStatus();
                     },
                     getType: function (item) {
-                        return !migrationTaskService.isScheduled(item.status) ? 'hyperLink' : '';
+                        return !item.isScheduled() ? 'hyperLink' : '';
                     },
                     onClick: function (item) {
                         var path = ['jobs', item.jobId].join('/');
@@ -219,7 +212,7 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'jobStartDate',
                     getDisplayValue: function (item) {
-                        return dateDisplayFormat(item.jobStartDate);
+                        return item.toDisplayDate(item.jobStartDate);
                     }
                 },
                 {
@@ -227,7 +220,7 @@ angular.module('rainierApp')
                     sizeClass: 'sixth',
                     sortField: 'jobEndDate',
                     getDisplayValue: function (item) {
-                        return dateDisplayFormat(item.jobEndDate);
+                        return item.toDisplayDate(item.jobEndDate);
                     }
                 },
                  {
@@ -235,12 +228,25 @@ angular.module('rainierApp')
                      sizeClass: 'sixth',
                      sortField: 'comments',
                      getDisplayValue: function (item) {
-                         return dateDisplayFormat(item.comments);
+                         return item.comments;
                      }
                  }
             ];
 
+
+            var updateList = function (items) {
+                _.forEach (items, function (d) {
+                    $('#' + d.id).attr('aria-expanded', 'false');
+                    d.opened = false;
+                    if (d.hasOwnProperty('volumePairs')) {
+                        d.volumePairs = [];
+                    }
+                });
+                return items;
+            };
+
             $scope.dataModel = dataModel;
-            scrollDataSourceBuilderService.setupDataLoader($scope, migrationTasks, 'migrationTasksSearch');
+            scrollDataSourceBuilderService.setupDataLoader($scope, migrationTasks, 'migrationTasksSearch', false, updateList);
         });
+
     });
