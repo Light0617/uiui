@@ -579,17 +579,9 @@ angular
                 },
                 helpContext: 'C_CREATE_PARITY_GROUPS'
             })
-            .when('/virtual-storage-machines/:virtualStorageMachineId/gad-pairs', {
+            .when('/virtual-storage-machines/:serialModelNumber', {
                 templateUrl: 'views/virtual-storage-machine-gad-pairs.html',
                 controller: 'VirtualStorageMachineGadPairsCtrl',
-                breadcrumbOptions: {
-                    labelKey: 'gad-pairs'
-                },
-                helpContext: 'R_VSM_INVENTORY'
-            })
-            .when('/virtual-storage-machines/:virtualStorageMachineId', {
-                templateUrl: 'views/virtual-storage-machine-details.html',
-                controller: 'VirtualStorageMachineDetailsCtrl',
                 helpContext: 'R_VSM_INVENTORY'
             })
             .when('/virtual-storage-machines', {
