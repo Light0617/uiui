@@ -8,7 +8,7 @@
 'use strict';
 
 angular.module('rainierApp')
-    .directive('wizardSvgPage', function ($timeout, d3service, wwnService, attachVolumeService, orchestratorService,$modal) {
+    .directive('wizardSvgPage', function ($timeout, d3service, wwnService, attachVolumeService, orchestratorService, $modal) {
 
         var builder;
         var selectedColor = '#00b3a2';
@@ -271,7 +271,7 @@ angular.module('rainierApp')
 
         }
 
-        function finishLineToEndPoint(circle, line, endPoint, dataModel, svg){
+        function finishLineToEndPoint(circle, line, endPoint, scope, svg){
             var portIndex;
             var pathIndex;
             var port;
@@ -279,7 +279,7 @@ angular.module('rainierApp')
             var path;
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-endpoint
-            port = dataModel.pathModel.storagePorts[portIndex];
+            port = scope.dataModel.pathModel.storagePorts[portIndex];
             if(port.isVsmPort){
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
@@ -305,24 +305,26 @@ angular.module('rainierApp')
             path = d3.select('g[title="path-endpoint-port"]')
                 .append('path')
                 .attr('d', function () {
-                    return dataModel.pathModel.createPath(
+                    return scope.dataModel.pathModel.createPath(
                         parseInt(circle.attr('cx')),
                         parseInt(circle.attr('cy')),
                         parseInt(line.attr('x1')),
                         parseInt(line.attr('y1')));
                 })
-                .attr('path-index', pathIndex ? pathIndex : dataModel.pathModel.paths.length);
-            setPathAttrs(path, dataModel, !pathIndex || (parseInt(pathIndex) >= dataModel.pathModel.originalPathLength), svg);
+                .attr('path-index', pathIndex ? pathIndex : scope.dataModel.pathModel.paths.length);
+            setPathAttrs(path, scope.dataModel, !pathIndex || (parseInt(pathIndex) >= scope.dataModel.pathModel.originalPathLength), svg);
 
             // If 'path-index' attribute is set, we are modifying a path.
             if (pathIndex){
-                dataModel.pathModel.paths[pathIndex].serverEndPoint = endPoint;
+                scope.dataModel.pathModel.paths[pathIndex].serverEndPoint = endPoint;
             } else {
-                dataModel.pathModel.paths.push({
+                scope.dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
                     isVsmPort: port.isVsmPort
                 });
+
+                scope.$apply();
             }
 
             portGroup = svg.select('g[port-index="'+ portIndex +'"]');
@@ -333,7 +335,7 @@ angular.module('rainierApp')
             line.remove();
         }
 
-        function finishLineToPort(circle, line, port, dataModel, svg){
+        function finishLineToPort(circle, line, port, scope, svg){
             var endPoint;
             var pathIndex;
             var path;
@@ -364,20 +366,20 @@ angular.module('rainierApp')
             path = d3.select('g[title="path-endpoint-port"]')
                 .append('path')
                 .attr('d', function () {
-                    return dataModel.pathModel.createPath(
+                    return scope.dataModel.pathModel.createPath(
                         parseInt(line.attr('x1')),
                         parseInt(line.attr('y1')),
                         parseInt(circle.attr('cx')),
                         parseInt(circle.attr('cy')));
                 })
-                .attr('path-index', pathIndex ? pathIndex : dataModel.pathModel.paths.length);
-            setPathAttrs(path, dataModel, !pathIndex || pathIndex >= dataModel.pathModel.originalPathLength, svg);
+                .attr('path-index', pathIndex ? pathIndex : scope.dataModel.pathModel.paths.length);
+            setPathAttrs(path, scope.dataModel, !pathIndex || pathIndex >= scope.dataModel.pathModel.originalPathLength, svg);
 
             // If 'path-index' is set, we are modifying a path.
             if (pathIndex) {
-                dataModel.pathModel.paths[pathIndex].storagePortId = port.storagePortId;
+                scope.dataModel.pathModel.paths[pathIndex].storagePortId = port.storagePortId;
             } else {
-                dataModel.pathModel.paths.push({
+                scope.dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
                     //serverWwn: wwnService.removeSymbol(wwn),
@@ -387,6 +389,7 @@ angular.module('rainierApp')
                         targetWwn: port.wwn
                     }
                 });
+                scope.$apply();
             }
 
             line.remove();
@@ -477,7 +480,7 @@ angular.module('rainierApp')
         }
 
         builder = {
-            _buildTopologicalEditor: function (d3, selectedSvg, dataModel, redrawLines) {
+            _buildTopologicalEditor: function (d3, selectedSvg, scope, redrawLines) {
                 var circle;
                 var cx;
                 var cy;
@@ -494,33 +497,33 @@ angular.module('rainierApp')
                 //     return;
                 // }
                 svg = selectedSvg;
-                svg.attr('viewBox', '0, 0, 1000, ' + dataModel.pathModel.viewBoxHeight)
-                    .attr('style', 'padding-bottom: ' + dataModel.pathModel.viewBoxHeight/10 + '%');
+                svg.attr('viewBox', '0, 0, 1000, ' + scope.dataModel.pathModel.viewBoxHeight)
+                    .attr('style', 'padding-bottom: ' + scope.dataModel.pathModel.viewBoxHeight/10 + '%');
                 g = svg.append('g')
                     .attr('title', 'path-endpoint-port');
 
                 d3.select('body')
                     .on('keydown', function(){
                     // If "delete" or "backspace" key is clicked, delete the selected paths.
-                    if (dataModel.isStepActive(pathPage)) {
+                    if (scope.dataModel.isStepActive(pathPage)) {
                         if (d3.event.keyCode === 8 || d3.event.keyCode === 46) {
-                            deleteSelected(dataModel.pathModel);
+                            deleteSelected(scope.dataModel.pathModel);
                         } else if (d3.event.keyCode === 27) {
                             // When Esc key is pressed, then ...
-                            recoverWhenClickEsc(svg, dataModel);
+                            recoverWhenClickEsc(svg, scope.dataModel);
                         }
                     }
                 });
 
                 if(redrawLines) {
                     allPaths = g.selectAll('path')
-                        .data(dataModel.pathModel.paths.filter(function(d){
+                        .data(scope.dataModel.pathModel.paths.filter(function(d){
                             return d.deleted !== true;
                         }))
                     .enter()
                     .append('path')
                     .attr('d', function (d){
-                        return dataModel.pathModel.getPath(d);
+                        return scope.dataModel.pathModel.getPath(d);
                     })
                     .attr('path-index', function(d, i){
                         return i;
@@ -528,24 +531,24 @@ angular.module('rainierApp')
                 }
                 else {
                     allPaths = g.selectAll('path')
-                        .data(dataModel.pathModel.paths.filter(function(d){
+                        .data(scope.dataModel.pathModel.paths.filter(function(d){
                             return d.deleted !== true;
                         }));
                 }
 
-                setPathAttrs(allPaths, dataModel, false, svg);
+                setPathAttrs(allPaths, scope.dataModel, false, svg);
 
                 // Draw the end point side of the new path
                 svg.selectAll('g[title="server-endpoint"]').on('click', function(){
                     var excludedIndex;
                     circle = d3.select(this).select('circle');
                     var endPoint = d3.select(this).select('text').attr('attr-raw');
-                    pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
+                    pathIndex = getPathIndexIfOnlyOneSelected(scope.dataModel.pathModel.paths);
                     if (pathIndex !== null) {
-                        if (pathIndex !== MULTI_SELECTED && endPoint === dataModel.pathModel.paths[pathIndex].serverEndPoint) {
+                        if (pathIndex !== MULTI_SELECTED && endPoint === scope.dataModel.pathModel.paths[pathIndex].serverEndPoint) {
                             // modify existing path.
                             // Remove the end point side of the path.
-                            removeOneSide(dataModel, svg, pathIndex, true);
+                            removeOneSide(scope.dataModel, svg, pathIndex, true);
                         }
 
                         // If one path is selected and the end point is clicked, we do nothing.
@@ -561,12 +564,12 @@ angular.module('rainierApp')
                         // the index of the selected path which should be excluded for existence check.
                         portIndexInLine = line.attr('attr-port-index');
                         excludedIndex = line.attr('path-index');
-                        if (pathExists(dataModel, endPoint, dataModel.pathModel.storagePorts[portIndexInLine].storagePortId, parseInt(excludedIndex))){
+                        if (pathExists(scope.dataModel, endPoint, scope.dataModel.pathModel.storagePorts[portIndexInLine].storagePortId, parseInt(excludedIndex))){
                             return;
                         }
 
                         // Finish the path
-                        finishLineToEndPoint(circle, line, endPoint, dataModel, svg);
+                        finishLineToEndPoint(circle, line, endPoint, scope, svg);
                     } else {
                         line = svg.select('line[title="line-from-endpoint"]');
                         if (!line.empty()) {
@@ -615,16 +618,16 @@ angular.module('rainierApp')
                         var excludedIndex;
                         portGroup = d3.select(this);
                         portIndex = parseInt(portGroup.attr('port-index'));
-                        port = dataModel.pathModel.storagePorts[portIndex];
+                        port = scope.dataModel.pathModel.storagePorts[portIndex];
                         circle = portGroup.select('circle:nth-child(1)');
                         line = svg.select('line[title="line-from-endpoint"]');
 
-                        pathIndex = getPathIndexIfOnlyOneSelected(dataModel.pathModel.paths);
+                        pathIndex = getPathIndexIfOnlyOneSelected(scope.dataModel.pathModel.paths);
                         if (pathIndex !== null) {
-                            if (pathIndex !== MULTI_SELECTED && port.storagePortId === dataModel.pathModel.paths[pathIndex].storagePortId) {
+                            if (pathIndex !== MULTI_SELECTED && port.storagePortId === scope.dataModel.pathModel.paths[pathIndex].storagePortId) {
                                 // modify existing path.
                                 // First remove the port side of the path.
-                                removeOneSide(dataModel, svg, pathIndex, false, portIndex);
+                                removeOneSide(scope.dataModel, svg, pathIndex, false, portIndex);
                             }
 
                             // If one path is selected and the port is clicked, we do nothing.
@@ -638,12 +641,12 @@ angular.module('rainierApp')
                             // But if we are modifying a path to its original path, we should allow it. excludedIndex is
                             // the index of the selected path which should be excluded for existence check.
                             excludedIndex = line.attr('path-index');
-                            if (pathExists(dataModel, line.attr('attr-endpoint'), port.storagePortId, parseInt(excludedIndex))) {
+                            if (pathExists(scope.dataModel, line.attr('attr-endpoint'), port.storagePortId, parseInt(excludedIndex))) {
                                 return;
                             }
 
                             // Finish the path
-                            finishLineToPort(circle, line, port, dataModel, svg);
+                            finishLineToPort(circle, line, port, scope, svg);
 
                         } else {
                             // create a new path
@@ -727,7 +730,7 @@ angular.module('rainierApp')
                             if (!dataModel) {
                                 return;
                             }
-                            builder._buildTopologicalEditor(d3, selectedSvg, dataModel);
+                            builder._buildTopologicalEditor(d3, selectedSvg, scope);
                         };
                     });
                 };
@@ -735,7 +738,7 @@ angular.module('rainierApp')
                 scope.dataModel.build = function(redrawLines) {
                     d3service.d3().then(function(d3) {
                         var selectedSvg = d3.select('#topology-editor');
-                        builder._buildTopologicalEditor(d3, selectedSvg, linkScope.dataModel, redrawLines);
+                        builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
                     });
                 };
 

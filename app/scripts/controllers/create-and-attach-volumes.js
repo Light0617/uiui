@@ -135,6 +135,7 @@ angular.module('rainierApp')
                         enableZoning: false,
                         enableLunUnification: false,
                         storagePorts: ports,
+                        selectServerPath: true,
                         selectedServers: selectedServers,
                         selectedHostModeOption: hostModeOption,
                         hostModes: hostModes,
@@ -163,6 +164,8 @@ angular.module('rainierApp')
                                 filteredHostGroups,
                                 true
                             );
+
+                            $scope.dataModel.selectServerPath = attachModel.selectServerPath;
 
                             angular.extend($scope.dataModel.protectModel,
                                 {

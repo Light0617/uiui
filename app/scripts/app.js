@@ -87,7 +87,7 @@ angular
                     labelKey: 'shred-volumes'
                 }
             })
-            .when('/hosts/virtualize-volumes', {
+            .when('/storage-systems/:storageSystemId/volumes/virtualize-volumes', {
                 templateUrl: 'views/virtualize-volumes.html',
                 controller: 'VirtualizeVolumesCtrl',
                 breadcrumbOptions: {

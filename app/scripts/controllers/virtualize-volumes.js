@@ -59,8 +59,10 @@ angular.module('rainierApp')
                 storagePorts: []
             },
             selectModel: {
+                confirmTitle: synchronousTranslateService.translate('select-path-confirmation'),
+                confirmMessage: synchronousTranslateService.translate('select-path'),
                 canGoNext: function () {
-                    return $scope.dataModel.pathModel.paths.length;
+                    return ($scope.dataModel.pathModel.paths.length > 0);
                 },
                 next: function () {
                     if ($scope.dataModel.selectModel.canGoNext && $scope.dataModel.selectModel.canGoNext()) {
@@ -76,20 +78,13 @@ angular.module('rainierApp')
                             payload.lunPaths.push({ ldev: ldev.volumeId });
                         });
                         orchestratorService.previrtualizeVolumes(storageSystemId, payload);
-                        //distinguish between pre-virtualization pathModel and create paths pathModel
-                        $scope.dataModel.preVirtualizationPaths = $scope.dataModel.pathModel.paths;
-                        $scope.dataModel.preVirtualizationSourcePorts = $scope.dataModel.pathModel.sourcePorts;
-                        $scope.dataModel.preVirtualizationStoragePorts = $scope.dataModel.pathModel.storagePorts;
-                        //$scope.dataModel.preVirtualizePathModel = $scope.dataModel.pathModel;
-                        //clear the paths
-                        $scope.dataModel.pathModel.paths = [];
-                        $scope.dataModel.pathModel.sourcePorts = [];
+                        //dataModel.itemSelected = false;
+                        getVolumes(storageSystemId);
 
-                        $scope.dataModel.goNext();
                     }
                 },
                 validation: true,
-                itemSelected: true
+                itemSelected: false
             }
         };
 
@@ -119,13 +114,15 @@ angular.module('rainierApp')
                     $scope.$watch('dataModel.selectedTarget', function() {
                         getTargetPorts();
                     });
+                    $scope.$watchCollection('dataModel.pathModel.paths', function () {
+                        $scope.dataModel.selectModel.itemSelected = $scope.dataModel.pathModel.paths.length > 0;
+                    });
                 });
             });
 
             angular.extend($scope.dataModel, viewModelService.newWizardViewModel(['selectSourcePort', 'selectDiscoveredVolumes', 'selectServer', 'paths']));
 
         });
-
 
         /******* Get Volumes *******/
         //add for button
@@ -181,12 +178,13 @@ angular.module('rainierApp')
 
                 // Todo: Add for footer button
                 dataModelVolume.volumeDataModel = {
-                    noAvailableArray: noAvailableArray,
-                    confirmTitle: synchronousTranslateService.translate('storage-pool-migrate-confirmation'),
-                    confirmMessage: synchronousTranslateService.translate('storage-pool-migrate-zero-selected'),
+                    //noAvailableArray: noAvailableArray,
+                    confirmTitle: synchronousTranslateService.translate('select-discovered-volumes-confirmation'),
+                    confirmMessage: synchronousTranslateService.translate('select-discovered-volumes'),
+
                     canGoNext: function () {
-                        //return _.some(dataModel.displayList, 'selected');
-                        return true;
+                        //itemSelected = $scope.dataModel.anySelected();
+                        return $scope.dataModel.anySelected();
                     },
 
                     //TODO: next step of confirmation needs further discussion
@@ -206,7 +204,7 @@ angular.module('rainierApp')
                         }, 500);
                     },*/
                     validation: true,
-                    itemSelected: false
+                    itemSelected: false,
                 };
 
                 $scope.getVolumeFilterModel = {
@@ -282,17 +280,28 @@ angular.module('rainierApp')
 
                 dataModelVolume.targetPorts = $scope.dataModel.pathModel.paths;
 
+                angular.extend($scope.dataModel, dataModelVolume);
+
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
 
-                $scope.dataModel.selectedVolumes = ShareDataService.selectedVirtualizeVolumes;
+                dataModelVolume.loadMore = $scope.dataModel.loadMore;
 
-                angular.extend($scope.dataModel, dataModelVolume);
+                $scope.$watch('dataModel.displayList', function () {
+                    dataModelVolume.volumeDataModel.itemSelected = $scope.dataModel.anySelected();
+                }, true);
+
+                //distinguish between pre-virtualization pathModel and create paths pathModel
+                $scope.dataModel.preVirtualizationPaths = $scope.dataModel.pathModel.paths;
+                $scope.dataModel.preVirtualizationSourcePorts = $scope.dataModel.pathModel.sourcePorts;
+                $scope.dataModel.preVirtualizationStoragePorts = $scope.dataModel.pathModel.storagePorts;
+                //$scope.dataModel.preVirtualizePathModel = $scope.dataModel.pathModel;
+                //clear the paths
+                $scope.dataModel.pathModel.paths = [];
+                $scope.dataModel.pathModel.sourcePorts = [];
+                $scope.dataModel.goNext();
             });
-        };
 
-        paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function () {
-            getVolumes(storageSystemId);
-        });
+        };
 
 
 
@@ -383,6 +392,8 @@ angular.module('rainierApp')
 
                 // Todo: Add for footer button
                 dataModelServer.serverModel = {
+                    confirmTitle: synchronousTranslateService.translate('select-server-confirmation'),
+                    confirmMessage: synchronousTranslateService.translate('select-server'),
                     canGoNext: function () {
                         return _.some($scope.dataModel.displayList, 'selected');
                     },
@@ -395,6 +406,8 @@ angular.module('rainierApp')
                             attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.hostModeOptions, idCoordinates);
                             $scope.dataModel.selectServerPath = true;
                             $scope.dataModel.selectedServer = $scope.dataModel.getSelectedItems();
+                            $scope.dataModel.isPrevirtualize = false;
+                            createPaths();
                             $scope.dataModel.goNext();
                             $timeout(function () {
                                 $scope.dataModel.build(true);
@@ -414,6 +427,12 @@ angular.module('rainierApp')
                             filtered: $scope.dataModel.displayList.length,
                             total: $scope.dataModel.volumeCachedList.length
                         };
+                        $scope.$watch($scope.dataModel.displayList, function () {
+                            $scope.dataModel.itemSelected = _.some($scope.dataModel.displayList, function(item) {
+                                return item.selected;
+                            });
+                        });
+                        $scope.dataModel.itemSelected = true;
                         $scope.dataModel.goBack();
                     },
                     validation: true,
@@ -484,6 +503,10 @@ angular.module('rainierApp')
                 $scope.dataModel.serverDisplayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, hosts, 'hostSearch');
+
+                $scope.$watch('dataModel.displayList', function () {
+                    dataModelServer.serverModel.itemSelected = $scope.dataModel.anySelected();
+                }, true);
 
                 angular.extend($scope.dataModel, dataModelServer);
                 $scope.dataModel.selectedDiscoveredVolumes = $scope.dataModel.getSelectedItems();
@@ -577,27 +600,52 @@ angular.module('rainierApp')
         }
 
         /******* Create Paths *******/
+        function createPaths() {
+            var dataModelCreatePath = {};
+            // Todo: Add for footer button
+            dataModelCreatePath.createPathModel = {
+                canGoNext: function () {
+                    return ($scope.dataModel.pathModel.paths.length > 0);
+                },
 
-        var dataModelCreatePath = {};
-        // Todo: Add for footer button
-        dataModelCreatePath.createPathModel = {
-            canGoNext: function () {
-                return true;
-            },
-
-            //TODO: next step of confirmation needs further discussion
-            next: function () {
-                if (dataModelCreatePath.createPathModel.canGoNext && dataModelCreatePath.createPathModel.canGoNext()) {
-                    $scope.dataModel.goNext();
-                }
-            },
-            previous: function() {
-                //distinguish between pre-virtualization pathModel and create paths pathModel
-                $scope.dataModel.goBack();
-            },
-            validation: true,
-            itemSelected: false
-        };
-        angular.extend($scope.dataModel, dataModelCreatePath);
-
+                //TODO: next step of confirmation needs further discussion
+                next: function () {
+                    if (dataModelCreatePath.createPathModel.canGoNext && dataModelCreatePath.createPathModel.canGoNext()) {
+                        var payload = {
+                            targetPortForSrcVol: [],
+                            serverInfos: [],
+                            lunns: []
+                        };
+                        _.each($scope.dataModel.preVirtualizationPaths, function (path) {
+                            payload.targetPortForSrcVol.push(path.storagePortId);
+                        });
+                        _.each($scope.dataModel.pathModel.paths, function (path) {
+                            var serverInfo = {
+                                targetPortForHost: path.storagePortId,
+                                serverWwn: path.serverEndPoint,
+                                hostMode: $scope.dataModel.attachModel.selectedHostMode,
+                                hostModeOpts: $scope.dataModel.attachModel.selectedHostModeOption
+                            };
+                            payload.serverInfos.push(serverInfo);
+                        });
+                        _.each($scope.dataModel.selectedDiscoveredVolumes, function (vol) {
+                            console.log(vol);
+                            payload.lunns.push(vol.volumeId);
+                        });
+                        console.log(payload);
+                        orchestratorService.virtualizeVolumes(storageSystemId, payload);
+                        $scope.dataModel.goNext();
+                    }
+                },
+                previous: function () {
+                    //distinguish between pre-virtualization pathModel and create paths pathModel
+                    $scope.dataModel.pathModel.paths = [];
+                    $scope.dataModel.goBack();
+                },
+                validation: true,
+                itemSelected: false
+            };
+            angular.extend($scope.dataModel, dataModelCreatePath);
+            // $scope.dataModel.isPrevirtualize = false;
+        }
     });
