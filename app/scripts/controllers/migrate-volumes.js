@@ -118,7 +118,7 @@ angular.module('rainierApp')
                 var storagePools = enablePools(result.resources);
                 var dataModel = {
                     // TODO REWRAIN-8104: When updating task, title should be changed?
-                    title: isCreateAction ? 'migrate-volumes' : 'update-migration-task',
+                    //title: isCreateAction ? 'migrate-volumes' : 'update-migration-task',
                     onlyOperation: true,
                     view: 'tile',
                     storageSystemId: storageSystemId,
@@ -259,6 +259,7 @@ angular.module('rainierApp')
                         });
                     }
                 };
+                migrationTaskService.setPoolsGridSetting(dataModel);
 
                 dataModel.cachedList = storagePools;
                 dataModel.displayList = storagePools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);

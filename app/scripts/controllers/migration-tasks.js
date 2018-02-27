@@ -77,7 +77,7 @@ angular.module('rainierApp')
                 },
                 fetchFirstPageChildren: function (item) {
                     if (item.opened) {
-                        migrationTaskService.getMigrationPairs(0, storageSystemId, item).then(function (result) {
+                        migrationTaskService.getMigrationPairs(undefined, storageSystemId, item).then(function (result) {
                             item.volumePairs = result.resources;
                             $scope.dataModel.childrenToken = result.nextToken;
                         });

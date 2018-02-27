@@ -93,11 +93,11 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
 
         var pairStatuses;
         if (status === 'Scheduled') {
-            pairStatuses = ['NotMigrated'];
+            pairStatuses = ['NOT_MIGRATED'];
         } else if (status === 'In Progress') {
-            pairStatuses = ['Migrating', 'Migrated', 'NotMigrated'];
+            pairStatuses = ['MIGRATING', 'MIGRATED', 'NOT_MIGRATED'];
         } else {
-            pairStatuses = ['Migrated', 'NotMigrated'];
+            pairStatuses = ['MIGRATED', 'NOT_MIGRATED'];
         }
         while (total-- !== 0) {
             var mockPair = generateMockMigrationPair(groupId, total, pairStatuses, volNumBase, targetPoolId);
@@ -112,25 +112,25 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
         var copyGroup = 'N/A';
         var copyProgress = 0;
         var isSourcePool = mockUtils.randomInt(0, 1);
-        if (status === 'Migrating' || status === 'Migrated') {
+        if (status === 'MIGRATING' || status === 'MIGRATED') {
             copyGroup = 'HSA-Reserved-' + volNumBase + '-' + '0';
         }
-        if (status === 'Migrating') {
+        if (status === 'MIGRATING') {
             copyProgress = mockUtils.randomInt(0, 100);
-        } else if (status === 'Migrated') {
+        } else if (status === 'MIGRATED') {
             copyProgress = 100;
         }
 
         return {
             'migrationTaskId': parentId,
             'sourceVolumeId': volNumber + volNumBase,
-            'sourcePoolId': (isSourcePool === 0)? mockUtils.randomInt(0, 10) : undefined,
-            'sourceParityGroupId': (isSourcePool === 1)? '1-' + mockUtils.randomInt(0, 64) : 'N/A',
-            'targetVolumeId': (status !== 'NotMigrated') ? 300 + volNumber + volNumBase : undefined,
+            'sourcePoolId': (isSourcePool === 0)? mockUtils.randomInt(0, 10) : null,
+            'sourceParityGroupId': (isSourcePool === 1)? '1-' + mockUtils.randomInt(0, 64) : null,
+            'targetVolumeId': (status !== 'NOT_MIGRATED') ? 300 + volNumber + volNumBase : null,
             'targetPoolId': targetPoolId,
             'status': status,
             'copyProgress': copyProgress,
-            'copyGroup': copyGroup
+            'copyGroupName': copyGroup
         };
     };
 

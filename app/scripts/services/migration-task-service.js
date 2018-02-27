@@ -21,21 +21,6 @@ angular.module('rainierApp')
                                                 paginationService, synchronousTranslateService, queryService,
                                                 objectTransformService) {
     var MIGRATION_PAIRS_PATH = 'migration-pairs';
-    var dispStatusConst = {
-        SCHEDULED: 'Scheduled',
-        IN_PROGRESS: 'In Progress',
-        SUCCESS: 'Success',
-        FAILED: 'Failed',
-        SUCCESS_WITH_ERRORS: 'Success with Errors'
-    };
-    var rawStatusConst = {
-        SCHEDULED: 'SCHEDULED',
-        // Followings are same as Job.status
-        IN_PROGRESS: 'IN_PROGRESS',
-        SUCCESS: 'SUCCESS',
-        FAILED: 'FAILED',
-        SUCCESS_WITH_ERRORS: 'SUCCESS_WITH_ERRORS'
-    };
 
     var mergeJobInfo = function (resources) {
         var tasks = [];
@@ -48,7 +33,7 @@ angular.module('rainierApp')
                         item.jobEndDate = job.endDate;
                     })));
             } else {
-                item.status = rawStatusConst.SCHEDULED;
+                item.status = 'SCHEDULED';
             }
         });
 
@@ -81,29 +66,81 @@ angular.module('rainierApp')
             objectTransformService.transformMigrationPair);
     };
 
+    var setPoolsGridSetting = function (dataModel) {
+        // same as storage-pools.js
+        dataModel.gridSettings = [
+            {
+                title: 'ID',
+                sizeClass: 'eighteenth',
+                sortField: 'storagePoolId',
+                getDisplayValue: function (item) {
+                    return item.storagePoolId;
+                },
+                type: 'id'
+            },
+            {
+                title: 'Name',
+                sizeClass: 'sixth',
+                sortField: 'label',
+                getDisplayValue: function (item) {
+                    return item.label;
+                }
+            },
+            {
+                title: 'Type',
+                sizeClass: 'eighteenth',
+                sortField: 'type',
+                getDisplayValue: function (item) {
+                    return synchronousTranslateService.translate(item.type);
+                }
+            },
+            {
+                title: 'pool-active-flash',
+                sizeClass: 'eighteenth',
+                sortField: 'activeFlashEnabled',
+                getDisplayValue: function (item) {
+                    return item.activeFlashEnabled ? 'pool-active-flash' : '';
+                },
+                getIconClass: function (item) {
+                    return item.activeFlashEnabled ? 'icon-checkmark' : '';
+                },
+                type: 'icon'
+            },
+            {
+                title: 'common-label-total',
+                sizeClass: 'twelfth',
+
+                sortField: 'capacityInBytes.value',
+                getDisplayValue: function (item) {
+                    return item.capacityInBytes;
+                },
+                type: 'size'
+            },
+            {
+                title: 'common-label-free',
+                sizeClass: 'twelfth',
+                sortField: 'availableCapacityInBytes.value',
+                getDisplayValue: function (item) {
+                    return item.availableCapacityInBytes;
+                },
+                type: 'size'
+            },
+            {
+                title: 'common-label-used',
+                sizeClass: 'twelfth',
+                sortField: 'usedCapacityInBytes.value',
+                getDisplayValue: function (item) {
+                    return item.usedCapacityInBytes;
+                },
+                type: 'size'
+            }
+        ];
+    };
+
     return {
-//        isScheduled: function (status) {
-//            return status === dispStatusConst.SCHEDULED ||
-//                status === rawStatusConst.SCHEDULED;
-//        },
-//        isInProgress: function (status) {
-//            return status === dispStatusConst.IN_PROGRESS ||
-//                status === rawStatusConst.IN_PROGRESS;
-//        },
-//        isSuccess: function (status) {
-//            return status === dispStatusConst.SUCCESS ||
-//                status === rawStatusConst.SUCCESS;
-//        },
-//        isFailed: function (status) {
-//            return status === dispStatusConst.FAILED ||
-//                status === rawStatusConst.FAILED;
-//        },
-//        isSuccessWithErrors: function (status) {
-//            return status === dispStatusConst.SUCCESS_WITH_ERRORS ||
-//                status === rawStatusConst.SUCCESS_WITH_ERRORS;
-//        },
         getMigrationPairs: getMigrationPairs,
         getAllMigrationPairs: getAllMigrationPairs,
-        mergeJobInfo: mergeJobInfo
+        mergeJobInfo: mergeJobInfo,
+        setPoolsGridSetting: setPoolsGridSetting
     };
 });

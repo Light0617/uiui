@@ -3044,40 +3044,54 @@ angular.module('rainierApp')
             transformMigrationPair: function (item) {
                 // Resource links
                 // TODO When the source volume is external, where is the destination?
-                item.launchSourceVol = function () {
-                    var path = ['storage-systems', item.storageSystemId, 'volumes', item.sourceVolumeId].join('/');
+                item.launchSourceVol = function (storageSystemId) {
+                    var path = ['storage-systems', storageSystemId, 'volumes', item.sourceVolumeId].join('/');
                     $location.path(path);
                 };
-                if (item.sourcePoolId !== constantService.notAvailable) {
-                    item.launchSourcePool = function () {
-                        var path = ['storage-systems', item.storageSystemId, 'storage-pools', item.sourcePoolId].join('/');
+                if (item.sourcePoolId !== null) {
+                    item.launchSourcePool = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'storage-pools', item.sourcePoolId].join('/');
                         $location.path(path);
                     };
+                } else {
+                    item.sourcePoolId = constantService.notAvailable;
                 }
-                if (item.sourceParityGroupId !== constantService.notAvailable) {
-                    item.launchSourceParityGroup = function () {
-                        var path = ['storage-systems', item.storageSystemId, 'external-parity-groups', item.sourceParityGroupId].join('/');
+                if (item.sourceParityGroupId !== null) {
+                    item.launchSourceParityGroup = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'external-parity-groups', item.sourceParityGroupId].join('/');
                         $location.path(path);
                     };
+                } else {
+                    item.sourceParityGroupId = constantService.notAvailable;
                 }
-                if (item.targetVolumeId === undefined) {
-                    item.launchTargetVol = function () {
-                        var path = ['storage-systems', item.storageSystemId, 'volumes', item.targetVolumeId].join('/');
+                if (item.targetVolumeId !== null) {
+                    item.launchTargetVol = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'volumes', item.targetVolumeId].join('/');
                         $location.path(path);
                     };
+                } else {
+                    item.targetVolumeId = constantService.notAvailable;
                 }
-                if (item.targetPoolId !== constantService.notAvailable) {
+                if (item.targetPoolId !== null) {
                     item.launchTargetPool = function () {
                         var path = ['storage-systems', item.storageSystemId, 'storage-pools', item.targetPoolId].join('/');
                         $location.path(path);
                     };
+                } else {
+                    item.targetPoolId = constantService.notAvailable;
+                }
+                if (item.copyProgress === null) {
+                    item.copyProgress = constantService.notAvailable;
+                }
+                if (item.copyGroupName === null) {
+                    item.copyGroupName = constantService.notAvailable;
                 }
 
                 // status display
                 item.toDisplayStatus = function () {
                     switch (item.status) {
                         case 'NOT_MIGRATED':
-                            return synchronousTranslateService.translate('migration-pair-status-not_migrated');
+                            return synchronousTranslateService.translate('migration-pair-status-not-migrated');
                         case 'MIGRATED':
                             return synchronousTranslateService.translate('migration-pair-status-migrating');
                         case 'MIGRATING':
