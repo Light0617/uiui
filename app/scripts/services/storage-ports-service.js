@@ -158,7 +158,8 @@ angular.module('rainierApp')
                             return '';
                         }
                         return item.iscsiPortInformation.portIscsiName;
-                    }
+                    },
+                    type: 'scrollable'
                 },
                 {
                     title: 'storage-port-iscsi-ipv4',

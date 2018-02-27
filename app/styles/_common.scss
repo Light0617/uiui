@@ -100,3 +100,30 @@
 .checkbox-label {
   cursor: pointer;
 }
+
+.cell.text-resize.ellipsis > .no-ellipsis-value {
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  padding-top: 0.8rem;
+  overflow-x: scroll;
+  white-space: nowrap;
+  text-overflow: unset;
+  &::-webkit-scrollbar {
+    height: 0.8rem;
+    width: 0;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 0.4rem;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.4rem;
+    background-color: transparent;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background-color: $neutral05;
+    }
+  }
+}

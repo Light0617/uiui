@@ -143,6 +143,8 @@
                         </span>
                     </p>
 
+                    <p ng-switch-when="scrollable" class="no-ellipsis-value" title="{{ settings.getDisplayValue(item) }}">{{ settings.getDisplayValue(item) }}</p>
+
                     <p ng-switch-default="" title="{{settings.getDisplayValue(item)}}" ng-click="item.onClick()">{{settings.getDisplayValue(item)}}</p>
 
                 </div>
