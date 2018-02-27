@@ -101,6 +101,10 @@
   cursor: pointer;
 }
 
+.rtl {
+  direction: rtl;
+}
+
 .cell.text-resize.ellipsis > .no-ellipsis-value {
   padding-left: 0.3rem;
   padding-right: 0.3rem;
