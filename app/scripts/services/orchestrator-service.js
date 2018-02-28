@@ -170,6 +170,9 @@ angular.module('rainierApp')
             updateHostWwn: function (hostId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('update-wwpns').post(payload));
             },
+            updateHostIscsi: function (hostId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('update-iscsi-settings').post(payload));
+            },
             failedServersForStorageSystem: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('data-protection/storage-systems', storageSystemId).one('servers/failed-servers').get().then(function(result) {
                     return result;

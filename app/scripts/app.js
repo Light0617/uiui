@@ -585,8 +585,8 @@ angular
                 helpContext: 'C_CREATE_PARITY_GROUPS'
             })
             .when('/virtual-storage-machines/:serialModelNumber', {
-                templateUrl: 'views/virtual-storage-machine-details.html',
-                controller: 'VirtualStorageMachineDetailsCtrl',
+                templateUrl: 'views/virtual-storage-machine-gad-pairs.html',
+                controller: 'VirtualStorageMachineGadPairsCtrl',
                 helpContext: 'R_VSM_INVENTORY'
             })
             .when('/virtual-storage-machines', {

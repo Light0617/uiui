@@ -186,7 +186,7 @@ angular.module('rainierApp')
             }
             if (iscsiNames.length > 0) {
                 queryString = paginationService.getQueryStringForList(iscsiNames);
-                queryService.setQueryMapEntry('iscsiInitiatorNames', queryString);
+                queryService.setQueryMapEntry('iscsiTargetInformation.iscsiInitiatorNames', queryString);
             }
         };
 
@@ -382,7 +382,7 @@ angular.module('rainierApp')
             });
 
             _.forEach(hostGroups, function(hostGroup) {
-                for (i = 0; i < hostGroup.hbaWwns.length; ++i) {
+                for (i = 0; i < hostGroup.hbaWwns && hostGroup.hbaWwns.length; ++i) {
                     if (serverWwnMap.hasOwnProperty(hostGroup.hbaWwns[i])) {
                         foundMatch = false;
                         for (j = 0; j < hostGroup.luns.length; ++j) {

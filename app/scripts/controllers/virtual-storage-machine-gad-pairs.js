@@ -2,16 +2,18 @@
 
 /**
  * @ngdoc function
- * @name rainierApp.controller:VirtualStorageMachineDetailsCtrl
+ * @name rainierApp.controller:VirtualStorageMachineGadPairsCtrl
  * @description
- * # VirtualStorageMachineDetailsCtrl
+ * # VirtualStorageMachineGadPairsCtrl
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('VirtualStorageMachineDetailsCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
-                                              objectTransformService, synchronousTranslateService, $location,
-                                              scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
-                                              queryService, wwnService, dpAlertService) {
+    .controller('VirtualStorageMachineGadPairsCtrl', function (
+        $scope, $routeParams, $timeout, $window, orchestratorService,
+        objectTransformService, synchronousTranslateService, $location,
+        scrollDataSourceBuilderServiceNew, ShareDataService, paginationService,
+        queryService, wwnService, dpAlertService
+    ) {
         var serialModelNumber = $routeParams.serialModelNumber;
         var getGadPairsPath = 'gad-pairs';
         var getVirtualStorageMachinesPath = 'virtual-storage-machines';
@@ -175,7 +177,5 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, null, true);
         });
-
-
 
     });

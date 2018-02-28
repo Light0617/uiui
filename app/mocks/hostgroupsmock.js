@@ -15,7 +15,9 @@ rainierAppMock.factory('hostGroupsMock', function (mockUtils, commonMock) {
             storageSystemId: '410013',
             hostMode: 'LINUX',
             hostModeOptions: [999],
-            luns: [1, 2]
+            luns: _.chain(_.range(0, 199)).map(function (v, i) {
+                return {lun: i, volumeId: v};
+            }).value()
         };
     };
 

@@ -22,7 +22,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'storageSystemId': '2200' + v,
             'storageSystemName': 'Storage' + v,
             'unified': mockUtils.trueOrFalse(),
-            'model': 'VSP G400',
+            'model': 'VSP G1000',
             'svpIpAddress': '10.20.90.1' + v,
             'gum1IpAddress': '10.20.90.2' + v,
             'gum2IpAddress': '10.20.90.3' + v,
@@ -84,8 +84,9 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             return mockUtils.response.ok(summary);
         }
         if (urlResult.resourceId) {
-            var storageSystem = mockUtils.fromCollection(storageSystems, urlResult.resourceId, 'storageSystemId');
-            return (storageSystem) ? mockUtils.response.ok(storageSystem) : mockUtils.response.notFound('Unable to find endpoint with matching Id.');
+            // var storageSystem = mockUtils.fromCollection(storageSystems, urlResult.resourceId, 'storageSystemId');
+            // return (storageSystem) ? mockUtils.response.ok(storageSystem) : mockUtils.response.notFound('Unable to find endpoint with matching Id.');
+            return mockUtils.response.ok(storageSystems[0]);
         }
         var paginatedStorageSystems = {
             resources: storageSystems,

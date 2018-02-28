@@ -141,7 +141,6 @@ angular.module('rainierApp')
                         hostModes: hostModes,
                         hostMode: attachVolumeService.getMatchedHostMode(hostGroupResults, hostModes[0]),
                         hostModeOptions: results,
-                        serverPortMapperModel: viewModelService.newServerPortMapperModel(ports, selectedServers),
                         previous: function() {
                             $scope.dataModel.goBack();
                         },

@@ -147,6 +147,13 @@ module.exports = function(grunt) {
             copyFile(abspath, destFilePath);
         };
 
+        var mergeJson = function(overrideJson, originalJson, destFilePath) {
+            var overrides = grunt.file.readJSON(overrideJson);
+            var original = grunt.file.readJSON(originalJson);
+            var merged = Object.assign(original, overrides);
+            grunt.file.write(destFilePath, JSON.stringify(merged, null, 2));
+        };
+
         /**
          * Read the file which keeps track all the copied branding files, and remove them from the main App
          * @param appPath
@@ -226,7 +233,6 @@ module.exports = function(grunt) {
             }
         };
 
-
         var switchBrand = function(files, requestedBrand){
             files.forEach(function(filePair) {
                 filePair.src.forEach(function(brandPath){
@@ -258,7 +264,13 @@ module.exports = function(grunt) {
                         trackCopyFile(filePath, trackingFiles);
 
                         //copy the brand file to override the default file.
-                        copyBrandFiles(abspath, constructPath(app, filePath));
+                        var destination = constructPath(app, filePath);
+                        if (filename==='translation.json') {
+                            console.log('merging translation.json');
+                            mergeJson(abspath, destination, destination)
+                        } else {
+                            copyBrandFiles(abspath, destination);
+                        }
                     });
 
                     //commit the list of the tracked branding files record so we can delete as restore step.
