@@ -111,7 +111,7 @@
   padding-top: 0.8rem;
   overflow-x: scroll;
   white-space: nowrap;
-  text-overflow: unset;
+  text-overflow: clip;
   &::-webkit-scrollbar {
     height: 0.8rem;
     width: 0;
