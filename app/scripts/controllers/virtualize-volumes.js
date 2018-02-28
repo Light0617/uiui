@@ -78,7 +78,6 @@ angular.module('rainierApp')
                             payload.lunPaths.push({ ldev: ldev.volumeId });
                         });
                         orchestratorService.previrtualizeVolumes(storageSystemId, payload);
-                        //dataModel.itemSelected = false;
                         getVolumes(storageSystemId);
 
                     }
@@ -176,18 +175,14 @@ angular.module('rainierApp')
                     }
                 };
 
-                // Todo: Add for footer button
                 dataModelVolume.volumeDataModel = {
-                    //noAvailableArray: noAvailableArray,
                     confirmTitle: synchronousTranslateService.translate('select-discovered-volumes-confirmation'),
                     confirmMessage: synchronousTranslateService.translate('select-discovered-volumes'),
 
                     canGoNext: function () {
-                        //itemSelected = $scope.dataModel.anySelected();
                         return $scope.dataModel.anySelected();
                     },
 
-                    //TODO: next step of confirmation needs further discussion
                     next: function () {
                         if (dataModelVolume.volumeDataModel.canGoNext && dataModelVolume.volumeDataModel.canGoNext()) {
                             initializeServer();
@@ -311,41 +306,23 @@ angular.module('rainierApp')
             $scope.operatingSystems = constantService.osType();
             queryService.clearQueryMap();
             var GET_HOSTS_PATH = 'compute/servers';
-            var osNames = [{name: 'HP_UX', caption: 'Hewlett-Packard Unix'},
-                {name: 'SOLARIS', caption: 'Oracle Solaris'},
-                {name: 'AIX', caption: 'IBM AIX'},
-                {name: 'TRU64', caption: 'Tru64 Unix'},
-                {name: 'WIN', caption: 'Windows'},
-                {name: 'WIN_EX', caption: 'Windows EX'},
-                {name: 'LINUX', caption: 'Linux'},
-                {name: 'VMWARE', caption: 'VMware'},
-                {name: 'VMWARE_EX', caption: 'VMware EX'},
-                {name: 'UVM', caption: 'UVM'},
-                {name: 'NETWARE', caption: 'Netware'},
-                {name: 'OVMS', caption: 'OVMS'}];
-
-            function translateOsName(osName) {
-                for (var i = 0; i < osNames.length; i++) {
-                    if (osNames[i].name === osName) {
-                        return osNames[i].caption;
-                    }
-                }
-                return osName;
-            }
+            var osNames = _.object(['HP_UX', 'SOLARIS', 'AIX', 'TRU64', 'WIN', 'WIN_EX', 'LINUX', 'VMWARE', 'VMWARE_EX', 'UVM', 'NETWARE', 'OVMS'],
+                ['Hewlett-Packard Unix', 'Oracle Solaris', 'IBM AIX', 'Tru64 Unix', 'Windows', 'Windows EX', 'Linux', 'VMware', 'VMware EX', 'UVM', 'Netware', 'OVMS']);
 
             orchestratorService.hostsSummary().then(function (result) {
                 var summaryModel = donutService.hostSummary();
 
                 summaryModel.totalHost = result.totalHost;
-                for (var i = 0; i < $scope.operatingSystems.length; ++i) {
-                    if (!result.osTypeCount[$scope.operatingSystems[i]]) {
-                        continue;
+
+                _.each($scope.operatingSystems, function(os){
+                    if(result.osTypeCount[os]){
+                        summaryModel.data.push({
+                            label: osNames[os],
+                            value: result.osTypeCount[os]
+                        });
                     }
-                    summaryModel.data.push({
-                        label: translateOsName($scope.operatingSystems[i]),
-                        value: result.osTypeCount[$scope.operatingSystems[i]]
-                    });
-                }
+                });
+
                 summaryModel.title = synchronousTranslateService.translate('common-hosts');
 
                 $scope.summaryModel = summaryModel;
@@ -523,26 +500,6 @@ angular.module('rainierApp')
             $scope.filterModel = {
                 $replicationRawTypes: replicationService.rawTypes,
                 showAllFilters: true,
-                filterOperatingSystem: function () {
-                    var enabledOperatingSystemType = [];
-                    var operatingSystemType = $scope.filterModel.operatingSystemType;
-                    for (var key in  operatingSystemType) {
-                        if (operatingSystemType[key]) {
-                            enabledOperatingSystemType.push(key);
-                        }
-                    }
-                    $scope.filterModel.filter.osType = enabledOperatingSystemType;
-                },
-                filterDpType: function () {
-                    var replicationTypes = [];
-                    if ($scope.dataModel.serverModel.snapshot) {
-                        replicationTypes.push($scope.filterModel.$replicationRawTypes.SNAP);
-                    }
-                    if ($scope.dataModel.serverModel.cloneNow) {
-                        replicationTypes.push($scope.filterModel.$replicationRawTypes.CLONE);
-                    }
-                    $scope.filterModel.filter.replicationTypes = replicationTypes;
-                },
                 filter: {
                     freeText: '',
                     status: '',

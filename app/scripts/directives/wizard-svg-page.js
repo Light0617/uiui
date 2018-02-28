@@ -27,13 +27,11 @@ angular.module('rainierApp')
             var path;
             for(i = 0; i< pathModel.paths.length; i++) {
                 path = pathModel.paths[i];
-                console.log('The path to be deleted is : ', path);
                 if (path.selected === true && path.deleted !== true && !path.isVsmPort){
                     path.deleted = true;
                     d3.select('path[path-index="' + i + '"]').remove();
                 }
             }
-            //pathModel.paths = _.reject(pathModel.paths, function(path) { return path.selected; });
         };
 
         var selectNone = function(dataModel){

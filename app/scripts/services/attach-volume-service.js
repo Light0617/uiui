@@ -18,25 +18,25 @@ angular.module('rainierApp')
         var hostModeOptionAutoSelect = 999;
 
         function setPortCoordinates(storagePorts, idCoordinates) {
-            for (var i =0; i< storagePorts.length; ++i){
+            _.each(storagePorts, function(port, i){
                 var point = {
                     x: 870,
                     y: 10 + i * 25
                 };
                 storagePorts[i].coordinate = point;
                 idCoordinates[storagePorts[i].storagePortId] = point;
-            }
+            });
         }
 
         function setSourcePortCoordinates(storagePorts, idCoordinates) {
-            for (var i =0; i< storagePorts.length; ++i){
+            _.each(storagePorts, function(port, i){
                 var point = {
                     x: 232,
                     y: 10 + i * 25
                 };
                 storagePorts[i].coordinate = point;
                 idCoordinates[storagePorts[i].storagePortId] = point;
-            }
+            });
         }
 
         function getAllHostModeOptionsString(hostModeOptions) {
