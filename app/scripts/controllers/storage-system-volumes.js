@@ -255,6 +255,22 @@ angular.module('rainierApp')
                         $location.path(['hosts','migrate-volumes'].join('/'));
                     }
                 },
+                //Virtualize
+                //TODO: need to change the icon
+                {
+                    icon: 'icon-virtualize-volume',
+                    tooltip: 'virtualize-volumes',
+                    type: 'link',
+                    enabled: function () {
+                        return true;
+                    },
+                    onClick: function () {
+                        ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
+                        $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
+                    }
+                },
+                //Shredding
+                //TODO: need to change the icon
                 {
                     icon: 'icon-migrate-volume',
                     tooltip: 'shred-volumes',

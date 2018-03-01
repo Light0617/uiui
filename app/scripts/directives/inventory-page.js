@@ -51,7 +51,8 @@ angular.module('rainierApp')
                 listDetailsTemplate : '@',
                 pageActions :'=',
                 selectedItemActions : '=',
-                services: '='
+                services: '=',
+                infiniteScrollContainerElement: '='
             },
             controller: controller,
             templateUrl: 'views/templates/inventory-page.html',

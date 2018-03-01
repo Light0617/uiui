@@ -1,0 +1,33 @@
+<div class="fieldset">
+    <div class="label-value-container">
+        <div class="label-value-container">
+            <label class="label">{{dataModel.selectedDiscoveredVolumes.length}} Discovered Volumes</label>
+            <div class="btn-group btn-full-width" role="group">
+                <div class="btn-group btn-full-width" role="group" ng-repeat="volume in dataModel.selectedDiscoveredVolumes">
+                    <a class="btn btn-default btn-dark btn-full-width" tooltip="{{volume.label}}">{{volume.label}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="label-value-container">
+            <label class="label">Host Mode</label>
+            <select class="form-control"
+                    ng-model="dataModel.attachModel.hostMode"
+                    ng-options="'host-mode-' + mode | translate for mode in dataModel.attachModel.hostModes">
+            </select>
+        </div>
+
+        <div class="label-value-container">
+            <label class="label">Host Mode Option</label>
+            <select class="form-control"
+                    title="None"
+                    ng-model="dataModel.attachModel.selectedHostModeOption"
+                    ng-change="dataModel.checkSelectedHostModeOptions()"
+                    ng-options="hostModeOptions.id as hostModeOptions.displayName for hostModeOptions in dataModel.attachModel.hostModeOptions"
+                    multiple>
+            </select>
+        </div>
+
+    </div>
+
+</div>

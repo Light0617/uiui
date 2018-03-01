@@ -1,0 +1,13 @@
+<div class="fieldset">
+    <div class="label-value-container">
+        <div class="label-value-container">
+            <label class="label">{{dataModel.targetPorts.length}} Selected Target Ports</label>
+            <div class="btn-group" role="group">
+                <div class="btn-group" role="group" ng-repeat="port in dataModel.targetPorts">
+                    <a class="btn btn-default btn-dark" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

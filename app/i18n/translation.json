@@ -1054,6 +1054,16 @@
     "workflow-title-select-target-pool": "Select Target Pool",
     "storage-pool-migrate-confirmation": "No pool selected",
     "storage-pool-migrate-zero-selected": "Select one pool to migrate.",
-    "action-tooltip-migrate-volumes": "Migrate Volumes"
-
+    "select-discovered-volumes-confirmation": "No discovered volume selected",
+    "select-discovered-volumes": "Select discovered volumes",
+    "select-path-confirmation": "No path selected",
+    "select-path": "Select path",
+    "select-server-confirmation": "No server selected",
+    "select-server": "Select server",
+    "action-tooltip-migrate-volumes": "Migrate Volumes",
+    "virtualize-volumes": "Virtualize Volumes",
+    "workflow-title-create-path-from-source": "Create Path From Source",
+    "workflow-title-select-discovered-volumes": "Select Discovered Volumes",
+    "workflow-title-select-server": "Select Server",
+    "workflow-title-create-paths": "Create Paths"
 }
