@@ -80,7 +80,7 @@ angular
                     labelKey: 'migrate-volumes'
                 }
             })
-            .when('/hosts/shred-volumes', {
+            .when('/storage-systems/:storageSystemId/volumes/shred-volumes', {
                 templateUrl: 'views/shred-volumes.html',
                 controller: 'ShredVolumesCtrl',
                 breadcrumbOptions: {
@@ -434,6 +434,13 @@ angular
                 templateUrl: 'views/storage-pool.html',
                 controller: 'StoragePoolCtrl',
                 helpContext: 'R_POOL_DETAILS'
+            })
+            .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/shred-volumes', {
+                templateUrl: 'views/shred-volumes.html',
+                controller: 'ShredVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'shred-volumes'
+                }
             })
             .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/:volumeId', {
                 templateUrl: 'views/storage-system-volume.html',
