@@ -26,7 +26,7 @@
                 <p class="sort-column-header">{{'host-volume-list-host-group' | translate}}</p>
             </div>
         </div>
-        <div class="tile row-tile nested-row-tile panel-body"
+        <div class="tile row-tile nested-row-tile"
              ng-repeat="path in item.paths" ng-if="path.wwns && path.wwns.length>0">
             <div class="twelfth cell text-resize ellipsis"
                  title="{{path.storagePortId}}">
@@ -34,7 +34,7 @@
             </div>
             <div class="twelfth cell text-resize ellipsis"
                  title="{{path.wwns.join(',')}}">
-                <p>{{path.wwns.join(',')}}</p>
+                <p class="no-ellipsis-value">{{path.wwns.join(',')}}</p>
             </div>
             <div class="twelfth cell text-resize ellipsis"
                  title="{{path.lun}}">
@@ -94,7 +94,7 @@
                 <p class="sort-column-header">{{'host-volume-list-mutual-chap-user' | translate}}</p>
             </div>
         </div>
-        <div class="tile row-tile nested-row-tile panel-body"
+        <div class="tile row-tile nested-row-tile"
              ng-repeat="path in item.paths" ng-if="path.iscsiTargetInformation">
             <div class="twelfth cell text-resize ellipsis"
                  title="{{path.storagePortId}}">
@@ -102,7 +102,7 @@
             </div>
             <div class="twelfth cell text-resize ellipsis"
                  title="{{path.iscsiTargetInformation.iscsiInitiatorNames.join(',')}}">
-                <p>{{path.iscsiTargetInformation.iscsiInitiatorNames.join(',')}}</p>
+                <p class="no-ellipsis-value rtl">{{path.iscsiTargetInformation.iscsiInitiatorNames.join(',')}}</p>
             </div>
             <div class="twelfth cell text-resize ellipsis"
                  title="{{path.lun}}">
