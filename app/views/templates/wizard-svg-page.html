@@ -1,6 +1,5 @@
 <!--Toolbar actions for edit lun path-->
 <edit-lun-path-toolbar ng-model="dataModel"></edit-lun-path-toolbar>
-
 <div class="scroll-wizard-container single-pane editor">
 
     <svg id="topology-editor" class="topology-editor" viewBox="0 0 1000 1000" xml:space="preserve" preserveAspectRatio="xMidYMin slice" style="padding-bottom: 100%">
@@ -9,7 +8,8 @@
             <path class="server-tile-icon" d="M16.46,15A1.44,1.44,0,1,1,15,13.56,1.44,1.44,0,0,1,16.46,15ZM20,13.21V18a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V13.21a9.28,9.28,0,0,1,.21-2.1s0-.07,0-.1L3,0H17l2.79,11.12h0v0l.06.21h0A11.69,11.69,0,0,1,20,13.21ZM3.17,17.44H16.83a.66.66,0,0,0,.65-.65V13.38c0-.3,0-.59,0-.82h-15c0,.22,0,.51,0,.82v3.4A.66.66,0,0,0,3.17,17.44ZM16.91,10,15.11,2.51H4.89L3.09,10Z"/>
         </symbol>
 
-        <g ng-repeat="host in dataModel.pathModel.selectedHosts track by $index" ng-if="dataModel.pathModel.selectedHosts">
+        <!--Server-->
+        <g ng-repeat="host in dataModel.pathModel.selectedHosts track by $index" ng-if="dataModel.pathModel.selectedHosts && dataModel.selectServerPath">
             <g ng-if="host.startHeight !== undefined">
                 <rect class="tile-base" ng-class="{'active': host.isSelected === true}" x="5" ng-attr-y="{{host.startHeight}}" width="235"
                       ng-attr-height="{{host.endPoints.length <= 4 ? 100 : host.endPoints.length * 25}}" rx="10" ry="10"
@@ -30,17 +30,32 @@
                     <title ng-if="host.protocol==='ISCSI'">{{endPoint}}</title>
                     <text ng-if="host.protocol==='ISCSI'" attr-raw={{endPoint}} class="sm-label" x="222" ng-attr-y="{{host.startHeight + 16 + $index*25}}" text-anchor="end">{{ellipsis(endPoint)}}</text>
                 </g>
-
             </g>
         </g>
+        <!--source ports-->
+        <g class="pointer" title="server-endpoint" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.sourcePorts track by $index" ng-if="dataModel.pathModel.sourcePorts && !dataModel.selectServerPath">
+            <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
+                  x="5" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
+                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
 
-        <g ng-repeat="port in dataModel.pathModel.storagePorts track by $index" ng-if="dataModel.pathModel.storagePorts">
+            <!--storage port icon-->
+            <g class="g_main" port-id="{{port.storagePortId}}">
+                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x-758}}" ng-attr-cy="{{port.coordinate.y}}" r="6"/>
+                <rect class="port-icon-plug" ng-attr-x="{{port.coordinate.x-758}}" ng-attr-y="{{port.coordinate.y-1}}" width="16" height="4" rx="2" ry="2"/>
+
+            </g>
+
+            <text class="sm-label" x="15" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
+        </g>
+
+        <!--target ports-->
+        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.storagePorts track by $index">
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
                   x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
                   ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
 
             <!--storage port icon-->
-            <g title="storage-port" class="g_main" port-index="{{$index}}" port-id="{{port.storagePortId}}">
+            <g class="g_main" port-id="{{port.storagePortId}}">
                 <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="6"/>
                 <circle fill="black" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{port.coordinate.y}}" r="2"/>
             </g>

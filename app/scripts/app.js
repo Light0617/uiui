@@ -79,14 +79,19 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes'
                 }
-                //TODO:Help context
-                // helpContext: 'C_CREATE_ATTACH'
             })
             .when('/hosts/shred-volumes', {
                 templateUrl: 'views/shred-volumes.html',
                 controller: 'ShredVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'shred-volumes'
+                }
+            })
+            .when('/storage-systems/:storageSystemId/volumes/virtualize-volumes', {
+                templateUrl: 'views/virtualize-volumes.html',
+                controller: 'VirtualizeVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'virtualize-volumes'
                 }
             })
             .when('/hosts/create-and-attach-volumes', {
@@ -584,17 +589,9 @@ angular
                 },
                 helpContext: 'C_CREATE_PARITY_GROUPS'
             })
-            .when('/virtual-storage-machines/:virtualStorageMachineId/gad-pairs', {
+            .when('/virtual-storage-machines/:serialModelNumber', {
                 templateUrl: 'views/virtual-storage-machine-gad-pairs.html',
                 controller: 'VirtualStorageMachineGadPairsCtrl',
-                breadcrumbOptions: {
-                    labelKey: 'gad-pairs'
-                },
-                helpContext: 'R_VSM_INVENTORY'
-            })
-            .when('/virtual-storage-machines/:virtualStorageMachineId', {
-                templateUrl: 'views/virtual-storage-machine-details.html',
-                controller: 'VirtualStorageMachineDetailsCtrl',
                 helpContext: 'R_VSM_INVENTORY'
             })
             .when('/virtual-storage-machines', {

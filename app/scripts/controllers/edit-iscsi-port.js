@@ -37,7 +37,7 @@ angular.module('rainierApp')
                 storagePortId: port.storagePortId,
                 storageSystemId: port.storageSystemId,
                 securitySwitchEnabled: port.securitySwitchEnabled,
-                attribute: storagePortsService.rawToDisplayAttributes[port.attributes[0]],
+                attribute: port.attributes.length ? storagePortsService.rawToDisplayAttributes[port.attributes[0]] : undefined,
                 ipv6Enabled: port.iscsiPortInformation ? port.iscsiPortInformation.ipv6Enabled : false,
                 ipv4: {
                     address: portIpv4.address,
@@ -79,7 +79,7 @@ angular.module('rainierApp')
         var generatePayload = function (model) {
             var payload = {
                 securitySwitchEnabled: model.securitySwitchEnabled,
-                attribute: storagePortsService.getRawPortAttribute(model.attribute),
+                attribute: model.supportPortAttribute ? storagePortsService.getRawPortAttribute(model.attribute) : undefined,
                 iscsiPortInformation: {
                     ipv6Enabled: model.ipv6Enabled,
                     ipv4Information: {

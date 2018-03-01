@@ -46,20 +46,6 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         return r;
     };
 
-    var virtualStorageMachineInformation = function (actualStorageId, actualVolumeId) {
-        return _.sample([true, false]) ? {
-            virtualStorageMachineId: actualStorageId + 'VSP G800',
-            storageSystemId: actualStorageId,
-            model: 'VSP G800',
-            virtualVolumeId: actualVolumeId
-        } : {
-            virtualStorageMachineId: '123456VSPG800',
-            storageSystemId: '809999',
-            model: 'VSP G800',
-            virtualVolumeId: _.sample([true, false]) ? actualVolumeId : '1'
-        };
-    };
-
     function path(protocol) {
         var iscsi = _.sample([true, false]);
         if(protocol==='FIBRE') {
@@ -92,7 +78,6 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
         var migrationStatus = _.sample([true, false]);
         var iscsi = _.sample([true, false]);
-
         return {
             volumeId: v + '',
             storageSystemId: 'REPLACE',
@@ -107,12 +92,10 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             gadSummary: getVolumeGADSummary(volType, v),
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             dkcDataSavingType: _.sample(['NONE', 'COMPRESSION', 'DEDUPLICATION_AND_COMPRESSION']),
-            virtualStorageMachineInformation: virtualStorageMachineInformation('REPLACE'),
             migrationSummary: {
-                "type": migrationStatus ? 'MIGRATION' : 'NONE',
+                "migrationType": migrationStatus ? 'MIGRATION' : 'NONE',
                 "ownerTaskId": migrationStatus ? mockUtils.randomInt(0, 100) : undefined
             },
-            virtualStorageMachineInformation: virtualStorageMachineInformation('220063', v + ''),
             attachedVolumeServerSummary:[
             {
                 serverId: null,

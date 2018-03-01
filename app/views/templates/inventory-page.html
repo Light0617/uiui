@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 tile-container flex-grid" ng-if="dataModel.view=== 'tile'"
-             infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='1'>
+             infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='1' infinite-scroll-container='infiniteScrollContainerElement'>
             <div class="tile resource-tile control-tile" ng-hide="dataModel.isGefn" ng-if="dataModel.context !== 'poolDetails' && dataModel.addAction && !dataModel.onlyOperation" ng-click="dataModel.addAction()" title="{{dataModel.actionTitle}}">
                 <div class="tile-button">
                     <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
@@ -143,6 +143,8 @@
                             {{i}}<br ng-if="!$last">
                         </span>
                     </p>
+
+                    <p ng-switch-when="scrollable" class="no-ellipsis-value rtl" title="{{ settings.getDisplayValue(item) }}">{{ settings.getDisplayValue(item) }}</p>
 
                     <p ng-switch-default="" title="{{settings.getDisplayValue(item)}}" ng-click="item.onClick()">{{settings.getDisplayValue(item)}}</p>
 

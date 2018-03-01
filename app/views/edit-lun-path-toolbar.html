@@ -5,13 +5,14 @@
             <button class="btn btn-default btn-sm btn-dark" ng-click="dataModel.pathModel.selectNone(dataModel)">{{ 'common-label-select-none' | translate }}</button>
             <button class="btn btn-default btn-sm btn-dark" ng-click="dataModel.pathModel.deleteSelected(dataModel.pathModel)">{{ 'common-label-delete-selected' | translate }}</button>
         </div>
-        <ul class="legend">
+        <ul class="legend" ng-if="!dataModel.isPrevirtualize">
             <li class="legend-item existing-paths">{{ 'lun-existing-label' | translate }}</li>
             <li class="legend-item new-paths">{{ 'lun-new-label' | translate }}</li>
         </ul>
     </div>
     <div class="header-row">
-        <p>{{dataModel.pathModel.selectedHosts.length}} Servers</p>
-        <p><span class="icon icon-ports icon-sm"></span> {{dataModel.pathModel.storagePorts.length}} Storage Ports</p>
+        <p ng-if="!dataModel.isPrevirtualize">{{dataModel.pathModel.selectedHosts.length}} Servers</p>
+        <p ng-if="dataModel.isPrevirtualize"><span class="icon icon-ports icon-sm"></span> {{dataModel.pathModel.sourcePorts.length}} Source Storage Ports</p>
+        <p><span class="icon icon-ports icon-sm"></span> {{dataModel.pathModel.storagePorts.length}} Target Storage Ports</p>
     </div>
 </div>
