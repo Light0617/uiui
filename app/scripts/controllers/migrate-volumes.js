@@ -117,8 +117,8 @@ angular.module('rainierApp')
                 //add for button
                 var storagePools = enablePools(result.resources);
                 var dataModel = {
-                    // TODO REWRAIN-8104: When updating task, title should be changed?
-                    //title: isCreateAction ? 'migrate-volumes' : 'update-migration-task',
+                    title: isCreateAction ? 'migrate-volumes' : 'update-migration-task',
+                    noPageTitle: true,
                     onlyOperation: true,
                     view: 'tile',
                     storageSystemId: storageSystemId,
