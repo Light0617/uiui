@@ -1,44 +1,51 @@
-<div class="scroll-wizard-container">
-    <div class="fieldset">
-        <ng-container>
-            <div class="label-value-container">
-                <label class="label">{{ 'migrate-volumes-label-schedule' | translate}}</label>
-                <div class="btn-group btn-group-toggle date-time-control btn-group-justified">
-                    <button type="button" class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
-                            btn-radio="'Immediately'" ng-checked="dataModel.settingModel.scheduleType !== 'Scheduled'">
-                        {{'migrate-volumes-label-migrate-now' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
-                            btn-radio="'Scheduled'" ng-checked="dataModel.settingModel.scheduleType === 'Scheduled'">
-                        {{'migrate-volumes-label-migrate-later' | translate}}
-                    </button>
-                </div>
-            </div>
-            <div class="label-value-container" ng-if="dataModel.settingModel.scheduleType === 'Scheduled'">
-                <div class="dropdown">
-                    <div class="dropdown-toggle" id="startDateFromCalendar" role="button" data-toggle="dropdown">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="From"
-                                   data-ng-model="dataModel.settingModel.scheduleDate">
-                            <span class="input-group-addon"><i class="icon icon-dashboard"></i></span>
-                        </div>
-                    </div>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <datetimepicker data-ng-model="dataModel.settingModel.scheduleDate"
-                                        data-datetimepicker-config="{ dropdownSelector: '#startDateFromCalendar' }"/>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- TODO NEWRAIN-8104: Layout. I want to layout these 2 sets horizontally. How should I do it? -->
-            <div class="label-value-container">
-                <label class="label">{{'migrate-volumes-label-migration-task-name' | translate}}</label>
-                <input class="form-control" ng-model="dataModel.settingModel.migrationTaskName">
-            </div>
-            <div class="label-value-container">
-                <label class="label">{{'migrate-volumes-label-comments' | translate}}</label>
-                <input class="form-control" ng-model="dataModel.settingModel.comments">
-            </div>
-        </ng-container>
+<div class="clearfix">
+    <label>{{ 'migrate-volumes-label-schedule' | translate}}</label>
+    <div class="btn-group btn-group-toggle date-time-control btn-group-justified">
+        <label class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
+               btn-radio="'Immediately'" ng-checked="dataModel.settingModel.scheduleType !== 'Scheduled'">
+            {{'migrate-volumes-label-migrate-now' | translate}}
+        </label>
+        <label class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
+               btn-radio="'Scheduled'" ng-checked="dataModel.settingModel.scheduleType === 'Scheduled'">
+            {{'migrate-volumes-label-migrate-later' | translate}}
+        </label>
     </div>
+</div>
+
+<div class="clearfix" ng-if="dataModel.settingModel.scheduleType === 'Scheduled'">
+    <form role="form" class="validation-form col-lg-6 form-horizontal" name="inputTimeForm">
+        <div class="form-group form-group-lg form-horizontal">
+            <label>{{'migrate-volumes-label-start-time' | translate}}</label>
+            <input type="text" class="form-control time-input" ng-model="dataModel.settingModel.schedule.time"
+                   bs-timepicker ng-attr-placeholder="{{dataModel.settingModel.schedule.time}}">
+        </div>
+    </form>
+    <form role="form" class="validation-form col-lg-6 form-horizontal" name="inputDateForm">
+        <div class="form-group form-group-lg form-horizontal">
+            <label>{{'migrate-volumes-label-start-date' | translate}}</label>
+            <div class="dropdown-toggle" id="dateSelector" role="button" data-toggle="dropdown">
+                <input type="text" class="form-control time-input"
+                       value="{{ dataModel.settingModel.schedule.date | date : 'MMM d, y' }}">
+            </div>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker ng-model="dataModel.settingModel.schedule.date"
+                                data-datetimepicker-config="{ dropdownSelector: '#dateSelector', minView: 'day' }"/>
+            </ul>
+        </div>
+    </form>
+</div>
+
+<div class="clearfix">
+    <form role="form" class="validation-form col-lg-6 form-horizontal" novalidate>
+        <div class="form-group form-group-lg form-horizontal">
+            <label>{{'migrate-volumes-label-migration-task-name' | translate}}</label>
+            <input class="form-control" ng-model="dataModel.settingModel.migrationTaskName" required>
+        </div>
+    </form>
+    <form role="form" class="validation-form col-lg-6 form-horizontal" novalidate>
+        <div class="form-group form-group-lg form-horizontal">
+            <label>{{'migrate-volumes-label-comments' | translate}}</label>
+            <input class="form-control" ng-model="dataModel.settingModel.comments">
+        </div>
+    </form>
 </div>

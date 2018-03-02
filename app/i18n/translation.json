@@ -1049,9 +1049,11 @@
     "data-reduction-savings-ratio": "Data Reduction",
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
 
-    "migrate-volumes": "Migrate Volumes",
     "shred-volumes": "Shred Volumes",
-    "update-migration-task": "Update Migration Task",
+
+    "migrate-volumes": "Migrate Volumes",
+    "migrate-volumes-title-create": "Migrate Volumes",
+    "migrate-volumes-title-update": "Edit Migration Task",
     "workflow-title-select-target-pool": "Select Target Pool",
     "workflow-title-set-migrate-setting": "Task Settings",
     "storage-pool-migrate-confirmation": "No pool selected",
@@ -1067,6 +1069,8 @@
     "migrate-volumes-label-schedule": "Schedule",
     "migrate-volumes-label-migrate-now": "Migrate Now",
     "migrate-volumes-label-migrate-later": "Migrate Later",
+    "migrate-volumes-label-start-time": "Start Time",
+    "migrate-volumes-label-start-date": "Start Date",
     "volume-migration-type": "Reserved for Migration",
     "volume-migration-type-filter-none": "Not Reserved",
     "volume-migration-type-filter-volumeMigration": "Reserved",
@@ -1097,11 +1101,13 @@
     "migration-pair-status-migrated": "Migrated",
     "migration-pair-status-invalid": "Invalid",
 
-    "migration-tasks-action-tooltip-interrupt": "Interrupt Running Job",
-    "migration-task-interrupt-confirmation-title": "Interrupt Migration Jobs Confirmation",
-    "migration-task-interrupt-confirmation-message": "Running jobs corresponding to the selected {{getSelectedCount()}} migration tasks will be interrupted. Do you want to proceed?",
-    "migration-task-delete-confirmation-title": "Delete Migration Tasks Confirmation",
-    "migration-task-delete-confirmation-message": "The selected {{getSelectedCount()}} migration tasks in the current storage system will be deleted. Do you want to proceed?",
+    "action-tooltip-edit-migration-tasks": "Edit Migration Task",
+    "action-tooltip-interrupt-migrations-in-progress": "Interrupt Migration in Progress",
+    "action-tooltip-delete-migration-tasks": "Delete Migration Task",
+    "migration-task-interrupt-confirmation": "Interrupt Migrations in Progress Confirmation",
+    "migration-task-interrupt-selected-content": "The jobs for selected {{getSelectedCount()}} Migration Tasks will be interrupted. Do you want to proceed?",
+    "migration-task-delete-confirmation": "Delete Migration Tasks Confirmation",
+    "migration-task-delete-selected-content": "The selected {{getSelectedCount()}} Migration Tasks will be deleted. Do you want to proceed?",
 
     "select-discovered-volumes-confirmation": "No discovered volume selected",
     "select-discovered-volumes": "Select discovered volumes",
@@ -1114,4 +1120,5 @@
     "workflow-title-select-discovered-volumes": "Select Discovered Volumes",
     "workflow-title-select-server": "Select Server",
     "workflow-title-create-paths": "Create Paths"
+
 }
