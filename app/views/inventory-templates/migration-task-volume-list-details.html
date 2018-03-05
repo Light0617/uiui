@@ -1,0 +1,80 @@
+<div class="list-view panel-collapse in nested-row-container" infinite-scroll='dataModel.loadMoreChildren(item)'
+     infinite-scroll-distance='0' infinite-scroll-disabled="!item.opened || dataModel.busyLoadingMoreChildren">
+    <div class="tile nested-row-tile column-headers">
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-source-volume-id' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-source-volume-id' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-source-pool-id' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-source-pool-id' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-source-parityGroup-id' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-source-parityGroup-id' | translate}}</p>
+        </div>
+
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-target-volume-id' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-target-volume-id' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-target-pool-id' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-target-pool-id' | translate}}</p>
+        </div>
+
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-status' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-status' | translate}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-copy-progress' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-copy-progress' | translate}}</p>
+        </div>
+
+        <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-tasks-volume-list-copy-group' | translate}}">
+            <p class="sort-column-header">{{'migration-tasks-volume-list-copy-group' | translate}}</p>
+        </div>
+    </div>
+    <!--Nested List Tile-->
+    <div ng-if="item.volumePairs" class="tile row-tile nested-row-tile panel-body" ng-repeat="vp in item.volumePairs">
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourceVol(dataModel.storageSystemId)"
+           title="{{vp.sourceVolumeId}}"><p>{{vp.sourceVolumeId}}</p>
+        </a>
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourcePool(dataModel.storageSystemId)"
+           ng-show="{{vp.sourcePoolId !== 'N/A'}}" title="{{vp.sourcePoolId}}"><p>{{vp.sourcePoolId}}</p>
+        </a>
+        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.sourcePoolId === 'N/A'}}"
+             title="{{vp.sourcePoolId}}"><p>{{vp.sourcePoolId}}</p>
+        </div>
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourceParityGroup(dataModel.storageSystemId)"
+           ng-show="{{vp.sourceParityGroupId !== 'N/A'}}" title="{{vp.sourceParityGroupId}}"><p>{{vp.sourceParityGroupId}}</p>
+        </a>
+        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.sourceParityGroupId === 'N/A'}}"
+             title="{{vp.sourceParityGroupId}}"><p>{{vp.sourceParityGroupId}}</p>
+        </div>
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetVol(dataModel.storageSystemId)"
+           ng-show="{{vp.targetVolumeId !== 'N/A'}}" title="{{vp.targetVolumeId}}"><p>{{vp.targetVolumeId}}</p>
+        </a>
+        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.targetVolumeId === 'N/A'}}"
+             title="{{vp.targetVolumeId}}"><p>{{vp.targetVolumeId}}</p>
+        </div>
+        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetPool(dataModel.storageSystemId)"
+           ng-show="{{vp.targetPoolId !== 'N/A'}}" title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>
+        </a>
+        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.targetPoolId === 'N/A'}}"
+             title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>
+        </div>
+
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.status}}"><p>{{vp.toDisplayStatus()}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.copyProgress}}">
+            <p>{{vp.copyProgress}}</p>
+        </div>
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.copyGroupName}}">
+            <p>{{vp.copyGroupName}}</p>
+        </div>
+    </div>
+
+</div>

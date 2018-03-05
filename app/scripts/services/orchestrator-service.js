@@ -381,6 +381,24 @@ angular.module('rainierApp')
             updateStorageSystem: function (storageSystemId, updateStorageSystemPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId).post(updateStorageSystemPayload));
             },
+            migrationTasks: function (storageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('migration-tasks').get());
+            },
+            migrationTask: function (storageSystemId, migrationTaskId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('migration-tasks', migrationTaskId).get());
+            },
+            createMigrationTask: function (storageSystemId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('migration-tasks').post(payload));
+            },
+            deleteMigrationTask: function (storageSystemId, migrationTaskId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('migration-tasks', migrationTaskId).remove());
+            },
+            updateMigrationTask: function (storageSystemId, migrationTaskId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('migration-tasks/' + migrationTaskId).post(payload));
+            },
+            interruptMigrationTask: function (storageSystemId, migrationTaskId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('migration-tasks/', migrationTaskId, '/interrupt').post());
+            },
             jobsTimeSlice: function (fromDate, toDate) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('jobs').get({
                     fromStartDate: fromDate.replace('Z', '+0000'),

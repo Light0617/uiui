@@ -154,7 +154,8 @@ angular.module('rainierApp')
                     utilization: {
                         min: 0,
                         max: 100
-                    }
+                    },
+                    migrationType: ''
                 },
                 fetchPreviousVolumeType: function (previousVolumeType) {
                   $scope.filterModel.filter.previousVolumeType = previousVolumeType;
@@ -244,15 +245,17 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
+                        // TODO NEWRAIN-8104: Enable or disable control.
                         return !hasGadVolume(dataModel.getSelectedItems()) && !_.some(dataModel.getSelectedItems(),
                             function (vol) {
                                 return !vol.isUnprotected();
                             }) && $scope.selectedCount > 0;
                     },
                     onClick: function () {
-                        // maximum number of volumes to migrate is 14
-                        ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 14);
-                        $location.path(['hosts','migrate-volumes'].join('/'));
+                        // Maximum number of volumes to migrate in one migration group is 300.
+                        // TODO NEWRAIN-8104: If number of vols is over 300, what should be done?
+                        ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 300);
+                        $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                     }
                 },
                 //Virtualize

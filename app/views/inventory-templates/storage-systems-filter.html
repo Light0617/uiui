@@ -49,3 +49,18 @@
         </div>
     </div>
 </div>
+
+<div class="control-group">
+    <h3>{{'has-migration-tasks' | translate}}<span class="read-only" type="text">{{ dataModel.search.hasMigrationTasks || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group btn-group-toggle btn-group-justified">
+    <label class="btn btn-primary" ng-model="dataModel.search.hasMigrationTasks"
+           ng-change="filterModel.filterQuery('hasMigrationTasks', 'False')"
+           btn-radio="'False'" uncheckable>{{'migration-tasks-not-exist' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="dataModel.search.hasMigrationTasks"
+           ng-change="filterModel.filterQuery('hasMigrationTasks', 'True')"
+           btn-radio="'True'" uncheckable>{{'migration-tasks-exist' | translate}}
+    </label>
+</div>

@@ -3,7 +3,8 @@
         translate}}
     </button>
     <button type="button" class="btn btn-default" type="button" ng-if="dataModel.previous"
-            ng-click="dataModel.previous()">{{'common-label-previous' | translate}}
+            ng-click="dataModel.previous()"
+            ng-disabled="dataModel.canGoBack && !dataModel.canGoBack()">{{'common-label-previous' | translate}}
     </button>
 
     <button type="button" class="btn btn-default" type="button" ng-if="!dataModel.validation && dataModel.next" ng-click="dataModel.next()"

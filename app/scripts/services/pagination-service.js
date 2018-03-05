@@ -109,7 +109,7 @@ angular.module('rainierApp')
         function getAllPromisesHelper (promise, finalResult, deferred, path, transform, queryParams, storageSystemId) {
             promise.then (function (result) {
                 finalResult = finalResult.concat(result.resources);
-                if (result.nextToken !== null) {
+                if (result.nextToken !== undefined && result.nextToken !== null) {
                     queryParams.nextToken = result.nextToken;
                     getAllPromisesHelper (get(path, transform, queryParams, storageSystemId), finalResult, deferred,
                         path, transform, queryParams, storageSystemId );

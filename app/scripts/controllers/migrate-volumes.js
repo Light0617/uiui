@@ -1,7 +1,7 @@
 /*
  * ========================================================================
  *
- * Copyright (c) by Hitachi Vantara, 2017. All rights reserved.
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
  *
  * ========================================================================
  */
@@ -19,6 +19,8 @@ angular.module('rainierApp')
     .controller('MigrateVolumesCtrl', function(
         $scope,
         $modal,
+        $routeParams,
+        $q,
         orchestratorService,
         viewModelService,
         ShareDataService,
@@ -39,7 +41,9 @@ angular.module('rainierApp')
         storageNavigatorSessionService,
         resourceTrackerService,
         gadVolumeTypeSearchService,
-        synchronousTranslateService) {
+        synchronousTranslateService,
+        diskSizeService,
+        migrationTaskService) {
 
         $scope.dataModel = {};
 
@@ -49,24 +53,72 @@ angular.module('rainierApp')
 
         var getStoragePoolsPath = 'storage-pools';
 
+        var totalVolumeSize = 0;
+        var sourceVolumePools = {};
+        var storageSystemId = $routeParams.storageSystemId;
+        var migrationTaskId = $routeParams.migrationTaskId;
+        var selectedVolumes = ShareDataService.selectedMigrateVolumes;
+
+        // check the type of action.
+        var isCreateAction = true;
+        if (migrationTaskId !== undefined) {
+            // this is update migration task action
+            isCreateAction = false;
+            migrationTaskId = parseInt(migrationTaskId);
+        }
+
+        // calculate volume information
+        var calculateVolumes = function (volumes) {
+            $scope.dataModel.selectedVolumes = volumes;
+            _.forEach(volumes, function (volume) {
+                totalVolumeSize += volume.totalCapacity.value;
+                if (volume.poolId !== null && volume.poolId !== undefined) {
+                    sourceVolumePools[volume.poolId] = true;
+                }
+            });
+        };
+
+        // filter unavailable pools.
+        // TODO NEWRAIN-8104: If all pools currently obtained are unavailable, auto-reloading next page would be started?
+        var enablePools = function (pools) {
+            var availablePools = [];
+            _.forEach(pools, function (pool) {
+                // HDP or HDT
+                if (pool.type !== 'HDT' && pool.type !== 'HDP') {
+                    return;
+                }
+                // Not source pool
+                if (sourceVolumePools[pool.storagePoolId]) {
+                    return;
+                }
+                // TODO NEWRAIN-8104 Total capacity is lesser than pool utilization threshold
+                if (pool.availableCapacityInBytes < totalVolumeSize) {
+                    return;
+                }
+                availablePools.push(pool);
+            });
+            return availablePools;
+        };
+
         var updateResultTotalCounts = function(result) {
+            // filter pools
+            var pools = enablePools(result.resources);
             $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.cachedList = result.resources;
-            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            $scope.dataModel.cachedList = pools;
+            $scope.dataModel.displayList = pools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
             $scope.dataModel.itemCounts = {
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
             };
         };
 
-        var getPool = function(storageSystemId) {
-            paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true,
-                storageSystemId).then(function (result) {
+        var setResult = function (result) {
                 paginationService.clearQuery();
                 //add for button
-                var noAvailableArray = false;
-                var storagePools = result.resources;
+                var storagePools = enablePools(result.resources);
                 var dataModel = {
+                    title: isCreateAction ? 'migrate-volumes' : 'update-migration-task',
+                    noPageTitle: true,
                     onlyOperation: true,
                     view: 'tile',
                     storageSystemId: storageSystemId,
@@ -74,8 +126,6 @@ angular.module('rainierApp')
                     total: result.total,
                     currentPageCount: 0,
                     storageSystems: $scope.dataModel.storageSystems,
-                    selectedSource: $scope.dataModel.selectedSource,
-                    selectedTarget: $scope.dataModel.selectedTarget,
                     selectedVolumes: $scope.dataModel.selectedVolumes,
                     busy: false,
                     sort: {
@@ -84,8 +134,8 @@ angular.module('rainierApp')
                         setSort: function (f) {
                             $timeout(function () {
                                 if ($scope.dataModel.sort.field === f) {
-                                    queryService.setSort(f, !$scope.dataModelPool.sort.reverse);
-                                    $scope.dataModel.sort.reverse = !$scope.dataModelPool.sort.reverse;
+                                    queryService.setSort(f, !$scope.dataModel.sort.reverse);
+                                    $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
                                 } else {
                                     $scope.dataModel.sort.field = f;
                                     queryService.setSort(f, false);
@@ -98,21 +148,27 @@ angular.module('rainierApp')
                         }
                     }
                 };
+                var getTargetPool = function () {
+                    var targetPool = _.find(dataModel.displayList, function (item) {
+                        return item.selected;
+                    });
+                    targetPool = dataModel.getSelectedItems()[0];
+                    return targetPool;
+                };
 
-                angular.extend(dataModel, viewModelService.newWizardViewModel(['selectPool']));
+                angular.extend(dataModel, viewModelService.newWizardViewModel(['selectPool', 'setting']));
 
-                // Todo: next step of confirmation needs further discussion
                 dataModel.selectPoolModel = {
-                    noAvailableArray: noAvailableArray,
+                    noAvailableArray: false,
                     confirmTitle: synchronousTranslateService.translate('storage-pool-migrate-confirmation'),
                     confirmMessage: synchronousTranslateService.translate('storage-pool-migrate-zero-selected'),
                     canGoNext: function () {
                         return _.some(dataModel.displayList, 'selected');
                     },
 
-                    //TODO: next step of confirmation needs further discussion
                     next: function () {
                         if (dataModel.selectPoolModel.canGoNext && dataModel.selectPoolModel.canGoNext()) {
+                            dataModel.settingModel.migrationTaskName = getTargetPool().label;
                             dataModel.goNext();
                         }
                     },
@@ -121,6 +177,49 @@ angular.module('rainierApp')
                     },
                     validation: true,
                     itemSelected: false
+                };
+
+                dataModel.settingModel = {
+                    noAvailableArray: false,
+                    confirmTitle: synchronousTranslateService.translate('storage-pool-migrate-confirmation'),
+                    confirmMessage: synchronousTranslateService.translate('storage-pool-migrate-zero-selected'),
+                    canSubmit: function () {
+                        return dataModel.settingModel.migrationTaskName;
+                    },
+                    submit: function () {
+                        dataModel.goNext();
+                        var targetPool = getTargetPool();
+                        var sourceVolumeIds = _.map(dataModel.selectedVolumes, function (volume) {
+                            return volume.volumeId;
+                        });
+                        var schedule = {};
+                        if (dataModel.settingModel.scheduleType === 'Scheduled') {
+                            schedule.datetime = dataModel.settingModel.scheduleDate.toISOString();
+                        }
+                        var payload = {
+                            targetPoolId: targetPool.storagePoolId,
+                            migrationTaskName: dataModel.settingModel.migrationTaskName,
+                            schedule: schedule
+                        };
+                        if (isCreateAction) {
+                            payload.sourceVolumeIds = sourceVolumeIds;
+                            orchestratorService.createMigrationTask(storageSystemId, payload);
+                        } else {
+                            orchestratorService.updateMigrationTask(storageSystemId, migrationTaskId, payload);
+                        }
+                    },
+                    canGoBack: function () {
+                        return isCreateAction;
+                    },
+                    previous: function () {
+                        if (dataModel.settingModel.canGoBack && dataModel.settingModel.canGoBack()) {
+                            dataModel.goBack();
+                        }
+                    },
+                    validation: true,
+                    itemSelected: false,
+                    migrationTaskName: '',
+                    scheduleType: 'Immediately'
                 };
 
                 $scope.filterModel = {
@@ -160,34 +259,91 @@ angular.module('rainierApp')
                         });
                     }
                 };
+                migrationTaskService.setPoolsGridSetting(dataModel);
 
                 dataModel.cachedList = storagePools;
                 dataModel.displayList = storagePools.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
-                dataModel.getResources = function () {
-                    return paginationService.get($scope.dataModel.nextToken, getStoragePoolsPath, objectTransformService.transformPool, false, storageSystemId);
-                };
+                if (isCreateAction) {
+                    dataModel.getResources = function () {
+                        return paginationService.get($scope.dataModel.nextToken, getStoragePoolsPath, objectTransformService.transformPool, false, storageSystemId);
+                    };
+                }
                 $scope.dataModel = dataModel;
 
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storagePools, 'storagePoolSearch');
 
+        };
 
-            }, function() {
+        var getPools = function(storageSystemId) {
+            paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true,
+                storageSystemId).then(setResult, function() {
                 $scope.dataModel.displayList = [];
                 $scope.dataModel.itemCounts = 0;
             });
+        }
+
+        // TODO NEWRAIN-8104: Error case.
+        var getTargetMigrationTask = function () {
+            var migrationTask;
+            // get target migration task
+            orchestratorService.migrationTask(storageSystemId, migrationTaskId).then(function (result) {
+                migrationTask = result;
+                // get migration pairs to obtain source volumes, target pool
+                return migrationTaskService.getAllMigrationPairs(storageSystemId, migrationTaskId);
+            }).then(function (pairs) {
+                var sourceVolumeIds = [];
+                var targetPoolId;
+                _.forEach(pairs, function(item) {
+                    sourceVolumeIds.push(item.sourceVolumeId);
+                    targetPoolId = item.targetPoolId;
+                });
+                var sourceVolumes = [];
+                // get each volume information
+                var tasks = _.map(sourceVolumeIds, function (sourceVolumeId) {
+                    return orchestratorService.volume(storageSystemId, sourceVolumeId).then(function (volume) {
+                        sourceVolumes.push(volume);
+                    });
+                });
+                $q.all(tasks).then(function () {
+                    calculateVolumes(sourceVolumes);
+                    orchestratorService.storagePool(storageSystemId, targetPoolId).then(function (result) {
+                        var storagePools = [];
+                        storagePools.push(result);
+                        var resultObject = {
+                            resources: storagePools,
+                            nextToken: 1,
+                            total: 1
+                        };
+
+                        result.selected = true;
+
+                        // set wizard data
+                        setResult(resultObject)
+                        $scope.dataModel.selectPoolModel.itemSelected = true;
+                        $scope.dataModel.settingModel.migrationTaskName = migrationTask.migrationTaskName;
+                        // TODO NEWRAIN-8104: If cached migration task has already started, how should we do?
+                        $scope.dataModel.settingModel.scheduleType = 'Scheduled';
+                        if (migrationTask.schedule.datetime) {
+                            $scope.dataModel.settingModel.scheduleDate = new Date(migrationTask.schedule.datetime);
+                        }
+
+                        // Target pool is selected.
+                        $scope.dataModel.goNext();
+                    });
+                });
+            });
         };
 
-
-        paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result){
-            $scope.dataModel.storageSystems = result;
-            $scope.dataModel.selectedSource = _.first($scope.dataModel.storageSystems);
-            $scope.dataModel.selectedTarget = _.first($scope.dataModel.storageSystems);
-            var storageSystemId = $scope.dataModel.selectedSource.storageSystemId;
-            //Selected volumes from the volume inventory page
-            $scope.dataModel.selectedVolumes = ShareDataService.selectedMigrateVolumes;
-            getPool(storageSystemId);
-        });
+        // Get candidate pools
+        if (isCreateAction) {
+            calculateVolumes(selectedVolumes);
+            // Get candidate pools
+            getPools(storageSystemId);
+        } else {
+            // Get migration task, volumes and target pool
+            getTargetMigrationTask();
+        }
 
         $scope.$watch(function ($scope) {
             if ($scope.dataModel && $scope.dataModel.displayList) {
@@ -203,13 +359,13 @@ angular.module('rainierApp')
             itemSelected = _.find($scope.dataModel.displayList, function(item){ return item.selected;}) ? true : false;
 
             $scope.dataModel.selectPoolModel.itemSelected = itemSelected;
-        }, true);
-
-        $scope.$watch('dataModel.selectedTarget', function(newValue) {
-            if(newValue) {
-                getPool(newValue.storageSystemId);
+            if (itemSelected) {
+                $scope.dataModel.settingModel.volumeMigrationLabel = $scope.dataModel.getSelectedItems()[0].label;
             }
-        });
+            if (!$scope.dataModel.settingModel.scheduleDate) {
+                $scope.dataModel.settingModel.scheduleDate = new Date();
+            }
+        }, true);
 
         //user can only select one pool
         $scope.$watch('selectedCount', function (count) {

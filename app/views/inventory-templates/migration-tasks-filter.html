@@ -1,0 +1,32 @@
+<div class="control-group">
+    <h3>{{'migration-task-status' | translate}}</h3>
+</div>
+<div class="btn-group btn-group-justified btn-group-vertical">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.scheduled"
+               ng-init="dataModel.search.scheduled=false">
+        {{'migration-task-status-scheduled' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.inProgress"
+               ng-init="dataModel.search.inProgress=false">
+        {{'migration-task-status-in-progress' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.success"
+               ng-init="dataModel.search.success=false">
+        {{'migration-task-status-success' | translate}}
+    </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.successWithErrs"
+               ng-init="dataModel.search.successWithErrs=false">
+        {{'migration-task-status-success-with-errors' | translate}}
+    </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.failed"
+               ng-init="dataModel.search.failed=false">
+        {{'migration-task-status-failed' | translate}}
+    </label>
+</div>

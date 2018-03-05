@@ -2,16 +2,6 @@
     <div class="label-value-container">
 
         <div class="label-value-container">
-            <label for="target-array" class="label">Target Array</label>
-            <select id="target-array"
-                    class="value form-control"
-                    ng-model="dataModel.selectedTarget"
-                    ng-options="storageSystem as storageSystem.storageSystemName for storageSystem in
-                    dataModel.storageSystems track by storageSystem.storageSystemId">
-            </select>
-        </div>
-
-        <div class="label-value-container">
             <label class="label">{{dataModel.selectedVolumes.length}} Selected Volumes</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="volume in dataModel.selectedVolumes">

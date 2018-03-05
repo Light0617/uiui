@@ -232,7 +232,8 @@ angular
                         'storage-pools',
                         'volumes',
                         'parity-groups',
-                        'external-parity-groups'
+                        'external-parity-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'R_REPLICATION_GROUP_INV'
@@ -321,7 +322,8 @@ angular
                         'storage-pools',
                         'parity-groups',
                         'external-parity-groups',
-                        'replication-groups'
+                        'replication-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'C_VOLUMES_INV'
@@ -474,7 +476,8 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
-                        'replication-groups'
+                        'replication-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'C_POOLS_INV'
@@ -510,7 +513,8 @@ angular
                         'storage-pools',
                         'parity-groups',
                         'external-parity-groups',
-                        'replication-groups'
+                        'replication-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'T_ENABLE_PORT_SECURITY'
@@ -532,7 +536,8 @@ angular
                         'volumes',
                         'storage-pools',
                         'external-parity-groups',
-                        'replication-groups'
+                        'replication-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'C_PARITY_GROUPS_INV'
@@ -905,6 +910,41 @@ angular
                     labelKey: 'storage-volume-detach'
                 },
                 helpContext: ''
+            })
+            .when('/storage-systems/:storageSystemId/migration-tasks', {
+                templateUrl: 'views/migration-tasks.html',
+                controller: 'MigrationTasksCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-migration-tasks',
+                    peers: [
+                        'storage-ports',
+                        'volumes',
+                        'parity-groups',
+                        'storage-pools',
+                        'external-parity-groups',
+                        'replication-groups'
+                    ]
+                },
+                //TODO:Help context
+                // helpContext: 'C_CREATE_ATTACH'
+            })
+            .when('/storage-systems/:storageSystemId/migration-tasks/:migrationTaskId/update', {
+                templateUrl: 'views/migrate-volumes.html',
+                controller: 'MigrateVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'update-migration-task'
+                }
+                //TODO:Help context
+                // helpContext: 'C_CREATE_ATTACH'
+            })
+            .when('/storage-systems/:storageSystemId/migrate-volumes', {
+                templateUrl: 'views/migrate-volumes.html',
+                controller: 'MigrateVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'migrate-volumes'
+                }
+                //TODO:Help context
+                // helpContext: 'C_CREATE_ATTACH'
             })
             .otherwise({
                 redirectTo: '/'

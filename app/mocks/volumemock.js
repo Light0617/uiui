@@ -83,7 +83,6 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             storageSystemId: 'REPLACE',
             poolId: '001',
             label: 'Volume' + v,
-            scheduledForMigration: migrationStatus,
             size: mockUtils.getCapacity(100, 200),
             usedCapacity: mockUtils.getCapacity(10, 25),
             availableCapacity: mockUtils.getCapacity(50, 75),
@@ -93,6 +92,10 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             gadSummary: getVolumeGADSummary(volType, v),
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             dkcDataSavingType: _.sample(['NONE', 'COMPRESSION', 'DEDUPLICATION_AND_COMPRESSION']),
+            migrationSummary: {
+                "migrationType": migrationStatus ? 'MIGRATION' : 'NONE',
+                "ownerTaskId": migrationStatus ? mockUtils.randomInt(0, 100) : undefined
+            },
             attachedVolumeServerSummary:[
             {
                 serverId: null,

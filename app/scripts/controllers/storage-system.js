@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                objectTransformService, diskSizeService, synchronousTranslateService,
                                                paginationService, replicationGroupsService,
                                                capacityAlertService, dpAlertService, jobsAlertService, hwAlertService,
-                                               replicationService) {
+                                               replicationService, migrationTaskService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -21,7 +21,8 @@ angular.module('rainierApp')
         var tiers;
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
         var GET_STORAGE_PORTS_PATH = 'storage-ports';
-        
+        var GET_MIGRATION_TASKS_PATH = 'migration-tasks';
+
         $scope.services = {
             cp: capacityAlertService,
             dp: dpAlertService,
@@ -271,5 +272,22 @@ angular.module('rainierApp')
             };
         });
 
+        paginationService.getAllPromises(null, GET_MIGRATION_TASKS_PATH, true, storageSystemId,
+            objectTransformService.transformMigrationTask).then(function (result) {
+            migrationTaskService.mergeJobInfo(result).then(function (resources) {
+                var mgs = resources;
+                $scope.migrationTasks = mgs;
+                $scope.migrationTasksSummary = {
+                    total : mgs.length,
+                    // TODO NEWRAIN-8105: Should statues have the order?
+                    migrationTasksByStatus : _.map(_.groupBy(mgs, 'status'), function (g){
+                        return {
+                            status : _.first(g).toDisplayStatus(),
+                            count : g.length
+                        };
+                    })
+                };
+            });
+        });
 
     });

@@ -93,7 +93,8 @@ angular.module('rainierApp')
                         min: 0,
                         max: 1000,
                         unit: 'PB'
-                    }
+                    },
+                    hasMigrationTasks: null
                 },
                 sort: {
                     field: 'storageSystemId',

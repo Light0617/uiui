@@ -210,3 +210,20 @@
                ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadNotAvailable ? 'NOT_AVAILABLE' : '', filterModel.arrayType, 'NOT_AVAILABLE')">{{'gad-volume-type-not-available' | translate}}
     </label>
 </div>
+
+<!-- TODO NEWRAIN-8105: Label -->
+<div class="control-group" ng-if="filterModel.filter.hasOwnProperty('migrationType')">
+    <h3>{{'volume-migration-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.migrationType || 'ALL'}}</span></h3>
+</div>
+<div class="btn-group btn-group-toggle btn-group-justified" ng-if="filterModel.filter.hasOwnProperty('migrationType')">
+    <label class="btn btn-primary" ng-model="filterModel.filter.migrationType"
+           ng-change="filterModel.filterQuery('migrationSummary.type', 'NONE')"
+           btn-radio="'Not Reserved'" uncheckable>{{'volume-migration-type-filter-none' | translate}}
+    </label>
+
+    <label class="btn btn-primary" ng-model="filterModel.filter.migrationType"
+           ng-change="filterModel.filterQuery('migrationSummary.type', 'MIGRATION')"
+           btn-radio="'Reserved'" uncheckable>
+        {{'volume-migration-type-filter-volumeMigration' | translate}}
+    </label>
+</div>
