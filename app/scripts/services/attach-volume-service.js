@@ -175,6 +175,10 @@ angular.module('rainierApp')
             return iscsiNames;
         };
 
+        var escapeComma = function (stringWithComma) {
+            return stringWithComma.replace(/\,/g, '\\,');
+        };
+
         var registerHostGroupsQuery = function (queryService, paginationService, selectedServers) {
             var iscsiNames = getSelectedServerIscsiNames(selectedServers);
             var wwpns = getSelectedServerWwpns(selectedServers);
@@ -186,6 +190,7 @@ angular.module('rainierApp')
             }
             if (iscsiNames.length > 0) {
                 queryString = paginationService.getQueryStringForList(iscsiNames);
+                queryString = escapeComma(queryString);
                 queryService.setQueryMapEntry('iscsiTargetInformation.iscsiInitiatorNames', queryString);
             }
         };
