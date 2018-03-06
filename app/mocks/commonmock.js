@@ -11,7 +11,7 @@
 rainierAppMock.factory('commonMock', function () {
     return {
         randomChar: function () {
-            return _.sample('ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,'.split(''));
+            return _.sample('ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.-:'.split(''));
         },
         randomHex: function () {
             return _.sample('0123456789ABCDEF'.split(''));

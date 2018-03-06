@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .factory('attachVolumeService', function (
         orchestratorService, viewModelService, resourceTrackerService, constantService,
-        ShareDataService, $location, $modal, synchronousTranslateService
+        ShareDataService, $location, $modal, synchronousTranslateService, queryService
     ) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
@@ -175,10 +175,6 @@ angular.module('rainierApp')
             return iscsiNames;
         };
 
-        var escapeComma = function (stringWithComma) {
-            return stringWithComma.replace(/\,/g, '\\,');
-        };
-
         var registerHostGroupsQuery = function (queryService, paginationService, selectedServers) {
             var iscsiNames = getSelectedServerIscsiNames(selectedServers);
             var wwpns = getSelectedServerWwpns(selectedServers);
@@ -190,7 +186,7 @@ angular.module('rainierApp')
             }
             if (iscsiNames.length > 0) {
                 queryString = paginationService.getQueryStringForList(iscsiNames);
-                queryString = escapeComma(queryString);
+                queryString = queryService.escapeValue(queryString);
                 queryService.setQueryMapEntry('iscsiTargetInformation.iscsiInitiatorNames', queryString);
             }
         };
@@ -200,7 +196,7 @@ angular.module('rainierApp')
             _.forEach(servers, function(server) {
                 _.forEach(server.endPoints, function(endPoint) {
                     endPointToServerMap[endPoint] = server;
-                });
+                })server;
             });
 
             var allocateLikeFilteredHostGroups = [];
