@@ -139,7 +139,7 @@ angular.module('rainierApp')
             return orchestratorService.storageSystem(storageSystemId);
         }).then(function (storageSystem) {
             $scope.dataModel.supportPortAttribute =
-                storageSystemCapabilitiesService.supportPortAttribute(storageSystem.storageSystemModel);
+                storageSystemCapabilitiesService.supportPortAttribute(storageSystem.model);
             if (_.isUndefined(storageSystem) || _.isUndefined($scope.dataModel.port)) {
                 back();
             }
