@@ -104,15 +104,24 @@ angular.module('rainierApp')
                 }];
                 $scope.dataModel.targetSnapshotPool = $scope.dataModel.snapshotTargetPools[0];
 
-                _.filter(storagePools, function(pool) {
-                    return _.contains(poolTypes, pool.type);
-                }).forEach(function (p) {
-                    p.displayLabel = p.snapshotPoolLabel();
-                    $scope.dataModel.snapshotTargetPools.push(p);
-                    if(p.storagePoolId === replicationGroup.targetPoolId){
-                        $scope.dataModel.targetSnapshotPool = p;
-                    }
-                });
+                _.chain(storagePools)
+                    .filter(function (pool) {
+                        return _.contains(poolTypes, pool.type)
+                    })
+                    .filter(function (pool) {
+                        return pool.isReservedPool !== true
+                    })
+                    .map(function (pool) {
+                        pool.displayLabel = pool.snapshotPoolLabel();
+                        return pool;
+                    })
+                    .sortBy('storagePoolId')
+                    .forEach(function (pool) {
+                        $scope.dataModel.snapshotTargetPools.push(pool);
+                        if (pool.storagePoolId === replicationGroup.targetPoolId) {
+                            $scope.dataModel.targetSnapshotPool = pool;
+                        }
+                    });
                 $scope.dataModel.snapshotTargetPoolsSize = _.size($scope.dataModel.snapshotTargetPools);
             }
 

@@ -802,18 +802,28 @@ angular.module('rainierApp')
                 });
             };
 
-                function filterSnapshotPools(storageSystemId, poolTypes) {
+            function filterSnapshotPools(storageSystemId, poolTypes) {
                 var snapshotPools = [{
                     displayLabel: synchronousTranslateService.translate('common-auto-selected'),
                     storagePoolId: null
                 }];
+
                 var storagePools = allStoragePools[storageSystemId];
-                _.forEach(storagePools, function (pool) {
-                    if (_.include(poolTypes, pool.type)) {
+                _.chain(storagePools)
+                    .filter(function (pool) {
+                        return _.contains(poolTypes, pool.type)
+                    })
+                    .filter(function (pool) {
+                        return pool.isReservedPool !== true
+                    })
+                    .map(function (pool) {
                         pool.displayLabel = pool.snapshotPoolLabelWithPoolId();
+                        return pool;
+                    })
+                    .sortBy('storagePoolId')
+                    .forEach(function (pool) {
                         snapshotPools.push(pool);
-                    }
-                });
+                    });
 
                 return snapshotPools;
             }

@@ -410,12 +410,21 @@ angular.module('rainierApp')
             var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(
                 storageSystem.model, storageSystem.firmwareVersion);
 
-            _.forEach(pools, function(pool) {
-                if (_.include(poolTypes, pool.type)){
+            _.chain(pools)
+                .filter(function (pool) {
+                    return _.contains(poolTypes, pool.type)
+                })
+                .filter(function (pool) {
+                    return pool.isReservedPool !== true
+                })
+                .map(function (pool) {
                     pool.displayLabel = pool.snapshotPoolLabel();
+                    return pool;
+                })
+                .sortBy('storagePoolId')
+                .forEach(function (pool) {
                     filteredPools.push(pool);
-                }
-            });
+                });
 
             return filteredPools;
         }

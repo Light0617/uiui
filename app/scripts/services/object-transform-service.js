@@ -706,8 +706,12 @@ angular.module('rainierApp')
                     return this.externalParityGroupIds && this.externalParityGroupIds.length > 0;
                 };
 
-                if (item.label.indexOf('HSA-reserved-') === 0 || item.isUsingExternalStorage()) {
+                if (item.isUsingExternalStorage()) {
                     item.disabledCheckBox = true;
+                }
+                if (item.label.indexOf(constantService.prefixReservedStoragePool) === 0) {
+                    item.disabledCheckBox = true;
+                    item.isReservedPool = true;
                 }
 
                 var activeFlashTitle = '';
