@@ -186,6 +186,7 @@ angular.module('rainierApp')
             }
             if (iscsiNames.length > 0) {
                 queryString = paginationService.getQueryStringForList(iscsiNames);
+                queryString = queryService.escapeValue(queryString);
                 queryService.setQueryMapEntry('iscsiTargetInformation.iscsiInitiatorNames', queryString);
             }
         };
