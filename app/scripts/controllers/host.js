@@ -8,7 +8,7 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostCtrl', function ($scope, $routeParams, $window, $timeout, $location, orchestratorService,
+    .controller('HostCtrl', function ($scope, $routeParams, $window, $timeout, $location, $q, orchestratorService,
                                       objectTransformService, scrollDataSourceBuilderService, ShareDataService,
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
@@ -85,7 +85,7 @@ angular.module('rainierApp')
                     $scope.attachedVolumes = {};
                 });
             });
-            return Promise.resolve(host);
+            return $q.resolve(host);
         }).then(function (host) {
             paginationService.clearQuery();
             queryService.setQueryMapEntry('serverId', parseInt(hostId));
