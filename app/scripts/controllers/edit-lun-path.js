@@ -263,6 +263,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                         host.allHostModeOptionsString = attachVolumeService.getAllHostModeOptionsString($scope.dataModel.attachModel.selectedHostModeOption);
                     });
 
+                    $scope.dataModel.selectServerPath = true;
                     dataModel.goNext();
                 },
                 validation: true

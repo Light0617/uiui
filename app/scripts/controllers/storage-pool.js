@@ -184,6 +184,18 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    icon: 'icon-migrate-volume',
+                    tooltip: 'shred-volumes',
+                    type: 'link',
+                    enabled: function(){
+                        return true;
+                    },
+                    onClick: function () {
+                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'volumes','shred-volumes'].join('/'));
+                    }
+                },
+                {
                     icon: 'icon-attach-volume',
                     tooltip: 'action-tooltip-attach-volumes',
                     type: 'link',

@@ -283,7 +283,7 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        $location.path(['hosts','shred-volumes'].join('/'));
+                        $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
                     }
                 },
                 {
