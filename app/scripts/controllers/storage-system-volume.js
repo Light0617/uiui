@@ -84,6 +84,11 @@ angular.module('rainierApp')
                 ShareDataService.push('selectedVolumes', [$scope.model]);
                 $location.path('storage-systems/' + $scope.model.storageSystemId + '/attach-volumes');
             };
+
+            $scope.migrateVolume = function () {
+                ShareDataService.selectedMigrateVolumes = [result];
+                $location.path(['storage-systems', $scope.model.storageSystemId, 'migrate-volumes'].join('/'));
+            };
         });
 
         storageSystemVolumeService.getVolumePairsAsSVol(volumeId, storageSystemId).then(function (result) {
@@ -479,6 +484,19 @@ angular.module('rainierApp')
                     },
                     enabled: function () {
                         return !dataModel.anySelected() && dataModel.enableRestore;
+                    }
+                },
+                {
+                    icon: 'icon-migrate-volume',
+                    tooltip: 'action-tooltip-migrate-volumes',
+                    type: 'link',
+                    onClick: function () {
+                        $scope.migrateVolume();
+                    },
+                    enabled: function () {
+                        // TODO NEWRAIN-8104: Enable or disable control.
+                        // In case of disabled for this volume, the icon itself should be hidden?
+                        return true;
                     }
                 }
             ];

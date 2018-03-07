@@ -69,7 +69,7 @@
             <label class="btn btn-default" ng-model="filterModel.filter.poolType" btn-radio="'HDT'" title="Tiered (HDT)" ng-click="filterModel.filterQuery('type', 'HDT')" uncheckable>Tiered
             </label>
         </div>
-        <div class="btn-group">
+        <div class="btn-group" ng-if="!filterModel.poolTypeHtiDisabled">
             <label class="btn btn-default" ng-model="filterModel.filter.poolType" btn-radio="'HTI'" title="Snap (HTI)" ng-click="filterModel.filterQuery('type', 'HTI')" uncheckable>Snap
             </label>
         </div>

@@ -2,30 +2,39 @@
     <label>{{ 'migrate-volumes-label-schedule' | translate}}</label>
     <div class="btn-group btn-group-toggle date-time-control btn-group-justified">
         <label class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
-               btn-radio="'Immediately'" ng-checked="dataModel.settingModel.scheduleType !== 'Scheduled'">
+               btn-radio="'Immediately'" ng-checked="dataModel.settingModel.scheduleType !== 'Scheduled'"
+               title="{{'migrate-volumes-tooltip-migrate-now' | translate}}">
             {{'migrate-volumes-label-migrate-now' | translate}}
         </label>
         <label class="btn btn-default" ng-model="dataModel.settingModel.scheduleType"
-               btn-radio="'Scheduled'" ng-checked="dataModel.settingModel.scheduleType === 'Scheduled'">
+               btn-radio="'Scheduled'" ng-checked="dataModel.settingModel.scheduleType === 'Scheduled'"
+               title="{{'migrate-volumes-tooltip-migrate-later' | translate}}">
             {{'migrate-volumes-label-migrate-later' | translate}}
         </label>
     </div>
 </div>
 
 <div class="clearfix" ng-if="dataModel.settingModel.scheduleType === 'Scheduled'">
-    <form role="form" class="validation-form col-lg-6 form-horizontal" name="inputTimeForm">
+    <form role="form" class="validation-form col-lg-6 form-horizontal" name="validationForm.inputTimeForm">
         <div class="form-group form-group-lg form-horizontal">
             <label>{{'migrate-volumes-label-start-time' | translate}}</label>
             <input type="text" class="form-control time-input" ng-model="dataModel.settingModel.schedule.time"
-                   bs-timepicker ng-attr-placeholder="{{dataModel.settingModel.schedule.time}}">
+                   bs-timepicker ng-attr-placeholder="{{dataModel.settingModel.schedule.timeDisplay}}" name="time"
+                   data-ng-required="dataModel.settingModel.scheduleType === 'Scheduled'">
+            <p ng-show="validationForm.inputTimeForm.time.$invalid && !validationForm.inputTimeForm.time.$pristine"
+               class="validation-text">{{'migrate-volumes-invalid-time-message' | translate }}</p>
         </div>
     </form>
-    <form role="form" class="validation-form col-lg-6 form-horizontal" name="inputDateForm">
+    <form role="form" class="validation-form col-lg-6 form-horizontal" name="validationForm.inputDateForm">
         <div class="form-group form-group-lg form-horizontal">
             <label>{{'migrate-volumes-label-start-date' | translate}}</label>
             <div class="dropdown-toggle" id="dateSelector" role="button" data-toggle="dropdown">
-                <input type="text" class="form-control time-input"
-                       value="{{ dataModel.settingModel.schedule.date | date : 'MMM d, y' }}">
+                <input type="text" class="form-control time-input" name="date"
+                       ng-model="dataModel.settingModel.schedule.dateDisplay" ng-model-options="{debounce: 500}"
+                       data-ng-required="dataModel.settingModel.scheduleType === 'Scheduled'"
+                       ng-change="dataModel.isValidDate(validationForm.inputDateForm)">
+                <p ng-show="validationForm.inputDateForm.date.$invalid && !validationForm.inputDateForm.date.$pristine"
+                   class="validation-text">{{'migrate-volumes-invalid-date-message' | translate }}</p>
             </div>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                 <datetimepicker ng-model="dataModel.settingModel.schedule.date"
@@ -36,16 +45,19 @@
 </div>
 
 <div class="clearfix">
-    <form role="form" class="validation-form col-lg-6 form-horizontal" novalidate>
+    <form role="form" class="validation-form col-lg-6 form-horizontal" name="validationForm.inputNameForm" novalidate>
         <div class="form-group form-group-lg form-horizontal">
             <label>{{'migrate-volumes-label-migration-task-name' | translate}}</label>
-            <input class="form-control" ng-model="dataModel.settingModel.migrationTaskName" required>
+            <input class="form-control" name="migrationTaskName" ng-model="dataModel.settingModel.migrationTaskName"
+                   ng-maxlength="32" maxlength="32" ng-pattern="dataModel.migrationTaskNameRegexp" required>
+            <p ng-show="validationForm.inputNameForm.migrationTaskName.$invalid && !validationForm.inputNameForm.migrationTaskName.$pristine"
+               class="validation-text">{{'migrate-volumes-invalid-name-message' | translate }}</p>
         </div>
     </form>
     <form role="form" class="validation-form col-lg-6 form-horizontal" novalidate>
         <div class="form-group form-group-lg form-horizontal">
             <label>{{'migrate-volumes-label-comments' | translate}}</label>
-            <input class="form-control" ng-model="dataModel.settingModel.comments">
+            <input class="form-control" ng-model="dataModel.settingModel.comments" name="comments" maxLength="255">
         </div>
     </form>
 </div>

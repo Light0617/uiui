@@ -6,18 +6,18 @@
 
     <wizard-body>
         <wizard-advanced-stepper>
-            <wizard-advanced-stepper-button ng-title="'workflow-title-select-target-pool' | translate"
+            <wizard-advanced-stepper-button ng-title="'migrate-volumes-step-select-pool' | translate"
                                             step-completed="dataModel.isStepCompleted('selectPool')"
                                             step-active="dataModel.isStepActive('selectPool')">
             </wizard-advanced-stepper-button>
-            <wizard-advanced-stepper-button ng-title="'workflow-title-set-migrate-setting' | translate"
+            <wizard-advanced-stepper-button ng-title="'migrate-volumes-step-task-settings' | translate"
                                             step-completed="dataModel.isStepCompleted('setting')"
                                             step-active="dataModel.isStepActive('setting')">
             </wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('selectPool')"
-                                   ng-title="'workflow-title-select-target-pool' | translate"
+                                   ng-title="'migrate-volumes-step-select-pool' | translate"
                                    left-panel-template="views/workflow-templates/select-migrate-pool-left-panel.html"
                                    right-panel-template="views/workflow-templates/select-migrate-pool-right-panel.html"
                                    ng-model="dataModel"
@@ -26,7 +26,7 @@
                                    class="two-panel"></wizard-left-right-content>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('setting')"
-                                   ng-title="'workflow-title-set-migrate-setting' | translate"
+                                   ng-title="'migrate-volumes-step-task-settings' | translate"
                                    left-panel-template="views/workflow-templates/migrate-volumes-setting-left-panel.html"
                                    right-panel-template="views/workflow-templates/migrate-volumes-setting-right-panel.html"
                                    ng-model="dataModel"
