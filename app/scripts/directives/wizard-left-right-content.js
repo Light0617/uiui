@@ -22,8 +22,7 @@ angular.module('rainierApp')
                 leftPanelTemplate: '@',
                 rightPanelTemplate: '@',
                 pageTitle: '=ngTitle',
-                pageName: '@',
-                filterModel: '='
+                pageName: '@'
             },
             replace: true,
             templateUrl: 'views/templates/wizard-left-right-content.html'

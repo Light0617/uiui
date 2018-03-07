@@ -64,7 +64,9 @@ angular.module('rainierApp')
                 $scope.model.activeFlashAllowed = false;
                 $scope.model.suspendSnapshot = false;
                 $scope.model.isShowSuspendSnapshot = false;
-                _.forEach(result.licenseSettings, function(license){
+                $scope.model.isSupportDpTiIntegration = storageSystemCapabilitiesService.isSupportDpTiPoolIntegrationVersion(
+                    $scope.model.storageSystem.model, $scope.model.storageSystem.firmwareVersion);
+                    _.forEach(result.licenseSettings, function(license){
                         if (license.productName.toUpperCase() === 'ACTIVE FLASH' && license.installed === true){
                             $scope.model.hasActiveFlashLicense = true;
                         } else if (license.productName.toUpperCase() === 'THIN IMAGE' && license.installed === true) {

@@ -117,6 +117,7 @@ angular.module('rainierApp')
             },
             yes: 'YES',
             no: 'NO',
-            notAvailable: 'N/A'
+            notAvailable: 'N/A',
+            prefixReservedStoragePool: 'HSA-reserved'
         };
     });

@@ -187,11 +187,22 @@ angular.module('rainierApp')
                         if (externalVolumePairExist.clone) {
                             replicationGroupCountByType.count++;
                         }
-                    } else if (replicationService.isSnap(replicationGroupCountByType.replicationType)) {
-                        replicationGroup.type = synchronousTranslateService.translate('common-replication-groups-snap');
-                        replicationGroupCountByType.count += externalVolumePairExist.snapshot ? 1 : 0;
-                        replicationGroupCountByType.count += externalVolumePairExist.snapshotEx ? 1 : 0;
-                        replicationGroupCountByType.count += externalVolumePairExist.snapshotFc ? 1 : 0;
+                    } else if (replicationService.isSnapShotType(replicationGroupCountByType.replicationType)) {
+                        var typeForSnapShot = synchronousTranslateService.translate('common-replication-groups-snap');
+                        var groupForSnapShot = _.find(replicationGroupsByType, function(group) {
+                            return group.type === typeForSnapShot;
+                        });
+                        if (_.isUndefined(groupForSnapShot)) {
+                            replicationGroup.type = typeForSnapShot;
+                            replicationGroupCountByType.count += externalVolumePairExist.snapshot ? 1 : 0;
+                            replicationGroupCountByType.count += externalVolumePairExist.snapshotEx ? 1 : 0;
+                            replicationGroupCountByType.count += externalVolumePairExist.snapshotFc ? 1 : 0;
+                        } else {
+                            // Do not push new element if already exist.
+                            groupForSnapShot.count += replicationGroupCountByType.count;
+                            total += replicationGroupCountByType.count;
+                            return;
+                        }
                     }
 
                     replicationGroup.count = replicationGroupCountByType.count;

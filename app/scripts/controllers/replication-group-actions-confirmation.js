@@ -8,7 +8,9 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('replicationGroupActionsConfirmationCtrl', function ($scope, orchestratorService, objectTransformService, scrollDataSourceBuilderService, $routeParams, $timeout, ShareDataService) {
+    .controller('replicationGroupActionsConfirmationCtrl', function ($scope, orchestratorService, objectTransformService,
+                                                                     scrollDataSourceBuilderService, $routeParams, $timeout, ShareDataService,
+                                                                     replicationService, synchronousTranslateService) {
         var storageSystemId = $routeParams.storageSystemId;
         var action = ShareDataService.replicationGroupAction;
         var replicationGroup = ShareDataService.selectedReplicationGroup;
@@ -16,7 +18,7 @@ angular.module('rainierApp')
             window.history.back();
         }
 
-        if(_.first(replicationGroup).type !== 'Snap' || action === 'delete') {
+        if(!replicationService.isSnapShotType(_.first(replicationGroup).type) || action === 'delete') {
             orchestratorService.affectedVolumePairsByReplicationGroup(storageSystemId, _.first(replicationGroup).id).then(function (result) {
                 _.forEach(result.volumePairs, function (vp) {
                     objectTransformService.transformVolumePairs(vp);
@@ -55,12 +57,14 @@ angular.module('rainierApp')
 
         $scope.submitActions = function () {
             var selectedReplicationGroup = _.first(replicationGroup);
+            var defaultTargetPool = synchronousTranslateService.translate('common-auto-selected');
             var payload;
             switch (action) {
                 case 'suspend':
-                    if (selectedReplicationGroup.type === 'Snap') {
+                    if (replicationService.isSnapShotType(selectedReplicationGroup.type)) {
                         payload = {
-                            'scheduleEnabled': false
+                            'scheduleEnabled': false,
+                            'targetPoolId': selectedReplicationGroup.targetPoolId === defaultTargetPool ? null : selectedReplicationGroup.targetPoolId
                         };
                         orchestratorService.editReplicationGroup(storageSystemId, selectedReplicationGroup.id, payload).then(function () {
                             window.history.back();
@@ -72,9 +76,10 @@ angular.module('rainierApp')
                     }
                     break;
                 case 'resume':
-                    if (selectedReplicationGroup.type === 'Snap') {
+                    if (replicationService.isSnapShotType(selectedReplicationGroup.type)) {
                         payload = {
-                            'scheduleEnabled': true
+                            'scheduleEnabled': true,
+                            'targetPoolId': selectedReplicationGroup.targetPoolId === defaultTargetPool ? null : selectedReplicationGroup.targetPoolId
                         };
                         orchestratorService.editReplicationGroup(storageSystemId, selectedReplicationGroup.id, payload).then(function () {
                             window.history.back();

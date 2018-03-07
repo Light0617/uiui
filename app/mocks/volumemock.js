@@ -83,6 +83,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             storageSystemId: 'REPLACE',
             poolId: '001',
             label: 'Volume' + v,
+            scheduledForMigration: migrationStatus,
             size: mockUtils.getCapacity(100, 200),
             usedCapacity: mockUtils.getCapacity(10, 25),
             availableCapacity: mockUtils.getCapacity(50, 75),

@@ -33,6 +33,8 @@
         <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 tile-container flex-grid" ng-if="dataModel.view=== 'tile'"
              infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='1' infinite-scroll-container='infiniteScrollContainerElement'>
             <div class="tile resource-tile control-tile" ng-hide="dataModel.isGefn" ng-if="dataModel.context !== 'poolDetails' && dataModel.addAction && !dataModel.onlyOperation" ng-click="dataModel.addAction()" title="{{dataModel.actionTitle}}">
+             infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='1'>
+            <div class="tile resource-tile control-tile" ng-hide="dataModel.isGefn" ng-if="dataModel.context !== 'poolDetails' && dataModel.addAction" ng-click="dataModel.addAction()" title="{{dataModel.actionTitle}}">
                 <div class="tile-button">
                     <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
                         <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 "></polygon>
@@ -71,7 +73,7 @@
                     <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
                 </div>
             </div>
-            <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile || dataModel.isGefn" ng-if="dataModel.context !== 'poolDetails' && dataModel.addAction && !dataModel.onlyOperation" ng-click="dataModel.addAction()">
+            <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile || dataModel.isGefn" ng-if="dataModel.context !== 'poolDetails' && dataModel.addAction" ng-click="dataModel.addAction()">
                 <span class="btn icon-btn icon-lg icon-add"></span>
             </div>
             <div class="tile row row-tile add-resource" ng-hide="dataModel.hideAddTile || dataModel.isGefn" ng-if="dataModel.context === 'poolDetails' && !dataModel.showAddIcon" ng-click="dataModel.addPoolDetailsClickAction(dataModel.storagePoolId)">

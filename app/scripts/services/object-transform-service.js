@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location, $filter,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService, commonConverterService, volumeService) {
+                                                 constantService, commonConverterService, volumeService,
+                                                 storageAdvisorEmbeddedSessionService) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -139,11 +140,6 @@ angular.module('rainierApp')
             }
         }
 
-        function transformHsaEmbeddedLaunchUrl(item) {
-            item.hsaEmbeddedLaunchUrlForGum1 = ['https://', item.gum1IpAddress].join('');
-            item.hsaEmbeddedLaunchUrlForGum2 = ['https://', item.gum2IpAddress].join('');
-        }
-
         function transformStorageSystemSettings(item) {
             var result = [];
 
@@ -151,16 +147,7 @@ angular.module('rainierApp')
                 item.storageSystemId, sessionScopeEncryptionKeys));
 
             if (constantService.isHM850Series(item.model)) {
-                result.push({
-                    type: 'hyperlink',
-                    title: 'storage-system-launch-hsae-1',
-                    href: item.hsaEmbeddedLaunchUrlForGum1
-                });
-                result.push({
-                    type: 'hyperlink',
-                    title: 'storage-system-launch-hsae-2',
-                    href: item.hsaEmbeddedLaunchUrlForGum2
-                });
+                result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
             }
 
             result.push({
@@ -205,7 +192,6 @@ angular.module('rainierApp')
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
                 transformHdvmSnLaunchUrl(item);
-                transformHsaEmbeddedLaunchUrl(item);
 
                 item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
                 item.metaData = [
@@ -294,7 +280,7 @@ angular.module('rainierApp')
 
             },
             transformReplicationGroup: function (item) {
-                if (replicationService.isSnap(item.type)) {
+                if (replicationService.isSnapShotType(item.type)) {
                     if (item.scheduleEnabled === false) {
                         item.status = 'Suspended';
                     } else if (!item.hasOwnProperty('isExternal')) {
@@ -755,8 +741,12 @@ angular.module('rainierApp')
                     return this.externalParityGroupIds && this.externalParityGroupIds.length > 0;
                 };
 
-                if (item.label.indexOf('HSA-reserved-') === 0 || item.isUsingExternalStorage()) {
+                if (item.isUsingExternalStorage()) {
                     item.disabledCheckBox = true;
+                }
+                if (item.label.indexOf(constantService.prefixReservedStoragePool) === 0) {
+                    item.disabledCheckBox = true;
+                    item.isReservedPool = true;
                 }
 
                 var activeFlashTitle = '';
