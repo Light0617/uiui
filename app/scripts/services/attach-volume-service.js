@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .factory('attachVolumeService', function (
         orchestratorService, viewModelService, resourceTrackerService, constantService,
-        ShareDataService, $location, $modal, synchronousTranslateService, queryService
+        ShareDataService, $location, $modal, synchronousTranslateService
     ) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
@@ -196,7 +196,7 @@ angular.module('rainierApp')
             _.forEach(servers, function(server) {
                 _.forEach(server.endPoints, function(endPoint) {
                     endPointToServerMap[endPoint] = server;
-                })server;
+                });
             });
 
             var allocateLikeFilteredHostGroups = [];
