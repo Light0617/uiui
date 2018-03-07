@@ -184,11 +184,14 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    icon: 'icon-migrate-volume',
+                    icon: 'icon-shred-volume',
                     tooltip: 'shred-volumes',
                     type: 'link',
                     enabled: function(){
-                        return true;
+                        return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return vol.dataProtectionStatus === 'Protected' || vol.dataProtectionStatus === 'Secondary';
+                            });
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
