@@ -140,7 +140,7 @@ angular.module('rainierApp')
                     return;
                 }
 
-                Promise.all([
+                $q.all([
                     updateHostEndPoints(),
                     updateHostFields()
                 ]).then(function () {
@@ -240,7 +240,7 @@ angular.module('rainierApp')
             } else if ($scope.dataModel.protocol === 'ISCSI') {
                 return postIscsiEndPoint(hostId, endPointPayload);
             }
-            return Promise.resolve();
+            return $q.resolve();
         }
 
         function updateHostEndPoints() {
@@ -304,6 +304,6 @@ angular.module('rainierApp')
             if (payload.serverName || payload.description || payload.ipAddress || payload.osType) {
                 return orchestratorService.updateHost(hostId, payload);
             }
-            return Promise.resolve();
+            return $q.resolve();
         }
     });

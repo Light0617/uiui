@@ -199,8 +199,8 @@ angular.module('rainierApp')
                         this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
                     }
                 }
-            }
-        };
+            };
+        }
 
         function initFibre() {
             var queryObject = new paginationService.QueryObject('type', undefined, 'FIBRE');
