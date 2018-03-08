@@ -485,19 +485,6 @@ angular.module('rainierApp')
                     enabled: function () {
                         return !dataModel.anySelected() && dataModel.enableRestore;
                     }
-                },
-                {
-                    icon: 'icon-migrate-volume',
-                    tooltip: 'action-tooltip-migrate-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        $scope.migrateVolume();
-                    },
-                    enabled: function () {
-                        // TODO NEWRAIN-8104: Enable or disable control.
-                        // In case of disabled for this volume, the icon itself should be hidden?
-                        return true;
-                    }
                 }
             ];
 
