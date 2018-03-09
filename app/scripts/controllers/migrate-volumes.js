@@ -20,7 +20,7 @@ angular.module('rainierApp')
                                                viewModelService, ShareDataService, paginationService, queryService,
                                                objectTransformService, constantService, $location, $timeout,
                                                scrollDataSourceBuilderServiceNew, resourceTrackerService,
-                                               synchronousTranslateService, migrationTaskService) {
+                                               synchronousTranslateService, migrationTaskService, utilService) {
 
         $scope.dataModel = {};
         $scope.validationForm = {};
@@ -46,6 +46,7 @@ angular.module('rainierApp')
         var calculateVolumes = function (volumes) {
             $scope.dataModel.selectedVolumes = volumes;
             _.forEach(volumes, function (volume) {
+                // TODO Use usedCapacity for DP-VOL and totalCapacity for External-VOL. I will fix it later.
                 totalVolumeSize += volume.totalCapacity.value;
                 if (volume.poolId !== null && volume.poolId !== undefined) {
                     sourceVolumePools[volume.poolId] = true;
@@ -68,12 +69,13 @@ angular.module('rainierApp')
                     return;
                 }
                 // Not over utilization threshold2
-                var utilizationLimitSize = pool.utilizationThreshold2 * pool.capacityInBytes.value / 100;
+                var poolTotalCapacity = pool.availableCapacityInBytes.value + pool.usedCapacityInBytes.value;
+                var utilizationLimitSize = pool.utilizationThreshold2 * poolTotalCapacity / 100;
                 if (pool.usedCapacityInBytes.value + totalVolumeSize > utilizationLimitSize) {
                     return;
                 }
                 availablePools.push(pool);
-                selectedTargetPoolExist |= (selectedTargetPoolId === pool.storagePoolId);
+                selectedTargetPoolExist = selectedTargetPoolExist || (selectedTargetPoolId === pool.storagePoolId);
             });
             _.forEach(availablePools, function (pool) {
                 pool.disabledCheckBox = selectedTargetPoolExist && (pool.storagePoolId !== selectedTargetPoolId);
@@ -117,6 +119,7 @@ angular.module('rainierApp')
                     selectedVolumes: $scope.dataModel.selectedVolumes,
                     migrationTaskNameRegexp: /^[,./0-9:@A-Z\\_a-z][,-./0-9:@A-Z\\_a-z]*$/,
                     busy: false,
+                    adjustWizardRightPanel: true,
                     sort: {
                         field: 'name',
                         reverse: false,
@@ -163,9 +166,6 @@ angular.module('rainierApp')
                             }
                             dataModel.goNext();
                         }
-                    },
-                    previous: function() {
-                        dataModel.goBack();
                     },
                     validation: true,
                     itemSelected: false
@@ -299,7 +299,7 @@ angular.module('rainierApp')
 
                 dataModel.isValidDate = function (form) {
                     var parseDate = new Date(dataModel.settingModel.schedule.dateDisplay);
-                    if (parseDate.toString() === 'Invalid Date') {
+                    if (_.isNaN(parseDate.getTime())) {
                         // date format is not valid.
                         form.date.$setValidity('text', false);
                     } else {
@@ -398,7 +398,7 @@ angular.module('rainierApp')
             _.map($scope.dataModel.displayList, function (storagePool) {
                 storagePool.disabledCheckBox = !(count === 0 || (count === 1 && storagePool.storagePoolId === $scope.dataModel.getSelectedItems()[0].storagePoolId));
             });
-            if (count === 0) {
+            if (utilService.isNullOrUndef(count) || count === 0) {
                 selectedTargetPoolId = undefined;
             } else {
                 selectedTargetPoolId = $scope.dataModel.getSelectedItems()[0].storagePoolId;
