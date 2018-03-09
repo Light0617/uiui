@@ -33,7 +33,7 @@
             </g>
         </g>
         <!--source ports-->
-        <g class="pointer" title="server-endpoint" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.sourcePorts track by $index" ng-if="dataModel.pathModel.sourcePorts && !dataModel.selectServerPath">
+        <g class="pointer" title="server-endpoint" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.sourcePorts track by $index" ng-if="dataModel.pathModel.sourcePorts && !dataModel.selectServerPath && !dataModel.selectedType">
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
                   x="5" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
                   ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
@@ -42,14 +42,44 @@
             <g class="g_main" port-id="{{port.storagePortId}}">
                 <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x-758}}" ng-attr-cy="{{port.coordinate.y}}" r="6"/>
                 <rect class="port-icon-plug" ng-attr-x="{{port.coordinate.x-758}}" ng-attr-y="{{port.coordinate.y-1}}" width="16" height="4" rx="2" ry="2"/>
-
             </g>
 
             <text class="sm-label" x="15" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
         </g>
+        <!--FC source ports-->
+        <g class="pointer" title="server-endpoint" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.FcSourcePorts track by $index" ng-if="dataModel.pathModel.sourcePorts && !dataModel.selectServerPath && dataModel.selectedType === 'FIBRE'">
+            <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
+                  x="5" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
+                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"
+                  ng-if="port.type === dataModel.selectedType"/>
+
+            <!--storage port icon-->
+            <g class="g_main" port-id="{{port.storagePortId}}" ng-if="port.type === dataModel.selectedType">
+                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x-758}}" ng-attr-cy="{{$index * 25 + 10}}" r="6"/>
+                <rect class="port-icon-plug" ng-attr-x="{{port.coordinate.x-758}}" ng-attr-y="{{$index * 25 + 9}}" width="16" height="4" rx="2" ry="2"/>
+            </g>
+
+            <text class="sm-label" x="15" ng-attr-y="{{13 + $index * 25}}" text-anchor="start" ng-if="port.type === dataModel.selectedType">{{port.storagePortId}}</text>
+        </g>
+        <!--ISCSI source ports-->
+        <g class="pointer" title="server-endpoint" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.IscsiSourcePorts track by $index" ng-if="dataModel.pathModel.IscsiSourcePorts && !dataModel.selectServerPath && dataModel.selectedType === 'ISCSI'">
+            <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
+                  x="5" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
+                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"
+                  ng-if="port.type === dataModel.selectedType"/>
+
+            <!--storage port icon-->
+            <g class="g_main" port-id="{{port.storagePortId}}" ng-if="port.type === dataModel.selectedType">
+                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x-758}}" ng-attr-cy="{{$index * 25 + 10}}" r="6"/>
+                <rect class="port-icon-plug" ng-attr-x="{{port.coordinate.x-758}}" ng-attr-y="{{$index * 25 + 9}}" width="16" height="4" rx="2" ry="2"/>
+            </g>
+
+            <text class="sm-label" x="15" ng-attr-y="{{13 + $index * 25}}" text-anchor="start" ng-if="port.type === dataModel.selectedType">{{port.storagePortId}}</text>
+        </g>
+
 
         <!--target ports-->
-        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.storagePorts track by $index">
+        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.storagePorts track by $index" ng-if="!dataModel.selectedType">
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
                   x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
                   ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
@@ -63,5 +93,35 @@
             <text class="sm-label" x="882" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
         </g>
 
+        <!--FC target ports-->
+        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.FcStoragePorts track by $index" ng-if="dataModel.selectedType === 'FIBRE'">
+            <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
+                  x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
+                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"
+                  ng-if="port.type === dataModel.selectedType"/>
+
+            <!--storage port icon-->
+            <g class="g_main" port-id="{{port.storagePortId}}">
+                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{$index * 25 + 10}}" r="6"/>
+                <circle fill="black" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{$index * 25 + 9}}" r="2"/>
+            </g>
+
+            <text class="sm-label" x="882" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
+        </g>
+
+        <!--ISCSI target ports-->
+        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.IscsiStoragePorts track by $index" ng-if="dataModel.selectedType === 'ISCSI'">
+            <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
+                  x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
+                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
+
+            <!--storage port icon-->
+            <g class="g_main" port-id="{{port.storagePortId}}">
+                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{$index * 25 + 10}}" r="6"/>
+                <circle fill="black" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{$index * 25 + 9}}" r="2"/>
+            </g>
+
+            <text class="sm-label" x="882" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
+        </g>
     </svg>
 </div>
