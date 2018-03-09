@@ -200,7 +200,7 @@ angular.module('rainierApp')
                 storageSystemSelectable: selectable,
                 storageSystem: storageSystem,
                 storageSystems: storageSystems,
-                availablePoolTypes: [],
+                availablePoolTypes: ["DDM"],
                 hasHdpLicense: false,
                 hasHdtLicense: false,
                 hasHtiLicense: false,
@@ -212,7 +212,6 @@ angular.module('rainierApp')
 
             $scope.payload = {
                 submit: function () {
-
                     var setSubscriptionLimit = function (payload, subscriptionLimit) {
                         if ($scope.model.editableSubscriptionLimit) {
                             payload.subscriptionLimit = subscriptionLimit;
