@@ -379,16 +379,10 @@ angular.module('rainierApp')
                 result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
 
                 result.showCompressionDetails = function () {
-                    if (result.fmcCompressed === 'YES') {
-                        return true;
-                    } else if (result.deduplicationEnabled === true) {
-                        return true;
-                    } else if (result.compressionDetails.compressionRate === 1 &&
-                        result.compressionDetails.savingsPercentage === 0) {
-                        return false;
-                    } else {
+                    if (result.deduplicationEnabled === true) {
                         return true;
                     }
+                    return false;
                 };
                 result.showFmcDetails = function() {
                     if (result.fmcCompressed === 'YES') {
