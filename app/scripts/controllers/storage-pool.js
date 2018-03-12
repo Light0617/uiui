@@ -381,8 +381,11 @@ angular.module('rainierApp')
                 result.showCompressionDetails = function () {
                     if (result.deduplicationEnabled === true) {
                         return true;
+                    } else if (result.compressionDetails.compressionRate === 1 &&
+                        (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
+                        return false;
                     }
-                    return false;
+                    return true;
                 };
                 result.showFmcDetails = function() {
                     if (result.fmcCompressed === 'YES') {
