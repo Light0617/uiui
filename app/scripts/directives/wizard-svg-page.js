@@ -728,7 +728,7 @@ angular.module('rainierApp')
                             if (!dataModel) {
                                 return;
                             }
-                            if(dataModel.pathModel.paths.length === 0) {
+                            if(dataModel.isVirtualizeVolume) {
                                 builder._buildTopologicalEditor(d3, selectedSvg, scope);
                             }
                             else {
