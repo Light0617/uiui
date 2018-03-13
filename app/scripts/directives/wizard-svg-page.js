@@ -728,7 +728,13 @@ angular.module('rainierApp')
                             if (!dataModel) {
                                 return;
                             }
-                            builder._buildTopologicalEditor(d3, selectedSvg, scope, true);
+                            if(dataModel.pathModel.paths.length === 0) {
+                                builder._buildTopologicalEditor(d3, selectedSvg, scope);
+                            }
+                            else {
+                                builder._buildTopologicalEditor(d3, selectedSvg, scope, true);
+
+                            }
                         };
                     });
                 };
