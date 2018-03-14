@@ -164,6 +164,7 @@ angular.module('rainierApp')
                         return;
                     }
 
+                    $scope.dataModel.selectServerPath = true;
                     setHostModeAndHostModeOptions(selectedServers, dataModel.attachModel.defaultHostMode, dataModel.attachModel.storagePorts);
                     dataModel.goNext();
                 },

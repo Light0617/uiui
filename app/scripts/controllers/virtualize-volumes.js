@@ -45,6 +45,7 @@ angular.module('rainierApp')
         var getSortedStoragePortsPath = 'storage-ports' + '?sort=storagePortId:ASC';
         $scope.dataModel = {
             isPrevirtualize: true,
+            isVirtualizeVolume: true,
             targetCoordinates: {},
             sourceCoordinates: {},
             pathModel: {
