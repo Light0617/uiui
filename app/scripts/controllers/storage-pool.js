@@ -266,9 +266,8 @@ angular.module('rainierApp')
                             }) && dataModel.anySelected();
                     },
                     onClick: function () {
-                        // Maximum number of volumes to migrate in one migration group is 300.
-                        // TODO NEWRAIN-8104: If number of vols is over 300, what should be done?
-                        ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 300);
+                        // If number of volumes over 300, wizard shows error.
+                        ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                     }
                 },

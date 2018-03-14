@@ -119,7 +119,7 @@ angular.module('rainierApp')
             var actions = [
                 {
                     icon: 'icon-edit',
-                    tooltip :'action-tooltip-edit',
+                    tooltip :'action-tooltip-edit-migration-tasks',
                     type: 'link',
                     enabled: function () {
                         return dataModel.onlyOneSelected() &&
@@ -135,14 +135,14 @@ angular.module('rainierApp')
                 },
                 {
                     icon: 'icon-stop',
-                    tooltip :'migration-tasks-action-tooltip-interrupt',
+                    tooltip :'action-tooltip-interrupt-migrations-in-progress',
                     type: 'confirm',
-                    confirmTitle: 'migration-task-interrupt-confirmation-title',
-                    confirmMessage: 'migration-task-interrupt-confirmation-message',
+                    confirmTitle: 'migration-task-interrupt-confirmation',
+                    confirmMessage: 'migration-task-interrupt-selected-content',
                     enabled: function () {
                         return dataModel.anySelected() &&
-                            _.every(dataModel.getSelectedItems(), function (mg) {
-                                return migrationTaskService.isInProgress(mg.status);
+                            _.every(dataModel.getSelectedItems(), function (item) {
+                                return item.isInProgress();
                             });
                     },
                     onClick: function () {
@@ -153,14 +153,14 @@ angular.module('rainierApp')
                 },
                 {
                     icon: 'icon-delete',
-                    tooltip :'action-tooltip-delete',
+                    tooltip :'action-tooltip-delete-migration-tasks',
                     type: 'confirm',
-                    confirmTitle: 'migration-task-delete-confirmation-title',
-                    confirmMessage: 'migration-task-delete-confirmation-message',
+                    confirmTitle: 'migration-task-delete-confirmation',
+                    confirmMessage: 'migration-task-delete-selected-content',
                     enabled: function () {
                         return dataModel.anySelected() &&
-                            _.every(dataModel.getSelectedItems(), function (mg) {
-                                return !migrationTaskService.isInProgress(mg.status);
+                            _.every(dataModel.getSelectedItems(), function (item) {
+                                return !item.isInProgress();
                             });
                     },
                     onClick: function () {
@@ -177,7 +177,7 @@ angular.module('rainierApp')
 
             dataModel.gridSettings = [
                 {
-                    title: 'Name',
+                    title: synchronousTranslateService.translate('migration-task-list-name'),
                     sizeClass: 'sixth',
                     sortField: 'migrationTaskName',
                     getDisplayValue: function (item) {
@@ -185,7 +185,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Schedule Date',
+                    title: synchronousTranslateService.translate('migration-task-list-scheduled-date'),
                     sizeClass: 'sixth',
                     sortField: 'scheduleDate',
                     getDisplayValue: function (item) {
@@ -193,7 +193,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Status',
+                    title: synchronousTranslateService.translate('migration-task-list-status'),
                     sizeClass: 'sixth',
                     sortField: 'status',
                     getDisplayValue: function (item) {
@@ -208,7 +208,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Job Start',
+                    title: synchronousTranslateService.translate('migration-task-list-job-start'),
                     sizeClass: 'sixth',
                     sortField: 'jobStartDate',
                     getDisplayValue: function (item) {
@@ -216,7 +216,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Job End',
+                    title: synchronousTranslateService.translate('migration-task-list-job-end'),
                     sizeClass: 'sixth',
                     sortField: 'jobEndDate',
                     getDisplayValue: function (item) {
@@ -224,7 +224,7 @@ angular.module('rainierApp')
                     }
                 },
                  {
-                     title: 'Comments',
+                     title: synchronousTranslateService.translate('migration-task-list-comments'),
                      sizeClass: 'sixth',
                      sortField: 'comments',
                      getDisplayValue: function (item) {

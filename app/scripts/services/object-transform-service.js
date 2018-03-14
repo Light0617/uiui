@@ -642,6 +642,10 @@ angular.module('rainierApp')
                     return (this.provisioningStatus === 'UNMANAGED');
                 };
 
+                item.isMigrating = function () {
+                    return (this.migrationSummary.migrationType === 'MIGRATION');
+                };
+
                 item.actions = {
                     'delete': {
                         icon: 'icon-delete',

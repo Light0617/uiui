@@ -84,6 +84,11 @@ angular.module('rainierApp')
                 ShareDataService.push('selectedVolumes', [$scope.model]);
                 $location.path('storage-systems/' + $scope.model.storageSystemId + '/attach-volumes');
             };
+
+            $scope.migrateVolume = function () {
+                ShareDataService.selectedMigrateVolumes = [result];
+                $location.path(['storage-systems', $scope.model.storageSystemId, 'migrate-volumes'].join('/'));
+            };
         });
 
         storageSystemVolumeService.getVolumePairsAsSVol(volumeId, storageSystemId).then(function (result) {

@@ -1,3 +1,7 @@
+<div ng-if="dataModel.selectedVolumes.length > 300" class="alert alert-warning" role="alert">
+    <!-- TODO: NEWRAIN-8104: Since unknown reason, length value is not shown in message. -->
+    <h3 class="">{{'migrate-volumes-too-many-volumes-selected' | translate:dataModel.selectedVolumes.length}}</h3>
+</div>
 <inventory-page ng-model="dataModel"
                 filter-model="filterModel"
                 list-count-summary-title="storage-pools-showing-x-of-y"

@@ -939,7 +939,7 @@ angular
                 templateUrl: 'views/migrate-volumes.html',
                 controller: 'MigrateVolumesCtrl',
                 breadcrumbOptions: {
-                    labelKey: 'update-migration-task'
+                    labelKey: 'migrate-volumes-title-update'
                 }
                 //TODO:Help context
                 // helpContext: 'C_CREATE_ATTACH'
