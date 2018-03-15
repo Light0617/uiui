@@ -373,9 +373,6 @@ angular.module('rainierApp')
         function getMatchHostGroups(hostGroups, servers, volumeIdMap){
             var resultHostGroups = [];
             var serverWwnMap = {};
-            var i;
-            var j;
-            var foundMatch;
 
             _.forEach(servers, function(server){
                 _.forEach(server.wwpns, function(wwpn){
@@ -384,24 +381,15 @@ angular.module('rainierApp')
 
             });
 
-            _.forEach(hostGroups, function(hostGroup) {
-                for (i = 0; i < hostGroup.hbaWwns && hostGroup.hbaWwns.length; ++i) {
-                    if (serverWwnMap.hasOwnProperty(hostGroup.hbaWwns[i])) {
-                        foundMatch = false;
-                        for (j = 0; j < hostGroup.luns.length; ++j) {
-                            if (volumeIdMap.hasOwnProperty(hostGroup.luns[j].volumeId)) {
-                                resultHostGroups.push(hostGroup);
-                                foundMatch = true;
-                                break;
-                            }
-                        }
-                        if (foundMatch) {
-                            break;
-                        }
-
-                    }
-                }
+            var foundMatch = _.find(hostGroups, function(hostGroup){
+                var hasWwn = _.some(hostGroup.hbaWwns, function(wwn){ return serverWwnMap.hasOwnProperty(wwn); });
+                var hasLun = _.some(hostGroup.luns, function(lun){ return volumeIdMap.hasOwnProperty(lun.volumeId); });
+                return hasWwn && hasLun;
             });
+
+            if(foundMatch){
+                resultHostGroups.push(foundMatch);
+            }
 
             resultHostGroups.push(getMatchHostGroupsByIscsi(hostGroups, servers, volumeIdMap));
 

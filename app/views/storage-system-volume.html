@@ -28,6 +28,13 @@
              ng-if="protected && !model.disabledCheckBox">
             <span class="icon-remove-volume icon-sm"></span>
         </div>
+
+        <div class="btn icon-btn" ng-click="model.disabledCheckBox || migrateVolume()"
+             title="{{ 'action-tooltip-migrate-volumes' | translate}}"
+             ng-if="!model.disabledCheckBox && !model.isMigrating()">
+            <!-- TODO Check other conditions. -->
+            <span class="icon-migrate-volume icon-sm"></span>
+        </div>
     </page-title>
 
     <div class="summary-container-default" id="top-info" ng-if="summaryModel">

@@ -242,9 +242,8 @@ angular.module('rainierApp')
                             }) && $scope.selectedCount > 0;
                     },
                     onClick: function () {
-                        // Maximum number of volumes to migrate in one migration group is 300.
-                        // TODO NEWRAIN-8104: If number of vols is over 300, what should be done?
-                        ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 300);
+                        // If number of volumes over 300, wizard shows error.
+                        ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                     }
                 },
@@ -265,15 +264,18 @@ angular.module('rainierApp')
                 //Shredding
                 //TODO: need to change the icon
                 {
-                    icon: 'icon-migrate-volume',
+                    icon: 'icon-shred-volume',
                     tooltip: 'shred-volumes',
                     type: 'link',
                     enabled: function(){
-                        return true;
+                        return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return vol.dataProtectionStatus === 'Protected' || vol.dataProtectionStatus === 'Secondary';
+                            });
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        $location.path(['hosts','shred-volumes'].join('/'));
+                        $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
                     }
                 },
                 {

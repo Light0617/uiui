@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "dependencies": {
         "angular": "1.4.8",
-        "bel-ui": "http://git.mcp.com/ui/bel.git#db10",
+        "bel-ui": "http://git.mcp.com/ui/bel.git#evolution",
         "helpui-framework": "http://git.mcp.com/ui/help-framework.git#develop",
         "helpui-content": "http://git.mcp.com/ui/help-content.git#unbranded",
         "angular-resource": "1.4.8",
