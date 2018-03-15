@@ -215,8 +215,8 @@ angular.module('rainierApp')
                         type: 'link',
                         enabled: function () {
                             // TODO NEWRAIN-8104: Enable or disable control.
-                            return isVolumesInSameStorageSystemAndNotGADVolume(dataModel.getSelectedItems())
-                                && !_.some(dataModel.getSelectedItems(), function (vol) {
+                            return isVolumesInSameStorageSystemAndNotGADVolume(dataModel.getSelectedItems()) &&
+                                !_.some(dataModel.getSelectedItems(), function (vol) {
                                         return !vol.isUnprotected();
                                     });
                         },

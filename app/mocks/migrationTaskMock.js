@@ -33,10 +33,10 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
 
         var job;
         var status;
+        var now = new Date();
         if (mockUtils.randomInt(0, 5) < 4) {
             var endDate;
             var startDate;
-            var now = new Date();
             var start = now;
             now.setHours(now.getHours() - mockUtils.randomInt(1, 100));
             if (jobStatus !== 'IN_PROGRESS') {
@@ -65,7 +65,6 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
             }
         } else {
             status = 'Scheduled';
-            var now = new Date();
             now.setHours(now.getHours() + mockUtils.randomInt(1, 100));
             datetime = mockUtils.dateInISO(now);
             schedule.datetime = datetime;
@@ -165,7 +164,6 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
     };
 
     var handleGetPairsRequest = function (urlResult) {
-        var storageSystemId = urlResult.resourceId + '';
         var mgId = 'N/A';
         var nextToken = 0;
         _.forEach(urlResult.queryParams, function (item) {
