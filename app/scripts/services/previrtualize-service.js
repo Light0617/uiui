@@ -1,7 +1,7 @@
 /*
  * ========================================================================
  *
- * Copyright (c) by Hitachi Vantara, 2017. All rights reserved.
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
  *
  * ========================================================================
  */
@@ -9,21 +9,23 @@
 'use strict';
 
 angular.module('rainierApp')
-    .factory('orchestratorService', function (
-        objectTransformService,
-        apiResponseHandlerService,
-        orchestratorService
+    .factory('previrtualizeService', function (
+        $q
     ) {
-        var previrtualize = function () {
-
+        var previrtualize = function (storageSystemId, payload) {
+            return $q.resolve('something');
         };
 
         var discover = function() {
 
         };
 
+        var preVirtualizeAndDiscover = function () {
+
+        };
+
         return {
             previrtualize: previrtualize,
-            discover: discover
+            preVirtualizeAndDiscover: preVirtualizeAndDiscover
         };
     });
