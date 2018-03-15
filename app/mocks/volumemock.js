@@ -93,8 +93,8 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             dkcDataSavingType: _.sample(['NONE', 'COMPRESSION', 'DEDUPLICATION_AND_COMPRESSION']),
             migrationSummary: {
-                "migrationType": migrationStatus ? 'MIGRATION' : 'NONE',
-                "ownerTaskId": migrationStatus ? mockUtils.randomInt(0, 100) : undefined
+                'migrationType': migrationStatus ? 'MIGRATION' : 'NONE',
+                'ownerTaskId': migrationStatus ? mockUtils.randomInt(0, 100) : undefined
             },
             attachedVolumeServerSummary:[
             {
