@@ -24,7 +24,7 @@ angular.module('rainierApp')
                 sizeClass: 'sixteenth',
                 sortField: 'volumeId',
                 getDisplayValue: function(item) {
-                    return item.volumeId;
+                    return item.displayVolumeId;
                 },
                 type: 'id'
 
