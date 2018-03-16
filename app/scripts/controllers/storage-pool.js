@@ -197,6 +197,21 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    icon: 'icon-shred-volume',
+                    tooltip: 'shred-volumes',
+                    type: 'link',
+                    enabled: function(){
+                        return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return vol.dataProtectionStatus === 'Protected' || vol.dataProtectionStatus === 'Secondary';
+                            });
+                    },
+                    onClick: function () {
+                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'volumes','shred-volumes'].join('/'));
+                    }
+                },
+                {
                     icon: 'icon-attach-volume',
                     tooltip: 'action-tooltip-attach-volumes',
                     type: 'link',
