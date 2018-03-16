@@ -123,6 +123,15 @@ angular.module('rainierApp')
                 });
             }
 
+            dataModel.gridSettings.push({
+                title: 'assigned-to-migration',
+                sizeClass: 'sixteenth',
+                sortField: 'assignedToMigration',
+                getDisplayValue: function(item) {
+                    return item.assignedToMigration();
+                }
+            });
+
             if (options.canAdd) {
                 dataModel.addAction = function() {
                     $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
@@ -196,12 +205,91 @@ angular.module('rainierApp')
             ];
         };
 
+        var poolGridSettings = function (dataModel) {
+            dataModel.gridSettings = [
+                {
+                    title: 'ID',
+                    sizeClass: 'eighteenth',
+                    sortField: 'storagePoolId',
+                    getDisplayValue: function (item) {
+                        return item.storagePoolId;
+                    },
+                    type: 'id'
+
+                },
+                {
+                    title: 'Name',
+                    sizeClass: 'sixth',
+                    sortField: 'label',
+                    getDisplayValue: function (item) {
+                        return item.label;
+                    }
+
+                },
+                {
+                    title: 'Type',
+                    sizeClass: 'eighteenth',
+                    sortField: 'type',
+                    getDisplayValue: function (item) {
+                        return synchronousTranslateService.translate(item.type);
+                    }
+
+                },
+                {
+                    title: 'pool-active-flash',
+                    sizeClass: 'eighteenth',
+                    sortField: 'activeFlashEnabled',
+                    getDisplayValue: function (item) {
+                        return item.activeFlashEnabled ? 'pool-active-flash' : '';
+                    },
+                    getIconClass: function (item) {
+                        return item.activeFlashEnabled ? 'icon-checkmark' : '';
+                    },
+                    type: 'icon'
+                },
+                {
+                    title: 'common-label-total',
+                    sizeClass: 'twelfth',
+
+                    sortField: 'capacityInBytes.value',
+                    getDisplayValue: function (item) {
+                        return item.capacityInBytes;
+                    },
+                    type: 'size'
+
+                },
+                {
+                    title: 'common-label-free',
+                    sizeClass: 'twelfth',
+                    sortField: 'availableCapacityInBytes.value',
+                    getDisplayValue: function (item) {
+                        return item.availableCapacityInBytes;
+                    },
+                    type: 'size'
+
+                },
+                {
+                    title: 'common-label-used',
+                    sizeClass: 'twelfth',
+                    sortField: 'usedCapacityInBytes.value',
+                    getDisplayValue: function (item) {
+                        return item.usedCapacityInBytes;
+                    },
+                    type: 'size'
+
+                }
+            ];
+        };
+
         return {
             setVolumesGridSettings: function(dataModel, options) {
                 volumeGridSettings(dataModel, options);
             },
             setHostGridSettings: function(dataModel) {
                 hostGridSettings(dataModel);
+            },
+            setPoolGridSettings: function(dataModel) {
+                poolGridSettings(dataModel);
             }
         };
     });

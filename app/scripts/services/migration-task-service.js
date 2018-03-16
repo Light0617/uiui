@@ -21,23 +21,42 @@ angular.module('rainierApp')
                                                 paginationService, synchronousTranslateService, queryService,
                                                 objectTransformService) {
     var MIGRATION_PAIRS_PATH = 'migration-pairs';
+    var JOBS_PATH = 'jobs';
+    var VOLUMES_PATH = 'volumes';
+    var QUERY_KEY_MIGRATION_TYPE = 'migrationSummary.migrationType';
+    var QUERY_KEY_OWNER_TASK_ID = 'migrationSummary.ownerTaskId';
 
     var mergeJobInfo = function (resources) {
-        var tasks = [];
+        var jobIds = [];
+        var jobIdMap = {};
         _.forEach(resources, function (item) {
             if (item.jobId && item.jobId !== 'N/A') {
-                tasks.push(apiResponseHandlerService._apiGetResponseHandler(Restangular.one('jobs', item.jobId).get()
-                    .then(function (job) {
-                        item.status = job.status;
-                        item.jobStartDate = job.startDate;
-                        item.jobEndDate = job.endDate;
-                    })));
+                jobIds.push({text: item.jobId});
+                jobIdMap[item.jobId] = item;
             } else {
                 item.status = 'SCHEDULED';
             }
         });
+        var promise;
+        if (jobIds.length > 0) {
+            paginationService.clearQuery();
+            queryService.setQueryMapEntry('jobId', jobIds);
+            promise = paginationService.getAllPromises(null, JOBS_PATH, false, null, null, null, 'jobs')
+                .then(function (result) {
+                    _.forEach(result, function (item) {
+                        if (jobIdMap[item.jobId]) {
+                            var migrationTask = jobIdMap[item.jobId];
+                            migrationTask.status = item.status;
+                            migrationTask.jobStartDate = item.startDate;
+                            migrationTask.jobEndDate = item.endDate;
+                        }
+                    });
+                });
+        } else {
+            promise = $q.resolve();
+        }
 
-        return $q.all(tasks).then(function () {
+        return promise.then(function () {
             _.forEach(resources, function (item) {
                 objectTransformService.transformMigrationTask(item);
             });
@@ -45,8 +64,15 @@ angular.module('rainierApp')
         });
     };
 
-    var getMigrationPairs = function (token, storageSystemId, migrationTask) {
-        var queryParams = {q: ['migrationTaskId:' + migrationTask.migrationTaskId]};
+    var getMigrationPairs = function (token, storageSystemId, migrationTask, filterStatuses) {
+        var queryFilter = '';
+        if (filterStatuses && filterStatuses.length > 0) {
+            queryFilter = ' AND status:(' + filterStatuses.join(' OR ') + ')';
+        }
+        var queryParams = {
+            q: ['migrationTaskId:' + migrationTask.migrationTaskId + queryFilter],
+            sort: 'sourceVolumeId:asc'
+        };
         if (token !== undefined) {
             queryParams.nextToken = token;
         }
@@ -66,81 +92,75 @@ angular.module('rainierApp')
             objectTransformService.transformMigrationPair);
     };
 
-    var setPoolsGridSetting = function (dataModel) {
-        // same as storage-pools.js
-        dataModel.gridSettings = [
-            {
-                title: 'ID',
-                sizeClass: 'eighteenth',
-                sortField: 'storagePoolId',
-                getDisplayValue: function (item) {
-                    return item.storagePoolId;
-                },
-                type: 'id'
-            },
-            {
-                title: 'Name',
-                sizeClass: 'sixth',
-                sortField: 'label',
-                getDisplayValue: function (item) {
-                    return item.label;
-                }
-            },
-            {
-                title: 'Type',
-                sizeClass: 'eighteenth',
-                sortField: 'type',
-                getDisplayValue: function (item) {
-                    return synchronousTranslateService.translate(item.type);
-                }
-            },
-            {
-                title: 'pool-active-flash',
-                sizeClass: 'eighteenth',
-                sortField: 'activeFlashEnabled',
-                getDisplayValue: function (item) {
-                    return item.activeFlashEnabled ? 'pool-active-flash' : '';
-                },
-                getIconClass: function (item) {
-                    return item.activeFlashEnabled ? 'icon-checkmark' : '';
-                },
-                type: 'icon'
-            },
-            {
-                title: 'common-label-total',
-                sizeClass: 'twelfth',
+    var getVolumes = function (storageSystemId, volumeIds) {
+        paginationService.clearQuery();
+        //paginationService.setFilterSearch(new paginationService.QueryObject('volumeId', undefined, volumeIds));
+        queryService.setQueryMapEntry('volumeId', volumeIds);
+        return paginationService.getAllPromises(null, VOLUMES_PATH, false, storageSystemId,
+                    objectTransformService.transformVolume);
+    };
 
-                sortField: 'capacityInBytes.value',
-                getDisplayValue: function (item) {
-                    return item.capacityInBytes;
-                },
-                type: 'size'
-            },
-            {
-                title: 'common-label-free',
-                sizeClass: 'twelfth',
-                sortField: 'availableCapacityInBytes.value',
-                getDisplayValue: function (item) {
-                    return item.availableCapacityInBytes;
-                },
-                type: 'size'
-            },
-            {
-                title: 'common-label-used',
-                sizeClass: 'twelfth',
-                sortField: 'usedCapacityInBytes.value',
-                getDisplayValue: function (item) {
-                    return item.usedCapacityInBytes;
-                },
-                type: 'size'
-            }
-        ];
+    var volumeMigrationTypeFilter = function (type, isManaged, migrationType) {
+        var queryObject;
+        var searchType = new paginationService.SearchType();
+        // remove before specification.
+        queryObject = new paginationService.QueryObject(QUERY_KEY_MIGRATION_TYPE, undefined, null);
+        paginationService.setFilterSearch(queryObject);
+        queryObject = new paginationService.QueryObject(QUERY_KEY_OWNER_TASK_ID, undefined, null);
+        paginationService.setFilterSearch(queryObject);
+
+        if (!migrationType || migrationType === '') {
+            // no filter
+            return;
+        }
+        switch (type) {
+            case 'NONE':
+                queryObject = new paginationService.QueryObject(QUERY_KEY_MIGRATION_TYPE, undefined, type);
+                paginationService.setFilterSearch(queryObject);
+                break;
+            case 'MIGRATION':
+                var existenceType = isManaged ? searchType.EXISTING : searchType.MISSING;
+                if (!isManaged) {
+                    queryObject = new paginationService.QueryObject(QUERY_KEY_MIGRATION_TYPE, undefined, type);
+                    paginationService.setFilterSearch(queryObject);
+                }
+                queryObject = new paginationService.QueryObject(QUERY_KEY_OWNER_TASK_ID, existenceType, null);
+                paginationService.setFilterSearch(queryObject);
+                break;
+        }
+    };
+
+    var checkLicense = function (storageSystemId) {
+        return orchestratorService.licenses(storageSystemId).then(function (result) {
+            return _.some(result.licenseSettings, function (license) {
+                return (license.productName.toUpperCase() === 'VOLUME MIGRATION' && license.installed === true);
+            });
+        });
+    };
+
+    var isMigrationAvailable = function (volume) {
+        var available = true;
+        available = available && !volume.isMigrating();
+        available = available && volume.isAttached();
+        available = available && !volume.isSnapshotPair();
+        // Not check other pair state, gad state.
+        return available;
+    };
+
+    var isAllMigrationAvailable = function (volumes) {
+        return !_.some(volumes, function (volume) {
+            return !isMigrationAvailable(volume);
+        });
     };
 
     return {
         getMigrationPairs: getMigrationPairs,
         getAllMigrationPairs: getAllMigrationPairs,
         mergeJobInfo: mergeJobInfo,
-        setPoolsGridSetting: setPoolsGridSetting
+        volumeMigrationTypeFilter: volumeMigrationTypeFilter,
+        checkLicense: checkLicense,
+        isMigrationAvailable: isMigrationAvailable,
+        isAllMigrationAvailable: isAllMigrationAvailable,
+        getVolumes: getVolumes
     };
 });

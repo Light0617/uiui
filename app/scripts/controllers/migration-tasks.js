@@ -58,7 +58,8 @@ angular.module('rainierApp')
                     isStatusFiltered: function () {
                         var self = this;
                         return self.scheduled || self.inProgress || self.success || self.failed || self.successWithErrs;
-                    }
+                    },
+                    pairStatuses: []
                 },
                 sort: {
                     field: 'defaultSortKey',
@@ -77,7 +78,8 @@ angular.module('rainierApp')
                 },
                 fetchFirstPageChildren: function (item) {
                     if (item.opened) {
-                        migrationTaskService.getMigrationPairs(undefined, storageSystemId, item).then(function (result) {
+                        migrationTaskService.getMigrationPairs(undefined, storageSystemId, item,
+                            $scope.dataModel.search.pairStatuses).then(function (result) {
                             item.volumePairs = result.resources;
                             $scope.dataModel.childrenToken = result.nextToken;
                         });
@@ -93,7 +95,7 @@ angular.module('rainierApp')
                         $scope.dataModel.busyLoadingMoreChildren = true;
 
                         migrationTaskService.getMigrationPairs($scope.dataModel.childrenToken, storageSystemId,
-                            item).then(function (result) {
+                            item, $scope.dataModel.search.pairStatuses).then(function (result) {
                                 item.volumePairs = item.volumePairs.concat(result.resources);
                                 $scope.dataModel.childrenToken = result.nextToken;
                                 //Add a short time delay to avoid multiple backend calls
@@ -113,6 +115,30 @@ angular.module('rainierApp')
                         }
                     });
                     return selectedCount;
+                },
+                filterPairs: function (pairStatus) {
+                    $scope.dataModel.pairFiltering = true;
+                    var pairStatuses = $scope.dataModel.search.pairStatuses;
+                    if (pairStatuses.indexOf(pairStatus) >= 0) {
+                        pairStatuses.some(function (value, i) {
+                            if (value === pairStatus) {
+                                pairStatuses.splice(i, 1);
+                            }
+                        });
+                    } else {
+                        pairStatuses.push(pairStatus);
+                    }
+                    var openedItem = _.find($scope.dataModel.filteredList, function (item) {
+                        return item.opened;
+                    });
+                    if (openedItem) {
+                        migrationTaskService.getMigrationPairs(undefined, storageSystemId, openedItem,
+                            $scope.dataModel.search.pairStatuses).then(function (result) {
+                            openedItem.volumePairs = result.resources;
+                            $scope.dataModel.childrenToken = result.nextToken;
+                            $scope.dataModel.pairFiltering = false;
+                        });
+                    }
                 }
             };
 
@@ -235,6 +261,9 @@ angular.module('rainierApp')
 
 
             var updateList = function (items) {
+                if ($scope.dataModel.pairFiltering) {
+                    return items;
+                }
                 _.forEach (items, function (d) {
                     $('#' + d.id).attr('aria-expanded', 'false');
                     d.opened = false;

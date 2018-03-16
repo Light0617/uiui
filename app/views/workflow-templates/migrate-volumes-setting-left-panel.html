@@ -6,7 +6,7 @@
                 {{'migrate-volumes-label-selected-volumes' | translate:dataModel.selectedVolumes.length}}</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="volume in dataModel.selectedVolumes">
-                    <div class="value disabled col-lg-12">{{volume.label}}</div>
+                    <div class="value disabled col-lg-12">{{volume.label ? volume.label : volume.volumeId}}</div>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <label class="label">{{'migrate-volumes-label-target-pool' | translate}}</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="pool in dataModel.getSelectedItems()">
-                    <div class="value disabled col-lg-12">{{pool.label}}</div>
+                    <div class="value disabled col-lg-12">{{pool.label ? pool.label : pool.storagePoolId}}</div>
                 </div>
             </div>
         </div>

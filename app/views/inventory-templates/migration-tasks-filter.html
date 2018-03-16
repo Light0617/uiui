@@ -30,3 +30,30 @@
         {{'migration-task-status-failed' | translate}}
     </label>
 </div>
+
+<div class="control-group">
+    <h3>{{'migration-pair-status' | translate}}</h3>
+</div>
+<div class="btn-group btn-group-justified btn-group-vertical">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.notMigrated"
+               ng-init="dataModel.search.notMigrated=false" ng-change="dataModel.filterPairs('NOT_MIGRATED')">
+        {{'migration-pair-status-not-migrated' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.migrating"
+               ng-init="dataModel.search.migrating=false" ng-change="dataModel.filterPairs('MIGRATING')">
+        {{'migration-pair-status-migrating' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.migrated"
+               ng-init="dataModel.search.migrated=false" ng-change="dataModel.filterPairs('MIGRATED')">
+        {{'migration-pair-status-migrated' | translate}}
+    </label>
+
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="dataModel.search.invalid"
+               ng-init="dataModel.search.invalid=false" ng-change="dataModel.filterPairs('INVALID')">
+        {{'migration-pair-status-invalid' | translate}}
+    </label>
+</div>
