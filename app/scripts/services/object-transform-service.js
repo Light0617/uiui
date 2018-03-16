@@ -74,6 +74,15 @@ angular.module('rainierApp')
             return time;
         };
 
+        var formatVolumeId = function (id) {
+            if (!id) {
+                return "";
+            }
+            var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
+            var formatted = hexId.match(/.{1,2}/g).join(':');
+            return id + ' (' + formatted + ')';
+        };
+
         function transformStorageSystemsSummary(item) {
             var subscribedCapacityPercentage = 0;
             var usagePercentage = 0;
@@ -201,6 +210,10 @@ angular.module('rainierApp')
         }
 
         transforms = {
+
+            transformVolumeId: function(id) {
+                return formatVolumeId(id);
+            },
 
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
@@ -339,10 +352,12 @@ angular.module('rainierApp')
                 if (!item.primaryVolume) {
                     item.primaryVolume = {
                         id: 'N/A',
+                        displayId: 'N/A',
                         status: 'N/A',
                         storageSystemId: 'N/A'
                     };
                 } else {
+                    item.primaryVolume.displayId = formatVolumeId(item.primaryVolume.id);
                     item.launchPvol = function () {
                         var path = ['storage-systems', item.primaryVolume.storageSystemId, 'volumes', item.primaryVolume.id].join('/');
                         $location.path(path);
@@ -356,10 +371,12 @@ angular.module('rainierApp')
                 if (!item.secondaryVolume) {
                     item.secondaryVolume = {
                         id: 'N/A',
+                        displayId: 'N/A',
                         status: 'N/A',
                         storageSystemId: 'N/A'
                     };
                 } else {
+                    item.secondaryVolume.displayId = formatVolumeId(item.secondaryVolume.id);
                     item.launchSvol = function () {
                         var path = ['storage-systems', item.secondaryVolume.storageSystemId, 'volumes', item.secondaryVolume.id].join('/');
                         $location.path(path);
@@ -455,7 +472,7 @@ angular.module('rainierApp')
 
                 item.poolLabel = 'pool' + item.poolId;
                 item.volumeLabel = 'Volume' + item.volumeId;
-
+                item.displayVolumeId = formatVolumeId(item.volumeId);
 
                 item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType, item.gadSummary);
 
@@ -516,7 +533,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.label,
-                        details: [item.volumeId]
+                        details: [item.displayVolumeId]
                     },
                     {
                         left: false,
