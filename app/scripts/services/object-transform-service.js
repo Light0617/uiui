@@ -3024,8 +3024,8 @@ angular.module('rainierApp')
                     item.targetVolumeId = constantService.notAvailable;
                 }
                 if (item.targetPoolId !== null) {
-                    item.launchTargetPool = function () {
-                        var path = ['storage-systems', item.storageSystemId, 'storage-pools', this.targetPoolId].join('/');
+                    item.launchTargetPool = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'storage-pools', this.targetPoolId].join('/');
                         $location.path(path);
                     };
                 } else {
