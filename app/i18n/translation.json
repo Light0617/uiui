@@ -459,6 +459,8 @@
     "storage-volume-attach-valid-tooltip": "LUN",
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
     "storage-volume-attach-different-protocol-servers": "Cannot attach volumes for different protocol servers.",
+    "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
+    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name already exists in the specified Storage Port. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure?",
     "no-servers-onboarded": "No servers have been added yet.",
 
     "attach-volumes-number-of-volume": "# of Vol.",

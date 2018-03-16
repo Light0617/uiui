@@ -122,6 +122,7 @@ angular.module('rainierApp')
                                                 window.history.back();
                                             });
                                         } else {
+                                            modelInstance.close(true);
                                             orchestratorFunction(resourcePayload).then(function () {
                                                 window.history.back();
                                             });

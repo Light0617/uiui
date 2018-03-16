@@ -34,6 +34,33 @@ angular.module('rainierApp')
             );
             return wrapped.promise;
         };
+
+        var defaultErrAction = function (error, wrapped) {
+            if (self.errorDialogOpend) {
+                console.log(error);
+                wrapped.reject(error);
+                return;
+            }
+            var modelInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = error.data;
+                    $scope.cancel = function () {
+                        modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                        self.errorDialogOpend = false;
+                        wrapped.reject();
+                    };
+
+                    modelInstance.result.finally(function () {
+                        $scope.cancel();
+                    });
+                }
+            });
+            self.errorDialogOpend = true;
+        };
+
         var _apiResponseHandler = function (promise) {
 
             var wrapped = $q.defer();
@@ -44,30 +71,23 @@ angular.module('rainierApp')
 
                     wrapped.resolve(job);
                 }, function (error) {
-                    if (self.errorDialogOpend) {
-                        console.log(error);
-                        wrapped.reject(error);
-                        return;
-                    }
-                    var modelInstance = $modal.open({
-                        templateUrl: 'views/templates/error-modal.html',
-                        windowClass: 'modal fade confirmation',
-                        backdropClass: 'modal-backdrop',
-                        controller: function ($scope) {
+                    defaultErrAction(error, wrapped);
+                }
+            );
+            return wrapped.promise;
+        };
 
-                            $scope.error = error.data;
-                            $scope.cancel = function () {
-                                modelInstance.dismiss('cancel');
-                                self.errorDialogOpend = false;
-                                wrapped.reject();
-                            };
+        var _apiResponseHandlerWithErrAction = function (promise, errAction) {
 
-                            modelInstance.result.finally(function() {
-                                $scope.cancel();
-                            });
-                        }
-                    });
-                    self.errorDialogOpend = true;
+            var wrapped = $q.defer();
+            promise.then(function (job) {
+                    $timeout(function () {
+                        $rootScope.$broadcast('jobCreated', job);
+                    }, 1000);
+
+                    wrapped.resolve(job);
+                }, function (error) {
+                    errAction.call({}, error, wrapped, defaultErrAction);
                 }
             );
             return wrapped.promise;
@@ -75,6 +95,7 @@ angular.module('rainierApp')
 
         return {
             _apiGetResponseHandler: _apiGetResponseHandler,
-            _apiResponseHandler: _apiResponseHandler
+            _apiResponseHandler: _apiResponseHandler,
+            _apiResponseHandlerWithErrAction: _apiResponseHandlerWithErrAction
         };
     });
