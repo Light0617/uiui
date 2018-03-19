@@ -14,7 +14,7 @@ angular.module('rainierApp')
         $timeout,
         orchestratorService
     ) {
-        var interval = 1;
+        var interval = 5000;
         var upperLimit = 10;
         var count = 0;
         var interrupted = false;
