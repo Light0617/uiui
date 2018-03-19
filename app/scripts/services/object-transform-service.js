@@ -656,7 +656,8 @@ angular.module('rainierApp')
                 };
 
                 item.isMigrating = function () {
-                    return (this.migrationSummary.ownerTaskId || this.migrationSummary.migrationType === 'MIGRATION');
+                    return (this.migrationSummary.ownerTaskId ||
+                            this.migrationSummary.migrationType === constantService.migrationType.MIGRATION);
                 }
 
                 item.assignedToMigration = function () {
@@ -664,7 +665,7 @@ angular.module('rainierApp')
                         return synchronousTranslateService.translate('yes');
                     }
                     switch (this.migrationSummary.migrationType) {
-                        case 'MIGRATION':
+                        case constantService.migrationType.MIGRATION:
                             return synchronousTranslateService.translate('yes-unmanaged');
                         case 'NONE':
                             return synchronousTranslateService.translate('no');
@@ -682,7 +683,7 @@ angular.module('rainierApp')
                 var migrationTypeDisplay;
                 if (item.migrationSummary.ownerTaskId) {
                     migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
-                } else if (item.migrationSummary.migrationType === 'MIGRATION') {
+                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
                     migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
                 }
                 if (migrationTypeDisplay) {

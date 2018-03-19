@@ -217,14 +217,6 @@ angular.module('rainierApp')
                     }
                     var queryObjectInstance = queryService.getQueryObjectInstance(queryObject.key, queryObject.value);
                     queryService.setQueryObject(queryObjectInstance);
-                } else if (queryObject.type === type.MISSING || queryObject.type === type.EXISTING) {
-                    var query = queryService.getQuery(queryObject.key);
-                    if (query) {
-                        queryService.removeQueryMapEntry(queryObject.key);
-                    }
-                    var isExist = (queryObject.type === type.EXISTING);
-                    var queryObjectInstance = queryService.getExistenceQueryObject(queryObject.key, isExist);
-                    queryService.setQueryObject(queryObjectInstance);
                 } else {
                     queryService.removeQueryMapEntry(queryObject.key);
                 }
@@ -251,6 +243,26 @@ angular.module('rainierApp')
             },
             addSearchParameter: function (queryObject) {
                 queryService.setQueryMapEntry(queryObject.key, queryObject.value);
+            },
+            setExistenceSearch: function (queryObject) {
+                if (queryObject.type === type.MISSING || queryObject.type === type.EXISTING) {
+                    var query = queryService.getQuery(queryObject.key);
+                    if (query) {
+                        queryService.removeQueryMapEntry(queryObject.key);
+                    }
+                    var isExist = (queryObject.type === type.EXISTING);
+                    var queryObject = queryService.getQueryObjectInstance(queryObject.key, null);
+                    queryObject.queryStringFunction = function() {
+                        if (isExist) {
+                            return ['_exists_:' + queryObject.queryKey];
+                        } else {
+                            return ['_missing_:' + queryObject.queryKey];
+                        }
+                    };
+                    queryService.setQueryObject(queryObject);
+                } else {
+                    queryService.removeQueryMapEntry(queryObject.key);
+                }
             }
         };
     });

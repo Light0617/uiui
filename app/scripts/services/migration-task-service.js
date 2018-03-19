@@ -19,7 +19,7 @@
 angular.module('rainierApp')
     .factory('migrationTaskService', function ($q, Restangular, apiResponseHandlerService, orchestratorService,
                                                 paginationService, synchronousTranslateService, queryService,
-                                                objectTransformService) {
+                                                objectTransformService, constantService) {
     var MIGRATION_PAIRS_PATH = 'migration-pairs';
     var JOBS_PATH = 'jobs';
     var VOLUMES_PATH = 'volumes';
@@ -107,25 +107,27 @@ angular.module('rainierApp')
         queryObject = new paginationService.QueryObject(QUERY_KEY_MIGRATION_TYPE, undefined, null);
         paginationService.setFilterSearch(queryObject);
         queryObject = new paginationService.QueryObject(QUERY_KEY_OWNER_TASK_ID, undefined, null);
-        paginationService.setFilterSearch(queryObject);
+        paginationService.setExistenceSearch(queryObject);
 
         if (!migrationType || migrationType === '') {
             // no filter
             return;
         }
         switch (type) {
-            case 'NONE':
+            case constantService.migrationType.NONE:
                 queryObject = new paginationService.QueryObject(QUERY_KEY_MIGRATION_TYPE, undefined, type);
                 paginationService.setFilterSearch(queryObject);
+                queryObject = new paginationService.QueryObject(QUERY_KEY_OWNER_TASK_ID, searchType.MISSING, null);
+                paginationService.setExistenceSearch(queryObject);
                 break;
-            case 'MIGRATION':
+            case constantService.migrationType.MIGRATION:
                 var existenceType = isManaged ? searchType.EXISTING : searchType.MISSING;
                 if (!isManaged) {
                     queryObject = new paginationService.QueryObject(QUERY_KEY_MIGRATION_TYPE, undefined, type);
                     paginationService.setFilterSearch(queryObject);
                 }
                 queryObject = new paginationService.QueryObject(QUERY_KEY_OWNER_TASK_ID, existenceType, null);
-                paginationService.setFilterSearch(queryObject);
+                paginationService.setExistenceSearch(queryObject);
                 break;
         }
     };
@@ -140,9 +142,9 @@ angular.module('rainierApp')
 
     var isMigrationAvailable = function (volume) {
         var available = true;
-        available = available && !volume.isMigrating();
-        available = available && volume.isAttached();
-        available = available && !volume.isSnapshotPair();
+        available &= !volume.isMigrating();
+        available &= volume.isAttached();
+        available &= !volume.isSnapshotPair();
         // Not check other pair state, gad state.
         return available;
     };
