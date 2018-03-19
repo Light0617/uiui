@@ -405,7 +405,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('migration-tasks/' + migrationTaskId).post(payload));
             },
             interruptMigrationTask: function (storageSystemId, migrationTaskId) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('migration-tasks/', migrationTaskId, '/interrupt').post());
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('migration-tasks/' + migrationTaskId + '/interrupt').post());
             },
             jobsTimeSlice: function (fromDate, toDate) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('jobs').get({
