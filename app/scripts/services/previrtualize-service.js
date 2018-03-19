@@ -20,8 +20,8 @@ angular.module('rainierApp')
         var interrupted = false;
         var pollingPromise;
 
-        var previrtualize = function (storageSystemId, payload) {
-            return orchestratorService.previrtualize(storageSystemId, payload)
+        var previrtualize = function (payload) {
+            return orchestratorService.previrtualize(payload)
                 .then(function (response) {
                     return $q.resolve(response.jobId);
                 });
@@ -31,6 +31,7 @@ angular.module('rainierApp')
             return function (result) {
                 if (!result || result.status === 'inprogress') {
                     $timeout(getJob(jobId, defer), interval);
+                    count++;
                     // getJob(jobId, defer)();
                 } else if (interrupted || upperLimit <= count || result.status === 'failed') {
                     defer.resolve(false);
@@ -62,8 +63,8 @@ angular.module('rainierApp')
             return orchestratorService.virtualizedVolumes(jobId);
         };
 
-        var preVirtualizeAndDiscover = function (storageSystemId, payload) {
-            previrtualize(storageSystemId, payload)
+        var preVirtualizeAndDiscover = function (payload) {
+            previrtualize(payload)
                 .then(poll)
                 .then(function (result) {
                     if (result) {
