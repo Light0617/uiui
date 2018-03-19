@@ -9,16 +9,15 @@
 'use strict';
 
 describe('Service: previrtualizeService tests', function () {
-    var previrtualizeService, $q, $rootScope, $httpBackend;
+    var previrtualizeService, $q, $rootScope, $httpBackend, status, finishedJobResponse;
 
     var pollingCount = 0;
-    var finishedJobResponse = {jobId: 0, status: 'finished'};
     var orchestratorServiceMock = {
-        previrtualize: function (storageSystemId, payload) {
+        previrtualize: function (payload) {
             return $q.resolve({jobId: 0});
         },
         jobStatus: function (jobId) {
-            var working = {jobId: jobId, status: 'inprogress'};
+            var working = {jobId: jobId, status: status.inprogress};
             var result = pollingCount <= 0 ? finishedJobResponse : working;
             return $q.resolve(result);
         },
@@ -38,7 +37,7 @@ describe('Service: previrtualizeService tests', function () {
         });
     });
 
-    beforeEach(inject(function (_previrtualizeService_, _$q_, _$rootScope_, _$httpBackend_) {
+    beforeEach(inject(function (_previrtualizeService_, _$q_, _$rootScope_, _$httpBackend_, _constantService_) {
         previrtualizeService = _previrtualizeService_;
         $q = _$q_;
         $rootScope = _$rootScope_;
@@ -46,6 +45,8 @@ describe('Service: previrtualizeService tests', function () {
         $httpBackend.whenGET('/i18n/translation.json').respond({
             success: {}
         });
+        status = _constantService_.previrtualizeJobStatus;
+        finishedJobResponse = {jobId: 0, status: status.success};
     }));
 
     describe('previrtualize', function () {
@@ -108,7 +109,7 @@ describe('Service: previrtualizeService tests', function () {
                 data = response;
             });
 
-            previrtualizeService.handleJob(0, defer)({status: 'success', jobId: 0});
+            previrtualizeService.handleJob(0, defer)({status: status.success, jobId: 0});
             defer.promise.then(function (response) {
                 defferForKarma.resolve(response);
             });
@@ -128,7 +129,7 @@ describe('Service: previrtualizeService tests', function () {
                 data = response;
             });
 
-            previrtualizeService.handleJob(0, defer)({status: 'failed', jobId: 0});
+            previrtualizeService.handleJob(0, defer)({status: status.failed, jobId: 0});
             defer.promise.then(function (response) {
                 deferForKarma.resolve(response);
             });
@@ -139,7 +140,7 @@ describe('Service: previrtualizeService tests', function () {
         });
 
         it('returns a function which should resolve with status finished' +
-            'when the job inprogress and retry process executed.', inject(function ($timeout) {
+            'when the job is in progress and retry process executed.', inject(function ($timeout) {
             var data;
             var deferForKarma = $q.defer();
             var defer = $q.defer();
@@ -149,7 +150,7 @@ describe('Service: previrtualizeService tests', function () {
                 data = response;
             });
 
-            previrtualizeService.handleJob(0, defer)({status: 'inprogress', jobId: 0});
+            previrtualizeService.handleJob(0, defer)({status: status.inprogress, jobId: 0});
             defer.promise.then(function (response) {
                 deferForKarma.resolve(response);
             });
@@ -157,7 +158,7 @@ describe('Service: previrtualizeService tests', function () {
             $timeout.flush();
             $rootScope.$digest();
 
-            expect(data.status).toEqual('finished');
+            expect(data.status).toEqual(status.success);
         }));
 
     });

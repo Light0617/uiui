@@ -87,7 +87,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/pre-virtualize').post(payload));
             },
             jobStatus: function(jobId) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.one('jobs/' + jobId).get().then(function (result) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('jobs/' + jobId).get().then(function() {
                     return result;
                 }));
             },

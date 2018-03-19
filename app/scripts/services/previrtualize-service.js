@@ -12,7 +12,9 @@ angular.module('rainierApp')
     .factory('previrtualizeService', function (
         $q,
         $timeout,
-        orchestratorService
+        orchestratorService,
+        constantService,
+        utilService
     ) {
         var interval = 5000;
         var upperLimit = 10;
@@ -29,11 +31,12 @@ angular.module('rainierApp')
 
         var handleJob = function (jobId, defer) {
             return function (result) {
-                if (!result || result.status === 'inprogress') {
+                if (!result || result.status === constantService.previrtualizeJobStatus.inprogress) {
                     $timeout(getJob(jobId, defer), interval);
                     count++;
-                    // getJob(jobId, defer)();
-                } else if (interrupted || upperLimit <= count || result.status === 'failed') {
+                } else if (interrupted || upperLimit <= count ||
+                    result.status === constantService.previrtualizeJobStatus.failed) {
+                    // TODO confirm we have to show dialog or not
                     defer.resolve(false);
                 } else {
                     defer.resolve(result);
@@ -67,7 +70,7 @@ angular.module('rainierApp')
             previrtualize(payload)
                 .then(poll)
                 .then(function (result) {
-                    if (result) {
+                    if (result && !utilService.isNullOrUndef(result.jobId)) {
                         return discover(result.jobId);
                     }
                     return $q.resolve([]);

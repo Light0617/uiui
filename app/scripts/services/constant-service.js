@@ -21,6 +21,12 @@ angular.module('rainierApp')
         var isRaidSeriesFunc = function (storageModel) {
             return isR800SeriesFunc.call(this, storageModel);
         };
+        var previrtualizeJobStatus = {
+            inprogress: 'IN_PROGRESS',
+            success: 'SUCCESS',
+            failed: 'FAILED'
+            // SUCCESS WITH ERRORS are not exists in previrtualize
+        };
 
         return {
             osType: function () {
@@ -44,6 +50,7 @@ angular.module('rainierApp')
             },
             isR800Series: isR800SeriesFunc,
             isRaidSeries: isRaidSeriesFunc,
+            previrtualizeJobStatus: previrtualizeJobStatus,
             isHM800Series: function (storageModel) {
                 return storageModel === this.storageModel.HM800.G100 ||
                     storageModel === this.storageModel.HM800.G200 ||
