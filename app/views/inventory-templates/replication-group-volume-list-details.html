@@ -44,15 +44,15 @@
             <div class="btn icon-btn icon-xsm">&nbsp;</div>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchPvol()"
-           title="{{vp.primaryVolume.id}}"><p>{{vp.primaryVolume.id}}</p>
+           title="{{vp.primaryVolume.displayId}}"><p>{{vp.primaryVolume.displayId}}</p>
         </a>
 
         <div class="twelfth cell text-resize ellipsis" title="{{vp.primaryVolume.status}}">
             <p>{{vp.primaryVolume.status}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSvol()"
-           ng-if="vp.secondaryVolume.id !== 'N/A'" title="{{vp.secondaryVolume.id}}">
-            <p>{{vp.secondaryVolume.id}}</p>
+           ng-if="vp.secondaryVolume.id !== 'N/A'" title="{{vp.secondaryVolume.displayId}}">
+            <p>{{vp.secondaryVolume.displayId}}</p>
         </a>
 
         <div class="twelfth cell text-resize ellipsis" title="{{vp.secondaryVolume.id}}"

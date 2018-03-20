@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                                      replicationGroupsService, storageSystemVolumeService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
-        $scope.volumeId = volumeId;
+        $scope.volumeId = objectTransformService.transformVolumeId(volumeId);
         $scope.protected = false;
         $scope.noRgWithVolumeIdAsPvol = false;
         $scope.noRgWithVolumeIdAsPvolAndClone = false;
@@ -31,7 +31,7 @@ angular.module('rainierApp')
         orchestratorService.volume(storageSystemId, volumeId).then(function (result) {
 
             var summaryModel = objectTransformService.transformToVolumeSummaryModel(result);
-            summaryModel.title = 'Storage volume ' + volumeId;
+            summaryModel.title = 'Storage volume ' + objectTransformService.transformVolumeId(volumeId);
 
             $scope.summaryModel = summaryModel;
             result.orchestratorService = orchestratorService;

@@ -25,6 +25,7 @@ angular.module('rainierApp')
         var serverIds = [];
         orchestratorService.volume(storageSystemId, volumeId).then(function (result) {
             $scope.model.volumeLabel = result.label;
+            $scope.model.displayVolumeId = result.displayVolumeId;
             _.forEach(result.attachedVolumeServerSummary, function (attachedVolumeServerSummaryItem) {
                 if(attachedVolumeServerSummaryItem.serverId !== null) {
                     serverIds.push(attachedVolumeServerSummaryItem.serverId);

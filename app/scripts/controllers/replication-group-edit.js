@@ -26,6 +26,7 @@ angular.module('rainierApp')
         _.forEach(replicationGroup.primaryVolumeIds, function (pvolId) {
             primaryVolumes.push({
                 id: pvolId,
+                displayId: objectTransformService.transformVolumeId(pvolId),
                 label: 'N/A',
                 numberOfSecondaryVolume: 'N/A',
                 primaryStorageSystemId: replicationGroup.storageSystemId,
