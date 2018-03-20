@@ -84,12 +84,40 @@ angular.module('rainierApp')
             interrupted = true;
         };
 
+        var createPrevirtualizePayloadPortInfo = function (
+            srcPort,
+            targetWwn,
+            iscsiTargetInformation
+        ) {
+            return {
+                srcPort: srcPort,
+                targetWwn: targetWwn,
+                iscsiTargetInformation: iscsiTargetInformation
+            };
+        };
+
+        var createPrevirtualizePayload = function (
+            targetStorageSystemId,
+            portsInfo,
+            volumeIds
+        ) {
+            return {
+                targetStorageSystemId: targetStorageSystemId,
+                portsInfo: portsInfo,
+                luns: _.chain(volumeIds).map(function (volId) {
+                    return {volumeId: volId};
+                }).value()
+            };
+        };
+
         return {
             discover: discover,
             handleJob: handleJob,
             poll: poll,
             previrtualize: previrtualize,
             stopPolling: stopPolling,
-            preVirtualizeAndDiscover: preVirtualizeAndDiscover
+            preVirtualizeAndDiscover: preVirtualizeAndDiscover,
+            createPrevirtualizePayload: createPrevirtualizePayload,
+            createPrevirtualizePayloadPortInfo: createPrevirtualizePayloadPortInfo
         };
     });

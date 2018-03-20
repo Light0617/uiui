@@ -44,6 +44,15 @@ angular.module('rainierApp')
         /******* Pre Virtualization *******/
         var storageSystemId = ShareDataService.selectedVirtualizeVolumes[0].storageSystemId;
         var getSortedStoragePortsPath = 'storage-ports' + '?sort=storagePortId:ASC';
+        var portsInfo = function (paths) {
+            return _.map(paths, function (p) {
+                return previrtualizeService.createPrevirtualizePayloadPortInfo(
+                    p.storagePortId,
+                    p.preVirtualizePayload ? p.preVirtualizePayload.targetWwn : undefined
+                    // TODO for iSCSI Virtualize
+                );
+            });
+        };
         $scope.dataModel = {
             isPrevirtualize: true,
             isVirtualizeVolume: true,
@@ -68,17 +77,16 @@ angular.module('rainierApp')
                 },
                 next: function () {
                     if ($scope.dataModel.selectModel.canGoNext && $scope.dataModel.selectModel.canGoNext()) {
-                        var payload = {
-                            portInfo: [],
-                            lunPaths: []
-                        };
+                        var volumeIds = _.map(
+                            $scope.dataModel.selectedVolumes,
+                            function(vol) { return vol.volumeId; }
+                        );
 
-                        _.each($scope.dataModel.pathModel.paths, function(path) {
-                            payload.portInfo.push(path.preVirtualizePayload);
-                        });
-                        _.each(ShareDataService.selectedVirtualizeVolumes, function(ldev) {
-                            payload.lunPaths.push({ ldev: ldev.volumeId });
-                        });
+                        var payload = previrtualizeService.createPrevirtualizePayload(
+                            $scope.dataModel.selectedTarget.storageSystemId,
+                            portsInfo($scope.dataModel.pathModel.paths),
+                            volumeIds
+                        );
                         orchestratorService.previrtualizeVolumes(storageSystemId, payload);
                         getVolumes(storageSystemId);
 
