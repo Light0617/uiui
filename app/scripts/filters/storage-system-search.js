@@ -37,7 +37,7 @@ angular.module('rainierApp')
 
                 var matchedMigrationTasks = !search.hasMigrationTasks ||
                     search.hasMigrationTasks === 'True' && parseInt(item.migrationTaskCount) > 0 ||
-                    search.hasMigrationTasks === 'False' && (!item.migrationTaskCount || parseInt(item.migrationTaskCount) == 0);
+                    search.hasMigrationTasks === 'False' && (!item.migrationTaskCount || parseInt(item.migrationTaskCount) === 0);
 
                 return item.selected || (matchedCapacity && matchedSymbol && matchedMigrationTasks);
             });
