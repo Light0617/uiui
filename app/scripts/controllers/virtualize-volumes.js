@@ -48,8 +48,9 @@ angular.module('rainierApp')
             return _.map(paths, function (p) {
                 return previrtualizeService.createPrevirtualizePayloadPortInfo(
                     p.storagePortId,
-                    p.preVirtualizePayload ? p.preVirtualizePayload.targetWwn : undefined
+                    p.preVirtualizePayload ? p.preVirtualizePayload.targetWwn : undefined,
                     // TODO for iSCSI Virtualize
+                    undefined
                 );
             });
         };
@@ -87,9 +88,11 @@ angular.module('rainierApp')
                             portsInfo($scope.dataModel.pathModel.paths),
                             volumeIds
                         );
-                        orchestratorService.previrtualizeVolumes(storageSystemId, payload);
-                        getVolumes(storageSystemId);
+                        // orchestratorService.previrtualizeVolumes(storageSystemId, payload);
+                        // getVolumes(storageSystemId);
+                        previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
 
+                        });
                     }
                 },
                 validation: true,

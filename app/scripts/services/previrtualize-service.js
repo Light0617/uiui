@@ -66,8 +66,8 @@ angular.module('rainierApp')
             return orchestratorService.virtualizedVolumes(jobId);
         };
 
-        var preVirtualizeAndDiscover = function (payload) {
-            previrtualize(payload)
+        var previrtualizeAndDiscover = function (payload) {
+            return previrtualize(payload)
                 .then(poll)
                 .then(function (result) {
                     if (result && !utilService.isNullOrUndef(result.jobId)) {
@@ -116,7 +116,7 @@ angular.module('rainierApp')
             poll: poll,
             previrtualize: previrtualize,
             stopPolling: stopPolling,
-            preVirtualizeAndDiscover: preVirtualizeAndDiscover,
+            previrtualizeAndDiscover: previrtualizeAndDiscover,
             createPrevirtualizePayload: createPrevirtualizePayload,
             createPrevirtualizePayloadPortInfo: createPrevirtualizePayloadPortInfo
         };
