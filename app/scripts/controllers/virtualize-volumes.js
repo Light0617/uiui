@@ -153,7 +153,6 @@ angular.module('rainierApp')
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
             }
             $scope.dataModel.deleteAllPaths($scope.dataModel.pathModel);
-            // $scope.dataModel.pathModel.paths = [];
             $scope.dataModel.build(true);
         }
 

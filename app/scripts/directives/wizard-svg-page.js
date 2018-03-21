@@ -760,7 +760,6 @@ angular.module('rainierApp')
                         d3.select('path[path-index="' + i + '"]').remove();
                     }
                     scope.dataModel.pathModel.paths = [];
-                    //scope.dataModel.build(true);
                 };
             }
         };
