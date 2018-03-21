@@ -38,6 +38,7 @@ angular.module('rainierApp')
         replicationService,
         gadVolumeTypeSearchService,
         virtualizeVolumeService,
+        previrtualizeService,
         donutService) {
 
         /******* Pre Virtualization *******/
