@@ -277,8 +277,7 @@ angular.module('rainierApp')
             var path;
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-endpoint
-            port = scope.dataModel.pathModel.storagePorts[portIndex];
-            if(port.isVsmPort){
+            if(port.vsmPort){
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -319,7 +318,7 @@ angular.module('rainierApp')
                 scope.dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
-                    isVsmPort: port.isVsmPort
+                    isVsmPort: port.vsmPort
                 });
 
                 scope.$apply();
@@ -337,7 +336,7 @@ angular.module('rainierApp')
             var endPoint;
             var pathIndex;
             var path;
-            if(port.isVsmPort){
+            if(port.vsmPort){
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -380,8 +379,7 @@ angular.module('rainierApp')
                 scope.dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
-                    //serverWwn: wwnService.removeSymbol(wwn),
-                    isVsmPort: port.isVsmPort,
+                    isVsmPort: port.vsmPort,
                     preVirtualizePayload: {
                         //srcPort: wwn,
                         targetWwn: port.wwn

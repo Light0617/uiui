@@ -149,10 +149,6 @@ angular.module('rainierApp')
                 return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
             };
 
-            var hasPrevalidationForDeleting = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isPrevalidationForDeleting();}) !== undefined;
-            };
-
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -162,7 +158,7 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-volume-delete-confirmation',
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) && !hasPrevalidationForDeleting(dataModel.getSelectedItems());
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         _.forEach(dataModel.getSelectedItems(), function (item) {
@@ -415,16 +411,13 @@ angular.module('rainierApp')
                 result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
 
                 result.showCompressionDetails = function () {
-                    if (result.fmcCompressed === 'YES') {
-                        return true;
-                    } else if (result.deduplicationEnabled === true) {
+                    if (result.deduplicationEnabled === true) {
                         return true;
                     } else if (result.compressionDetails.compressionRate === 1 &&
-                        result.compressionDetails.savingsPercentage === 0) {
+                        (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
                         return false;
-                    } else {
-                        return true;
                     }
+                    return true;
                 };
                 result.showFmcDetails = function() {
                     if (result.fmcCompressed === 'YES') {

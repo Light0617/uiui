@@ -74,7 +74,7 @@
                                 <p></p>
                             </div>
 
-                            <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
+                            <div class="label-value-container">
                                 <p class="label">{{ 'data-reduction-savings-ratio' | translate }}</p>
                                 <span ng-if="poolDataModel.dataReductionSavingsRate !== 0"> {{poolDataModel.dataReductionSavingsRate}} : 1&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <span ng-if="poolDataModel.dataReductionSavingsRate === 0"> - </span>
@@ -157,21 +157,26 @@
         </div>
     </div>
 
-    <div class="container-fluid resource-detail tiles-view" ng-if="poolDataModel.showCompressionDetails()">
+    <div class="container-fluid resource-detail tiles-view" ng-if="poolDataModel.showCompressionDetails() || poolDataModel.showFmcDetails()">
         <div class="resource-row">
-            <div class="tile meta-tile third">
+            <div class="tile meta-tile half" ng-if="!poolDataModel.showCompressionDetails()">
+                <div class="alert alert-info" role="alert">
+                    <h3>{{'storage-pool-dedup-comp-not-configured' | translate}}</h3>
+                </div>
+            </div>
+            <div class="tile meta-tile third" ng-if="poolDataModel.showCompressionDetails()">
                 <div class="two-column-header-row">
-                    <h2>Compression</h2>
+                    <h2>{{'storage-pool-dkc_compression' | translate }}</h2>
                 </div>
                 <div class="tile-row nested-tiles">
                     <div class="tile third">
-                        <h4 class="label">Compression Ratio</h4>
+                        <h4 class="label">{{'storage-pool-compression-ratio' | translate }}</h4>
                         <div class="tile-row data-viz-container">
                             <ratio-data-visualization ng-model="poolDataModel.compressionRatioProportion"></ratio-data-visualization>
                         </div>
                     </div>
                     <div class="tile third">
-                        <h4 class="label">Deduplication Ratio</h4>
+                        <h4 class="label">{{'storage-pool-deduplication-ratio' | translate }}</h4>
                         <div class="tile-row data-viz-container">
                             <ratio-data-visualization ng-model="poolDataModel.deduplicationRatioProportion">
                             </ratio-data-visualization>
@@ -180,7 +185,7 @@
                     </div>
                 </div>
                 <div class="tile-row footer-row">
-                    <h4 class="label">Savings Percentage</h4>
+                    <h4 class="label">{{'storage-pool-savings-percentage' | translate }}</h4>
                     <div class="data-viz bar">
                         <usage-indicator-bar-2 class="data-viz-container" ng-model="poolDataModel.savingsPercentageBar"></usage-indicator-bar-2>
                     </div>
@@ -193,7 +198,7 @@
             </div>
             <div class="tile meta-tile half" ng-if="poolDataModel.showFmcDetails()">
                 <div class="two-column-header-row">
-                    <h2>FMD DC2 Compression</h2>
+                    <h2>{{'storage-pool-compression' | translate }}</h2>
                     <p>{{ 'storage-pool-compressed-parity-group-ids' | translate}}
                         <span ng-repeat="parityGroup in poolDataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span
                                 class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
@@ -205,20 +210,20 @@
                     <div class="meta-tile-tile half">
                         <div class="tile-row nested-tiles">
                             <div class="tile third">
-                                <h4 class="label">Compression Ratio</h4>
+                                <h4 class="label">{{'storage-pool-compression-ratio' | translate }}</h4>
                                 <div class="tile-row data-viz-container">
                                     <ratio-data-visualization ng-model="poolDataModel.fmcCompressionRatio"></ratio-data-visualization>
                                 </div>
                             </div>
                             <div class="tile third">
-                                <h4 class="label">Expansion Ratio</h4>
+                                <h4 class="label">{{'storage-pool-expansion-ratio' | translate }}</h4>
                                 <div class="tile-row data-viz-container">
                                     <ratio-data-visualization ng-model="poolDataModel.fmcExpansionRatio"></ratio-data-visualization>
                                 </div>
                             </div>
                         </div>
                         <div class="tile-row footer-row">
-                            <h4 class="label">Savings Percentage</h4>
+                            <h4 class="label">{{'storage-pool-savings-percentage' | translate }}</h4>
                             <div class="data-viz bar">
                                 <usage-indicator-bar-2 class="data-viz-container" ng-model="poolDataModel.fmcSavingsPercentageBar"></usage-indicator-bar-2>
                             </div>
@@ -226,7 +231,7 @@
                     </div>
 
                     <div class="tile ddv-container">
-                        <h4 class="label">Logical Capacity</h4>
+                        <h4 class="label">{{'storage-pool-logical-capacity' | translate }}</h4>
                         <div class="tile-row data-viz-container">
                             <polar-data-visualization class="utilization-data-viz udv"
                                                       ng-model="poolDataModel.fmcCapacityData.item"></polar-data-visualization>

@@ -34,7 +34,7 @@
             <input type="range" class="slider-range range-slider-control" ng-model="model.templateUtilizationThreshold2" required="true" min="0" max="100">
             </div>
             </div>
-            <div class="checkbox-group input-combined">
+            <div class="checkbox-group input-combined" ng-if="model.isSupportDpTiIntegration">
                 <input type="checkbox" ng-model="model.templateSuspendSnapshot">
                 <div class="break-line-label" title="{{'storage-pool-suspend-snapshot-description' | translate}}">
                     {{'storage-pool-suspend-snapshot-description' | translate}}</div>

@@ -117,6 +117,12 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
             return type === dispTypeConst.SNAP_CLONE ||
                 type === rawTypeConst.SNAP_CLONE;
         },
+        isSnapShotType: function (type) {
+            return type === dispTypeConst.SNAP ||
+                type === rawTypeConst.SNAP ||
+                type === dispTypeConst.SNAP_ON_SNAP ||
+                type === rawTypeConst.SNAP_ON_SNAP;
+        },
         tooltip: function (type) {
             var tooltip = rawToTooltip(dispToRaw(type));
             if (tooltip) {
