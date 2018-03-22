@@ -48,18 +48,18 @@ angular.module('rainierApp')
             return function () {
                 return orchestratorService.jobStatus(jobId)
                     .then(handleJob(jobId, defer))
-                    .catch(function (reason) {
+                    .catch(function () {
                         return defer.resolve(false);
                     });
             };
-            return defer.promise;
         };
 
         var poll = function (jobId) {
             interrupted = false;
             count = 0;
             var defer = $q.defer();
-            return getJob(jobId, defer)();
+            getJob(jobId, defer)();
+            return defer.promise;
         };
 
         var discover = function (jobId) {

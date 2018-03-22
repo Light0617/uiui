@@ -156,10 +156,11 @@ rainierAppMock.run(function(
                 return authMock.authenticateAndCall(urlResult, evsMock.handle);
             case 'jobs':
                 if(rainierJobsMock.target(urlResult)) {
-                    return authMock.authenticateAndCall(urlResult, rainierJobsMock.handle)
+                    return authMock.authenticateAndCall(urlResult, rainierJobsMock.handle);
                 } else {
                     return authMock.authenticateAndCall(urlResult, jobMock.handle);
                 }
+                break;
             case 'templates':
                 return templateSwitcher(urlResult);
             case 'san-fabrics':

@@ -89,9 +89,10 @@ angular.module('rainierApp')
                             volumeIds
                         );
                         // orchestratorService.previrtualizeVolumes(storageSystemId, payload);
-                        // getVolumes(storageSystemId);
                         previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
-
+                            //todo
+                            console.log(volumes);
+                            getVolumes(storageSystemId);
                         });
                     }
                 },
