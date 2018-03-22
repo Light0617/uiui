@@ -16,7 +16,7 @@ rainierAppMock.run(function(
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
     replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
     monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock,
-    migrationTaskMock
+    migrationTaskMock, rainierJobsMock
 ) {
 
 
@@ -155,7 +155,11 @@ rainierAppMock.run(function(
             case 'vfs':
                 return authMock.authenticateAndCall(urlResult, evsMock.handle);
             case 'jobs':
-                return authMock.authenticateAndCall(urlResult, jobMock.handle);
+                if(rainierJobsMock.target(urlResult)) {
+                    return authMock.authenticateAndCall(urlResult, rainierJobsMock.handle)
+                } else {
+                    return authMock.authenticateAndCall(urlResult, jobMock.handle);
+                }
             case 'templates':
                 return templateSwitcher(urlResult);
             case 'san-fabrics':

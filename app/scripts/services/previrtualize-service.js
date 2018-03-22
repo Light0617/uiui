@@ -32,7 +32,7 @@ angular.module('rainierApp')
         var handleJob = function (jobId, defer) {
             return function (result) {
                 if (!result || result.status === constantService.previrtualizeJobStatus.inprogress) {
-                    $timeout(getJob(jobId, defer), interval);
+                    pollingPromise = $timeout(getJob(jobId, defer), interval);
                     count++;
                 } else if (interrupted || upperLimit <= count ||
                     result.status === constantService.previrtualizeJobStatus.failed) {
@@ -58,7 +58,7 @@ angular.module('rainierApp')
         var poll = function (jobId) {
             interrupted = false;
             count = 0;
-            var defer = $q.defer;
+            var defer = $q.defer();
             return getJob(jobId, defer)();
         };
 
