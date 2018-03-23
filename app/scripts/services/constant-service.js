@@ -55,7 +55,8 @@ angular.module('rainierApp')
                     storageModel === this.storageModel.HM800.F800;
             },
             isHM850Series: function (storageModel) {
-                return storageModel === this.storageModel.HM850.G350 ||
+                return storageModel === this.storageModel.HM850.G130 ||
+                    storageModel === this.storageModel.HM850.G350 ||
                     storageModel === this.storageModel.HM850.G370 ||
                     storageModel === this.storageModel.HM850.G700 ||
                     storageModel === this.storageModel.HM850.G900 ||
@@ -100,6 +101,7 @@ angular.module('rainierApp')
                     F800: 'VSP F800'
                 },
                 HM850: {
+                    G130: 'VSP G130',
                     G350: 'VSP G350',
                     G370: 'VSP G370',
                     G700: 'VSP G700',

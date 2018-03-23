@@ -30,6 +30,7 @@ angular.module('rainierApp')
         var vspX800IdentifierPrefix = '/dev/storage/836000';
         var vspX350IdentifierPrefix = '/dev/storage/882000';
         var vspX370X700X900IdentifierPrefix = '/dev/storage/886000';
+        var vspX130IdentifierPrefix = '/dev/storage/880000';
         var vspG1000Identifier = '/sanproject';
         var sessionScopeEncryptionKeys = 'encryption-keys';
 
@@ -134,6 +135,9 @@ angular.module('rainierApp')
                 case constantService.storageModel.HM850.G900:
                 case constantService.storageModel.HM850.F900:
                     identifier = vspX370X700X900IdentifierPrefix + item.storageSystemId;
+                    break;
+                case constantService.storageModel.HM850.G130:
+                    identifier = vspX130IdentifierPrefix + item.storageSystemId;
                     break;
                 case constantService.storageModel.Rx00.G1000:
                 case constantService.storageModel.Rx00.G1500:
