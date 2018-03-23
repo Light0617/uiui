@@ -62,8 +62,10 @@ angular.module('rainierApp')
             return defer.promise;
         };
 
-        var discover = function (jobId) {
-            return orchestratorService.virtualizedVolumes(jobId);
+        var discover = function (storageSystemId, portIds) {
+            // TODO depends on API specs
+            // return orchestratorService.discoverPrevirtualizedVolumes(jobId);
+            return $q.resolve([])
         };
 
         var previrtualizeAndDiscover = function (payload) {

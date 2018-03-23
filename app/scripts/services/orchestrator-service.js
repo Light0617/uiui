@@ -89,6 +89,9 @@ angular.module('rainierApp')
             jobStatus: function(jobId) {
                 return Restangular.one('jobs/' + jobId).get();
             },
+            discoverPrevirtualizedVolumes: function(storageSystemId, portId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems/' + storageSystemId + '/storage-ports/' + portId + '/discover-groups').get());
+            },
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/' + storageSystemId + '/virtualize').post(payload));
             },
