@@ -94,26 +94,11 @@
         </g>
 
         <!--FC target ports-->
-        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.FcStoragePorts track by $index" ng-if="dataModel.selectedType === 'FIBRE'">
+        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.selectedType === 'FIBRE' ? dataModel.pathModel.FcStoragePorts : dataModel.pathModel.IscsiStoragePorts track by $index">
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
                   x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
                   ng-click="dataModel.pathModel.toggleSelected(port, $event)"
                   ng-if="port.type === dataModel.selectedType"/>
-
-            <!--storage port icon-->
-            <g class="g_main" port-id="{{port.storagePortId}}">
-                <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{$index * 25 + 10}}" r="6"/>
-                <circle fill="black" ng-attr-cx="{{port.coordinate.x}}" ng-attr-cy="{{$index * 25 + 9}}" r="2"/>
-            </g>
-
-            <text class="sm-label" x="882" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
-        </g>
-
-        <!--ISCSI target ports-->
-        <g class="pointer" title="storage-port" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.IscsiStoragePorts track by $index" ng-if="dataModel.selectedType === 'ISCSI'">
-            <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
-                  x="860" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
-                  ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
 
             <!--storage port icon-->
             <g class="g_main" port-id="{{port.storagePortId}}">
