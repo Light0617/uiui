@@ -18,7 +18,6 @@ angular.module('rainierApp')
     ) {
         var interval = 5000;
         var upperLimit = 10;
-        var count = 0;
 
         var previrtualize = function (payload) {
             return orchestratorService.previrtualize(payload)
@@ -27,7 +26,7 @@ angular.module('rainierApp')
                 });
         };
 
-        var handleJob = function (jobId, defer) {
+        var handleJob = function (jobId, defer, count) {
             return function (result) {
                 if (!result || result.status === constantService.previrtualizeJobStatus.inprogress) {
                     $timeout(getJob(jobId, defer), interval);
@@ -42,21 +41,23 @@ angular.module('rainierApp')
             };
         };
 
-        var getJob = function (jobId, defer) {
+        var getJob = function (jobId, defer, count) {
             return function () {
                 return orchestratorService.jobStatus(jobId)
-                    .then(handleJob(jobId, defer))
+                    .then(handleJob(jobId, defer, count))
                     .catch(function () {
                         return defer.resolve(false);
                     });
             };
         };
 
-        var poll = function (jobId) {
-            count = 0;
-            var defer = $q.defer();
-            getJob(jobId, defer)();
-            return defer.promise;
+        var poll = function () {
+            var count = 0;
+            return function(jobId) {
+                var defer = $q.defer();
+                getJob(jobId, defer, count)();
+                return defer.promise;
+            }
         };
 
         var discover = function (storageSystemId, portIds) {
@@ -67,7 +68,7 @@ angular.module('rainierApp')
 
         var previrtualizeAndDiscover = function (payload) {
             return previrtualize(payload)
-                .then(poll)
+                .then(poll())
                 .then(function (result) {
                     if (result && !utilService.isNullOrUndef(result.jobId)) {
                         return discover(result.jobId);
