@@ -502,11 +502,12 @@ angular.module('rainierApp')
                  * Return null if no available snap shot types can be found.
                  */
                 var existingSnapTypes =
-                    _.chain(primaryVolumeIdsForCreate).map(function(volumeId) {
+                    _.chain(primaryVolumeIdsForCreate).map(function (volumeId) {
                         return $scope.volumeExistingProtectionTypeAsPVol[storageSystemId][volumeId];
-                    }).reject(function(type) {
-                        return type === CLONE;
-                    }).flatten().uniq().value();
+                    }).flatten().uniq()
+                        .reject(function (type) {
+                            return type === CLONE;
+                        }).value();
                 if (_.isEmpty(existingSnapTypes)) {
                     return $scope.arraySupportSnapshotTypes[storageSystemId][0];
                 } else if (existingSnapTypes.length === 1) {
