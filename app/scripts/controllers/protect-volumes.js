@@ -189,7 +189,6 @@ angular.module('rainierApp')
             $scope.dataModel.hourInterval = 1;
             $scope.dataModel.scheduleTimeUnit = 'AM';
             $scope.dataModel.scheduleTimeHour = 12;
-            $scope.dataModel.scheduleTimeMins = 0;
             $scope.dataModel.scheduleMinute = 0;
 
             $scope.dataModel.arraySnapshotPooList = [];
@@ -215,13 +214,25 @@ angular.module('rainierApp')
 
                 if (replicationService.isSnap(technology)) {
                     _.forEach($scope.dataModel.volumeRows, function (volume) {
-                        var existingProtectionTypesAsPvol = $scope.volumeExistingProtectionTypeAsPVol[volume.storageSystemId][volume.volumeId];
-                        var isSnapOnSnapCreationSupported = $scope.arraySupportSnapOnSnapCreation[volume.storageSystemId];
+                        // Get existed replication type list without Clone
+                        var existingSnapshotTypesAsPvol =
+                            _.chain($scope.volumeExistingProtectionTypeAsPVol[volume.storageSystemId][volume.volumeId])
+                                .reject(function(type){
+                                    return type === CLONE;
+                                })
+                                .map(function(type){
+                                    return replicationService.displayReplicationType(type);
+                                });
+                        // Define default snapshot type. If the storage system supports snap on snap, use "snap on Snap".
+                        var createNewSnapshotType = $scope.arraySupportSnapOnSnapCreation[volume.storageSystemId] ?
+                            replicationService.dispTypes.SNAP_ON_SNAP: replicationService.dispTypes.SNAP;
+
                         volume.copyGroupNames = _.where(allCopyGroups[volume.storageSystemId], function (cg) {
-                            var isCopyGroupTypeMatch = _.every(existingProtectionTypesAsPvol, function(type){
-                                    return replicationService.displayReplicationType(type) === cg.type;
-                                }) && (isSnapOnSnapCreationSupported === false ?
-                                    replicationService.isSnap(cg.type) : replicationService.isSnapShotType(cg.type));
+                            // If target p-vol was not protected, use default type's replication group.
+                            // Else use the replication groups that have same replication type
+                            var isCopyGroupTypeMatch = isEmpty(existingSnapshotTypesAsPvol) ?
+                                createNewSnapshotType === cg.type :
+                                existingSnapshotTypesAsPvol.contains(cg.type);
                             return isCopyGroupTypeMatch &&
                                 (consistencyGroupNeeded === cg.consistent) &&
                                 (!_.isFinite(numberOfCopiesInput) || numberOfCopiesInput === cg.numberOfCopies) &&
@@ -767,7 +778,7 @@ angular.module('rainierApp')
 
             $scope.$watchCollection('[dataModel.replicationTechnology, dataModel.numberOfSnapshots,' +
                 'dataModel.numberOfCopies, dataModel.consistencyGroupNeeded, dataModel.scheduleTime,dataModel.scheduleDate, ' +
-                'dataModel.hourInterval, dataModel.scheduleTimeUnit, dataModel.scheduleTimeHour, dataModel.scheduleTimeMins, dataModel.schedule]',
+                'dataModel.hourInterval, dataModel.scheduleTimeUnit, dataModel.scheduleTimeHour, dataModel.scheduleMinute, dataModel.schedule]',
                 function (newValue, oldValue) {
                     if ($scope.dataModel.replicationTechnology === SNAPSHOT) {
                         $scope.dataModel.numberOfCopiesInput = $scope.dataModel.numberOfSnapshots;

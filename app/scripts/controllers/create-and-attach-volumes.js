@@ -324,7 +324,10 @@ angular.module('rainierApp')
             $scope.dataModel.showDropDownColumn = true;
         }
 
-        $scope.$watchGroup(['dataModel.currentPage', 'dataModel.protectModel.replicationTechnology', 'dataModel.protectModel.noOfSnapshots', 'dataModel.protectModel.noOfCopies', 'dataModel.protectModel.consistencyGroup', 'dataModel.protectModel.schedule.toScheduleString()'], function (values) {
+        $scope.$watchGroup(['dataModel.currentPage', 'dataModel.protectModel.replicationTechnology', 'dataModel.protectModel.noOfSnapshots', 'dataModel.protectModel.noOfCopies',
+            'dataModel.protectModel.consistencyGroup', 'dataModel.protectModel.schedule.toScheduleString()', 'dataModel.protectModel.schedule.time',
+            'dataModel.protectModel.schedule.dayOfMonth','dataModel.protectModel.schedule.selectedDays', 'dataModel.protectModel.schedule.hourInterval',
+            'dataModel.protectModel.schedule.hourStartMinute'], function (values) {
             if (values[0] !== 'protect') {
                 return;
             }
