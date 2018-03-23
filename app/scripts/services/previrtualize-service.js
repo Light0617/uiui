@@ -19,8 +19,6 @@ angular.module('rainierApp')
         var interval = 5000;
         var upperLimit = 10;
         var count = 0;
-        var interrupted = false;
-        var pollingPromise;
 
         var previrtualize = function (payload) {
             return orchestratorService.previrtualize(payload)
@@ -32,9 +30,9 @@ angular.module('rainierApp')
         var handleJob = function (jobId, defer) {
             return function (result) {
                 if (!result || result.status === constantService.previrtualizeJobStatus.inprogress) {
-                    pollingPromise = $timeout(getJob(jobId, defer), interval);
+                    $timeout(getJob(jobId, defer), interval);
                     count++;
-                } else if (interrupted || upperLimit <= count ||
+                } else if (upperLimit <= count ||
                     result.status === constantService.previrtualizeJobStatus.failed) {
                     // TODO confirm we have to show dialog or not
                     defer.resolve(false);
@@ -55,7 +53,6 @@ angular.module('rainierApp')
         };
 
         var poll = function (jobId) {
-            interrupted = false;
             count = 0;
             var defer = $q.defer();
             getJob(jobId, defer)();
@@ -77,13 +74,6 @@ angular.module('rainierApp')
                     }
                     return $q.resolve([]);
                 });
-        };
-
-        var stopPolling = function () {
-            if (pollingPromise) {
-                $timeout.cancel(pollingPromise);
-            }
-            interrupted = true;
         };
 
         var createPrevirtualizePayloadPortInfo = function (
@@ -117,7 +107,6 @@ angular.module('rainierApp')
             handleJob: handleJob,
             poll: poll,
             previrtualize: previrtualize,
-            stopPolling: stopPolling,
             previrtualizeAndDiscover: previrtualizeAndDiscover,
             createPrevirtualizePayload: createPrevirtualizePayload,
             createPrevirtualizePayloadPortInfo: createPrevirtualizePayloadPortInfo

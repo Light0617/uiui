@@ -3,7 +3,7 @@
 rainierAppMock.factory('rainierJobsMock', function (mockUtils) {
     var preVirtualizeKey = 'preVirtualize';
 
-    var preVirtualizeCount = 3;
+    var preVirtualizeCount = 1;
     var preVirtualizeJobs = function () {
         preVirtualizeCount--;
         var job = {
@@ -14,7 +14,7 @@ rainierAppMock.factory('rainierJobsMock', function (mockUtils) {
                 status: 'IN_PROGRESS'
             });
         } else {
-            preVirtualizeCount = 3;
+            preVirtualizeCount = 1;
             return _.extend(job, {
                 status: 'SUCCESS'
                 // TODO some reports are expected
