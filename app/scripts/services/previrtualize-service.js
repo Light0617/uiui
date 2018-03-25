@@ -57,13 +57,15 @@ angular.module('rainierApp')
                 var defer = $q.defer();
                 getJob(jobId, defer, count)();
                 return defer.promise;
-            }
+            };
         };
 
-        var discover = function (storageSystemId, portIds) {
+        var discover = function (
+            // storageSystemId, portIds
+        ) {
             // TODO depends on API specs
             // return orchestratorService.discoverPrevirtualizedVolumes(jobId);
-            return $q.resolve([])
+            return $q.resolve([]);
         };
 
         var previrtualizeAndDiscover = function (payload) {
