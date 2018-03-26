@@ -104,7 +104,8 @@ angular.module('rainierApp')
             var filteredPools = filterStoragePools($scope.dataModel.selectedStorageSystem, pools);
             $scope.dataModel.snapshotPoolModel = {
                 targetPool: filteredPools[0],
-                filteredPools: filteredPools
+                filteredPools: filteredPools,
+                filteredPoolsSize: _.size(filteredPools)
             };
         });
 
@@ -285,8 +286,15 @@ angular.module('rainierApp')
                 var payload;
 
                 if (protectModel.copyGroup.useNew) {
+                    var isSupportSnapOnSnapCreation = storageSystemCapabilitiesService.isSupportSnapOnSnapCreation(
+                        $scope.dataModel.selectedStorageSystem.model,
+                        $scope.dataModel.selectedStorageSystem.firmwareVersion
+                    );
+                    var replicationType =
+                        replicationService.isSnap(protectModel.replicationTechnology) && isSupportSnapOnSnapCreation === true ?
+                            replicationService.rawTypes.SNAP_ON_SNAP : protectModel.replicationTechnology;
                     payload = {
-                        replicationType: protectModel.replicationTechnology,
+                        replicationType: replicationType,
                         consistencyGroupNeeded: protectModel.consistencyGroup,
                         replicationGroupName : protectModel.copyGroupName,
                         replicationGroupId : null,
@@ -354,7 +362,7 @@ angular.module('rainierApp')
                 noOfCopiesInput = parseInt($scope.dataModel.protectModel.noOfSnapshots);
                 _.forEach($scope.dataModel.copyGroups, function (cg) {
                     var cgConsistent = cg.consistent === 'On';
-                    if (replicationService.isSnap(cg.type) &&
+                    if ((replicationService.isSnapShotType(cg.type)) &&
                         (!_.isFinite(noOfCopiesInput) || noOfCopiesInput === 0 || noOfCopiesInput === cg.numberOfCopies) &&
                         (cronStringConverterService.isEqualForObjectModel(currentSchedule, cg.schedule)) &&
                         ($scope.dataModel.protectModel.consistencyGroup === cgConsistent)) {
@@ -407,12 +415,21 @@ angular.module('rainierApp')
             var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(
                 storageSystem.model, storageSystem.firmwareVersion);
 
-            _.forEach(pools, function(pool) {
-                if (_.include(poolTypes, pool.type)){
+            _.chain(pools)
+                .filter(function (pool) {
+                    return _.contains(poolTypes, pool.type)
+                })
+                .filter(function (pool) {
+                    return pool.isReservedPool !== true
+                })
+                .map(function (pool) {
                     pool.displayLabel = pool.snapshotPoolLabel();
+                    return pool;
+                })
+                .sortBy('storagePoolId')
+                .forEach(function (pool) {
                     filteredPools.push(pool);
-                }
-            });
+                });
 
             return filteredPools;
         }

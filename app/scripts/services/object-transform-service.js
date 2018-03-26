@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location, $filter,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
-                                                 constantService, commonConverterService, volumeService) {
+                                                 constantService, commonConverterService, volumeService,
+                                                 storageAdvisorEmbeddedSessionService) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -29,6 +30,7 @@ angular.module('rainierApp')
         var vspX800IdentifierPrefix = '/dev/storage/836000';
         var vspX350IdentifierPrefix = '/dev/storage/882000';
         var vspX370X700X900IdentifierPrefix = '/dev/storage/886000';
+        var vspX130IdentifierPrefix = '/dev/storage/880000';
         var vspG1000Identifier = '/sanproject';
         var sessionScopeEncryptionKeys = 'encryption-keys';
 
@@ -72,6 +74,15 @@ angular.module('rainierApp')
                 time = '0' + time;
             }
             return time;
+        };
+
+        var formatVolumeId = function (id) {
+            if (!id) {
+                return "";
+            }
+            var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
+            var formatted = hexId.match(/.{1,2}/g).join(':');
+            return id + ' (' + formatted + ')';
         };
 
         function transformStorageSystemsSummary(item) {
@@ -125,6 +136,9 @@ angular.module('rainierApp')
                 case constantService.storageModel.HM850.F900:
                     identifier = vspX370X700X900IdentifierPrefix + item.storageSystemId;
                     break;
+                case constantService.storageModel.HM850.G130:
+                    identifier = vspX130IdentifierPrefix + item.storageSystemId;
+                    break;
                 case constantService.storageModel.Rx00.G1000:
                 case constantService.storageModel.Rx00.G1500:
                 case constantService.storageModel.Rx00.F1500:
@@ -139,11 +153,6 @@ angular.module('rainierApp')
             }
         }
 
-        function transformHsaEmbeddedLaunchUrl(item) {
-            item.hsaEmbeddedLaunchUrlForGum1 = ['https://', item.gum1IpAddress].join('');
-            item.hsaEmbeddedLaunchUrlForGum2 = ['https://', item.gum2IpAddress].join('');
-        }
-
         function transformStorageSystemSettings(item) {
             var result = [];
 
@@ -151,16 +160,7 @@ angular.module('rainierApp')
                 item.storageSystemId, sessionScopeEncryptionKeys));
 
             if (constantService.isHM850Series(item.model)) {
-                result.push({
-                    type: 'hyperlink',
-                    title: 'storage-system-launch-hsae-1',
-                    href: item.hsaEmbeddedLaunchUrlForGum1
-                });
-                result.push({
-                    type: 'hyperlink',
-                    title: 'storage-system-launch-hsae-2',
-                    href: item.hsaEmbeddedLaunchUrlForGum2
-                });
+                result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
             }
 
             result.push({
@@ -202,10 +202,13 @@ angular.module('rainierApp')
 
         transforms = {
 
+            transformVolumeId: function(id) {
+                return formatVolumeId(id);
+            },
+
             transformStorageSystem: function (item) {
                 transformStorageSystemsSummary(item);
                 transformHdvmSnLaunchUrl(item);
-                transformHsaEmbeddedLaunchUrl(item);
 
                 item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
                 item.metaData = [
@@ -307,7 +310,7 @@ angular.module('rainierApp')
 
             },
             transformReplicationGroup: function (item) {
-                if (replicationService.isSnap(item.type)) {
+                if (replicationService.isSnapShotType(item.type)) {
                     if (item.scheduleEnabled === false) {
                         item.status = 'Suspended';
                     } else if (!item.hasOwnProperty('isExternal')) {
@@ -352,10 +355,12 @@ angular.module('rainierApp')
                 if (!item.primaryVolume) {
                     item.primaryVolume = {
                         id: 'N/A',
+                        displayId: 'N/A',
                         status: 'N/A',
                         storageSystemId: 'N/A'
                     };
                 } else {
+                    item.primaryVolume.displayId = formatVolumeId(item.primaryVolume.id);
                     item.launchPvol = function () {
                         var path = ['storage-systems', item.primaryVolume.storageSystemId, 'volumes', item.primaryVolume.id].join('/');
                         $location.path(path);
@@ -369,10 +374,12 @@ angular.module('rainierApp')
                 if (!item.secondaryVolume) {
                     item.secondaryVolume = {
                         id: 'N/A',
+                        displayId: 'N/A',
                         status: 'N/A',
                         storageSystemId: 'N/A'
                     };
                 } else {
+                    item.secondaryVolume.displayId = formatVolumeId(item.secondaryVolume.id);
                     item.launchSvol = function () {
                         var path = ['storage-systems', item.secondaryVolume.storageSystemId, 'volumes', item.secondaryVolume.id].join('/');
                         $location.path(path);
@@ -468,7 +475,7 @@ angular.module('rainierApp')
 
                 item.poolLabel = 'pool' + item.poolId;
                 item.volumeLabel = 'Volume' + item.volumeId;
-
+                item.displayVolumeId = formatVolumeId(item.volumeId);
 
                 item.displayedDpType = replicationService.displayReplicationTypes(item.dataProtectionSummary.replicationType, item.gadSummary);
 
@@ -529,7 +536,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.label,
-                        details: [item.volumeId]
+                        details: [item.displayVolumeId]
                     },
                     {
                         left: false,
@@ -806,8 +813,12 @@ angular.module('rainierApp')
                     return this.externalParityGroupIds && this.externalParityGroupIds.length > 0;
                 };
 
-                if (item.label.indexOf('HSA-reserved-') === 0 || item.isUsingExternalStorage()) {
+                if (item.isUsingExternalStorage()) {
                     item.disabledCheckBox = true;
+                }
+                if (item.label.indexOf(constantService.prefixReservedStoragePool) === 0) {
+                    item.disabledCheckBox = true;
+                    item.isReservedPool = true;
                 }
 
                 var activeFlashTitle = '';

@@ -33,7 +33,7 @@
                 </label>
             </div>
         </div>
-        <a class="col-md-1 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.secondaryVolume.id !== 'N/A'" title="{{vp.secondaryVolume.id}}"><p>{{vp.secondaryVolume.id}}</p></a>
+        <a class="col-md-1 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.secondaryVolume.id !== 'N/A'" title="{{vp.secondaryVolume.displayId}}"><p>{{vp.secondaryVolume.displayId}}</p></a>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondaryVolume.id}}" ng-if="vp.secondaryVolume.id === 'N/A'" ><p>{{vp.secondaryVolume.id}}</p></div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondaryVolume.status}}"><p>{{vp.secondaryVolume.status}}</p></div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.primaryVolume.status}}"><p>{{vp.primaryVolume.status}}</p></div>

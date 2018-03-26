@@ -38,6 +38,7 @@ angular.module('rainierApp')
         replicationService,
         gadVolumeTypeSearchService,
         virtualizeVolumeService,
+        previrtualizeService,
         donutService) {
 
         /******* Pre Virtualization *******/
@@ -126,7 +127,7 @@ angular.module('rainierApp')
 
         /******* Get Volumes *******/
         //add for button
-        var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
+        // var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
 
         var GET_VOLUMES_PATH = 'volumes';
 
@@ -145,7 +146,7 @@ angular.module('rainierApp')
                 paginationService.clearQuery();
 
                 //add for button
-                var noAvailableArray = false;
+                // var noAvailableArray = false;
 
                 var dataModelVolume = {
                     onlyOperation: true,

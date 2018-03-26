@@ -261,7 +261,7 @@
     "storage-pool-utilization-threshold-high": "Utilization Threshold (High) %",
     "storage-pool-utilization-threshold-low": "Utilization Threshold (Low) %",
     "storage-pool-subscription-limit": "Subscription Limit",
-    "storage-pool-suspend-snapshot-description": "Snapshots will collapse to keep capacity for user data when this threshold is exceeded.",
+    "storage-pool-suspend-snapshot-description": "If this threshold is exceeded, snapshots will be disabled to ensure there is enough capacity for user data.",
 
     "storage-pool-list-parity-groups": "List of Parity Groups:",
     "storage-pool-delete-confirmation": "Delete Pools Confirmation",
@@ -287,9 +287,15 @@
     "storage-pool-monitoring-mode": "Monitoring",
     "storage-pool-tier-capacity": "Capacity",
     "storage-pool-tier-information": "Tier Information",
+    "storage-pool-dkc_compression":"Compression",
     "storage-pool-deduplication": "Deduplication",
     "storage-pool-deduplication-enabled": "Deduplication Enabled",
     "storage-pool-dc2-compression-not-configured": "FMD DC2 Compression is not configured",
+    "storage-pool-dedup-comp-not-configured": "Compression and Deduplication are not configured",
+    "storage-pool-compression-ratio":"Compression Ratio",
+    "storage-pool-deduplication-ratio":"Deduplication Ratio",
+    "storage-pool-expansion-ratio":"Expansion Ratio",
+    "storage-pool-logical-capacity":"Logical Capacity",
 
     "HDP": "Thin",
     "HDT": "Tiered",
@@ -318,7 +324,7 @@
     "storage-volume-update-current-size": "Current Size",
     "storage-volume-update-updated-size": "Updated Size",
     "storage-volume-update-new-size": "New Size",
-    "storage-volume-update-change-compression": "Change Compression Type",
+    "storage-volume-update-change-compression": "Change Capacity Saving",
     "storage-volume-update-compression-current": "Current Type",
     "storage-volume-update-compression-new": "New Type",
     "storage-volume-protected-cannot-expand": "This volume is protected and can't be expanded",
@@ -535,8 +541,7 @@
     "storage-system-delete-zero-selected": "Select at least one storage system for deletion!",
     "storage-system-onboarding-prompt": "There is no storage system. Onboard the storage system by clicking the button below:",
     "storage-system-launch-hdvm": "Launch HDvM-SN",
-    "storage-system-launch-hsae-1": "Launch Storage Advisor Embedded (GUM1)",
-    "storage-system-launch-hsae-2": "Launch Storage Advisor Embedded (GUM2)",
+    "storage-system-launch-hsae": "Launch Storage Advisor Embedded",
     "storage-system-launch-smu": "Launch HNAS SMU",
     "storage-system-settings": "Initial Setup Wizard (Settings)",
     "storage-systems-update": "Update Storage System",
@@ -557,7 +562,7 @@
 
     "error-message-title": "Action Failed!",
     "common-error-message": "Check input and try again. Otherwise, navigate to the Jobs page and view job status - the operation may be taking longer than expected.",
-    "navigator-session-loading": "Loading storage navigator...",
+    "navigator-session-loading": "Loading Storage Navigator...",
     "navigator-session-modal-error": "Storage Navigator is not accessible. Please verify network connectivity and credentials used to onboard Storage System.",
     "navigator-session-html-error": "Storage Navigator is not accessible. Please close this page and verify network connectivity and credentials used to onboard Storage System.",
     "navigator-session-permission-modal-error": "You do not have sufficient permissions to launch Storage Navigator from this page.",
@@ -565,6 +570,10 @@
     "common-api-get-message": "Failed to get data from API. Try again.",
     "job-started-title": "Job Started: ",
     "resource-tracker-error-message": "One or more requested resources are being worked on by currently running Jobs. Do you want to proceed?",
+
+    "hsae-session-modal-error": "Storage Advisor Embedded is not accessible. Please verify network connectivity.",
+    "hsae-session-html-error": "Storage Advisor Embedded is not accessible. Please close this page and verify network connectivity.",
+    "hsae-session-loading": "Loading Storage Advisor Embedded...",
 
     "host-filter-provisioned": "Provisioned",
     "host-filter-not-provisioned": "Not Provisioned",
@@ -1029,6 +1038,9 @@
     "replication-group-actions-delete-snapshot-confirmation-message": "The selected replication group will be deleted. No volume pairs will be affected. Do you want to continue?",
     "replication-group-actions-restore-confirmation-title": "Restore Volume Pairs Confirmation",
     "replication-group-actions-restore-confirmation-message": "The selected primary volumes will be restored by using corresponding secondary volumes. Do you want to continue?",
+    "replication-group-description-for-target-pool": "Note: For volumes that already contain one or more snapshots, new snapshots will be saved in the same pool as the existing snapshots.",
+    "replication-group-can-not-create-multiple-replication-types-message": "A replication group cannot be created. For pairs (other than 'Clone') in the selected volumes {{volumeIDs}}, confirm that all pairs were replicated by using 'SNAP' or 'SNAP on SNAP'.",
+    "existing-replication-types": "Existing replication types",
     "restore-confirmation-message": "Select from the following secondary volumes to restore current primary volume:",
     "product-name": "Hitachi Storage Advisor",
     "product-copy-right": "© {{getCurrentYear()}} Hitachi, Ltd. All rights reserved.",
@@ -1130,6 +1142,6 @@
     "workflow-title-create-path-from-source": "Create Path From Source",
     "workflow-title-select-discovered-volumes": "Select Discovered Volumes",
     "workflow-title-select-server": "Select Server",
-    "workflow-title-create-paths": "Create Paths"
-
+    "workflow-title-create-paths": "Create Paths",
+    "capacity-efficiency-savings-ratio": "Capacity Efficiency"
 }

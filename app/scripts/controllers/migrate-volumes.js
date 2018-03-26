@@ -396,7 +396,7 @@ angular.module('rainierApp')
             }
         });
 
-        $scope.$watch('dataModel.settingModel.schedule.date', function (newVal, oldVal) {
+        $scope.$watch('dataModel.settingModel.schedule.date', function (newVal) {
             if ($scope.dataModel.settingModel) {
                 $scope.dataModel.settingModel.schedule.dateDisplay = $filter('date')(newVal, 'MMM d, y');
             }

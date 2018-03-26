@@ -23,6 +23,15 @@ angular.module('rainierApp')
             addableParityGroup: function (storageSystemModel) {
                 return constantService.isRaidSeries(storageSystemModel) === false;
             },
+            isSupportDpTiPoolIntegrationVersion: function (storageSystemModel, firmwareVersion) {
+                return dataProtectionCapabilitiesService.isSupportDpTiPoolIntegrationVersion(storageSystemModel, firmwareVersion);
+            },
+            isSupportSnapOnSnapCreation: function (storageSystemModel, firmwareVersion) {
+                return dataProtectionCapabilitiesService.isSupportSnapOnSnapCreation(storageSystemModel, firmwareVersion);
+            },
+            supportReplicationSnapshotTypes: function (storageSystemModel, firmwareVersion) {
+               return dataProtectionCapabilitiesService.supportReplicationSnapshotTypes(storageSystemModel, firmwareVersion);
+            },
             supportPortAttribute: function(storageSystemModel) {
                 return constantService.isR800Series(storageSystemModel);
             }
