@@ -89,8 +89,10 @@ angular.module('rainierApp')
                             volumeIds
                         );
                         // orchestratorService.previrtualizeVolumes(storageSystemId, payload);
+                        $scope.dataModel.isWaiting = true;
                         previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
-                            //todo
+                            // TODO Actual Discovered volume should be listed
+                            $scope.dataModel.isWaiting = false;
                             console.log(volumes);
                             getVolumes(storageSystemId);
                         });
