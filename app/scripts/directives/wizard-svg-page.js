@@ -277,7 +277,8 @@ angular.module('rainierApp')
             var path;
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-endpoint
-            if(port.vsmPort){
+            port = scope.dataModel.pathModel.storagePorts[portIndex];
+            if (port && port.vsmPort) {
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -739,15 +740,12 @@ angular.module('rainierApp')
                         };
                     });
                 };
-                scope.dataModel.pathModel.builder();
 
                 scope.dataModel.build = function(redrawLines) {
-                    $timeout(function(){
-                        d3service.d3().then(function(d3) {
-                            var selectedSvg = d3.select('#topology-editor');
-                            builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
-                        });
-                    }, 600);
+                    d3service.d3().then(function(d3) {
+                        var selectedSvg = d3.select('#topology-editor');
+                        builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
+                    });
                 };
 
                 scope.dataModel.deleteAllPaths = function(pathModel){
@@ -759,6 +757,8 @@ angular.module('rainierApp')
                     }
                     scope.dataModel.pathModel.paths = [];
                 };
+
+                scope.dataModel.pathModel.builder();
             }
         };
     });

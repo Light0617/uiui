@@ -99,7 +99,7 @@ angular.module('rainierApp')
                 $scope.dataModel.pathModel.storagePorts = result.resources;
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
-                $scope.dataModel.pathModel.build();
+                $scope.dataModel.build();
             });
         }
 
@@ -133,6 +133,7 @@ angular.module('rainierApp')
                     $scope.$watchCollection('dataModel.pathModel.paths', function () {
                         $scope.dataModel.selectModel.itemSelected = $scope.dataModel.pathModel.paths.length > 0;
                     });
+                    $scope.dataModel.build();
                 });
             });
 
