@@ -141,13 +141,13 @@ angular.module('rainierApp')
 
         });
 
-        $scope.dataModel.switchType = function (){
-            if($scope.dataModel.selectedType === 'FIBRE'){
+        $scope.dataModel.switchType = function () {
+            if($scope.dataModel.selectedType === 'FIBRE') {
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.FcSourcePorts, $scope.dataModel.pathModel.FcStoragePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                 $scope.dataModel.pathModel.storagePorts = $scope.dataModel.pathModel.FcStoragePorts;
                 $scope.dataModel.pathModel.sourcePorts = $scope.dataModel.pathModel.FcSourcePorts;
-            }else if($scope.dataModel.selectedType === 'ISCSI'){
+            }else if($scope.dataModel.selectedType === 'ISCSI') {
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.IscsiSourcePorts, $scope.dataModel.pathModel.IscsiStoragePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                 $scope.dataModel.pathModel.storagePorts = $scope.dataModel.pathModel.IscsiStoragePorts;
@@ -158,7 +158,7 @@ angular.module('rainierApp')
             }
             $scope.dataModel.deleteAllPaths($scope.dataModel.pathModel);
             $scope.dataModel.build(true);
-        }
+        };
 
         /******* Get Volumes *******/
         //add for button
