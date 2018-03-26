@@ -403,7 +403,7 @@ angular.module('rainierApp')
                     break;
                 }
                 path = dataModel.pathModel.paths[i];
-                if (endPoint === path.serverEndPoint && portId === path.storagePortId){
+                if (endPoint === path.serverEndPoint && portId === path.storagePortId && !path.deleted){
                     return true;
                 }
             }

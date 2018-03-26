@@ -22,7 +22,7 @@
                 <text class="host-mode-options md-label" x="10" ng-attr-y="{{host.startHeight + 75}}">{{host.allHostModeOptionsString.length > 10 ? host.allHostModeOptionsString.substring(0,9) + '...' : host.allHostModeOptionsString}}
                     <title>{{host.allHostModeOptionsString}}</title>
                 </text>
-                <g title="server-endpoint" ng-repeat="endPoint in host.endPoints" attr-endpoint="{{endPoint}}">
+                <g title="server-endpoint" port-index="{{$index}}" ng-repeat="endPoint in host.endPoints track by $index" attr-endpoint="{{endPoint}}">
                     <circle stroke-width="2" stroke="black" fill="rgba(255, 255, 255, 0)" ng-attr-cx="{{host.endPointCoordinatesMap[endPoint].x}}" ng-attr-cy="{{host.endPointCoordinatesMap[endPoint].y}}" r="6"/>
                     <rect class="port-icon-plug" x="232" ng-attr-y="{{host.startHeight + 11 + $index*25}}" width="16" height="4" rx="2" ry="2"/>
                     <title ng-if="host.protocol==='FIBRE'">{{displayWwn(endPoint)}}</title>
