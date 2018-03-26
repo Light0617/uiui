@@ -99,7 +99,7 @@ angular.module('rainierApp')
                 $scope.dataModel.pathModel.storagePorts = result.resources;
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
-                $scope.dataModel.pathModel.builder();
+                $scope.dataModel.pathModel.build();
             });
         }
 
@@ -127,7 +127,6 @@ angular.module('rainierApp')
 
                     $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                         $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
-                    $scope.dataModel.pathModel.builder();
                     $scope.$watch('dataModel.selectedTarget', function() {
                         getTargetPorts();
                     });
