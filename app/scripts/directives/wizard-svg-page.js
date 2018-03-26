@@ -377,12 +377,15 @@ angular.module('rainierApp')
                 scope.dataModel.pathModel.paths[pathIndex].storagePortId = port.storagePortId;
             } else {
                 scope.dataModel.pathModel.paths.push({
+                    srcStorageSystemId: port.storageSystemId,
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
                     isVsmPort: port.vsmPort,
                     preVirtualizePayload: {
                         //srcPort: wwn,
-                        targetWwn: port.wwn
+                        srcPort: port.storagePortId,
+                        targetWwn: port.wwn,
+                        storagePortType: scope.dataModel.selectedType
                     }
                 });
                 scope.$apply();
@@ -737,13 +740,25 @@ angular.module('rainierApp')
                     });
                 };
                 scope.dataModel.pathModel.builder();
+
                 scope.dataModel.build = function(redrawLines) {
-                    d3service.d3().then(function(d3) {
-                        var selectedSvg = d3.select('#topology-editor');
-                        builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
-                    });
+                    $timeout(function(){
+                        d3service.d3().then(function(d3) {
+                            var selectedSvg = d3.select('#topology-editor');
+                            builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
+                        });
+                    }, 600);
                 };
 
+                scope.dataModel.deleteAllPaths = function(pathModel){
+                    var i;
+                    var path;
+                    for(i = 0; i< pathModel.paths.length; i++) {
+                        path = pathModel.paths[i];
+                        d3.select('path[path-index="' + i + '"]').remove();
+                    }
+                    scope.dataModel.pathModel.paths = [];
+                };
             }
         };
     });

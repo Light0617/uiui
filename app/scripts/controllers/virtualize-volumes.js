@@ -44,11 +44,14 @@ angular.module('rainierApp')
         /******* Pre Virtualization *******/
         var storageSystemId = ShareDataService.selectedVirtualizeVolumes[0].storageSystemId;
         var getSortedStoragePortsPath = 'storage-ports' + '?sort=storagePortId:ASC';
+
         $scope.dataModel = {
             isPrevirtualize: true,
             isVirtualizeVolume: true,
             targetCoordinates: {},
             sourceCoordinates: {},
+            selectedType : "",
+            type: ["FIBRE", "ISCSI"],
             pathModel: {
                 paths: [],
                 viewBoxHeight: 0,
@@ -107,8 +110,21 @@ angular.module('rainierApp')
 
             paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, true, storageSystemId).then(function (result) {
                 $scope.dataModel.pathModel.sourcePorts = result.resources;
+                $scope.dataModel.pathModel.FcSourcePorts = _.filter($scope.dataModel.pathModel.sourcePorts, function(port){
+                    return port.type === 'FIBRE';
+                });
+                $scope.dataModel.pathModel.IscsiSourcePorts = _.filter($scope.dataModel.pathModel.sourcePorts, function(port){
+                    return port.type === 'ISCSI';
+                });
                 paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, true, $scope.dataModel.selectedTarget.storageSystemId).then(function (result) {
                     $scope.dataModel.pathModel.storagePorts = result.resources;
+                    $scope.dataModel.pathModel.FcStoragePorts = _.filter($scope.dataModel.pathModel.storagePorts, function(port){
+                        return port.type === 'FIBRE';
+                    });
+                    $scope.dataModel.pathModel.IscsiStoragePorts = _.filter($scope.dataModel.pathModel.storagePorts, function(port){
+                        return port.type === 'ISCSI';
+                    });
+
                     $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                         $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                     $scope.dataModel.pathModel.builder();
@@ -124,6 +140,25 @@ angular.module('rainierApp')
             angular.extend($scope.dataModel, viewModelService.newWizardViewModel(['selectSourcePort', 'selectDiscoveredVolumes', 'selectServer', 'paths']));
 
         });
+
+        $scope.dataModel.switchType = function () {
+            if($scope.dataModel.selectedType === 'FIBRE') {
+                $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.FcSourcePorts, $scope.dataModel.pathModel.FcStoragePorts,
+                    $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
+                $scope.dataModel.pathModel.storagePorts = $scope.dataModel.pathModel.FcStoragePorts;
+                $scope.dataModel.pathModel.sourcePorts = $scope.dataModel.pathModel.FcSourcePorts;
+            }else if($scope.dataModel.selectedType === 'ISCSI') {
+                $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.IscsiSourcePorts, $scope.dataModel.pathModel.IscsiStoragePorts,
+                    $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
+                $scope.dataModel.pathModel.storagePorts = $scope.dataModel.pathModel.IscsiStoragePorts;
+                $scope.dataModel.pathModel.sourcePorts = $scope.dataModel.pathModel.IscsiSourcePorts;
+            }else{
+                $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
+                    $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
+            }
+            $scope.dataModel.deleteAllPaths($scope.dataModel.pathModel);
+            $scope.dataModel.build(true);
+        };
 
         /******* Get Volumes *******/
         //add for button
@@ -182,12 +217,12 @@ angular.module('rainierApp')
                     confirmMessage: synchronousTranslateService.translate('select-discovered-volumes'),
 
                     canGoNext: function () {
-                        return $scope.dataModel.anySelected();
+                        return dataModelVolume.volumeDataModel.itemSelected;
                     },
-
                     next: function () {
                         if (dataModelVolume.volumeDataModel.canGoNext && dataModelVolume.volumeDataModel.canGoNext()) {
                             initializeServer();
+                            $scope.filterModel.filterQuery('protocol', $scope.dataModel.selectedType);
                             $scope.dataModel.goNext();
                         }
                     },
@@ -388,9 +423,7 @@ angular.module('rainierApp')
                             $scope.dataModel.isPrevirtualize = false;
                             createPaths();
                             $scope.dataModel.goNext();
-                            $timeout(function () {
-                                $scope.dataModel.build(true);
-                            }, 500);
+                            $scope.dataModel.build(true);
                         }
                     },
                     previous: function () {
@@ -508,7 +541,8 @@ angular.module('rainierApp')
                     osType: null,
                     replicationType: null,
                     snapshot: false,
-                    clone: false
+                    clone: false,
+                    protocol: $scope.dataModel.selectedType
                 },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
