@@ -223,19 +223,32 @@ angular.module('rainierApp')
                         details: []
                     }
                 ];
-                item.getIcons = function () {
-                    return [];
-                };
+                var icons = [];
                 if (item.gadSummary === 'INCOMPLETE') {
                     item.alertType = 'alert-link';
                     item.alertLink = {
                         icon: 'icon-small-triangle',
                         title: synchronousTranslateService.translate('incomplete-gad-array'),
                     };
+                    icons.push(item.alertLink);
+                }
+                if (item.migrationTaskCount > 0) {
+                    var variable = {
+                        migrationTaskCount: item.migrationTaskCount
+                    };
+                    icons.push({
+                        icon: 'icon-migrate-volume',
+                        title: synchronousTranslateService.translate('action-tooltip-migration-tasks-inventory',
+                                                                     variable),
+                        onClick: function () {
+                            var path = ['storage-systems', item.storageSystemId, 'migration-tasks'].join('/');
+                            $location.path(path);
+                        }
+                    });
                 }
 
                 item.getIcons = function () {
-                    return [this.alertLink];
+                    return icons;
                 };
                 item.topTotal = item.total;
                 item.topSize = item.physicalUsed;
@@ -650,8 +663,42 @@ angular.module('rainierApp')
                 };
 
                 item.isMigrating = function () {
-                    return (this.migrationSummary.migrationType === 'MIGRATION');
+                    return (this.migrationSummary.ownerTaskId ||
+                            this.migrationSummary.migrationType === constantService.migrationType.MIGRATION);
+                }
+
+                item.assignedToMigration = function () {
+                    if (this.migrationSummary.ownerTaskId) {
+                        return synchronousTranslateService.translate('yes');
+                    }
+                    switch (this.migrationSummary.migrationType) {
+                        case constantService.migrationType.MIGRATION:
+                            return synchronousTranslateService.translate('yes-unmanaged');
+                        case 'NONE':
+                            return synchronousTranslateService.translate('no');
+                    }
+                    return synchronousTranslateService.translate('no');
                 };
+
+                item.isSnapshotPair = function () {
+                    return (this.dataProtectionSummary.replicationType.indexOf('SNAP') !== -1 ||
+                        this.dataProtectionSummary.replicationType.indexOf('SNAP_ON_SNAP') !== -1 ||
+                        this.dataProtectionSummary.replicationType.indexOf('SNAP_CLONE') !== -1);
+                };
+
+                item.detailMetaData = [];
+                var migrationTypeDisplay;
+                if (item.migrationSummary.ownerTaskId) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
+                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
+                }
+                if (migrationTypeDisplay) {
+                    item.detailMetaData.push({
+                        title: migrationTypeDisplay,
+                        detailData: migrationTypeDisplay
+                    });
+                }
 
                 item.actions = {
                     'delete': {
@@ -2973,7 +3020,8 @@ angular.module('rainierApp')
                 }
                 if (item.sourceParityGroupId !== null) {
                     item.launchSourceParityGroup = function (storageSystemId) {
-                        var path = ['storage-systems', storageSystemId, 'external-parity-groups', this.sourceParityGroupId].join('/');
+                        var path = ['storage-systems', storageSystemId, 'external-parity-groups',
+                                    this.sourceParityGroupId].join('/');
                         $location.path(path);
                     };
                 } else {
@@ -2988,8 +3036,8 @@ angular.module('rainierApp')
                     item.targetVolumeId = constantService.notAvailable;
                 }
                 if (item.targetPoolId !== null) {
-                    item.launchTargetPool = function () {
-                        var path = ['storage-systems', this.storageSystemId, 'storage-pools', this.targetPoolId].join('/');
+                    item.launchTargetPool = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'storage-pools', this.targetPoolId].join('/');
                         $location.path(path);
                     };
                 } else {
@@ -3007,10 +3055,10 @@ angular.module('rainierApp')
                     switch (this.status) {
                         case 'NOT_MIGRATED':
                             return synchronousTranslateService.translate('migration-pair-status-not-migrated');
-                        case 'MIGRATED':
-                            return synchronousTranslateService.translate('migration-pair-status-migrated');
                         case 'MIGRATING':
                             return synchronousTranslateService.translate('migration-pair-status-migrating');
+                        case 'MIGRATED':
+                            return synchronousTranslateService.translate('migration-pair-status-migrated');
                         case 'INVALID':
                             return synchronousTranslateService.translate('migration-pair-status-invalid');
                         default:

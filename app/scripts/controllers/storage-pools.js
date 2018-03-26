@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('StoragePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, $location, paginationService, queryService, capacityAlertService,
-                                              storageNavigatorSessionService, constantService, resourceTrackerService) {
+                                              storageNavigatorSessionService, constantService, resourceTrackerService,
+                                              inventorySettingsService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
 
@@ -202,79 +203,7 @@ angular.module('rainierApp')
                     return actions;
                 };
 
-                dataModel.gridSettings = [
-                    {
-                        title: 'ID',
-                        sizeClass: 'eighteenth',
-                        sortField: 'storagePoolId',
-                        getDisplayValue: function (item) {
-                            return item.storagePoolId;
-                        },
-                        type: 'id'
-
-                    },
-                    {
-                        title: 'Name',
-                        sizeClass: 'sixth',
-                        sortField: 'label',
-                        getDisplayValue: function (item) {
-                            return item.label;
-                        }
-
-                    },
-                    {
-                        title: 'Type',
-                        sizeClass: 'eighteenth',
-                        sortField: 'type',
-                        getDisplayValue: function (item) {
-                            return synchronousTranslateService.translate(item.type);
-                        }
-
-                    },
-                    {
-                        title: 'pool-active-flash',
-                        sizeClass: 'eighteenth',
-                        sortField: 'activeFlashEnabled',
-                        getDisplayValue: function (item) {
-                            return item.activeFlashEnabled ? 'pool-active-flash' : '';
-                        },
-                        getIconClass: function (item) {
-                            return item.activeFlashEnabled ? 'icon-checkmark' : '';
-                        },
-                        type: 'icon'
-                    },
-                    {
-                        title: 'common-label-total',
-                        sizeClass: 'twelfth',
-
-                        sortField: 'capacityInBytes.value',
-                        getDisplayValue: function (item) {
-                            return item.capacityInBytes;
-                        },
-                        type: 'size'
-
-                    },
-                    {
-                        title: 'common-label-free',
-                        sizeClass: 'twelfth',
-                        sortField: 'availableCapacityInBytes.value',
-                        getDisplayValue: function (item) {
-                            return item.availableCapacityInBytes;
-                        },
-                        type: 'size'
-
-                    },
-                    {
-                        title: 'common-label-used',
-                        sizeClass: 'twelfth',
-                        sortField: 'usedCapacityInBytes.value',
-                        getDisplayValue: function (item) {
-                            return item.usedCapacityInBytes;
-                        },
-                        type: 'size'
-
-                    }
-                ];
+                inventorySettingsService.setPoolGridSettings(dataModel);
 
                 if (storageSystem.unified) {
                     dataModel.gridSettings.push({

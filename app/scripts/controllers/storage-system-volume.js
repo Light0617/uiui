@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeCtrl', function ($scope, $routeParams, $timeout, $window, $location, orchestratorService,
                                                      synchronousTranslateService, objectTransformService, ShareDataService,
                                                      scrollDataSourceBuilderService, dataProtectionSettingsService, replicationService,
-                                                     replicationGroupsService, storageSystemVolumeService, paginationService, resourceTrackerService) {
+                                                     replicationGroupsService, storageSystemVolumeService, paginationService,
+                                                     resourceTrackerService, migrationTaskService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
         $scope.volumeId = objectTransformService.transformVolumeId(volumeId);
@@ -57,6 +58,10 @@ angular.module('rainierApp')
                 });
             }
 
+            migrationTaskService.checkLicense(storageSystemId).then(function (result) {
+                $scope.volumeMigrationAvailable = result;
+            });
+
             $scope.protectCurrentVolume = function () {
                 ShareDataService.volumesList = [result];
 
@@ -86,8 +91,12 @@ angular.module('rainierApp')
             };
 
             $scope.migrateVolume = function () {
-                ShareDataService.selectedMigrateVolumes = [result];
+                ShareDataService.selectedMigrateVolumes = [$scope.model];
                 $location.path(['storage-systems', $scope.model.storageSystemId, 'migrate-volumes'].join('/'));
+            };
+
+            $scope.isMigrateAvailable = function () {
+                return $scope.volumeMigrationAvailable && migrationTaskService.isMigrationAvailable($scope.model);
             };
         });
 

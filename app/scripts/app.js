@@ -559,7 +559,8 @@ angular
                         'storage-pools',
                         'volumes',
                         'parity-groups',
-                        'replication-groups'
+                        'replication-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'

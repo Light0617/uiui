@@ -5,7 +5,7 @@
             <label class="label">{{dataModel.selectedVolumes.length}} Selected Volumes</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="volume in dataModel.selectedVolumes">
-                    <div class="value disabled col-lg-12">{{volume.label}}</div>
+                    <div class="value disabled col-lg-12">{{volume.label ? volume.label : volume.volumeId}}</div>
                 </div>
             </div>
         </div>

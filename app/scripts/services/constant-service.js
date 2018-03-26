@@ -89,6 +89,10 @@ angular.module('rainierApp')
                 ACTIVE_PRIMARY: 'ACTIVE_PRIMARY',
                 ACTIVE_SECONDARY: 'ACTIVE_SECONDARY'
             },
+            migrationType: {
+                NONE: 'NONE',
+                MIGRATION: 'MIGRATION'
+            },
             storageModel: {
                 HM800: {
                     G100: 'VSP G100',
