@@ -71,6 +71,11 @@ rainierAppMock.factory('licensemock', function (mockUtils) {
                     },
                     usedCapacity : '28666759217152'
                 }
+            },
+            {
+                'productName': 'Volume Migration',
+                'installed': true,
+                'licenseCapacity': null
             }
         ]
     };

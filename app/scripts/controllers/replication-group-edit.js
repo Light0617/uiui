@@ -49,7 +49,7 @@ angular.module('rainierApp')
         var selectedStorageSystems = {};
         var storagePools = [];
         var tasks = getLabelAndNumberOfSVolForEachPVolTasks;
-        if (replicationService.isSnap(replicationGroup.type)) {
+        if (replicationService.isSnapShotType(replicationGroup.type)) {
             var getPoolsTask = orchestratorService.storageSystem(storageSystemId).then(function (result) {
                 selectedStorageSystems = result;
                 return paginationService
@@ -97,7 +97,7 @@ angular.module('rainierApp')
             };
 
 
-            if(replicationService.isSnap($scope.dataModel.replicationType)) {
+            if(replicationService.isSnapShotType($scope.dataModel.replicationType)) {
                 var poolTypes = storageSystemCapabilitiesService.supportSnapshotPoolType(selectedStorageSystems.model, selectedStorageSystems.firmwareVersion);
                 $scope.dataModel.snapshotTargetPools = [{
                     displayLabel: synchronousTranslateService.translate('common-auto-selected'),
@@ -105,15 +105,25 @@ angular.module('rainierApp')
                 }];
                 $scope.dataModel.targetSnapshotPool = $scope.dataModel.snapshotTargetPools[0];
 
-                _.filter(storagePools, function(pool) {
-                    return _.contains(poolTypes, pool.type);
-                }).forEach(function (p) {
-                    p.displayLabel = p.snapshotPoolLabel();
-                    $scope.dataModel.snapshotTargetPools.push(p);
-                    if(p.storagePoolId === replicationGroup.targetPoolId){
-                        $scope.dataModel.targetSnapshotPool = p;
-                    }
-                });
+                _.chain(storagePools)
+                    .filter(function (pool) {
+                        return _.contains(poolTypes, pool.type)
+                    })
+                    .filter(function (pool) {
+                        return pool.isReservedPool !== true
+                    })
+                    .map(function (pool) {
+                        pool.displayLabel = pool.snapshotPoolLabel();
+                        return pool;
+                    })
+                    .sortBy('storagePoolId')
+                    .forEach(function (pool) {
+                        $scope.dataModel.snapshotTargetPools.push(pool);
+                        if (pool.storagePoolId === replicationGroup.targetPoolId) {
+                            $scope.dataModel.targetSnapshotPool = pool;
+                        }
+                    });
+                $scope.dataModel.snapshotTargetPoolsSize = _.size($scope.dataModel.snapshotTargetPools);
             }
 
             $scope.$watch('dataModel.schedule.hourStartMinute', function(value) {
@@ -128,7 +138,7 @@ angular.module('rainierApp')
                         (replicationGroup.comments !== 'N/A' ? replicationGroup.comments : ''));
                 }
 
-                if (replicationService.isSnap($scope.dataModel.replicationType)) {
+                if (replicationService.isSnapShotType($scope.dataModel.replicationType)) {
                     return canSubmitSnapshot();
                 }
             };
@@ -195,7 +205,7 @@ angular.module('rainierApp')
                     });
                 }
 
-                if (replicationService.isSnap($scope.dataModel.replicationType)) {
+                if (replicationService.isSnapShotType($scope.dataModel.replicationType)) {
                     var snapshotTasks = [];
                     if ($scope.anyPrimaryVolumeSelected) {
                         var snapshotPayLoadPrimaryVolumeIds = [];
@@ -252,7 +262,7 @@ angular.module('rainierApp')
                 return replicationGroup.targetPoolId !== $scope.dataModel.targetSnapshotPool.storagePoolId;
             }
 
-            $scope.isSnap = replicationService.isSnap;
+            $scope.isSnapShotType = replicationService.isSnapShotType;
             $scope.isClone = replicationService.isClone;
 
             function hasDaySelected(days) {

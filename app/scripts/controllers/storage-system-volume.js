@@ -11,7 +11,8 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumeCtrl', function ($scope, $routeParams, $timeout, $window, $location, orchestratorService,
                                                      synchronousTranslateService, objectTransformService, ShareDataService,
                                                      scrollDataSourceBuilderService, dataProtectionSettingsService, replicationService,
-                                                     replicationGroupsService, storageSystemVolumeService, paginationService, resourceTrackerService) {
+                                                     replicationGroupsService, storageSystemVolumeService, paginationService,
+                                                     resourceTrackerService, migrationTaskService) {
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
         $scope.volumeId = objectTransformService.transformVolumeId(volumeId);
@@ -57,6 +58,10 @@ angular.module('rainierApp')
                 });
             }
 
+            migrationTaskService.checkLicense(storageSystemId).then(function (result) {
+                $scope.volumeMigrationAvailable = result;
+            });
+
             $scope.protectCurrentVolume = function () {
                 ShareDataService.volumesList = [result];
 
@@ -86,8 +91,12 @@ angular.module('rainierApp')
             };
 
             $scope.migrateVolume = function () {
-                ShareDataService.selectedMigrateVolumes = [result];
+                ShareDataService.selectedMigrateVolumes = [$scope.model];
                 $location.path(['storage-systems', $scope.model.storageSystemId, 'migrate-volumes'].join('/'));
+            };
+
+            $scope.isMigrateAvailable = function () {
+                return $scope.volumeMigrationAvailable && migrationTaskService.isMigrationAvailable($scope.model);
             };
         });
 
@@ -164,7 +173,20 @@ angular.module('rainierApp')
             } else {
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot = true;
             }
-            return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing(volumeId, storageSystemId);
+            return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotOnSnapAndRGNameExisting(volumeId, storageSystemId);
+        }).then(function (result) {
+            $scope.numberOfVPWithVolumeIdAsPvol += result.total;
+            if (result.total) {
+                $scope.noRgWithVolumeIdAsPvolAndSnaphotOnSnap = false;
+                var replicationGroupAsPVolName = _.first(result.resources).replicationGroup;
+                return storageSystemVolumeService.getReplicationGroupByName(replicationGroupAsPVolName, storageSystemId).then(function (result) {
+                    $scope.rgWithVolumeIdAsPvol.push(_.first(result.resources));
+                    return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing(volumeId, storageSystemId);
+                });
+            } else {
+                $scope.noRgWithVolumeIdAsPvolAndSnaphotOnSnap = true;
+                return storageSystemVolumeService.getVolumePairsAsPVolAndSnapshotExtendableAndRGNameMissing(volumeId, storageSystemId);
+            }
         }).then(function (result) {
             $scope.numberOfVPWithVolumeIdAsPvol += result.total;
             if (result.total) {
@@ -202,7 +224,8 @@ angular.module('rainierApp')
             }
 
             $scope.noRgWithVolumeIdAsPvol = $scope.noRgWithVolumeIdAsPvolAndClone && $scope.noRgWithVolumeIdAsPvolAndSnaphot &&
-                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot && $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable &&
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphot && $scope.noRgWithVolumeIdAsPvolAndSnaphotOnSnap &&
+                $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotExtendable &&
                 $scope.noRgWithVolumeIdAsPvolAndExternalSnaphotFullcopy && $scope.noGadRgWithVolmeIdAsPvolAndSvol;
 
             $scope.rgWithVolumeIdAsPvol = _.sortBy($scope.rgWithVolumeIdAsPvol, 'id');
@@ -267,14 +290,14 @@ angular.module('rainierApp')
                 }
             }
             _.forEach($scope.rgWithVolumeIdAsPvol, function (rgsp) {
-                if (replicationService.isSnap(rgsp.type)) {
+                if (replicationService.isSnapShotType(rgsp.type)) {
                     rgsp.icon = baseRightIconString + 'scheduled-active';
                 } else {
                     rgsp.icon = baseRightIconString + 'not-scheduled-active';
                 }
             });
             if ($scope.rgWithVolumeIdAsSvol &&
-                replicationService.isSnap($scope.rgWithVolumeIdAsSvol.type)) {
+                replicationService.isSnapShotType($scope.rgWithVolumeIdAsSvol.type)) {
                 $scope.defaultLeftIconString = defaultLeftIconString + 'scheduled-active';
                 $scope.longLeftIconString = longLeftIconString + 'scheduled-active';
             } else if ($scope.rgWithVolumeIdAsSvol) {

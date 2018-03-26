@@ -70,9 +70,6 @@
     </div>
 </div>
 
-
-
-
-
-
-
+<label ng-if="dataModel.protectModel.copyGroup.useNew && dataModel.protectModel.replicationTechnology !='NONE' &&
+       dataModel.snapshotPoolModel.filteredPoolsSize > 1">
+    {{'replication-group-description-for-target-pool' | translate}}</label>

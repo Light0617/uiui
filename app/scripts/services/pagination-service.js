@@ -15,15 +15,20 @@ angular.module('rainierApp')
             this.INT = 'int';
             this.ARRAY = 'array';
             this.RANGE = 'range';
+            this.MISSING = 'missing';
+            this.EXISTING = 'existing';
         }
         var type = new SearchType();
         // If we're using a prefix other than "storageSystem", that's when prefix and perfixId will be used.
-        function get(path, transform, queryParams, storageSystemId, prefix, prefixId) {
+        function get(path, transform, queryParams, storageSystemId, prefix, prefixId, resourcesKey) {
+            if (!resourcesKey) {
+                resourcesKey = 'resources';
+            }
             if (prefix && prefixId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one(prefix, prefixId)
                     .one(path)
                     .get(queryParams).then(function (result) {
-                        var resources = result.resources;
+                        var resources = result[resourcesKey];
                         if(transform) {
                             _.forEach(resources, function (item) {
                                 if (_.isFunction(transform)) {
@@ -38,7 +43,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId)
                     .one(path)
                     .get(queryParams).then(function (result) {
-                        var resources = result.resources;
+                        var resources = result[resourcesKey];
                         if(transform) {
                             _.forEach(resources, function (item) {
                                 if (_.isFunction(transform)) {
@@ -52,7 +57,7 @@ angular.module('rainierApp')
             else {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one(path)
                     .get(queryParams).then(function (result) {
-                        var resources = result.resources;
+                        var resources = result[resourcesKey];
                         if(transform) {
                             _.forEach(resources, function (item) {
                                 if (_.isFunction(transform)) {
@@ -106,21 +111,25 @@ angular.module('rainierApp')
                     getAllItems(result.nextToken, getAllPath, false, storageSystemId, storageSystemModel, dataModel);
                 });
         }
-        function getAllPromisesHelper (promise, finalResult, deferred, path, transform, queryParams, storageSystemId) {
+        function getAllPromisesHelper (promise, finalResult, deferred, path, transform, queryParams, storageSystemId,
+            resourcesKey) {
             promise.then (function (result) {
-                finalResult = finalResult.concat(result.resources);
+                finalResult = finalResult.concat(result[resourcesKey]);
                 if (result.nextToken !== undefined && result.nextToken !== null) {
                     queryParams.nextToken = result.nextToken;
-                    getAllPromisesHelper (get(path, transform, queryParams, storageSystemId), finalResult, deferred,
-                        path, transform, queryParams, storageSystemId );
+                    getAllPromisesHelper (get(path, transform, queryParams, storageSystemId, null, null, resourcesKey),
+                        finalResult, deferred, path, transform, queryParams, storageSystemId, resourcesKey);
                 } else {
                     deferred.resolve(finalResult);
                 }
             });
         }
-        function getAllPromises(token, path, isFirstCall, storageSystemId, transform, deferred) {
+        function getAllPromises(token, path, isFirstCall, storageSystemId, transform, deferred, resourcesKey) {
             if(!deferred){
                 deferred = $q.defer();
+            }
+            if (!resourcesKey) {
+                resourcesKey = 'resources';
             }
             if (isFirstCall) {
                 clearQuery();
@@ -129,8 +138,8 @@ angular.module('rainierApp')
             if (token !== undefined) {
                 queryParams.nextToken = token;
             }
-            getAllPromisesHelper(get(path, transform, queryParams, storageSystemId), [], deferred, path, transform,
-                queryParams, storageSystemId);
+            getAllPromisesHelper(get(path, transform, queryParams, storageSystemId, null, null, resourcesKey), [],
+                deferred, path, transform, queryParams, storageSystemId, resourcesKey);
             return deferred.promise;
         }
 
@@ -234,6 +243,26 @@ angular.module('rainierApp')
             },
             addSearchParameter: function (queryObject) {
                 queryService.setQueryMapEntry(queryObject.key, queryObject.value);
+            },
+            setExistenceSearch: function (queryObject) {
+                if (queryObject.type === type.MISSING || queryObject.type === type.EXISTING) {
+                    var query = queryService.getQuery(queryObject.key);
+                    if (query) {
+                        queryService.removeQueryMapEntry(queryObject.key);
+                    }
+                    var isExist = (queryObject.type === type.EXISTING);
+                    var queryObject = queryService.getQueryObjectInstance(queryObject.key, null);
+                    queryObject.queryStringFunction = function() {
+                        if (isExist) {
+                            return ['_exists_:' + queryObject.queryKey];
+                        } else {
+                            return ['_missing_:' + queryObject.queryKey];
+                        }
+                    };
+                    queryService.setQueryObject(queryObject);
+                } else {
+                    queryService.removeQueryMapEntry(queryObject.key);
+                }
             }
         };
     });

@@ -287,7 +287,7 @@ angular.module('rainierApp')
                 path = dataModel.pathModel.paths[i];
 
                 // If marked as deleted, it is deleted and should not be added.
-                if (path.deleted === true || path.isVsmPort){
+                if (path.deleted === true ){
                     continue;
                 }
 
@@ -317,14 +317,16 @@ angular.module('rainierApp')
                         var isVsmPort = false;
                         _.forEach(storagePorts, function(storagePort){
                             if (storagePort.storagePortId === hostGroup.storagePortId){
-                                isVsmPort = storagePort.isVsmPort;
+                                isVsmPort = storagePort.vsmPort;
                             }
                         });
 
+                        if (isVsmPort === true) {
+                            return;
+                        }
                         var path = {
                             storagePortId: hostGroup.storagePortId,
-                            serverEndPoint: endPoint,
-                            isVsmPort: isVsmPort
+                            serverEndPoint: endPoint
                         };
                         paths.push(path);
                     }

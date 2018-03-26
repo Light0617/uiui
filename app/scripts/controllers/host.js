@@ -12,10 +12,11 @@ angular.module('rainierApp')
                                       objectTransformService, scrollDataSourceBuilderService, ShareDataService,
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
-                                      replicationService, gadVolumeTypeSearchService) {
+                                      replicationService, gadVolumeTypeSearchService, migrationTaskService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
+        var licenseStatusOfVolumeMigration = {};
         ShareDataService.showProvisioningStatus = false;
         var updateToggleId =  function (resources) {
             var id = 0;
@@ -91,6 +92,7 @@ angular.module('rainierApp')
             queryService.setQueryMapEntry('serverId', parseInt(hostId));
             paginationService.get(null, ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume, false).then(function (result) {
                 getHostGroupsForStorageSystems(result);
+                checkLicenses(result);
                 updateToggleId(result.resources);
                 var dataModel = {
                     view: 'list',
@@ -214,14 +216,12 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',
                         enabled: function () {
-                            // TODO NEWRAIN-8104: Enable or disable control.
-                            return isVolumesInSameStorageSystemAndNotGADVolume(dataModel.getSelectedItems()) &&
-                                !_.some(dataModel.getSelectedItems(), function (vol) {
-                                        return !vol.isUnprotected();
-                                    });
+                            return isVolumesInSameStorageSystem(dataModel.getSelectedItems())
+                                && licenseStatusOfVolumeMigration[dataModel.getSelectedItems()[0].storageSystemId]
+                                && migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems())
+                                && $scope.selectedCount <= 300;
                         },
                         onClick: function () {
-                            // If number of volumes over 300, wizard shows error.
                             ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                             var storageSystemId = ShareDataService.selectedMigrateVolumes[0].storageSystemId;
                             $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
@@ -305,6 +305,34 @@ angular.module('rainierApp')
             paginationService.getAllPromises(null, 'host-groups', false, storageSystemId, null, false).then(function(hostGroupResults) {
                 hostGroupsInStorageSystem[storageSystemId] = hostGroupResults;
             });
+        };
+
+        var checkLicenses = function (attachedVolumesPerServer) {
+            var uniqueStorageSystemIds = getUniqueStorageSystemsForAttachedVolumes (attachedVolumesPerServer);
+            for (var i = 0; i < uniqueStorageSystemIds.length; i++) {
+                checkLicensesPerStorageSystem(uniqueStorageSystemIds[i]);
+            }
+        };
+
+        var checkLicensesPerStorageSystem = function (storageSystemId) {
+            orchestratorService.licenses(storageSystemId).then(function (result) {
+                return _.some(result.licenseSettings, function (license) {
+                    if (license.productName.toUpperCase() === 'VOLUME MIGRATION' && license.installed === true) {
+                        licenseStatusOfVolumeMigration[storageSystemId] = true;
+                    }
+                    // if any other license necessary, check it here.
+                });
+            });
+        };
+
+        var isVolumesInSameStorageSystem = function (selectedVolumes) {
+            if (selectedVolumes !== null && selectedVolumes !== undefined && selectedVolumes.length > 0) {
+                var storageSystemId = selectedVolumes[0].storageSystemId;
+                return !_.some(selectedVolumes, function(volume) {
+                    return (storageSystemId !== volume.storageSystemId);
+                });
+            }
+            return false;
         };
 
         var isVolumesInSameStorageSystemAndNotGADVolume = function (selectedVolumes) {
@@ -438,7 +466,8 @@ angular.module('rainierApp')
                 utilization: {
                     min: 0,
                     max: 100
-                }
+                },
+                migrationType: ''
             },
             fetchPreviousVolumeType: function (previousVolumeType) {
                 $scope.filterModel.filter.previousVolumeType = previousVolumeType;
@@ -446,6 +475,13 @@ angular.module('rainierApp')
             arrayType: (new paginationService.SearchType()).ARRAY,
             filterQuery: function (key, value, type, arrayClearKey) {
                 gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
+                queryService.setQueryMapEntry('serverId', parseInt(hostId));
+                paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume).then(function (result) {
+                        updateResultTotalCounts(result);
+                });
+            },
+            migrationFilterQuery: function (type, isManaged) {
+                migrationTaskService.volumeMigrationTypeFilter(type, isManaged, $scope.filterModel.filter.migrationType);
                 queryService.setQueryMapEntry('serverId', parseInt(hostId));
                 paginationService.getQuery(ATTACHED_VOLUMES_PATH, objectTransformService.transformVolume).then(function (result) {
                         updateResultTotalCounts(result);

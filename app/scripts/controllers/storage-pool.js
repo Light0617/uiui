@@ -13,7 +13,8 @@ angular.module('rainierApp')
                                              inventorySettingsService, scrollDataSourceBuilderServiceNew,
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
-                                             replicationService, resourceTrackerService, gadVolumeTypeSearchService) {
+                                             replicationService, resourceTrackerService, gadVolumeTypeSearchService,
+                                             migrationTaskService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -84,6 +85,10 @@ angular.module('rainierApp')
                 dataModel.showAddIcon = result.type === 'HTI' || result.label.indexOf('HSA-reserved-') === 0;
             });
 
+            migrationTaskService.checkLicense(storageSystemId).then(function (result) {
+                dataModel.volumeMigrationAvailable = result;
+            });
+
             $scope.filterModel = {
                 $replicationRawTypes: replicationService.rawTypes,
                 filter: {
@@ -114,11 +119,19 @@ angular.module('rainierApp')
                     utilization: {
                         min: 0,
                         max: 100
-                    }
+                    },
+                    migrationType: ''
                 },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
                     gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
+                    paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                migrationFilterQuery: function (type, isManaged) {
+                    migrationTaskService.volumeMigrationTypeFilter(type, isManaged, $scope.filterModel.filter.migrationType);
                     paginationService.addSearchParameter(new paginationService.QueryObject('poolId', new paginationService.SearchType().INT, storagePoolId));
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
@@ -149,10 +162,6 @@ angular.module('rainierApp')
                 return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
             };
 
-            var hasPrevalidationForDeleting = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isPrevalidationForDeleting();}) !== undefined;
-            };
-
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -162,7 +171,7 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-volume-delete-confirmation',
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) && !hasPrevalidationForDeleting(dataModel.getSelectedItems());
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         _.forEach(dataModel.getSelectedItems(), function (item) {
@@ -259,14 +268,11 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
-                        // TODO NEWRAIN-8104: Enable or disable control.
-                        return !hasGadVolume(dataModel.getSelectedItems()) && !_.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return !vol.isUnprotected();
-                            }) && dataModel.anySelected();
+                        return dataModel.volumeMigrationAvailable
+                            && migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems())
+                            && $scope.selectedCount > 0 && $scope.selectedCount <= 300;
                     },
                     onClick: function () {
-                        // If number of volumes over 300, wizard shows error.
                         ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                     }
@@ -415,16 +421,13 @@ angular.module('rainierApp')
                 result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
 
                 result.showCompressionDetails = function () {
-                    if (result.fmcCompressed === 'YES') {
-                        return true;
-                    } else if (result.deduplicationEnabled === true) {
+                    if (result.deduplicationEnabled === true) {
                         return true;
                     } else if (result.compressionDetails.compressionRate === 1 &&
-                        result.compressionDetails.savingsPercentage === 0) {
+                        (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
                         return false;
-                    } else {
-                        return true;
                     }
+                    return true;
                 };
                 result.showFmcDetails = function() {
                     if (result.fmcCompressed === 'YES') {

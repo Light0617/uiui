@@ -13,7 +13,8 @@ angular.module('rainierApp')
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
-                                                      constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService) {
+                                                      constantService, resourceTrackerService, replicationService,
+                                                      gadVolumeTypeSearchService, migrationTaskService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -63,6 +64,10 @@ angular.module('rainierApp')
             summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
             $scope.summaryModel.dpAlert.update();
+
+            return migrationTaskService.checkLicense(storageSystemId);
+        }).then(function (result) {
+            $scope.dataModel.volumeMigrationAvailable = result;
         });
 
         var volumeUnprotectActions = function (selectedVolume) {
@@ -167,6 +172,12 @@ angular.module('rainierApp')
                         updateResultTotalCounts(result);
                     });
                 },
+                migrationFilterQuery: function (type, isManaged) {
+                    migrationTaskService.volumeMigrationTypeFilter(type, isManaged, $scope.filterModel.filter.migrationType);
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
                 sliderQuery: function(key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
                     paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
@@ -190,11 +201,6 @@ angular.module('rainierApp')
                 return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
             };
 
-            //prevalidation for deleting volumes that are already attached to UI
-            var hasPrevalidationForDeleting = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isPrevalidationForDeleting();}) !== undefined;
-            };
-
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -204,12 +210,7 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-volume-delete-confirmation',
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected() &&
-                            !hasGadVolume(dataModel.getSelectedItems()) && !hasPrevalidationForDeleting(dataModel.getSelectedItems()) &&
-                            //block deleting if the migration status is true
-                            !_.some(dataModel.getSelectedItems(), function (vol) {
-                                return vol.scheduledForMigration;
-                            });
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
 
@@ -245,14 +246,11 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
-                        // TODO NEWRAIN-8104: Enable or disable control.
-                        return !hasGadVolume(dataModel.getSelectedItems()) && !_.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return !vol.isUnprotected();
-                            }) && $scope.selectedCount > 0;
+                        return dataModel.volumeMigrationAvailable
+                            && migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems())
+                            && $scope.selectedCount > 0 && $scope.selectedCount <= 300;
                     },
                     onClick: function () {
-                        // If number of volumes over 300, wizard shows error.
                         ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                     }

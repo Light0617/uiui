@@ -11,7 +11,7 @@
         </a>
 
         <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-delete-volumes' | translate}}"
-           ng-if="!model.disabledCheckBox && !model.isGadVolume() && !model.isPrevalidationForDeleting() && !model.scheduledForMigration"
+           ng-if="!model.disabledCheckBox && !model.isGadVolume()"
            confirm
            confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"
            confirm-message="{{ 'storage-volume-delete-current-content' | translate}}"
@@ -31,8 +31,7 @@
 
         <div class="btn icon-btn" ng-click="model.disabledCheckBox || migrateVolume()"
              title="{{ 'action-tooltip-migrate-volumes' | translate}}"
-             ng-if="!model.disabledCheckBox && !model.isMigrating()">
-            <!-- TODO Check other conditions. -->
+             ng-if="!model.disabledCheckBox && isMigrateAvailable()">
             <span class="icon-migrate-volume icon-sm"></span>
         </div>
     </page-title>
@@ -77,6 +76,10 @@
                         <p class="label">{{ 'storage-volume-protected' | translate}}</p>
                         <span ng-if="protected" class="icon icon-solo icon-checkmark-fill icon-sm centered-content"></span>
                         <span ng-if="!protected" class="icon icon-solo icon-failed icon-sm centered-content"></span>
+                    </div>
+                    <div class="label-value-container">
+                        <p class="label">{{ 'assigned-to-migration' | translate}}</p>
+                        <p class="value">{{model.assignedToMigration()}}</p>
                     </div>
                 </div>
             </div>
