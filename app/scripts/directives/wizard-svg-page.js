@@ -493,9 +493,9 @@ angular.module('rainierApp')
                 var innerCircle;
                 var allPaths;
                 var g;
-                // if (!d3.select('path[path-index]').empty()) {
-                //     return;
-                // }
+                if (!d3.select('path[path-index]').empty()) {
+                    return;
+                }
                 svg = selectedSvg;
                 svg.attr('viewBox', '0, 0, 1000, ' + scope.dataModel.pathModel.viewBoxHeight)
                     .attr('style', 'padding-bottom: ' + scope.dataModel.pathModel.viewBoxHeight/10 + '%');
@@ -742,10 +742,12 @@ angular.module('rainierApp')
                 };
 
                 scope.dataModel.build = function(redrawLines) {
-                    d3service.d3().then(function(d3) {
-                        var selectedSvg = d3.select('#topology-editor');
-                        builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
-                    });
+                    $timeout(function(){
+                        d3service.d3().then(function(d3) {
+                            var selectedSvg = d3.select('#topology-editor');
+                            builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
+                        });
+                    }, 600);
                 };
 
                 scope.dataModel.deleteAllPaths = function(pathModel){
