@@ -12,7 +12,8 @@ angular.module('rainierApp')
     .factory('portDiscoverService', function (
         $q,
         apiResponseHandlerService,
-        Restangular
+        Restangular,
+        orchestratorService
     ) {
         var keyForDiscovered = 'hashKey';
         var discoverManagedVolumes = function (
@@ -22,23 +23,21 @@ angular.module('rainierApp')
             srcStorageSystemId,
             srcVolumeIds
         ) {
-            var tgtPortHash, srcPortHash, srcVolumes, discoveredLunsHash;
-
+            $q.all([
+                getAndStorePortsHash(tgtPortIds, tgtStorageSystemId),
+                getAndStorePortsHash(srcPortIds, srcStorageSystemId),
+                getAndStoreVolumes(srcVolumeIds, srcStorageSystemId),
+                discoverAndStoreLuns(tgtPortIds, tgtStorageSystemId)
+            ]);
+            // TODO for management
         };
 
-        var discoverUnmanagedVolumes = function (
-            tgtPortIds,
-            tgtStorageSystemId
-        ) {
-            return discoverGroups(tgtPortIds, tgtStorageSystemId);
+        var getAndStorePortsHash = function (portIds, storageSystemId) {
+            // TODO for management
         };
 
-        var getPortsHash = function (portIds, storageSystemId) {
-
-        };
-
-        var getVolumes = function (volumeIds, storageSystemId) {
-
+        var getAndStoreVolumes = function (volumeIds, storageSystemId) {
+            // TODO for management
         };
 
         var endPoint = function (discoveredLun) {
@@ -58,30 +57,31 @@ angular.module('rainierApp')
         };
 
         var appendKey = function (discoveredLun) {
-            discoveredLun[keyForDiscovered]= keyOf(discoveredLun);
+            discoveredLun[keyForDiscovered] = keyOf(discoveredLun);
             discoveredLun.endPoint = endPoint(discoveredLun);
             return discoveredLun;
         };
 
-        var discoveredGroupsToHash = function (discoveredLuns) {
+        var discoveredLunsToHash = function (discoveredLuns) {
             return _.chain(discoveredLuns).map(appendKey)
                 .indexBy(keyForDiscovered).value();
         };
 
-        var discoverGroup = function (portId, storageSystemId) {
-            var url = 'storage-systems/' + storageSystemId + '/storage-ports/' + portId + '/discover-groups';
-            return apiResponseHandlerService._apiResponseHandler(Restangular.one(url).post({}))
+        var discoverAndStoreLuns = function (portIds, storageSystemId) {
+            return discoverLuns(portIds, storageSystemId)
+                .then(discoveredLunsToHash);
         };
 
-        var discoverGroups = function (portIds, storageSystemId) {
-            var requests = _.map(portIds, function (pid) { return discoverGroup(pid, storageSystemId); });
+        var discoverLuns = function (portIds, storageSystemId) {
+            var requests = _.map(portIds, function (pid) {
+                return orchestratorService.discoverLun(pid, storageSystemId);
+            });
             return $q.all(requests)
-                .then(_.flatten)
-                .then(discoveredGroupsToHash);
+                .then(_.flatten);
         };
 
         return {
             discoverManagedVolumes: discoverManagedVolumes,
-            discoverUnmanagedVolumes: discoverUnmanagedVolumes
+            discoverLuns: discoverLuns
         };
     });
