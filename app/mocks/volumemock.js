@@ -94,7 +94,6 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             gadSummary: getVolumeGADSummary(volType, v),
             provisioningStatus: _.sample(['ATTACHED', 'UNATTACHED', 'UNMANAGED']),
             dkcDataSavingType: _.sample(['NONE', 'COMPRESSION', 'DEDUPLICATION_AND_COMPRESSION']),
-            requireDDM: false,//(mocksize > 4000000000000) ? true : false, // if size > 4000000000000, true
             migrationSummary: {
                 'migrationType': migrationStatus ? 'MIGRATION' : 'NONE',
                 'ownerTaskId': migrationStatus ? mockUtils.randomInt(0, 100) : undefined
