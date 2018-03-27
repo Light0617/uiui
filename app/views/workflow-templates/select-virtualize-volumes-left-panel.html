@@ -1,5 +1,5 @@
 <div class="fieldset">
-    <div class="label-value-container">
+    <div class="label-value-container" ng-if="!dataModel.isAddExtVolume">
 
         <!--select FC or iSCSI-->
         <div class="form-group">
@@ -20,6 +20,8 @@
             </div>
         </div>
 
+
+
         <div class="label-value-container">
             <label for="target-array" class="label">Target Storage System</label>
             <select id="target-array"
@@ -27,6 +29,18 @@
                     ng-model="dataModel.selectedTarget"
                     ng-options="storageSystem as storageSystem.storageSystemName for storageSystem in
                     dataModel.storageSystems track by storageSystem.storageSystemId">
+            </select>
+        </div>
+    </div>
+
+    <div class="label-value-container" ng-if="dataModel.isAddExtVolume">
+        <!--select FC or iSCSI(Create External Volume)-->
+        <div class="form-group">
+            <label for="storage-type">Select Type</label>
+            <select class="form-control" ng-model="dataModel.selectedType"
+                    ng-init="dataModel.selectedType = dataModel.type[0]"
+                    ng-options="pt | translate for pt in dataModel.type"
+                    ng-change="dataModel.switchPortType(); ">
             </select>
         </div>
     </div>

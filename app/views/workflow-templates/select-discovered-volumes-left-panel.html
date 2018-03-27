@@ -1,6 +1,51 @@
 <div class="fieldset">
     <div class="label-value-container">
-        <div class="label-value-container">
+        <!--&lt;!&ndash;select FC or iSCSI(Create External Volume)&ndash;&gt;-->
+        <!--<div class="form-group" ng-if="dataModel.isAddExtVolume">-->
+            <!--<label for="storage-type">Select Type</label>-->
+            <!--<select class="form-control" id="storage-type" ng-model="dataModel.selectedType"-->
+                    <!--ng-init="dataModel.selectedType = dataModel.type[0]"-->
+                    <!--ng-options="pt | translate for pt in dataModel.type"-->
+                    <!--ng-change="dataModel.switchType(true); ">-->
+                <!--<option value="">Type</option>-->
+            <!--</select>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash;show FC ports(Create External Volume)&ndash;&gt;-->
+        <!--<div class="label-value-container" ng-if="dataModel.selectedType === 'FIBRE' && dataModel.isAddExtVolume">-->
+            <!--<label class="label">{{dataModel.pathModel.FcSourcePorts.length}} Ports</label>-->
+            <!--<div class="btn-group">-->
+                <!--<div class="btn-group" ng-repeat="port in dataModel.pathModel.FcSourcePorts">-->
+                    <!--<button type="button" style="width: 90px;" class="btn btn-dark ng-pristine ng-untouched ng-valid" ng-model="dataModel.currentPort" btn-radio="'{{port.storagePortId}}'" ng-click="dataModel.discoverLuns(port.storagePortId)" tooltip="{{port.storagePortId}}">-->
+                        <!--{{port.storagePortId}}-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash;show ISCSI ports(Create External Volume)&ndash;&gt;-->
+        <!--<div class="label-value-container" ng-if="dataModel.selectedType === 'ISCSI' && dataModel.isAddExtVolume">-->
+            <!--<label class="label">{{dataModel.pathModel.IscsiSourcePorts.length}} Ports</label>-->
+            <!--<div class="btn-group">-->
+                <!--<div class="btn-group" ng-repeat="port in dataModel.pathModel.IscsiSourcePorts">-->
+                    <!--<button type="button" style="width: 90px;" class="btn btn-dark ng-pristine ng-untouched ng-valid" ng-model="dataModel.currentPort" btn-radio="'{{port.storagePortId}}'" ng-click="dataModel.discoverLuns(port.storagePortId)" tooltip="{{port.storagePortId}}">-->
+                        <!--{{port.storagePortId}}-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="label-value-container" ng-if="dataModel.isAddExtVolume">
+            <label class="label">{{dataModel.selectedPorts.length}} Selected Ports</label>
+            <div class="btn-group" role="group">
+                <div class="btn-group" role="group" ng-repeat="port in dataModel.selectedPorts">
+                    <a class="btn btn-default btn-dark" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
+                </div>
+            </div>
+        </div>
+
+        <!--Virtualize Wizard-->
+        <div class="label-value-container" ng-if="!dataModel.isAddExtVolume">
             <label class="label">{{dataModel.targetPorts.length}} Selected Target Ports</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="port in dataModel.targetPorts">

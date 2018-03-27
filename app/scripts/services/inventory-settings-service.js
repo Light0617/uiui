@@ -133,10 +133,17 @@ angular.module('rainierApp')
             });
 
             if (options.canAdd) {
-                dataModel.addAction = function() {
-                    $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
-                };
 
+                if(dataModel.isAddExtVolume){
+                    dataModel.addAction = function () {
+                        ShareDataService.isAddExtVolume = true;
+                        $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
+                    };
+                }else {
+                    dataModel.addAction = function () {
+                        $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
+                    };
+                }
                 dataModel.addPoolDetailsClickAction = function(storagePoolId) {
                     ShareDataService.push('autoSelectedPoolId', storagePoolId);
                     $location.path(['storage-systems', dataModel.storageSystemId, 'storage-pools',
