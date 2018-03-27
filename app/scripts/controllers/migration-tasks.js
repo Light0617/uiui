@@ -203,6 +203,14 @@ angular.module('rainierApp')
 
             dataModel.gridSettings = [
                 {
+                    title: synchronousTranslateService.translate('migration-task-list-id'),
+                    sizeClass: 'sixteenth',
+                    sortField: 'migrationTaskId',
+                    getDisplayValue: function (item) {
+                        return item.migrationTaskId;
+                    }
+                },
+                {
                     title: synchronousTranslateService.translate('migration-task-list-name'),
                     sizeClass: 'sixth',
                     sortField: 'migrationTaskName',
@@ -220,7 +228,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: synchronousTranslateService.translate('migration-task-list-status'),
-                    sizeClass: 'sixth',
+                    sizeClass: 'seventh',
                     sortField: 'status',
                     getDisplayValue: function (item) {
                         return item.toDisplayStatus();

@@ -64,6 +64,10 @@ angular.module('rainierApp')
                 if (pool.type !== 'HDT' && pool.type !== 'HDP') {
                     return;
                 }
+                // Not 'HSA-reserved'
+                if (pool.label.indexOf(constantService.prefixReservedStoragePool) !== -1) {
+                    return;
+                }
                 // Not source pool
                 if (sourceVolumePools[pool.storagePoolId]) {
                     return;
@@ -88,6 +92,7 @@ angular.module('rainierApp')
             // filter pools
             var pools = enablePools(result);
             $scope.dataModel.displayList = pools;
+            $scope.dataModel.filteredList = pools;
             $scope.dataModel.itemCounts = {
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
@@ -311,14 +316,13 @@ angular.module('rainierApp')
             }).then(function (pairs) {
                 var sourceVolumeIds = [];
                 var sourceExternalVolumeIds = [];
-                var targetPoolId;
                 _.forEach(pairs, function(item) {
                     if (item.sourceParityGroupId !== constantService.notAvailable) {
                         sourceExternalVolumeIds.push(item.sourceVolumeId);
                     } else {
                         sourceVolumeIds.push({text: item.sourceVolumeId});
                     }
-                    targetPoolId = item.targetPoolId;
+                    selectedTargetPoolId = item.targetPoolId;
                 });
                 var sourceVolumes = [];
                 var sourceExternalVolumes = [];
@@ -331,16 +335,10 @@ angular.module('rainierApp')
                 $q.all(tasks).then(function () {
                     calculateVolumes(sourceVolumes); // TODO sourceExternalVolumes
                     getPools(storageSystemId, function(dataModel) {
-                        var targetPool = _.find(dataModel.displayList, function (item) {
-                            return item.storagePoolId === targetPoolId;
-                        });
-                        if (targetPool) {
-                            targetPool.selected = true;
-                        }
                         dataModel.settingModel.migrationTaskName = migrationTask.migrationTaskName;
                         dataModel.settingModel.comments = migrationTask.comments;
                         dataModel.settingModel.scheduleType = 'Scheduled';
-                        // TODO NEWRAIN-8104: If cached migration task has already started, how should we do?
+                        // If cached migration task has already started, we don't care here, since it will fail on submit.
                         dataModel.settingModel.schedule.currentDate = migrationTask.schedule;
                         if (migrationTask.schedule && migrationTask.schedule.datetime) {
                             var datetime = migrationTask.schedule.datetime;
@@ -386,14 +384,14 @@ angular.module('rainierApp')
 
         //user can only select one pool
         $scope.$watch('selectedCount', function (count) {
-            _.map($scope.dataModel.displayList, function (storagePool) {
-                storagePool.disabledCheckBox = !(count === 0 || (count === 1 && storagePool.storagePoolId === $scope.dataModel.getSelectedItems()[0].storagePoolId));
-            });
             if (utilService.isNullOrUndef(count) || count === 0) {
                 selectedTargetPoolId = undefined;
             } else {
                 selectedTargetPoolId = $scope.dataModel.getSelectedItems()[0].storagePoolId;
             }
+            _.map($scope.dataModel.filteredList, function (storagePool) {
+                storagePool.disabledCheckBox = !(count === 0 || (count === 1 && storagePool.storagePoolId === selectedTargetPoolId));
+            });
         });
 
         $scope.$watch('dataModel.settingModel.schedule.date', function (newVal) {

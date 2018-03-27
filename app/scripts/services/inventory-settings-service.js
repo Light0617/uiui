@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .factory('inventorySettingsService', function($timeout, diskSizeService, orchestratorService, ShareDataService,
-        $location, replicationService) {
+        $location, replicationService, synchronousTranslateService) {
 
         var volumeGridSettings = function(dataModel, options) {
 
