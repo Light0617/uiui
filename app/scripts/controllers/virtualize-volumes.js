@@ -590,16 +590,6 @@ angular.module('rainierApp')
 
                 });
             });
-            // orchestratorService.discoveredLuns(storageSystemId, ports[0].storagePortId).then(function (luns) {
-            //     objectTransformService.transformDiscoveredLun(luns);
-            //     $scope.dataModel.portLunMap[ports[0].storagePortId] = luns;
-            // }).then(function () {
-            //     _.each($scope.dataModel.portLunMap[ports[0].storagePortId], function (lun) {
-            //             $scope.dataModel.displayList.push(lun);
-            //     });
-            //     updateDiscoveredLunsTotalCounts(ports[0].storagePortId);
-            //
-            // });
 
             initView($scope.dataModel.displayList);
             if(!$scope.dataModel.isAddExtVolume) {
