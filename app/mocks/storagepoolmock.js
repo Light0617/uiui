@@ -54,7 +54,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                 'usedSubscribedCapacity':4999610368,
                 'poolCount':30
             }
-        ]
+        ],
+        'ddm': mockUtils.trueOrFalse()
     };
 
     var monitoringModes = ['PERIODICAL', 'CONTINUOUS', 'PERIODICAL_WITH_ACTIVE_FLASH', 'CONTINUOUS_WITH_ACTIVE_FLASH', 'NONE'];

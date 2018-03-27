@@ -332,7 +332,30 @@ angular.module('rainierApp')
                 dataModelVolume.loadMore = $scope.dataModel.loadMore;
 
                 $scope.$watch('dataModel.displayList', function () {
-                    dataModelVolume.volumeDataModel.itemSelected = $scope.dataModel.anySelected();
+                    //check if there's any volume requires ddm
+                    $scope.dataModel.hasVolumeRequireDdm = _.find($scope.dataModel.displayList, function(item){
+                        return item.selected && item.isDDM;
+                    });
+
+                    if($scope.dataModel.hasVolumeRequireDdm) {
+                        //check pool summary if ddm pool is available
+                        var ddmAvailable = false;
+                        orchestratorService.storagePoolsSummary(storageSystemId).then(function (result) {
+                            ddmAvailable = result.ddm;
+                        });
+                        if (ddmAvailable) {
+                            dataModelVolume.volumeDataModel.itemSelected = true;
+                        } else {//else, show popup error message, including link to create ddm pool page.
+                            dataModelVolume.volumeDataModel.confirmTitle = 'No DDM Pool Exist';
+                            dataModelVolume.volumeDataModel.confirmMessage = 'Go to create pool page to create one.';
+                            dataModelVolume.volumeDataModel.confirmMessage.href = $location.path(['storage-systems', storageSystemId, 'storage-pools', 'add'].join('/'));
+                            dataModelVolume.volumeDataModel.itemSelected = false;
+                        }
+                    }else{//If no, just check if there's item selected
+                        dataModelVolume.volumeDataModel.confirmTitle = synchronousTranslateService.translate('select-discovered-volumes-confirmation');
+                        dataModelVolume.volumeDataModel.confirmMessage =  synchronousTranslateService.translate('select-discovered-volumes'),
+                        dataModelVolume.volumeDataModel.itemSelected = $scope.dataModel.anySelected();
+                    }
                 }, true);
 
                 //distinguish between pre-virtualization pathModel and create paths pathModel
