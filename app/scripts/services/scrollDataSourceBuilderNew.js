@@ -146,28 +146,25 @@ angular.module('rainierApp')
                     return _.where(this.displayList, 'selected');
                 };
 
-
-                scope.$watch(function () {
+                function getSelectedCount() {
                     return _.size(scope.dataModel.getSelectedItems());
-                }, function (size) {
-                    scope.selectedCount = size;
-                });
+                }
 
                 scope.dataModel.allSelected = function () {
                     var size = _.size(this.displayList);
-                    return size > 0 && scope.selectedCount === size;
+                    return size > 0 && getSelectedCount() === size;
                 };
 
                 scope.dataModel.onlyOneSelected = function () {
-                    return scope.selectedCount === 1;
+                    return getSelectedCount() === 1;
                 };
 
                 scope.dataModel.anySelected = function () {
-                    return scope.selectedCount > 0;
+                    return getSelectedCount() > 0;
                 };
 
                 scope.dataModel.getSelectedCount = function () {
-                    return scope.selectedCount;
+                    return getSelectedCount();
                 };
 
                 scope.$watch(function () {
