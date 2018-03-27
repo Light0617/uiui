@@ -11,7 +11,8 @@
 angular.module('rainierApp')
     .factory('portDiscoverService', function (
         $q,
-        orchestratorService
+        apiResponseHandlerService,
+        Restangular
     ) {
         var discoverManagedVolumes = function (
             tgtPortIds,
@@ -28,7 +29,6 @@ angular.module('rainierApp')
             tgtPortIds,
             tgtStorageSystemId
         ) {
-
         };
 
         var getPortsHash = function (portIds, storageSystemId) {
@@ -40,7 +40,15 @@ angular.module('rainierApp')
         };
 
         var discoverGroups = function (portIds, storageSystemId) {
+            var requests = _.map(portIds, function (pid) { return discoverGroup(pid, storageSystemId); });
+            return $q.all(requests)
+                .then(function (multiLevelDeep) { return _.flatten(multiLevelDeep); })
+                .then(function (singleLevelDeep) {  });
+        };
 
+        var discoverGroup = function (portId, storageSystemId) {
+            var url = 'storage-systems/' + storageSystemId + '/storage-ports/' + portId + '/discover-groups';
+            return apiResponseHandlerService._apiResponseHandler(Restangular.one(url).post({}))
         };
 
         return {
