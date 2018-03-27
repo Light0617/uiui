@@ -200,7 +200,7 @@ angular.module('rainierApp')
                 storageSystemSelectable: selectable,
                 storageSystem: storageSystem,
                 storageSystems: storageSystems,
-                availablePoolTypes: ["DDM"],
+                availablePoolTypes: ['DDM'],
                 hasHdpLicense: false,
                 hasHdtLicense: false,
                 hasHtiLicense: false,
@@ -276,7 +276,7 @@ angular.module('rainierApp')
 
                 isInvalid: function () {
                     var isInvalid = !$scope.model || !$scope.model.storageSystem || !$scope.model.label ||
-                        _.isEmpty($scope.model.label) ||  !$scope.model.availablePoolTypes || $scope.model.availablePoolTypes.length === 0;
+                        _.isEmpty($scope.model.label) ||  !$scope.model.availablePoolTypes;
                     
                     if(!isInvalid && $scope.model.subscriptionLimit){
                         var isHtiPool = $scope.model.htiPool;
