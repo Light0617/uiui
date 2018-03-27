@@ -12,13 +12,12 @@ angular.module('rainierApp')
     .factory('previrtualizeService', function (
         $q,
         $timeout,
-        orchestratorService
+        orchestratorService,
+        constantService,
+        utilService
     ) {
         var interval = 5000;
         var upperLimit = 10;
-        var count = 0;
-        var interrupted = false;
-        var pollingPromise;
 
         var previrtualize = function (payload) {
             return orchestratorService.previrtualize(payload)
@@ -27,13 +26,14 @@ angular.module('rainierApp')
                 });
         };
 
-        var handleJob = function (jobId, defer) {
+        var handleJob = function (jobId, defer, count) {
             return function (result) {
-                if (!result || result.status === 'inprogress') {
+                if (!result || result.status === constantService.previrtualizeJobStatus.inprogress) {
                     $timeout(getJob(jobId, defer), interval);
                     count++;
-                    // getJob(jobId, defer)();
-                } else if (interrupted || upperLimit <= count || result.status === 'failed') {
+                } else if (upperLimit <= count ||
+                    result.status === constantService.previrtualizeJobStatus.failed) {
+                    // TODO confirm we have to show dialog or not
                     defer.resolve(false);
                 } else {
                     defer.resolve(result);
@@ -41,44 +41,68 @@ angular.module('rainierApp')
             };
         };
 
-        var getJob = function (jobId, defer) {
+        var getJob = function (jobId, defer, count) {
             return function () {
                 return orchestratorService.jobStatus(jobId)
-                    .then(handleJob(jobId, defer))
-                    .catch(function (reason) {
+                    .then(handleJob(jobId, defer, count))
+                    .catch(function () {
                         return defer.resolve(false);
                     });
             };
-            return defer.promise;
         };
 
-        var poll = function (jobId) {
-            interrupted = false;
-            count = 0;
-            var defer = $q.defer;
-            return getJob(jobId, defer)();
+        var poll = function () {
+            var count = 0;
+            return function(jobId) {
+                var defer = $q.defer();
+                getJob(jobId, defer, count)();
+                return defer.promise;
+            };
         };
 
-        var discover = function (jobId) {
-            return orchestratorService.virtualizedVolumes(jobId);
+        var discover = function (
+            // storageSystemId, portIds
+        ) {
+            // TODO depends on API specs
+            // return orchestratorService.discoverPrevirtualizedVolumes(jobId);
+            return $q.resolve([]);
         };
 
-        var preVirtualizeAndDiscover = function (payload) {
-            previrtualize(payload)
-                .then(poll)
+        var previrtualizeAndDiscover = function (payload) {
+            return previrtualize(payload)
+                .then(poll())
                 .then(function (result) {
-                    if (result) {
+                    if (result && !utilService.isNullOrUndef(result.jobId)) {
                         return discover(result.jobId);
                     }
                     return $q.resolve([]);
                 });
         };
 
-        var stopPolling = function () {
-            if (pollingPromise) {
-                $timeout.cancel(pollingPromise);
-            }
-            interrupted = true;
+        var createPrevirtualizePayloadPortInfo = function (
+            srcPort,
+            targetWwn,
+            iscsiTargetInformation
+        ) {
+            return {
+                srcPort: srcPort,
+                targetWwn: targetWwn,
+                iscsiTargetInformation: iscsiTargetInformation
+            };
+        };
+
+        var createPrevirtualizePayload = function (
+            targetStorageSystemId,
+            portsInfo,
+            volumeIds
+        ) {
+            return {
+                targetStorageSystemId: targetStorageSystemId,
+                portsInfo: portsInfo,
+                luns: _.chain(volumeIds).map(function (volId) {
+                    return {volumeId: volId};
+                }).value()
+            };
         };
 
         return {
@@ -86,7 +110,8 @@ angular.module('rainierApp')
             handleJob: handleJob,
             poll: poll,
             previrtualize: previrtualize,
-            stopPolling: stopPolling,
-            preVirtualizeAndDiscover: preVirtualizeAndDiscover
+            previrtualizeAndDiscover: previrtualizeAndDiscover,
+            createPrevirtualizePayload: createPrevirtualizePayload,
+            createPrevirtualizePayloadPortInfo: createPrevirtualizePayloadPortInfo
         };
     });
