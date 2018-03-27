@@ -277,7 +277,8 @@ angular.module('rainierApp')
             var path;
             portIndex = parseInt(line.attr('attr-port-index'));
             pathIndex = line.attr('path-index'); // path index of the line-from-endpoint
-            if(port.vsmPort){
+            port = scope.dataModel.pathModel.storagePorts[portIndex];
+            if (port && port.vsmPort) {
                 var modelInstance = $modal.open({
                     templateUrl: 'views/templates/error-modal.html',
                     windowClass: 'modal fade confirmation',
@@ -402,7 +403,7 @@ angular.module('rainierApp')
                     break;
                 }
                 path = dataModel.pathModel.paths[i];
-                if (endPoint === path.serverEndPoint && portId === path.storagePortId){
+                if (endPoint === path.serverEndPoint && portId === path.storagePortId && !path.deleted){
                     return true;
                 }
             }
@@ -492,9 +493,9 @@ angular.module('rainierApp')
                 var innerCircle;
                 var allPaths;
                 var g;
-                // if (!d3.select('path[path-index]').empty()) {
-                //     return;
-                // }
+                if (!d3.select('path[path-index]').empty()) {
+                    return;
+                }
                 svg = selectedSvg;
                 svg.attr('viewBox', '0, 0, 1000, ' + scope.dataModel.pathModel.viewBoxHeight)
                     .attr('style', 'padding-bottom: ' + scope.dataModel.pathModel.viewBoxHeight/10 + '%');
@@ -739,7 +740,6 @@ angular.module('rainierApp')
                         };
                     });
                 };
-                scope.dataModel.pathModel.builder();
 
                 scope.dataModel.build = function(redrawLines) {
                     $timeout(function(){
@@ -759,6 +759,8 @@ angular.module('rainierApp')
                     }
                     scope.dataModel.pathModel.paths = [];
                 };
+
+                scope.dataModel.pathModel.builder();
             }
         };
     });
