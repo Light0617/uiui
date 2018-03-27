@@ -84,7 +84,32 @@ describe('Service: portDiscoverService tests', function () {
             $rootScope.$digest();
 
             expect(data.length).toEqual(8);
+        });
+    });
 
+    describe('discoverUnmanagedVolumes', function () {
+        it('should resolve with distinct array', function () {
+            var data;
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            promise.then(function (response) {
+                data = response;
+            });
+
+            portDiscoverService
+                .discoverUnmanagedVolumes(['CL1-A', 'CL21-C'], 1)
+                .then(function (response) {
+                    deferred.resolve(response);
+                });
+
+            $rootScope.$digest();
+
+            expect(data.length).toEqual(4);
+            expect(data[0].hashKey).toEqual('CL1-Asrc_0_172.17.71.2_iscsi');
+            expect(data[1].hashKey).toEqual('CL1-Asrc_0_wwn');
+            expect(data[2].hashKey).toEqual('CL21-Csrc_0_172.17.71.2_iscsi');
+            expect(data[3].hashKey).toEqual('CL21-Csrc_0_wwn');
         });
     });
 });

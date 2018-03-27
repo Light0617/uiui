@@ -27,9 +27,17 @@ angular.module('rainierApp')
                 getAndStorePortsHash(tgtPortIds, tgtStorageSystemId),
                 getAndStorePortsHash(srcPortIds, srcStorageSystemId),
                 getAndStoreVolumes(srcVolumeIds, srcStorageSystemId),
-                discoverAndStoreLuns(tgtPortIds, tgtStorageSystemId)
+                discoverLunsHash(tgtPortIds, tgtStorageSystemId)
             ]);
             // TODO for management
+        };
+
+        var discoverUnamanagedVolumes = function (
+            portIds,
+            storageSystemIds
+        ) {
+            return discoverLunsHash(portIds, storageSystemIds)
+                .then(_.toArray);
         };
 
         var getAndStorePortsHash = function (portIds, storageSystemId) {
@@ -53,7 +61,7 @@ angular.module('rainierApp')
         };
 
         var keyOf = function (discoveredLun) {
-            return discoveredLun.portId + discoveredLun.lun + endPoint(discoveredLun);
+            return [discoveredLun.portId, discoveredLun.lunId, endPoint(discoveredLun)].join('_');
         };
 
         var appendKey = function (discoveredLun) {
@@ -67,7 +75,7 @@ angular.module('rainierApp')
                 .indexBy(keyForDiscovered).value();
         };
 
-        var discoverAndStoreLuns = function (portIds, storageSystemId) {
+        var discoverLunsHash = function (portIds, storageSystemId) {
             return discoverLuns(portIds, storageSystemId)
                 .then(discoveredLunsToHash);
         };
@@ -82,6 +90,7 @@ angular.module('rainierApp')
 
         return {
             discoverManagedVolumes: discoverManagedVolumes,
+            discoverUnmanagedVolumes: discoverUnamanagedVolumes,
             discoverLuns: discoverLuns
         };
     });
