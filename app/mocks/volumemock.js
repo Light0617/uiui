@@ -78,15 +78,16 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         var volType = _.sample(['HDP', 'HDT', 'HTI', 'GAD']);
         var migrationStatus = _.sample([true, false]);
         var iscsi = _.sample([true, false]);
+        var mocksize = mockUtils.getCapacity(2.5, 20);
         return {
             volumeId: v + '',
             storageSystemId: 'REPLACE',
             poolId: '001',
             label: 'Volume' + v,
             scheduledForMigration: migrationStatus,
-            size: mockUtils.getCapacity(100, 200),
-            usedCapacity: mockUtils.getCapacity(10, 25),
-            availableCapacity: mockUtils.getCapacity(50, 75),
+            size: mocksize,
+            usedCapacity: mockUtils.getCapacity(1, 2),
+            availableCapacity: mockUtils.getCapacity(1, 2),
             status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
             type: volType,
             dataProtectionSummary: getVolumeDataProtectionSummary(),
@@ -97,6 +98,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
                 'migrationType': migrationStatus ? 'MIGRATION' : 'NONE',
                 'ownerTaskId': migrationStatus ? mockUtils.randomInt(0, 100) : undefined
             },
+            isDDM: (mocksize > 4000000000000) ? true : false, // if size > 4000000000000, true
             attachedVolumeServerSummary:[
             {
                 serverId: null,

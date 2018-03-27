@@ -78,7 +78,7 @@ angular.module('rainierApp')
 
         var formatVolumeId = function (id) {
             if (!id) {
-                return "";
+                return '';
             }
             var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
             var formatted = hexId.match(/.{1,2}/g).join(':');
