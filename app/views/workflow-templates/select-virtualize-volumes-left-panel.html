@@ -1,6 +1,16 @@
 <div class="fieldset">
     <div class="label-value-container">
 
+        <!--select FC or iSCSI-->
+        <div class="form-group">
+            <label for="storage-type">Select Type</label>
+            <select class="form-control" id="storage-type" ng-model="dataModel.selectedType"
+                    ng-init="dataModel.selectedType = dataModel.type[0]"
+                    ng-options="pt | translate for pt in dataModel.type"
+                    ng-change="dataModel.switchType(true); ">
+            </select>
+        </div>
+
         <div class="label-value-container">
             <label class="label">{{dataModel.selectedVolumes.length}} Selected Volumes</label>
             <div class="btn-group btn-full-width" role="group">
