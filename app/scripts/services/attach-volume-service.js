@@ -515,7 +515,12 @@ angular.module('rainierApp')
                                 $scope.confirmationTitle = synchronousTranslateService.translate(
                                     "storage-volume-attach-confirm-force-overwrite-chap-user-name-title");
                                 $scope.confirmationMessage = synchronousTranslateService.translate(
-                                    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message");
+                                    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message",
+                                    {
+                                        storageSystemId: error.data.messageParameters.storageSystemId,
+                                        storagePort: error.data.messageParameters.storagePort,
+                                        chapUserNames: error.data.messageParameters.chapUserNames
+                                    });
 
                                 $scope.ok = function () {
                                     payload["forceOverwriteChapSecret"] = true; // Set option to force to overwrite CHAP secret
