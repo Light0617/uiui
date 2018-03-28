@@ -503,7 +503,7 @@ angular.module('rainierApp')
         };
 
         var attachVolumeForIscsi = function (payload) {
-            orchestratorService.attachVolumeForIscsi(payload, function (error, wrapped, defaultErrAction) {
+            return orchestratorService.attachVolumeForIscsi(payload, function (error, wrapped, defaultErrAction) {
                 switch (error.status) {
                     case 412:
                         // Specified CHAP user already exists in the specified Storage Port
