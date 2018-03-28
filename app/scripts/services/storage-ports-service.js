@@ -26,9 +26,12 @@ angular.module('rainierApp')
         paginationService,
         wwnService,
         constantService,
-        storageSystemCapabilitiesService
+        storageSystemCapabilitiesService,
+        scrollDataSourceBuilderServiceNew
     ) {
         var getStoragePortsPath = 'storage-ports';
+        var idKey = 'storagePortId';
+
 
         var typeNames = [
             {name: 'FIBRE', caption: 'Fibre'},
@@ -274,6 +277,222 @@ angular.module('rainierApp')
             return undefined;
         };
 
+        // select port page
+
+        var defaultSort = function (model) {
+            model.sort.setSort(idKey);
+        };
+
+        var updateResultTotalCounts = function (result, scope) {
+            scope.dataModel.nextToken = result.nextToken;
+            scope.dataModel.cachedList = result.resources;
+            scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            scope.dataModel.itemCounts = {
+                filtered: scope.dataModel.displayList.length,
+                total: scope.dataModel.total
+            };
+        }
+
+        var generateSetSortFn = function(scope) {
+            return function (f) {
+                $timeout(function () {
+                    if (scope.dataModel.sort.field === f) {
+                        queryService.setSort(f, !scope.dataModel.sort.reverse);
+                        scope.dataModel.sort.reverse = true;
+                    } else {
+                        scope.dataModel.sort.field = f;
+                        queryService.setSort(f, false);
+                        scope.dataModel.sort.reverse = false;
+                    }
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                        updateResultTotalCounts(result, scope);
+                    });
+                });
+            };
+        }
+
+        var generateDataModel = function(result, scope) {
+            var dataModel = {
+                view: 'tile',
+                nextToken: result.nextToken,
+                total: result.total,
+                currentPageCount: 0,
+                sort: {
+                    field: idKey,
+                    reverse: true,
+                    setSort: generateSetSortFn(scope)
+                },
+                showPortAttributeFilter: storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel),
+                chartData: scope.summaryModel.chartData
+            };
+            return dataModel;
+        }
+
+
+        var generateFilterModel = function() {
+            return {
+                filter: {
+                    freeText: '',
+                    portSpeed: '',
+                    securitySwitchEnabled: null,
+                    attributes: ''
+                },
+                filterQuery: function (key, value, type, arrayClearKey) {
+                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                    paginationService.setFilterSearch(queryObject);
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                sliderQuery: function (key, start, end, unit) {
+                    paginationService.setSliderSearch(key, start, end, unit);
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                searchQuery: function (value) {
+                    var queryObjects = [];
+                    queryObjects.push(new paginationService.QueryObject(idKey, new paginationService.SearchType().STRING, value));
+                    paginationService.setTextSearch(queryObjects);
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                        updateResultTotalCounts(result);
+                    });
+                }
+            };
+        }
+
+        var generateEditFibrePortDialogSettings = function(scope) {
+            var dialogSettings = {
+                id: 'securityEnableDisableConfirmation',
+                title: 'storage-port-enable-security-title',
+                content: 'storage-port-enable-security-content',
+                trueText: 'storage-port-enable-security',
+                falseText: 'storage-port-not-enable-security',
+                switchEnabled: {
+                    value: false
+                }
+            };
+
+            if (
+                scope.storageSystemModel &&
+                storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel)
+            ) {
+                dialogSettings.itemAttribute = {
+                    value: function () {
+                        if (storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel)) {
+                            return portAttributes.target;
+                        } else {
+                            return null;
+                        }
+                    }
+                };
+                dialogSettings.itemAttributes = [
+                    portAttributes.target,
+                    portAttributes.initiator,
+                    portAttributes.rcuTarget,
+                    portAttributes.external
+                ];
+            }
+
+            return dialogSettings;
+        }
+
+        var fibreActions = function(dataModel, scope) {
+            return {
+                icon: 'icon-edit',
+                type: 'confirmation-modal',
+                tooltip: 'action-tooltip-toggle-security',
+                dialogSettings: generateEditFibrePortDialogSettings(scope),
+                enabled: function () {
+                    return dataModel.anySelected();
+                },
+                confirmClick: function () {
+                    $('#' + this.dialogSettings.id).modal('hide');
+                    var enabled = this.dialogSettings.switchEnabled.value;
+                    var attribute = null;
+
+                    if (storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel)) {
+                        attribute = getRawPortAttribute(this.dialogSettings.itemAttribute.value);
+                    }
+
+                    _.forEach(dataModel.getSelectedItems(), function (storagePort) {
+                        var payload = {
+                            securitySwitchEnabled: enabled,
+                            attribute: attribute
+                        };
+                        orchestratorService.updateStoragePort(storagePort.storageSystemId, storagePort.storagePortId, payload);
+                    });
+
+                    this.dialogSettings.switchEnabled.value = false;
+                    this.dialogSettings.itemAttribute.value = function () {
+                        if (storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel)) {
+                            return portAttributes.target;
+                        } else {
+                            return null;
+                        }
+                    };
+                },
+                onClick: function () {
+
+                    var firstItem = _.first(dataModel.getSelectedItems());
+                    var isAllSameSecuritySwitchEnabled = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                        return storagePort.securitySwitchEnabled === this.securitySwitchEnabled;
+                    }, firstItem);
+
+                    this.dialogSettings.switchEnabled.value = isAllSameSecuritySwitchEnabled ? firstItem.securitySwitchEnabled : false;
+
+                    if (storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel)) {
+                        var isAllSameAttribute = _.all(dataModel.getSelectedItems(), function (storagePort) {
+                            return storagePort.attributes[0] === this.attributes[0];
+                        }, firstItem);
+
+                        this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
+                    }
+                }
+            }
+        }
+
+        var initPorts = function(type, scope) {
+            var queryObject = new paginationService.QueryObject('type', undefined, type);
+            return paginationService
+                .get(
+                    null, getStoragePortsPath, objectTransformService.transformPort,
+                    true, storageSystemId, undefined, undefined, queryObject
+                )
+                .then(function (result) {
+                    var dataModel = generateDataModel(result, scope);
+                    if(type === 'FIBRE') {
+                        var actions = fibreActions(dataModel,scope);
+                        dataModel.getActions = function () {
+                            return [actions];
+                        };
+                    }else if(type === 'ISCSI'){
+                        var actions = iscsiActions(dataModel);
+                        dataModel.getActions = function () {
+                            return actions;
+                        };
+                    }
+                    dataModel.getResources = function () {
+                        return paginationService.get(
+                            null, getStoragePortsPath, objectTransformService.transformPort,
+                            false, storageSystemId, undefined, undefined, queryObject
+                        );
+                    };
+                    if(type === 'FIBRE') {
+                        dataModel.gridSettings = fibreGridSettings(scope.storageSystemModel);
+                    }else if(type === 'ISCSI'){
+                        dataModel.gridSettings = iscsiGridSettings(scope.storageSystemModel);
+                    }
+                    dataModel.cachedList = result.resources;
+                    dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
+                    angular.extend(scope.dataModel, dataModel);
+                    scope.filterModel = generateFilterModel();
+                    scrollDataSourceBuilderServiceNew.setupDataLoader(scope, result.resources, 'storagePortSearch', true);
+                    return dataModel;
+                });
+        }
+
         init();
 
         return {
@@ -287,6 +506,14 @@ angular.module('rainierApp')
             getStoragePortsPath: getStoragePortsPath,
             getRawPortAttribute: getRawPortAttribute,
             iscsiActions: iscsiActions,
-            idKey: 'storagePortId'
+            idKey: 'storagePortId',
+            defaultSort: defaultSort,
+            updateResultTotalCounts: updateResultTotalCounts,
+            generateSetSortFn: generateSetSortFn,
+            generateDataModel: generateDataModel,
+            generateFilterModel: generateFilterModel,
+            generateEditFibrePortDialogSettings: generateEditFibrePortDialogSettings,
+            fibreActions: fibreActions,
+            initPorts: initPorts
         };
     });

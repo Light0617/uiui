@@ -26,7 +26,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
     };
 
     var iscsiTargetInformation = function () {
-        var r = {
+        return {
             ipAddress: "172.17.91.00",
             iscsiName: "iqn.1994-04.jp.co.hitachi:rsd.h8h.t.10011.1d097",
             amd: "CHAP",
@@ -34,7 +34,6 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
             chapUser: "Win_SQL_EX",
             iscsiVirtualPortId: "CL1-D"
         };
-        return r;
     };
 
     var generateDiscoveredLun = function (l) {
