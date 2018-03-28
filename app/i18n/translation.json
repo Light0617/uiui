@@ -1095,6 +1095,7 @@
     "migration-tasks-not-exist": "False",
 
     "common-migration-tasks": "Migration Tasks",
+    "migration-task-list-id": "ID",
     "migration-task-list-name": "Name",
     "migration-task-list-scheduled-date": "Scheduled Date",
     "migration-task-list-status": "Status",
