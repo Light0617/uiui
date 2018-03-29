@@ -13,8 +13,7 @@ angular.module('rainierApp')
         $q,
         apiResponseHandlerService,
         Restangular,
-        orchestratorService,
-        objectTransformService
+        orchestratorService
     ) {
         // var keyForDiscovered = 'hashKey';
         var discoverManagedVolumes = function (
@@ -24,7 +23,7 @@ angular.module('rainierApp')
             targetStorageSystemId
         ) {
             var targetPortIds = _.map(externalPaths, 'targetPortId');
-            var targetPortHash, targetEndPointVolumeHash;
+            var targetPortHash; //targetEndPointVolumeHash
             targetPortEndPointHash(targetStorageSystemId, targetPortIds)
                 .then(function (result) {
                     targetPortHash = result;
@@ -72,7 +71,7 @@ angular.module('rainierApp')
         var targetEndPointsOfSourceVolume = function (volume) {
             return _.chain(volume.attachedVolumeServerSummary)
                 .map(function (summary) {
-                    return summary.paths
+                    return summary.paths;
                 })
                 .flatten()
                 .map(targetEndPointsOfVolumePath)
@@ -89,7 +88,7 @@ angular.module('rainierApp')
             };
 
             if (!path) {
-                return []
+                return [];
             } else if (path.wwns) {
                 return _.map(path.wwns, appendLun);
             } else if (
@@ -141,11 +140,11 @@ angular.module('rainierApp')
          * }
          */
         var discoverManagedVolumesFromPaths = function (
-            paths,
-            volumeIds,
-            sourceStorageId,
-            targetStorageId,
-            targetPortEndPointHash
+            // paths,
+            // volumeIds,
+            // sourceStorageId,
+            // targetStorageId,
+            // targetPortEndPointHash
         ) {
 
         };
