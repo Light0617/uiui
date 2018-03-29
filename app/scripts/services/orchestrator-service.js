@@ -369,6 +369,10 @@ angular.module('rainierApp')
             attachVolume: function (attachVolumePayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/attach').post(attachVolumePayload));
             },
+            attachVolumeForIscsi: function (attachVolumePayload, errAction) {
+                return apiResponseHandlerService._apiResponseHandlerWithErrAction(
+                    Restangular.all('volume-manager/attach').post(attachVolumePayload), errAction);
+            },
             detachVolume: function (detachVolumePayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/detach').post(detachVolumePayload));
             },

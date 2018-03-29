@@ -452,10 +452,13 @@ angular.module('rainierApp')
                         reservedResourcesList.push(vol.volumeId + '=' + resourceTrackerService.volume());
                     });
 
-                    // Show popup if resource is present in resource tracker else redirect
-                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                        'Attach Volumes Confirmation', null, null, payload, orchestratorService.attachVolume);
+                    var protocol = dataModel.pathModel.selectedHosts[0].protocol;
 
+                    // Show popup if resource is present in resource tracker else redirect
+                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
+                        resourceTrackerService.storageSystem(),
+                        'Attach Volumes Confirmation', null, null, payload, protocol === 'ISCSI'
+                            ? attachVolumeForIscsi : orchestratorService.attachVolume);
                 };
             }
         };
@@ -495,6 +498,53 @@ angular.module('rainierApp')
                     modalInstance.result.finally(function() {
                         modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
                     });
+                }
+            });
+        };
+
+        var attachVolumeForIscsi = function (payload) {
+            return orchestratorService.attachVolumeForIscsi(payload, function (error, wrapped, defaultErrAction) {
+                switch (error.status) {
+                    case 412:
+                        // Specified CHAP user already exists in the specified Storage Port
+                        var modelInstance = $modal.open({
+                            templateUrl: 'views/templates/basic-confirmation-modal.html',
+                            windowClass: 'modal fade confirmation',
+                            backdropClass: 'modal-backdrop',
+                            controller: function ($scope) {
+                                $scope.confirmationTitle = synchronousTranslateService.translate(
+                                    "storage-volume-attach-confirm-force-overwrite-chap-user-name-title");
+                                $scope.confirmationMessage = synchronousTranslateService.translate(
+                                    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message",
+                                    {
+                                        storageSystemId: error.data.messageParameters.storageSystemId,
+                                        storagePort: error.data.messageParameters.storagePort,
+                                        chapUserNames: error.data.messageParameters.chapUserNames
+                                    });
+
+                                $scope.ok = function () {
+                                    payload["forceOverwriteChapSecret"] = true; // Set option to force to overwrite CHAP secret
+                                    orchestratorService.attachVolume(payload) // Then retry to attach volume
+                                        .then(function () {
+                                            modelInstance.close(true);
+                                            window.history.back();
+                                        }, function () {
+                                            modelInstance.close(true);
+                                        });
+                                };
+
+                                $scope.cancel = function () {
+                                    modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                                };
+
+                                modelInstance.result.finally(function () {
+                                    $scope.cancel();
+                                });
+                            }
+                        });
+                        break;
+                    default:
+                        defaultErrAction.call({}, error, wrapped);
                 }
             });
         };
