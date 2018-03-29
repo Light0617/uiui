@@ -15,7 +15,18 @@ angular.module('rainierApp')
         Restangular,
         orchestratorService
     ) {
-        // var keyForDiscovered = 'hashKey';
+        /**
+         * externalPaths:  [{
+         *    targetPortId: 'target portId',
+         *    sourceEndPoint: {
+         *        wwn: 'source storage port wwn', // nullable for iSCSI
+         *        iscsiInfo: { // nullable for Fibre
+         *            iscsiName: 'source storage port IscsiName',
+         *            ip: 'source storage port ip address'
+         *        }
+         *    }
+         * }]
+         */
         var discoverManagedVolumes = function (
             externalPaths,
             volumeIds,
@@ -23,14 +34,80 @@ angular.module('rainierApp')
             targetStorageSystemId
         ) {
             var targetPortIds = _.map(externalPaths, 'targetPortId');
-            var targetPortHash; //targetEndPointVolumeHash
-            targetPortEndPointHash(targetStorageSystemId, targetPortIds)
-                .then(function (result) {
-                    targetPortHash = result;
+            return $q.all([
+                discoverManagedLunsFromPaths(externalPaths, targetStorageSystemId),
+                targetPortEndPointHash(targetStorageSystemId, targetPortIds),
+                volumeEndPointHash(sourceStorageSystemId, volumeIds)
+            ]).then(function (result) {
+                var discoveredLuns = result[0];
+                var targetPortIdHash = result[1];
+
+                var discoveredLunWithEndPoint = appendTargetEndPointToLuns(discoveredLuns, targetPortIdHash);
+
+                var volumeEndPointHash = result[2];
+                return $q.resolve(discoveredVolumes(discoveredLunWithEndPoint, volumeEndPointHash));
+            }).then(function (volumes) {
+                return $q.resolve(_.uniq(volumes, 'lunNEndPoint'));
+            });
+        };
+
+        var discoveredVolumes = function (discoveredLunsWithEndPoint, volumeEndPointHash) {
+            return _.chain(discoveredLunsWithEndPoint)
+                .map(function (lun) {
+                    return lun.lunNEndPoint;
                 })
-                .then(function () {
-                    volumeEndPointHash(sourceStorageSystemId, volumeIds);
-                });
+                .filter(function (lunNEndPoint) {
+                    return lunNEndPoint;
+                })
+                .map(function (lunNEndPoint) {
+                    return volumeEndPointHash[lunNEndPoint];
+                })
+                .filter(function (volume) {
+                    return volume;
+                })
+                .value();
+        };
+
+        var appendTargetEndPointToLuns = function (discoveredLuns, targetPortIdHash) {
+            return _.chain(discoveredLuns)
+                .map(function (discoveredLun) {
+                    var endPoint;
+                    if (targetPortIdHash[discoveredLun.portId]) {
+                        endPoint = targetPortIdHash[discoveredLun.portId].endPoint;
+                    }
+                    return _.assign(
+                        {},
+                        discoveredLun,
+                        {endPoint: endPoint}
+                    );
+                })
+                .filter(function (discoveredLun) {
+                    return discoveredLun.endPoint;
+                })
+                .map(function (discoveredLun) {
+                    return _.assign(
+                        discoveredLun,
+                        {lunNEndPoint: lunNEndPoint(discoveredLun.endPoint, discoveredLun.lunId)}
+                    );
+                })
+                .value();
+        };
+
+        var discoverManagedLunsFromPaths = function (
+            paths,
+            targetStorageId
+        ) {
+            return $q.all(
+                _.map(paths, function (path) {
+                    return orchestratorService.discoverLun(
+                        targetStorageId,
+                        path.targetPortId,
+                        path.sourceEndPoint
+                    );
+                })
+            ).then(function (result) {
+                return $q.resolve(_.flatten(result));
+            });
         };
 
         var volumeEndPointHash = function (sourceStorageSystemId, volumeIds) {
@@ -127,120 +204,17 @@ angular.module('rainierApp')
             }
         };
 
-        /**
-         * path : {
-         *    targetPortId: 'target portId',
-         *    sourceEndPoint: {
-         *        wwn: 'source storage port wwn', // nullable for iSCSI
-         *        iscsiInfo: { // nullable for Fibre
-         *            iscsiName: 'source storage port IscsiName',
-         *            ip: 'source storage port ip address'
-         *        }
-         *    }
-         * }
-         */
-        var discoverManagedVolumesFromPaths = function (
-            // paths,
-            // volumeIds,
-            // sourceStorageId,
-            // targetStorageId,
-            // targetPortEndPointHash
-        ) {
-
-        };
-        //
-        // var discoverUnamanagedVolumes = function (
-        //     portIds,
-        //     storageSystemIds
-        // ) {
-        //     return discoverLunsHash(portIds, storageSystemIds)
-        //         .then(_.toArray);
-        // };
-        //
-        // var getPortsHash = function (portIds, storageSystemId) {
-        //     // TODO for management
-        // };
-        //
-        // var endPointOfVolumePath = function (path) {
-        //
-        // };
-        //
-        // var keyOfVolumePath = function (path) {
-        //
-        // };
-        //
-        // var fillPathsInfoOnVolume = function (attachedVolume) {
-        //     attachedVolume.paths = attachedVolume.attachedVolumeServerSummary.paths;
-        //     _.forEach(attachedVolume.paths, function (path) {
-        //         path[keyForDiscovered] = keyOfVolumePath(path);
-        //         path.endPoint = endPointOfVolumePath(path);
-        //     });
-        //     return attachedVolume;
-        // };
-        //
-        // var getVolumes = function (volumeIds, storageSystemId) {
-        //     // TODO for management
-        //     return $q.all(
-        //         _.map(
-        //             volumeIds,
-        //             function (volumeId) {
-        //                 return orchestratorService.volume(storageSystemId, volumeId);
-        //             }
-        //         )
-        //     )
-        // };
-        //
-        // var endPointOfLun = function (discoveredLun) {
-        //     if (!_.isUndefined(discoveredLun.wwn)) {
-        //         return discoveredLun.wwn;
-        //     } else if (
-        //         !_.isUndefined(discoveredLun.iscsiInfo) &&
-        //         !_.isUndefined(discoveredLun.iscsiInfo.ip) &&
-        //         !_.isUndefined(discoveredLun.iscsiInfo.iscsiName)
-        //     ) {
-        //         return discoveredLun.iscsiInfo.ip + '_' + discoveredLun.iscsiInfo.iscsiName;
-        //     }
-        // };
-        //
-        // var keyOf = function (discoveredLun) {
-        //     return [discoveredLun.portId, discoveredLun.lunId, endPointOfLun(discoveredLun)].join('_');
-        // };
-        //
-        // var appendKey = function (discoveredLun) {
-        //     discoveredLun[keyForDiscovered] = keyOf(discoveredLun);
-        //     discoveredLun.endPoint = endPointOfLun(discoveredLun);
-        //     return discoveredLun;
-        // };
-        //
-        // var discoveredLunsToHash = function (discoveredLuns) {
-        //     return _.chain(discoveredLuns).map(appendKey)
-        //         .indexBy(keyForDiscovered).value();
-        // };
-        //
-        // var discoverLunsHash = function (portIds, storageSystemId) {
-        //     return discoverLuns(portIds, storageSystemId)
-        //         .then(discoveredLunsToHash);
-        // };
-        //
-        // var discoverLuns = function (portIds, storageSystemId) {
-        //     var requests = _.map(portIds, function (pid) {
-        //         return orchestratorService.discoverLun(pid, storageSystemId);
-        //     });
-        //     return $q.all(requests)
-        //         .then(_.flatten);
-        // };
-
         return {
             discoverManagedVolumes: discoverManagedVolumes,
-            // discoverUnmanagedVolumes: discoverUnamanagedVolumes,
-            // discoverLuns: discoverLuns,
-            targetPortEndPointHash: targetPortEndPointHash,
+            discoveredVolumes: discoveredVolumes,
+            appendTargetEndPointToLuns: appendTargetEndPointToLuns,
+            discoverManagedVolumesFromPaths: discoverManagedLunsFromPaths,
             volumeEndPointHash: volumeEndPointHash,
             flattenVolumesByTargetEndPoint: flattenVolumesByTargetEndPoint,
             targetEndPointsOfSourceVolume: targetEndPointsOfSourceVolume,
             targetEndPointsOfVolumePath: targetEndPointsOfVolumePath,
+            targetPortEndPointHash: targetPortEndPointHash,
             appendTargetEndPointToTargetPort: appendTargetEndPointToTargetPort,
-            targetEndPointOfTargetPort: targetEndPointOfTargetPort,
-            discoverManagedVolumesFromPaths: discoverManagedVolumesFromPaths
+            targetEndPointOfTargetPort: targetEndPointOfTargetPort
         };
     });

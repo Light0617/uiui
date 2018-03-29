@@ -17,9 +17,9 @@ describe('Service: portDiscoverService tests', function () {
             return $q.resolve({
                 storagePortId: tgtPortId,
                 storageSystemId: tgtStorageId,
-                wwn: isFibre ? 'thisiswwn' : undefined,
+                wwn: isFibre ? 'wwn1' : undefined,
                 iscsiPortInformation: {
-                    portIscsiName: isFibre ? undefined : 'thisisiscsiname'
+                    portIscsiName: isFibre ? undefined : 'iscsi1'
                 }
             });
         },
@@ -42,6 +42,21 @@ describe('Service: portDiscoverService tests', function () {
                     ]
                 }] : undefined
             });
+        },
+        discoverLun: function (storageSystemId, portId, payloadQuery) {
+            var found = storageSystemId % 2;
+            return $q.resolve(
+                found ? [
+                    {
+                        portId: portId,
+                        lunId: 1
+                    },
+                    {
+                        portId: portId,
+                        lunId: 2
+                    }
+                ] : []
+            );
         }
     };
 
@@ -80,8 +95,8 @@ describe('Service: portDiscoverService tests', function () {
 
             $rootScope.$digest();
 
-            expect(data['CL1-A'].endPoint).toEqual('thisiswwn');
-            expect(data['CL21-C'].endPoint).toEqual('thisiswwn');
+            expect(data['CL1-A'].endPoint).toEqual('wwn1');
+            expect(data['CL21-C'].endPoint).toEqual('wwn1');
         });
 
         it('should resolve with portid-indexed hash and iscsi name', function () {
@@ -101,8 +116,8 @@ describe('Service: portDiscoverService tests', function () {
 
             $rootScope.$digest();
 
-            expect(data['CL2-B'].endPoint).toEqual('thisisiscsiname');
-            expect(data['CL10-F'].endPoint).toEqual('thisisiscsiname');
+            expect(data['CL2-B'].endPoint).toEqual('iscsi1');
+            expect(data['CL10-F'].endPoint).toEqual('iscsi1');
         });
     });
 
@@ -301,6 +316,150 @@ describe('Service: portDiscoverService tests', function () {
             expect(data.wwn101_1.volumeId).toEqual(101);
             expect(data.wwn101_1.label).toEqual('volume101');
             expect(data.wwn101_1.lunNEndPoint).toEqual('wwn101_1');
+        });
+    });
+
+    describe('discoveredVolumes', function () {
+        it('should return volumes which filtered by discovered one', function () {
+            var discoveredLuns = [{
+                lunNEndPoint: 'wwna_lun1'
+            }, {
+                lunNEndPoint: 'iscsib_lun2'
+            }, {
+                lunNEndPoint: 'wwnb_lun2'
+            }];
+
+            var volumeEndPointHash = {
+                'wwna_lun1': {
+                    volumeId: 1,
+                    lun: 1
+                },
+                'iscsib_lun2': {
+                    volumeId: 1,
+                    lun: 2
+                },
+                'something': {
+                    volumeId: 0,
+                    lun: 0
+                }
+            };
+
+            var result = portDiscoverService
+                .discoveredVolumes(discoveredLuns, volumeEndPointHash);
+
+            expect(result).toEqual([{
+                volumeId: 1, lun: 1
+            }, {
+                volumeId: 1, lun: 2
+            }]);
+        });
+    });
+
+    describe('appendTargetEndPointToLuns', function () {
+        it('should return luns with endPoints', function () {
+            var discoveredLuns = [
+                {
+                    portId: 'CL1-A',
+                    lunId: 1
+                },
+                {
+                    portId: 'CL2-B',
+                    lunId: 1
+                }
+            ];
+            var targetPortIdHash = {
+                'CL1-A': {
+                    endPoint: 'iscsiNameHere'
+                }
+            };
+            var result = portDiscoverService.appendTargetEndPointToLuns(
+                discoveredLuns, targetPortIdHash
+            );
+            expect(result.length).toEqual(1);
+            expect(result[0].portId).toEqual('CL1-A');
+            expect(result[0].lunId).toEqual(1);
+            expect(result[0].endPoint).toEqual('iscsiNameHere');
+            expect(result[0].lunNEndPoint).toEqual('iscsiNameHere_1');
+        });
+    });
+
+    describe('discoverManagedLunsFromPaths', function () {
+        it('should resolved with flattened discovered luns', function () {
+            var data = [];
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            promise.then(function (response) {
+                data = response;
+            });
+
+            var paths = [{
+                targetPortId: 'CL11-F',
+                sourceEndPoint: {
+                    wwn: 'wwncl11f'
+                }
+            }, {
+                targetPortId: 'CL12-X',
+                iscsiInfo: {
+                    iscsiName: 'iscsicl12x'
+                }
+            }];
+
+            portDiscoverService
+                .discoverManagedVolumesFromPaths(paths, 1)
+                .then(function (response) {
+                    deferred.resolve(response);
+                });
+
+            $rootScope.$digest();
+
+            expect(data.length).toEqual(4);
+            expect(data[0]).toEqual({portId: 'CL11-F', lunId: 1});
+            expect(data[1]).toEqual({portId: 'CL11-F', lunId: 2});
+            expect(data[2]).toEqual({portId: 'CL12-X', lunId: 1});
+            expect(data[3]).toEqual({portId: 'CL12-X', lunId: 2});
+        });
+    });
+
+    describe('discoverManagedVolumes', function () {
+        it('should resolved with volumes witch actually discovered', function () {
+            var data = [];
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            promise.then(function (response) {
+                data = response;
+            });
+
+            var externalPaths = [{
+                targetPortId: 'CL129-X',
+                lunId: 2
+            }, {
+                targetPortId: 'CL129-X',
+                lunId: 1
+            }, {
+                targetPortId: 'CL0-undefined',
+                lunId: 0
+            }];
+            var volumeIds = [0, 1, 2, 3];
+
+            portDiscoverService.discoverManagedVolumes(externalPaths, volumeIds, 1, 1)
+                .then(function (response) {
+                    deferred.resolve(response);
+                });
+
+            $rootScope.$digest();
+
+            expect(data).toEqual(
+                [{
+                    volumeId: 1,
+                    label: 'volume1',
+                    capacity: 2,
+                    endPoint: 'wwn1',
+                    lun: 1,
+                    lunNEndPoint: 'wwn1_1'
+                }]
+            );
         });
     });
 });
