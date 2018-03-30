@@ -1,0 +1,85 @@
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name rainierApp.controller:mutualChapService
+ * @description
+ * # mutualChapService
+ * Factory of the rainierApp
+ */
+angular.module('rainierApp')
+    .factory('mutualChapService', function (orchestratorService, $modal, synchronousTranslateService) {
+        var editMutualChapUser = function (hostGroup) {
+            var modelInstance = $modal.open({
+                templateUrl: 'views/templates/edit-mutual-chap-user-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.iscsiTargetName = hostGroup.iscsiTargetInformation.iscsiTargetName;
+                    $scope.submit = function () {
+                        var payload = {
+                            iscsiTargetInformation: {
+                                mutualChapUser: {
+                                    userName: $scope.dataModel.mutualChapUserName,
+                                    secret: $scope.dataModel.mutualChapUserSecret
+                                }
+                            }
+                        };
+                        orchestratorService.editMutualChapUser(
+                            hostGroup.storageSystemId, hostGroup.hostGroupId, payload);
+                        $scope.cancel();
+                    };
+
+                    $scope.cancel = function () {
+                        modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modelInstance.result.finally(function () {
+                        $scope.cancel();
+                    });
+                }
+            });
+        };
+
+        var deleteMutualChapUser = function (hostGroup) {
+            var modelInstance = $modal.open({
+                templateUrl: 'views/templates/basic-confirmation-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.confirmationTitle = synchronousTranslateService.translate(
+                        'host-delete-mutual-chap-user');
+                    $scope.confirmationMessage = synchronousTranslateService.translate(
+                        'host-delete-mutual-chap-user-message',
+                        {
+                            iscsiTargetName: hostGroup.iscsiTargetInformation.iscsiTargetName,
+                            mutualUserName: hostGroup.iscsiTargetInformation.mutualChapUser
+                        });
+
+                    $scope.ok = function () {
+                        var payload = {
+                            iscsiTargetInformation: {
+                                mutualChapUser: null
+                            }
+                        };
+                        orchestratorService.deleteMutualChapUser(
+                            hostGroup.storageSystemId, hostGroup.hostGroupId, payload);
+                        $scope.cancel();
+                    };
+
+                    $scope.cancel = function () {
+                        modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modelInstance.result.finally(function () {
+                        $scope.cancel();
+                    });
+                }
+            });
+        };
+
+        return {
+            editMutualChapUser: editMutualChapUser,
+            deleteMutualChapUser: deleteMutualChapUser
+        };
+    });
