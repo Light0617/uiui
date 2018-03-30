@@ -12,7 +12,6 @@ angular.module('rainierApp')
     .factory('portDiscoverService', function (
         $q,
         apiResponseHandlerService,
-        Restangular,
         orchestratorService
     ) {
 
@@ -57,11 +56,11 @@ angular.module('rainierApp')
             } else if (
                 lun.externalIscsiInformation &&
                 lun.externalIscsiInformation.iscsiName &&
-                lun.externalIscsiInformation.ip
+                lun.externalIscsiInformation.ipAddress
             ) {
                 return lun.externalIscsiInformation.iscsiName +
                     '_' +
-                    lun.externalIscsiInformation.ip;
+                    lun.externalIscsiInformation.ipAddress;
             }
             return undefined;
         };

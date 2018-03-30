@@ -57,7 +57,7 @@ describe('Service: portDiscoverService tests', function () {
                         lunId: 2,
                         externalIscsiInformation: {
                             iscsiName: 'iscsi',
-                            ip: '1.1.1.2'
+                            ipAddress: '1.1.1.2'
                         }
                     }
                 ] : []
