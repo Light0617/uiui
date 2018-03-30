@@ -255,8 +255,10 @@ angular.module('rainierApp')
         };
 
         return {
+            // Use following 2 functions from outside of the service
             discoverUnmanagedLuns: discoverUnmanagedLuns,
             discoverManagedVolumes: discoverManagedVolumes,
+            // Following functions are only exposed for Specs
             discoveredVolumes: discoveredVolumes,
             appendTargetEndPointToLuns: appendTargetEndPointToLuns,
             discoverManagedVolumesFromPaths: discoverManagedLunsFromPaths,
@@ -265,7 +267,5 @@ angular.module('rainierApp')
             targetEndPointsOfSourceVolume: targetEndPointsOfSourceVolume,
             targetEndPointsOfVolumePath: targetEndPointsOfVolumePath,
             targetPortEndPointHash: targetPortEndPointHash,
-            appendTargetEndPointToTargetPort: appendTargetEndPointToTargetPort,
-            targetEndPointOfTargetPort: targetEndPointOfTargetPort
         };
     });
