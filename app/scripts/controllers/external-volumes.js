@@ -65,32 +65,6 @@ angular.module('rainierApp')
             $scope.summaryModel.dpAlert.update();
         });
 
-        var volumeUnprotectActions = function (selectedVolume) {
-            ShareDataService.volumeListForUnprotect = selectedVolume;
-
-            $location.path(['storage-systems', storageSystemId, 'volumes', 'unprotect'].join('/'));
-        };
-
-        var volumeRestoreAction = function (action, selectedVolumes) {
-
-            var volumeId = 0;
-            if (selectedVolumes && selectedVolumes.length > 0) {
-                volumeId = selectedVolumes[0].volumeId;
-            }
-
-            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
-
-                ShareDataService.SVolsList = _.filter(result.resources, function(SVol){ return SVol.primaryVolume && SVol.secondaryVolume; });
-                ShareDataService.restorePrimaryVolumeId = volumeId;
-                ShareDataService.restorePrimaryVolumeToken = result.nextToken;
-
-                _.forEach(ShareDataService.SVolsList, function (volume) {
-                    volume.selected = false;
-                });
-                $location.path(['/storage-systems/', storageSystemId, '/volumes/volume-actions-restore-selection'].join(''));
-            });
-        };
-
         paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true, storageSystemId).then(function (result) {
             paginationService.clearQuery();
             var dataModel = {
@@ -268,14 +242,5 @@ angular.module('rainierApp')
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
             };
-        };
-
-        Array.prototype.areAllItemsTrue = function() {
-            for(var i = 0; i < this.length; i++) {
-                if(this[i] === false) {
-                    return false;
-                }
-            }
-            return true;
         };
     });

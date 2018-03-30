@@ -582,7 +582,7 @@ angular
                         'volumes',
                         'parity-groups',
                         'replication-groups',
-                        'external-parity0groups'
+                        'external-parity-groups'
                     ]
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'
