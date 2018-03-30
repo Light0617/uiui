@@ -49,11 +49,16 @@ describe('Service: portDiscoverService tests', function () {
                 found ? [
                     {
                         portId: portId,
-                        lunId: 1
+                        lunId: 1,
+                        wwn: 'wwna'
                     },
                     {
                         portId: portId,
-                        lunId: 2
+                        lunId: 2,
+                        externalIscsiInformation: {
+                            iscsiName: 'iscsi',
+                            ip: '1.1.1.2'
+                        }
                     }
                 ] : []
             );
@@ -76,6 +81,33 @@ describe('Service: portDiscoverService tests', function () {
             success: {}
         });
     }));
+
+    describe('discoverUnmanagedLuns', function () {
+        it('should resolved with unique discovered luns', function () {
+            var data;
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            promise.then(function (response) {
+                data = response;
+            });
+
+            portDiscoverService
+                .discoverUnmanagedLuns(['CL1-A', 'CL21-C'], 1)
+                .then(function (response) {
+                    deferred.resolve(response);
+                });
+
+            $rootScope.$digest();
+
+            expect(data.length).toEqual(2);
+            expect(data[0].portId).toEqual('CL1-A');
+            expect(data[0].lunId).toEqual(1);
+            expect(data[1].portId).toEqual('CL1-A');
+            expect(data[1].lunId).toEqual(2);
+
+        });
+    });
 
     describe('targetPortEndPointHash', function () {
         it('should resolve with portid-indexed hash and wwn', function () {
@@ -414,10 +446,14 @@ describe('Service: portDiscoverService tests', function () {
             $rootScope.$digest();
 
             expect(data.length).toEqual(4);
-            expect(data[0]).toEqual({portId: 'CL11-F', lunId: 1});
-            expect(data[1]).toEqual({portId: 'CL11-F', lunId: 2});
-            expect(data[2]).toEqual({portId: 'CL12-X', lunId: 1});
-            expect(data[3]).toEqual({portId: 'CL12-X', lunId: 2});
+            expect(data[0].portId).toEqual('CL11-F');
+            expect(data[0].wwn).toEqual('wwna');
+            expect(data[1].portId).toEqual('CL11-F');
+            expect(data[1].externalIscsiInformation.iscsiName).toEqual('iscsi');
+            expect(data[2].portId).toEqual('CL12-X');
+            expect(data[2].wwn).toEqual('wwna');
+            expect(data[3].portId).toEqual('CL12-X');
+            expect(data[3].externalIscsiInformation.iscsiName).toEqual('iscsi');
         });
     });
 

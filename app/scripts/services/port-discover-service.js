@@ -15,6 +15,57 @@ angular.module('rainierApp')
         Restangular,
         orchestratorService
     ) {
+
+        var discoverUnmanagedLuns = function (
+            targetPortIds,
+            targetStorageSystemId
+        ) {
+            return $q.all(
+                _.map(targetPortIds, function (portId) {
+                    return orchestratorService.discoverLun(targetStorageSystemId, portId, {});
+                })
+            ).then(function (luns) {
+                var result = _.chain(luns)
+                    .flatten()
+                    .map(appendSourceEndPointToDiscoveredLuns)
+                    .filter(function (lun) {
+                        return lun.lunNSourceEndPoint;
+                    })
+                    .uniq('lunNSourceEndPoint')
+                    .value();
+                return $q.resolve(result);
+            });
+        };
+
+        var appendSourceEndPointToDiscoveredLuns = function (lun) {
+            var sourceEndPoint = sourceEndPointOfLun(lun);
+            if (sourceEndPoint) {
+                return _.assign(
+                    {},
+                    lun,
+                    {sourceEndPoint: sourceEndPoint},
+                    {lunNSourceEndPoint: lunNEndPoint(sourceEndPoint, lun.lunId)}
+                );
+            } else {
+                return lun;
+            }
+        };
+
+        var sourceEndPointOfLun = function (lun) {
+            if (lun.wwn) {
+                return lun.wwn;
+            } else if (
+                lun.externalIscsiInformation &&
+                lun.externalIscsiInformation.iscsiName &&
+                lun.externalIscsiInformation.ip
+            ) {
+                return lun.externalIscsiInformation.iscsiName +
+                    '_' +
+                    lun.externalIscsiInformation.ip;
+            }
+            return undefined;
+        };
+
         /**
          * externalPaths:  [{
          *    targetPortId: 'target portId',
@@ -205,6 +256,7 @@ angular.module('rainierApp')
         };
 
         return {
+            discoverUnmanagedLuns: discoverUnmanagedLuns,
             discoverManagedVolumes: discoverManagedVolumes,
             discoveredVolumes: discoveredVolumes,
             appendTargetEndPointToLuns: appendTargetEndPointToLuns,
