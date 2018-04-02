@@ -20,6 +20,10 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
                     {
                         'diskType': 'FMD DC2',
                         'speed': 0
+                    },
+                    {
+                        'diskType': 'FMD HDE',
+                        'speed': 0
                     }
                 ]
             },
@@ -114,6 +118,17 @@ rainierAppMock.factory('parityGroupMock', function(mockUtils) {
                 'totalCapacity':184717749780480,
                 'totalFreeCapacity':10555295268864,
                 'numberOfParityGroups':7
+            },
+            {
+                'diskType':'FMDHDE',
+                'speed':'0',
+                'size':2199023255552,
+                'tierName':'Platinum',
+                'numberOfAvailableDisks':2,
+                'numberOfExistingHotSpares':1,
+                'totalCapacity':13194139533312,
+                'totalFreeCapacity':846727492176,
+                'numberOfParityGroups':3
             }
         ]
     };
