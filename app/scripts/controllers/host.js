@@ -12,7 +12,8 @@ angular.module('rainierApp')
                                       objectTransformService, scrollDataSourceBuilderService, ShareDataService,
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
-                                      replicationService, gadVolumeTypeSearchService, migrationTaskService) {
+                                      replicationService, gadVolumeTypeSearchService, migrationTaskService,
+                                      mutualChapService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -271,6 +272,10 @@ angular.module('rainierApp')
 
                 // In case the getHost call returns earlier than this backend api call, we should restore the "host".
                 dataModel.host = $scope.dataModel.host;
+
+                dataModel.editMutualChapUser = mutualChapService.editMutualChapUser;
+                dataModel.deleteMutualChapUser = mutualChapService.deleteMutualChapUser;
+
                 $scope.dataModel = dataModel;
 
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources);

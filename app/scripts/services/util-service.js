@@ -12,6 +12,9 @@ angular.module('rainierApp')
         return {
             isNullOrUndef: function (value) {
                 return _.isNull(value) || _.isUndefined(value);
+            },
+            isNullOrUndefOrBlank: function (value) {
+                return _.isNull(value) || _.isUndefined(value) || value === '';
             }
         };
     });
