@@ -72,7 +72,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         generateMockDiscoveredLuns: generateMockDiscoveredLuns(),
         handle: function (urlResult) {
             switch (urlResult.method) {
-                case 'GET':
+                case 'POST':
                     return handleGetRequest(urlResult);
                 default:
                     return mockUtils.response.methodNotAllowed(urlResult.url);

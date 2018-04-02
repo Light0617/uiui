@@ -70,8 +70,10 @@ angular.module('rainierApp')
             targetCoordinates: {},
             sourceCoordinates: {},
             selectedType : "",
-            type: ['FIBRE', 'ISCSI'],
             portLunMap: {},
+            type: ["FIBRE", "ISCSI"],
+            iscsiPaths: [],
+            fibrePaths: [],
             pathModel: {
                 paths: [],
                 viewBoxHeight: 0,
@@ -110,9 +112,9 @@ angular.module('rainierApp')
                         }else {
                             previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
                                 // TODO Actual Discovered volume should be listed
-                                $scope.dataModel.isWaiting = false;
-                                console.log(volumes);
                                 getVolumes(storageSystemId);
+                            }).finally(function () {
+                                $scope.dataModel.isWaiting = false;
                             });
                         }
 
@@ -130,10 +132,17 @@ angular.module('rainierApp')
 
         function getTargetPorts() {
             paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, true, $scope.dataModel.selectedTarget.storageSystemId).then(function (result) {
-                $scope.dataModel.pathModel.storagePorts = result.resources;
+                //Filter out vsmPorts and allow only EXTERNAL_INITIATOR_PORT enabled ports
+                $scope.dataModel.pathModel.storagePorts = _.filter(result.resources, function(port) {
+                    return !port.vsmPort && _.find(port.attributes, function(attr) {
+                         return attr === 'External';
+                     });
+                });
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
-                $scope.dataModel.ready.then($scope.dataModel.build);
+                if(!$scope.dataModel.isAddExtVolume) {
+                    $scope.dataModel.ready.then($scope.dataModel.build);
+                }
             });
         }
 
@@ -143,7 +152,12 @@ angular.module('rainierApp')
             dataModel.storageSystems = result;
 
             paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, true, storageSystemId).then(function (result) {
-                $scope.dataModel.pathModel.sourcePorts = result.resources;
+                //Filter out vsmPorts and allow only TARGET_PORT enabled ports
+                $scope.dataModel.pathModel.sourcePorts = _.filter(result.resources, function(port) {
+                    return !port.vsmPort && _.find(port.attributes, function(attr) {
+                        return attr === 'Target';
+                    });
+                });
                 $scope.dataModel.pathModel.FcSourcePorts = _.filter($scope.dataModel.pathModel.sourcePorts, function(port){
                     return port.type === 'FIBRE';
                 });
@@ -169,32 +183,34 @@ angular.module('rainierApp')
                     $scope.$watch('dataModel.selectedTarget', function() {
                         getTargetPorts();
                     });
-                    //$scope.dataModel.pathModel.builder();
-                    // $scope.$watch('dataModel.selectedTarget', function() {
-                    //     getTargetPorts();
-                    // });
                     $scope.$watchCollection('dataModel.pathModel.paths', function () {
                         $scope.dataModel.selectModel.itemSelected = $scope.dataModel.pathModel.paths.length > 0;
                     });
-                    $scope.dataModel.ready.then($scope.dataModel.build);
                 });
             });
 
             if($scope.dataModel.isAddExtVolume){
                 angular.extend($scope.dataModel, viewModelService.newWizardViewModel(['selectPorts', 'selectDiscoveredVolumes', 'selectServer', 'paths']));
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storagePortSearch', true);
                 selectPorts(storageSystemId);
             }else {
                 angular.extend($scope.dataModel, viewModelService.newWizardViewModel(['selectSourcePort', 'selectDiscoveredVolumes', 'selectServer', 'paths']));
+                $scope.dataModel.ready.then($scope.dataModel.build);
             }
         });
 
         $scope.dataModel.switchType = function () {
+            $scope.dataModel.deleteAllLines($scope.dataModel.pathModel);
             if($scope.dataModel.selectedType === 'FIBRE') {
+                $scope.dataModel.iscsiPaths = $scope.dataModel.pathModel.paths;
+                $scope.dataModel.pathModel.paths = $scope.dataModel.fibrePaths;
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.FcSourcePorts, $scope.dataModel.pathModel.FcStoragePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                 $scope.dataModel.pathModel.storagePorts = $scope.dataModel.pathModel.FcStoragePorts;
                 $scope.dataModel.pathModel.sourcePorts = $scope.dataModel.pathModel.FcSourcePorts;
-            }else if($scope.dataModel.selectedType === 'ISCSI'){
+            }else if($scope.dataModel.selectedType === 'ISCSI') {
+                $scope.dataModel.fibrePaths = $scope.dataModel.pathModel.paths;
+                $scope.dataModel.pathModel.paths = $scope.dataModel.iscsiPaths;
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.IscsiSourcePorts, $scope.dataModel.pathModel.IscsiStoragePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                 $scope.dataModel.pathModel.storagePorts = $scope.dataModel.pathModel.IscsiStoragePorts;
@@ -203,7 +219,6 @@ angular.module('rainierApp')
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
             }
-            $scope.dataModel.deleteAllPaths($scope.dataModel.pathModel);
             $scope.dataModel.build(true);
         };
 
@@ -212,10 +227,6 @@ angular.module('rainierApp')
         var idKey = storagePortsService.idKey;
         var getStoragePortsPath = storagePortsService.getStoragePortsPath;
         var portAttributes = storagePortsService.portAttributes;
-
-        var defaultSort = function (model) {
-            model.sort.setSort(idKey);
-        };
 
         var selectPorts = function(storageSystemId){
 
@@ -247,6 +258,8 @@ angular.module('rainierApp')
                 itemSelected: false
             };
 
+            angular.extend($scope.dataModel, dataModelPort);
+
             $scope.dataModel.switchPortType = function(){
                 storagePortsService.initPorts($scope.dataModel.selectedType, $scope).then(storagePortsService.defaultSort);
             };
@@ -262,7 +275,11 @@ angular.module('rainierApp')
             }).then(function (result) {
                 $scope.summaryModel = result;
                 select('FIBRE');
-            }).then(defaultSort);
+                if($scope.dataModel.displayList.length === 0 || $scope.dataModel.displayList === 'undefined'){
+                    $scope.dataModel.selectedType = 'FIBRE';
+                    $scope.dataModel.switchPortType();
+                }
+            });
 
             $scope.updateSelected = function () {
                 var storagePort;
@@ -275,14 +292,6 @@ angular.module('rainierApp')
                     }
                 }
             };
-
-
-            angular.extend($scope.dataModel, dataModelPort);
-            if($scope.dataModel.displayList.length === 0 || $scope.dataModel.displayList === 'undefined'){
-                $scope.dataModel.selectedType = 'FIBRE';
-                $scope.dataModel.switchPortType();
-            }
-
             $scope.$watch('dataModel.displayList', function () {
                 $scope.dataModel.selectPortModel.itemSelected = $scope.dataModel.anySelected();
             }, true);
@@ -340,8 +349,12 @@ angular.module('rainierApp')
         var getVolumes = function (storageSystemId, ports){
             $scope.dataModel.displayList = [];
             $scope.dataModel.cachedList = [];
+            var payload = {
+               'wwn': null,
+               'iscsiInfo': null
+            };
             _.each(ports, function(port){
-                orchestratorService.discoveredLuns(storageSystemId, port.storagePortId).then(function (luns) {
+                orchestratorService.discoveredLuns(storageSystemId, port.storagePortId, payload).then(function (luns) {
                     objectTransformService.transformDiscoveredLun(luns);
                     $scope.dataModel.portLunMap[port.storagePortId] = luns;
                 }).then(function () {
@@ -350,6 +363,8 @@ angular.module('rainierApp')
                     });
                     updateDiscoveredLunsTotalCounts(port.storagePortId);
 
+                }).finally(function () {
+                    $scope.dataModel.isWaiting = false;
                 });
             });
 
