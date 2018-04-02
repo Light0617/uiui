@@ -321,7 +321,12 @@ angular.module('rainierApp')
                 scope.dataModel.pathModel.paths.push({
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
-                    isVsmPort: port.vsmPort
+                    isVsmPort: port.vsmPort,
+                    preVirtualizePayload: {
+                        srcPort: endPoint,
+                        targetWwn: port.wwn,
+                        storagePortType: scope.dataModel.selectedType
+                    }
                 });
 
                 scope.$apply();
@@ -385,8 +390,7 @@ angular.module('rainierApp')
                     serverEndPoint: endPoint,
                     isVsmPort: port.vsmPort,
                     preVirtualizePayload: {
-                        //srcPort: wwn,
-                        srcPort: port.storagePortId,
+                        srcPort: endPoint,
                         targetWwn: port.wwn,
                         storagePortType: scope.dataModel.selectedType
                     }
@@ -758,14 +762,13 @@ angular.module('rainierApp')
 
                 scope.readyDefer.resolve(true);
 
-                scope.dataModel.deleteAllPaths = function(pathModel){
+                scope.dataModel.deleteAllLines = function(pathModel){
                     var i;
                     var path;
                     for(i = 0; i< pathModel.paths.length; i++) {
                         path = pathModel.paths[i];
                         d3.select('path[path-index="' + i + '"]').remove();
                     }
-                    scope.dataModel.pathModel.paths = [];
                 };
 
                 scope.dataModel.pathModel.builder();

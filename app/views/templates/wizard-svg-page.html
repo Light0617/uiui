@@ -34,7 +34,7 @@
         </g>
 
         <!--source ports-->
-        <g class="pointer" title="server-endpoint" port-index="{{$index}}" ng-repeat="port in dataModel.pathModel.sourcePorts track by $index">
+        <g class="pointer" title="server-endpoint" ng-repeat="port in dataModel.pathModel.sourcePorts track by $index" attr-endpoint="{{port.storagePortId}}">
             <rect class="storage-port-base tile-base" ng-class="{'active': port.isSelected === true}"
                   x="5" ng-attr-y="{{$index * 25}}" width="120" height="20" rx="10" ry="10"
                   ng-click="dataModel.pathModel.toggleSelected(port, $event)"/>
@@ -45,7 +45,7 @@
                 <rect class="port-icon-plug" ng-attr-x="{{port.coordinate.x-758}}" ng-attr-y="{{port.coordinate.y-1}}" width="16" height="4" rx="2" ry="2"/>
             </g>
 
-            <text class="sm-label" x="15" ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
+            <text class="sm-label" x="15" attr-raw={{port.storagePortId}} ng-attr-y="{{13 + $index * 25}}" text-anchor="start">{{port.storagePortId}}</text>
         </g>
 
         <!--target ports-->

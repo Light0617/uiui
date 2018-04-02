@@ -19,6 +19,7 @@ angular.module('rainierApp')
     .factory('storagePortsService', function (
         $location,
         $routeParams,
+        $timeout,
         orchestratorService,
         storageNavigatorSessionService,
         synchronousTranslateService,
@@ -26,6 +27,7 @@ angular.module('rainierApp')
         paginationService,
         wwnService,
         constantService,
+        queryService,
         storageSystemCapabilitiesService,
         scrollDataSourceBuilderServiceNew
     ) {
@@ -323,9 +325,10 @@ angular.module('rainierApp')
                     setSort: generateSetSortFn(scope)
                 },
                 showPortAttributeFilter: storageSystemCapabilitiesService.supportPortAttribute(scope.storageSystemModel),
-                chartData: scope.summaryModel.chartData
+                chartData: scope.summaryModel ? null : scope.summaryModel.chartData
             };
-            return dataModel;
+            angular.extend(scope.dataModel, dataModel);
+            return scope.dataModel;
         }
 
 
