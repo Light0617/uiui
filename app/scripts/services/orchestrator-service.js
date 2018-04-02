@@ -184,13 +184,8 @@ angular.module('rainierApp')
             },
             editMutualChapUser: function (storageSystemId, hostGroupId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId)
-                    .all('host-groups/' + hostGroupId).post(payload));
+                    .all('host-groups/' + hostGroupId).patch(payload));
             },
-            deleteMutualChapUser: function (storageSystemId, hostGroupId, payload) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId)
-                    .all('host-groups/' + hostGroupId).post(payload));
-            },
-
             failedServersForStorageSystem: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('data-protection/storage-systems', storageSystemId).one('servers/failed-servers').get().then(function(result) {
                     return result;
