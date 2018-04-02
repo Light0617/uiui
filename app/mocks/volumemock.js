@@ -97,6 +97,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             migrationSummary: {
                 'migrationType': migrationStatus ? 'MIGRATION' : 'NONE',
                 'ownerTaskId': migrationStatus ? mockUtils.randomInt(0, 100) : undefined
+
             },
             isDDM: (mocksize > 4000000000000) ? true : false, // if size > 4000000000000, true
             attachedVolumeServerSummary:[

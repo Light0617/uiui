@@ -233,7 +233,8 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
-                        'migration-tasks'
+                        'migration-tasks',
+                        'external-volumes'
                     ]
                 },
                 helpContext: 'R_REPLICATION_GROUP_INV'
@@ -323,7 +324,8 @@ angular
                         'parity-groups',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks'
+                        'migration-tasks',
+                        'external-volumes'
                     ]
                 },
                 helpContext: 'C_VOLUMES_INV'
@@ -484,7 +486,8 @@ angular
                         'parity-groups',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks'
+                        'migration-tasks',
+                        'external-volumes',
                     ]
                 },
                 helpContext: 'C_POOLS_INV'
@@ -521,7 +524,8 @@ angular
                         'parity-groups',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks'
+                        'migration-tasks',
+                        'external-volumes'
                     ]
                 },
                 helpContext: 'T_ENABLE_PORT_SECURITY'
@@ -544,7 +548,8 @@ angular
                         'storage-pools',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks'
+                        'migration-tasks',
+                        'external-volumes'
                     ]
                 },
                 helpContext: 'C_PARITY_GROUPS_INV'
@@ -560,10 +565,34 @@ angular
                         'volumes',
                         'parity-groups',
                         'replication-groups',
-                        'migration-tasks'
+                        'migration-tasks',
+                        'external-volumes'
                     ]
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'
+            })
+            .when('/storage-systems/:storageSystemId/external-volumes', {
+                templateUrl: 'views/external-volumes.html',
+                controller: 'ExternalVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-external-volumes',
+                    peers: [
+                        'storage-ports',
+                        'storage-pools',
+                        'volumes',
+                        'parity-groups',
+                        'replication-groups',
+                        'external-parity-groups'
+                    ]
+                },
+                helpContext: 'R_EXTERNAL_PG_INV'
+            })
+            .when('/storage-systems/:storageSystemId/external-volumes/add', {
+                templateUrl: 'views/virtualize-volumes.html',
+                controller: 'VirtualizeVolumesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-external-volumes-add'
+                },
             })
             .when('/monitoring', {
                 templateUrl: 'views/monitoring.html',
@@ -685,6 +714,7 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
+                        'external-volumes',
                         'replication-groups',
                         'file-systems',
                         'shares-exports',
@@ -704,6 +734,7 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
+                        'external-volumes',
                         'replication-groups',
                         'file-pools',
                         'file-systems',
@@ -723,6 +754,7 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
+                        'external-volumes',
                         'replication-groups',
                         'file-pools',
                         'file-systems',
@@ -790,6 +822,7 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
+                        'external-volumes',
                         'replication-groups',
                         'file-pools',
                         'shares-exports',

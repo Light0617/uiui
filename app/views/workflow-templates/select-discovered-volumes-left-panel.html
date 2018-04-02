@@ -1,6 +1,18 @@
 <div class="fieldset">
     <div class="label-value-container">
-        <div class="label-value-container">
+
+        <!--Create External Volume Page-->
+        <div class="label-value-container" ng-if="dataModel.isAddExtVolume">
+            <label class="label">{{dataModel.selectedPorts.length}} Selected Ports</label>
+            <div class="btn-group" role="group">
+                <div class="btn-group" role="group" ng-repeat="port in dataModel.selectedPorts">
+                    <a class="btn btn-default btn-dark" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
+                </div>
+            </div>
+        </div>
+
+        <!--Virtualize Wizard-->
+        <div class="label-value-container" ng-if="!dataModel.isAddExtVolume">
             <label class="label">{{dataModel.targetPorts.length}} Selected Target Ports</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="port in dataModel.targetPorts">

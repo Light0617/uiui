@@ -16,7 +16,8 @@ rainierAppMock.run(function(
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
     replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
     monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock,
-    migrationTaskMock, rainierJobsMock
+    migrationTaskMock, rainierJobsMock, discoverLunMock
+
 ) {
 
 
@@ -52,6 +53,7 @@ rainierAppMock.run(function(
     fabricmock.init();
     serversMock.init();
     migrationTaskMock.init();
+    discoverLunMock.init();
 
 
     var parseUrl = function(method, url, data, headers) {
@@ -229,6 +231,8 @@ rainierAppMock.run(function(
                 break;
             case 'shares':
                 break;
+            case 'discover-groups':
+                return authMock.authenticateAndCall(urlResult, discoverLunMock.handle);
         }
         switch (urlResult.subType) {
             //Just the storage system

@@ -266,6 +266,7 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
+                        ShareDataService.isAddExtVolume = false;
                         $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
                     }
                 },

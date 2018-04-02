@@ -1,3 +1,11 @@
 <wizard-svg-page ng-title="'workflow-title-create-paths' | translate"
+                 ng-if="!dataModel.isAddExtVolume"
                  ng-model="dataModel">
 </wizard-svg-page>
+
+<inventory-page ng-model="dataModel"
+                ng-if="dataModel.isAddExtVolume"
+                filter-model="filterModel"
+                list-count-summary-title="storage-ports-showing-x-of-y"
+                filter-template="views/inventory-templates/storage-ports-filter.html">
+</inventory-page>

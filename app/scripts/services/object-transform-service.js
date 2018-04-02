@@ -800,6 +800,23 @@ angular.module('rainierApp')
                     return _.map(item.actions);
                 };
             },
+            transformDiscoveredLun: function(item){
+                _.each(item, function(i){
+                    i.metaData = [
+                        {
+                            left: true,
+                            title: i.lunId,
+                            details: [i.portId]
+                        },
+                        {
+                            left: false,
+                            title: i.wwn,
+                            details: [i.capacity]
+                        }
+                    ];
+                });
+
+            },
             transformPool: function (item) {
                 item.usagePercentage = Math.round(item.usedCapacityInBytes * 100 / item.capacityInBytes);
                 item.usage = item.usagePercentage + '%';

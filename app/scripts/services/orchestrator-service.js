@@ -254,6 +254,9 @@ angular.module('rainierApp')
             updateVolume: function (storageSystemId, volumeId, updatedVolume) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('volumes/' + volumeId).post(updatedVolume));
             },
+            discoveredLuns: function (storageSystemId, portId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('storage-ports', portId).one('discover-groups').get());
+            },
             storagePools: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('storage-pools').get().then(function (result) {
                     _.forEach(result.storagePools, function (item) {
