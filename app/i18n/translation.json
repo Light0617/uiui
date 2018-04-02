@@ -831,7 +831,7 @@
     "host-edit-mutual-chap-username": "Mutual CHAP Username",
     "host-edit-mutual-chap-secret": "Mutual CHAP Secret",
     "host-delete-mutual-chap-user": "Delete Mutual CHAP User",
-    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user [{{ mutualUserName }}] from iSCSI Target [{{ iscsiTargetName }}]. Are you sure?",
+    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure?",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",

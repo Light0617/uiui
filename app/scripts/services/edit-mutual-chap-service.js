@@ -8,7 +8,8 @@
  * Factory of the rainierApp
  */
 angular.module('rainierApp')
-    .factory('mutualChapService', function (orchestratorService, $modal, synchronousTranslateService) {
+    .factory('mutualChapService', function (orchestratorService, $modal,
+                                            synchronousTranslateService, utilService) {
         var editMutualChapUser = function (hostGroup) {
             var modelInstance = $modal.open({
                 templateUrl: 'views/templates/edit-mutual-chap-user-modal.html',
@@ -28,6 +29,11 @@ angular.module('rainierApp')
                         orchestratorService.editMutualChapUser(
                             hostGroup.storageSystemId, hostGroup.hostGroupId, payload);
                         $scope.cancel();
+                    };
+
+                    $scope.canSubmit = function () {
+                        return !utilService.isNullOrUndefOrBlank($scope.dataModel.mutualChapUserName) &&
+                            !utilService.isNullOrUndefOrBlank($scope.dataModel.mutualChapUserSecret);
                     };
 
                     $scope.cancel = function () {
@@ -52,8 +58,7 @@ angular.module('rainierApp')
                     $scope.confirmationMessage = synchronousTranslateService.translate(
                         'host-delete-mutual-chap-user-message',
                         {
-                            iscsiTargetName: hostGroup.iscsiTargetInformation.iscsiTargetName,
-                            mutualUserName: hostGroup.iscsiTargetInformation.mutualChapUser
+                            iscsiTargetName: hostGroup.iscsiTargetInformation.iscsiTargetName
                         });
 
                     $scope.ok = function () {
