@@ -91,7 +91,7 @@ angular.module('rainierApp')
             },
             discoverLun: function (portId, storageSystemId, payload) {
                 var url = 'storage-systems/' + storageSystemId + '/storage-ports/' + portId + '/discover-groups';
-                return apiResponseHandlerService._apiResponseHandler(Restangular.one(url).post(payload));
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.all(url).post(payload));
             },
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/' + storageSystemId + '/virtualize').post(payload));

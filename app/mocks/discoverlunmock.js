@@ -27,38 +27,37 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
 
     var iscsiTargetInformation = function () {
         return {
-            ipAddress: "172.17.91.00",
-            iscsiName: "iqn.1994-04.jp.co.hitachi:rsd.h8h.t.10011.1d097",
-            amd: "CHAP",
-            direction: "MUTUAL",
-            chapUser: "Win_SQL_EX",
-            iscsiVirtualPortId: "CL1-D"
+            ipAddress: '172.17.91.00',
+            iscsiName: 'iqn.1994-04.jp.co.hitachi:rsd.h8h.t.10011.1d097',
+            amd: 'CHAP',
+            direction: 'MUTUAL',
+            chapUser: 'Win_SQL_EX',
+            iscsiVirtualPortId: 'CL1-D'
         };
     };
 
     var generateDiscoveredLun = function (l) {
         var iscsi = _.sample([true, false]);
-        var v = v = _.random(1, 255);
+        var v = _.random(1, 255);
         var mocksize = mockUtils.getCapacity(100,200);
         return{
             portId: 'CL' + v + '-' + _.sample(['A', 'B']),
             wwn: wwns(),
             lunId: l + ' ',
             capacity: mocksize,
-            produceId: "OPEN-V",
-            eVolIdC: "HITACHI 50402840004F",
+            produceId: 'OPEN-V',
+            eVolIdC: 'HITACHI 50402840004F',
             externalIscsiInformation: iscsi ? iscsiTargetInformation() : undefined,
             isDDM: (mocksize > 4000000000000) ? true : false
         };
     };
 
-    var handleGetRequest = function (urlResult) {
+    var handlePostRequest = function (urlResult) {
         if (urlResult.subResourceId) {
             var luns = mockUtils.listFromCollection(discoveredLuns, urlResult.subResourceId, 'portId');
             return (luns) ? mockUtils.response.ok(luns) : mockUtils.response.notFound('Unable to find volume from matching portId.');
         }
-
-        return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(volumes));
+        mockUtils.response.notFound('Unable to find volume from matching portId.');
     };
 
 
@@ -73,7 +72,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         handle: function (urlResult) {
             switch (urlResult.method) {
                 case 'POST':
-                    return handleGetRequest(urlResult);
+                    return handlePostRequest(urlResult);
                 default:
                     return mockUtils.response.methodNotAllowed(urlResult.url);
             }
