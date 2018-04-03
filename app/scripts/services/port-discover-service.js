@@ -21,7 +21,7 @@ angular.module('rainierApp')
         ) {
             return $q.all(
                 _.map(targetPortIds, function (portId) {
-                    return orchestratorService.discoverLun(targetStorageSystemId, portId, {});
+                    return orchestratorService.discoverLun(portId, targetStorageSystemId, {});
                 })
             ).then(function (luns) {
                 var result = _.chain(luns)

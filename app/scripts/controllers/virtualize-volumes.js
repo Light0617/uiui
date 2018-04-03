@@ -41,7 +41,7 @@ angular.module('rainierApp')
         previrtualizeService,
         donutService,
         storagePortsService,
-        storageSystemCapabilitiesService
+        portDiscoverService
         ) {
 
         /******* Pre Virtualization *******/
@@ -249,14 +249,28 @@ angular.module('rainierApp')
                     if (dataModelPort.selectPortModel.canGoNext && dataModelPort.selectPortModel.canGoNext()) {
                         $scope.dataModel.selectPortDisplayList = $scope.dataModel.displayList;
                         $scope.dataModel.selectPortCachedList = $scope.dataModel.cachedList;
-                        $scope.dataModel.selectedPorts = $scope.dataModel.getSelectedItems()
-                        getVolumes(storageSystemId, $scope.dataModel.selectedPorts);
+                        $scope.dataModel.selectedPorts = $scope.dataModel.getSelectedItems();
+                        discoverUnmanagedLuns();
                         $scope.dataModel.goNext();
                     }
                 },
                 validation: true,
                 itemSelected: false
             };
+
+            function discoverUnmanagedLuns() {
+                var portIds = _.map($scope.dataModel.selectedPorts, function(p) { return p.storagePortId ;});
+                $scope.dataModel.isWaiting = true;
+                $scope.dataModel.cachedList = [];
+                $scope.dataModel.displayList = [];
+                portDiscoverService.discoverUnmanagedLuns(portIds, storageSystemId).then(function(result) {
+                    result = result ? result : [];
+                    objectTransformService.transformDiscoveredLun(result);
+                    $scope.dataModel.displayList = result;
+                }).finally(function () {
+                    $scope.dataModel.isWaiting = false;
+                });
+            }
 
             angular.extend($scope.dataModel, dataModelPort);
 
@@ -322,7 +336,7 @@ angular.module('rainierApp')
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.displayList.length
             };
-        }
+        };
 
         $scope.dataModel.discoverLuns = function(portId){
             $scope.dataModel.displayList = [];
