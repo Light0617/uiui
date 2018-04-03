@@ -9,7 +9,7 @@
 
 angular.module('rainierApp')
     .directive('wizardSvgPage', function (
-        $timeout, d3service, wwnService, attachVolumeService, orchestratorService, $modal, $q
+        $timeout, d3service, wwnService, attachVolumeService, orchestratorService, $modal
     ) {
 
         var builder;
@@ -714,10 +714,6 @@ angular.module('rainierApp')
             },
             templateUrl: 'views/templates/wizard-svg-page.html',
             restrict: 'E',
-            controller: ['$scope', function ($scope) {
-                $scope.readyDefer = $q.defer();
-                $scope.dataModel.ready = $scope.readyDefer.promise;
-            }],
             link: function postLink(scope) {
                 scope.displayWwn = wwnService.appendColon;
                 scope.ellipsis = ellipsis;
@@ -760,7 +756,7 @@ angular.module('rainierApp')
                     }, 600);
                 };
 
-                scope.readyDefer.resolve(true);
+                scope.dataModel.readyDefer.resolve(true);
 
                 scope.dataModel.deleteAllLines = function(pathModel){
                     var i;

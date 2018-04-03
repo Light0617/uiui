@@ -17,6 +17,7 @@
  */
 angular.module('rainierApp')
     .controller('VirtualizeVolumesCtrl', function (
+        $q,
         $scope,
         $routeParams,
         $timeout,
@@ -69,7 +70,8 @@ angular.module('rainierApp')
             isAddExtVolume: ShareDataService.isAddExtVolume,
             targetCoordinates: {},
             sourceCoordinates: {},
-            selectedType : "",
+            selectedType : '',
+            readyDefer: $q.defer(),
             portLunMap: {},
             type: ["FIBRE", "ISCSI"],
             iscsiPaths: [],
@@ -107,7 +109,7 @@ angular.module('rainierApp')
                         // orchestratorService.previrtualizeVolumes(storageSystemId, payload);
                         $scope.dataModel.isWaiting = true;
 
-                        if(!ShareDataService.isAddExtVolume) {
+                        if(ShareDataService.isAddExtVolume) {
                             getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
                         }else {
                             previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
@@ -141,7 +143,7 @@ angular.module('rainierApp')
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                 if(!$scope.dataModel.isAddExtVolume) {
-                    $scope.dataModel.ready.then($scope.dataModel.build);
+                    $scope.dataModel.readyDefer.promise.then($scope.dataModel.build);
                 }
             });
         }
@@ -195,7 +197,7 @@ angular.module('rainierApp')
                 selectPorts(storageSystemId);
             }else {
                 angular.extend($scope.dataModel, viewModelService.newWizardViewModel(['selectSourcePort', 'selectDiscoveredVolumes', 'selectServer', 'paths']));
-                $scope.dataModel.ready.then($scope.dataModel.build);
+                $scope.dataModel.readyDefer.promise.then($scope.dataModel.build);
             }
         });
 
