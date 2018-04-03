@@ -132,8 +132,11 @@
                  title="{{path.iscsiTargetInformation.mutualChapUser}}">
                 <p>{{path.iscsiTargetInformation.mutualChapUser}}</p>
                 <div class="btn-group" ng-if="path.iscsiTargetInformation">
-                    <div class="btn icon-btn icon-edit" ng-click="dataModel.editMutualChapUser(path)"></div>
-                    <div class="btn icon-btn icon-delete" ng-if="path.iscsiTargetInformation.mutualChapUser"
+                    <div class="btn icon-btn icon-edit"
+                         ng-if="path.iscsiTargetInformation.chapUsers"
+                         ng-click="dataModel.editMutualChapUser(path)"></div>
+                    <div class="btn icon-btn icon-delete"
+                         ng-if="path.iscsiTargetInformation.chapUsers && path.iscsiTargetInformation.mutualChapUser"
                          ng-click="dataModel.deleteMutualChapUser(path)"></div>
                 </div>
             </div>

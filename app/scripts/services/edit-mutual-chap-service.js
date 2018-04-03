@@ -21,7 +21,10 @@ angular.module('rainierApp')
                         var payload = {
                             iscsiTargetInformation: {
                                 mutualChapUser: {
-                                    userName: $scope.dataModel.mutualChapUserName,
+                                    userName: {
+                                        currentValue: hostGroup.iscsiTargetInformation.mutualChapUser,
+                                        newValue: $scope.dataModel.mutualChapUserName
+                                    },
                                     secret: $scope.dataModel.mutualChapUserSecret
                                 }
                             }
@@ -64,10 +67,15 @@ angular.module('rainierApp')
                     $scope.ok = function () {
                         var payload = {
                             iscsiTargetInformation: {
-                                mutualChapUser: null
+                                mutualChapUser: {
+                                    userName: {
+                                        currentValue: hostGroup.iscsiTargetInformation.mutualChapUser,
+                                        newValue: null
+                                    }
+                                }
                             }
                         };
-                        orchestratorService.deleteMutualChapUser(
+                        orchestratorService.editMutualChapUser(
                             hostGroup.storageSystemId, hostGroup.hostGroupId, payload);
                         $scope.cancel();
                     };
