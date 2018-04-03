@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService,
                                               objectTransformService, synchronousTranslateService, diskSizeService,
                                               scrollDataSourceBuilderService, storageNavigatorSessionService, $location,
-                                              paginationService, hwAlertService, constantService,
+                                              paginationService, hwAlertService, constantService, parityGroupService,
                                               resourceTrackerService, storageSystemCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
@@ -204,8 +204,11 @@ angular.module('rainierApp')
                 confirmTitle: 'parity-group-initialize-confirmation',
                 confirmMessage: 'parity-group-initialize-selected-content',
                 enabled: function () {
-                    var containsAvailable = _.find(dataModel.getSelectedItems(), function (item) { return item.status === 'AVAILABLE'; });
-                    return dataModel.anySelected() && !containsAvailable;
+                    var availableStatus = _.every(dataModel.getSelectedItems(), function (item) {
+                        return ( item.status !== 'AVAILABLE' &&
+                            parityGroupService.isAvailableEncryptionStatus(item));
+                    });
+                    return dataModel.anySelected() && availableStatus;
                 },
                 onClick: function () {
 
@@ -230,7 +233,8 @@ angular.module('rainierApp')
                 confirmMessage: 'parity-group-compress-selected-content',
                 enabled: function () {
                     return dataModel.anySelected() && !_.find(dataModel.getSelectedItems(), function(item) {
-                            return item.encryption ||
+                            return (item.encryption && !parityGroupService.isDiskBaseEncryptType(item.diskSpec.type)) ||
+                                !parityGroupService.isAvailableEncryptionStatus(item) ||
                                 item.diskSpec.type === 'SAS' ||
                                 item.diskSpec.type === 'SSD' ||
                                 item.diskSpec.type === 'FMD' ||

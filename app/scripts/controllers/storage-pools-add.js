@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService,
                                                  storagePoolService, objectTransformService, paginationService,
-                                                 resourceTrackerService, storageSystemCapabilitiesService, utilService) {
+                                                 resourceTrackerService, storageSystemCapabilitiesService, utilService,
+                                                 parityGroupService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -96,7 +97,8 @@ angular.module('rainierApp')
                 var showAsAvailable = ['AVAILABLE', 'QUICK_FORMATTING', 'AVAILABLE_PHYSICAL'];
                 var usableParityGroups = _.filter(result,
                     function(parityGroup) {
-                        return (showAsAvailable.indexOf(parityGroup.status) > -1);
+                        return (showAsAvailable.indexOf(parityGroup.status) > -1) &&
+                            parityGroupService.isAvailableEncryptionStatus(parityGroup);
                     }
                 );
                 $scope.model.parityGroups = storagePoolService.filterParityGroups(usableParityGroups);
