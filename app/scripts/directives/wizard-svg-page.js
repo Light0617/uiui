@@ -769,6 +769,8 @@ angular.module('rainierApp')
                         path = pathModel.paths[i];
                         d3.select('path[path-index="' + i + '"]').remove();
                     }
+                    svg.select('line[title="line-from-endpoint"]').remove();
+                    svg.select('line[title="line-from-port"]').remove();
                 };
 
                 scope.dataModel.pathModel.builder();
