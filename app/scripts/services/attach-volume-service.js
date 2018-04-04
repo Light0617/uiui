@@ -457,8 +457,8 @@ angular.module('rainierApp')
                     // Show popup if resource is present in resource tracker else redirect
                     resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
                         resourceTrackerService.storageSystem(),
-                        'Attach Volumes Confirmation', null, null, payload, protocol === 'ISCSI'
-                            ? attachVolumeForIscsi : orchestratorService.attachVolume);
+                        'Attach Volumes Confirmation', null, null, payload, protocol === 'ISCSI' ?
+                            attachVolumeForIscsi : orchestratorService.attachVolume);
                 };
             }
         };
@@ -513,9 +513,9 @@ angular.module('rainierApp')
                             backdropClass: 'modal-backdrop',
                             controller: function ($scope) {
                                 $scope.confirmationTitle = synchronousTranslateService.translate(
-                                    "storage-volume-attach-confirm-force-overwrite-chap-user-name-title");
+                                    'storage-volume-attach-confirm-force-overwrite-chap-user-name-title');
                                 $scope.confirmationMessage = synchronousTranslateService.translate(
-                                    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message",
+                                    'storage-volume-attach-confirm-force-overwrite-chap-user-name-message',
                                     {
                                         storageSystemId: error.data.messageParameters.storageSystemId,
                                         storagePort: error.data.messageParameters.storagePort,
@@ -523,7 +523,7 @@ angular.module('rainierApp')
                                     });
 
                                 $scope.ok = function () {
-                                    payload["forceOverwriteChapSecret"] = true; // Set option to force to overwrite CHAP secret
+                                    payload['forceOverwriteChapSecret'] = true; // Set option to force to overwrite CHAP secret
                                     orchestratorService.attachVolume(payload) // Then retry to attach volume
                                         .then(function () {
                                             modelInstance.close(true);

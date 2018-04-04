@@ -9,7 +9,7 @@
  */
 
 angular.module('rainierApp').factory('parityGroupService', function (utilService) {
-    var diskBaseEncryptType = ["FMD HDE"];
+    var diskBaseEncryptType = ['FMD HDE'];
 
     return {
         isAvailableEncryptionStatus: function (parityGroup) {

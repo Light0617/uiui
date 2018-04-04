@@ -251,7 +251,7 @@ angular.module('rainierApp')
                         queryService.removeQueryMapEntry(queryObject.key);
                     }
                     var isExist = (queryObject.type === type.EXISTING);
-                    var queryObject = queryService.getQueryObjectInstance(queryObject.key, null);
+                    queryObject = queryService.getQueryObjectInstance(queryObject.key, null);
                     queryObject.queryStringFunction = function() {
                         if (isExist) {
                             return ['_exists_:' + queryObject.queryKey];

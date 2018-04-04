@@ -141,10 +141,9 @@ angular.module('rainierApp')
     };
 
     var isMigrationAvailable = function (volume) {
-        var available = true;
-        available &= !volume.isMigrating();
-        available &= volume.isAttached();
-        available &= !volume.isSnapshotPair();
+        var available = !volume.isMigrating();
+        available = available && volume.isAttached();
+        available = available && !volume.isSnapshotPair();
         // Not check other pair state, gad state.
         return available;
     };
