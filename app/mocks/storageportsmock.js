@@ -88,7 +88,7 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
     };
 
     var iscsi = function () {
-        return 'jp.com.hitachi:rsd.hitachi.vantara.314159265.' + _.random(1, 1024).toString(16).toUpperCase();
+        return 'iqn.1994-04.jp.co.hitachi:rsd.h8h.t.10011.1d097';
     };
 
     var wwn = function () {

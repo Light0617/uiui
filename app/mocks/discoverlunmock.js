@@ -43,7 +43,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         return{
             portId: 'CL' + v + '-' + _.sample(['A', 'B']),
             wwn: wwns(),
-            lunId: l + ' ',
+            lunId: 1,
             capacity: mocksize,
             produceId: 'OPEN-V',
             eVolIdC: 'HITACHI 50402840004F',

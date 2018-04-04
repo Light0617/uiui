@@ -230,14 +230,11 @@ angular.module('rainierApp')
             _.forEach(volumes, function (v) {
                 var endPoints = targetEndPointsOfSourceVolume(v);
                 var copied = _.map(endPoints, function (endPoint) {
-                    return {
-                        volumeId: v.volumeId,
-                        label: v.label,
-                        capacity: v.capacity,
+                    return _.assign({}, v, {
                         endPoint: endPoint.targetEndPoint,
                         lun: endPoint.lun,
                         lunNEndPoint: lunNEndPoint(endPoint.targetEndPoint, endPoint.lun)
-                    };
+                    });
                 });
                 flattened.push(copied);
             });
