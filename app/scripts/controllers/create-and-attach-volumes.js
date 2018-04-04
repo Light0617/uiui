@@ -20,7 +20,7 @@ angular.module('rainierApp')
                                                         paginationService, queryService, objectTransformService,
                                                         cronStringConverterService, attachVolumeService, replicationService,
                                                         volumeService, constantService, storageSystemCapabilitiesService,
-                                                        synchronousTranslateService, $location, $timeout) {
+                                                        synchronousTranslateService, $location, $timeout, editChapService) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -243,9 +243,24 @@ angular.module('rainierApp')
                         }
                     );
 
-                    orchestratorService.createAttachProtectVolumes(payload).then(function() {
-                        window.history.back();
-                    });
+                    var protocol = $scope.dataModel.pathModel.selectedHosts[0].protocol;
+                    if (protocol === 'ISCSI') {
+                        orchestratorService.createAttachProtectVolumesForIscsi(payload, function (error, wrapped, defaultErrAction) {
+                            switch (error.status) {
+                                case 412:
+                                    // Specified CHAP user already exists in the specified Storage Port
+                                    editChapService.confirmOverwriteChapSecretThenCallApi(
+                                        error.data.messageParameters, orchestratorService.createAttachProtectVolumes, payload);
+                                    break;
+                                default:
+                                    defaultErrAction.call({}, error, wrapped);
+                            }
+                        });
+                    } else {
+                        orchestratorService.createAttachProtectVolumes(payload).then(function() {
+                            window.history.back();
+                        });
+                    }
                 },
                 previous: function() {
                     $scope.dataModel.goBack();
@@ -420,10 +435,10 @@ angular.module('rainierApp')
 
             _.chain(pools)
                 .filter(function (pool) {
-                    return _.contains(poolTypes, pool.type)
+                    return _.contains(poolTypes, pool.type);
                 })
                 .filter(function (pool) {
-                    return pool.isReservedPool !== true
+                    return pool.isReservedPool !== true;
                 })
                 .map(function (pool) {
                     pool.displayLabel = pool.snapshotPoolLabel();
