@@ -306,7 +306,7 @@ angular.module('rainierApp')
                         queryService.setSort(f, false);
                         scope.dataModel.sort.reverse = false;
                     }
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
                         updateResultTotalCounts(result, scope);
                     });
                 });
@@ -343,13 +343,13 @@ angular.module('rainierApp')
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                     paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 sliderQuery: function (key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 },
@@ -357,7 +357,7 @@ angular.module('rainierApp')
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject(idKey, new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
+                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 }
@@ -460,7 +460,7 @@ angular.module('rainierApp')
             return paginationService
                 .get(
                     null, getStoragePortsPath, objectTransformService.transformPort,
-                    true, storageSystemId, undefined, undefined, queryObject
+                    true, storageSystemId(), undefined, undefined, queryObject
                 )
                 .then(function (result) {
                     var dataModel = generateDataModel(result, scope);
@@ -478,7 +478,7 @@ angular.module('rainierApp')
                     dataModel.getResources = function () {
                         return paginationService.get(
                             null, getStoragePortsPath, objectTransformService.transformPort,
-                            false, storageSystemId, undefined, undefined, queryObject
+                            false, storageSystemId(), undefined, undefined, queryObject
                         );
                     };
                     if(type === 'FIBRE') {
