@@ -6,7 +6,7 @@
             <label class="label">{{dataModel.selectedPorts.length}} Selected Ports</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="port in dataModel.selectedPorts">
-                    <a class="btn btn-default btn-dark" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
+                    <a class="btn btn-text" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
                 </div>
             </div>
         </div>
@@ -16,7 +16,7 @@
             <label class="label">{{dataModel.targetPorts.length}} Selected Target Ports</label>
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group" ng-repeat="port in dataModel.targetPorts">
-                    <a class="btn btn-default btn-dark" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
+                    <a class="btn btn-text" tooltip="{{port.storagePortId}}">{{port.storagePortId}}</a>
                 </div>
             </div>
         </div>
