@@ -475,7 +475,7 @@ angular.module('rainierApp')
                 }else{//If no, just check if there's item selected
                     dataModelVolume.volumeDataModel.confirmTitle = synchronousTranslateService.translate('select-discovered-volumes-confirmation');
                     dataModelVolume.volumeDataModel.confirmMessage =  synchronousTranslateService.translate('select-discovered-volumes');
-                    dataModelVolume.volumeDataModel.itemSelected = $scope.dataModel.anySelected();
+                    dataModelVolume.volumeDataModel.itemSelected = _.filter($scope.dataModel.displayList, function (item) { return item.selected; }).length > 0;
                 }
             }, true);
 
@@ -582,6 +582,7 @@ angular.module('rainierApp')
                     },
                     previous: function () {
                         $scope.dataModel.selectServerPath = false;
+
                         $scope.dataModel.serverDisplayList = $scope.dataModel.displayList;
                         $scope.dataModel.displayList = $scope.dataModel.volumeDisplayList;
                         $scope.dataModel.serverCachedList = $scope.dataModel.cachedList;
