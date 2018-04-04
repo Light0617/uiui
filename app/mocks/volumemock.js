@@ -39,7 +39,6 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         var r = {
             iscsiTargetName: storagePortsMock.iscsi(),
             iscsiInitiatorNames: _.chain(randomLengthArray).map(storagePortsMock.iscsi).value(),
-            mutualChapUser: 'UserMutual',
             chapUsers: ['Chap1', 'Chap2', 'Chap3'],
             authenticationMode: _.sample(['CHAP', 'BOTH', 'NONE'])
         };

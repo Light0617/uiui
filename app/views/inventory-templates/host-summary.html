@@ -36,10 +36,6 @@
             <p class="label">{{'hosts-chap-user' | translate}}</p>
             <p class="value">{{summaryModel.server.chapUser}}</p>
         </div>
-        <div class="label-value-container" ng-if="summaryModel.server.protocol==='ISCSI'">
-            <p class="label">{{'hosts-mutual-chap-user' | translate}}</p>
-            <p class="value">{{summaryModel.server.mutualChapUser}}</p>
-        </div>
     </div>
     <div class="tile data-viz-container third">
             <array-polar-data-visualization class="utilization dataviz-legend" ng-model="summaryModel.arrayDataVisualizationModel" no-break-down="summaryModel.noBreakdown"></array-polar-data-visualization>

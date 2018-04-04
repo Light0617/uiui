@@ -179,54 +179,6 @@
                         </div>
                     </ng-container>
                 </ng-container>
-
-                <!-- Mutual Chap Auth -->
-                <ng-container ng-if="dataModel.chap.chapEnabled">
-                    <div class="header-row label-value-container-title">
-                        <h2>{{ 'host-update-mutual-chap-settings' | translate }}</h2>
-                    </div>
-                    <div class="label-value-container">
-                        <label class="label form-label">{{ 'host-update-mutual-chap-auth' | translate }}</label>
-                        <div class="form-control-btn btn-group btn-group-justified">
-                            <label class="btn btn-primary"
-                                   ng-class="{'active': !dataModel.chap.mutualEnabled}">
-                                <input hidden type="radio"
-                                       ng-model="dataModel.chap.mutualEnabled"
-                                       auto-complete="off"
-                                       ng-value="false">
-                                {{ 'action-tooltip-disable' | translate }}
-                            </label>
-                            <label class="btn btn-primary"
-                                   ng-class="{'active': dataModel.chap.mutualEnabled}">
-                                <input hidden type="radio"
-                                       ng-model="dataModel.chap.mutualEnabled"
-                                       auto-complete="off"
-                                       ng-value="true">
-                                {{ 'action-tooltip-enable' | translate }}
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Mutual Chap Credentials -->
-                    <ng-container ng-if="dataModel.chap.mutualEnabled">
-                        <label class="label-value-container checkbox-label" ng-if="dataModel.originalChap.mutualEnabled">
-                            <input type="checkbox" ng-model="dataModel.chap.updateMutualCredential">
-                            {{ 'host-update-mutual-chap-credential' | translate }}
-                        </label>
-                        <ng-container ng-if="dataModel.chap.updateMutualCredential">
-                            <div class="label-value-container">
-                                <label class="label form-label">{{ 'host-update-mutual-chap-user' | translate }}</label>
-                                <input class="form-control" ng-model="dataModel.chap.mutualUser">
-                            </div>
-                            <div class="label-value-container">
-                                <label class="label form-label">{{ 'host-update-mutual-chap-secret' | translate }}</label>
-                                <input type="password" class="form-control" ng-model="dataModel.chap.mutualSecret">
-                            </div>
-                        </ng-container>
-                    </ng-container>
-
-                </ng-container>
-
             </ng-container>
 
             <div class="tile-view list-view">

@@ -46,7 +46,6 @@ angular.module('rainierApp')
 
                     var host = getEmptyHost();
                     host.chapUser = '';
-                    host.mutualChapUser = '';
                     host.iscsiNames = '';
 
                     angular.extend(host, h);
@@ -93,8 +92,7 @@ angular.module('rainierApp')
             });
             _.forEach(dataModel.hostsModel.iscsiHosts, function (h) {
                 hostsPayload.servers.push(buildIscsiPayload(
-                    h.name, h.description, h.ipAddress, h.osType, h.iscsiNames,
-                    h.chapUserName, h.chapUserSecret, h.mutualChapUserName, h.mutualChapUserSecret
+                    h.name, h.description, h.ipAddress, h.osType, h.iscsiNames, h.chapUserName, h.chapUserSecret
                 ));
             });
 
@@ -109,16 +107,11 @@ angular.module('rainierApp')
         };
 
         function buildIscsiPayload(
-            name, description, ipAddress, osType, iscsiNames,
-            chapUserName, chapUserSecret, mutualChapUserName, mutualChapUserSecret
+            name, description, ipAddress, osType, iscsiNames, chapUserName, chapUserSecret
         ) {
             var chapUser = chapUserName || chapUserSecret ? {
                 userName: chapUserName,
                 secret: chapUserSecret
-            } : undefined;
-            var mutualChapUser = mutualChapUserName || mutualChapUserSecret ? {
-                userName: mutualChapUserName,
-                secret: mutualChapUserSecret
             } : undefined;
             return {
                 protocol: 'ISCSI',
@@ -129,8 +122,7 @@ angular.module('rainierApp')
                 iscsiNames: _.map(iscsiNames.split(','), function (n) {
                     return n.trim();
                 }),
-                chapUser: chapUser,
-                mutualChapUser: mutualChapUser
+                chapUser: chapUser
             };
 
         }
@@ -161,9 +153,7 @@ angular.module('rainierApp')
             wwns: 'wwns',
             iscsinames: 'iscsiNames',
             chapusername: 'chapUserName',
-            chapusersecret: 'chapUserSecret',
-            mutualchapusername: 'mutualChapUserName',
-            mutualchapusersecret: 'mutualChapUserSecret'
+            chapusersecret: 'chapUserSecret'
         };
 
         var convertCsvToHost = function (csvRow) {

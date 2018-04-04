@@ -41,13 +41,9 @@ angular.module('rainierApp')
             }
             return {
                 chapEnabled: !_.isEmpty(host.chapUser),
-                mutualEnabled: !_.isEmpty(host.mutualChapUser),
                 chapUser: host.chapUser,
-                mutualUser: host.mutualChapUser,
                 chapSecret: '',
-                mutualSecret: '',
-                updateChapCredential: _.isEmpty(host.chapUser),
-                updateMutualCredential: _.isEmpty(host.mutualChapUser)
+                updateChapCredential: _.isEmpty(host.chapUser)
             };
         }
 
@@ -60,8 +56,7 @@ angular.module('rainierApp')
 
             if (!chap.chapEnabled) {
                 return {
-                    chapUser: {},
-                    mutualChapUser: {}
+                    chapUser: {}
                 };
             }
 
@@ -72,18 +67,6 @@ angular.module('rainierApp')
                 result.chapUser = {
                     userName: chap.chapUser,
                     secret: chap.chapSecret
-                };
-            }
-
-            if (!chap.mutualEnabled) {
-                result.mutualChapUser = {};
-                return result;
-            }
-
-            if (chap.updateMutualCredential) {
-                result.mutualChapUser = {
-                    userName: chap.mutualUser,
-                    secret: chap.mutualSecret
                 };
             }
 
@@ -176,10 +159,7 @@ angular.module('rainierApp')
                 return false;
             }
 
-            if (
-                (after.chapEnabled && after.updateChapCredential) ||
-                (after.chapEnabled && after.mutualEnabled && after.updateMutualCredential)
-            ) {
+            if (after.chapEnabled && after.updateChapCredential) {
                 return true;
             }
             return !_.isEqual($scope.chapPayload(after), chapPayload(before));
@@ -201,14 +181,7 @@ angular.module('rainierApp')
                 return false;
             }
 
-            if (
-                chap.chapEnabled && chap.mutualEnabled && chap.updateMutualCredential &&
-                (_.isEmpty(chap.mutualUser) || _.isEmpty(chap.mutualSecret))
-            ) {
-                return false;
-            }
-
-            if (chap.chapEnabled && chap.mutualEnabled && chap.updateMutualCredential && _.isEmpty(chap.mutualSecret)) {
+            if (chap.chapEnabled) {
                 return false;
             }
 
@@ -229,8 +202,7 @@ angular.module('rainierApp')
             return orchestratorService.updateHostIscsi(hostId, {
                 updateAttachedVolumes: $scope.dataModel.applyChangesToAttachedVolumes,
                 iscsiNameUpdates: endPointPayload,
-                chapUser: chapPayload.chapUser,
-                mutualChapUser: chapPayload.mutualChapUser
+                chapUser: chapPayload.chapUser
             });
         }
 
