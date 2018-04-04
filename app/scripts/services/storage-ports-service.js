@@ -293,7 +293,7 @@ angular.module('rainierApp')
                 filtered: scope.dataModel.displayList.length,
                 total: scope.dataModel.total
             };
-        }
+        };
 
         var generateSetSortFn = function(scope) {
             return function (f) {
@@ -311,7 +311,7 @@ angular.module('rainierApp')
                     });
                 });
             };
-        }
+        };
 
         var generateDataModel = function(result, scope) {
             var dataModel = {
@@ -329,7 +329,7 @@ angular.module('rainierApp')
             };
             angular.extend(scope.dataModel, dataModel);
             return scope.dataModel;
-        }
+        };
 
 
         var generateFilterModel = function() {
@@ -362,7 +362,7 @@ angular.module('rainierApp')
                     });
                 }
             };
-        }
+        };
 
         var generateEditFibrePortDialogSettings = function(scope) {
             var dialogSettings = {
@@ -398,7 +398,7 @@ angular.module('rainierApp')
             }
 
             return dialogSettings;
-        }
+        };
 
         var fibreActions = function(dataModel, scope) {
             return {
@@ -452,8 +452,8 @@ angular.module('rainierApp')
                         this.dialogSettings.itemAttribute.value = isAllSameAttribute ? firstItem.attributes[0] : portAttributes.target;
                     }
                 }
-            }
-        }
+            };
+        };
 
         var initPorts = function(type, scope) {
             var queryObject = new paginationService.QueryObject('type', undefined, type);
@@ -464,13 +464,14 @@ angular.module('rainierApp')
                 )
                 .then(function (result) {
                     var dataModel = generateDataModel(result, scope);
+                    var actions;
                     if(type === 'FIBRE') {
-                        var actions = fibreActions(dataModel,scope);
+                        actions = fibreActions(dataModel,scope);
                         dataModel.getActions = function () {
                             return [actions];
                         };
                     }else if(type === 'ISCSI'){
-                        var actions = iscsiActions(dataModel);
+                        actions = iscsiActions(dataModel);
                         dataModel.getActions = function () {
                             return actions;
                         };
@@ -494,7 +495,7 @@ angular.module('rainierApp')
                     scrollDataSourceBuilderServiceNew.setupDataLoader(scope, result.resources, 'storagePortSearch', true);
                     return dataModel;
                 });
-        }
+        };
 
         init();
 

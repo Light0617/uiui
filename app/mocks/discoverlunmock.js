@@ -36,7 +36,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         };
     };
 
-    var generateDiscoveredLun = function (l) {
+    var generateDiscoveredLun = function () {
         var iscsi = _.sample([true, false]);
         var v = _.random(1, 255);
         var mocksize = mockUtils.getCapacity(100,200);
