@@ -2,9 +2,9 @@
     <div class="label-value-container">
         <div class="label-value-container">
             <label class="label">{{dataModel.selectedDiscoveredVolumes.length}} Discovered Volumes</label>
-            <div class="btn-group btn-full-width" role="group">
-                <div class="btn-group btn-full-width" role="group" ng-repeat="volume in dataModel.selectedDiscoveredVolumes">
-                    <a class="btn btn-default btn-dark btn-full-width" tooltip="{{volume.lunId}}">{{volume.lunId}}</a>
+            <div class="btn-group" role="group">
+                <div class="btn-group" role="group" ng-repeat="volume in dataModel.selectedDiscoveredVolumes">
+                    <a class="btn btn-text" tooltip="{{volume.lunId}}">{{volume.lunId}}</a>
                 </div>
             </div>
         </div>
