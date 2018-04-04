@@ -43,7 +43,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         return{
             portId: 'CL' + v + '-' + _.sample(['A', 'B']),
             wwn: wwns(),
-            lunId: l + ' ',
+            lunId: 1,
             capacity: mocksize,
             produceId: 'OPEN-V',
             eVolIdC: 'HITACHI 50402840004F',
@@ -55,7 +55,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
     var handlePostRequest = function (urlResult) {
         if (urlResult.subResourceId) {
             var luns = mockUtils.listFromCollection(discoveredLuns, urlResult.subResourceId, 'portId');
-            return (luns) ? mockUtils.response.ok(luns) : mockUtils.response.notFound('Unable to find volume from matching portId.');
+            return (luns) ? mockUtils.response.ok(discoveredLuns) : mockUtils.response.notFound('Unable to find volume from matching portId.');
         }
         mockUtils.response.notFound('Unable to find volume from matching portId.');
     };

@@ -57,7 +57,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         return {
             'storagePortId': 'CL1-D',
             'storageSystemId': '410266',
-            'lun': 5,
+            'lun': 1,
             'name': 'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
             'hostMode': 'LINUX',
             'wwns': iscsi ? undefined : wwns(),
@@ -107,7 +107,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
                     {
                         'storagePortId':'CL1-D',
                         'storageSystemId':'410266',
-                        'lun':5,
+                        'lun':1,
                         'name':'HID_CL1-D_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
                         'hostMode':'LINUX',
                         'wwns': iscsi ? undefined : wwns(),
@@ -125,7 +125,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
                     {
                         'storagePortId':'CL1-E',
                         'storageSystemId':'410266',
-                        'lun':4,
+                        'lun':1,
                         'name':'HID_CL1-E_ae76506a-ba79-4bd7-834d-8cf5887cc3ec',
                         'hostMode':'LINUX',
                         'wwns': iscsi ? undefined : wwns(),

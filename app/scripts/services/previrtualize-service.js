@@ -13,8 +13,7 @@ angular.module('rainierApp')
         $q,
         $timeout,
         orchestratorService,
-        constantService,
-        utilService
+        constantService
     ) {
         var interval = 5000;
         var upperLimit = 10;
@@ -60,22 +59,15 @@ angular.module('rainierApp')
             };
         };
 
-        var discover = function (
-            // storageSystemId, portIds
-        ) {
-            // TODO depends on API specs
-            // return orchestratorService.discoverPrevirtualizedVolumes(jobId);
-            return $q.resolve([]);
-        };
-
         var previrtualizeAndDiscover = function (payload) {
             return previrtualize(payload)
                 .then(poll())
                 .then(function (result) {
-                    if (result && !utilService.isNullOrUndef(result.jobId)) {
-                        return discover(result.jobId);
+                    if (result && result.status === constantService.previrtualizeJobStatus.success) {
+                        return $q.resolve(true);
                     }
-                    return $q.resolve([]);
+                    // TODO make sure the message for previrtualize
+                    return $q.reject('Failed to previrtualize');
                 });
         };
 
@@ -106,10 +98,10 @@ angular.module('rainierApp')
         };
 
         return {
-            discover: discover,
+            // For Specs
             handleJob: handleJob,
-            poll: poll,
             previrtualize: previrtualize,
+            // For UI
             previrtualizeAndDiscover: previrtualizeAndDiscover,
             createPrevirtualizePayload: createPrevirtualizePayload,
             createPrevirtualizePayloadPortInfo: createPrevirtualizePayloadPortInfo

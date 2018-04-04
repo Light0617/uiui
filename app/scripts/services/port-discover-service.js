@@ -42,8 +42,8 @@ angular.module('rainierApp')
                 return _.assign(
                     {},
                     lun,
-                    {sourceEndPoint: sourceEndPoint},
-                    {lunNSourceEndPoint: lunNEndPoint(sourceEndPoint, lun.lunId)}
+                    { sourceEndPoint: sourceEndPoint },
+                    { lunNSourceEndPoint: lunNEndPoint(sourceEndPoint, lun.lunId) }
                 );
             } else {
                 return lun;
@@ -61,6 +61,54 @@ angular.module('rainierApp')
                 return lun.externalIscsiInformation.iscsiName +
                     '_' +
                     lun.externalIscsiInformation.ipAddress;
+            }
+            return undefined;
+        };
+
+        /**
+         * create external paths from paths wich created from wizard-svg-page
+         */
+        var createExternalPath = function (paths, sourceStoragePorts) {
+            var portIdHash = _.indexBy(sourceStoragePorts, 'storagePortId');
+            var externalPaths = _.chain(paths)
+                .map(function (path) {
+                    return { sourcePortId: path.serverEndPoint, targetPortId: path.storagePortId };
+                })
+                .map(function (path) {
+                    var sourcePort = portIdHash[path.sourcePortId];
+                    return _.assign(path, { sourceEndPoint: sourceEndPointOfPort(sourcePort) });
+                })
+                .filter(function (path) {
+                    return path.sourceEndPoint;
+                })
+                .value();
+            return externalPaths;
+        };
+
+        var sourceEndPointOfPort = function (port) {
+            if (port.wwn) {
+                return {
+                    wwn: port.wwn
+                };
+            } else if (port.iscsiPortInformation && port.iscsiPortInformation.portIscsiName) {
+                if (
+                    port.iscsiPortInformation.ipv4Information &&
+                    port.iscsiPortInformation.ipv4Information.address
+                ) {
+                    return {
+                        iscsiName: port.iscsiPortInformation.portIscsiName,
+                        ip: port.iscsiPortInformation.ipv4Information.address
+                    };
+                } else if (
+                    port.iscsiPortInformation.ipv6Information &&
+                    port.iscsiPortInformation.ipv6Information.address
+                ) {
+                    return {
+                        iscsiName: port.iscsiPortInformation.portIscsiName,
+                        ip: port.iscsiPortInformation.ipv6Information.address
+                    };
+                }
+                return undefined;
             }
             return undefined;
         };
@@ -102,7 +150,7 @@ angular.module('rainierApp')
         };
 
         var discoveredVolumes = function (discoveredLunsWithEndPoint, volumeEndPointHash) {
-            return _.chain(discoveredLunsWithEndPoint)
+            var result = _.chain(discoveredLunsWithEndPoint)
                 .map(function (lun) {
                     return lun.lunNEndPoint;
                 })
@@ -116,6 +164,7 @@ angular.module('rainierApp')
                     return volume;
                 })
                 .value();
+            return result;
         };
 
         var appendTargetEndPointToLuns = function (discoveredLuns, targetPortIdHash) {
@@ -128,7 +177,7 @@ angular.module('rainierApp')
                     return _.assign(
                         {},
                         discoveredLun,
-                        {endPoint: endPoint}
+                        { endPoint: endPoint }
                     );
                 })
                 .filter(function (discoveredLun) {
@@ -137,7 +186,7 @@ angular.module('rainierApp')
                 .map(function (discoveredLun) {
                     return _.assign(
                         discoveredLun,
-                        {lunNEndPoint: lunNEndPoint(discoveredLun.endPoint, discoveredLun.lunId)}
+                        { lunNEndPoint: lunNEndPoint(discoveredLun.endPoint, discoveredLun.lunId) }
                     );
                 })
                 .value();
@@ -150,8 +199,8 @@ angular.module('rainierApp')
             return $q.all(
                 _.map(paths, function (path) {
                     return orchestratorService.discoverLun(
-                        targetStorageId,
                         path.targetPortId,
+                        targetStorageId,
                         path.sourceEndPoint
                     );
                 })
@@ -181,14 +230,11 @@ angular.module('rainierApp')
             _.forEach(volumes, function (v) {
                 var endPoints = targetEndPointsOfSourceVolume(v);
                 var copied = _.map(endPoints, function (endPoint) {
-                    return {
-                        volumeId: v.volumeId,
-                        label: v.label,
-                        capacity: v.capacity,
+                    return _.assign({}, v, {
                         endPoint: endPoint.targetEndPoint,
                         lun: endPoint.lun,
                         lunNEndPoint: lunNEndPoint(endPoint.targetEndPoint, endPoint.lun)
-                    };
+                    });
                 });
                 flattened.push(copied);
             });
@@ -258,6 +304,7 @@ angular.module('rainierApp')
             // Use following 2 functions from outside of the service
             discoverUnmanagedLuns: discoverUnmanagedLuns,
             discoverManagedVolumes: discoverManagedVolumes,
+            createExternalPath: createExternalPath,
             // Following functions are only exposed for Specs
             discoveredVolumes: discoveredVolumes,
             appendTargetEndPointToLuns: appendTargetEndPointToLuns,

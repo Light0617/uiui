@@ -17,6 +17,7 @@
  */
 angular.module('rainierApp')
     .controller('VirtualizeVolumesCtrl', function (
+        $q,
         $scope,
         $routeParams,
         $timeout,
@@ -69,7 +70,8 @@ angular.module('rainierApp')
             isAddExtVolume: ShareDataService.isAddExtVolume,
             targetCoordinates: {},
             sourceCoordinates: {},
-            selectedType : "",
+            selectedType : '',
+            readyDefer: $q.defer(),
             portLunMap: {},
             type: ["FIBRE", "ISCSI"],
             iscsiPaths: [],
@@ -105,12 +107,34 @@ angular.module('rainierApp')
                         );
                         $scope.dataModel.isWaiting = true;
 
-                        if(!ShareDataService.isAddExtVolume) {
+                        if(ShareDataService.isAddExtVolume) {
                             getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
                         }else {
-                            previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
+                            previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
                                 // TODO Actual Discovered volume should be listed
-                                getVolumes(storageSystemId);
+                                var externalPath = portDiscoverService.createExternalPath(
+                                    $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
+                                );
+                                return portDiscoverService.discoverManagedVolumes(
+                                    externalPath,
+                                    volumeIds,
+                                    storageSystemId,
+                                    $scope.dataModel.selectedTarget.storageSystemId
+                                );
+                            }).then(function (volumes) {
+                                if(!volumes.length) {
+                                    // TODO make sure the message
+                                    return $q.reject('Failed to discover');
+                                }
+                                $scope.dataModel.displayList = [];
+                                $scope.dataModel.cachedList = [];
+                                _.forEach(volumes, objectTransformService.transformVolume);
+                                $scope.dataModel.displayList = volumes;
+                                initView($scope.dataModel.displayList);
+                                $scope.dataModel.goNext();
+                            }).catch(function (e) {
+                                // TODO Show dialog and disable next
+                                console.log(e);
                             }).finally(function () {
                                 $scope.dataModel.isWaiting = false;
                             });
@@ -135,7 +159,7 @@ angular.module('rainierApp')
                 $scope.dataModel.pathModel.viewBoxHeight = virtualizeVolumeService.getViewBoxHeight($scope.dataModel.pathModel.sourcePorts, $scope.dataModel.pathModel.storagePorts,
                     $scope.dataModel.sourceCoordinates, $scope.dataModel.targetCoordinates);
                 if(!$scope.dataModel.isAddExtVolume) {
-                    $scope.dataModel.ready.then($scope.dataModel.build());
+                    $scope.dataModel.readyDefer.promise.then($scope.dataModel.build);
                 }
             });
         }
@@ -192,7 +216,7 @@ angular.module('rainierApp')
                 selectPorts(storageSystemId);
             }else {
                 angular.extend($scope.dataModel, viewModelService.newWizardViewModel(['selectSourcePort', 'selectDiscoveredVolumes', 'selectServer', 'paths']));
-                $scope.dataModel.ready.then($scope.dataModel.build());
+                $scope.dataModel.readyDefer.promise.then($scope.dataModel.build);
             }
         });
 
@@ -451,7 +475,7 @@ angular.module('rainierApp')
                 }else{//If no, just check if there's item selected
                     dataModelVolume.volumeDataModel.confirmTitle = synchronousTranslateService.translate('select-discovered-volumes-confirmation');
                     dataModelVolume.volumeDataModel.confirmMessage =  synchronousTranslateService.translate('select-discovered-volumes');
-                    dataModelVolume.volumeDataModel.itemSelected = $scope.dataModel.anySelected();
+                    dataModelVolume.volumeDataModel.itemSelected = _.filter($scope.dataModel.displayList, function (item) { return item.selected; }).length > 0;
                 }
             }, true);
 
@@ -558,6 +582,7 @@ angular.module('rainierApp')
                     },
                     previous: function () {
                         $scope.dataModel.selectServerPath = false;
+
                         $scope.dataModel.serverDisplayList = $scope.dataModel.displayList;
                         $scope.dataModel.displayList = $scope.dataModel.volumeDisplayList;
                         $scope.dataModel.serverCachedList = $scope.dataModel.cachedList;
