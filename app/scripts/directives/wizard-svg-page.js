@@ -772,8 +772,9 @@ angular.module('rainierApp')
                     svg.select('line[title="line-from-endpoint"]').remove();
                     svg.select('line[title="line-from-port"]').remove();
                 };
-
-                scope.dataModel.pathModel.builder();
+                $timeout(function(){
+                    scope.dataModel.pathModel.builder();
+                }, 600);
             }
         };
     });
