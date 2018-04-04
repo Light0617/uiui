@@ -50,7 +50,6 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock, commonMoc
         result.protocol = 'ISCSI';
         result.iscsiNames = commonMock.getIscsiNames();
         result.chapUser = 'user1';
-        result.mutualChapUser = 'user2';
         return result;
     };
 
