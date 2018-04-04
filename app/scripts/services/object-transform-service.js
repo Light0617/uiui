@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService,
-                                                 storageAdvisorEmbeddedSessionService) {
+                                                 storageAdvisorEmbeddedSessionService, utilService) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -77,8 +77,11 @@ angular.module('rainierApp')
         };
 
         var formatVolumeId = function (id) {
-            if (!id) {
-                return '';
+            if (utilService.isNullOrUndef(id)) {
+              return '';
+            }
+            if (typeof id === 'string' || id instanceof String) {
+              id = parseInt(id);
             }
             var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
             var formatted = hexId.match(/.{1,2}/g).join(':');
