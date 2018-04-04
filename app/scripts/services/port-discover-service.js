@@ -98,7 +98,7 @@ angular.module('rainierApp')
                     return {
                         iscsiName: port.iscsiPortInformation.portIscsiName,
                         ip: port.iscsiPortInformation.ipv4Information.address
-                    }
+                    };
                 } else if (
                     port.iscsiPortInformation.ipv6Information &&
                     port.iscsiPortInformation.ipv6Information.address
@@ -106,7 +106,7 @@ angular.module('rainierApp')
                     return {
                         iscsiName: port.iscsiPortInformation.portIscsiName,
                         ip: port.iscsiPortInformation.ipv6Information.address
-                    }
+                    };
                 }
                 return undefined;
             }
@@ -150,7 +150,7 @@ angular.module('rainierApp')
         };
 
         var discoveredVolumes = function (discoveredLunsWithEndPoint, volumeEndPointHash) {
-            return _.chain(discoveredLunsWithEndPoint)
+            var result = _.chain(discoveredLunsWithEndPoint)
                 .map(function (lun) {
                     return lun.lunNEndPoint;
                 })
@@ -164,6 +164,7 @@ angular.module('rainierApp')
                     return volume;
                 })
                 .value();
+            return result;
         };
 
         var appendTargetEndPointToLuns = function (discoveredLuns, targetPortIdHash) {
@@ -198,8 +199,8 @@ angular.module('rainierApp')
             return $q.all(
                 _.map(paths, function (path) {
                     return orchestratorService.discoverLun(
-                        targetStorageId,
                         path.targetPortId,
+                        targetStorageId,
                         path.sourceEndPoint
                     );
                 })

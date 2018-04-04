@@ -13,8 +13,7 @@ angular.module('rainierApp')
         $q,
         $timeout,
         orchestratorService,
-        constantService,
-        utilService
+        constantService
     ) {
         var interval = 5000;
         var upperLimit = 10;

@@ -114,7 +114,6 @@ angular.module('rainierApp')
                         }else {
                             previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
                                 // TODO Actual Discovered volume should be listed
-                                // getVolumes(storageSystemId);
                                 var externalPath = portDiscoverService.createExternalPath(
                                     $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
                                 );
@@ -126,10 +125,15 @@ angular.module('rainierApp')
                                 );
                             }).then(function (volumes) {
                                 if(!volumes.length) {
-                                    return $q.reject('Failed to previrtualize');
+                                    // TODO make sure the message
+                                    return $q.reject('Failed to discover');
                                 }
+                                $scope.dataModel.displayList = [];
+                                $scope.dataModel.cachedList = [];
                                 _.forEach(volumes, objectTransformService.transformVolume);
                                 $scope.dataModel.displayList = volumes;
+                                initView($scope.dataModel.displayList);
+                                $scope.dataModel.goNext();
                             }).catch(function (e) {
                                 // TODO Show dialog and disable next
                                 console.log(e);

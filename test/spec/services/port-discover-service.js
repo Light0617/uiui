@@ -43,7 +43,7 @@ describe('Service: portDiscoverService tests', function () {
                 }] : undefined
             });
         },
-        discoverLun: function (storageSystemId, portId, payloadQuery) {
+        discoverLun: function (portId, storageSystemId, payloadQuery) {
             var found = storageSystemId % 2;
             return $q.resolve(
                 found ? [
