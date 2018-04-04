@@ -523,7 +523,7 @@ angular.module('rainierApp')
                                     });
 
                                 $scope.ok = function () {
-                                    payload['forceOverwriteChapSecret'] = true; // Set option to force to overwrite CHAP secret
+                                    payload.forceOverwriteChapSecret = true; // Set option to force to overwrite CHAP secret
                                     orchestratorService.attachVolume(payload) // Then retry to attach volume
                                         .then(function () {
                                             modelInstance.close(true);

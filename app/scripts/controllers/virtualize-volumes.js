@@ -22,6 +22,7 @@ angular.module('rainierApp')
         $routeParams,
         $timeout,
         $window,
+        $location,
         orchestratorService,
         objectTransformService,
         synchronousTranslateService,
@@ -73,7 +74,7 @@ angular.module('rainierApp')
             selectedType : '',
             readyDefer: $q.defer(),
             portLunMap: {},
-            type: ["FIBRE", "ISCSI"],
+            type: ['FIBRE', 'ISCSI'],
             iscsiPaths: [],
             fibrePaths: [],
             pathModel: {
@@ -245,10 +246,6 @@ angular.module('rainierApp')
 
 
         /******* Select Port(Create Ext Volume Page) *******/
-        var idKey = storagePortsService.idKey;
-        var getStoragePortsPath = storagePortsService.getStoragePortsPath;
-        var portAttributes = storagePortsService.portAttributes;
-
         var selectPorts = function(storageSystemId){
 
             //add for button
@@ -337,7 +334,7 @@ angular.module('rainierApp')
 
         /******* Discover Luns *******/
         //add for button
-        var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
+        // var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
 
         var updateResultTotalCounts = function(result) {
             $scope.dataModel.nextToken = result.nextToken;
@@ -424,7 +421,7 @@ angular.module('rainierApp')
                 sort: {
                     field: 'volumeId',
                     reverse: false,
-                    setSort: function (f) {
+                    setSort: function () {
                         //Sort discover
                     }
                 }
