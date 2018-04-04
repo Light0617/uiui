@@ -112,9 +112,27 @@ angular.module('rainierApp')
                         if(ShareDataService.isAddExtVolume) {
                             getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
                         }else {
-                            previrtualizeService.previrtualizeAndDiscover(payload).then(function (volumes) {
+                            previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
                                 // TODO Actual Discovered volume should be listed
-                                getVolumes(storageSystemId);
+                                // getVolumes(storageSystemId);
+                                var externalPath = portDiscoverService.createExternalPath(
+                                    $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
+                                );
+                                return portDiscoverService.discoverManagedVolumes(
+                                    externalPath,
+                                    volumeIds,
+                                    storageSystemId,
+                                    $scope.dataModel.selectedTarget.storageSystemId
+                                );
+                            }).then(function (volumes) {
+                                if(!volumes.length) {
+                                    return $q.reject('Failed to previrtualize');
+                                }
+                                _.forEach(volumes, objectTransformService.transformVolume);
+                                $scope.dataModel.displayList = volumes;
+                            }).catch(function (e) {
+                                // TODO Show dialog and disable next
+                                console.log(e);
                             }).finally(function () {
                                 $scope.dataModel.isWaiting = false;
                             });

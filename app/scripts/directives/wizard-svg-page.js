@@ -756,7 +756,9 @@ angular.module('rainierApp')
                     }, 600);
                 };
 
-                scope.dataModel.readyDefer.resolve(true);
+                if (scope.dataModel.readyDefer) {
+                    scope.dataModel.readyDefer.resolve(true);
+                }
 
                 scope.dataModel.deleteAllLines = function(pathModel){
                     var i;

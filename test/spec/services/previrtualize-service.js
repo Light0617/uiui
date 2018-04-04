@@ -73,31 +73,6 @@ describe('Service: previrtualizeService tests', function () {
         });
     });
 
-    describe('discover', function () {
-        it('returns a promise', function () {
-            expect(previrtualizeService.discover(100).then).toBeDefined();
-        });
-
-        it('should resolve with volumes', function () {
-            var data;
-            var deferred = $q.defer();
-            var promise = deferred.promise;
-
-            promise.then(function (response) {
-                data = response;
-            });
-
-            previrtualizeService.discover(123123).then(function (response) {
-                deferred.resolve(response);
-            });
-
-            $rootScope.$digest();
-
-            // expect(data.length).toEqual(3);
-            // expect(data[1].id).toEqual(2);
-        });
-    });
-
     describe('handleJob', function () {
         it('returns a function which should resolve with jobId when the job succeed.', function () {
             var data;
