@@ -19,7 +19,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
     $scope, orchestratorService, objectTransformService,
     paginationService, queryService,
     ShareDataService, viewModelService,
-    attachVolumeService, constantService
+    attachVolumeService, constantService, editChapService
 ) {
 
     var GET_PORTS_PATH = 'storage-ports';
@@ -362,9 +362,23 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                             updates: updates
                         };
 
-                        orchestratorService.editLunPaths(payload);
+                        if (host.protocol === 'ISCSI') {
+                            orchestratorService.editLunPathsForIscsi(payload, function (error, wrapped, defaultErrAction) {
+                                switch (error.status) {
+                                    case 412:
+                                        // Specified CHAP user already exists in the specified Storage Port
+                                        editChapService.confirmOverwriteChapSecretThenCallApi(
+                                            error.data.messageParameters, orchestratorService.editLunPaths, payload);
+                                        break;
+                                    default:
+                                        defaultErrAction.call({}, error, wrapped);
+                                }
+                            });
+                        } else {
+                            orchestratorService.editLunPaths(payload);
+                            window.history.back();
+                        }
                     }
-                    window.history.back();
                 }
             });
             attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, $scope.dataModel.attachModel.selectedHostModeOption, idCoordinates);
