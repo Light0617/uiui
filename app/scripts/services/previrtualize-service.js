@@ -84,14 +84,16 @@ angular.module('rainierApp')
         };
 
         var createPrevirtualizePayload = function (
+            sourceStorageSystemId,
             targetStorageSystemId,
             portsInfo,
             volumeIds
         ) {
             return {
+                sourceStorageSystemId: sourceStorageSystemId,
                 targetStorageSystemId: targetStorageSystemId,
                 portsInfo: portsInfo,
-                luns: _.chain(volumeIds).map(function (volId) {
+                volumes: _.chain(volumeIds).map(function (volId) {
                     return {volumeId: volId};
                 }).value()
             };
