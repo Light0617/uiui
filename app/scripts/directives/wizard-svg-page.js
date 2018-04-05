@@ -271,7 +271,7 @@ angular.module('rainierApp')
 
         }
 
-        function finishLineToEndPoint(circle, line, endPoint, scope, svg){
+        function finishLineToEndPoint(circle, line, endPoint, scope, svg, serverId){
             var portIndex;
             var pathIndex;
             var port;
@@ -322,6 +322,7 @@ angular.module('rainierApp')
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
                     isVsmPort: port.vsmPort,
+                    serverId: serverId,
                     preVirtualizePayload: {
                         srcPort: endPoint,
                         targetWwn: port.wwn,
@@ -340,8 +341,9 @@ angular.module('rainierApp')
             line.remove();
         }
 
-        function finishLineToPort(circle, line, port, scope, svg){
+        function finishLineToPort(circle, line, port, scope, svg, serverId){
             var endPoint;
+            var serverId;
             var pathIndex;
             var path;
             if(port.vsmPort){
@@ -389,6 +391,7 @@ angular.module('rainierApp')
                     storagePortId: port.storagePortId,
                     serverEndPoint: endPoint,
                     isVsmPort: port.vsmPort,
+                    serverId: serverId,
                     preVirtualizePayload: {
                         srcPort: endPoint,
                         targetWwn: port.wwn,
@@ -498,6 +501,7 @@ angular.module('rainierApp')
                 var pathIndex;
                 var innerCircle;
                 var allPaths;
+                var serverId;
                 var g;
                 if (!d3.select('path[path-index]').empty()) {
                     return;
@@ -549,6 +553,7 @@ angular.module('rainierApp')
                     var excludedIndex;
                     circle = d3.select(this).select('circle');
                     var endPoint = d3.select(this).select('text').attr('attr-raw');
+                    var serverId = d3.select(this).select('text').attr('attr-server-id');
                     pathIndex = getPathIndexIfOnlyOneSelected(scope.dataModel.pathModel.paths);
                     if (pathIndex !== null) {
                         if (pathIndex !== MULTI_SELECTED && endPoint === scope.dataModel.pathModel.paths[pathIndex].serverEndPoint) {
@@ -575,7 +580,7 @@ angular.module('rainierApp')
                         }
 
                         // Finish the path
-                        finishLineToEndPoint(circle, line, endPoint, scope, svg);
+                        finishLineToEndPoint(circle, line, endPoint, scope, svg, serverId);
                     } else {
                         line = svg.select('line[title="line-from-endpoint"]');
                         if (!line.empty()) {
@@ -606,6 +611,7 @@ angular.module('rainierApp')
                             .attr('x2', parseInt(cx) + 100)
                             .attr('y2', cy)
                             .attr('attr-endpoint', endPoint)
+                            .attr('attr-server-id', serverId)
                             .attr('stroke-dasharray', '10,10')
                             .attr('stroke-width', 2)
                             .attr('stroke', selectedColor);
@@ -647,12 +653,13 @@ angular.module('rainierApp')
                             // But if we are modifying a path to its original path, we should allow it. excludedIndex is
                             // the index of the selected path which should be excluded for existence check.
                             excludedIndex = line.attr('path-index');
+                            serverId = line.attr('attr-server-id');
                             if (pathExists(scope.dataModel, line.attr('attr-endpoint'), port.storagePortId, parseInt(excludedIndex))) {
                                 return;
                             }
 
                             // Finish the path
-                            finishLineToPort(circle, line, port, scope, svg);
+                            finishLineToPort(circle, line, port, scope, svg, serverId);
 
                         } else {
                             // create a new path

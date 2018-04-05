@@ -49,6 +49,7 @@ angular.module('rainierApp')
         /******* Pre Virtualization *******/
         var storageSystemId = $routeParams.storageSystemId;
         var getSortedStoragePortsPath = 'storage-ports' + '?sort=storagePortId:ASC';
+        var isAddExtVolume = $location.path().includes('external-volumes');
         var portsInfo = function (paths) {
             return _.map(paths, function (p) {
                 return previrtualizeService.createPrevirtualizePayloadPortInfo(
@@ -64,11 +65,14 @@ angular.module('rainierApp')
         if(ShareDataService.selectedVirtualizeVolumes){
             storageSystemId = ShareDataService.selectedVirtualizeVolumes[0].storageSystemId;
         }
+        else if (!isAddExtVolume) {
+            $location.path(['/storage-systems/', storageSystemId, '/volumes/'].join(''));
+        }
 
         $scope.dataModel = {
             isPrevirtualize: true,
             isVirtualizeVolume: true,
-            isAddExtVolume: ShareDataService.isAddExtVolume,
+            isAddExtVolume: isAddExtVolume,
             targetCoordinates: {},
             sourceCoordinates: {},
             selectedType : '',
@@ -108,7 +112,7 @@ angular.module('rainierApp')
                         );
                         $scope.dataModel.isWaiting = true;
 
-                        if(ShareDataService.isAddExtVolume) {
+                        if(isAddExtVolume) {
                             getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
                         }else {
                             previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
@@ -406,10 +410,6 @@ angular.module('rainierApp')
         };
 
         var initView = function (result){
-
-            //add for button
-            //var noAvailableArray = false;
-
             var dataModelVolume = {
                 onlyOperation: true,
                 view: 'tile',
@@ -484,7 +484,6 @@ angular.module('rainierApp')
             //clear the paths
             $scope.dataModel.pathModel.paths = [];
             $scope.dataModel.pathModel.sourcePorts = [];
-
         };
 
 
@@ -748,37 +747,15 @@ angular.module('rainierApp')
             var dataModelCreatePath = {};
             // Todo: Add for footer button
             dataModelCreatePath.createPathModel = {
-                canGoNext: function () {
+                canSubmit: function () {
                     return ($scope.dataModel.pathModel.paths.length > 0);
                 },
 
                 //TODO: next step of confirmation needs further discussion
-                next: function () {
-                    if (dataModelCreatePath.createPathModel.canGoNext && dataModelCreatePath.createPathModel.canGoNext()) {
-                        var payload = {
-                            targetPortForSrcVol: [],
-                            serverInfos: [],
-                            luns: []
-                        };
-                        _.each($scope.dataModel.preVirtualizationPaths, function (path) {
-                            payload.targetPortForSrcVol.push(path.storagePortId);
-                        });
-                        _.each($scope.dataModel.pathModel.paths, function (path) {
-                            var serverInfo = {
-                                targetPortForHost: path.storagePortId,
-                                serverWwn: path.serverEndPoint,
-                                hostMode: $scope.dataModel.attachModel.selectedHostMode,
-                                hostModeOpts: $scope.dataModel.attachModel.selectedHostModeOption
-                            };
-                            payload.serverInfos.push(serverInfo);
-                        });
-                        _.each($scope.dataModel.selectedDiscoveredVolumes, function (vol) {
-                            console.log(vol);
-                            payload.luns.push(vol.volumeId);
-                        });
-                        console.log(payload);
-                        orchestratorService.virtualizeVolumes(storageSystemId, payload);
-                        $scope.dataModel.goNext();
+                submit: function () {
+                    if (dataModelCreatePath.createPathModel.canSubmit && dataModelCreatePath.createPathModel.canSubmit()) {
+                        var payload = virtualizeVolumeService.constructVirtualizePayload($scope.dataModel);
+                        orchestratorService.virtualizeVolumes(storageSystemId, payload).then(function() { window.history.back(); });
                     }
                 },
                 previous: function () {
