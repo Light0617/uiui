@@ -217,10 +217,10 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',
                         enabled: function () {
-                            return isVolumesInSameStorageSystem(dataModel.getSelectedItems())
-                                && licenseStatusOfVolumeMigration[dataModel.getSelectedItems()[0].storageSystemId]
-                                && migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems())
-                                && $scope.selectedCount <= 300;
+                            return isVolumesInSameStorageSystem(dataModel.getSelectedItems()) &&
+                                licenseStatusOfVolumeMigration[dataModel.getSelectedItems()[0].storageSystemId] &&
+                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems()) &&
+                                $scope.selectedCount <= 300;
                         },
                         onClick: function () {
                             ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();

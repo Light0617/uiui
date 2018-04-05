@@ -823,10 +823,10 @@ angular.module('rainierApp')
                 var storagePools = allStoragePools[storageSystemId];
                 _.chain(storagePools)
                     .filter(function (pool) {
-                        return _.contains(poolTypes, pool.type)
+                        return _.contains(poolTypes, pool.type);
                     })
                     .filter(function (pool) {
-                        return pool.isReservedPool !== true
+                        return pool.isReservedPool !== true;
                     })
                     .map(function (pool) {
                         pool.displayLabel = pool.snapshotPoolLabelWithPoolId();

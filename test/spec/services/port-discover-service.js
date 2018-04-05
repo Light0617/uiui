@@ -486,16 +486,13 @@ describe('Service: portDiscoverService tests', function () {
 
             $rootScope.$digest();
 
-            expect(data).toEqual(
-                [{
-                    volumeId: 1,
-                    label: 'volume1',
-                    capacity: 2,
-                    endPoint: 'wwn1',
-                    lun: 1,
-                    lunNEndPoint: 'wwn1_1'
-                }]
-            );
+            expect(data.length).toBe(1);
+            expect(data[0].volumeId).toBe(1);
+            expect(data[0].label).toBe('volume1');
+            expect(data[0].capacity).toBe(2);
+            expect(data[0].endPoint).toBe('wwn1');
+            expect(data[0].lun).toBe(1);
+            expect(data[0].lunNEndPoint).toBe('wwn1_1');
         });
     });
 });

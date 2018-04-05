@@ -325,7 +325,6 @@ angular.module('rainierApp')
                     selectedTargetPoolId = item.targetPoolId;
                 });
                 var sourceVolumes = [];
-                var sourceExternalVolumes = [];
                 var tasks = [];
                 tasks.push(migrationTaskService.getVolumes(storageSystemId, sourceVolumeIds).then(function (volumes) {
                     sourceVolumes = volumes;

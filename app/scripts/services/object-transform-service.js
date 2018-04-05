@@ -668,7 +668,7 @@ angular.module('rainierApp')
                 item.isMigrating = function () {
                     return (this.migrationSummary.ownerTaskId ||
                             this.migrationSummary.migrationType === constantService.migrationType.MIGRATION);
-                }
+                };
 
                 item.assignedToMigration = function () {
                     if (this.migrationSummary.ownerTaskId) {
