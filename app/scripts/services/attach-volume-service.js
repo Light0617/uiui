@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .factory('attachVolumeService', function (
         orchestratorService, viewModelService, resourceTrackerService, constantService,
-        ShareDataService, $location, $modal, synchronousTranslateService
+        ShareDataService, $location, $modal, synchronousTranslateService, editChapService
     ) {
         var autoSelect = 'AUTO';
         var idCoordinates = {};
@@ -507,41 +507,8 @@ angular.module('rainierApp')
                 switch (error.status) {
                     case 412:
                         // Specified CHAP user already exists in the specified Storage Port
-                        var modelInstance = $modal.open({
-                            templateUrl: 'views/templates/basic-confirmation-modal.html',
-                            windowClass: 'modal fade confirmation',
-                            backdropClass: 'modal-backdrop',
-                            controller: function ($scope) {
-                                $scope.confirmationTitle = synchronousTranslateService.translate(
-                                    'storage-volume-attach-confirm-force-overwrite-chap-user-name-title');
-                                $scope.confirmationMessage = synchronousTranslateService.translate(
-                                    'storage-volume-attach-confirm-force-overwrite-chap-user-name-message',
-                                    {
-                                        storageSystemId: error.data.messageParameters.storageSystemId,
-                                        storagePort: error.data.messageParameters.storagePort,
-                                        chapUserNames: error.data.messageParameters.chapUserNames
-                                    });
-
-                                $scope.ok = function () {
-                                    payload.forceOverwriteChapSecret = true; // Set option to force to overwrite CHAP secret
-                                    orchestratorService.attachVolume(payload) // Then retry to attach volume
-                                        .then(function () {
-                                            modelInstance.close(true);
-                                            window.history.back();
-                                        }, function () {
-                                            modelInstance.close(true);
-                                        });
-                                };
-
-                                $scope.cancel = function () {
-                                    modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
-                                };
-
-                                modelInstance.result.finally(function () {
-                                    $scope.cancel();
-                                });
-                            }
-                        });
+                        editChapService.confirmOverwriteChapSecretThenCallApi(
+                            error.data.messageParameters, orchestratorService.attachVolume, payload);
                         break;
                     default:
                         defaultErrAction.call({}, error, wrapped);
