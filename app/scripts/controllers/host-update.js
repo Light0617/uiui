@@ -174,18 +174,8 @@ angular.module('rainierApp')
                 return false;
             }
 
-            if (
-                chap.chapEnabled && chap.updateChapCredential &&
-                (_.isEmpty(chap.chapUser) || _.isEmpty(chap.chapSecret))
-            ) {
-                return false;
-            }
-
-            if (chap.chapEnabled) {
-                return false;
-            }
-
-            return true;
+            return !(chap.chapEnabled && chap.updateChapCredential &&
+                (_.isEmpty(chap.chapUser) || _.isEmpty(chap.chapSecret)));
         }
 
         function postFibreEndPoint(hostId, endPointPayload) {
