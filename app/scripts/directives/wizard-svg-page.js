@@ -343,7 +343,6 @@ angular.module('rainierApp')
 
         function finishLineToPort(circle, line, port, scope, svg, serverId){
             var endPoint;
-            var serverId;
             var pathIndex;
             var path;
             if(port.vsmPort){

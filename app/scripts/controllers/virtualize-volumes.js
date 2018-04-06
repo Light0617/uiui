@@ -338,9 +338,6 @@ angular.module('rainierApp')
 
 
         /******* Discover Luns *******/
-        //add for button
-        // var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
-
         var updateResultTotalCounts = function(result) {
             $scope.dataModel.nextToken = result.nextToken;
             $scope.dataModel.cachedList = result.resources;

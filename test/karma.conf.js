@@ -14,7 +14,7 @@ module.exports = function(config) {
         basePath: '../',
 
         // testing framework to use (jasmine/mocha/qunit/...)
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'es6-shim'],
 
         // list of files / patterns to load in the browser
         files: [
@@ -53,6 +53,7 @@ module.exports = function(config) {
             'bower_components/bel-ui/app/scripts/services/locale.js',
             'bower_components/bel-ui/app/scripts/services/base64.js',
             'bower_components/bel-ui/app/scripts/services/auth.js',
+            'bower_components/bel-ui/app/scripts/services/queryService.js',
             'bower_components/helpui-framework/helpuiModule.js',
             'bower_components/helpui-content/helpuiContent.js',
             'bower_components/d3/d3.js',
@@ -105,6 +106,7 @@ module.exports = function(config) {
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
+            'karma-es6-shim',
             'karma-spec-reporter'
         ],
 
