@@ -53,7 +53,7 @@ angular.module('rainierApp')
         var portsInfo = function (paths) {
             return _.map(paths, function (p) {
                 return previrtualizeService.createPrevirtualizePayloadPortInfo(
-                    p.storagePortId,
+                    p.serverEndPoint,
                     p.preVirtualizePayload ? p.preVirtualizePayload.targetWwn : undefined,
                     // TODO for iSCSI Virtualize
                     undefined
@@ -106,6 +106,7 @@ angular.module('rainierApp')
                         );
 
                         var payload = previrtualizeService.createPrevirtualizePayload(
+                            storageSystemId,
                             $scope.dataModel.selectedTarget.storageSystemId,
                             portsInfo($scope.dataModel.pathModel.paths),
                             volumeIds
