@@ -14,7 +14,7 @@ module.exports = function(config) {
         basePath: '../',
 
         // testing framework to use (jasmine/mocha/qunit/...)
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'es6-shim'],
 
         // list of files / patterns to load in the browser
         files: [
@@ -105,6 +105,7 @@ module.exports = function(config) {
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
+            'karma-es6-shim',
             'karma-spec-reporter'
         ],
 
