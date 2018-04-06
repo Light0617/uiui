@@ -803,8 +803,10 @@ angular.module('rainierApp')
                     return _.map(item.actions);
                 };
             },
-            transformDiscoveredLun: function(item){
-                _.each(item, function(i){
+            transformDiscoveredLun: function(items){
+                _.each(items, function(i){
+                    var displayCapacity = diskSizeService.getDisplaySize(i.capacity);
+                    i.displayCapacity = displayCapacity.size + ' ' + displayCapacity.unit;
                     i.metaData = [
                         {
                             left: true,
@@ -813,8 +815,8 @@ angular.module('rainierApp')
                         },
                         {
                             left: false,
-                            title: i.wwn,
-                            details: [i.capacity]
+                            title: wwnService.appendColon(i.wwn),
+                            details: [i.displayCapacity]
                         }
                     ];
                 });
