@@ -8,7 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('virtualizeVolumeService', function () {
+    .factory('virtualizeVolumeService', function (attachVolumeService) {
 
         function constructVirtualizePayload(dataModel) {
             var serverMap = new Map();
