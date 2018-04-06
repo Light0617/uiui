@@ -373,6 +373,8 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                                     default:
                                         defaultErrAction.call({}, error, wrapped);
                                 }
+                            }).then(function () {
+                                window.history.back();
                             });
                         } else {
                             orchestratorService.editLunPaths(payload);

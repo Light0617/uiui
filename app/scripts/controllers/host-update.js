@@ -9,7 +9,8 @@
  */
 angular.module('rainierApp')
     .controller('HostUpdateCtrl', function (
-        $scope, $routeParams, $q, orchestratorService, wwnService, constantService, $modal, synchronousTranslateService
+        $scope, $routeParams, $q, orchestratorService, wwnService, constantService,
+        $modal, synchronousTranslateService, utilService
     ) {
         var hostId = $routeParams.hostId;
 
@@ -123,7 +124,7 @@ angular.module('rainierApp')
                     return;
                 }
 
-                if ($scope.dataModel.chap && $scope.dataModel.chap.updateChapCredential) {
+                if ($scope.dataModel.chap && !utilService.isNullOrUndefOrBlank($scope.dataModel.chap.chapSecret)) {
                     var modelInstance = $modal.open({
                         templateUrl: 'views/templates/basic-confirmation-modal.html',
                         windowClass: 'modal fade confirmation',

@@ -35,7 +35,8 @@ angular.module('rainierApp')
                     };
 
                     $scope.canSubmit = function () {
-                        return !utilService.isNullOrUndefOrBlank($scope.dataModel.mutualChapUserName) &&
+                        return $scope.dataModel &&
+                            !utilService.isNullOrUndefOrBlank($scope.dataModel.mutualChapUserName) &&
                             !utilService.isNullOrUndefOrBlank($scope.dataModel.mutualChapUserSecret);
                     };
 

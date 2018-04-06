@@ -255,6 +255,8 @@ angular.module('rainierApp')
                                 default:
                                     defaultErrAction.call({}, error, wrapped);
                             }
+                        }).then(function () {
+                            window.history.back();
                         });
                     } else {
                         orchestratorService.createAttachProtectVolumes(payload).then(function() {
