@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('HostUpdateCtrl', function (
-        $scope, $routeParams, $q, orchestratorService, wwnService, constantService
+        $scope, $routeParams, $q, orchestratorService, wwnService, constantService, $modal, synchronousTranslateService
     ) {
         var hostId = $routeParams.hostId;
 
@@ -123,12 +123,44 @@ angular.module('rainierApp')
                     return;
                 }
 
-                $q.all([
-                    updateHostEndPoints(),
-                    updateHostFields()
-                ]).then(function () {
-                    window.history.back();
-                });
+                if ($scope.dataModel.chap && $scope.dataModel.chap.updateChapCredential) {
+                    var modelInstance = $modal.open({
+                        templateUrl: 'views/templates/basic-confirmation-modal.html',
+                        windowClass: 'modal fade confirmation',
+                        backdropClass: 'modal-backdrop',
+                        controller: function ($scope) {
+                            $scope.confirmationTitle = synchronousTranslateService.translate(
+                                'host-update-chap-confirm-overwrite-chap-secret-title');
+                            $scope.confirmationMessage = synchronousTranslateService.translate(
+                                'host-update-chap-confirm-overwrite-chap-secret-message');
+
+                            $scope.ok = function () {
+                                $q.all([
+                                    updateHostEndPoints(),
+                                    updateHostFields()
+                                ]).then(function () {
+                                    $scope.cancel();
+                                    window.history.back();
+                                });
+                            };
+
+                            $scope.cancel = function () {
+                                modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                            };
+
+                            modelInstance.result.finally(function () {
+                                $scope.cancel();
+                            });
+                        }
+                    });
+                } else {
+                    $q.all([
+                        updateHostEndPoints(),
+                        updateHostFields()
+                    ]).then(function () {
+                        window.history.back();
+                    });
+                }
             };
         });
 

@@ -825,6 +825,9 @@
     "host-update-chap-user": "New CHAP User",
     "host-update-chap-secret": "New CHAP Secret",
 
+    "host-update-chap-confirm-overwrite-chap-secret-title": "CHAP Secret Overwrite Confirmation",
+    "host-update-chap-confirm-overwrite-chap-secret-message": "All of CHAP user related to this Server will be overwritten by specified CHAP secret. Are you sure?",
+
     "host-update-mutual-chap-settings": "Mutual CHAP Settings",
     "host-update-mutual-chap-auth": "Mutual CHAP Auth",
     "host-update-mutual-chap-credential": "Update Mutual CHAP Credential",
