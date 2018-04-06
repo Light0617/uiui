@@ -142,6 +142,8 @@ angular.module('rainierApp')
                                 ]).then(function () {
                                     $scope.cancel();
                                     window.history.back();
+                                }, function () {
+                                    modelInstance.close(true);
                                 });
                             };
 
