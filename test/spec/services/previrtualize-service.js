@@ -13,7 +13,7 @@ describe('Service: previrtualizeService tests', function () {
 
     var pollingCount = 0;
     var orchestratorServiceMock = {
-        previrtualize: function (payload) {
+        previrtualize: function () {
             return $q.resolve({jobId: 0});
         },
         jobStatus: function (jobId) {
@@ -21,7 +21,7 @@ describe('Service: previrtualizeService tests', function () {
             var result = pollingCount <= 0 ? finishedJobResponse : working;
             return $q.resolve(result);
         },
-        virtualizedVolumes: function (jobId) {
+        virtualizedVolumes: function () {
             return $q.resolve([
                 {id: 1},
                 {id: 2},

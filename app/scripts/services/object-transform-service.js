@@ -3006,16 +3006,16 @@ angular.module('rainierApp')
                 };
                 item.isInProgress = function () {
                     return this.status === 'IN_PROGRESS';
-                },
+                };
                 item.isSuccess = function () {
                     return this.status === 'SUCCESS';
-                },
+                };
                 item.isFailed = function () {
                     return this.status === 'FAILED';
-                },
+                };
                 item.isSuccessWithErrors = function () {
                     return this.status === 'SUCCESS_WITH_ERRORS';
-                },
+                };
                 item.toDisplayDate = function (isoDate) {
                     if (isoDate && isoDate !== constantService.notAvailable) {
                         return $filter('date')(isoDate, 'MMM d, y h:mm:ss a');

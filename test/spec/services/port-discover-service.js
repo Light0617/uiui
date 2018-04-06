@@ -43,7 +43,7 @@ describe('Service: portDiscoverService tests', function () {
                 }] : undefined
             });
         },
-        discoverLun: function (portId, storageSystemId, payloadQuery) {
+        discoverLun: function (portId, storageSystemId) {
             var found = storageSystemId % 2;
             return $q.resolve(
                 found ? [
@@ -339,15 +339,19 @@ describe('Service: portDiscoverService tests', function () {
 
             $rootScope.$digest();
 
-            expect(data.iscsi100_1.volumeId).toEqual(100);
-            expect(data.iscsi100_1.label).toEqual('volume100');
-            expect(data.iscsi100_1.lunNEndPoint).toEqual('iscsi100_1');
-            expect(data.iscsi101_1.volumeId).toEqual(100);
-            expect(data.iscsi101_1.label).toEqual('volume100');
-            expect(data.iscsi101_1.lunNEndPoint).toEqual('iscsi101_1');
-            expect(data.wwn101_1.volumeId).toEqual(101);
-            expect(data.wwn101_1.label).toEqual('volume101');
-            expect(data.wwn101_1.lunNEndPoint).toEqual('wwn101_1');
+            var lunSuffix = '_1';
+            var a = data['iscsi100' + lunSuffix];
+            var b = data['iscsi101'+ lunSuffix];
+            var c = data['wwn101' + lunSuffix];
+            expect(a.volumeId).toEqual(100);
+            expect(a.label).toEqual('volume100');
+            expect(a.lunNEndPoint).toEqual('iscsi100_1');
+            expect(b.volumeId).toEqual(100);
+            expect(b.label).toEqual('volume100');
+            expect(b.lunNEndPoint).toEqual('iscsi101_1');
+            expect(c.volumeId).toEqual(101);
+            expect(c.label).toEqual('volume101');
+            expect(c.lunNEndPoint).toEqual('wwn101_1');
         });
     });
 
