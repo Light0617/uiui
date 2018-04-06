@@ -38,6 +38,7 @@
     "jshint-stylish": "0.2.0",
     "karma": "0.12.24",
     "karma-chrome-launcher": "^0.2.0",
+    "karma-es6-shim": "^1.0.0",
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "0.2.3",
     "karma-phantomjs-launcher": "1.0.2",

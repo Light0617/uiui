@@ -53,6 +53,7 @@ module.exports = function(config) {
             'bower_components/bel-ui/app/scripts/services/locale.js',
             'bower_components/bel-ui/app/scripts/services/base64.js',
             'bower_components/bel-ui/app/scripts/services/auth.js',
+            'bower_components/bel-ui/app/scripts/services/queryService.js',
             'bower_components/helpui-framework/helpuiModule.js',
             'bower_components/helpui-content/helpuiContent.js',
             'bower_components/d3/d3.js',
