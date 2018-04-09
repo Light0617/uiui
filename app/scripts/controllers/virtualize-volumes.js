@@ -184,6 +184,7 @@ angular.module('rainierApp')
                         return  port.securitySwitchEnabled;
                     })
                     .value();
+                // TODO dialog for the case sourcePorts === 0
                 $scope.dataModel.pathModel.FcSourcePorts = _.filter($scope.dataModel.pathModel.sourcePorts, function(port){
                     return port.type === 'FIBRE';
                 });
@@ -198,6 +199,7 @@ angular.module('rainierApp')
                              return attr === 'External';
                          });
                     });
+                    // TODO dialog for the case storagePorts === 0
                     $scope.dataModel.pathModel.FcStoragePorts = _.filter($scope.dataModel.pathModel.storagePorts, function(port){
                         return port.type === 'FIBRE';
                     });
