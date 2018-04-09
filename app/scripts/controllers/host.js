@@ -141,7 +141,12 @@ angular.module('rainierApp')
                         type: 'link',
                         enabled: function () {
                             return dataModel.onlyOneSelected() &&
-                                _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
+                                _.find(dataModel.getSelectedItems(), function(volume) {
+                                    return isVolumeGADAware(volume);
+                                }) === undefined &&
+                                !_.some(dataModel.getSelectedItems(), function (vol) {
+                                    return vol.isShredding();
+                                });
                         },
                         onClick: function () {
                             var item = _.first(dataModel.getSelectedItems());
@@ -209,7 +214,9 @@ angular.module('rainierApp')
 
                         },
                         enabled: function () {
-                            return dataModel.anySelected();
+                            return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(), function (vol) {
+                                       return vol.isShredding();
+                                   });
                         }
                     },
                     {

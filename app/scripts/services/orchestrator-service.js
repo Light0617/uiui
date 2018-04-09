@@ -401,6 +401,9 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandlerWithErrAction(
                     Restangular.all('volume-manager/edit-lun-paths').post(editLunPathPayload), errAction);
             },
+            shredVolumes: function (shredVolumesPayload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred').post(shredVolumesPayload));
+            },
             deleteVolume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).remove());
             },

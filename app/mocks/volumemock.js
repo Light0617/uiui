@@ -87,7 +87,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             size: mocksize,
             usedCapacity: mockUtils.getCapacity(1, 2),
             availableCapacity: mockUtils.getCapacity(1, 2),
-            status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
+            status: _.sample(['NORMAL', 'BLOCKED', 'BUSY', 'UNKNOWN', 'SHREDDING', 'NONE']),
             type: volType,
             dataProtectionSummary: getVolumeDataProtectionSummary(),
             gadSummary: getVolumeGADSummary(volType, v),

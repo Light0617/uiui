@@ -1,7 +1,7 @@
 /*
  * ========================================================================
  *
- * Copyright (c) by Hitachi Data Systems, 2017. All rights reserved.
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
  *
  * ========================================================================
  */
@@ -18,7 +18,8 @@ angular.module('rainierApp')
     .directive('passPatternTile', function () {
         return {
             scope: {
-                item: '=',
+                model: '=ngModel',
+                update: '&'
             },
             templateUrl: 'views/templates/pass-pattern-tile.html',
             restrict: 'E'

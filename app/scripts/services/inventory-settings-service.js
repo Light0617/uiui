@@ -54,6 +54,14 @@ angular.module('rainierApp')
                 }
 
             }, {
+                title: 'status',
+                sizeClass: 'sixteenth',
+                sortField: 'status',
+                getDisplayValue: function(item) {
+                    return item.status;
+                }
+
+            }, {
                 title: 'data-protection-type',
                 sizeClass: 'sixteenth',
                 sortField: 'dataProtectionSummary.replicationType',
