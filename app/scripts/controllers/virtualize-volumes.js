@@ -61,11 +61,10 @@ angular.module('rainierApp')
             });
         };
 
-
-        if(ShareDataService.selectedVirtualizeVolumes){
-            storageSystemId = ShareDataService.selectedVirtualizeVolumes[0].storageSystemId;
-        }
-        else if (!isAddExtVolume) {
+        if (
+            !isAddExtVolume &&
+            (!ShareDataService.selectedVirtualizeVolumes || ShareDataService.selectedVirtualizeVolumes.length === 0)
+        ) {
             $location.path(['/storage-systems/', storageSystemId, '/volumes/'].join(''));
         }
 
@@ -113,38 +112,34 @@ angular.module('rainierApp')
                         );
                         $scope.dataModel.isWaiting = true;
 
-                        if(isAddExtVolume) {
-                            getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
-                        }else {
-                            previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
-                                // TODO Actual Discovered volume should be listed
-                                var externalPath = portDiscoverService.createExternalPath(
-                                    $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
-                                );
-                                return portDiscoverService.discoverManagedVolumes(
-                                    externalPath,
-                                    volumeIds,
-                                    storageSystemId,
-                                    $scope.dataModel.selectedTarget.storageSystemId
-                                );
-                            }).then(function (volumes) {
-                                if(!volumes.length) {
-                                    // TODO make sure the message
-                                    return $q.reject('Failed to discover');
-                                }
-                                $scope.dataModel.displayList = [];
-                                $scope.dataModel.cachedList = [];
-                                _.forEach(volumes, objectTransformService.transformVolume);
-                                $scope.dataModel.displayList = volumes;
-                                initView($scope.dataModel.displayList);
-                                $scope.dataModel.goNext();
-                            }).catch(function (e) {
-                                // TODO Show dialog and disable next
-                                console.log(e);
-                            }).finally(function () {
-                                $scope.dataModel.isWaiting = false;
-                            });
-                        }
+                        previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
+                            // TODO Actual Discovered volume should be listed
+                            var externalPath = portDiscoverService.createExternalPath(
+                                $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
+                            );
+                            return portDiscoverService.discoverManagedVolumes(
+                                externalPath,
+                                volumeIds,
+                                storageSystemId,
+                                $scope.dataModel.selectedTarget.storageSystemId
+                            );
+                        }).then(function (volumes) {
+                            if(!volumes.length) {
+                                // TODO make sure the message
+                                return $q.reject('Failed to discover');
+                            }
+                            $scope.dataModel.displayList = [];
+                            $scope.dataModel.cachedList = [];
+                            _.forEach(volumes, objectTransformService.transformVolume);
+                            $scope.dataModel.displayList = volumes;
+                            initView($scope.dataModel.displayList);
+                            $scope.dataModel.goNext();
+                        }).catch(function (e) {
+                            // TODO Show dialog and disable next
+                            console.log(e);
+                        }).finally(function () {
+                            $scope.dataModel.isWaiting = false;
+                        });
                     }
                 },
                 validation: true,
