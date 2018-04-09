@@ -1160,5 +1160,7 @@
     "workflow-title-select-discovered-volumes": "Select Discovered Luns",
     "workflow-title-select-server": "Select Server",
     "workflow-title-create-paths": "Create Paths",
-    "capacity-efficiency-savings-ratio": "Capacity Efficiency"
+    "capacity-efficiency-savings-ratio": "Capacity Efficiency",
+
+    "fail-to-discover-error": "There is no volume discovered on the selected port."
 }

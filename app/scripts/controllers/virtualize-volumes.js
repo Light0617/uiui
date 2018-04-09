@@ -43,7 +43,8 @@ angular.module('rainierApp')
         previrtualizeService,
         donutService,
         storagePortsService,
-        portDiscoverService
+        portDiscoverService,
+        modalDialogService
         ) {
 
         /******* Pre Virtualization *******/
@@ -140,7 +141,7 @@ angular.module('rainierApp')
                                 $scope.dataModel.goNext();
                             }).catch(function (e) {
                                 // TODO Show dialog and disable next
-                                console.log(e);
+                                modalDialogService.showDialog('', 'fail-to-discover-error', 'warning');                                console.log(e);
                             }).finally(function () {
                                 $scope.dataModel.isWaiting = false;
                             });
