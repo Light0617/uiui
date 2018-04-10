@@ -1162,5 +1162,8 @@
     "workflow-title-create-paths": "Create Paths",
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
 
-    "fail-to-discover-error": "There is no volume discovered on the selected port."
+    "fail-to-discover-error": "There is no volume discovered on the selected port. Please check your physical connection.",
+    "job-failed-error": "Create Path Job failed. Please go to Job page to check the reason.",
+    "fail-to-previrt-error": "Failed to create path. ",
+    "fail-to-get-job-status-error": "Fail to get job status."
 }

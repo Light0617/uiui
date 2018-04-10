@@ -131,7 +131,7 @@ angular.module('rainierApp')
                             }).then(function (volumes) {
                                 if(!volumes.length) {
                                     // TODO make sure the message
-                                    return $q.reject('Failed to discover');
+                                    return $q.reject('fail-to-discover-error');
                                 }
                                 $scope.dataModel.displayList = [];
                                 $scope.dataModel.cachedList = [];
@@ -141,7 +141,8 @@ angular.module('rainierApp')
                                 $scope.dataModel.goNext();
                             }).catch(function (e) {
                                 // TODO Show dialog and disable next
-                                modalDialogService.showDialog('', 'fail-to-discover-error', 'warning');                                console.log(e);
+                                modalDialogService.showDialog('', e, 'warning');
+                                console.log(e);
                             }).finally(function () {
                                 $scope.dataModel.isWaiting = false;
                             });
