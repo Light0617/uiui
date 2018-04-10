@@ -42,7 +42,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         var mocksize = mockUtils.getCapacity(100,200);
         return{
             portId: 'CL' + v + '-' + _.sample(['A', 'B']),
-            wwn: wwns(),
+            wwn: wwns()[0],
             lunId: 1,
             capacity: mocksize,
             produceId: 'OPEN-V',

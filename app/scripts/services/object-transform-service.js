@@ -203,6 +203,21 @@ angular.module('rainierApp')
             return [];
         }
 
+        function appendAssignedToMigrationFn(item) {
+            item.assignedToMigration = function() {
+                if (item.migrationSummary.ownerTaskId) {
+                    return synchronousTranslateService.translate('yes');
+                }
+                switch (item.migrationSummary.migrationType) {
+                    case constantService.migrationType.MIGRATION:
+                        return synchronousTranslateService.translate('yes-unmanaged');
+                    case 'NONE':
+                        return synchronousTranslateService.translate('no');
+                }
+                return synchronousTranslateService.translate('no');
+            };
+        }
+
         transforms = {
 
             transformVolumeId: function(id) {
@@ -670,18 +685,7 @@ angular.module('rainierApp')
                             this.migrationSummary.migrationType === constantService.migrationType.MIGRATION);
                 };
 
-                item.assignedToMigration = function () {
-                    if (this.migrationSummary.ownerTaskId) {
-                        return synchronousTranslateService.translate('yes');
-                    }
-                    switch (this.migrationSummary.migrationType) {
-                        case constantService.migrationType.MIGRATION:
-                            return synchronousTranslateService.translate('yes-unmanaged');
-                        case 'NONE':
-                            return synchronousTranslateService.translate('no');
-                    }
-                    return synchronousTranslateService.translate('no');
-                };
+                appendAssignedToMigrationFn(item);
 
                 item.isSnapshotPair = function () {
                     return (this.dataProtectionSummary.replicationType.indexOf('SNAP') !== -1 ||
@@ -803,8 +807,10 @@ angular.module('rainierApp')
                     return _.map(item.actions);
                 };
             },
-            transformDiscoveredLun: function(item){
-                _.each(item, function(i){
+            transformDiscoveredLun: function(items){
+                _.each(items, function(i){
+                    var displayCapacity = diskSizeService.getDisplaySize(i.capacity);
+                    i.displayCapacity = displayCapacity.size + ' ' + displayCapacity.unit;
                     i.metaData = [
                         {
                             left: true,
@@ -813,8 +819,8 @@ angular.module('rainierApp')
                         },
                         {
                             left: false,
-                            title: i.wwn,
-                            details: [i.capacity]
+                            title: wwnService.appendColon(i.wwn),
+                            details: [i.displayCapacity]
                         }
                     ];
                 });
@@ -988,6 +994,97 @@ angular.module('rainierApp')
                         item.capacityInBytes.size, ' ',
                         item.capacityInBytes.unit, ')'
                     ].join('');
+                };
+            },
+            transformExternalVolume: function (item) {
+                appendAssignedToMigrationFn(item);
+                item.itemIcon = 'icon-volume';
+                item.displayVolumeId = formatVolumeId(item.volumeId);
+                item.capacity = diskSizeService.getDisplaySize(item.size);
+                item.usedCapacity = diskSizeService.getDisplaySize(item.usedCapacity);
+                item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
+                item.displayCapacity = item.capacity.size + ' ' + item.capacity.unit;
+                item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
+                    'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
+                var migrationTypeDisplay;
+                if (item.migrationSummary.ownerTaskId) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
+                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
+                }
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.displayVolumeId,
+                        details: _.filter([
+                            item.storageSystemId,
+                            item.provisioningStatus,
+                            migrationTypeDisplay,
+                            item.externalParityGroupId,
+                            item.displayMappedVolumeId,
+                            item.displayCapacity
+                        ], function(v) {
+                            return !utilService.isNullOrUndef(v);
+                        })
+                    }
+                ];
+
+                item.isAttached = function () {
+                    return (this.provisioningStatus === 'ATTACHED');
+                };
+
+                item.isMigrating = function () {
+                    return (this.migrationSummary.ownerTaskId ||
+                            this.migrationSummary.migrationType === constantService.migrationType.MIGRATION);
+                };
+
+                item.onClick = function () {
+                    $location.path(['storage-systems', item.storageSystemId, 'external-volumes', item.volumeId].join(
+                        '/'));
+                };
+            },
+            transformToExternalVolumeSummaryModel: function (item) {
+                return {
+                    arrayDataVisualizationModel: {
+                        total: {
+                            label: (function (key) {
+                                return synchronousTranslateService.translate(key);
+                            })('common-label-total'),
+                            capacity: item.capacity
+                        },
+                        items: [
+                            [{
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-volumes-used'),
+                                tooltip: (function (key) {
+                                    var usedCapacityObject = item.usedCapacity;
+                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                    var variable = {
+                                        usedCapacity: usedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('volumes-used-capacity-tooltip'),
+                                capacity: item.usedCapacity,
+                                color: thinUsedColor
+                            },
+                            {
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-volumes-free'),
+                                tooltip: (function (key) {
+                                    var freeCapacityObject = item.availableCapacity;
+                                    var freeCapacityAmount = freeCapacityObject.size + freeCapacityObject.unit;
+                                    var variable = {
+                                        freeCapacity: freeCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('volumes-free-capacity-tooltip'),
+                                capacity: item.availableCapacity,
+                                color: thinFreeColor
+                            }]
+                        ]
+                    }
                 };
             },
             transformExternalParityGroup: function (item) {

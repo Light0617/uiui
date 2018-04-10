@@ -16,7 +16,7 @@ rainierAppMock.run(function(
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
     replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
     monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock,
-    migrationTaskMock, rainierJobsMock, discoverLunMock
+    migrationTaskMock, rainierJobsMock, discoverLunMock, externalVolumesMock
 
 ) {
 
@@ -252,6 +252,8 @@ rainierAppMock.run(function(
                 return authMock.authenticateAndCall(urlResult, volumeMock.handle);
             case 'parity-groups':
                 return authMock.authenticateAndCall(urlResult, parityGroupMock.handle);
+            case 'external-volumes':
+                return authMock.authenticateAndCall(urlResult, externalVolumesMock.handle);
             case 'external-parity-groups':
                 return authMock.authenticateAndCall(urlResult, externalParityGroupMock.handle);
             case 'replication-groups':

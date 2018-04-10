@@ -77,6 +77,10 @@
     "dsd-volume-capacity-tooltip": "{{dsdVolCapacity}} is subscribed for Deduplication.",
     "common-label-free": "Thin Free",
     "free-capacity-tooltip": "{{freeCapacity}} Thin Free - Total available physical capacity across all storage pools.",
+    "common-label-volumes-used": "Used",
+    "common-label-volumes-free": "Free",
+    "volumes-used-capacity-tooltip": "{{usedCapacity}} Used - Total used capacity of all volumes.",
+    "volumes-free-capacity-tooltip": "{{freeCapacity}} Free - Total available capacity of all volumes.",
     "common-label-percent-free": "% Used",
     "common-label-allocated": "Allocated to Pools",
     "allocated-capacity-tooltip": "{{allocatedCapacity}} Allocated to Pools - Total capacity of all storage pools.",
@@ -136,6 +140,8 @@
     "common-external-parity-groups": "External Parity Groups",
     "common-external-volumes": "External Volumes",
     "common-external-volumes-add": "Create External Volumes",
+    "common-external-parity-group-id": "External Parity Group ID",
+    "common-external-mapped-volume-id": "Mapped Volume ID",
     "common-replication-group-action-confirmation": "Replication Group Action Confirmation",
     "common-replication-group-action": "{{pageAction}} Replication Group",
     "common-on": "On",
@@ -356,6 +362,7 @@
     "storage-volume-filter-protection-type": "Protection Type",
     "storage-volume-filter-data-protection": "Data Protection",
     "storage-volume-filter-data-protection-volume-type": "Data Protection Volume Type",
+    "storage-volume-filter-volume-status": "Select Status Filter",
 
     "storage-volume-summary-protected-volumes": "Protected Volumes",
     "storage-volume-summary-unprotected-volumes": "Unprotected Volumes",
@@ -779,6 +786,7 @@
     "action-tooltip-update-volumes" : "Update Volumes",
     "action-tooltip-delete-volumes" : "Delete Volumes",
     "action-tooltip-toggle-security" : "Enable/Disable Security",
+    "action-tooltip-unvirtualize" : "Unvirtualize",
 
     "clone-now-tooltip" : "Clone now - Makes a point in time copy of the volume selected using Shadow Image technology",
     "full-copy-tooltip" : "Full Copy - Makes a continuous copy of the volumes selected using Shadow Image technology",
@@ -1164,5 +1172,10 @@
 
     "fail-to-discover-error": "There is no volume discovered on the selected port. Please check your physical connection.",
     "job-failed-error": "Create Path From Source Job failed. Please go to Job page to check the reason.",
-    "fail-to-get-job-status-error": "Fail to get job status."
+    "fail-to-get-job-status-error": "Fail to get job status.",
+
+    "external-volume-unvirtualize-confirmation": "Unvirtualize Confirmation",
+    "external-volume-unvirtualize-content": "The current external volume will be unvirtualized. Do you want to proceed?",
+    "external-volumes-unvirtualize-confirmation": "Unvirtualize Confirmation",
+    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?"
 }

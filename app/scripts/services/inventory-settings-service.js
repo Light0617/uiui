@@ -133,17 +133,9 @@ angular.module('rainierApp')
             });
 
             if (options.canAdd) {
-
-                if(dataModel.isAddExtVolume){
-                    dataModel.addAction = function () {
-                        ShareDataService.isAddExtVolume = true;
-                        $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
-                    };
-                }else {
-                    dataModel.addAction = function () {
-                        $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
-                    };
-                }
+                dataModel.addAction = function () {
+                    $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
+                };
                 dataModel.addPoolDetailsClickAction = function(storagePoolId) {
                     ShareDataService.push('autoSelectedPoolId', storagePoolId);
                     $location.path(['storage-systems', dataModel.storageSystemId, 'storage-pools',
@@ -153,6 +145,82 @@ angular.module('rainierApp')
             }
 
         };
+
+        var externalVolumeGridSettings = function (dataModel) {
+            dataModel.gridSettings = [
+                {
+                    title: 'ID',
+                    sizeClass: 'sixteenth',
+                    sortField: 'volumeId',
+                    getDisplayValue: function (item) {
+                        return item.displayVolumeId;
+                    },
+                    type: 'id'
+                },
+                {
+                    title: 'storage-systems-serial-number',
+                    sizeClass: 'sixteenth',
+                    sortField: 'storageSystemId',
+                    getDisplayValue: function(item) {
+                        return item.storageSystemId;
+                    }
+                },
+                {
+                    title: 'common-label-total',
+                    sizeClass: 'sixteenth',
+                    sortField: 'size',
+                    getDisplayValue: function(item) {
+                        return item.capacity;
+                    },
+                    type: 'size'
+                },
+                {
+                    title: 'volume-provisioning-status',
+                    sizeClass: 'twelfth',
+                    sortField: 'provisioningStatus',
+                    getDisplayValue: function(item) {
+                        return item.provisioningStatus;
+                    }
+                },
+                {
+                    title: 'status',
+                    sizeClass: 'twelfth',
+                    sortField: 'status',
+                    getDisplayValue: function(item) {
+                        return item.status;
+                    }
+                },
+                {
+                    title: 'assigned-to-migration',
+                    sizeClass: 'sixteenth',
+                    sortField: 'assignedToMigration',
+                    getDisplayValue: function(item) {
+                        return item.assignedToMigration();
+                    }
+                },
+                {
+                    title: 'common-external-parity-group-id',
+                    sizeClass: 'sixteenth',
+                    sortField: 'externalParityGroupId',
+                    getDisplayValue: function(item) {
+                        return item.externalParityGroupId;
+                    }
+                },
+                {
+                    title: 'common-external-mapped-volume-id',
+                    sizeClass: 'sixteenth',
+                    sortField: 'mappedLdevId',
+                    getDisplayValue: function(item) {
+                        return item.mappedVolumeId;
+                    }
+                }
+            ];
+            dataModel.addAction = function () {
+                ShareDataService.isAddExtVolume = true;
+                $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
+            };
+        };
+
         var hostGridSettings = function(dataModel) {
 
             dataModel.gridSettings = [
@@ -297,6 +365,7 @@ angular.module('rainierApp')
             },
             setPoolGridSettings: function(dataModel) {
                 poolGridSettings(dataModel);
-            }
+            },
+            setExternalVolumeGridSettings: externalVolumeGridSettings
         };
     });
