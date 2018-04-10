@@ -34,6 +34,10 @@ angular.module('rainierApp')
                     d3.select('path[path-index="' + i + '"]').remove();
                 }
             }
+
+            pathModel.paths = _.filter(pathModel.paths, function(path){
+                return path.deleted != true;
+            });
         };
 
         var selectNone = function(dataModel){
