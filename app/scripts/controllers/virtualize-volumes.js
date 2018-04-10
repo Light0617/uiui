@@ -112,37 +112,37 @@ angular.module('rainierApp')
                             volumeIds
                         );
                         $scope.dataModel.isWaiting = true;
+                        inventorySettingsService.setVolumesGridSettings($scope.dataModel);
 
-                        if(isAddExtVolume) {
-                            getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
-                        }else {
-                            previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
-                                // TODO Actual Discovered volume should be listed
-                                var externalPath = portDiscoverService.createExternalPath(
-                                    $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
-                                );
-                                return portDiscoverService.discoverManagedVolumes(
-                                    externalPath,
-                                    volumeIds,
-                                    storageSystemId,
-                                    $scope.dataModel.selectedTarget.storageSystemId
-                                );
-                            }).then(function (volumes) {
-                                if(!volumes.length) {
-                                    return $q.reject('fail-to-discover-error');
-                                }
-                                $scope.dataModel.displayList = [];
-                                $scope.dataModel.cachedList = [];
-                                _.forEach(volumes, objectTransformService.transformVolume);
-                                $scope.dataModel.displayList = volumes;
-                                initView($scope.dataModel.displayList);
-                                $scope.dataModel.goNext();
-                            }).catch(function (e) {
-                                modalDialogService.showDialog('', e, 'warning');
-                            }).finally(function () {
-                                $scope.dataModel.isWaiting = false;
+                        previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
+                            // TODO Actual Discovered volume should be listed
+                            var externalPath = portDiscoverService.createExternalPath(
+                                $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
+                            );
+                            return portDiscoverService.discoverManagedVolumes(
+                                externalPath,
+                                volumeIds,
+                                storageSystemId,
+                                $scope.dataModel.selectedTarget.storageSystemId
+                            );
+                        }).then(function (volumes) {
+                            if(!volumes.length) {
+                                return $q.reject('fail-to-discover-error');
+                            }
+                            $scope.dataModel.displayList = [];
+                            $scope.dataModel.cachedList = [];
+                            _.forEach(volumes, function(v) {
+                                v.selected = true;
+                                objectTransformService.transformVolume(v);
                             });
-                        }
+                            $scope.dataModel.displayList = volumes;
+                            initView($scope.dataModel.displayList);
+                            $scope.dataModel.goNext();
+                        }).catch(function (e) {
+                            modalDialogService.showDialog('', e, 'warning');
+                        }).finally(function () {
+                            $scope.dataModel.isWaiting = false;
+                        });
                     }
                 },
                 validation: true,
@@ -383,34 +383,6 @@ angular.module('rainierApp')
                     });
                     updateDiscoveredLunsTotalCounts(portId);
                 });
-            }
-        };
-
-        var getVolumes = function (storageSystemId, ports){
-            $scope.dataModel.displayList = [];
-            $scope.dataModel.cachedList = [];
-            var payload = {
-               'wwn': null,
-               'iscsiInfo': null
-            };
-            _.each(ports, function(port){
-                orchestratorService.discoveredLuns(storageSystemId, port.storagePortId, payload).then(function (luns) {
-                    objectTransformService.transformDiscoveredLun(luns);
-                    $scope.dataModel.portLunMap[port.storagePortId] = luns;
-                }).then(function () {
-                    _.each($scope.dataModel.portLunMap[port.storagePortId], function (lun) {
-                        $scope.dataModel.displayList.push(lun);
-                    });
-                    updateDiscoveredLunsTotalCounts(port.storagePortId);
-
-                }).finally(function () {
-                    $scope.dataModel.isWaiting = false;
-                });
-            });
-
-            initView($scope.dataModel.displayList);
-            if(!$scope.dataModel.isAddExtVolume) {
-                $scope.dataModel.goNext();
             }
         };
 
