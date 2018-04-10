@@ -993,11 +993,25 @@ angular.module('rainierApp')
                 };
             },
             transformExternalVolume: function (item) {
+                item.itemIcon = 'icon-volume';
+                item.displayVolumeId = formatVolumeId(item.volumeId);
+                item.capacity = diskSizeService.getDisplaySize(item.size);
+                item.displayCapacity = item.capacity.size + ' ' + item.capacity.unit;
+                item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
+                    'Virtual Volume ID: ' + item.mappedVolumeId : undefined;
+                item.migrationType = item.migrationSummary && item.migrationSummary.migrationType ?
+                    'Migration Type: ' + item.migrationSummary.migrationType : undefined;
                 item.metaData = [
                     {
                         left: true,
-                        title: item.mappedLdevId,
-                        details: [item.externalParityGroupId]
+                        title: item.displayVolumeId,
+                        details: [
+                            item.externalParityGroupId,
+                            item.displayMappedVolumeId,
+                            item.provisioningStatus,
+                            item.migrationType,
+                            item.displayCapacity
+                        ]
                     }
                 ];
             },

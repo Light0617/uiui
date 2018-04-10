@@ -3,10 +3,10 @@
 rainierAppMock.factory('externalVolumesMock', function(mockUtils) {
     var externalVolume = function(id) {
         return {
-            mappedLdevId: id,
+            volumeId: id,
+            mappedLdevId: _.sample('9' + id, undefined),
             externalParityGroupId: _.random(1,10) + '-' + _.random(1,10),
-            usedCapacity: _.random(1,1024 ^ 4),
-            availableCapacity: _.random(1,1024 ^ 4)
+            size: _.random(1, Math.pow(1024, 4))
         };
     };
 
