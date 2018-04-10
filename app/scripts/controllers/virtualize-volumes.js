@@ -130,7 +130,6 @@ angular.module('rainierApp')
                                 );
                             }).then(function (volumes) {
                                 if(!volumes.length) {
-                                    // TODO make sure the message
                                     return $q.reject('fail-to-discover-error');
                                 }
                                 $scope.dataModel.displayList = [];
@@ -140,9 +139,7 @@ angular.module('rainierApp')
                                 initView($scope.dataModel.displayList);
                                 $scope.dataModel.goNext();
                             }).catch(function (e) {
-                                // TODO Show dialog and disable next
                                 modalDialogService.showDialog('', e, 'warning');
-                                console.log(e);
                             }).finally(function () {
                                 $scope.dataModel.isWaiting = false;
                             });
