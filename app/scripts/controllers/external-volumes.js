@@ -8,12 +8,15 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ExternalVolumesCtrl', function ($scope, $modal, $routeParams, $timeout, $filter, $location,
-                                                      objectTransformService, orchestratorService, volumeService,
-                                                      scrollDataSourceBuilderServiceNew, ShareDataService,
-                                                      inventorySettingsService, paginationService, queryService,
-                                                      storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
-                                                      constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService) {
+    .controller('ExternalVolumesCtrl', function (
+        $scope, $modal, $routeParams, $timeout, $filter, $location,
+        objectTransformService, orchestratorService, volumeService,
+        scrollDataSourceBuilderServiceNew, ShareDataService,
+        inventorySettingsService, paginationService, queryService,
+        storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
+        constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService,
+        migrationTaskService
+    ) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_ETERNAL_VOLUMES_PATH = 'external-volumes';
         ShareDataService.showProvisioningStatus = true;
@@ -86,9 +89,9 @@ angular.module('rainierApp')
                     volumeType: '',
                     previousVolumeType: '',
                     provisioningStatus: '',
-                    dkcDataSavingType: '',
                     replicationType: [],
                     protectionStatusList: [],
+                    migrationType: '',
                     snapshotex: false,
                     snapshotfc: false,
                     snapshot: false,
@@ -96,22 +99,10 @@ angular.module('rainierApp')
                     protected: false,
                     unprotected: false,
                     secondary: false,
-                    gadActivePrimary: false,
-                    gadActiveSecondary: false,
-                    gadNotAvailable: false,
-                    freeCapacity: {
+                    size: {
                         min: 0,
                         max: 1000,
                         unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    utilization: {
-                        min: 0,
-                        max: 100
                     }
                 },
                 fetchPreviousVolumeType: function (previousVolumeType) {
@@ -119,7 +110,14 @@ angular.module('rainierApp')
                 },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
-                    gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
+                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
+                    paginationService.setFilterSearch(queryObject);
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
+                        updateResultTotalCounts(result);
+                    });
+                },
+                migrationFilterQuery: function (type, isManaged) {
+                    migrationTaskService.volumeMigrationTypeFilter(type, isManaged, $scope.filterModel.filter.migrationType);
                     paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
@@ -133,7 +131,6 @@ angular.module('rainierApp')
                 searchQuery: function (value) {
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
-                    queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
