@@ -96,6 +96,9 @@ angular.module('rainierApp')
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/' + storageSystemId + '/virtualize').post(payload));
             },
+            unvirtualizeVolume: function (storageSystemId, volumeId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/external-volumes/' + volumeId).remove());
+            },
             editReplicationGroup: function (storageSystemId, replicationGroupId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('replication-groups/' + replicationGroupId).patch(payload));
             },
@@ -240,6 +243,12 @@ angular.module('rainierApp')
             volume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).get().then(function (result) {
                     objectTransformService.transformVolume(result);
+                    return result;
+                }));
+            },
+            externalVolume: function (storageSystemId, volumeId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('external-volumes', volumeId).get().then(function (result) {
+                    objectTransformService.transformExternalVolume(result);
                     return result;
                 }));
             },

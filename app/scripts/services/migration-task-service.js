@@ -23,6 +23,7 @@ angular.module('rainierApp')
     var MIGRATION_PAIRS_PATH = 'migration-pairs';
     var JOBS_PATH = 'jobs';
     var VOLUMES_PATH = 'volumes';
+    var EXTERNAL_VOLUMES_PATH = 'external-volumes';
     var QUERY_KEY_MIGRATION_TYPE = 'migrationSummary.migrationType';
     var QUERY_KEY_OWNER_TASK_ID = 'migrationSummary.ownerTaskId';
 
@@ -44,7 +45,7 @@ angular.module('rainierApp')
             promise = paginationService.getAllPromises(null, JOBS_PATH, false, null, null, null, 'jobs')
                 .then(function (result) {
                     _.forEach(result, function (item) {
-                        if (jobIdMap[item.jobId]) {
+                        if (item && jobIdMap[item.jobId]) {
                             var migrationTask = jobIdMap[item.jobId];
                             migrationTask.status = item.status;
                             migrationTask.jobStartDate = item.startDate;
@@ -100,6 +101,13 @@ angular.module('rainierApp')
                     objectTransformService.transformVolume);
     };
 
+    var getExternalVolumes = function (storageSystemId, volumeIds) {
+        paginationService.clearQuery();
+        queryService.setQueryMapEntry('volumeId', volumeIds);
+        return paginationService.getAllPromises(null, EXTERNAL_VOLUMES_PATH, false, storageSystemId,
+                    objectTransformService.transformExternalVolume);
+    };
+
     var volumeMigrationTypeFilter = function (type, isManaged, migrationType) {
         var queryObject;
         var searchType = new paginationService.SearchType();
@@ -141,11 +149,9 @@ angular.module('rainierApp')
     };
 
     var isMigrationAvailable = function (volume) {
-        var available = !volume.isMigrating();
-        available = available && volume.isAttached();
-        available = available && !volume.isSnapshotPair();
+        var isNotSnapshotPair = volume.isSnapshotPair === undefined || !volume.isSnapshotPair();
         // Not check other pair state, gad state.
-        return available;
+        return !volume.isMigrating() && volume.isAttached() && isNotSnapshotPair;
     };
 
     var isAllMigrationAvailable = function (volumes) {

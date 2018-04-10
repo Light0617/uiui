@@ -61,11 +61,10 @@ angular.module('rainierApp')
             });
         };
 
-
-        if(ShareDataService.selectedVirtualizeVolumes){
-            storageSystemId = ShareDataService.selectedVirtualizeVolumes[0].storageSystemId;
-        }
-        else if (!isAddExtVolume) {
+        if (
+            !isAddExtVolume &&
+            (!ShareDataService.selectedVirtualizeVolumes || ShareDataService.selectedVirtualizeVolumes.length === 0)
+        ) {
             $location.path(['/storage-systems/', storageSystemId, '/volumes/'].join(''));
         }
 
@@ -113,38 +112,34 @@ angular.module('rainierApp')
                         );
                         $scope.dataModel.isWaiting = true;
 
-                        if(isAddExtVolume) {
-                            getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
-                        }else {
-                            previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
-                                // TODO Actual Discovered volume should be listed
-                                var externalPath = portDiscoverService.createExternalPath(
-                                    $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
-                                );
-                                return portDiscoverService.discoverManagedVolumes(
-                                    externalPath,
-                                    volumeIds,
-                                    storageSystemId,
-                                    $scope.dataModel.selectedTarget.storageSystemId
-                                );
-                            }).then(function (volumes) {
-                                if(!volumes.length) {
-                                    // TODO make sure the message
-                                    return $q.reject('Failed to discover');
-                                }
-                                $scope.dataModel.displayList = [];
-                                $scope.dataModel.cachedList = [];
-                                _.forEach(volumes, objectTransformService.transformVolume);
-                                $scope.dataModel.displayList = volumes;
-                                initView($scope.dataModel.displayList);
-                                $scope.dataModel.goNext();
-                            }).catch(function (e) {
-                                // TODO Show dialog and disable next
-                                console.log(e);
-                            }).finally(function () {
-                                $scope.dataModel.isWaiting = false;
-                            });
-                        }
+                        previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
+                            // TODO Actual Discovered volume should be listed
+                            var externalPath = portDiscoverService.createExternalPath(
+                                $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
+                            );
+                            return portDiscoverService.discoverManagedVolumes(
+                                externalPath,
+                                volumeIds,
+                                storageSystemId,
+                                $scope.dataModel.selectedTarget.storageSystemId
+                            );
+                        }).then(function (volumes) {
+                            if(!volumes.length) {
+                                // TODO make sure the message
+                                return $q.reject('Failed to discover');
+                            }
+                            $scope.dataModel.displayList = [];
+                            $scope.dataModel.cachedList = [];
+                            _.forEach(volumes, objectTransformService.transformVolume);
+                            $scope.dataModel.displayList = volumes;
+                            initView($scope.dataModel.displayList);
+                            $scope.dataModel.goNext();
+                        }).catch(function (e) {
+                            // TODO Show dialog and disable next
+                            console.log(e);
+                        }).finally(function () {
+                            $scope.dataModel.isWaiting = false;
+                        });
                     }
                 },
                 validation: true,
@@ -171,17 +166,25 @@ angular.module('rainierApp')
         }
 
         paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
+            result = _.filter(result, function(r) { return r.storageSystemId !== storageSystemId; });
+            // TODO dialog for the case result.length === 0
             var dataModel = $scope.dataModel;
             dataModel.selectedTarget = result[0];
             dataModel.storageSystems = result;
 
             paginationService.get(null, getSortedStoragePortsPath, objectTransformService.transformPort, true, storageSystemId).then(function (result) {
                 //Filter out vsmPorts and allow only TARGET_PORT enabled ports
-                $scope.dataModel.pathModel.sourcePorts = _.filter(result.resources, function(port) {
-                    return !port.vsmPort && _.find(port.attributes, function(attr) {
-                        return attr === 'Target';
-                    });
-                });
+                $scope.dataModel.pathModel.sourcePorts = _.chain(result.resources)
+                    .filter(function(port) {
+                        return !port.vsmPort && _.find(port.attributes, function(attr) {
+                            return attr === 'Target';
+                        });
+                    })
+                    .filter(function(port) {
+                        return  port.securitySwitchEnabled;
+                    })
+                    .value();
+                // TODO dialog for the case sourcePorts === 0
                 $scope.dataModel.pathModel.FcSourcePorts = _.filter($scope.dataModel.pathModel.sourcePorts, function(port){
                     return port.type === 'FIBRE';
                 });
@@ -196,6 +199,7 @@ angular.module('rainierApp')
                              return attr === 'External';
                          });
                     });
+                    // TODO dialog for the case storagePorts === 0
                     $scope.dataModel.pathModel.FcStoragePorts = _.filter($scope.dataModel.pathModel.storagePorts, function(port){
                         return port.type === 'FIBRE';
                     });
