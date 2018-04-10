@@ -15,7 +15,7 @@ angular.module('rainierApp')
         inventorySettingsService, paginationService, queryService,
         storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
         constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService,
-        migrationTaskService
+        migrationTaskService, synchronousTranslateService
     ) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_ETERNAL_VOLUMES_PATH = 'external-volumes';
@@ -46,7 +46,8 @@ angular.module('rainierApp')
         $scope.summaryModel={
             getActions: function () {
                 return _.map(actions);
-            }
+            },
+            title: synchronousTranslateService.translate('common-external-volumes')
         };
 
         $scope.filterModel = {};
@@ -79,7 +80,8 @@ angular.module('rainierApp')
                             });
                         });
                     }
-                }
+                },
+                volumeMigrationAvailable: false
             };
 
             $scope.filterModel = {
@@ -92,6 +94,7 @@ angular.module('rainierApp')
                     replicationType: [],
                     protectionStatusList: [],
                     migrationType: '',
+                    volumeStatus: '',
                     snapshotex: false,
                     snapshotfc: false,
                     snapshot: false,
@@ -141,23 +144,49 @@ angular.module('rainierApp')
             inventorySettingsService.setExternalVolumeGridSettings(dataModel);
 
             var actions = [
+                // volume migration
+                {
+                    icon: 'icon-migrate-volume',
+                    tooltip: 'action-tooltip-migrate-volumes',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.volumeMigrationAvailable &&
+                            migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems()) &&
+                            dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300;
+                    },
+                    onClick: function () {
+                        ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
+                        $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
+                    }
+                },
+                // unvirtualize TODO change icon
                 {
                     icon: 'icon-delete',
-                    tooltip: 'action-tooltip-delete',
+                    tooltip: 'action-tooltip-unvirtualize',
                     type: 'confirm',
 
-                    confirmTitle: 'storage-volume-delete-confirmation',
-                    confirmMessage: 'storage-volume-delete-selected-content',
+                    confirmTitle: 'external-volumes-unvirtualize-confirmation',
+                    confirmMessage: 'external-volumes-unvirtualize-content',
                     enabled: function () {
                         return dataModel.anySelected() &&
                             //block deleting if the migration status is true
                             !_.some(dataModel.getSelectedItems(), function (vol) {
-                                return vol.scheduledForMigration;
+                                return vol.isMigrating();
                             });
                     },
                     onClick: function () {
-                        var selected = dataModel.getSelectedItems();
-                        // TODO implement unvirtualize here
+                        // Build reserved resources
+                        var reservedResourcesList = [];
+                        var volIds = [];
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+                            volIds.push(item.volumeId);
+                        });
+
+                        // Show popup if resource is present in resource tracker else submit
+                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
+                            resourceTrackerService.storageSystem(), 'Unvirtualize Confirmation', storageSystemId,
+                            volIds, null, orchestratorService.unvirtualizeVolume);
                     }
                 }
             ];
@@ -175,6 +204,10 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
 
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
+
+            return migrationTaskService.checkLicense(storageSystemId);
+        }).then(function (result) {
+            $scope.dataModel.volumeMigrationAvailable = result;
         });
 
         var updateResultTotalCounts = function(result) {

@@ -162,7 +162,8 @@ angular.module('rainierApp')
                     sortField: 'volumeId',
                     getDisplayValue: function (item) {
                         return item.displayVolumeId;
-                    }
+                    },
+                    type: 'id'
                 },
                 {
                     title: 'storage-systems-serial-number',
@@ -190,6 +191,14 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    title: 'status',
+                    sizeClass: 'twelfth',
+                    sortField: 'status',
+                    getDisplayValue: function(item) {
+                        return item.status;
+                    }
+                },
+                {
                     title: 'assigned-to-migration',
                     sizeClass: 'sixteenth',
                     sortField: 'assignedToMigration',
@@ -198,7 +207,7 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'External Parity Group ID', // TODO i18n
+                    title: 'common-external-parity-group-id',
                     sizeClass: 'sixteenth',
                     sortField: 'externalParityGroupId',
                     getDisplayValue: function(item) {
@@ -206,11 +215,11 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    title: 'Mapped Volume ID', // TODO i18n
+                    title: 'common-external-mapped-volume-id',
                     sizeClass: 'sixteenth',
                     sortField: 'mappedLdevId',
                     getDisplayValue: function(item) {
-                        return item.mappedLdevId;
+                        return item.mappedVolumeId;
                     }
                 }
             ];

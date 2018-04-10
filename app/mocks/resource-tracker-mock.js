@@ -21,7 +21,7 @@ rainierAppMock.factory('resourceTrackerMock', function (mockUtils) {
         ]
     };
     var handleGetRequest = function () {
-        return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(mockTrackedResources));
+        return mockUtils.response.ok(mockTrackedResources);
     };
 
 
