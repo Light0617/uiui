@@ -133,17 +133,9 @@ angular.module('rainierApp')
             });
 
             if (options.canAdd) {
-
-                if(dataModel.isAddExtVolume){
-                    dataModel.addAction = function () {
-                        ShareDataService.isAddExtVolume = true;
-                        $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
-                    };
-                }else {
-                    dataModel.addAction = function () {
-                        $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
-                    };
-                }
+                dataModel.addAction = function () {
+                    $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
+                };
                 dataModel.addPoolDetailsClickAction = function(storagePoolId) {
                     ShareDataService.push('autoSelectedPoolId', storagePoolId);
                     $location.path(['storage-systems', dataModel.storageSystemId, 'storage-pools',
@@ -223,6 +215,10 @@ angular.module('rainierApp')
                     }
                 }
             ];
+            dataModel.addAction = function () {
+                ShareDataService.isAddExtVolume = true;
+                $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
+            };
         };
 
         var hostGridSettings = function(dataModel) {
