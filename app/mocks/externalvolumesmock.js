@@ -4,9 +4,16 @@ rainierAppMock.factory('externalVolumesMock', function(mockUtils) {
     var externalVolume = function(id) {
         return {
             volumeId: id,
-            mappedLdevId: _.sample('9' + id, undefined),
-            externalParityGroupId: _.random(1,10) + '-' + _.random(1,10),
-            size: _.random(1, Math.pow(1024, 4))
+            size: _.random(1, Math.pow(1024, 4)),
+            mappedLdevId: _.sample(['9' + id, undefined]),
+            migrationSummary: _.sample([undefined, {
+                migrationType: 'NONE'
+            }]),
+            storageSystemId: '999999',
+            externalParityGroupId: _.sample([
+                undefined,
+                _.random(1,10) + '-' + _.random(1,10)
+            ])
         };
     };
 

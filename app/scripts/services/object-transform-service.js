@@ -1005,13 +1005,16 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.displayVolumeId,
-                        details: [
-                            item.externalParityGroupId,
-                            item.displayMappedVolumeId,
+                        details: _.filter([
+                            item.storageSystemId,
                             item.provisioningStatus,
                             item.migrationType,
+                            item.externalParityGroupId,
+                            item.displayMappedVolumeId,
                             item.displayCapacity
-                        ]
+                        ], function(v) {
+                            return !utilService.isNullOrUndef(v);
+                        })
                     }
                 ];
             },
