@@ -6,7 +6,7 @@ rainierAppMock.factory('externalVolumesMock', function(mockUtils) {
             volumeId: id,
             size: _.random(1, Math.pow(1024, 4)),
             mappedLdevId: _.sample(['9' + id, undefined]),
-            migrationSummary: _.sample([undefined, {
+            migrationSummary: _.sample([{}, {
                 migrationType: 'NONE'
             }]),
             storageSystemId: '999999',

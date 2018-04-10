@@ -203,6 +203,21 @@ angular.module('rainierApp')
             return [];
         }
 
+        function appendAssignedToMigrationFn(item) {
+            item.assignedToMigration = function() {
+                if (item.migrationSummary.ownerTaskId) {
+                    return synchronousTranslateService.translate('yes');
+                }
+                switch (item.migrationSummary.migrationType) {
+                    case constantService.migrationType.MIGRATION:
+                        return synchronousTranslateService.translate('yes-unmanaged');
+                    case 'NONE':
+                        return synchronousTranslateService.translate('no');
+                }
+                return synchronousTranslateService.translate('no');
+            };
+        }
+
         transforms = {
 
             transformVolumeId: function(id) {
@@ -670,18 +685,7 @@ angular.module('rainierApp')
                             this.migrationSummary.migrationType === constantService.migrationType.MIGRATION);
                 };
 
-                item.assignedToMigration = function () {
-                    if (this.migrationSummary.ownerTaskId) {
-                        return synchronousTranslateService.translate('yes');
-                    }
-                    switch (this.migrationSummary.migrationType) {
-                        case constantService.migrationType.MIGRATION:
-                            return synchronousTranslateService.translate('yes-unmanaged');
-                        case 'NONE':
-                            return synchronousTranslateService.translate('no');
-                    }
-                    return synchronousTranslateService.translate('no');
-                };
+                appendAssignedToMigrationFn(item);
 
                 item.isSnapshotPair = function () {
                     return (this.dataProtectionSummary.replicationType.indexOf('SNAP') !== -1 ||
@@ -993,14 +997,16 @@ angular.module('rainierApp')
                 };
             },
             transformExternalVolume: function (item) {
+                appendAssignedToMigrationFn(item);
                 item.itemIcon = 'icon-volume';
                 item.displayVolumeId = formatVolumeId(item.volumeId);
                 item.capacity = diskSizeService.getDisplaySize(item.size);
                 item.displayCapacity = item.capacity.size + ' ' + item.capacity.unit;
                 item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
-                    'Virtual Volume ID: ' + item.mappedVolumeId : undefined;
-                item.migrationType = item.migrationSummary && item.migrationSummary.migrationType ?
-                    'Migration Type: ' + item.migrationSummary.migrationType : undefined;
+                    'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
+                item.dispayAssignedToMigartion =
+                    synchronousTranslateService.translate('assigned-to-migration') +
+                    ': ' +  item.assignedToMigration();
                 item.metaData = [
                     {
                         left: true,
@@ -1008,7 +1014,7 @@ angular.module('rainierApp')
                         details: _.filter([
                             item.storageSystemId,
                             item.provisioningStatus,
-                            item.migrationType,
+                            item.dispayAssignedToMigartion,
                             item.externalParityGroupId,
                             item.displayMappedVolumeId,
                             item.displayCapacity

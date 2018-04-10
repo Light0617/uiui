@@ -153,6 +153,69 @@ angular.module('rainierApp')
             }
 
         };
+
+        var externalVolumeGridSettings = function (dataModel) {
+            dataModel.gridSettings = [
+                {
+                    title: 'ID',
+                    sizeClass: 'sixteenth',
+                    sortField: 'volumeId',
+                    getDisplayValue: function (item) {
+                        return item.displayVolumeId;
+                    }
+                },
+                {
+                    title: 'storage-systems-serial-number',
+                    sizeClass: 'sixteenth',
+                    sortField: 'storageSystemId',
+                    getDisplayValue: function(item) {
+                        return item.storageSystemId;
+                    }
+                },
+                {
+                    title: 'common-label-total',
+                    sizeClass: 'sixteenth',
+                    sortField: 'size',
+                    getDisplayValue: function(item) {
+                        return item.capacity;
+                    },
+                    type: 'size'
+                },
+                {
+                    title: 'volume-provisioning-status',
+                    sizeClass: 'twelfth',
+                    sortField: 'provisioningStatus',
+                    getDisplayValue: function(item) {
+                        return item.provisioningStatus;
+                    }
+                },
+                {
+                    title: 'assigned-to-migration',
+                    sizeClass: 'sixteenth',
+                    sortField: 'assignedToMigration',
+                    getDisplayValue: function(item) {
+                        return item.assignedToMigration();
+                    }
+                },
+                {
+                    title: 'External Parity Group ID', // TODO i18n
+                    sizeClass: 'sixteenth',
+                    sortField: 'externalParityGroupId',
+                    getDisplayValue: function(item) {
+                        return item.externalParityGroupId;
+                    }
+                },
+                {
+                    title: 'Mapped Volume ID', // TODO i18n
+                    sizeClass: 'sixteenth',
+                    sortField: 'mappedLdevId',
+                    getDisplayValue: function(item) {
+                        return item.mappedLdevId;
+                    }
+                }
+            ];
+        };
+
         var hostGridSettings = function(dataModel) {
 
             dataModel.gridSettings = [
@@ -297,6 +360,7 @@ angular.module('rainierApp')
             },
             setPoolGridSettings: function(dataModel) {
                 poolGridSettings(dataModel);
-            }
+            },
+            setExternalVolumeGridSettings: externalVolumeGridSettings
         };
     });

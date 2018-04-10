@@ -71,7 +71,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                            paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -120,13 +120,13 @@ angular.module('rainierApp')
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
                     gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
-                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 sliderQuery: function(key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
@@ -135,18 +135,13 @@ angular.module('rainierApp')
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
                     queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 }
             };
 
-            inventorySettingsService.setVolumesGridSettings(dataModel);
-
-            //prevalidation for deleting volumes that are already attached to UI
-            var hasPrevalidationForDeleting = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isPrevalidationForDeleting();}) !== undefined;
-            };
+            inventorySettingsService.setExternalVolumeGridSettings(dataModel);
 
             var actions = [
                 {
@@ -178,7 +173,7 @@ angular.module('rainierApp')
             dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
             dataModel.getResources = function(){
-                return paginationService.get($scope.dataModel.nextToken, GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, false, storageSystemId);
+                return paginationService.get($scope.dataModel.nextToken, GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, false, storageSystemId);
             };
             $scope.dataModel = dataModel;
 
