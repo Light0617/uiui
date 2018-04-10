@@ -43,7 +43,8 @@ angular.module('rainierApp')
         previrtualizeService,
         donutService,
         storagePortsService,
-        portDiscoverService
+        portDiscoverService,
+        modalDialogService
         ) {
 
         /******* Pre Virtualization *******/
@@ -112,34 +113,36 @@ angular.module('rainierApp')
                         );
                         $scope.dataModel.isWaiting = true;
 
-                        previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
-                            // TODO Actual Discovered volume should be listed
-                            var externalPath = portDiscoverService.createExternalPath(
-                                $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
-                            );
-                            return portDiscoverService.discoverManagedVolumes(
-                                externalPath,
-                                volumeIds,
-                                storageSystemId,
-                                $scope.dataModel.selectedTarget.storageSystemId
-                            );
-                        }).then(function (volumes) {
-                            if(!volumes.length) {
-                                // TODO make sure the message
-                                return $q.reject('Failed to discover');
-                            }
-                            $scope.dataModel.displayList = [];
-                            $scope.dataModel.cachedList = [];
-                            _.forEach(volumes, objectTransformService.transformVolume);
-                            $scope.dataModel.displayList = volumes;
-                            initView($scope.dataModel.displayList);
-                            $scope.dataModel.goNext();
-                        }).catch(function (e) {
-                            // TODO Show dialog and disable next
-                            console.log(e);
-                        }).finally(function () {
-                            $scope.dataModel.isWaiting = false;
-                        });
+                        if(isAddExtVolume) {
+                            getVolumes(storageSystemId, $scope.dataModel.pathModel.paths);
+                        }else {
+                            previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
+                                // TODO Actual Discovered volume should be listed
+                                var externalPath = portDiscoverService.createExternalPath(
+                                    $scope.dataModel.pathModel.paths, $scope.dataModel.pathModel.sourcePorts
+                                );
+                                return portDiscoverService.discoverManagedVolumes(
+                                    externalPath,
+                                    volumeIds,
+                                    storageSystemId,
+                                    $scope.dataModel.selectedTarget.storageSystemId
+                                );
+                            }).then(function (volumes) {
+                                if(!volumes.length) {
+                                    return $q.reject('fail-to-discover-error');
+                                }
+                                $scope.dataModel.displayList = [];
+                                $scope.dataModel.cachedList = [];
+                                _.forEach(volumes, objectTransformService.transformVolume);
+                                $scope.dataModel.displayList = volumes;
+                                initView($scope.dataModel.displayList);
+                                $scope.dataModel.goNext();
+                            }).catch(function (e) {
+                                modalDialogService.showDialog('', e, 'warning');
+                            }).finally(function () {
+                                $scope.dataModel.isWaiting = false;
+                            });
+                        }
                     }
                 },
                 validation: true,

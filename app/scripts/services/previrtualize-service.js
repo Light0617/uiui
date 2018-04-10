@@ -22,6 +22,9 @@ angular.module('rainierApp')
             return orchestratorService.previrtualize(payload)
                 .then(function (response) {
                     return $q.resolve(response.jobId);
+                })
+                .catch(function (e) {
+                    return $q.reject(e.data.message);
                 });
         };
 
@@ -32,8 +35,7 @@ angular.module('rainierApp')
                     count++;
                 } else if (upperLimit <= count ||
                     result.status === constantService.previrtualizeJobStatus.failed) {
-                    // TODO confirm we have to show dialog or not
-                    defer.resolve(false);
+                    defer.reject('job-failed-error');
                 } else {
                     defer.resolve(result);
                 }
@@ -45,7 +47,7 @@ angular.module('rainierApp')
                 return orchestratorService.jobStatus(jobId)
                     .then(handleJob(jobId, defer, count))
                     .catch(function () {
-                        return defer.resolve(false);
+                        return defer.reject('fail-to-get-job-status-error');
                     });
             };
         };
@@ -62,12 +64,11 @@ angular.module('rainierApp')
         var previrtualizeAndDiscover = function (payload) {
             return previrtualize(payload)
                 .then(poll())
-                .then(function (result) {
-                    if (result && result.status === constantService.previrtualizeJobStatus.success) {
-                        return $q.resolve(true);
-                    }
-                    // TODO make sure the message for previrtualize
-                    return $q.reject('Failed to previrtualize');
+                .then(function () {
+                    return $q.resolve(true);
+                })
+                .catch(function (e) {
+                    return $q.reject(e);
                 });
         };
 
