@@ -1170,9 +1170,12 @@
     "workflow-title-create-paths": "Create Paths",
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
 
+    "fail-to-discover-error": "There is no volume discovered on the selected port. Please check your physical connection.",
+    "job-failed-error": "Create Path From Source Job failed. Please go to Job page to check the reason.",
+    "fail-to-get-job-status-error": "Fail to get job status.",
+
     "external-volume-unvirtualize-confirmation": "Unvirtualize Confirmation",
     "external-volume-unvirtualize-content": "The current external volume will be unvirtualized. Do you want to proceed?",
     "external-volumes-unvirtualize-confirmation": "Unvirtualize Confirmation",
     "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?"
-
 }
