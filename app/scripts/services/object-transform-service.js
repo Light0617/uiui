@@ -996,8 +996,8 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title: item.volumeId,
-                        details: []
+                        title: item.mappedLdevId,
+                        details: [item.externalParityGroupId]
                     }
                 ];
             },
