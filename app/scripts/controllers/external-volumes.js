@@ -15,8 +15,7 @@ angular.module('rainierApp')
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
                                                       constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService) {
         var storageSystemId = $routeParams.storageSystemId;
-        var storageSystem;
-        var GET_VOLUMES_PATH = 'volumes';
+        var GET_ETERNAL_VOLUMES_PATH = 'external-volumes';
         ShareDataService.showProvisioningStatus = true;
         ShareDataService.showPoolBreadCrumb = false;
         $scope.dataModel = {
@@ -49,23 +48,7 @@ angular.module('rainierApp')
 
         $scope.filterModel = {};
 
-        orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            storageSystem = result;
-            return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
-        }).then(function (result) {
-            var summaryModel = objectTransformService.transformToStorageSummaryModel(storageSystem, null, result);
-
-            summaryModel.title = 'Volumes';
-            summaryModel.protectedVolume = result.protectedVolumes;
-            summaryModel.unprotectedVolume = result.unprotectedVolumes;
-            summaryModel.secondaryVolume = result.secondaryVolumes;
-            summaryModel.dpAlert = dpAlertService;
-            summaryModel.getActions = $scope.summaryModel.getActions;
-            $scope.summaryModel = summaryModel;
-            $scope.summaryModel.dpAlert.update();
-        });
-
-        paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true, storageSystemId).then(function (result) {
+        paginationService.get(null, GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, true, storageSystemId).then(function (result) {
             paginationService.clearQuery();
             var dataModel = {
                 view: 'tile',
@@ -88,7 +71,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                            paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -137,13 +120,13 @@ angular.module('rainierApp')
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
                     gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 sliderQuery: function(key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
@@ -152,17 +135,13 @@ angular.module('rainierApp')
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
                     queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 }
             };
 
             inventorySettingsService.setVolumesGridSettings(dataModel);
-
-            var hasGadVolume = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
-            };
 
             //prevalidation for deleting volumes that are already attached to UI
             var hasPrevalidationForDeleting = function(selectedVolumes)  {
@@ -179,42 +158,14 @@ angular.module('rainierApp')
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
                         return dataModel.anySelected() &&
-                            !hasGadVolume(dataModel.getSelectedItems()) && !hasPrevalidationForDeleting(dataModel.getSelectedItems()) &&
                             //block deleting if the migration status is true
                             !_.some(dataModel.getSelectedItems(), function (vol) {
                                 return vol.scheduledForMigration;
                             });
                     },
                     onClick: function () {
-
-                        // Build reserved resources
-                        var reservedResourcesList = [];
-                        var volIds = [];
-                        _.forEach(dataModel.getSelectedItems(), function (item) {
-                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
-                            volIds.push(item.volumeId);
-                        });
-
-                        // Show popup if resource is present in resource tracker else submit
-                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                            'Delete Volumes Confirmation', storageSystemId, volIds, null, orchestratorService.deleteVolume);
-
-                    }
-                },
-                {
-                    icon: 'icon-migrate-volume',
-                    tooltip: 'action-tooltip-migrate-volumes',
-                    type: 'link',
-                    enabled: function () {
-                        return !hasGadVolume(dataModel.getSelectedItems()) && !_.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return !vol.isUnprotected();
-                            }) && $scope.selectedCount > 0;
-                    },
-                    onClick: function () {
-                        // maximum number of volumes to migrate is 14
-                        ShareDataService.selectedMigrateVolumes = _.first(dataModel.getSelectedItems(), 14);
-                        $location.path(['hosts','migrate-volumes'].join('/'));
+                        var selected = dataModel.getSelectedItems();
+                        // TODO implement unvirtualize here
                     }
                 }
             ];
@@ -227,7 +178,7 @@ angular.module('rainierApp')
             dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
             dataModel.getResources = function(){
-                return paginationService.get($scope.dataModel.nextToken, GET_VOLUMES_PATH, objectTransformService.transformVolume, false, storageSystemId);
+                return paginationService.get($scope.dataModel.nextToken, GET_ETERNAL_VOLUMES_PATH, objectTransformService.transformVolume, false, storageSystemId);
             };
             $scope.dataModel = dataModel;
 

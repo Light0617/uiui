@@ -992,6 +992,15 @@ angular.module('rainierApp')
                     ].join('');
                 };
             },
+            transformExternalVolume: function (item) {
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.volumeId,
+                        details: []
+                    }
+                ];
+            },
             transformExternalParityGroup: function (item) {
                 var used = item.capacity - item.availableCapacity;
                 item.usagePercentage = Math.round((used) * 100 / item.capacity);
