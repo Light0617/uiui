@@ -301,4 +301,5 @@ angular.module('rainierApp')
             });
         });
 
+        orchestratorService.hostGroups(storageSystemId).then(function () {});
     });
