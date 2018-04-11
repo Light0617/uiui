@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
                                       replicationService, gadVolumeTypeSearchService, migrationTaskService,
-                                      mutualChapService) {
+                                      mutualChapService, resourceTrackerService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -185,17 +185,27 @@ angular.module('rainierApp')
                         confirmClick: function () {
                             $('#' + this.dialogSettings.id).modal('hide');
                             var enabled = zoneEnabled ? this.dialogSettings.switchEnabled.value : undefined;
+
+                            var reservedResourcesQueries = [];
                             _.forEach(dataModel.getSelectedItems(), function (volume) {
-
-                                var detachVolumePayload = {
-                                    storageSystemId: volume.storageSystemId,
-                                    serverId: hostId,
-                                    volumeId: volume.volumeId,
-                                    removeConnection: enabled
-                                };
-
-                                orchestratorService.detachVolume(detachVolumePayload);
+                                var reservedResource = volume.volumeId + '=' + resourceTrackerService.volume();
+                                reservedResourcesQueries.push(resourceTrackerService.queryReservedResource(
+                                    reservedResource, volume.storageSystemId, resourceTrackerService.storageSystem()));
                             });
+                            resourceTrackerService.showReservedPopUpOrSubmitQuery(reservedResourcesQueries,
+                                'storage-volume-detach-confirmation', null, null, null, null, function () {
+                                    _.forEach(dataModel.getSelectedItems(), function (volume) {
+
+                                        var detachVolumePayload = {
+                                            storageSystemId: volume.storageSystemId,
+                                            serverId: hostId,
+                                            volumeId: volume.volumeId,
+                                            removeConnection: enabled
+                                        };
+
+                                        orchestratorService.detachVolume(detachVolumePayload);
+                                    });
+                                });
                         }
                     },
                     {
