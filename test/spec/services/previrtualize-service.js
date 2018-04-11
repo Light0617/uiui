@@ -105,13 +105,13 @@ describe('Service: previrtualizeService tests', function () {
             });
 
             previrtualizeService.handleJob(0, defer)({status: status.failed, jobId: 0});
-            defer.promise.then(function (response) {
+            defer.promise.catch(function (response) {
                 deferForKarma.resolve(response);
             });
 
             $rootScope.$digest();
 
-            expect(data).toEqual(false);
+            expect(data).toEqual('job-failed-error');
         });
 
         it('returns a function which should resolve with status finished' +
