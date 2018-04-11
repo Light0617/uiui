@@ -260,7 +260,6 @@ angular.module('rainierApp')
         });
 
         orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
-            console.log('externalVolumeSummary is : ', result);
             $scope.externalVolumesSummary = {
                 total : result.numberOfVolumes,
                 volumesByType : []
