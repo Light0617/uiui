@@ -186,6 +186,12 @@ angular.module('rainierApp')
             updateHostIscsi: function (hostId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('update-iscsi-settings').post(payload));
             },
+            hostGroups: function (storageSystemId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId)
+                    .one('host-groups').get().then(function (result) {
+                        return result;
+                    }));
+            },
             editMutualChapUser: function (storageSystemId, hostGroupId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId)
                     .all('host-groups/' + hostGroupId).patch(payload));
