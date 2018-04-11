@@ -52,6 +52,10 @@ angular.module('rainierApp')
         var getSortedStoragePortsPath = 'storage-ports' + '?sort=storagePortId:ASC';
         var isAddExtVolume = $location.path().includes('external-volumes');
         var portsInfo = function (paths) {
+            paths = _.filter(paths, function(path){
+                return path.deleted != true;
+            });
+
             return _.map(paths, function (p) {
                 return previrtualizeService.createPrevirtualizePayloadPortInfo(
                     p.serverEndPoint,
