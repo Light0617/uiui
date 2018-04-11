@@ -221,6 +221,44 @@ angular.module('rainierApp')
             };
         };
 
+        var discoveredLunSettings = function (dataModel) {
+            dataModel.gridSettings = [
+                {
+                    title: 'host-volume-list-lun-id',
+                    sizeClass: 'twelfth',
+                    sortField: 'lunId',
+                    getDisplayValue: function(item) {
+                        return item.lunId;
+                    }
+                },
+                {
+                    title: 'host-volume-list-port',
+                    sizeClass: 'sixth',
+                    sortField: 'portId',
+                    getDisplayValue: function(item) {
+                        return item.portId;
+                    }
+                },
+                {
+                    title: 'storage-port-fc-wwn',
+                    sizeClass: 'third',
+                    sortField: 'wwn',
+                    getDisplayValue: function(item) {
+                        return item.wwn;
+                    }
+                },
+                {
+                    title: 'storage-pool-tier-capacity',
+                    sizeClass: 'quarter',
+                    sortField: 'capacity',
+                    getDisplayValue: function(item) {
+                        return item.capacity;
+                    },
+                    type: 'size'
+                }
+            ];
+        };
+
         var hostGridSettings = function(dataModel) {
 
             dataModel.gridSettings = [
@@ -366,6 +404,7 @@ angular.module('rainierApp')
             setPoolGridSettings: function(dataModel) {
                 poolGridSettings(dataModel);
             },
-            setExternalVolumeGridSettings: externalVolumeGridSettings
+            setExternalVolumeGridSettings: externalVolumeGridSettings,
+            setDiscoveredLunSettings: discoveredLunSettings
         };
     });

@@ -464,18 +464,6 @@ angular.module('rainierApp')
                 )
                 .then(function (result) {
                     var dataModel = generateDataModel(result, scope);
-                    var actions;
-                    if(type === 'FIBRE') {
-                        actions = fibreActions(dataModel,scope);
-                        dataModel.getActions = function () {
-                            return [actions];
-                        };
-                    }else if(type === 'ISCSI'){
-                        actions = iscsiActions(dataModel);
-                        dataModel.getActions = function () {
-                            return actions;
-                        };
-                    }
                     dataModel.getResources = function () {
                         return paginationService.get(
                             null, getStoragePortsPath, objectTransformService.transformPort,

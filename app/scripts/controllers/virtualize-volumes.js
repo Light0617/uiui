@@ -293,9 +293,11 @@ angular.module('rainierApp')
                 $scope.dataModel.isWaiting = true;
                 $scope.dataModel.cachedList = [];
                 $scope.dataModel.displayList = [];
+                inventorySettingsService.setDiscoveredLunSettings($scope.dataModel);
                 portDiscoverService.discoverUnmanagedLuns(portIds, storageSystemId).then(function(result) {
                     result = result ? result : [];
                     objectTransformService.transformDiscoveredLun(result);
+                    _.each(result, function(r) { r.selected = true; });
                     $scope.dataModel.displayList = result;
                     initView($scope.dataModel.displayList);
                 }).finally(function () {
@@ -355,40 +357,8 @@ angular.module('rainierApp')
             };
         };
 
-        var updateDiscoveredLunsTotalCounts = function(portId){
-            $scope.dataModel.total = $scope.dataModel.portLunMap[portId].length;
-
-            $scope.dataModel.itemCounts = {
-                filtered: $scope.dataModel.displayList.length,
-                total: $scope.dataModel.displayList.length
-            };
-        };
-
-        $scope.dataModel.discoverLuns = function(portId){
-            $scope.dataModel.displayList = [];
-
-            if($scope.dataModel.portLunMap[portId]){
-                _.each($scope.dataModel.portLunMap[portId], function (port) {
-                    $scope.dataModel.displayList.push(port);
-                });
-                updateDiscoveredLunsTotalCounts(portId);
-
-            }else {
-                orchestratorService.discoveredLuns(storageSystemId, portId).then(function (luns) {
-                    objectTransformService.transformDiscoveredLun(luns);
-                    $scope.dataModel.portLunMap[portId] = luns;
-                }).then(function () {
-                    _.each($scope.dataModel.portLunMap[portId], function (port) {
-                        $scope.dataModel.displayList.push(port);
-                    });
-                    updateDiscoveredLunsTotalCounts(portId);
-                });
-            }
-        };
-
         var initView = function (result){
             var dataModelVolume = {
-                onlyOperation: true,
                 view: 'tile',
                 storageSystemId: storageSystemId,
                 nextToken: result.nextToken,
@@ -503,7 +473,6 @@ angular.module('rainierApp')
                 var hosts = result.resources;
 
                 var dataModelServer = {
-                    onlyOperation: true,
                     hosts: hosts,
                     view: 'tile',
                     allItemsSelected: false,
