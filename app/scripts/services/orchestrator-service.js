@@ -187,7 +187,7 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('compute/servers', hostId).all('update-iscsi-settings').post(payload));
             },
             hostGroups: function (storageSystemId) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId)
+                return apiResponseHandlerService._apiGetResponseHandlerWithErrDialog(Restangular.one('storage-systems', storageSystemId)
                     .one('host-groups').get().then(function (result) {
                         return result;
                     }));
