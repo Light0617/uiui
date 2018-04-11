@@ -259,6 +259,23 @@ angular.module('rainierApp')
             
         });
 
+        orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
+            console.log('externalVolumeSummary is : ', result);
+            $scope.externalVolumesSummary = {
+                total : result.numberOfVolumes,
+                volumesByType : []
+            };
+            for (var volumeTypeEntry in result.volumeCountByType) {
+                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
+                    var item = {};
+                    item.type = volumeTypeEntry;
+                    item.count = result.volumeCountByType[volumeTypeEntry];
+                    $scope.externalVolumesSummary.volumesByType.push(item);
+                }
+            }
+
+        });
+
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
             var pgs = result;
             $scope.parityGroups = pgs;
