@@ -269,8 +269,8 @@ angular.module('rainierApp')
                     type: 'link',
                     enabled: function () {
                         return dataModel.volumeMigrationAvailable &&
-                            migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems()) &&
-                            $scope.selectedCount > 0 && $scope.selectedCount <= 300;
+                            dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                            migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();

@@ -219,8 +219,8 @@ angular.module('rainierApp')
                         enabled: function () {
                             return isVolumesInSameStorageSystem(dataModel.getSelectedItems()) &&
                                 licenseStatusOfVolumeMigration[dataModel.getSelectedItems()[0].storageSystemId] &&
-                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems()) &&
-                                $scope.selectedCount <= 300;
+                                dataModel.getSelectedCount() <= 300 &&
+                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                         },
                         onClick: function () {
                             ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
