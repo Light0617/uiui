@@ -23,7 +23,7 @@ angular.module('rainierApp')
     var MIGRATION_PAIRS_PATH = 'migration-pairs';
     var JOBS_PATH = 'jobs';
     var VOLUMES_PATH = 'volumes';
-    var EXTERNAL_VOLUMES_PATH = 'external-volumes';
+    // var EXTERNAL_VOLUMES_PATH = 'external-volumes';
     var QUERY_KEY_MIGRATION_TYPE = 'migrationSummary.migrationType';
     var QUERY_KEY_OWNER_TASK_ID = 'migrationSummary.ownerTaskId';
 
@@ -101,12 +101,12 @@ angular.module('rainierApp')
                     objectTransformService.transformVolume);
     };
 
-    var getExternalVolumes = function (storageSystemId, volumeIds) {
-        paginationService.clearQuery();
-        queryService.setQueryMapEntry('volumeId', volumeIds);
-        return paginationService.getAllPromises(null, EXTERNAL_VOLUMES_PATH, false, storageSystemId,
-                    objectTransformService.transformExternalVolume);
-    };
+    // var getExternalVolumes = function (storageSystemId, volumeIds) {
+    //     paginationService.clearQuery();
+    //     queryService.setQueryMapEntry('volumeId', volumeIds);
+    //     return paginationService.getAllPromises(null, EXTERNAL_VOLUMES_PATH, false, storageSystemId,
+    //                 objectTransformService.transformExternalVolume);
+    // };
 
     var volumeMigrationTypeFilter = function (type, isManaged, migrationType) {
         var queryObject;
