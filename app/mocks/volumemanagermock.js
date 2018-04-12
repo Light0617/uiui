@@ -47,12 +47,22 @@ rainierAppMock.factory('volumeManagerMock', function (mockUtils, commonMock) {
         };
     };
 
+    var shredResult = function () {
+        return {
+            jobId: 'shredding',
+            status: _.sample(['IN_PROGRESS', 'SUCCESS', 'FAILURE'])
+        };
+    };
+
     var handler = function (urlResource) {
         if(urlResource.action === 'auto-path-select') {
             return result();
         }
         if(urlResource.action === 'pre-virtualize') {
             return previrtualizeResult();
+        }
+        if (urlResource.action === 'shred') {
+            return shredResult();
         }
         return [];
     };

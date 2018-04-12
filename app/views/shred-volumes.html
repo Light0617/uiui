@@ -1,130 +1,17 @@
 <common-page-header></common-page-header>
 <wizard-page>
-    <div ng-if="dataModel">
-        <div class="wizard-header">
-            <div class="wizard-nav">
-                <button type="button" class="btn icon-btn icon-carousel-left-arrow icon-lg" back-button></button>
-            </div>
-            <div class="wizard-title-group">
-                <span class="icon icon-parity-group icon-xlg"></span>
-                <!--TODO: add locale when working on advanced page -->
-                <h1 class="wizard-title">{{'shred-volumes' | translate}}</h1>
 
-            </div>
-        </div>
-        <div class="wizard-body new">
-            <!-- if basic -->
-            <!-- left column -->
-            <div class="wizard-left" ng-if="dataModel.wizardType === 'basic'">
-                <shred-volume-basic-left-panel ng-model="dataModel"></shred-volume-basic-left-panel>
+    <wizard-header ng-title="'shred-volumes' | translate" icon-class="icon-shred-volume"></wizard-header>
 
-            </div>
+    <single-step-wizard-body ng-title="{{'shred-volumes-wizard-title' | translate}}"
+                             left-panel-template="views/workflow-templates/shred-volumes-left-panel.html"
+                             right-panel-template="views/workflow-templates/shred-volumes-right-panel.html"
+                             ng-model="dataModel"
+                             page-name="create-and-attach-volumes">
+    </single-step-wizard-body>
 
-            <!-- right column -->
-            <div class="wizard-right" ng-if="dataModel.wizardType === 'basic'">
-                <div class="header-row">
-                    <h2>Shredding Algorithms</h2>
-                </div>
-                <div class="header-row">
-                    <p>Select a volume from the left to view passes, patterns and estimated shred time.</p>
-                </div>
-                <div class="header-row" ng-if="dataModel.showCurrentVolume === true">
-                    {{dataModel.currentVolume}}
-                </div>
-
-                <div class="tile-row right-panel-padding" ng-if="dataModel.showCurrentVolume === true">
-                    <div class="label-value-container">
-                        <p class="label ng-binding">pass 1</p>
-                        <p class="value ng-binding">{{dataModel.shreddingAlgorithms[0]}}</p>
-                    </div>
-                    <div class="label-value-container">
-                        <p class="label ng-binding">pass 2</p>
-                        <p class="value ng-binding">{{dataModel.shreddingAlgorithms[1]}}</p>
-                    </div>
-                    <div class="label-value-container">
-                        <p class="label ng-binding">pass 3</p>
-                        <p class="value ng-binding">{{dataModel.shreddingAlgorithms[2]}}</p>
-                    </div>
-                    <div class="label-value-container">
-                        <p class="label ng-binding">Estimated Shred Time</p>
-                        <p class="value ng-binding">85 minutes</p>
-                    </div>
-                </div>
-
-            </div>
-            <!-- if advanced -->
-            <!-- left column -->
-            <div class="wizard-left" ng-if="dataModel.wizardType === 'advanced'">
-                <shred-volume-advanced-left-panel ng-model="dataModel"></shred-volume-advanced-left-panel>
-            </div>
-
-            <!-- right column -->
-            <div class="wizard-right" ng-if="dataModel.wizardType === 'advanced'">
-                <div class="header-row">
-                    <h2>Shredding Algorithms</h2>
-                </div>
-                <div class="label-value-container right-panel-padding">
-                    <p class="label ng-binding">Number of passes: </p>
-                    <input type="number" value="{{dataModel.minPass}}" min="1" max="35" ng-model="dataModel.minPass" ng-change="updateNumOfPassByInput(dataModel.minPass); updateNumOfPass();">
-                </div>
-                <div class="control-group slider-padding">
-                    <div id="pass-range" class="slider-range range-slider-control" two-knob-slider=""
-                         slider-min="dataModel.minPass" slider-max="dataModel.maxPass"
-                         ng-model-min="dataModel.minPass" ng-model-max="dataModel.minPass" single-slider="true" ng-click="updateNumOfPass()" style="background-color: #E3E4E7;">
-                    </div>
-                    <span style="display:inline-block; float:left;">1</span>
-                    <span style="display:inline-block; float:right;">35</span>
-                </div>
-
-                <div class="label-value-container right-panel-padding">
-                    <p class="label ng-binding">Total Estimated Shred Time</p>
-                    <p class="value ng-binding">2 hours 41 minutes</p>
-                </div>
-                <div class="label-value-container right-panel-padding">
-                    <p class="label ng-binding">Enter Pattern For Each Pass</p>
-                </div>
-                <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12 pattern-tile-container tile-container flex-grid">
-                    <div class="resource-tile tile" ng-repeat="item in dataModel.itemList" style="height: 80px">
-                        <pass-pattern-tile item="item" class=""></pass-pattern-tile>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Wizard footer-->
-        <div class="row navbar-fixed-bottom footer-container">
-            <div class="wizard-footer">
-                <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group" role="toggle" data-toggle="buttons">
-                        <label ng-model="dataModel.wizardType" btn-radio="'basic'" class="btn btn-primary" title="Basic" ng-click="resetSlider()">
-                            <input autocomplete="off" checked="" type="radio" />
-                            Basic
-                        </label>
-                        <label ng-model="dataModel.wizardType" btn-radio="'advanced'" class="btn btn-primary" title="Advanced">
-                            <input  autocomplete="off" checked="" type="radio"/>
-                            Advanced
-                        </label>
-                    </div>
-
-                    <div class="btn-group btn-group-confirm pull-right" role="confirm" id="confirmation">
-                        <button type="button" class="btn btn-default" id="cancel" title="Cancel" back-button>Cancel
-                        </button>
-
-                        <!--Basic Submit Button-->
-                        <button type="button" class="btn btn-default active" id="submit-basic" title="Submit" ng-if="dataModel.wizardType === 'basic'"
-                                ng-click="createParityGroupsBasic()">Submit
-                        </button>
-                        <!--Advanced Submit Button-->
-                        <button type="button" class="btn btn-default active" id="submit-advanced" title="Submit"
-                                ng-click="createParityGroupAdvanced()" ng-if="dataModel.wizardType === 'advanced'"
-                                ng-attr-confirm="{{!itemSelected}}"
-                                confirm-title="{{'parity-group-add-none-selected-message-title' | translate}}"
-                                confirm-message="{{'parity-group-add-none-selected-message' | translate}}">Submit
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <wizard-footer ng-model="dataModel" ng-if="dataModel">
+    </wizard-footer>
 
 </wizard-page>
 

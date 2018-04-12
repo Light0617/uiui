@@ -19,10 +19,7 @@ rainierAppMock.factory('serversMock', function (mockUtils, volumeMock, commonMoc
             var mockHost = generateMockHost(total);
             mockHosts.push(mockHost);
         }
-        mockVolumes = volumeMock.getMock();
-        _.forEach(mockVolumes, function (item) {
-            item.provisioningStatus = 'ATTACHED';
-        });
+        mockVolumes = volumeMock.getAttachedMock();
     };
 
     var commonServerProperties = function(id) {

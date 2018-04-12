@@ -21,7 +21,7 @@ angular.module('rainierApp')
 
             dataModel.gridSettings = [{
                 title: 'ID',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'volumeId',
                 getDisplayValue: function(item) {
                     return item.displayVolumeId;
@@ -31,7 +31,7 @@ angular.module('rainierApp')
             },
             {
                 title: 'virtual-volume-id',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'gadSummary.virtualLdevId',
                 getDisplayValue: function(item) {
                     return item.gadSummary.virtualLdevId;
@@ -40,22 +40,30 @@ angular.module('rainierApp')
             },
             {
                 title: 'storage-systems-serial-number',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'storageSystemId',
                 getDisplayValue: function(item) {
                     return item.storageSystemId;
                 }
             }, {
                 title: 'Name',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'label',
                 getDisplayValue: function(item) {
                     return item.label;
                 }
 
             }, {
+                title: 'status',
+                sizeClass: 'eighteenth',
+                sortField: 'status',
+                getDisplayValue: function(item) {
+                    return item.status;
+                }
+
+            }, {
                 title: 'data-protection-type',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'dataProtectionSummary.replicationType',
                 getDisplayValue: function(item) {
                     return item.displayedDpType;
@@ -69,7 +77,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'data-protection-status',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'dataProtectionSummary.hasFailures',
                 getDisplayValue: function(item) {
                     return item.dpMonitoringStatus;
@@ -77,14 +85,14 @@ angular.module('rainierApp')
 
             }, {
                 title: 'volume-capacity-saving-type',
-                sizeClass: 'twelfth',
+                sizeClass: 'sixteenth',
                 sortField: 'capacitySavingType',
                 getDisplayValue: function (item) {
                     return item.capacitySavingType;
                 }
             }, {
                 title: 'common-label-total',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
 
                 sortField: 'size',
                 getDisplayValue: function(item) {
@@ -94,7 +102,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'common-label-free',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'availableCapacity',
                 getDisplayValue: function(item) {
                     return item.availableCapacity;
@@ -103,7 +111,7 @@ angular.module('rainierApp')
 
             }, {
                 title: 'common-label-used',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'usedCapacity',
                 getDisplayValue: function(item) {
                     return item.usedCapacity;
@@ -115,7 +123,7 @@ angular.module('rainierApp')
             if(ShareDataService.showProvisioningStatus === true) {
                 dataModel.gridSettings.push({
                     title: 'volume-provisioning-status',
-                    sizeClass: 'twelfth',
+                    sizeClass: 'sixteenth',
                     sortField: 'provisioningStatus',
                     getDisplayValue: function(item) {
                         return item.provisioningStatus;
@@ -125,7 +133,7 @@ angular.module('rainierApp')
 
             dataModel.gridSettings.push({
                 title: 'assigned-to-migration',
-                sizeClass: 'sixteenth',
+                sizeClass: 'eighteenth',
                 sortField: 'assignedToMigration',
                 getDisplayValue: function(item) {
                     return item.assignedToMigration();
