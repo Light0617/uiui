@@ -86,6 +86,13 @@ angular.module('rainierApp')
                 HDT: 'HDT',
                 HTI: 'HTI'
             },
+            volumeType: {
+                HDP: 'HDP',
+                HDT: 'HDT',
+                HTI: 'HTI',
+                GAD: 'GAD',
+                EXTERNAL: 'EXTERNAL'
+            },
             tieringMode:{
                 NONE: 'NONE',
                 MANUAL: 'MANUAL',

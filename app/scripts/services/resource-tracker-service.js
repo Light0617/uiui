@@ -11,15 +11,29 @@ angular.module('rainierApp')
     .factory('resourceTrackerService', function ($q, $modal,orchestratorService, paginationService) {
         var resourceTrackerService =
         {
+            queryReservedResource: function (reservedResource, parentResId, parentResType) {
+                var res = reservedResource.split('=');
+                var resId = res[0];
+                var resType = res[1];
+                resourceTrackerService.setSearchParameters(resId, resType, parentResId, parentResType);
+                return paginationService.getQuery('resource-tracker/reserved-resources', null, null);
+            },
+
             showReservedPopUpOrSubmit: function(reservedResourcesList, parentResId, parentResType,
                                          message, storageSystemId, resourceId, resourcePayload, orchestratorFunction, urlRedirectFunction, bulkUpdateFlag) {
+                var queries = _.map(reservedResourcesList, function (reservedResource) {
+                    return resourceTrackerService.queryReservedResource(reservedResource, parentResId, parentResType);
+                });
+                resourceTrackerService.showReservedPopUpOrSubmitQuery(
+                    queries, message, storageSystemId, resourceId, resourcePayload, orchestratorFunction,
+                    urlRedirectFunction, bulkUpdateFlag);
+            },
+
+            showReservedPopUpOrSubmitQuery: function(queries, message, storageSystemId, resourceId, resourcePayload,
+                                                     orchestratorFunction, urlRedirectFunction, bulkUpdateFlag) {
                 var flag = false;
-                var tasks = _.map(reservedResourcesList, function (reservedResource) {
-                    var res = reservedResource.split('=');
-                    var resId = res[0];
-                    var resType = res[1];
-                    resourceTrackerService.setSearchParameters(resId, resType, parentResId, parentResType);
-                    return paginationService.getQuery('resource-tracker/reserved-resources', null, null).then(function(result) {
+                var tasks = _.map(queries, function (reservedResourceQuery) {
+                    return reservedResourceQuery.then(function(result) {
                         if(result.reservedResources.length > 0) {
                             flag = true;
                         }

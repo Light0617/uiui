@@ -233,8 +233,8 @@ angular
                         'volumes',
                         'parity-groups',
                         'external-parity-groups',
-                        'migration-tasks',
-                        'external-volumes'
+                        'external-volumes',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'R_REPLICATION_GROUP_INV'
@@ -324,8 +324,8 @@ angular
                         'parity-groups',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks',
-                        'external-volumes'
+                        'external-volumes',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'C_VOLUMES_INV'
@@ -486,8 +486,8 @@ angular
                         'parity-groups',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks',
                         'external-volumes',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'C_POOLS_INV'
@@ -524,8 +524,8 @@ angular
                         'parity-groups',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks',
-                        'external-volumes'
+                        'external-volumes',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'T_ENABLE_PORT_SECURITY'
@@ -548,8 +548,8 @@ angular
                         'storage-pools',
                         'external-parity-groups',
                         'replication-groups',
-                        'migration-tasks',
-                        'external-volumes'
+                        'external-volumes',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'C_PARITY_GROUPS_INV'
@@ -565,8 +565,8 @@ angular
                         'volumes',
                         'parity-groups',
                         'replication-groups',
-                        'migration-tasks',
-                        'external-volumes'
+                        'external-volumes',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'
@@ -582,7 +582,8 @@ angular
                         'volumes',
                         'parity-groups',
                         'replication-groups',
-                        'external-parity-groups'
+                        'external-parity-groups',
+                        'migration-tasks'
                     ]
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'
@@ -593,6 +594,13 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'common-external-volumes-add'
                 },
+                // TODO helpContext
+            })
+            .when('/storage-systems/:storageSystemId/external-volumes/:volumeId', {
+                templateUrl: 'views/external-volume.html',
+                controller: 'ExternalVolumeCtrl',
+                // TODO helpContext
+                helpContext: 'R_VOLUME_DETAILS'
             })
             .when('/monitoring', {
                 templateUrl: 'views/monitoring.html',

@@ -47,8 +47,12 @@ angular.module('rainierApp')
         var calculateVolumes = function (volumes) {
             $scope.dataModel.selectedVolumes = volumes;
             _.forEach(volumes, function (item) {
-                // TODO Use capacity for External-VOL. How can I distinguish external volume.
-                totalVolumeSize += item.usedCapacity.value;
+                if (item.type === constantService.volumeType.EXTERNAL) {
+                    // Use total capacity for External-VOL.
+                    totalVolumeSize += item.capacity.value;
+                } else {
+                    totalVolumeSize += item.usedCapacity.value;
+                }
                 if (!utilService.isNullOrUndef(item.poolId)) {
                     sourceVolumePools[item.poolId] = true;
                 }
@@ -317,6 +321,7 @@ angular.module('rainierApp')
                 var sourceVolumeIds = [];
                 var sourceExternalVolumeIds = [];
                 _.forEach(pairs, function(item) {
+                    // TODO sourceExternalParityGroupId
                     if (item.sourceParityGroupId !== constantService.notAvailable) {
                         sourceExternalVolumeIds.push(item.sourceVolumeId);
                     } else {
@@ -325,14 +330,18 @@ angular.module('rainierApp')
                     selectedTargetPoolId = item.targetPoolId;
                 });
                 var sourceVolumes = [];
+                var sourceExternalVolumes = [];
                 var tasks = [];
                 tasks.push(migrationTaskService.getVolumes(storageSystemId, sourceVolumeIds).then(function (volumes) {
                     sourceVolumes = volumes;
                 }));
-                // TODO ExternalVolumes
+                tasks.push(migrationTaskService.getExternalVolumes(storageSystemId, sourceExternalVolumeIds).then(function (volumes) {
+                    sourceExternalVolumes = volumes;
+                }));
 
                 $q.all(tasks).then(function () {
-                    calculateVolumes(sourceVolumes); // TODO sourceExternalVolumes
+                    var allVolumes = sourceVolumes.concat(sourceExternalVolumes);
+                    calculateVolumes(sourceVolumes);
                     getPools(storageSystemId, function(dataModel) {
                         dataModel.settingModel.migrationTaskName = migrationTask.migrationTaskName;
                         dataModel.settingModel.comments = migrationTask.comments;

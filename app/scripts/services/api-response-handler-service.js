@@ -12,7 +12,7 @@ angular.module('rainierApp')
 
         var self = this;
 
-        var _apiGetResponseHandler = function (promise) {
+        var _apiGetResponseHandler = function (promise, showErrDialog) {
             var wrapped = $q.defer();
             promise.then(function (job) {
                     wrapped.resolve(job);
@@ -29,6 +29,9 @@ angular.module('rainierApp')
                         data.received = new Date();
                         $rootScope.$broadcast('pageErrorReceived', data);
                     }, 1000);
+                    if (showErrDialog) {
+                        defaultErrAction.call({}, error, wrapped);
+                    }
                     wrapped.reject(error);
                 }
             );
@@ -59,6 +62,10 @@ angular.module('rainierApp')
                 }
             });
             self.errorDialogOpend = true;
+        };
+
+        var _apiGetResponseHandlerWithErrDialog = function (promise) {
+            return _apiGetResponseHandler.call({}, promise, true);
         };
 
         var _apiResponseHandler = function (promise) {
@@ -95,6 +102,7 @@ angular.module('rainierApp')
 
         return {
             _apiGetResponseHandler: _apiGetResponseHandler,
+            _apiGetResponseHandlerWithErrDialog: _apiGetResponseHandlerWithErrDialog,
             _apiResponseHandler: _apiResponseHandler,
             _apiResponseHandlerWithErrAction: _apiResponseHandlerWithErrAction
         };
