@@ -304,13 +304,15 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                             var volume = selectedVolumes[j];
                             // Add new path
                             if (!path.luns){
-                                lunPathDiffPayload = {
-                                    storageSystemId: storageSystemId,
-                                    volumeId: volume.volumeId,
-                                    lun: volume.lun,
-                                    currentPath: null,
-                                    newPath: generatePathPayload(path, host)
-                                };
+                                if(path.deleted !=true) {
+                                    lunPathDiffPayload = {
+                                        storageSystemId: storageSystemId,
+                                        volumeId: volume.volumeId,
+                                        lun: volume.lun,
+                                        currentPath: null,
+                                        newPath: generatePathPayload(path, host)
+                                    };
+                                }
                             } else {
                                 var originalPath = originalPaths[i];
                                 if (path.deleted === true) {
