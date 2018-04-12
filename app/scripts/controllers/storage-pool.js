@@ -60,6 +60,7 @@ angular.module('rainierApp')
                 total: result.total,
                 currentPageCount: 0,
                 busy: false,
+                narrowUsageBar: true,
                 sort: {
                     field: 'volumeId',
                     reverse: false,
