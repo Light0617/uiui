@@ -206,6 +206,10 @@ angular.module('rainierApp')
                 return _.some(selectedVolumes, function (vol) { return vol.isShredding(); });
             };
 
+            var enableToShred = function (volume) {
+                return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
+            };
+
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -287,8 +291,8 @@ angular.module('rainierApp')
                         var selectedCount = $scope.selectedCount;
                         return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                !_.some(dataModel.getSelectedItems(), function (vol) {
-                                    return !vol.isUnattached() || !vol.isNormal() || vol.capacitySavingType !== 'No' ||
-                                           vol.isSnapshotPair();
+                                    return !vol.isUnattached() || !enableToShred(vol) ||
+                                           vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
                                });
                     },
                     onClick: function () {
