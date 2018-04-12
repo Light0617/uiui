@@ -843,7 +843,7 @@
     "host-update-mutual-chap-user": "New Mutual CHAP User",
 
     "host-edit-mutual-chap-user": "Edit Mutual CHAP User",
-    "host-edit-mutual-chap-username": "Mutual CHAP Username",
+    "host-edit-mutual-chap-username": "Mutual CHAP User",
     "host-edit-mutual-chap-secret": "Mutual CHAP Secret",
     "host-delete-mutual-chap-user": "Delete Mutual CHAP User",
     "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure?",
