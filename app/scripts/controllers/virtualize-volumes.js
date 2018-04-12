@@ -70,6 +70,7 @@ angular.module('rainierApp')
         }
 
         $scope.dataModel = {
+            addAction: false,
             isPrevirtualize: true,
             isVirtualizeVolume: true,
             isAddExtVolume: isAddExtVolume,
@@ -112,7 +113,7 @@ angular.module('rainierApp')
                             volumeIds
                         );
                         $scope.dataModel.isWaiting = true;
-                        inventorySettingsService.setVolumesGridSettings($scope.dataModel);
+                        inventorySettingsService.setVolumesGridSettings($scope.dataModel, {canAdd: false});
 
                         previrtualizeService.previrtualizeAndDiscover(payload).then(function () {
                             // TODO Actual Discovered volume should be listed
@@ -473,6 +474,7 @@ angular.module('rainierApp')
                 var hosts = result.resources;
 
                 var dataModelServer = {
+                    addAction: false,
                     hosts: hosts,
                     view: 'tile',
                     allItemsSelected: false,
