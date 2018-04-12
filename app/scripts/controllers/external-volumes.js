@@ -47,7 +47,6 @@ angular.module('rainierApp')
             getActions: function () {
                 return _.map(actions);
             },
-            title: synchronousTranslateService.translate('common-external-volumes')
         };
 
         $scope.filterModel = {};
@@ -56,6 +55,7 @@ angular.module('rainierApp')
             paginationService.clearQuery();
             var dataModel = {
                 view: 'tile',
+                title: synchronousTranslateService.translate('common-external-volumes'),
                 storageSystemId: storageSystemId,
                 nextToken: result.nextToken,
                 total: result.total,

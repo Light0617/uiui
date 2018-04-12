@@ -822,8 +822,8 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
-                    var displayCapacity = diskSizeService.getDisplaySize(i.capacity);
-                    i.displayCapacity = displayCapacity.size + ' ' + displayCapacity.unit;
+                    i.capacity = diskSizeService.getDisplaySize(i.capacity);
+                    i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
                     i.metaData = [
                         {
                             left: true,
