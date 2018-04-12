@@ -8,7 +8,9 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('virtualizeVolumeService', function (attachVolumeService) {
+    .factory('virtualizeVolumeService', function (
+        $location, $modal, ShareDataService, utilService, attachVolumeService, synchronousTranslateService
+    ) {
 
         function constructVirtualizePayload(dataModel) {
             var serverMap = new Map();
@@ -47,6 +49,53 @@ angular.module('rainierApp')
             return payload;
         }
 
+        var extractCommonSourceStorageId = function (volumes) {
+            var vols = volumes;
+            var sourceStorageSystemIds = _.chain(vols)
+                .map(function (v) {
+                    return v.storageSystemId;
+                })
+                .uniq()
+                .value();
+            if (sourceStorageSystemIds.length === 1) {
+                return sourceStorageSystemIds[0];
+            } else {
+                return undefined;
+            }
+        };
+
+        var openModalForDifferentStorage = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/tempaltes/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                constroller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('error-message-title'),
+                        message: 'Selected volumes comes from different storage systems.'
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modalInstance.result.finally(function() {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    });
+                }
+            });
+        };
+
+        var invokeOpenAttachToStorageFromHost = function (volumes) {
+            var storageSystemId = extractCommonSourceStorageId(volumes);
+            if (utilService.isNullOrUndef(storageSystemId)) {
+                openModalForDifferentStorage();
+            } else {
+                ShareDataService.push('attachToStorageVolumes', volumes);
+                ShareDataService.push('sourceStorageSystemId', storageSystemId);
+                $location.path(['storage-systems', storageSystemId, 'attach-to-storage'].join('/'));
+            }
+        };
+
         return {
             getViewBoxHeight: function(sourcePorts, targetPorts, sourceCoordinates, targetCoordinates) {
                 attachVolumeService.setPortCoordiantes(sourcePorts, sourceCoordinates);
@@ -58,6 +107,7 @@ angular.module('rainierApp')
 
                 return Math.max(sourceHeight, targetHeight);
             },
-            constructVirtualizePayload: constructVirtualizePayload
+            constructVirtualizePayload: constructVirtualizePayload,
+            invokeOpenAttachToStorageFromHost: invokeOpenAttachToStorageFromHost
         };
     });

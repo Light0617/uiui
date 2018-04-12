@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
                                       replicationService, gadVolumeTypeSearchService, migrationTaskService,
-                                      mutualChapService, resourceTrackerService) {
+                                      mutualChapService, resourceTrackerService, virtualizeVolumeService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -212,14 +212,23 @@ angular.module('rainierApp')
                         icon: 'icon-data-protection',
                         tooltip: 'action-tooltip-protect-volumes',
                         type: 'link',
+                        enabled: dataModel.anySelected,
                         onClick: function () {
                             ShareDataService.volumesList = dataModel.getSelectedItems();
 
                             $location.path('/hosts/' + hostId + '/protect');
 
-                        },
+                        }
+                    },
+                    {
+                        icon: 'icon-volume',
+                        tooltip: 'Attach to Storage',
+                        type: 'link',
                         enabled: function () {
                             return dataModel.anySelected();
+                        },
+                        onClick: function () {
+                            virtualizeVolumeService.invokeOpenAttachToStorageFromHost(dataModel.getSelectedItems());
                         }
                     },
                     {
