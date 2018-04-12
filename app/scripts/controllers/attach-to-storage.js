@@ -67,7 +67,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     };
 
     var onProtocolChange = function () {
-        var currentProtocol = $scope.dataModel.selectedProtocol;
+        // var currentProtocol = $scope.dataModel.selectedProtocol;
     };
 
     var extractFromShareDataService = function () {
