@@ -304,7 +304,7 @@ angular.module('rainierApp').controller('EditLunPathCtrl', function (
                             var volume = selectedVolumes[j];
                             // Add new path
                             if (!path.luns){
-                                if(path.deleted !=true) {
+                                if(path.deleted !==true) {
                                     lunPathDiffPayload = {
                                         storageSystemId: storageSystemId,
                                         volumeId: volume.volumeId,

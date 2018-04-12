@@ -53,7 +53,7 @@ angular.module('rainierApp')
         var isAddExtVolume = $location.path().includes('external-volumes');
         var portsInfo = function (paths) {
             paths = _.filter(paths, function(path){
-                return path.deleted != true;
+                return path.deleted !== true;
             });
 
             return _.map(paths, function (p) {
