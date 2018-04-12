@@ -20,7 +20,7 @@
         </a>
 
         <div class="btn icon-btn" ng-click="protectCurrentVolume()" title="{{ 'action-tooltip-protect-volumes' | translate}}"
-             ng-if="!model.disabledCheckBox && model.isAttached() &6 !model.isShredding()">
+             ng-if="!model.disabledCheckBox && model.isAttached() && !model.isShredding()">
             <span class="icon-data-protection icon-sm"></span>
         </div>
 
