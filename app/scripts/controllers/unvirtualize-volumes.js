@@ -16,12 +16,12 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('UnvirtualizeVolumesCtrl', function($scope, $modal, $routeParams, $q, $filter, orchestratorService,
-                                               viewModelService, ShareDataService, paginationService, queryService,
-                                               objectTransformService, constantService, $location, $timeout,
-                                               scrollDataSourceBuilderService, resourceTrackerService,
-                                               synchronousTranslateService, migrationTaskService, utilService,
-                                               inventorySettingsService) {
+    .controller('UnvirtualizeVolumesCtrl', function(
+      // $scope, $modal, $routeParams, $q, $filter, orchestratorService,
+      // viewModelService, ShareDataService, paginationService, queryService,
+      // objectTransformService, constantService, $location, $timeout,
+      // scrollDataSourceBuilderService, resourceTrackerService
+    ) {
 
 
     });
