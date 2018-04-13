@@ -93,6 +93,14 @@ angular.module('rainierApp')
                 GAD: 'GAD',
                 EXTERNAL: 'EXTERNAL'
             },
+            volumeStatus: {
+                NORMAL: 'NORMAL',
+                BLOCKED: 'BLOCKED',
+                BUSY: 'BUSY',
+                SHREDDING: 'SHREDDING',
+                NONE: 'NONE',
+                UNKNOWN: 'UNKNOWN'
+            },
             tieringMode:{
                 NONE: 'NONE',
                 MANUAL: 'MANUAL',
