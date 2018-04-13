@@ -724,6 +724,7 @@ angular
                         'external-parity-groups',
                         'external-volumes',
                         'replication-groups',
+                        'migration-tasks',
                         'file-systems',
                         'shares-exports',
                         'vfs'
@@ -744,6 +745,7 @@ angular
                         'external-parity-groups',
                         'external-volumes',
                         'replication-groups',
+                        'migration-tasks',
                         'file-pools',
                         'file-systems',
                         'shares-exports'
@@ -764,6 +766,7 @@ angular
                         'external-parity-groups',
                         'external-volumes',
                         'replication-groups',
+                        'migration-tasks',
                         'file-pools',
                         'file-systems',
                         'vfs'
@@ -832,6 +835,7 @@ angular
                         'external-parity-groups',
                         'external-volumes',
                         'replication-groups',
+                        'migration-tasks',
                         'file-pools',
                         'shares-exports',
                         'vfs'
@@ -971,6 +975,7 @@ angular
                         'parity-groups',
                         'storage-pools',
                         'external-parity-groups',
+                        'external-volumes',
                         'replication-groups'
                     ]
                 },
