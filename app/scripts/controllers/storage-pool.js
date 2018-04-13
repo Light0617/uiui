@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
                                              replicationService, resourceTrackerService, gadVolumeTypeSearchService,
-                                             migrationTaskService, $q) {
+                                             migrationTaskService, $q, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -188,6 +188,10 @@ angular.module('rainierApp')
                     return _.some(selectedVolumes, function (vol) { return vol.isShredding(); });
                 };
 
+                var enableToShred = function (volume) {
+                    return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
+                };
+
                 dataModel.actions = [];
 
                 if(ddmEnabled) {
@@ -220,6 +224,7 @@ angular.module('rainierApp')
                                 ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                                 $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                             }
+
                         }
                     ];
                 }else {
@@ -268,15 +273,16 @@ angular.module('rainierApp')
                                 $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
                             }
                         },
+
                         {
                             icon: 'icon-shred-volume',
                             tooltip: 'shred-volumes',
                             type: 'link',
-                            enabled: function () {
+                            enabled: function(){
                                 return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                     !_.some(dataModel.getSelectedItems(), function (vol) {
-                                        return !vol.isUnattached() || !vol.isNormal() || vol.capacitySavingType !== 'No' ||
-                                            vol.isSnapshotPair();
+                                        return !vol.isUnattached() || !enableToShred(vol)  ||
+                                            vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
                                     });
                             },
                             onClick: function () {
@@ -320,9 +326,6 @@ angular.module('rainierApp')
                                         }
                                     });
                                 }
-                            },
-                            enabled: function () {
-                                return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
                             }
                         },
                         {
