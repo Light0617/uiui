@@ -332,12 +332,18 @@ angular.module('rainierApp')
                 var sourceVolumes = [];
                 var sourceExternalVolumes = [];
                 var tasks = [];
-                tasks.push(migrationTaskService.getVolumes(storageSystemId, sourceVolumeIds).then(function (volumes) {
-                    sourceVolumes = volumes;
-                }));
-                tasks.push(migrationTaskService.getExternalVolumes(storageSystemId, sourceExternalVolumeIds).then(function (volumes) {
-                    sourceExternalVolumes = volumes;
-                }));
+                if (sourceVolumeIds.length > 0) {
+                    tasks.push(migrationTaskService.getVolumes(storageSystemId, sourceVolumeIds).then(
+                        function (volumes) {
+                            sourceVolumes = volumes;
+                        }));
+                }
+                if (sourceExternalVolumeIds.length > 0) {
+                    tasks.push(migrationTaskService.getExternalVolumes(storageSystemId, sourceExternalVolumeIds).then(
+                        function (volumes) {
+                            sourceExternalVolumes = volumes;
+                        }));
+                }
 
                 $q.all(tasks).then(function () {
                     calculateVolumes(sourceVolumes);
