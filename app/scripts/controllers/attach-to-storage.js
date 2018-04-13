@@ -100,7 +100,27 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     };
 
     var onProtocolChange = function () {
-        // var currentProtocol = $scope.dataModel.selectedProtocol;
+        updateProtocol().then(buildSvgFn(true));
+    };
+
+    var updateProtocol = function () {
+        var targetPorts = filterByProtocol($scope.dataModel.targetStoragePorts);
+        var sourcePorts = filterByProtocol($scope.dataModel.sourceStoragePorts);
+        console.log(targetPorts);
+        if (targetPorts.length && sourcePorts.length) {
+            $scope.dataModel.pathModel = attachToStorageService.generatePathModel(sourcePorts, targetPorts);
+            return $q.resolve();
+        } else {
+            $scope.dataModel.pathModel = undefined;
+            // TODO SHOW DIALOG
+            return $q.reject();
+        }
+    };
+
+    var filterByProtocol = function (ports) {
+        return _.filter(ports, function (p) {
+            return p.type === $scope.dataModel.selectedProtocol;
+        });
     };
 
     var extractFromShareDataService = function () {
@@ -119,21 +139,20 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     };
 
     var updateTarget = function (targetStorageSystemId) {
+        if ($scope.dataModel.deleteAllLines && $scope.dataModel.pathModel) {
+            $scope.dataModel.deleteAllLines($scope.dataModel.pathModel);
+        }
         return getStoragePorts(targetStorageSystemId)
             .then(function (ports) {
                 $scope.dataModel.targetStoragePorts =
                     _.chain(ports)
                         .filter(filterTargetStoragePort)
                         .value();
-                return $q.resolve($scope.dataModel.targetStoragePorts);
-            })
-            .then(function (targetPorts) {
-                var sourcePorts = $scope.dataModel.sourceStoragePorts;
-                $scope.dataModel.pathModel = attachToStorageService.generatePathModel(sourcePorts, targetPorts);
-                console.log(JSON.stringify($scope.dataModel.pathModel));
                 return $q.resolve();
-            });
+            })
+            .then(updateProtocol);
     };
+
 
     var buildSvgFn = function (redrawLines) {
         return function () {
