@@ -14,7 +14,7 @@
             </label>
             <input type="text" name="secondPattern" class="value ng-binding form-inline-block-force pattern-input"
                    ng-model-options="{debounce: 500}" ng-model="model.pattern" maxlength="8" required
-                   ng-change="update()(model.index)" ng-pattern="/^[a-fA-F0-9]{1,8}$/">
+                   ng-change="update()()" ng-pattern="/^[a-fA-F0-9]{1,8}$/">
             <label class="form-inline-block-force">{{'shred-volumes-advanced-panel-pass-pattern-suffix' | translate}}
             </label>
         </div>

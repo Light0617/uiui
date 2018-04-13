@@ -287,8 +287,6 @@ angular.module('rainierApp')
                     tooltip: 'shred-volumes',
                     type: 'link',
                     enabled: function(){
-                        var selectedItems = dataModel.getSelectedItems();
-                        var selectedCount = $scope.selectedCount;
                         return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                !_.some(dataModel.getSelectedItems(), function (vol) {
                                     return !vol.isUnattached() || !enableToShred(vol) ||
