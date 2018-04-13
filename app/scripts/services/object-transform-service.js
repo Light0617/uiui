@@ -222,9 +222,9 @@ angular.module('rainierApp')
         function jumpToVolumeDetailsByType(storageSystemId, volumeId) {
             var hitPaths = [];
             var queries = _.map(['volumes', 'external-volumes'], function (path) {
-                return Restangular.one('storage-systems', storageSystemId).one(path, volumeId).get().then(function (result) {
+                return Restangular.one('storage-systems', storageSystemId).one(path, volumeId).get().then(function () {
                     hitPaths.push(path);
-                }, function (error) {
+                }, function () {
                     // nothing
                 });
             });
