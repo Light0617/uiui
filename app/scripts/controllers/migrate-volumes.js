@@ -127,7 +127,7 @@ angular.module('rainierApp')
                     currentPageCount: 0,
                     storageSystems: $scope.dataModel.storageSystems,
                     selectedVolumes: $scope.dataModel.selectedVolumes,
-                    migrationTaskNameRegexp: /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+)$/,
+                    migrationTaskNameRegexp: /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/,
                     busy: false,
                     adjustWizardRightPanel: true,
                     sort: {
@@ -172,7 +172,8 @@ angular.module('rainierApp')
                     next: function () {
                         if (dataModel.selectPoolModel.canGoNext && dataModel.selectPoolModel.canGoNext()) {
                             if (!dataModel.settingModel.migrationTaskName) {
-                                dataModel.settingModel.migrationTaskName = getTargetPool().label;
+                                var poolLabel = getTargetPool().label;
+                                dataModel.settingModel.migrationTaskName = poolLabel.replace(/[^a-zA-Z0-9-_]/g, '_');
                             }
                             dataModel.goNext();
                         }
@@ -321,8 +322,7 @@ angular.module('rainierApp')
                 var sourceVolumeIds = [];
                 var sourceExternalVolumeIds = [];
                 _.forEach(pairs, function(item) {
-                    // TODO sourceExternalParityGroupId
-                    if (item.sourceParityGroupId !== constantService.notAvailable) {
+                    if (item.sourceExternalParityGroupId !== constantService.notAvailable) {
                         sourceExternalVolumeIds.push(item.sourceVolumeId);
                     } else {
                         sourceVolumeIds.push({text: item.sourceVolumeId});
@@ -332,12 +332,18 @@ angular.module('rainierApp')
                 var sourceVolumes = [];
                 var sourceExternalVolumes = [];
                 var tasks = [];
-                tasks.push(migrationTaskService.getVolumes(storageSystemId, sourceVolumeIds).then(function (volumes) {
-                    sourceVolumes = volumes;
-                }));
-                tasks.push(migrationTaskService.getExternalVolumes(storageSystemId, sourceExternalVolumeIds).then(function (volumes) {
-                    sourceExternalVolumes = volumes;
-                }));
+                if (sourceVolumeIds.length > 0) {
+                    tasks.push(migrationTaskService.getVolumes(storageSystemId, sourceVolumeIds).then(
+                        function (volumes) {
+                            sourceVolumes = volumes;
+                        }));
+                }
+                if (sourceExternalVolumeIds.length > 0) {
+                    tasks.push(migrationTaskService.getExternalVolumes(storageSystemId, sourceExternalVolumeIds).then(
+                        function (volumes) {
+                            sourceExternalVolumes = volumes;
+                        }));
+                }
 
                 $q.all(tasks).then(function () {
                     calculateVolumes(sourceVolumes);

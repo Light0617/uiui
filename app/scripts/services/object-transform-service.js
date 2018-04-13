@@ -8,11 +8,12 @@
  * Provider in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location, $filter,
+    .factory('objectTransformService', function (diskSizeService, synchronousTranslateService, $location, $filter, $q,
                                                  ShareDataService, cronStringConverterService, wwnService,
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService,
-                                                 storageAdvisorEmbeddedSessionService, utilService) {
+                                                 storageAdvisorEmbeddedSessionService, utilService,
+                                                 Restangular) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -218,6 +219,23 @@ angular.module('rainierApp')
             };
         }
 
+        function jumpToVolumeDetailsByType(storageSystemId, volumeId) {
+            var hitPaths = [];
+            var queries = _.map(['volumes', 'external-volumes'], function (path) {
+                return Restangular.one('storage-systems', storageSystemId).one(path, volumeId).get().then(function () {
+                    hitPaths.push(path);
+                }, function () {
+                    // nothing
+                });
+            });
+            $q.all(queries).then(function () {
+                if (hitPaths.length === 0) {
+                    hitPaths.push('volumes');
+                }
+                $location.path(['storage-systems', storageSystemId, hitPaths[0], volumeId].join('/'));
+            });
+        }
+
         transforms = {
 
             transformVolumeId: function(id) {
@@ -399,8 +417,9 @@ angular.module('rainierApp')
                 } else {
                     item.secondaryVolume.displayId = formatVolumeId(item.secondaryVolume.id);
                     item.launchSvol = function () {
-                        var path = ['storage-systems', item.secondaryVolume.storageSystemId, 'volumes', item.secondaryVolume.id].join('/');
-                        $location.path(path);
+                        jumpToVolumeDetailsByType(item.secondaryVolume.storageSystemId, item.secondaryVolume.id);
+//                        var path = ['storage-systems', item.secondaryVolume.storageSystemId, 'volumes', item.secondaryVolume.id].join('/');
+//                        $location.path(path);
                     };
                 }
 
@@ -455,8 +474,9 @@ angular.module('rainierApp')
                 if (item.secondary) {
                     item.hasSecondaryHalf = true;
                     item.launchSvol = function () {
-                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
-                        $location.path(path);
+                        jumpToVolumeDetailsByType(item.secondary.storageSystemId, item.secondary.volumeId);
+//                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
+//                        $location.path(path);
                     };
                 } else {
                     item.hasSecondaryHalf = false;
@@ -659,8 +679,9 @@ angular.module('rainierApp')
                 item.topPostFix = 'common-label-total';
                 item.bottomPostFix = 'common-label-used';
                 item.onClick = function () {
-                    $location.path(['storage-systems', item.storageSystemId, 'volumes', item.volumeId].join(
-                        '/'));
+                    jumpToVolumeDetailsByType(item.storageSystemId, item.volumeId);
+//                    $location.path(['storage-systems', item.storageSystemId, 'volumes', item.volumeId].join(
+//                        '/'));
                 };
 
                 item.isNormal = function () {
@@ -3157,14 +3178,14 @@ angular.module('rainierApp')
                 } else {
                     item.sourcePoolId = constantService.notAvailable;
                 }
-                if (item.sourceParityGroupId !== null) {
+                if (item.sourceExternalParityGroupId !== null) {
                     item.launchSourceParityGroup = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'external-parity-groups',
-                                    this.sourceParityGroupId].join('/');
+                                    this.sourceExternalParityGroupId].join('/');
                         $location.path(path);
                     };
                 } else {
-                    item.sourceParityGroupId = constantService.notAvailable;
+                    item.sourceExternalParityGroupId = constantService.notAvailable;
                 }
                 if (item.targetVolumeId !== null) {
                     item.displayTargetVolumeId = formatVolumeId(item.targetVolumeId);
