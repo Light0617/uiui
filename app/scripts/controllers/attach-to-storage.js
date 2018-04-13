@@ -26,6 +26,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     objectTransformService,
     attachToStorageService,
     previrtualizeService,
+    synchronousTranslateService,
     utilService
 ) {
     // INITIALIZE dataModel
@@ -34,16 +35,11 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             isPrevirtualize: true,
             isVirtualizeVolume: true,
             footerModel: footerModel(),
-            protocolCandidates: [
-                { key: 'FIBRE', display: 'Fibre' },
-                { key: 'ISCSI', display: 'iSCSI' }
-            ],
             readyDefer: $q.defer(),
             isWaiting: true,
             onProtocolChange: onProtocolChange,
             onTargetStorageSystemChange: onTargetStorageSystemChange
         };
-        dataModel.selectedProtocol = dataModel.protocolCandidates[0].key;
         return dataModel;
     };
 
@@ -87,6 +83,21 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         return $q.resolve();
     };
 
+    var initProtocolCandidates = function (sourceStoragePorts) {
+        return _.chain(sourceStoragePorts)
+            .map(function (p) {
+                return p.type;
+            })
+            .uniq()
+            .map(function (type) {
+                return {
+                    key: type,
+                    display: synchronousTranslateService.translate(type)
+                };
+            })
+            .value();
+    };
+
     // FUNCTION DEFINITIONS
     var init = function () {
         initDataModel()
@@ -95,6 +106,10 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             })
             .then(function (result) {
                 _.extend($scope.dataModel, result);
+                $scope.dataModel.protocolCandidates = initProtocolCandidates($scope.dataModel.sourceStoragePorts);
+                if ($scope.dataModel.protocolCandidates.length) {
+                    $scope.dataModel.selectedProtocol = $scope.dataModel.protocolCandidates[0].key;
+                }
                 var initialTargetStorageSystemId = $scope.dataModel.targetStorageSystemIdCandidates[0];
                 $scope.dataModel.selectedTargetStorageSystemId = initialTargetStorageSystemId;
                 return $q.resolve(initialTargetStorageSystemId);
@@ -122,6 +137,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         } else {
             $scope.dataModel.pathModel = undefined;
             // TODO SHOW DIALOG
+            attachToStorageService.openNoPortDialog($scope.dataModel.selectedProtocol);
             return $q.reject();
         }
     };

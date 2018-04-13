@@ -66,7 +66,7 @@ angular.module('rainierApp')
 
         var openModalForDifferentStorage = function () {
             var modalInstance = $modal.open({
-                templateUrl: 'views/tempaltes/error-modal.html',
+                templateUrl: 'views/templates/error-modal.html',
                 windowClass: 'modal fade confirmation',
                 backdropClass: 'modal-backdrop',
                 constroller: function ($scope) {
@@ -85,7 +85,7 @@ angular.module('rainierApp')
             });
         };
 
-        var invokeOpenAttachToStorageFromHost = function (volumes) {
+        var invokeOpenAttachToStorage = function (volumes) {
             var storageSystemId = extractCommonSourceStorageId(volumes);
             if (utilService.isNullOrUndef(storageSystemId)) {
                 openModalForDifferentStorage();
@@ -108,6 +108,6 @@ angular.module('rainierApp')
                 return Math.max(sourceHeight, targetHeight);
             },
             constructVirtualizePayload: constructVirtualizePayload,
-            invokeOpenAttachToStorageFromHost: invokeOpenAttachToStorageFromHost
+            invokeOpenAttachToStorage: invokeOpenAttachToStorage
         };
     });

@@ -17,7 +17,8 @@
  */
 angular.module('rainierApp')
     .factory('attachToStorageService', function (
-        attachVolumeService, previrtualizeService, virtualizeVolumeService
+        $modal, attachVolumeService, previrtualizeService,
+        virtualizeVolumeService, synchronousTranslateService
     ) {
         var generateGetPathFn = function (sourceCoordinates, targetCoordinates) {
             return function (path) {
@@ -66,8 +67,31 @@ angular.module('rainierApp')
             });
         };
 
+        var openNoPortDialog = function (protocolKey) {
+            var protocol = synchronousTranslateService.translate(protocolKey);
+            var modalInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('error-message-title'),
+                        message: 'There is no suitable ' + protocol + ' ports on the source or the target storage.'
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modalInstance.result.finally(function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    });
+                }
+            });
+        };
+
         return {
             generatePathModel: generatePathModel,
             portsInfo: portsInfo,
+            openNoPortDialog: openNoPortDialog
         };
     });
