@@ -591,8 +591,8 @@ angular
             .when('/storage-systems/:storageSystemId/attach-to-storage', {
                 templateUrl: 'views/attach-to-storage.html',
                 controller: 'AttachToStorageCtrl',
-                breadcrumbsOptions: {
-                    labelKey: 'attach-to-storage'
+                breadcrumbOptions: {
+                    labelKey: 'Attach Volumes to Storage'
                 }
             })
             .when('/storage-systems/:storageSystemId/external-volumes/add', {
