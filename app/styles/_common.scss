@@ -125,3 +125,42 @@
     background-color: $neutral05;
   }
 }
+
+.wizard-right-adjust-area {
+  height: auto !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-wizard-container .tile-container .pass-pattern-tiles {
+  -webkit-flex-basis: 19%;
+  -ms-flex-preferred-size: 19%;
+  flex-basis: 19%;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin: 0 1em 1em 0;
+  max-width: 380px;
+  min-width: 380px;
+  padding-left: 10px;
+}
+
+.pass-pattern-tiles .left-side {
+  padding-right: 10px;
+}
+
+.pass-pattern-tiles .pass-pattern-input {
+  vertical-align: middle;
+  min-width: 18em;
+}
+
+.pass-pattern-tiles .pass-pattern-input .pattern-input {
+  width: 7em;
+}
+
+.form-inline-block-force {
+  display: inline-block !important;
+}

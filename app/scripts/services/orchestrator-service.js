@@ -261,6 +261,9 @@ angular.module('rainierApp')
             volumeSummary: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes/summary').get());
             },
+            externalVolumeSummary: function (storageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('external-volumes/summary').get());
+            },
             updateVolume: function (storageSystemId, volumeId, updatedVolume) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('volumes/' + volumeId).post(updatedVolume));
             },
@@ -415,6 +418,9 @@ angular.module('rainierApp')
             editLunPathsForIscsi: function (editLunPathPayload, errAction) {
                 return apiResponseHandlerService._apiResponseHandlerWithErrAction(
                     Restangular.all('volume-manager/edit-lun-paths').post(editLunPathPayload), errAction);
+            },
+            shredVolumes: function (shredVolumesPayload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred').post(shredVolumesPayload));
             },
             deleteVolume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).remove());

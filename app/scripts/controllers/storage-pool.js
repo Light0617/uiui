@@ -60,6 +60,7 @@ angular.module('rainierApp')
                 total: result.total,
                 currentPageCount: 0,
                 busy: false,
+                narrowUsageBar: true,
                 sort: {
                     field: 'volumeId',
                     reverse: false,
@@ -162,6 +163,10 @@ angular.module('rainierApp')
                 return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
             };
 
+            var hasShredding = function (selectedVolumes) {
+                return _.some(selectedVolumes, function (vol) { return vol.isShredding(); });
+            };
+
             var actions = [
                 {
                     icon: 'icon-delete',
@@ -171,7 +176,8 @@ angular.module('rainierApp')
                     confirmTitle: 'storage-volume-delete-confirmation',
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
+                               !hasShredding(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         _.forEach(dataModel.getSelectedItems(), function (item) {
@@ -184,7 +190,8 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems());
+                        return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
+                               !hasShredding(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
@@ -197,14 +204,15 @@ angular.module('rainierApp')
                     tooltip: 'shred-volumes',
                     type: 'link',
                     enabled: function(){
-                        return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return vol.dataProtectionStatus === 'Protected' || vol.dataProtectionStatus === 'Secondary';
-                            });
+                        return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                               !_.some(dataModel.getSelectedItems(), function (vol) {
+                                    return !vol.isUnattached() || !vol.isNormal() || vol.capacitySavingType !== 'No' ||
+                                           vol.isSnapshotPair();
+                               });
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                        $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'volumes','shred-volumes'].join('/'));
+                        $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
                     }
                 },
                 {
@@ -290,7 +298,7 @@ angular.module('rainierApp')
                     enabled: function () {
                         return dataModel.anySelected() && _.all(dataModel.getSelectedItems(),
                                 function (vol) {
-                                    return vol.isAttached();
+                                    return vol.isAttached() && !vol.isShredding();
                                 });
                     }
                 },

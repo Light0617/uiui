@@ -1,0 +1,28 @@
+<!-- Basic mode -->
+<form role="form" class="input-panel" ng-if="dataModel.shreddingMode === 'BASIC'">
+    <fieldset class="fieldset label-value-container">
+        <label>{{'shred-volumes-basic-panel-description' | translate}}</label>
+        <h3 class="">{{dataModel.basicShreddingPattern}}</h3>
+    </fieldset>
+</form>
+
+<!-- Advanced mode -->
+<form role="form" class="input-panel" ng-if="dataModel.shreddingMode === 'ADVANCED'" name="model.passForm">
+    <fieldset class="fieldset label-value-container">
+        <p class="label ng-binding">{{'shred-volumes-advanced-panel-number-of-passes' | translate}}</p>
+        <input type="number" value="{{dataModel.numOfPass}}" min="1" max="7" ng-model="dataModel.numOfPass"
+               ng-change="dataModel.updateNumOfPass();" name="numOfPasses" ng-min="1" ng-max="7" required>
+        <p ng-show="model.passForm.numOfPasses.$invalid && !model.passForm.numOfPasses.$pristine"
+           class="validation-text">{{'shred-volumes-invalid-pass-number-message' | translate }}</p>
+    </fieldset>
+</form>
+<form role="form" class="input-panel" ng-if="dataModel.shreddingMode === 'ADVANCED'">
+    <fieldset class="fieldset label-value-container">
+        <p class="label ng-binding">{{'shred-volumes-advanced-panel-input-pass-patterns' | translate}}</p>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 tile-container flex-grid">
+            <div class="pass-pattern-tiles tile" ng-repeat="item in dataModel.itemList">
+                <pass-pattern-tile ng-model="item" update="dataModel.updatePattern"></pass-pattern-tile>
+            </div>
+        </div>
+    </fieldset>
+</form>

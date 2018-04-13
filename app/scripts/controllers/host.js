@@ -212,12 +212,16 @@ angular.module('rainierApp')
                         icon: 'icon-data-protection',
                         tooltip: 'action-tooltip-protect-volumes',
                         type: 'link',
-                        enabled: dataModel.anySelected,
                         onClick: function () {
                             ShareDataService.volumesList = dataModel.getSelectedItems();
 
                             $location.path('/hosts/' + hostId + '/protect');
 
+                        },
+                        enabled: function () {
+                            return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(), function (vol) {
+                                       return vol.isShredding();
+                                   });
                         }
                     },
                     {

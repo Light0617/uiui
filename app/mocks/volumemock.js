@@ -10,6 +10,7 @@
 
 rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
     var volumes = [];
+    var attachedVolumes = [];
 
     var generateMockVolumes = function () {
         var total = 200;
@@ -17,6 +18,9 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
         while (total-- !== 0) {
             var mockVolume = generateMockVolume(total);
             volumes.push(mockVolume);
+            if (mockVolume.provisioningStatus === 'ATTACHED') {
+                attachedVolumes.push(mockVolume);
+            }
         }
     };
 
@@ -87,7 +91,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             size: mocksize,
             usedCapacity: mockUtils.getCapacity(1, 2),
             availableCapacity: mockUtils.getCapacity(1, 2),
-            status: _.sample(['Normal', 'Blocked', 'Busy', 'Unknown']),
+            status: _.sample(['NORMAL', 'BLOCKED', 'BUSY', 'UNKNOWN', 'SHREDDING', 'NONE']),
             type: volType,
             dataProtectionSummary: getVolumeDataProtectionSummary(),
             gadSummary: getVolumeGADSummary(volType, v),
@@ -215,6 +219,9 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             return volumes;
         },
         generateMockVolumes: generateMockVolumes(),
+        getAttachedMock: function () {
+            return attachedVolumes;
+        },
         handle: function (urlResult) {
             switch (urlResult.method) {
                 case 'GET':

@@ -1,12 +1,25 @@
 <!-- Pass Pattern Tile -->
 
-<div class="tile-row">
-    <div class="label-value-container" style="padding-top: 5px; padding-right: 10px; display: inline-block">
-        <p class="label ng-binding">Pass Number</p>
-        <p class="value ng-binding">{{item+1}}</p>
+<div class="tile-row form-h-align">
+    <div class="label-value-container left-side">
+        <p class="label ng-binding">{{'shred-volumes-advanced-panel-pass-pattern-number' | translate}}</p>
+        <p class="value ng-binding">{{model.index + 1}}</p>
     </div>
-    <div class="label-value-container" style="display: inline-block">
-        <p class="label ng-binding">Pattern</p>
-        <input type="text" class="value ng-binding" placeholder="XX-XX-XX" style="width: 80px;">
+
+    <form role="form" class="validation-form" name="model.patternForm">
+    <div class="label-value-container">
+        <p class="label ng-binding">{{'shred-volumes-advanced-panel-pass-pattern-label' | translate}}</p>
+        <div class="pass-pattern-input">
+            <label class="form-inline-block-force">{{'shred-volumes-advanced-panel-pass-pattern-prefix' | translate}}
+            </label>
+            <input type="text" name="secondPattern" class="value ng-binding form-inline-block-force pattern-input"
+                   ng-model-options="{debounce: 500}" ng-model="model.pattern" maxlength="8" required
+                   ng-change="update()(model.index)" ng-pattern="/^[a-fA-F0-9]{1,8}$/">
+            <label class="form-inline-block-force">{{'shred-volumes-advanced-panel-pass-pattern-suffix' | translate}}
+            </label>
+        </div>
+        <p ng-show="model.patternForm.secondPattern.$invalid && !model.patternForm.secondPattern.$pristine"
+           class="validation-text">{{'shred-volumes-invalid-pattern-message' | translate }}</p>
     </div>
+    </form>
 </div>
