@@ -340,7 +340,6 @@ angular.module('rainierApp')
                 }));
 
                 $q.all(tasks).then(function () {
-                    var allVolumes = sourceVolumes.concat(sourceExternalVolumes);
                     calculateVolumes(sourceVolumes);
                     getPools(storageSystemId, function(dataModel) {
                         dataModel.settingModel.migrationTaskName = migrationTask.migrationTaskName;
