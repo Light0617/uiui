@@ -25,6 +25,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     orchestratorService,
     objectTransformService,
     attachToStorageService,
+    previrtualizeService,
     utilService
 ) {
     // INITIALIZE dataModel
@@ -32,16 +33,43 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         var dataModel = {
             isPrevirtualize: true,
             isVirtualizeVolume: true,
-            attachModel: {},
+            footerModel: footerModel(),
             protocolCandidates: [
                 { key: 'FIBRE', display: 'Fibre' },
                 { key: 'ISCSI', display: 'iSCSI' }
             ],
             readyDefer: $q.defer(),
-            isWaiting: true
+            isWaiting: true,
+            onProtocolChange: onProtocolChange,
+            onTargetStorageSystemChange: onTargetStorageSystemChange
         };
         dataModel.selectedProtocol = dataModel.protocolCandidates[0].key;
         return dataModel;
+    };
+
+    var footerModel = function () {
+        return {
+            canSubmit: function () {
+                if (
+                    $scope.dataModel && $scope.dataModel.pathModel && $scope.dataModel.pathModel.paths
+                ) {
+                    return attachToStorageService.portsInfo($scope.dataModel.pathModel.paths).length > 0;
+                }
+                return false;
+            },
+            submit: submit
+        }
+    };
+
+    var submit = function () {
+        var payload = previrtualizeService.createPrevirtualizePayload(
+            $scope.dataModel.sourceStorageSystemId,
+            $scope.dataModel.selectedTargetStorageSystemId,
+            attachToStorageService.portsInfo($scope.dataModel.pathModel.paths),
+            $scope.dataModel.selectedVolumeIds
+        );
+        orchestratorService.previrtualize(payload);
+        backToPreviousView();
     };
 
     var spinner = function (waiting) {
@@ -73,25 +101,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             })
             .then(updateTarget)
             .then(buildSvgFn(false))
-            .then(function () {
-                initFunctions($scope.dataModel);
-            })
             .finally(spinner);
-    };
-
-    var initFunctions = function (dataModel) {
-        dataModel.onTargetStorageSystemChange = onTargetStorageSystemChange;
-        dataModel.onProtocolChange = onProtocolChange;
-        dataModel.attachModel.submit = submit;
-        dataModel.attachModel.canSubmit = canSubmit;
-    };
-
-    var submit = function () {
-        console.log($scope.dataModel);
-    };
-
-    var canSubmit = function () {
-        return true;
     };
 
     var onTargetStorageSystemChange = function () {
@@ -106,7 +116,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     var updateProtocol = function () {
         var targetPorts = filterByProtocol($scope.dataModel.targetStoragePorts);
         var sourcePorts = filterByProtocol($scope.dataModel.sourceStoragePorts);
-        console.log(targetPorts);
         if (targetPorts.length && sourcePorts.length) {
             $scope.dataModel.pathModel = attachToStorageService.generatePathModel(sourcePorts, targetPorts);
             return $q.resolve();
@@ -135,6 +144,9 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         ) {
             backToPreviousView();
         }
+        result.selectedVolumeIds = _.map(result.selectedVolumes, function (v) {
+            return v.volumeId;
+        });
         return result;
     };
 
@@ -147,6 +159,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
                 $scope.dataModel.targetStoragePorts =
                     _.chain(ports)
                         .filter(filterTargetStoragePort)
+                        .sortBy('storagePortId')
                         .value();
                 return $q.resolve();
             })
@@ -201,7 +214,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
 
     var getStoragePorts = function (storageSystemId) {
         return orchestratorService.storagePorts(storageSystemId).then(function (r) {
-            var ports = r.resources;
+            var ports = _.sortBy(r.resources, 'storagePortId');
             _.each(ports, function (p) {
                 objectTransformService.transformPort(p);
             });
