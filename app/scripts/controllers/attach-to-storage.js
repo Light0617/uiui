@@ -58,7 +58,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
                 return false;
             },
             submit: submit
-        }
+        };
     };
 
     var submit = function () {
