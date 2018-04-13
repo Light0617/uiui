@@ -127,7 +127,7 @@ angular.module('rainierApp')
                     currentPageCount: 0,
                     storageSystems: $scope.dataModel.storageSystems,
                     selectedVolumes: $scope.dataModel.selectedVolumes,
-                    migrationTaskNameRegexp: /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+)$/,
+                    migrationTaskNameRegexp: /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/,
                     busy: false,
                     adjustWizardRightPanel: true,
                     sort: {
@@ -172,7 +172,8 @@ angular.module('rainierApp')
                     next: function () {
                         if (dataModel.selectPoolModel.canGoNext && dataModel.selectPoolModel.canGoNext()) {
                             if (!dataModel.settingModel.migrationTaskName) {
-                                dataModel.settingModel.migrationTaskName = getTargetPool().label;
+                                var poolLabel = getTargetPool().label;
+                                dataModel.settingModel.migrationTaskName = poolLabel.replace(/[^a-zA-Z0-9-_]/g, '_');
                             }
                             dataModel.goNext();
                         }

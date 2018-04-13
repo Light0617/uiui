@@ -1124,7 +1124,7 @@
     "migrate-volumes-label-migrate-later": "Migrate Later",
     "migrate-volumes-label-start-time": "Start Time",
     "migrate-volumes-label-start-date": "Start Date",
-    "migrate-volumes-invalid-name-message": "Enter up to 32 alphanumeric characters, or symbols (- . @ _ ) or space in the name, but it must not start with a hyphen.",
+    "migrate-volumes-invalid-name-message": "Enter up to 32 alphanumeric characters, hyphens, and underscores in the name, but it must not start with a hyphen.",
     "migrate-volumes-invalid-time-message": "Enter time within the format 'HH:mm [AM|PM]'.",
     "migrate-volumes-invalid-date-message": "Enter date with valid date format.",
     "has-migration-tasks": "Migration Tasks Exist",
