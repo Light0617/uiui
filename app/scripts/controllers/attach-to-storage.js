@@ -1,7 +1,20 @@
-// TODO copyright and ngdoc
+/*
+ * ========================================================================
+ *
+ * Copyright (c) by Hitachi Vantara, 2018. All rights reserved.
+ *
+ * ========================================================================
+ */
 
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name rainierApp.controller:AttachToStorageCtrl
+ * @description
+ * # AttachToStorageCtrl
+ * Controller of the rainierApp
+ */
 angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     $q,
     $scope,
@@ -11,39 +24,59 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     paginationService,
     orchestratorService,
     objectTransformService,
+    attachToStorageService,
     utilService
 ) {
     // INITIALIZE dataModel
     var initialDataModel = function () {
         var dataModel = {
-            attachModel: {
-            },
+            isPrevirtualize: true,
+            isVirtualizeVolume: true,
+            attachModel: {},
             protocolCandidates: [
                 { key: 'FIBRE', display: 'Fibre' },
                 { key: 'ISCSI', display: 'iSCSI' }
-            ]
+            ],
+            readyDefer: $q.defer(),
+            isWaiting: true
         };
         dataModel.selectedProtocol = dataModel.protocolCandidates[0].key;
         return dataModel;
     };
 
+    var spinner = function (waiting) {
+        if ($scope.dataModel) {
+            $scope.dataModel.isWaiting = waiting;
+        }
+    };
+
+    var initDataModel = function () {
+        $scope.dataModel = initialDataModel();
+        $scope.dataModel.isStepActive = function () {
+            return true;
+        };
+        _.extend($scope.dataModel, extractFromShareDataService());
+        return $q.resolve();
+    };
+
     // FUNCTION DEFINITIONS
     var init = function () {
-        var dataModel = initialDataModel();
-        _.extend(dataModel, extractFromShareDataService());
-        getInitialData(dataModel.sourceStorageSystemId)
+        initDataModel()
+            .then(function () {
+                return getInitialData($scope.dataModel.sourceStorageSystemId);
+            })
             .then(function (result) {
-                _.extend(dataModel, result);
-
-                var initialTargetStorageSystemId = dataModel.targetStorageSystemIdCandidates[0];
-                dataModel.selectedTargetStorageSystemId = initialTargetStorageSystemId;
+                _.extend($scope.dataModel, result);
+                var initialTargetStorageSystemId = $scope.dataModel.targetStorageSystemIdCandidates[0];
+                $scope.dataModel.selectedTargetStorageSystemId = initialTargetStorageSystemId;
                 return $q.resolve(initialTargetStorageSystemId);
             })
             .then(updateTarget)
-            .catch(backToPreviousView);
-        initFunctions(dataModel);
-
-        $scope.dataModel = dataModel;
+            .then(buildSvgFn(false))
+            .then(function () {
+                initFunctions($scope.dataModel);
+            })
+            .finally(spinner);
     };
 
     var initFunctions = function (dataModel) {
@@ -63,7 +96,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
 
     var onTargetStorageSystemChange = function () {
         var currentTargetStorageSystem = $scope.dataModel.selectedTargetStorageSystemId;
-        updateTarget(currentTargetStorageSystem);
+        updateTarget(currentTargetStorageSystem).then(buildSvgFn(true));
     };
 
     var onProtocolChange = function () {
@@ -77,8 +110,8 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         };
         if (
             utilService.isNullOrUndef(result.sourceStorageSystemId) ||
-            utilService.isNullOrUndef(result.volumes) ||
-            !result.volumes.length
+            utilService.isNullOrUndef(result.selectedVolumes) ||
+            !result.selectedVolumes.length
         ) {
             backToPreviousView();
         }
@@ -88,13 +121,30 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     var updateTarget = function (targetStorageSystemId) {
         return getStoragePorts(targetStorageSystemId)
             .then(function (ports) {
-                $scope.dataModel.targetStoragePortCandidates =
-                    _.chain(ports).filter(filterTargetStoragePort).value();
+                $scope.dataModel.targetStoragePorts =
+                    _.chain(ports)
+                        .filter(filterTargetStoragePort)
+                        .value();
+                return $q.resolve($scope.dataModel.targetStoragePorts);
+            })
+            .then(function (targetPorts) {
+                var sourcePorts = $scope.dataModel.sourceStoragePorts;
+                $scope.dataModel.pathModel = attachToStorageService.generatePathModel(sourcePorts, targetPorts);
+                console.log(JSON.stringify($scope.dataModel.pathModel));
+                return $q.resolve();
             });
     };
 
+    var buildSvgFn = function (redrawLines) {
+        return function () {
+            return $scope.dataModel.readyDefer.promise.then(function () {
+                $scope.dataModel.build(redrawLines);
+            });
+        };
+    };
+
     var backToPreviousView = function () {
-        // $window.history.back();
+        $window.history.back();
     };
 
     // NOT DEPENDS ON DataModel
