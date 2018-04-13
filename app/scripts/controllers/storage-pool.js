@@ -100,7 +100,7 @@ angular.module('rainierApp')
                     }
                 };
 
-                dataModel.addAction = (poolResult.type === 'HTI' || poolResult.label.indexOf('HSA-reserved-') === 0) & (!ddmEnabled);
+                dataModel.addAction = (poolResult.type === 'HTI' || poolResult.label.indexOf('HSA-reserved-') === 0) && (!ddmEnabled);
 
                 migrationTaskService.checkLicense(storageSystemId).then(function (result) {
                     dataModel.volumeMigrationAvailable = result;
@@ -416,8 +416,8 @@ angular.module('rainierApp')
                 $scope.dataModel = dataModel;
 
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
-            })
-        }
+            });
+        };
 
 
 
@@ -435,9 +435,9 @@ angular.module('rainierApp')
             orchestratorService.storageSystem(storageSystemId).then(function (result) {
                 $scope.storageSystemDataModel = result;
 
-            })
+            });
             return $q.resolve();
-        }
+        };
 
         var getPool = function(){
              return orchestratorService.storagePool(storageSystemId, storagePoolId).then(function (result) {
@@ -534,7 +534,7 @@ angular.module('rainierApp')
              }).catch(function(e){
                  return $q.reject(e);
              });
-        }
+        };
 
         getStorageSystem().then(getPool).then(
             function(result) {

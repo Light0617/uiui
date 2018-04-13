@@ -195,7 +195,7 @@ angular.module('rainierApp')
             if($scope.model.ddmEnabled){
                 $scope.model.subscriptionLimit = null;
             }
-        })
+        });
 
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEMS_PATH, true, null,
             objectTransformService.transformStorageSystem).then(function (result) {
