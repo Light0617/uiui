@@ -36,24 +36,30 @@ angular.module('rainierApp')
                 $scope.diskTypeSpeedToTier = diskTypeSpeedToTier;
             });
 
-            orchestratorService.poolTemplate(val.storageSystemId)
-                .then(function (result) {
-                    $scope.model.poolTemplate = result;
-                    $scope.model.utilizationThreshold1 = parseInt(result.utilizationThreshold1);
-                    defaultLow = parseInt(result.utilizationThreshold1);
-                    $scope.model.utilizationThreshold2 = parseInt(result.utilizationThreshold2);
+            orchestratorService.poolTemplate(val.storageSystemId).then(function (result) {
+                $scope.model.poolTemplate = result;
+                $scope.model.utilizationThreshold1 = parseInt(result.utilizationThreshold1);
+                defaultLow = parseInt(result.utilizationThreshold1);
+                $scope.model.utilizationThreshold2 = parseInt(result.utilizationThreshold2);
 
-                    $scope.model.subscriptionLimit = result.subscriptionLimit;
-                    if (!utilService.isNullOrUndef(result.subscriptionLimit)) {
-                        defaultSubscriptionLimitValue = result.subscriptionLimit.value;
-                        defaultSubscriptionLimitUnlimited = result.subscriptionLimit.unlimited;
+                $scope.model.subscriptionLimit = result.subscriptionLimit;
+                if (!utilService.isNullOrUndef(result.subscriptionLimit)) {
+                    defaultSubscriptionLimitValue = result.subscriptionLimit.value;
+                    defaultSubscriptionLimitUnlimited = result.subscriptionLimit.unlimited;
+                }
+                $scope.model.templateSubscriptionLimit = result.subscriptionLimit;
+
+                $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
+                $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
+                $scope.model.templateSuspendSnapshot = result.suspendSnapshot;
+
+                //When ddmEnabled, set subscription limit to null to pass isInvalid()
+                $scope.model.nullSubscriptionLimit = function(){
+                    if($scope.model.ddmEnabled){
+                        $scope.model.subscriptionLimit = null;
                     }
-                    $scope.model.templateSubscriptionLimit = result.subscriptionLimit;
-
-                    $scope.model.templateUtilizationThreshold1 = parseInt(result.utilizationThreshold1);
-                    $scope.model.templateUtilizationThreshold2 = parseInt(result.utilizationThreshold2);
-                    $scope.model.templateSuspendSnapshot = result.suspendSnapshot;
-                });
+                };
+            });
             
             orchestratorService.licenses(val.storageSystemId).then(function (result) {
                 $scope.model.htiPool = false;
@@ -188,12 +194,6 @@ angular.module('rainierApp')
             }else if(wizardType === 'basic'){
                 dataVizModelForBasic($scope.model.diskSizesByTier);
 
-            }
-        });
-
-        $scope.$watch('model.ddmEnabled', function(){
-            if($scope.model.ddmEnabled){
-                $scope.model.subscriptionLimit = null;
             }
         });
 

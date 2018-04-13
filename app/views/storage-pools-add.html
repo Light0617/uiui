@@ -31,7 +31,7 @@
                     <div class="form-group" ng-if="model.wizardType === 'advanced'">
                         <label for="pool-active-flash">{{ 'storage-pools-question-ddm' | translate}}</label>
 
-                        <div id="pool-ddm" class="btn-group btn-group-toggle-black btn-group-justified">
+                        <div id="pool-ddm" class="btn-group btn-group-toggle-black btn-group-justified" ng-click="model.nullSubscriptionLimit()">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-lg btn-default" ng-model="model.ddmEnabled"
                                         btn-radio="true">Yes

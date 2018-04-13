@@ -56,14 +56,236 @@ angular.module('rainierApp')
             var transform;
             var FILTER_PATH;
             var ddmEnabled = poolResult.ddmEnabled;
+            var actions = [];
+            var gridSettings;
+
+            var hasGadVolume = function(selectedVolumes)  {
+                return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
+            };
+
+            var hasShredding = function (selectedVolumes) {
+                return _.some(selectedVolumes, function (vol) { return vol.isShredding(); });
+            };
+
+            var enableToShred = function (volume) {
+                return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
+            };
             if(ddmEnabled){
                 PATH =GET_EXTERNAL_VOLUMES_WITH_POOL_ID_PATH;
                 transform = objectTransformService.transformExternalVolume;
                 FILTER_PATH = GET_EXTERNAL_VOLUMES_PATH;
+                gridSettings = inventorySettingsService.setExternalVolumeGridSettings;
+                actions = [
+                    {
+                        icon: 'icon-detach-volume',
+                        tooltip: 'storage-volume-detach',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                }) && !hasGadVolume(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            var item = _.first(dataModel.getSelectedItems());
+                            item.actions.detach.onClick();
+                        }
+                    },
+                    {
+                        icon: 'icon-migrate-volume',
+                        tooltip: 'action-tooltip-migrate-volumes',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.volumeMigrationAvailable &&
+                                dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
+                            $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
+                        }
+
+                    }
+                ];
             }else{
                 PATH = GET_VOLUMES_WITH_POOL_ID_FILTER_PATH;
                 transform = objectTransformService.transformVolume;
                 FILTER_PATH = GET_VOLUMES_PATH;
+                gridSettings = inventorySettingsService.setVolumesGridSettings;
+                actions = [
+                    {
+                        icon: 'icon-delete',
+                        tooltip: 'action-tooltip-delete',
+                        type: 'confirm',
+
+                        confirmTitle: 'storage-volume-delete-confirmation',
+                        confirmMessage: 'storage-volume-delete-selected-content',
+                        enabled: function () {
+                            return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
+                                !hasShredding(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            _.forEach(dataModel.getSelectedItems(), function (item) {
+                                item.actions.delete.onClick(orchestratorService, false);
+                            });
+                        }
+                    },
+                    {
+                        icon: 'icon-edit',
+                        tooltip: 'action-tooltip-edit',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
+                                !hasShredding(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            var item = _.first(dataModel.getSelectedItems());
+                            item.actions.edit.onClick();
+
+                        }
+                    },
+                    {
+                        icon: 'icon-virtualize-volume',
+                        tooltip: 'virtualize-volumes',
+                        type: 'link',
+                        enabled: function () {
+                            return true;
+                        },
+                        onClick: function () {
+                            ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
+                            ShareDataService.isAddExtVolume = false;
+                            $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
+                        }
+                    },
+
+                    {
+                        icon: 'icon-shred-volume',
+                        tooltip: 'shred-volumes',
+                        type: 'link',
+                        enabled: function(){
+                            return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                                !_.some(dataModel.getSelectedItems(), function (vol) {
+                                    return !vol.isUnattached() || !enableToShred(vol)  ||
+                                        vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
+                                });
+                        },
+                        onClick: function () {
+                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                            $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
+                        }
+                    },
+                    {
+                        icon: 'icon-attach-volume',
+                        tooltip: 'action-tooltip-attach-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            var flags = [];
+                            _.forEach(dataModel.getSelectedItems(), function (item) {
+                                flags.push(item.isUnattached());
+                            });
+                            if (areAllItemsTrue(flags)) {
+                                ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                                $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
+                                    '/'));
+                            } else {
+                                var modelInstance = $modal.open({
+                                    templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
+                                    windowClass: 'modal fade confirmation',
+                                    backdropClass: 'modal-backdrop',
+                                    controller: function ($scope) {
+                                        $scope.cancel = function () {
+                                            modelInstance.dismiss('cancel');
+                                        };
+
+                                        $scope.ok = function () {
+                                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                                            $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
+                                                '/'));
+                                            modelInstance.close(true);
+                                        };
+
+                                        modelInstance.result.finally(function () {
+                                            $scope.cancel();
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    {
+                        icon: 'icon-detach-volume',
+                        tooltip: 'storage-volume-detach',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached();
+                                }) && !hasGadVolume(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            var item = _.first(dataModel.getSelectedItems());
+                            item.actions.detach.onClick();
+                        }
+                    },
+                    {
+                        icon: 'icon-migrate-volume',
+                        tooltip: 'action-tooltip-migrate-volumes',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.volumeMigrationAvailable &&
+                                dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
+                            $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
+                        }
+                    },
+                    {
+                        icon: 'icon-data-protection',
+                        tooltip: 'action-tooltip-protect-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            ShareDataService.volumesList = dataModel.getSelectedItems();
+                            $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId,
+                                'volumes/protect'
+                            ].join('/'));
+                        },
+                        enabled: function () {
+                            return dataModel.anySelected() && _.all(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isAttached() && !vol.isShredding();
+                                });
+                        }
+                    },
+                    {
+                        icon: 'icon-remove-volume',
+                        tooltip: 'action-tooltip-unprotect-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            volumeUnprotectActions(dataModel.getSelectedItems());
+                        },
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isUnprotected();
+                                });
+                        }
+                    },
+                    {
+                        icon: 'icon-refresh',
+                        tooltip: 'action-tooltip-restore-volumes',
+                        type: 'link',
+                        onClick: function () {
+                            volumeRestoreAction('restore', dataModel.getSelectedItems());
+                        },
+                        enabled: function () {
+                            return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return vol.isUnprotected();
+                                });
+                        }
+                    }];
             }
 
             paginationService.get(null, PATH, transform, true, storageSystemId).then(function (result) {
@@ -174,237 +396,8 @@ angular.module('rainierApp')
                     }
                 };
 
-                if(ddmEnabled){
-                    inventorySettingsService.setExternalVolumeGridSettings(dataModel);
-                }else {
-                    inventorySettingsService.setVolumesGridSettings(dataModel);
-                }
-
-                var hasGadVolume = function(selectedVolumes)  {
-                    return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
-                };
-
-                var hasShredding = function (selectedVolumes) {
-                    return _.some(selectedVolumes, function (vol) { return vol.isShredding(); });
-                };
-
-                var enableToShred = function (volume) {
-                    return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
-                };
-
-                dataModel.actions = [];
-
-                if(ddmEnabled) {
-                    dataModel.actions = [
-                        {
-                            icon: 'icon-detach-volume',
-                            tooltip: 'storage-volume-detach',
-                            type: 'link',
-                            enabled: function () {
-                                return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                                    function (vol) {
-                                        return vol.isAttached();
-                                    }) && !hasGadVolume(dataModel.getSelectedItems());
-                            },
-                            onClick: function () {
-                                var item = _.first(dataModel.getSelectedItems());
-                                item.actions.detach.onClick();
-                            }
-                        },
-                        {
-                            icon: 'icon-migrate-volume',
-                            tooltip: 'action-tooltip-migrate-volumes',
-                            type: 'link',
-                            enabled: function () {
-                                return dataModel.volumeMigrationAvailable &&
-                                    dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
-                                    migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
-                            },
-                            onClick: function () {
-                                ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
-                                $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
-                            }
-
-                        }
-                    ];
-                }else {
-                    dataModel.actions = [
-                        {
-                            icon: 'icon-delete',
-                            tooltip: 'action-tooltip-delete',
-                            type: 'confirm',
-
-                            confirmTitle: 'storage-volume-delete-confirmation',
-                            confirmMessage: 'storage-volume-delete-selected-content',
-                            enabled: function () {
-                                return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
-                                    !hasShredding(dataModel.getSelectedItems());
-                            },
-                            onClick: function () {
-                                _.forEach(dataModel.getSelectedItems(), function (item) {
-                                    item.actions.delete.onClick(orchestratorService, false);
-                                });
-                            }
-                        },
-                        {
-                            icon: 'icon-edit',
-                            tooltip: 'action-tooltip-edit',
-                            type: 'link',
-                            enabled: function () {
-                                return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
-                                    !hasShredding(dataModel.getSelectedItems());
-                            },
-                            onClick: function () {
-                                var item = _.first(dataModel.getSelectedItems());
-                                item.actions.edit.onClick();
-
-                            }
-                        },
-                        {
-                            icon: 'icon-virtualize-volume',
-                            tooltip: 'virtualize-volumes',
-                            type: 'link',
-                            enabled: function () {
-                                return true;
-                            },
-                            onClick: function () {
-                                ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
-                                ShareDataService.isAddExtVolume = false;
-                                $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
-                            }
-                        },
-
-                        {
-                            icon: 'icon-shred-volume',
-                            tooltip: 'shred-volumes',
-                            type: 'link',
-                            enabled: function(){
-                                return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
-                                    !_.some(dataModel.getSelectedItems(), function (vol) {
-                                        return !vol.isUnattached() || !enableToShred(vol)  ||
-                                            vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
-                                    });
-                            },
-                            onClick: function () {
-                                ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                                $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
-                            }
-                        },
-                        {
-                            icon: 'icon-attach-volume',
-                            tooltip: 'action-tooltip-attach-volumes',
-                            type: 'link',
-                            onClick: function () {
-                                var flags = [];
-                                _.forEach(dataModel.getSelectedItems(), function (item) {
-                                    flags.push(item.isUnattached());
-                                });
-                                if (areAllItemsTrue(flags)) {
-                                    ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                                    $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
-                                        '/'));
-                                } else {
-                                    var modelInstance = $modal.open({
-                                        templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
-                                        windowClass: 'modal fade confirmation',
-                                        backdropClass: 'modal-backdrop',
-                                        controller: function ($scope) {
-                                            $scope.cancel = function () {
-                                                modelInstance.dismiss('cancel');
-                                            };
-
-                                            $scope.ok = function () {
-                                                ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                                                $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId, 'attach-volumes'].join(
-                                                    '/'));
-                                                modelInstance.close(true);
-                                            };
-
-                                            modelInstance.result.finally(function () {
-                                                $scope.cancel();
-                                            });
-                                        }
-                                    });
-                                }
-                            }
-                        },
-                        {
-                            icon: 'icon-detach-volume',
-                            tooltip: 'storage-volume-detach',
-                            type: 'link',
-                            enabled: function () {
-                                return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                                    function (vol) {
-                                        return vol.isAttached();
-                                    }) && !hasGadVolume(dataModel.getSelectedItems());
-                            },
-                            onClick: function () {
-                                var item = _.first(dataModel.getSelectedItems());
-                                item.actions.detach.onClick();
-                            }
-                        },
-                        {
-                            icon: 'icon-migrate-volume',
-                            tooltip: 'action-tooltip-migrate-volumes',
-                            type: 'link',
-                            enabled: function () {
-                                return dataModel.volumeMigrationAvailable &&
-                                    dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
-                                    migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
-                            },
-                            onClick: function () {
-                                ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
-                                $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
-                            }
-                        },
-                        {
-                            icon: 'icon-data-protection',
-                            tooltip: 'action-tooltip-protect-volumes',
-                            type: 'link',
-                            onClick: function () {
-                                ShareDataService.volumesList = dataModel.getSelectedItems();
-                                $location.path(['storage-systems', storageSystemId, 'storage-pools', storagePoolId,
-                                    'volumes/protect'
-                                ].join('/'));
-                            },
-                            enabled: function () {
-                                return dataModel.anySelected() && _.all(dataModel.getSelectedItems(),
-                                    function (vol) {
-                                        return vol.isAttached() && !vol.isShredding();
-                                    });
-                            }
-                        },
-                        {
-                            icon: 'icon-remove-volume',
-                            tooltip: 'action-tooltip-unprotect-volumes',
-                            type: 'link',
-                            onClick: function () {
-                                volumeUnprotectActions(dataModel.getSelectedItems());
-                            },
-                            enabled: function () {
-                                return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
-                                    function (vol) {
-                                        return vol.isUnprotected();
-                                    });
-                            }
-                        },
-                        {
-                            icon: 'icon-refresh',
-                            tooltip: 'action-tooltip-restore-volumes',
-                            type: 'link',
-                            onClick: function () {
-                                volumeRestoreAction('restore', dataModel.getSelectedItems());
-                            },
-                            enabled: function () {
-                                return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
-                                    function (vol) {
-                                        return vol.isUnprotected();
-                                    });
-                            }
-                        }];
-                }
                 dataModel.getActions = function () {
-                    return dataModel.actions;
+                    return actions;
                 };
 
                 dataModel.cachedList = result.resources;
@@ -414,6 +407,8 @@ angular.module('rainierApp')
                     return paginationService.get($scope.dataModel.nextToken, PATH, transform, false, storageSystemId);
                 };
                 $scope.dataModel = dataModel;
+
+                gridSettings(dataModel);
 
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
             });
