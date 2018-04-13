@@ -432,11 +432,10 @@ angular.module('rainierApp')
         };
 
         var getStorageSystem = function(){
-            orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            return orchestratorService.storageSystem(storageSystemId).then(function (result) {
                 $scope.storageSystemDataModel = result;
-
+                return $q.resolve();
             });
-            return $q.resolve();
         };
 
         var getPool = function(){
