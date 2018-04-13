@@ -1,4 +1,5 @@
-<div class="control-group">
+
+<div class="control-group" ng-if="!filterModel.ddmEnabled">
     <h3>{{'storage-volume-filter-free-space' | translate}}<span class="read-only">{{filterModel.filter.freeCapacity.min}} - {{filterModel.filter.freeCapacity.max}} {{filterModel.filter.freeCapacity.unit}}</span>
     </h3>
 
@@ -54,7 +55,7 @@
     </div>
 </div>
 <!--Control group: Utilization of Volume Input-->
-<div class="control-group">
+<div class="control-group" ng-if="!filterModel.ddmEnabled">
     <h3>{{'storage-volume-filter-utilization' | translate}}<span class="read-only">{{filterModel.filter.utilization.min}} - {{filterModel.filter.utilization.max}}</span>
     </h3>
 
@@ -64,10 +65,10 @@
          stop-event-fn="filterModel.sliderQuery('utilization', filterModel.filter.utilization.min, filterModel.filter.utilization.max)">
     </div>
 </div>
-<div class="control-group" ng-if="filterModel.filter.hasOwnProperty('volumeType')">
+<div class="control-group" ng-if="filterModel.filter.hasOwnProperty('volumeType') && !filterModel.ddmEnabled" >
     <h3>{{'storage-volume-filter-volume-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.volumeType || 'ALL'}}</span></h3>
 </div>
-<div class="btn-group btn-group-toggle btn-group-justified" ng-if="filterModel.filter.hasOwnProperty('volumeType')">
+<div class="btn-group btn-group-toggle btn-group-justified" ng-if="filterModel.filter.hasOwnProperty('volumeType') && !filterModel.ddmEnabled">
     <div class="btn-group">
         <label class="btn btn-default" ng-model="filterModel.filter.volumeType" btn-radio="'HDP'" title="Thin (HDP)"
                uncheckable ng-click="filterModel.filterQuery('type', 'HDP')">{{'storage-volume-filter-thin' | translate}}
@@ -115,10 +116,10 @@
     </div>
 </div>
 
-<div class="control-group">
+<div class="control-group" ng-if="!filterModel.ddmEnabled">
     <h3>{{'volume-capacity-saving-type' | translate}}<span class="read-only" type="text">{{ filterModel.filter.dkcDataSavingType || 'ALL'}}</span></h3>
 </div>
-<div class="btn-group btn-group-vertical btn-group-justified">
+<div class="btn-group btn-group-vertical btn-group-justified" ng-if="!filterModel.ddmEnabled">
     <label class="btn btn-primary" ng-model="filterModel.filter.dkcDataSavingType"
            ng-change="filterModel.filterQuery('dkcDataSavingType', 'NONE')"
            btn-radio="'No'" uncheckable>
@@ -138,10 +139,10 @@
     </label>
 </div>
 
-<div class="control-group">
+<div class="control-group" ng-if="!filterModel.ddmEnabled">
     <h3>{{'storage-volume-filter-protection-type' | translate}}</h3>
 </div>
-<div class="btn-group btn-group-justified btn-group-vertical">
+<div class="btn-group btn-group-justified btn-group-vertical" ng-if="!filterModel.ddmEnabled">
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.snapshotex"
                ng-init="filterModel.filter.snapshotex=false"
@@ -169,11 +170,11 @@
     </label>
 </div>
 
-<div class="control-group" ng-show="!dataModel.isDPMonitoring">
+<div class="control-group" ng-show="!dataModel.isDPMonitoring" ng-if="!filterModel.ddmEnabled">
     <h3>{{'storage-volume-filter-data-protection-volume-type' | translate}}</h3>
 </div>
 
-<div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring">
+<div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring" ng-if="!filterModel.ddmEnabled">
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.protected" ng-init="filterModel.filter.protected=false"
                ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.protected ? 'P-VOL' : '', filterModel.arrayType, 'P-VOL')">{{'storage-volume-filter-protected' | translate}}
@@ -190,11 +191,11 @@
     </label>
 </div>
 
-<div class="control-group" ng-show="!dataModel.isDPMonitoring">
+<div class="control-group" ng-show="!dataModel.isDPMonitoring" ng-if="!filterModel.ddmEnabled">
     <h3>{{'gad-volume-type' | translate}}</h3>
 </div>
 
-<div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring">
+<div class="btn-group btn-group-justified btn-group-vertical" ng-show="!dataModel.isDPMonitoring" ng-if="!filterModel.ddmEnabled">
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.gadActivePrimary" ng-init="filterModel.filter.gadActivePrimary=false"
                ng-change="filterModel.filterQuery('gadSummary.volumeType', filterModel.filter.gadActivePrimary ? 'ACTIVE_PRIMARY' : '', filterModel.arrayType, 'ACTIVE_PRIMARY')">{{'gad-volume-type-primary' | translate}}

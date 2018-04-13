@@ -62,6 +62,7 @@ angular.module('rainierApp')
                 $scope.model.hasHtiLicense = false;
                 $scope.model.hasActiveFlashLicense = false;
                 $scope.model.activeFlashEnabled = false;
+                $scope.model.ddmEnabled = false;
                 $scope.model.activeFlashAllowed = false;
                 $scope.model.suspendSnapshot = false;
                 $scope.model.isShowSuspendSnapshot = false;
@@ -183,8 +184,18 @@ angular.module('rainierApp')
                     encryption: null,
                     compression: null
                 };
+                dataVizModelForAdvanced($scope.model.parityGroups);
+            }else if(wizardType === 'basic'){
+                dataVizModelForBasic($scope.model.diskSizesByTier);
+
             }
         });
+
+        $scope.$watch('model.ddmEnabled', function(){
+            if($scope.model.ddmEnabled){
+                $scope.model.subscriptionLimit = null;
+            }
+        })
 
         paginationService.getAllPromises(null, GET_STORAGE_SYSTEMS_PATH, true, null,
             objectTransformService.transformStorageSystem).then(function (result) {
@@ -202,7 +213,7 @@ angular.module('rainierApp')
                 storageSystemSelectable: selectable,
                 storageSystem: storageSystem,
                 storageSystems: storageSystems,
-                availablePoolTypes: ['DDM'],
+                availablePoolTypes: [],
                 hasHdpLicense: false,
                 hasHdtLicense: false,
                 hasHtiLicense: false,
@@ -215,7 +226,9 @@ angular.module('rainierApp')
             $scope.payload = {
                 submit: function () {
                     var setSubscriptionLimit = function (payload, subscriptionLimit) {
-                        if ($scope.model.editableSubscriptionLimit) {
+                        if($scope.model.ddmEnabled){
+                            payload.subscriptionLimit = null;
+                        } else if ($scope.model.editableSubscriptionLimit) {
                             payload.subscriptionLimit = subscriptionLimit;
                         }
                     };
@@ -245,14 +258,28 @@ angular.module('rainierApp')
                         var isSuspendSnapshot = _.isBoolean($scope.model.suspendSnapshot) ?
                             $scope.model.suspendSnapshot : null;
 
+
+                        var type = $scope.model.poolType;
+                        var utilizationThreshold1 = $scope.model.utilizationThreshold1;
+                        var utilizationThreshold2 = $scope.model.utilizationThreshold2;
+
+                        if($scope.model.ddmEnabled){
+                            type = 'HDP';
+                            utilizationThreshold1 = null;
+                            utilizationThreshold2 = null;
+                        }
+
+
                         var createPoolPayload = {
-                            type: $scope.model.poolType,
+                            type: type,
                             label: $scope.model.label,
                             activeFlashEnabled: $scope.model.activeFlashEnabled,
-                            utilizationThreshold1: $scope.model.utilizationThreshold1,
-                            utilizationThreshold2: $scope.model.utilizationThreshold2,
+                            ddmEnabled: $scope.model.ddmEnabled,
+                            utilizationThreshold1: utilizationThreshold1,
+                            utilizationThreshold2: utilizationThreshold2,
                             parityGroupIds: $scope.model.selectedParityGroups,
-                            suspendSnapshot: isSuspendSnapshot
+                            suspendSnapshot: isSuspendSnapshot,
+                            subscriptionLimit: null
                         };
 
                         setSubscriptionLimit(createPoolPayload, $scope.model.subscriptionLimit);
@@ -300,7 +327,9 @@ angular.module('rainierApp')
                             }
                         } else {
                             isInvalid = _.size($scope.model.selectedParityGroups) === 0;
-                            isInvalid = isInvalid || _.isEmpty($scope.model.poolType);
+                            if(!$scope.model.ddmEnabled) {
+                                isInvalid = isInvalid || _.isEmpty($scope.model.poolType);
+                            }
                         }
                     }
 

@@ -856,6 +856,8 @@ angular.module('rainierApp')
                         ': ' + commonConverterService.convertBooleanToString(item.activeFlashEnabled);
                 }
 
+                var ddmTitle = synchronousTranslateService.translate('pool-ddm') + ': ' + commonConverterService.convertBooleanToString(item.ddmEnabled);
+
                 item.metaData = [
                     {
                         left: true,
@@ -871,6 +873,11 @@ angular.module('rainierApp')
                         left: false,
                         title: synchronousTranslateService.translate(item.type),
                         details: [item.tierNames]
+                    },
+                    {
+                        left: false,
+                        title: ddmTitle,
+                        details: []
                     },
                     {
                         left: false,
