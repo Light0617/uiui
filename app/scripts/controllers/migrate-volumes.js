@@ -321,8 +321,7 @@ angular.module('rainierApp')
                 var sourceVolumeIds = [];
                 var sourceExternalVolumeIds = [];
                 _.forEach(pairs, function(item) {
-                    // TODO sourceExternalParityGroupId
-                    if (item.sourceParityGroupId !== constantService.notAvailable) {
+                    if (item.sourceExternalParityGroupId !== constantService.notAvailable) {
                         sourceExternalVolumeIds.push(item.sourceVolumeId);
                     } else {
                         sourceVolumeIds.push({text: item.sourceVolumeId});

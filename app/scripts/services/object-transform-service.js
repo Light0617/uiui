@@ -3150,14 +3150,14 @@ angular.module('rainierApp')
                 } else {
                     item.sourcePoolId = constantService.notAvailable;
                 }
-                if (item.sourceParityGroupId !== null) {
+                if (item.sourceExternalParityGroupId !== null) {
                     item.launchSourceParityGroup = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'external-parity-groups',
-                                    this.sourceParityGroupId].join('/');
+                                    this.sourceExternalParityGroupId].join('/');
                         $location.path(path);
                     };
                 } else {
-                    item.sourceParityGroupId = constantService.notAvailable;
+                    item.sourceExternalParityGroupId = constantService.notAvailable;
                 }
                 if (item.targetVolumeId !== null) {
                     item.displayTargetVolumeId = formatVolumeId(item.targetVolumeId);

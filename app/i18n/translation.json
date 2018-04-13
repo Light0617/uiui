@@ -1141,7 +1141,7 @@
     "migration-task-list-comments": "Comments",
     "migration-task-pair-list-src-vol-id": "SRC VOL ID",
     "migration-task-pair-list-src-pool-id": "SRC POOL ID",
-    "migration-task-pair-list-src-pg-id": "SRC PG ID",
+    "migration-task-pair-list-src-pg-id": "SRC EXT PG ID",
     "migration-task-pair-list-tgt-vol-id": "TGT VOL ID",
     "migration-task-pair-list-tgt-pool-id": "TGT POOL ID",
     "migration-task-pair-list-status": "Status",
