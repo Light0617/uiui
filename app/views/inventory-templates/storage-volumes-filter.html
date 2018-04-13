@@ -233,3 +233,18 @@
         {{'yes-unmanaged' | translate}}
     </label>
 </div>
+
+<div class="control-group">
+    <h3>{{'status' | translate}}<span class="read-only" type="text">{{filterModel.filter.volumeStatus || 'ALL'}}</span>
+    </h3>
+    <select class="selectpicker inline btn-group-justified" ng-model="filterModel.filter.volumeStatus"
+            ng-change="filterModel.filterQuery('status', filterModel.filter.volumeStatus)">
+        <option value="">{{'storage-volume-filter-volume-status' | translate}}</option>
+        <option value="NORMAL">NORMAL</option>
+        <option value="BLOCKED">BLOCKED</option>
+        <option value="BUSY">BUSY</option>
+        <option value="SHREDDING">SHREDDING</option>
+        <option value="UNKNOWN">UNKNOWN</option>
+        <option value="NONE">NONE</option>
+    </select>
+</div>

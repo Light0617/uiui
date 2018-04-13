@@ -381,14 +381,16 @@ angular.module('rainierApp')
 
             });
 
-            var foundMatch = _.find(hostGroups, function(hostGroup){
+            var foundMatch = _.filter(hostGroups, function(hostGroup){
                 var hasWwn = _.some(hostGroup.hbaWwns, function(wwn){ return serverWwnMap.hasOwnProperty(wwn); });
                 var hasLun = _.some(hostGroup.luns, function(lun){ return volumeIdMap.hasOwnProperty(lun.volumeId); });
                 return hasWwn && hasLun;
             });
 
             if(foundMatch){
-                resultHostGroups.push(foundMatch);
+                _.each(foundMatch, function(match){
+                    resultHostGroups.push(match);
+                });
             }
 
             resultHostGroups.push(getMatchHostGroupsByIscsi(hostGroups, servers, volumeIdMap));

@@ -663,6 +663,13 @@ angular.module('rainierApp')
                         '/'));
                 };
 
+                item.isNormal = function () {
+                    return (this.status === 'NORMAL');
+                };
+                item.isShredding = function () {
+                    return (this.status === 'SHREDDING');
+                };
+
                 item.isUnprotected = function () {
                     return (this.dataProtectionSummary.volumeType.indexOf('P-VOL') === -1);
                 };
@@ -694,6 +701,12 @@ angular.module('rainierApp')
                 };
 
                 item.detailMetaData = [];
+                if (!item.isNormal()) {
+                    item.detailMetaData.push({
+                        title: item.status,
+                        detailData: item.status
+                    });
+                }
                 var migrationTypeDisplay;
                 if (item.migrationSummary.ownerTaskId) {
                     migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
@@ -809,8 +822,8 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
-                    var displayCapacity = diskSizeService.getDisplaySize(i.capacity);
-                    i.displayCapacity = displayCapacity.size + ' ' + displayCapacity.unit;
+                    i.capacity = diskSizeService.getDisplaySize(i.capacity);
+                    i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
                     i.metaData = [
                         {
                             left: true,
@@ -3128,6 +3141,8 @@ angular.module('rainierApp')
                 };
             },
             transformMigrationPair: function (item) {
+                item.displaySourceVolumeId = formatVolumeId(item.sourceVolumeId);
+
                 // Resource links
                 // TODO When the source volume is external, where is the destination?
                 item.launchSourceVol = function (storageSystemId) {
@@ -3152,12 +3167,13 @@ angular.module('rainierApp')
                     item.sourceParityGroupId = constantService.notAvailable;
                 }
                 if (item.targetVolumeId !== null) {
+                    item.displayTargetVolumeId = formatVolumeId(item.targetVolumeId);
                     item.launchTargetVol = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'volumes', this.targetVolumeId].join('/');
                         $location.path(path);
                     };
                 } else {
-                    item.targetVolumeId = constantService.notAvailable;
+                    item.displayTargetVolumeId = constantService.notAvailable;
                 }
                 if (item.targetPoolId !== null) {
                     item.launchTargetPool = function (storageSystemId) {

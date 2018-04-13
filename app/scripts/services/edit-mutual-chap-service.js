@@ -17,6 +17,9 @@ angular.module('rainierApp')
                 backdropClass: 'modal-backdrop',
                 controller: function ($scope) {
                     $scope.iscsiTargetName = hostGroup.iscsiTargetInformation.iscsiTargetName;
+                    $scope.dataModel = {
+                        mutualChapUserName: hostGroup.iscsiTargetInformation.mutualChapUser
+                    };
                     $scope.submit = function () {
                         var payload = {
                             iscsiTargetInformation: {

@@ -67,7 +67,10 @@
                     <sort-column-header field="{{settings.sortField}}" label="{{settings.title}}"
                                         ng-model="dataModel.sort"></sort-column-header>
                 </div>
-                <div class="eighth cell text-resize" ng-if="dataModel.displayList[0].usage && dataModel.displayList[0].status !== 'EXTERNALIZED'">
+                <div class="eighth cell text-resize" ng-if="!dataModel.narrowUsageBar && dataModel.displayList[0].usage && dataModel.displayList[0].status !== 'EXTERNALIZED'">
+                    <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
+                </div>
+                <div class="twelfth cell text-resize" ng-if="dataModel.narrowUsageBar && dataModel.displayList[0].usage && dataModel.displayList[0].status !== 'EXTERNALIZED'">
                     <a class="sort-column-header" title="{{ 'usage' | translate }}">{{ 'usage' | translate }}</a>
                 </div>
             </div>
@@ -150,7 +153,11 @@
 
                 </div>
 
-                <div class="td eighth data cell" ng-if="item.usage && !item.fileCapacity && item.status !== 'EXTERNALIZED'" ng-click="item.onClick()">
+                <div class="td eighth data cell" ng-if="!dataModel.narrowUsageBar && item.usage && !item.fileCapacity && item.status !== 'EXTERNALIZED'" ng-click="item.onClick()">
+                    <usage-indicator-bar class="data-viz bar bar-container" ng-model="item"></usage-indicator-bar>
+                </div>
+
+                <div class="td twelfth data cell" ng-if="dataModel.narrowUsageBar && item.usage && !item.fileCapacity && item.status !== 'EXTERNALIZED'" ng-click="item.onClick()">
                     <usage-indicator-bar class="data-viz bar bar-container" ng-model="item"></usage-indicator-bar>
                 </div>
 

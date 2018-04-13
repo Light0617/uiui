@@ -1,0 +1,33 @@
+<div class="fieldset">
+    <div class="label-value-container">
+
+        <div class="label-value-container">
+            <label class="label">{{'shred-volumes-shredding-mode' | translate}}</label>
+            <div class="btn-group btn-group-toggle btn-group-justified">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-model="dataModel.shreddingMode"
+                            btn-radio="'BASIC'">{{'shred-volumes-shredding-mode-basic' | translate}}
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-model="dataModel.shreddingMode"
+                            btn-radio="'ADVANCED'">{{'shred-volumes-shredding-mode-advanced' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--Get all selected volumes and show as button groups-->
+        <div class="label-value-container">
+            <label class="label">
+                {{'shred-volumes-label-selected-volumes' | translate:dataModel.selectedVolumes.length}}</label>
+            <div class="btn-group" role="group">
+                <div class="btn-group" role="group" ng-repeat="volume in dataModel.selectedVolumes">
+                    <div class="value disabled col-lg-12">{{volume.label ? volume.label : volume.volumeId}}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

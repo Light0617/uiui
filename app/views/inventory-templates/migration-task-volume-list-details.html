@@ -40,7 +40,7 @@
     <!--Nested List Tile-->
     <div ng-if="item.volumePairs" class="tile row-tile nested-row-tile panel-body" ng-repeat="vp in item.volumePairs">
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourceVol(dataModel.storageSystemId)"
-           title="{{vp.sourceVolumeId}}"><p>{{vp.sourceVolumeId}}</p>
+           title="{{vp.displaySourceVolumeId}}"><p>{{vp.displaySourceVolumeId}}</p>
         </a>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourcePool(dataModel.storageSystemId)"
            ng-show="{{vp.sourcePoolId !== 'N/A'}}" title="{{vp.sourcePoolId}}"><p>{{vp.sourcePoolId}}</p>
@@ -55,10 +55,11 @@
              title="{{vp.sourceParityGroupId}}"><p>{{vp.sourceParityGroupId}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetVol(dataModel.storageSystemId)"
-           ng-show="{{vp.targetVolumeId !== 'N/A'}}" title="{{vp.targetVolumeId}}"><p>{{vp.targetVolumeId}}</p>
+           ng-show="{{vp.displayTargetVolumeId !== 'N/A'}}" title="{{vp.displayTargetVolumeId}}">
+            <p>{{vp.displayTargetVolumeId}}</p>
         </a>
-        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.targetVolumeId === 'N/A'}}"
-             title="{{vp.targetVolumeId}}"><p>{{vp.targetVolumeId}}</p>
+        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.displayTargetVolumeId === 'N/A'}}"
+             title="{{vp.displayTargetVolumeId}}"><p>{{vp.displayTargetVolumeId}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetPool(dataModel.storageSystemId)"
            ng-show="{{vp.targetPoolId !== 'N/A'}}" title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>

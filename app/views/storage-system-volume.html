@@ -5,13 +5,13 @@
              ng-if="!model.disabledCheckBox && !model.isGadVolume()"> <span class="icon-attach-volume icon-sm"></span>
         </div>
 
-        <a class="btn icon-btn" ng-if="!model.disabledCheckBox && !model.isGadVolume()"
+        <a class="btn icon-btn" ng-if="!model.disabledCheckBox && !model.isGadVolume() && !model.isShredding()"
            ng-attr-href="#/storage-systems/{{model.storageSystemId}}/volumes/{{model.volumeId}}/update"
            title="{{ 'action-tooltip-update-volumes' | translate}}" > <span class="icon-edit icon-sm"></span>
         </a>
 
         <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-delete-volumes' | translate}}"
-           ng-if="!model.disabledCheckBox && !model.isGadVolume()"
+           ng-if="!model.disabledCheckBox && !model.isGadVolume() && !model.isShredding()"
            confirm
            confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"
            confirm-message="{{ 'storage-volume-delete-current-content' | translate}}"
@@ -20,7 +20,8 @@
         </a>
 
         <div class="btn icon-btn" ng-click="protectCurrentVolume()" title="{{ 'action-tooltip-protect-volumes' | translate}}"
-             ng-if="!model.disabledCheckBox && model.isAttached()"> <span class="icon-data-protection icon-sm"></span>
+             ng-if="!model.disabledCheckBox && model.isAttached() && !model.isShredding()">
+            <span class="icon-data-protection icon-sm"></span>
         </div>
 
         <div class="btn icon-btn" ng-click="model.disabledCheckBox || unprotectCurrentVolume()"
@@ -76,6 +77,10 @@
                         <p class="label">{{ 'storage-volume-protected' | translate}}</p>
                         <span ng-if="protected" class="icon icon-solo icon-checkmark-fill icon-sm centered-content"></span>
                         <span ng-if="!protected" class="icon icon-solo icon-failed icon-sm centered-content"></span>
+                    </div>
+                    <div class="label-value-container">
+                        <p class="label">{{ 'status' | translate}}</p>
+                        <p class="value">{{model.status}}</p>
                     </div>
                     <div class="label-value-container">
                         <p class="label">{{ 'assigned-to-migration' | translate}}</p>
