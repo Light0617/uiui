@@ -38,15 +38,15 @@ angular.module('rainierApp')
                 $scope.dataModel.currentVolume = label;
                 $scope.dataModel.showCurrentVolume = true;
             },
-            updatePattern: function (index) {
+            updatePattern: function () {
                 $scope.dataModel.validatePatterns();
             },
             validateVolumes: function () {
-                return ($scope.dataModel.selectedVolumes !== undefined && $scope.dataModel.selectedVolumes.length > 0
-                    && $scope.dataModel.selectedVolumes.length <= 300);
+                return ($scope.dataModel.selectedVolumes !== undefined && $scope.dataModel.selectedVolumes.length > 0 &&
+                    $scope.dataModel.selectedVolumes.length <= 300);
             },
             validatePatterns: function () {
-                if (!$scope.dataModel.itemList || $scope.dataModel.itemList.length == 0) {
+                if (!$scope.dataModel.itemList || $scope.dataModel.itemList.length === 0) {
                     return false;
                 }
                 return _.all($scope.dataModel.itemList, function(item) {
@@ -68,7 +68,6 @@ angular.module('rainierApp')
                     volumeIds: volumeIds
                 };
 
-                var patterns = [];
                 if ($scope.dataModel.shreddingMode === 'ADVANCED') {
                     var patterns = _.map(_.range(0, $scope.dataModel.numOfPass), function (index) {
                         return '0x' + $scope.dataModel.itemList[index].pattern.trim();

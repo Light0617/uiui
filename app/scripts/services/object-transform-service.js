@@ -664,10 +664,10 @@ angular.module('rainierApp')
                 };
 
                 item.isNormal = function () {
-                    return (this.status === 'NORMAL');
+                    return (this.status === constantService.volumeStatus.NORMAL);
                 };
                 item.isShredding = function () {
-                    return (this.status === 'SHREDDING');
+                    return (this.status === constantService.volumeStatus.SHREDDING);
                 };
 
                 item.isUnprotected = function () {
