@@ -32,85 +32,7 @@ angular.module('rainierApp')
             model.sort.setSort(idKey);
         };
 
-        function updateResultTotalCounts(result) {
-            $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.cachedList = result.resources;
-            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-            $scope.dataModel.itemCounts = {
-                filtered: $scope.dataModel.displayList.length,
-                total: $scope.dataModel.total
-            };
-        }
-
-        function generateSetSortFn() {
-            return function (f) {
-                $timeout(function () {
-                    if ($scope.dataModel.sort.field === f) {
-                        queryService.setSort(f, !$scope.dataModel.sort.reverse);
-                        $scope.dataModel.sort.reverse = true;
-                    } else {
-                        $scope.dataModel.sort.field = f;
-                        queryService.setSort(f, false);
-                        $scope.dataModel.sort.reverse = false;
-                    }
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
-                        updateResultTotalCounts(result);
-                    });
-                });
-            };
-        }
-
-        function generateDataModel(result) {
-            var dataModel = {
-                view: 'tile',
-                nextToken: result.nextToken,
-                total: result.total,
-                currentPageCount: 0,
-                sort: {
-                    field: idKey,
-                    reverse: true,
-                    setSort: generateSetSortFn()
-                },
-                showPortAttributeFilter: storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel),
-                chartData: $scope.summaryModel.chartData
-            };
-            return dataModel;
-        }
-
-
-        function generateFilterModel() {
-            return {
-                filter: {
-                    freeText: '',
-                    portSpeed: '',
-                    securitySwitchEnabled: null,
-                    attributes: ''
-                },
-                filterQuery: function (key, value, type, arrayClearKey) {
-                    var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                    paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
-                        updateResultTotalCounts(result);
-                    });
-                },
-                sliderQuery: function (key, start, end, unit) {
-                    paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
-                        updateResultTotalCounts(result);
-                    });
-                },
-                searchQuery: function (value) {
-                    var queryObjects = [];
-                    queryObjects.push(new paginationService.QueryObject(idKey, new paginationService.SearchType().STRING, value));
-                    paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId).then(function (result) {
-                        updateResultTotalCounts(result);
-                    });
-                }
-            };
-        }
-
-        function generateEditFibrePortDialogSettings() {
+        function generateEditFibrePortDialogSettings () {
             var dialogSettings = {
                 id: 'securityEnableDisableConfirmation',
                 title: 'storage-port-enable-security-title',
@@ -146,7 +68,7 @@ angular.module('rainierApp')
             return dialogSettings;
         }
 
-        function generateEditFibrePortAction(dataModel) {
+        function generateEditFibrePortAction (dataModel) {
             return {
                 icon: 'icon-edit',
                 type: 'confirmation-modal',
@@ -202,7 +124,7 @@ angular.module('rainierApp')
             };
         }
 
-        function initFibre() {
+        function initFibre () {
             var queryObject = new paginationService.QueryObject('type', undefined, 'FIBRE');
             return paginationService
                 .get(
@@ -210,7 +132,9 @@ angular.module('rainierApp')
                     true, storageSystemId, undefined, undefined, queryObject
                 )
                 .then(function (result) {
-                    var dataModel = generateDataModel(result);
+                    var dataModel = storagePortsService.generateDataModel(result);
+                    dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
+                    dataModel.chartData = $scope.summaryModel.chartData;
                     var editFibrePortAction = generateEditFibrePortAction(dataModel);
                     dataModel.getActions = function () {
                         return [editFibrePortAction];
@@ -226,13 +150,13 @@ angular.module('rainierApp')
                     dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
                     $scope.dataModel = dataModel;
-                    $scope.filterModel = generateFilterModel();
+                    $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
                     scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storagePortSearch', true);
                     return dataModel;
                 });
         }
 
-        function initIscsi() {
+        function initIscsi () {
             var queryObject = new paginationService.QueryObject('type', undefined, 'ISCSI');
             return paginationService
                 .get(
@@ -240,7 +164,9 @@ angular.module('rainierApp')
                     true, storageSystemId, undefined, undefined, queryObject
                 )
                 .then(function (result) {
-                    var dataModel = generateDataModel(result);
+                    var dataModel = storagePortsService.generateDataModel(result);
+                    dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
+                    dataModel.chartData = $scope.summaryModel.chartData;
                     dataModel.getResources = function () {
                         return paginationService.get(
                             null, getStoragePortsPath, objectTransformService.transformPort,
@@ -257,13 +183,13 @@ angular.module('rainierApp')
                     };
 
                     $scope.dataModel = dataModel;
-                    $scope.filterModel = generateFilterModel();
+                    $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
                     scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storagePortSearch', true);
                     return dataModel;
                 });
         }
 
-        function tabModel() {
+        function tabModel () {
             var tabs = ['Fibre', 'iSCSI'];
             return {
                 tabs: tabs,
@@ -278,7 +204,7 @@ angular.module('rainierApp')
             };
         }
 
-        function select(tabName) {
+        function select (tabName) {
             $scope.tabModel.selected = tabName;
             $scope.tabModel.onChange(tabName);
         }
