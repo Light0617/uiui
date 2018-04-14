@@ -16,5 +16,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('externalVolumesAddService', function (
+
 ) {
+    return {};
 });

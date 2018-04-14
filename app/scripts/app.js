@@ -96,7 +96,7 @@ angular
             })
             .when('/storage-systems/:storageSystemId/external-volumes/add', {
                 templateUrl: 'views/external-volumes-add.html',
-                controller: 'ExternalVolumesAdd',
+                controller: 'ExternalVolumesAddCtrl',
                 breadcrumbOptions: {
                     labelKey: 'Add External Volumes'
                 }
