@@ -1,0 +1,79 @@
+<common-page-header></common-page-header>
+
+<wizard-page>
+    <wizard-header ng-title="'common-external-volumes-add' | translate "
+                   icon-class="icon-external-volume"></wizard-header>
+
+    <wizard-body>
+
+        <!-- STEPPER -->
+        <wizard-advanced-stepper>
+            <wizard-advanced-stepper-button ng-title="'Select Ports'"
+                                            step-completed="dataModel.isStepCompleted('selectPorts')"
+                                            step-active="dataModel.isStepActive('selectPorts')">
+            </wizard-advanced-stepper-button>
+            <div ng-if="false">
+                <wizard-advanced-stepper-button ng-title="Select WWN / iSCSI"
+                                                step-completed="dataModel.isStepCompleted('selectEndPoints')"
+                                                step-active="dataModel.isStepActive('selectEndPoints')">
+                </wizard-advanced-stepper-button>
+                <wizard-advanced-stepper-button ng-title="Select LUN"
+                                                step-completed="dataModel.isStepCompleted('selectLuns')"
+                                                step-active="dataModel.isStepActive('selectLuns')">
+                </wizard-advanced-stepper-button>
+                <wizard-advanced-stepper-button ng-title="Select Servers"
+                                                step-completed="dataModel.isStepCompleted('selectServers')"
+                                                step-active="dataModel.isStepActive('selectServers')">
+                </wizard-advanced-stepper-button>
+                <wizard-advanced-stepper-button ng-title="Select Paths"
+                                                step-completed="dataModel.isStepCompleted('selectPaths')"
+                                                step-active="dataModel.isStepActive('selectPaths')">
+                </wizard-advanced-stepper-button>
+            </div>
+        </wizard-advanced-stepper>
+
+        <!-- CONTENT -->
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectPorts')"
+                                   left-panel-template="views/workflow-templates/external-volumes-add-ports-left-panel.html"
+                                   right-panel-template="views/workflow-templates/external-volumes-add-ports-right-panel.html"
+                                   ng-model="dataModel.portsModel"
+                                   page-name="workflow-title-create-path-from"></wizard-left-right-content>
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectEndPoints')"
+                                   left-panel-template="views/workflow-templates/external-volumes-add-endpoints-left-panel.html"
+                                   right-panel-template="views/workflow-templates/external-volumes-add-endpoints-right-panel.html"
+                                   ng-model="dataModel.endPointsModel"
+                                   page-name="workflow-title-create-path-from"></wizard-left-right-content>
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectLuns')"
+                                   left-panel-template="views/workflow-templates/external-volumes-add-luns-left-panel.html"
+                                   right-panel-template="views/workflow-templates/external-volumes-add-luns-right-panel.html"
+                                   ng-model="dataModel.selectLunsModel"
+                                   page-name="workflow-title-create-path-from"></wizard-left-right-content>
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectServers')"
+                                   left-panel-template="views/workflow-templates/external-volumes-add-servers-left-panel.html"
+                                   right-panel-template="views/workflow-templates/external-volumes-add-servers-right-panel.html"
+                                   ng-model="dataModel.selectServersModel"
+                                   page-name="workflow-title-create-path-from"></wizard-left-right-content>
+        <wizard-svg-page ng-if="dataModel.isStepActive('selectPaths')"
+                         ng-title="'workflow-title-create-paths' | translate"
+                         ng-model="dataModel.pathsModel">
+        </wizard-svg-page>
+
+        <!-- FOOTER -->
+        <wizard-footer ng-if="dataModel.isStepActive('selectPorts')"
+                       ng-model="dataModel.portsModel.footerModel">
+        </wizard-footer>
+        <wizard-footer ng-if="dataModel.isStepActive('selectEndPoints')"
+                       ng-model="dataModel.endPointsModel.footerModel">
+        </wizard-footer>
+        <wizard-footer ng-if="dataModel.isStepActive('selectLuns')"
+                       ng-model="dataModel.lunsModel.footerModel">
+        </wizard-footer>
+        <wizard-footer ng-if="dataModel.isStepActive('selectServers')"
+                       ng-model="dataModel.serversModel.footerModel">
+        </wizard-footer>
+        <wizard-footer ng-if="dataModel.isStepActive('selectPaths')"
+                       ng-model="dataModel.pathsModel.footerModel">
+        </wizard-footer>
+
+    </wizard-body>
+</wizard-page>
