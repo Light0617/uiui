@@ -25,7 +25,6 @@ angular.module('rainierApp')
     ) {
         var storageSystemId = $routeParams.storageSystemId;
         var idKey = storagePortsService.idKey;
-        var getStoragePortsPath = storagePortsService.getStoragePortsPath;
         var portAttributes = storagePortsService.portAttributes;
 
         var defaultSort = function (model) {
@@ -125,68 +124,45 @@ angular.module('rainierApp')
         }
 
         function initFibre () {
-            var queryObject = new paginationService.QueryObject('type', undefined, 'FIBRE');
-            return paginationService
-                .get(
-                    null, getStoragePortsPath, objectTransformService.transformPort,
-                    true, storageSystemId, undefined, undefined, queryObject
-                )
-                .then(function (result) {
-                    var dataModel = storagePortsService.generateDataModel(result);
-                    dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
-                    dataModel.chartData = $scope.summaryModel.chartData;
-                    var editFibrePortAction = generateEditFibrePortAction(dataModel);
-                    dataModel.getActions = function () {
-                        return [editFibrePortAction];
-                    };
-                    dataModel.getResources = function () {
-                        return paginationService.get(
-                            null, getStoragePortsPath, objectTransformService.transformPort,
-                            false, storageSystemId, undefined, undefined, queryObject
-                        );
-                    };
-                    dataModel.gridSettings = storagePortsService.fibreGridSettings($scope.storageSystemModel);
-                    dataModel.cachedList = result.resources;
-                    dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            return storagePortsService.initFibreDataModel(storageSystemId).then(function (result) {
+                var dataModel = result.dataModel;
+                var ports = result.ports;
 
-                    $scope.dataModel = dataModel;
-                    $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
-                    scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storagePortSearch', true);
-                    return dataModel;
-                });
+                dataModel.gridSettings = storagePortsService.fibreGridSettings($scope.storageSystemModel);
+                dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
+                dataModel.chartData = $scope.summaryModel.chartData;
+                var editFibrePortAction = generateEditFibrePortAction(dataModel);
+                dataModel.getActions = function () {
+                    return [editFibrePortAction];
+                };
+                dataModel.gridSettings = storagePortsService.fibreGridSettings($scope.storageSystemModel);
+
+                $scope.dataModel = dataModel;
+                $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, ports, 'storagePortSearch', true);
+
+                return $scope.dataModel;
+            });
         }
 
         function initIscsi () {
-            var queryObject = new paginationService.QueryObject('type', undefined, 'ISCSI');
-            return paginationService
-                .get(
-                    undefined, getStoragePortsPath, objectTransformService.transformPort,
-                    true, storageSystemId, undefined, undefined, queryObject
-                )
-                .then(function (result) {
-                    var dataModel = storagePortsService.generateDataModel(result);
-                    dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
-                    dataModel.chartData = $scope.summaryModel.chartData;
-                    dataModel.getResources = function () {
-                        return paginationService.get(
-                            null, getStoragePortsPath, objectTransformService.transformPort,
-                            false, storageSystemId, undefined, undefined, queryObject
-                        );
-                    };
-                    dataModel.gridSettings = storagePortsService.iscsiGridSettings($scope.storageSystemModel);
-                    dataModel.cachedList = result.resources;
-                    dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            return storagePortsService.initIscsiDataModel(storageSystemId).then(function (result) {
+                var dataModel = result.dataModel;
+                var ports = result.ports;
 
-                    var actions = storagePortsService.iscsiActions(dataModel);
-                    dataModel.getActions = function () {
-                        return actions;
-                    };
+                dataModel.gridSettings = storagePortsService.iscsiGridSettings($scope.storageSystemModel);
+                dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
+                dataModel.chartData = $scope.summaryModel.chartData;
+                var actions = storagePortsService.iscsiActions(dataModel);
+                dataModel.getActions = function () {
+                    return actions;
+                };
+                $scope.dataModel = dataModel;
+                $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, ports, 'storagePortSearch', true);
 
-                    $scope.dataModel = dataModel;
-                    $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
-                    scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storagePortSearch', true);
-                    return dataModel;
-                });
+                return $scope.dataModel;
+            });
         }
 
         function tabModel () {

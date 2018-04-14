@@ -362,6 +362,39 @@ angular.module('rainierApp')
 
         init();
 
+        var initDataModel = function(storageSystemId, protocol) {
+            var queryObject = new paginationService.QueryObject('type', undefined, protocol);
+            return paginationService
+                .get(
+                    null, getStoragePortsPath, objectTransformService.transformPort,
+                    true, storageSystemId, undefined, undefined, queryObject
+                )
+                .then(function (result) {
+                    var dataModel = generateDataModel(result);
+                    dataModel.getResources = function () {
+                        return paginationService.get(
+                            null, getStoragePortsPath, objectTransformService.transformPort,
+                            false, storageSystemId, undefined, undefined, queryObject
+                        );
+                    };
+                    dataModel.cachedList = result.resources;
+                    dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+
+                    return {
+                        dataModel: dataModel,
+                        ports: result.resources
+                    };
+                });
+        };
+
+        var initFibreDataModel = function (storageSystemId) {
+            return initDataModel(storageSystemId, 'FIBRE');
+        };
+
+        var initIscsiDataModel = function (storageSystemId) {
+            return initDataModel(storageSystemId, 'ISCSI');
+        };
+
         return {
             portAttributes: portAttributes,
             addressingMode: addressingMode,
@@ -375,6 +408,8 @@ angular.module('rainierApp')
             getRawPortAttribute: getRawPortAttribute,
             iscsiActions: iscsiActions,
             generateDataModel: generateDataModel,
-            generateFilterModel: generateFilterModel
+            generateFilterModel: generateFilterModel,
+            initFibreDataModel: initFibreDataModel,
+            initIscsiDataModel: initIscsiDataModel
         };
     });
