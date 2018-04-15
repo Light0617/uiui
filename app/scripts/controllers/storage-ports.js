@@ -135,8 +135,6 @@ angular.module('rainierApp')
                 dataModel.getActions = function () {
                     return [editFibrePortAction];
                 };
-                dataModel.gridSettings = storagePortsService.fibreGridSettings($scope.storageSystemModel);
-
                 $scope.dataModel = dataModel;
                 $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, ports, 'storagePortSearch', true);

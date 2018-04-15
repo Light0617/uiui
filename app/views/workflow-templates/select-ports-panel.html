@@ -1,0 +1,18 @@
+<div class="header-row">
+    <h2>{{'Select Target Ports' | translate}}</h2>
+</div>
+<div class="scroll-wizard-container">
+    <div class="inventory tiles-view">
+        <div class="tile-container flex-grid inventory-panel" infinite-scroll='dataModel.loadMore()'
+             infinite-scroll-distance='1' infinite-scroll-container="'.scroll-wizard-container'">
+            <div class="tile resource-tile" ng-repeat="item in dataModel.displayList">
+                <ng-include src="'views/templates/inventory-item-tile.html'"></ng-include>
+            </div>
+            <div class="tile resource-tile invisible">&nbsp;</div>
+        </div>
+        <div class="controls-column filter-panel"
+             ng-include="'views/templates/ports-view-search-panel.html'">
+        </div>
+    </div>
+</div>
+
