@@ -28,94 +28,41 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel = viewModelService.newWizardViewModel([
             'selectPorts', 'selectEndPoints', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
-        var storageSystemId = extractStorageSystemId();
-        var dataModel = {
-            storageSystemId: storageSystemId,
-            portPage: {
-                dataModel: {
-                    id: 'dm'
-                },
-                filterModel: {
-                    id: 'fm'
-                }
-            }
-        };
-        _.extend($scope.dataModel, dataModel);
-
-        orchestratorService.storageSystem(storageSystemId)
-            .then(function (storage) {
-                dataModel.storageSystemModel = storage.model;
-                return storagePortsService.initFibreDataModel(storageSystemId);
-            })
-            .then(function (result) {
-                var portDataModel = {};
-                portDataModel = result.dataModel;
-                portDataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute(dataModel.storageSystemModel);
-                portDataModel.filterModel = storagePortsService.generateDataModel(portDataModel);
-                dataModel.portPage.dataModel = portDataModel;
-                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.ports, 'storagePortSearch', true);
-            });
-
-        /*
-        getStorage(dataModel.storageSystemId)
-            .then(function (storageSystemModel) {
-                dataModel.storageSystemModel = storageSystemModel;
-                return dataModel.storageSystemId;
-            })
-            .then(availableProtocols)
-            .then(function (protocols) {
-                dataModel.availableProtocols = protocols;
-                dataModel.selectedProtocol = dataModel.availableProtocols[0];
-                return dataModel.selectedProtocol;
-            })
-            .then(function (protocol) {
-                // if (protocol === 'FIBRE') {
-                return initFibre(dataModel.storageSystemId, dataModel.storageSystemModel, dataModel);
-                // }
-            })
-            .then(function (result) {
-                _.extend(dataModel, result.dataModel);
-                _.extend($scope.dataModel, dataModel);
-                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.ports, 'storagePortSearch', true);
-            });
-         */
+        $scope.dataModel.storageSystemId = extractStorageSystemId();
+        orchestratorService.storageSystem($scope.dataModel.storageSystemId)
+            .then(getFibrePortsModel)
+            .then(setupPorts)
     };
 
-    /*
-    var availableProtocols = function (storageSystemId) {
-        return orchestratorService.storagePorts(storageSystemId).then(function (ports) {
-            var protocols = _.chain(ports.resources)
-                .map(function (p) {
-                    return p.type;
-                })
-                .uniq()
-                .value();
-            return protocols;
-        });
+    var setupPorts = function (portsModel) {
+        _.extend($scope.dataModel, portsModel.dataModel);
+        $scope.filterModel = portsModel.filterModel;
+        scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
+        return true;
     };
 
-    var getStorage = function (storageSystemId) {
+    var getStorageSystemModel = function (storageSystemId) {
         return orchestratorService.storageSystem(storageSystemId)
+    };
+
+    var getFibrePortsModel = function (storageSystem) {
+        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel);
+    };
+
+    var getIscsiPortsModel = function (storageSystem) {
+        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel);
+    };
+
+    var getPortsModel = function (storageSystem, initPortModelFn) {
+        return initPortModelFn(storageSystem.storageSystemId)
             .then(function (result) {
-                objectTransformService.transformStorageSystem(result);
+                result.dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute(storageSystem.model.storageSystemModel);
+                result.dataModel = result.dataModel;
+                result.filterModel = storagePortsService.generateFilterModel(result.dataModel);
                 return result;
             });
     };
 
-    var initFibre = function (storageSystemId, storageSystemModel, dataModel) {
-        return storagePortsService.initFibreDataModel(storageSystemId)
-            .then(function (result) {
-                _.extend(dataModel, result.dataModel);
-                dataModel.gridSettings = storagePortsService.fibreGridSettings(storageSystemModel);
-                dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute(storageSystemModel);
-                dataModel.filterModel = storagePortsService.generateFilterModel(dataModel);
-                return {
-                    dataModel: dataModel,
-                    ports: result.ports
-                };
-            });
-    };
-    */
 
     var extractStorageSystemId = function () {
         var result = $routeParams.storageSystemId;

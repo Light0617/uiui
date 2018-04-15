@@ -35,9 +35,9 @@
         <!-- CONTENT -->
         <wizard-single-panel-content ng-if="dataModel.isStepActive('selectPorts')"
                                      ng-title="'Select Ports'"
-                                     ng-model="dataModel.portPage.dataModel"
-                                     filter-model="dataModel.portPage.filterModel"
+                                     ng-model="dataModel"
                                      class="single-panel"
+                                     filter-model="filterModel"
                                      panel-template="views/workflow-templates/select-ports-panel.html">
         </wizard-single-panel-content>
         <!--
