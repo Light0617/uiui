@@ -21,6 +21,15 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     scrollDataSourceBuilderServiceNew, synchronousTranslateService, scrollDataSourceBuilderService,
     portDiscoverService
 ) {
+    /**
+     * 1. initCommonAndPort
+     * 2. initPorts > next()
+     * 3. TBD: SCOPE DISCUSSING initWwns
+     * 4. previous() < initLuns  > next()
+     * 5. previous() < initServers  > next()
+     * 6. previous() < initPaths  > submit()
+     */
+
     /* UTILITIES */
     var backToPreviousView = function () {
         $window.history.back();
@@ -49,14 +58,17 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel = viewModelService.newWizardViewModel([
             'selectPorts', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
-        $scope.selected = {};
+        $scope.selected = {
+            externalPorts: [],
+            protocol: undefined,
+            luns: []
+        };
         startSpinner();
         var storageSystemId = extractStorageSystemId();
 
         setupStorageSystem(storageSystemId)
-            .then(setupPortDataModelStatic)
-            .then(onProtocolChange)
-            .then(stopSpinner);
+            .then(initPorts)
+            .finally(stopSpinner);
     };
 
     var setupStorageSystem = function (storageSystemId) {
@@ -78,16 +90,17 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     /**
      *  1. PORTS GET/SETUPS
      */
-    var onProtocolChange = function () {
+    var initPorts = function () {
         startSpinner();
+        setupPortDataModelStatic();
         return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
-            .then(stopSpinner);
+            .finally(stopSpinner);
     };
 
     var setupPortDataModelStatic = function () {
         var staticProperties = {
             protocolCandidates: getProtocolCandidates(),
-            onProtocolChange: onProtocolChange
+            onProtocolChange: initPorts
         };
         staticProperties.selectedProtocol = staticProperties.protocolCandidates[0].key;
         _.extend($scope.dataModel, staticProperties);
@@ -206,6 +219,20 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 console.log('hi');
             }
         };
+    };
+
+    /**
+     * 4. Servers
+     */
+    var initServers = function () {
+
+    };
+
+    /**
+     * 5. Paths
+     */
+    var initPaths = function () {
+
     };
 
     initCommonAndPort();

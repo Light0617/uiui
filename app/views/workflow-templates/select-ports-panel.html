@@ -2,7 +2,7 @@
     <h2>{{'Select Target Ports' | translate}}</h2>
     <select class="form-control smallEmMarginLeft"
             ng-model="dataModel.selectedProtocol"
-            ng-change="dataModel.onProtocolChange()"
+            ng-change="dataModel.initPorts()"
             ng-options="p.key as p.display for p in dataModel.protocolCandidates">
     </select>
 </div>
