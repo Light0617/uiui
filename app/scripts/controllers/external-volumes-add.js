@@ -239,7 +239,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var getAndSetupHosts = function () {
         return getHosts()
             .then(getHostsModel)
-            .then(setupHosts)
+            .then(setupHosts);
     };
 
     var setupHosts = function (hostsDataModel) {
@@ -251,7 +251,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     var getHosts = function () {
-        return paginationService.get(null, 'compute/servers', objectTransformService.transformHost, true)
+        return paginationService.get(null, 'compute/servers', objectTransformService.transformHost, true);
     };
 
     var getHostsModel = function (getHostsResult) {
@@ -266,7 +266,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         };
         dataModel.displayList = getHostsResult.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
         dataModel.getResources = function () {
-            return paginationService.get(dataModel.nextToken, 'compute/servers', objectTransformService.transformHost, false)
+            return paginationService.get(dataModel.nextToken, 'compute/servers', objectTransformService.transformHost, false);
         };
         return dataModel;
     };
