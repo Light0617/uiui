@@ -588,6 +588,13 @@ angular
                 },
                 helpContext: 'R_EXTERNAL_PG_INV'
             })
+            .when('/storage-systems/:storageSystemId/attach-to-storage', {
+                templateUrl: 'views/attach-to-storage.html',
+                controller: 'AttachToStorageCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'Attach Volumes to Storage'
+                }
+            })
             .when('/storage-systems/:storageSystemId/external-volumes/add', {
                 templateUrl: 'views/virtualize-volumes.html',
                 controller: 'VirtualizeVolumesCtrl',
