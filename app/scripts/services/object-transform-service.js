@@ -1040,6 +1040,7 @@ angular.module('rainierApp')
                 item.displayCapacity = item.capacity.size + ' ' + item.capacity.unit;
                 item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
                     'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
+                item.volumeLabel = 'Volume' + item.volumeId;
                 var migrationTypeDisplay;
                 if (item.migrationSummary.ownerTaskId) {
                     migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
@@ -3158,11 +3159,6 @@ angular.module('rainierApp')
                 item.displaySourceVolumeId = formatVolumeId(item.sourceVolumeId);
 
                 // Resource links
-                // TODO When the source volume is external, where is the destination?
-                item.launchSourceVol = function (storageSystemId) {
-                    var path = ['storage-systems', storageSystemId, 'volumes', this.sourceVolumeId].join('/');
-                    $location.path(path);
-                };
                 if (item.sourcePoolId !== null) {
                     item.launchSourcePool = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'storage-pools', this.sourcePoolId].join('/');
@@ -3172,12 +3168,20 @@ angular.module('rainierApp')
                     item.sourcePoolId = constantService.notAvailable;
                 }
                 if (item.sourceExternalParityGroupId !== null) {
+                    item.launchSourceVol = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'external-volumes', this.sourceVolumeId].join('/');
+                        $location.path(path);
+                    };
                     item.launchSourceParityGroup = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'external-parity-groups',
                                     this.sourceExternalParityGroupId].join('/');
                         $location.path(path);
                     };
                 } else {
+                    item.launchSourceVol = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'volumes', this.sourceVolumeId].join('/');
+                        $location.path(path);
+                    };
                     item.sourceExternalParityGroupId = constantService.notAvailable;
                 }
                 if (item.targetVolumeId !== null) {
