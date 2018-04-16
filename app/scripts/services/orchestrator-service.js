@@ -422,6 +422,9 @@ angular.module('rainierApp')
             shredVolumes: function (shredVolumesPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred').post(shredVolumesPayload));
             },
+            interruptShreddings: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred/interrupt').post(payload));
+            },
             deleteVolume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).remove());
             },

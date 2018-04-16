@@ -39,7 +39,24 @@ angular.module('rainierApp')
         };
 
         var actions = {
-            'SN2': sn2Action
+            'SN2': sn2Action,
+            'interrupt-shredding': {
+                icon: 'icon-stop',// TODO Change icon
+                title :'interrupt-shredding',
+                tooltip: 'interrupt-shredding',
+                type: 'confirm',
+                confirmTitle: 'interrupt-shredding-confirmation-title',
+                confirmMessage: 'interrupt-shredding-confirmation-message',
+                enabled: function () {
+                    return true;
+                },
+                onClick: function (orchestratorService) {
+                    var payload = {
+                        storageSystemId: storageSystemId
+                    };
+                    orchestratorService.interruptShreddings(payload);
+                }
+            }
         };
 
         $scope.summaryModel={
