@@ -3172,11 +3172,6 @@ angular.module('rainierApp')
                         var path = ['storage-systems', storageSystemId, 'external-volumes', this.sourceVolumeId].join('/');
                         $location.path(path);
                     };
-                    item.launchSourceParityGroup = function (storageSystemId) {
-                        var path = ['storage-systems', storageSystemId, 'external-parity-groups',
-                                    this.sourceExternalParityGroupId].join('/');
-                        $location.path(path);
-                    };
                 } else {
                     item.launchSourceVol = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'volumes', this.sourceVolumeId].join('/');
