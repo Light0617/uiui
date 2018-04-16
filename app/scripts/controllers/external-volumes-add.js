@@ -18,8 +18,9 @@
 angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     $q, $scope, $window, $routeParams, externalVolumesAddService, utilService, viewModelService,
     storagePortsService, orchestratorService, objectTransformService, storageSystemCapabilitiesService,
-    scrollDataSourceBuilderServiceNew, paginationService
+    scrollDataSourceBuilderServiceNew, synchronousTranslateService
 ) {
+    /* INITIALIZATION */
     var backToPreviousView = function () {
         $window.history.back();
     };
@@ -29,28 +30,73 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             'selectPorts', 'selectEndPoints', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
         $scope.dataModel.storageSystemId = extractStorageSystemId();
-        orchestratorService.storageSystem($scope.dataModel.storageSystemId)
-            .then(getFibrePortsModel)
+        setupStorageSystem($scope.dataModel.storageSystemId)
+            .then(setupForFibre);
+
+    };
+
+    var setupStorageSystem = function (storageSystemId) {
+        return orchestratorService.storageSystem(storageSystemId)
+            .then(function (result) {
+                $scope.storageSystem = result;
+                return result;
+            });
+    };
+
+    var extractStorageSystemId = function () {
+        var result = $routeParams.storageSystemId;
+        if (utilService.isNullOrUndef(result)) {
+            backToPreviousView();
+        }
+        return result;
+    };
+
+    /* 1. PORTS */
+    var setupForFibre = function (storageSystem) {
+        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel)
             .then(setupPorts)
+            .then(function () {
+                return filterTargetPorts($scope.filterModel);
+            });
+    };
+
+    var setupForIscsi = function (storageSystem) {
+        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel)
+            .then(setupPorts)
+            .then(function () {
+                return filterTargetPorts($scope.filterModel);
+            });
     };
 
     var setupPorts = function (portsModel) {
         _.extend($scope.dataModel, portsModel.dataModel);
         $scope.filterModel = portsModel.filterModel;
+        $scope.footerModel = portsFooter($scope.dataModel);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
+
         return true;
     };
 
-    var getStorageSystemModel = function (storageSystemId) {
-        return orchestratorService.storageSystem(storageSystemId)
+    var portsFooter = function (dataModel) {
+        return {
+            // confirmTitle: synchronousTranslateService.translate('select-discovered-volumes-confirmation'),
+            // confirmMessage: synchronousTranslateService.translate('select-discovered-volumes'),
+            validation: false,
+            // itemSelected: false,
+            canGoNext: function () {
+                return _.some(dataModel.displayList, function (i) {
+                    return i.selected;
+                });
+            },
+            next: function () {
+                console.log(dataModel);
+            }
+        }
     };
 
-    var getFibrePortsModel = function (storageSystem) {
-        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel);
-    };
-
-    var getIscsiPortsModel = function (storageSystem) {
-        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel);
+    var filterTargetPorts = function (filterModel) {
+        filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
+        return true;
     };
 
     var getPortsModel = function (storageSystem, initPortModelFn) {
@@ -61,15 +107,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 result.filterModel = storagePortsService.generateFilterModel(result.dataModel);
                 return result;
             });
-    };
-
-
-    var extractStorageSystemId = function () {
-        var result = $routeParams.storageSystemId;
-        if (utilService.isNullOrUndef(result)) {
-            backToPreviousView();
-        }
-        return result;
     };
 
     init();
