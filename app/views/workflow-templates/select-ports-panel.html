@@ -1,5 +1,10 @@
 <div class="header-row">
     <h2>{{'Select Target Ports' | translate}}</h2>
+    <select class="form-control smallEmMarginLeft"
+            ng-model="dataModel.selectedProtocol"
+            ng-change="dataModel.onProtocolChange()"
+            ng-options="p.key as p.display for p in dataModel.protocolCandidates">
+    </select>
 </div>
 <div class="scroll-wizard-container">
     <div class="inventory tiles-view">
@@ -15,4 +20,3 @@
         </div>
     </div>
 </div>
-

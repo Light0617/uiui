@@ -30,9 +30,10 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             'selectPorts', 'selectEndPoints', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
         $scope.dataModel.storageSystemId = extractStorageSystemId();
-        setupStorageSystem($scope.dataModel.storageSystemId)
-            .then(setupForFibre);
 
+        setupStorageSystem($scope.dataModel.storageSystemId)
+            .then(setupPortDataModelStatic)
+            .then(onProtocolChange);
     };
 
     var setupStorageSystem = function (storageSystemId) {
@@ -51,24 +52,39 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return result;
     };
 
-    /* 1. PORTS */
-    var setupForFibre = function (storageSystem) {
-        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel)
-            .then(setupPorts)
+    /* 1. PORTS GET/SETUPS*/
+    var onProtocolChange = function () {
+        return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol);
+    };
+
+    var setupPortDataModelStatic = function () {
+        var staticProperties = {
+            protocolCandidates: getProtocolCandidates(),
+            onProtocolChange: onProtocolChange
+        };
+        staticProperties.selectedProtocol = staticProperties.protocolCandidates[0].key;
+        _.extend($scope.dataModel, staticProperties);
+        return $scope.dataModel;
+    };
+
+    var getProtocolCandidates = function () {
+        return _.map(['FIBRE', 'ISCSI'], function (key) {
+            return {
+                key: key,
+                display: synchronousTranslateService.translate(key)
+            };
+        });
+    };
+
+    var getAndSetupPortDataModel = function (storageSystem, protocol) {
+        return getPortsModel(storageSystem, protocol)
+            .then(setupPortDataModel)
             .then(function () {
                 return filterTargetPorts($scope.filterModel);
             });
     };
 
-    var setupForIscsi = function (storageSystem) {
-        return getPortsModel(storageSystem, storagePortsService.initFibreDataModel)
-            .then(setupPorts)
-            .then(function () {
-                return filterTargetPorts($scope.filterModel);
-            });
-    };
-
-    var setupPorts = function (portsModel) {
+    var setupPortDataModel = function (portsModel) {
         _.extend($scope.dataModel, portsModel.dataModel);
         $scope.filterModel = portsModel.filterModel;
         $scope.footerModel = portsFooter($scope.dataModel);
@@ -79,10 +95,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var portsFooter = function (dataModel) {
         return {
-            // confirmTitle: synchronousTranslateService.translate('select-discovered-volumes-confirmation'),
-            // confirmMessage: synchronousTranslateService.translate('select-discovered-volumes'),
             validation: false,
-            // itemSelected: false,
             canGoNext: function () {
                 return _.some(dataModel.displayList, function (i) {
                     return i.selected;
@@ -91,7 +104,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             next: function () {
                 console.log(dataModel);
             }
-        }
+        };
     };
 
     var filterTargetPorts = function (filterModel) {
@@ -99,8 +112,8 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return true;
     };
 
-    var getPortsModel = function (storageSystem, initPortModelFn) {
-        return initPortModelFn(storageSystem.storageSystemId)
+    var getPortsModel = function (storageSystem, protocol) {
+        return storagePortsService.initDataModel(storageSystem.storageSystemId, protocol)
             .then(function (result) {
                 result.dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute(storageSystem.model.storageSystemModel);
                 result.dataModel = result.dataModel;

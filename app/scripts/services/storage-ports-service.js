@@ -409,6 +409,7 @@ angular.module('rainierApp')
             iscsiActions: iscsiActions,
             generateDataModel: generateDataModel,
             generateFilterModel: generateFilterModel,
+            initDataModel: initDataModel,
             initFibreDataModel: initFibreDataModel,
             initIscsiDataModel: initIscsiDataModel
         };
