@@ -190,7 +190,7 @@ angular.module('rainierApp')
                             return dataModel.onlyOneSelected() &&
                                 !_.find(dataModel.getSelectedItems(), function(item) {
                                     //edit button is disabled for ddm pools
-                                    return item.isUsingExternalStorage() && item.ddmEnabled;
+                                    return item.isUsingExternalStorage() || item.ddmEnabled;
                                 });
                         },
                         onClick: function () {
