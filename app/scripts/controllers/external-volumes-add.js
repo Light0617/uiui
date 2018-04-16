@@ -97,7 +97,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var onProtocolChange = function () {
         startSpinner();
         return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
-            // .catch() // HANDLE ERROR HERE
+        // .catch() // HANDLE ERROR HERE
             .finally(stopSpinner);
     };
 
@@ -131,6 +131,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupPortDataFilterFooterModel = function (portsModel) {
         _.extend($scope.dataModel, portsModel.dataModel);
+        $scope.dataModel.updateResultTotalCounts = storagePortsService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = portsFooter($scope.dataModel);
         $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
@@ -230,7 +231,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         // startSpinner();
         getAndSetupHosts()
             .then($scope.dataModel.goNext)
-            .catch(function(e) {
+            .catch(function (e) {
                 console.log('HI THERE!:', e);
             })
             .finally(stopSpinner);

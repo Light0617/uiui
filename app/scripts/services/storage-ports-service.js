@@ -324,7 +324,6 @@ angular.module('rainierApp')
                 }
             };
             dataModel.sort.setSort = generateSetSortFn(dataModel);
-            dataModel.updateResultTotalCounts = updateResultTotalCountsFn(dataModel);
             return dataModel;
         };
 
@@ -362,7 +361,7 @@ angular.module('rainierApp')
 
         init();
 
-        var initDataModel = function(storageSystemId, protocol) {
+        var initDataModel = function (storageSystemId, protocol) {
             var queryObject = new paginationService.QueryObject('type', undefined, protocol);
             return paginationService
                 .get(
@@ -409,6 +408,7 @@ angular.module('rainierApp')
             iscsiActions: iscsiActions,
             generateDataModel: generateDataModel,
             generateFilterModel: generateFilterModel,
+            updateResultTotalCountsFn: updateResultTotalCountsFn,
             initDataModel: initDataModel,
             initFibreDataModel: initFibreDataModel,
             initIscsiDataModel: initIscsiDataModel

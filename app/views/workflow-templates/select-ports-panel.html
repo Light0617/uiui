@@ -10,7 +10,6 @@
     <div class="inventory tiles-view">
         <div class="tile-container flex-grid inventory-panel" infinite-scroll='dataModel.loadMore()'
              infinite-scroll-distance='1' infinite-scroll-container="'.scroll-wizard-container'">
-            {{dataModel.displayList.length}}
             <div class="tile resource-tile" ng-repeat="item in dataModel.displayList track by $index">
                 <ng-include src="'views/templates/inventory-item-tile.html'"></ng-include>
             </div>

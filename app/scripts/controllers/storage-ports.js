@@ -136,6 +136,7 @@ angular.module('rainierApp')
                     return [editFibrePortAction];
                 };
                 $scope.dataModel = dataModel;
+                $scope.dataModel.updateResultTotalCounts = storagePortsService.updateResultTotalCountsFn(dataModel);
                 $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, ports, 'storagePortSearch', true);
 
@@ -156,6 +157,7 @@ angular.module('rainierApp')
                     return actions;
                 };
                 $scope.dataModel = dataModel;
+                $scope.dataModel.updateResultTotalCounts = storagePortsService.updateResultTotalCountsFn(dataModel);
                 $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, ports, 'storagePortSearch', true);
 
