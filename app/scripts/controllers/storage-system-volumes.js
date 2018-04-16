@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
                                                       constantService, resourceTrackerService, replicationService,
-                                                      gadVolumeTypeSearchService, migrationTaskService) {
+                                                      gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -264,6 +264,18 @@ angular.module('rainierApp')
                     onClick: function () {
                         ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
+                    }
+                },
+                // Attach to storage
+                {
+                    icon: 'icon-volume',
+                    tooltip: 'Attach to Storage',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    onClick: function () {
+                        virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
                     }
                 },
                 //Virtualize
