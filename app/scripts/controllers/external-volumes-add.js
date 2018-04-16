@@ -20,20 +20,37 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     storagePortsService, orchestratorService, objectTransformService, storageSystemCapabilitiesService,
     scrollDataSourceBuilderServiceNew, synchronousTranslateService
 ) {
-    /* INITIALIZATION */
+    /* UTILITIES */
     var backToPreviousView = function () {
         $window.history.back();
     };
 
-    var init = function () {
+    var startSpinner = function () {
+        spinner(true);
+    };
+
+    var stopSpinner = function () {
+        spinner(false);
+    };
+
+    var spinner = function (enable) {
+        if ($scope.dataModel) {
+            $scope.dataModel.isWaiting = enable;
+        }
+    };
+
+    /* INITIALIZATION */
+    var initCommonAndPort = function () {
         $scope.dataModel = viewModelService.newWizardViewModel([
             'selectPorts', 'selectEndPoints', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
+        startSpinner();
         $scope.dataModel.storageSystemId = extractStorageSystemId();
 
         setupStorageSystem($scope.dataModel.storageSystemId)
             .then(setupPortDataModelStatic)
-            .then(onProtocolChange);
+            .then(onProtocolChange)
+            .then(stopSpinner);
     };
 
     var setupStorageSystem = function (storageSystemId) {
@@ -54,7 +71,9 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     /* 1. PORTS GET/SETUPS*/
     var onProtocolChange = function () {
-        return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol);
+        startSpinner();
+        return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
+            .then(stopSpinner);
     };
 
     var setupPortDataModelStatic = function () {
@@ -68,6 +87,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     var getProtocolCandidates = function () {
+        // TODO get availabe protocol to get ports, if length === 0, show dialog
         return _.map(['FIBRE', 'ISCSI'], function (key) {
             return {
                 key: key,
@@ -122,5 +142,5 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             });
     };
 
-    init();
+    initCommonAndPort();
 });
