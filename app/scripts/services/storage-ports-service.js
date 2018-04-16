@@ -379,7 +379,7 @@ angular.module('rainierApp')
                     };
                     dataModel.cachedList = result.resources;
                     dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-
+                    dataModel.nextToken = result.nextToken;
                     return {
                         dataModel: dataModel,
                         ports: result.resources
