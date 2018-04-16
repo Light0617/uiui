@@ -17,10 +17,12 @@
                                             step-completed="dataModel.isStepCompleted('selectEndPoints')"
                                             step-active="dataModel.isStepActive('selectEndPoints')">
             </wizard-advanced-stepper-button>
-            <wizard-advanced-stepper-button ng-title="Select LUN"
+            -->
+            <wizard-advanced-stepper-button ng-title="'Select Luns'"
                                             step-completed="dataModel.isStepCompleted('selectLuns')"
                                             step-active="dataModel.isStepActive('selectLuns')">
             </wizard-advanced-stepper-button>
+            <!--
             <wizard-advanced-stepper-button ng-title="Select Servers"
                                             step-completed="dataModel.isStepCompleted('selectServers')"
                                             step-active="dataModel.isStepActive('selectServers')">
@@ -48,13 +50,15 @@
                                    ng-model="dataModel.endpointsModel"
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
-        <wizard-left-right-content ng-if="dataModel.isStepActive('selectLuns')"
-                                   class="virtualize-volume-wizard"
-                                   left-panel-template="views/workflow-templates/external-volumes-add-luns-left-panel.html"
-                                   right-panel-template="views/workflow-templates/external-volumes-add-luns-right-panel.html"
-                                   ng-model="dataModel"
-                                   page-name="create-and-attach-volumes">
-        </wizard-left-right-content>
+        -->
+        <wizard-single-panel-content ng-if="dataModel.isStepActive('selectLuns')"
+                                     ng-title="'Select Luns'"
+                                     ng-model="dataModel"
+                                     class="single-panel"
+                                     filter-model="filterModel"
+                                     panel-template="views/workflow-templates/select-luns-panel.html">
+        </wizard-single-panel-content>
+        <!--
         <wizard-left-right-content ng-if="dataModel.isStepActive('selectServers')"
                                    class="virtualize-volume-wizard"
                                    left-panel-template="views/workflow-templates/external-volumes-add-servers-left-panel.html"
@@ -80,9 +84,11 @@
     <wizard-footer ng-if="dataModel.isStepActive('selectEndPoints')"
                    ng-model="dataModel">
     </wizard-footer>
+    -->
     <wizard-footer ng-if="dataModel.isStepActive('selectLuns')"
-                   ng-model="dataModel">
+                   ng-model="footerModel">
     </wizard-footer>
+    <!--
     <wizard-footer ng-if="dataModel.isStepActive('selectServers')"
                    ng-model="dataModel">
     </wizard-footer>

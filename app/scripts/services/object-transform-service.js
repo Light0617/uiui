@@ -843,6 +843,7 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
+                    i.itemIcon = 'icon-manage';
                     i.capacity = diskSizeService.getDisplaySize(i.capacity);
                     i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
                     i.metaData = [
