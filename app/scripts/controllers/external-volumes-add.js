@@ -49,6 +49,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel = viewModelService.newWizardViewModel([
             'selectPorts', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
+        $scope.selected = {};
         startSpinner();
         var storageSystemId = extractStorageSystemId();
 
@@ -127,7 +128,9 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 return _.some(dataModel.displayList, filterSelected);
             },
             next: function () {
-                $scope.selectedExternalPorts = _.filter(dataModel.displayList, filterSelected);
+                // TODO warnings for taking time
+                $scope.selected.externalPorts = _.filter(dataModel.displayList, filterSelected);
+                $scope.selected.protocol = $scope.dataModel.selectedProtocol;
                 initDiscoveredLuns();
             }
         };
@@ -153,7 +156,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initDiscoveredLuns = function () {
         startSpinner();
-        var portIds = _.map($scope.selectedExternalPorts, 'storagePortId');
+        var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
         portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
             .then(validateGetLunsResult)
             .then(setupLuns)
@@ -199,7 +202,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 return _.some(dataModel.filteredList, filterSelected);
             },
             next: function () {
-                $scope.selectedExternalPorts = _.filter(dataModel.filteredList, filterSelected);
+                $scope.selected.luns = _.filter(dataModel.filteredList, filterSelected);
                 console.log('hi');
             }
         };
