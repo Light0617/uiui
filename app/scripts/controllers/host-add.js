@@ -188,8 +188,8 @@ angular.module('rainierApp')
             _.each(hosts, function (host) {
                 var converted = convertCsvToHost(host);
 
-                if (_.isEmpty(host)) {
-                    return;
+                if (_.isEmpty(host) || _.isEmpty(converted.name)) {
+                  return;
                 }
                 if (converted.iscsiNames) {
                     dataModel.hostsModel.addIscsiHost(converted, iscsiIndex++);
