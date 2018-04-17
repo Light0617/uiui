@@ -17,7 +17,8 @@
  */
 angular.module('rainierApp').factory('externalVolumesAddService', function (
     $q, $modal, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
-    paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew
+    paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew,
+    constantService, attachVolumeService
 ) {
 
     /**
@@ -202,6 +203,55 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         };
     };
 
+    /**
+     * PATHS
+     */
+    var getPathsModel = function (storageSystemId, hosts) {
+        return $q.all([
+            getHostModeOptions(storageSystemId),
+            getStoragePorts(storageSystemId)
+        ]).then(function (result) {
+            var hostModeOptions = result[0];
+            var ports = result[1];
+            return initPathsModel(hostModeOptions, ports, hosts);
+        });
+    };
+
+    var initPathsModel = function (hostModeOptions, ports, hosts) {
+        var result = {
+            hostModeCandidates: constantService.osType(),
+            hostModeOptions: hostModeOptions,
+            selectServerPath: true,
+            isVirtualizeVolume: true,
+            selectedServer: hosts,
+            pathModel: {
+                selectedHosts: hosts,
+                paths: [],
+                storagePorts: ports,
+                createPath: attachVolumeService.createPath,
+            }
+        };
+        var idCoordinates = {};
+        attachVolumeService.setPortCoordiantes(result.pathModel.storagePorts, idCoordinates);
+        attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, hostModeOptions, idCoordinates);
+        result.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight(result.pathModel.selectedHosts, ports);
+        return result;
+    };
+
+    var getHostModeOptions = function (storageSystemId) {
+        return orchestratorService.storageSystemHostModeOptions(storageSystemId);
+        // .then() check length
+    };
+
+    var getStoragePorts = function (storageSystemId) {
+        // SHOULD BE TARGET AND NOT VSM
+        return paginationService.getAllPromises(
+            null, 'storage-ports', false,
+            storageSystemId, objectTransformService.transformPort
+        );
+        // .then() check length
+    };
+
     return {
         /** COMMON */
         openErrorDialog: openErrorDialog,
@@ -220,5 +270,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         GET_SERVERS_PATH: GET_SERVERS_PATH,
         getHostsModel: getHostsModel,
         getHostsFilterModel: getHostsFilterModel,
+        /** PATHS */
+        getPathsModel: getPathsModel
     };
 });

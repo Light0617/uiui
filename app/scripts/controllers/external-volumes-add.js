@@ -19,7 +19,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     $q, $scope, $window, $routeParams, externalVolumesAddService, utilService, viewModelService,
     storagePortsService, orchestratorService, objectTransformService, storageSystemCapabilitiesService,
     scrollDataSourceBuilderServiceNew, synchronousTranslateService, scrollDataSourceBuilderService,
-    portDiscoverService, constantService, paginationService, attachVolumeService
+    portDiscoverService
 ) {
     /**
      * 1. initCommonAndPort
@@ -255,7 +255,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             },
             next: function () {
                 $scope.selected.hosts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
-                initPaths();
+                initPaths().then($scope.dataModel.goNext);
             },
             previous: function () {
                 initDiscoveredLuns().then($scope.dataModel.goBack);
@@ -267,57 +267,20 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      * 5. Paths
      */
     var initPaths = function () {
-        return getAndSetupPathsModel($scope.storageSystem.storageSystemId)
-            .then($scope.dataModel.goNext())
+        startSpinner();
+        return getAndSetupPathsModel($scope.storageSystem.storageSystemId, $scope.selected.hosts)
             .finally(stopSpinner);
     };
 
-    var getAndSetupPathsModel = function (storageSystemId) {
-        return $q.all([
-            getHostModeOptions(storageSystemId),
-            getStoragePorts(storageSystemId)
-        ]).then(function (result) {
-            var hostModeOptions = result[0];
-            var ports = result[1];
-            return setupModel(hostModeOptions, ports);
-        });
+    var getAndSetupPathsModel = function (storageSystemId, hosts) {
+        return externalVolumesAddService.getPathsModel(storageSystemId, hosts)
+            .then(setupModel);
     };
 
-    var setupModel = function (hostModeOptions, ports) {
-        var result = {
-            hostModeCandidates: constantService.osType(),
-            hostModeOptions: hostModeOptions,
-            selectServerPath: true,
-            isVirtualizeVolume: true,
-            selectedServer: $scope.selected.hosts,
-            pathModel: {
-                paths: [],
-                storagePorts: ports,
-                createPath: attachVolumeService.createPath,
-                selectedHosts: $scope.selected.hosts
-            }
-        };
-        _.extend($scope.dataModel, result);
-        var idCoordinates = {};
-        attachVolumeService.setPortCoordiantes(ports, idCoordinates);
-        attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, hostModeOptions, idCoordinates);
-        $scope.dataModel.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight($scope.selected.hosts, ports);
+    var setupModel = function (pathModel) {
+        _.extend($scope.dataModel, pathModel);
         $scope.footerModel = pathsFooter();
         return true;
-    };
-
-    var getHostModeOptions = function (storageSystemId) {
-        return orchestratorService.storageSystemHostModeOptions(storageSystemId);
-        // .then() check length
-    };
-
-    var getStoragePorts = function (storageSystemId) {
-        // SHOULD BE TARGET AND NOT VSM
-        return paginationService.getAllPromises(
-            null, 'storage-ports', false,
-            storageSystemId, objectTransformService.transformPort
-        );
-        // .then() check length
     };
 
     var pathsFooter = function () {
@@ -327,6 +290,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 return false;
             },
             submit: function () {
+                // TODO impl actual api call to use $scope.selected
                 console.log(JSON.stringify($scope.selected));
             },
             previous: function () {
