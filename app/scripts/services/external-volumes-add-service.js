@@ -18,7 +18,7 @@
 angular.module('rainierApp').factory('externalVolumesAddService', function (
     $q, $modal, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
     paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew,
-    constantService, attachVolumeService
+    constantService, attachVolumeService, queryService
 ) {
 
     /**
@@ -147,10 +147,10 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     /**
      * SERVERS
      */
-    var GET_SERVERS_PATH = 'compute/servers';
+    var GET_HOSTS_PATH = 'compute/servers';
 
-    var getServers = function () {
-        return paginationService.get(null, GET_SERVERS_PATH, objectTransformService.transformHost, true);
+    var getHosts = function () {
+        return paginationService.get(null, GET_HOSTS_PATH, objectTransformService.transformHost, true);
     };
 
     var initHostsModel = function (getHostsResult) {
@@ -165,13 +165,13 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         };
         dataModel.displayList = getHostsResult.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
         dataModel.getResources = function () {
-            return paginationService.get(dataModel.nextToken, GET_SERVERS_PATH, objectTransformService.transformHost, false);
+            return paginationService.get(null, GET_HOSTS_PATH, objectTransformService.transformHost, false);
         };
         return dataModel;
     };
 
     var getHostsModel = function () {
-        return getServers().then(initHostsModel);
+        return getHosts().then(initHostsModel);
     };
 
     var getHostsFilterModel = function (dataModel) {
@@ -187,7 +187,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             filterQuery: function (key, value, type, arrayClearKey) {
                 var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                 paginationService.setFilterSearch(queryObject);
-                paginationService.getQuery(GET_SERVERS_PATH, objectTransformService.transformHost).then(function (result) {
+                paginationService.getQuery(GET_HOSTS_PATH, objectTransformService.transformHost).then(function (result) {
                     dataModel.updateResultTotalCounts(result);
                 });
             },
@@ -196,7 +196,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
                 queryObjects.push(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, value));
                 queryObjects.push(new paginationService.QueryObject('serverName', new paginationService.SearchType().STRING, value));
                 paginationService.setTextSearch(queryObjects);
-                paginationService.getQuery(GET_SERVERS_PATH, objectTransformService.transformHost).then(function (result) {
+                paginationService.getQuery(GET_HOSTS_PATH, objectTransformService.transformHost).then(function (result) {
                     dataModel.updateResultTotalCounts(result);
                 });
             }
@@ -206,10 +206,10 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     /**
      * PATHS
      */
-    var getPathsModel = function (storageSystemId, hosts) {
+    var getPathsModel = function (storageSystemId, hosts, protocol) {
         return $q.all([
             getHostModeOptions(storageSystemId),
-            getStoragePorts(storageSystemId)
+            getStoragePorts(storageSystemId, protocol)
         ]).then(function (result) {
             var hostModeOptions = result[0];
             var ports = result[1];
@@ -250,11 +250,12 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         // .then() check length
     };
 
-    var getStoragePorts = function (storageSystemId) {
+    var getStoragePorts = function (storageSystemId, protocol) {
+        queryService.clearQueryMap();
         // SHOULD BE TARGET AND NOT VSM
         return paginationService.getAllPromises(
-            null, 'storage-ports', false,
-            storageSystemId, objectTransformService.transformPort
+            null, 'storage-ports?q=type:+' + protocol + '+AND+attributes:TARGET_PORT&sort=storagePortId:ASC',
+            false, storageSystemId, objectTransformService.transformPort
         );
         // .then() check length
     };
@@ -274,7 +275,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         validateGetLunsResult: validateGetLunsResult,
         handleDiscoverError: handleDiscoverError,
         /** SERVERS */
-        GET_SERVERS_PATH: GET_SERVERS_PATH,
+        GET_HOSTS_PATH: GET_HOSTS_PATH,
         getHostsModel: getHostsModel,
         getHostsFilterModel: getHostsFilterModel,
         /** PATHS */

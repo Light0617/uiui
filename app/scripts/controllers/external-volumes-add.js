@@ -132,6 +132,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = portsFooter($scope.dataModel);
         $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
+        scrollDataSourceBuilderService.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
 
         return true;
@@ -173,6 +174,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         _.extend($scope.dataModel, externalVolumesAddService.getLunsDataModel(lunsDataModel));
         $scope.filterModel = undefined;
         $scope.footerModel = lunsFooter($scope.dataModel);
+        scrollDataSourceBuilderServiceNew.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         scrollDataSourceBuilderService.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         return true;
     };
@@ -200,6 +202,9 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             },
             next: function () {
                 $scope.selected.luns = _.filter(dataModel.filteredList, externalVolumesAddService.filterSelected);
+                _.forEach($scope.dataModel.unbinders, function (unbind) {
+                    unbind();
+                });
                 initServers().then($scope.dataModel.goNext);
             },
             previous: function () {
@@ -220,14 +225,21 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var getAndSetupHosts = function () {
         return externalVolumesAddService.getHostsModel()
             .then(setupHosts)
+            .then(filterByProtocol)
             .then(autoSelectHost);
+    };
+
+    var filterByProtocol = function() {
+        $scope.filterModel.filterQuery('protocol', $scope.selected.protocol);
+        return true;
     };
 
     var setupHosts = function (hostsDataModel) {
         _.extend($scope.dataModel, hostsDataModel);
         $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
-        $scope.footerModel = hostsFooter(hostsDataModel);
+        $scope.footerModel = hostsFooter($scope.dataModel);
         $scope.filterModel = externalVolumesAddService.getHostsFilterModel($scope.dataModel);
+        scrollDataSourceBuilderService.setupDataLoader($scope, hostsDataModel.hosts, 'hostSearch');
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, hostsDataModel.hosts, 'hostSearch');
         return true;
     };
@@ -268,12 +280,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initPaths = function () {
         startSpinner();
-        return getAndSetupPathsModel($scope.storageSystem.storageSystemId, $scope.selected.hosts)
+        return getAndSetupPathsModel($scope.storageSystem.storageSystemId, $scope.selected.hosts, $scope.selected.protocol)
             .finally(stopSpinner);
     };
 
-    var getAndSetupPathsModel = function (storageSystemId, hosts) {
-        return externalVolumesAddService.getPathsModel(storageSystemId, hosts)
+    var getAndSetupPathsModel = function (storageSystemId, hosts, protocol) {
+        return externalVolumesAddService.getPathsModel(storageSystemId, hosts, protocol)
             .then(setupModel);
     };
 
@@ -296,6 +308,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 $scope.selected.paths = remainingPaths();
                 // TODO impl actual api call to use $scope.selected
                 console.log(JSON.stringify($scope.selected));
+                backToPreviousView();
             },
             previous: function () {
                 initServers().then($scope.dataModel.goBack);
@@ -304,7 +317,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     var remainingPaths = function () {
-        return _.filter($scope.dataModel.pathModel.paths, function(p) {
+        return _.filter($scope.dataModel.pathModel.paths, function (p) {
             return !p.deleted;
         });
     };
