@@ -114,7 +114,9 @@ angular.module('rainierApp')
                 },
                 addNewEndPoint: function () {
                     $scope.dataModel.addedEndPoints.splice(0, 0, {value: ''});
-                }
+                },
+                applyChangesAttachedVolumesConfirmationMessage: synchronousTranslateService.translate(
+                    result.protocol === 'FIBRE' ? 'host-update-fibre-confirmation-content' : 'host-update-iscsi-confirmation-content')
             };
 
             $scope.chapPayload = chapPayload;
