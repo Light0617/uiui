@@ -19,7 +19,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     $q, $scope, $window, $routeParams, externalVolumesAddService, utilService, viewModelService,
     storagePortsService, orchestratorService, objectTransformService, storageSystemCapabilitiesService,
     scrollDataSourceBuilderServiceNew, synchronousTranslateService, scrollDataSourceBuilderService,
-    portDiscoverService, paginationService
+    portDiscoverService
 ) {
     /**
      * 1. initCommonAndPort
@@ -47,10 +47,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         if ($scope.dataModel) {
             $scope.dataModel.isWaiting = enable;
         }
-    };
-
-    var filterSelected = function (i) {
-        return i.selected;
     };
 
     /* INITIALIZATION */
@@ -103,7 +99,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupPortDataModelStatic = function () {
         var staticProperties = {
-            protocolCandidates: getProtocolCandidates(),
+            protocolCandidates: externalVolumesAddService.getProtocolCandidates(),
             onProtocolChange: onProtocolChange
         };
         staticProperties.selectedProtocol = staticProperties.protocolCandidates[0].key;
@@ -111,27 +107,18 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return $q.resolve($scope.dataModel);
     };
 
-    var getProtocolCandidates = function () {
-        // TODO get availabe protocol to get ports, if length === 0, show dialog
-        return _.map(['FIBRE', 'ISCSI'], function (key) {
-            return {
-                key: key,
-                display: synchronousTranslateService.translate(key)
-            };
-        });
-    };
-
     var getAndSetupPortDataModel = function (storageSystem, protocol) {
-        return getPortsModel(storageSystem, protocol)
+        return externalVolumesAddService.getPortsModel(storageSystem, protocol)
             .then(setupPortDataFilterFooterModel)
             .then(function () {
-                return filterTargetPorts($scope.filterModel);
+                $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
+                return true;
             });
     };
 
     var setupPortDataFilterFooterModel = function (portsModel) {
         _.extend($scope.dataModel, portsModel.dataModel);
-        $scope.dataModel.updateResultTotalCounts = storagePortsService.updateResultTotalCountsFn($scope.dataModel);
+        $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = portsFooter($scope.dataModel);
         $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
@@ -143,28 +130,15 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return {
             validation: false,
             canGoNext: function () {
-                return _.some(dataModel.displayList, filterSelected);
+                return _.some(dataModel.displayList, externalVolumesAddService.filterSelected);
             },
             next: function () {
                 // TODO warnings for taking time
-                $scope.selected.externalPorts = _.filter(dataModel.displayList, filterSelected);
+                $scope.selected.externalPorts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
                 $scope.selected.protocol = $scope.dataModel.selectedProtocol;
                 initDiscoveredLuns();
             }
         };
-    };
-
-    var filterTargetPorts = function (filterModel) {
-        filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
-        return true;
-    };
-
-    var getPortsModel = function (storageSystem, protocol) {
-        return storagePortsService.initDataModel(storageSystem.storageSystemId, protocol)
-            .then(function (result) {
-                result.dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute(storageSystem.model.storageSystemModel);
-                return result;
-            });
     };
 
     /**
@@ -174,7 +148,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         startSpinner();
         var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
         portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
-            .then(validateGetLunsResult)
+            .then(externalVolumesAddService.validateGetLunsResult)
             .then(setupLuns)
             .then($scope.dataModel.goNext)
             .finally(stopSpinner);
@@ -182,43 +156,21 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupLuns = function (lunsDataModel) {
         objectTransformService.transformDiscoveredLun(lunsDataModel);
-        _.extend($scope.dataModel, getLunsDataModel(lunsDataModel));
+        _.extend($scope.dataModel, externalVolumesAddService.getLunsDataModel(lunsDataModel));
         $scope.filterModel = undefined;
         $scope.footerModel = lunsFooter($scope.dataModel);
         scrollDataSourceBuilderService.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         return true;
     };
 
-    var getLunsDataModel = function (luns) {
-        return {
-            displayList: luns,
-            cachedList: luns,
-            search: {
-                freeText: ''
-            }
-        };
-    };
-
-    var validateGetLunsResult = function (luns) {
-        if (!luns.length) {
-            openDialogForFialedToDiscovery();
-            return $q.reject();
-        }
-        return luns;
-    };
-
-    var openDialogForFialedToDiscovery = function () {
-        // TODO
-    };
-
     var lunsFooter = function (dataModel) {
         return {
             validation: false,
             canGoNext: function () {
-                return _.some(dataModel.filteredList, filterSelected);
+                return _.some(dataModel.filteredList, externalVolumesAddService.filterSelected);
             },
             next: function () {
-                $scope.selected.luns = _.filter(dataModel.filteredList, filterSelected);
+                $scope.selected.luns = _.filter(dataModel.filteredList, externalVolumesAddService.filterSelected);
                 initServers();
             }
         };
@@ -238,87 +190,27 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     var getAndSetupHosts = function () {
-        return getHosts()
-            .then(getHostsModel)
+        return externalVolumesAddService.getHostsModel()
             .then(setupHosts);
     };
 
     var setupHosts = function (hostsDataModel) {
         _.extend($scope.dataModel, hostsDataModel);
+        $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = hostsFooter(hostsDataModel);
-        $scope.filterModel = getHostsFilterModel();
+        $scope.filterModel = externalVolumesAddService.getHostsFilterModel($scope.dataModel);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, hostsDataModel.hosts, 'hostSearch');
         return true;
-    };
-
-    var getHosts = function () {
-        return paginationService.get(null, 'compute/servers', objectTransformService.transformHost, true);
-    };
-
-    var getHostsModel = function (getHostsResult) {
-        var dataModel = {
-            hosts: getHostsResult.resources,
-            nextToken: getHostsResult.nextToken,
-            total: getHostsResult.total,
-            cachedList: getHostsResult.resources,
-            search: {
-                freeText: ''
-            }
-        };
-        dataModel.displayList = getHostsResult.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-        dataModel.getResources = function () {
-            return paginationService.get(dataModel.nextToken, 'compute/servers', objectTransformService.transformHost, false);
-        };
-        return dataModel;
-    };
-
-    var updateResultTotalCounts = function (result) {
-        $scope.dataModel.nextToken = result.nextToken;
-        $scope.dataModel.cachedList = result.resources;
-        $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-        $scope.dataModel.itemCounts = {
-            filtered: $scope.dataModel.displayList.length,
-            total: $scope.dataModel.total
-        };
-    };
-
-    var getHostsFilterModel = function () {
-        return {
-            filter: {
-                freeText: '',
-                status: '',
-                osType: null,
-                replicationType: null,
-                snapshot: false,
-                clone: false
-            },
-            filterQuery: function (key, value, type, arrayClearKey) {
-                var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
-                paginationService.setFilterSearch(queryObject);
-                paginationService.getQuery('compute/servers', objectTransformService.transformHost).then(function (result) {
-                    updateResultTotalCounts(result);
-                });
-            },
-            searchQuery: function (value) {
-                var queryObjects = [];
-                queryObjects.push(new paginationService.QueryObject('serverId', new paginationService.SearchType().INT, value));
-                queryObjects.push(new paginationService.QueryObject('serverName', new paginationService.SearchType().STRING, value));
-                paginationService.setTextSearch(queryObjects);
-                paginationService.getQuery('compute/servers', objectTransformService.transformHost).then(function (result) {
-                    updateResultTotalCounts(result);
-                });
-            }
-        };
     };
 
     var hostsFooter = function (dataModel) {
         return {
             validation: false,
             canGoNext: function () {
-                return _.some(dataModel.displayList, filterSelected);
+                return _.some(dataModel.displayList, externalVolumesAddService.filterSelected);
             },
             next: function () {
-                $scope.selected.hosts = _.filter(dataModel.displayList, filterSelected);
+                $scope.selected.hosts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
                 console.log('hi');
             }
         };
