@@ -469,7 +469,7 @@
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
     "storage-volume-attach-different-protocol-servers": "Cannot attach volumes for different protocol servers.",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
-    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name(s) [{{ chapUserNames }}] already exists in the specified Storage Port {{ storagePort }} of {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure?",
+    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name(s) [{{ chapUserNames }}] already exists in the specified Storage Port {{ storagePort }} of {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure you want to proceed?",
     "no-servers-onboarded": "No servers have been added yet.",
 
     "attach-volumes-number-of-volume": "# of Vol.",
@@ -834,7 +834,7 @@
     "host-update-chap-secret": "New CHAP Secret",
 
     "host-update-chap-confirm-overwrite-chap-secret-title": "CHAP Secret Overwrite Confirmation",
-    "host-update-chap-confirm-overwrite-chap-secret-message": "All of CHAP user related to this Server will be overwritten by specified CHAP secret. Are you sure?",
+    "host-update-chap-confirm-overwrite-chap-secret-message": "All of CHAP user related to this Server will be overwritten by specified CHAP secret. Are you sure you want to proceed?",
 
     "host-update-mutual-chap-settings": "Mutual CHAP Settings",
     "host-update-mutual-chap-auth": "Mutual CHAP Auth",
@@ -846,7 +846,7 @@
     "host-edit-mutual-chap-username": "Mutual CHAP User",
     "host-edit-mutual-chap-secret": "Mutual CHAP Secret",
     "host-delete-mutual-chap-user": "Delete Mutual CHAP User",
-    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure?",
+    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure you want to proceed?",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",
