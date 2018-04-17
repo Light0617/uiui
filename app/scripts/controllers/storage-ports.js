@@ -113,7 +113,7 @@ angular.module('rainierApp')
         function generateEditFibrePortDialogSettings() {
             var dialogSettings = {
                 id: 'securityEnableDisableConfirmation',
-                confirmTitle: 'edit-fibre-port-title',
+                title: 'edit-fibre-port-title',
                 content: 'edit-fibre-port-content',
                 trueText: 'storage-port-enable-security',
                 falseText: 'storage-port-not-enable-security',
@@ -210,7 +210,8 @@ angular.module('rainierApp')
                     true, storageSystemId, undefined, undefined, queryObject
                 )
                 .then(function (result) {
-                    var dataModel = generateDataModel(result); var editFibrePortAction = generateEditFibrePortAction(dataModel);
+                    var dataModel = generateDataModel(result);
+                    var editFibrePortAction = generateEditFibrePortAction(dataModel);
                     dataModel.getActions = function () {
                         return [editFibrePortAction];
                     };
