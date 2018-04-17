@@ -234,7 +234,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         result.selectedHostMode = invokeFindHostMode(hosts[0], result.hostModeCandidates);
         var idCoordinates = {};
         attachVolumeService.setPortCoordiantes(result.pathModel.storagePorts, idCoordinates);
-        attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, hostModeOptions, idCoordinates);
+        attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, [], idCoordinates);
         result.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight(result.pathModel.selectedHosts, ports);
         return result;
     };

@@ -288,9 +288,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return {
             validation: false,
             canSubmit: function () {
-                return false;
+                var paths = remainingPaths();
+                return paths.length > 0;
             },
             submit: function () {
+                $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
+                $scope.selected.paths = remainingPaths();
                 // TODO impl actual api call to use $scope.selected
                 console.log(JSON.stringify($scope.selected));
             },
@@ -298,6 +301,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 initServers().then($scope.dataModel.goBack);
             }
         };
+    };
+
+    var remainingPaths = function () {
+        return _.filter($scope.dataModel.pathModel.paths, function(p) {
+            return !p.deleted;
+        });
     };
 
     initCommonAndPort();
