@@ -288,24 +288,23 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             hostModeCandidates: constantService.osType(),
             hostModeOptions: hostModeOptions,
             selectServerPath: true,
+            isVirtualizeVolume: true,
             selectedServer: $scope.selected.hosts,
             readyDefer: $q.defer(),
             pathModel: {
                 paths: [],
-                viewBoxHeight: 0,
                 storagePorts: ports,
                 createPath: attachVolumeService.createPath,
                 selectedHosts: $scope.selected.hosts
             }
         };
         _.extend($scope.dataModel, result);
-        attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, hostModeOptions, {});
-        $scope.dataModel.pathModel.createPath();
+        var idCoordinates = {};
+        attachVolumeService.setPortCoordiantes(ports, idCoordinates);
+        attachVolumeService.setEndPointCoordinates($scope.dataModel.pathModel.selectedHosts, hostModeOptions, idCoordinates);
+        $scope.dataModel.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight($scope.selected.hosts, ports);
         $scope.footerModel = pathsFooter();
-        return $scope.dataModel.readyDefer.promise.then(function () {
-            $scope.dataModel.build(true);
-            return true;
-        });
+        return true;
     };
 
     var getHostModeOptions = function (storageSystemId) {
