@@ -29,7 +29,7 @@
 </div>
 
 <confirmation-modal ng-if="action.enabled()"
-                    title="{{ action.dialogSettings.title | translate}}"
+                    confirm-title="{{ action.dialogSettings.confirmTitle | translate}}"
                     content="{{ action.dialogSettings.content  | translate:dataModel}}"
                     true-text="{{ action.dialogSettings.trueText  | translate:dataModel}}"
                     false-text="{{ action.dialogSettings.falseText  | translate:dataModel}}"
