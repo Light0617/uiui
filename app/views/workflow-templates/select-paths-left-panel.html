@@ -1,0 +1,33 @@
+<div class="fieldset" ng-if="false">
+    <!-- Source -->
+    <div class="label-value-container">
+        <label class="label">Source Storage</label>
+        <label class="value">{{ dataModel.sourceStorageSystemId }}</label>
+    </div>
+
+    <!-- Target Storage -->
+    <div class="label-value-container">
+        <label class="label">Target Storage</label>
+        <select class="form-control"
+                ng-change="dataModel.onTargetStorageSystemChange()"
+                ng-model="dataModel.selectedTargetStorageSystemId"
+                ng-options="id for id in dataModel.targetStorageSystemIdCandidates">
+        </select>
+    </div>
+
+    <!-- Protocol -->
+    <div class="label-value-container">
+        <label class="label">Protocol</label>
+        <select class="form-control"
+                ng-change="dataModel.onProtocolChange()"
+                ng-model="dataModel.selectedProtocol"
+                ng-options="p.key as p.display for p in dataModel.protocolCandidates">
+        </select>
+    </div>
+
+    <!-- Volumes -->
+    <div class="label-value-container">
+        <label class="label">Volumes</label>
+        <label ng-repeat="v in dataModel.selectedVolumes" class="value">{{ v.label }}</label>
+    </div>
+</div>

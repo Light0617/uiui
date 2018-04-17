@@ -26,12 +26,10 @@
                                             step-completed="dataModel.isStepCompleted('selectServers')"
                                             step-active="dataModel.isStepActive('selectServers')">
             </wizard-advanced-stepper-button>
-            <!--
-            <wizard-advanced-stepper-button ng-title="Select Paths"
+            <wizard-advanced-stepper-button ng-title="'Select Paths'"
                                             step-completed="dataModel.isStepCompleted('selectPaths')"
                                             step-active="dataModel.isStepActive('selectPaths')">
             </wizard-advanced-stepper-button>
-            -->
         </wizard-advanced-stepper>
 
         <!-- CONTENT -->
@@ -65,7 +63,13 @@
                                      filter-model="filterModel"
                                      panel-template="views/workflow-templates/select-servers-panel.html">
         </wizard-single-panel-content>
-
+        <wizard-left-right-content ng-if="dataModel.isStepActive('selectPaths')"
+                                   class="virtualize-volume-wizard"
+                                   left-panel-template="views/workflow-templates/select-paths-left-panel.html"
+                                   right-panel-template="views/workflow-templates/select-paths-right-panel.html"
+                                   ng-model="dataModel"
+                                   page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
         <!--
         <div ng-if="false">
             <wizard-svg-page ng-if="dataModel.isStepActive('selectPaths')"
@@ -91,9 +95,7 @@
     <wizard-footer ng-if="dataModel.isStepActive('selectServers')"
                    ng-model="footerModel">
     </wizard-footer>
-    <!--
     <wizard-footer ng-if="dataModel.isStepActive('selectPaths')"
                    ng-model="footerModel">
     </wizard-footer>
-    -->
 </wizard-page>

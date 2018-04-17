@@ -140,6 +140,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var handleDiscoverError = function () {
         openErrorDialog('Failed to discover LUN from selected port.');
+        return true;
     };
 
     /**

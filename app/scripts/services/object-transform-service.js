@@ -843,7 +843,7 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
-                    var properties = [i.portId, i.wwn, wwnService.appendColon(i.wwn), i.lunId];
+                    var properties = [i.portId, i.wwn, wwnService.appendColon(i.wwn), i.lunId, i.eVolIdC];
 
                     // iscsi
                     if (i.externalIscsiInformation) {
@@ -869,7 +869,7 @@ angular.module('rainierApp')
                         {
                             left: false,
                             title: wwnService.appendColon(i.wwn),
-                            details: [i.displayCapacity]
+                            details: [i.displayCapacity, i.eVolIdC]
                         }
                     ];
                 });

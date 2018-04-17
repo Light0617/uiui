@@ -12,7 +12,7 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
     var discoveredLuns = [];
 
     var generateMockDiscoveredLuns = function () {
-        var total = 100;
+        var total = 10;
 
         while (total-- !== 0) {
             var mockVolume = generateDiscoveredLun(total);
