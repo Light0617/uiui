@@ -1100,6 +1100,10 @@
     "shred-volumes-invalid-pattern-message": "Enter up to 8 hexadecimal characters.",
     "shred-volumes-invalid-pass-number-message": "Specify pass number between 1 to 7.",
 
+    "interrupt-shredding": "Interrupt Shredding",
+    "interrupt-shredding-confirmation-title": "Interrupt Shredding Confirmation",
+    "interrupt-shredding-confirmation-message": "All running shredding operations in the current storage system will be interrupted. Do you want to proceed?",
+
     "migrate-volumes": "Migrate Volumes",
     "migrate-volumes-title-create": "Migrate Volumes",
     "migrate-volumes-title-update": "Edit Migration Task",
