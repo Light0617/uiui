@@ -489,6 +489,8 @@
     "storage-volume-detach-not-remove-zone": "Not Remove Zone",
     "storage-volume-detach": "Detach Volume",
     "storage-volume-detach-different-protocol-servers": "Cannot detach volumes from different protocol servers.",
+    "storage-volume-detach-from-target": "Detach From Target Storage",
+    "storage-volume-detach-from-target-content": "Detach volume from storage system: ",
 
     "parity-group-raid-configuration": "RAID Type:",
     "parity-group-disk-type": "Disk Type:",
