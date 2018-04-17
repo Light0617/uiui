@@ -156,17 +156,17 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      * 3. LUNS
      */
     var initDiscoveredLuns = function () {
-        // externalVolumesAddService.openConfirmationDialog('This operation may take time, Proceed?')
-        //     .then(function () {
-        startSpinner();
-        var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
-        return portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
-            .then(externalVolumesAddService.validateGetLunsResult)
-            .then(setupLuns)
-            .then(autoSelectLuns)
-            .catch(externalVolumesAddService.handleDiscoverError)
-            .finally(stopSpinner);
-        // });
+        return externalVolumesAddService.openConfirmationDialog('This operation may take time, Proceed?')
+            .then(function () {
+                startSpinner();
+                var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
+                return portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
+                    .then(externalVolumesAddService.validateGetLunsResult)
+                    .then(setupLuns)
+                    .then(autoSelectLuns)
+                    .catch(externalVolumesAddService.handleDiscoverError)
+                    .finally(stopSpinner);
+            });
     };
 
     var setupLuns = function (lunsDataModel) {
@@ -229,7 +229,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(autoSelectHost);
     };
 
-    var filterByProtocol = function() {
+    var filterByProtocol = function () {
         $scope.filterModel.filterQuery('protocol', $scope.selected.protocol);
         return true;
     };
