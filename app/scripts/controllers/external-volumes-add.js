@@ -280,6 +280,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var setupModel = function (pathModel) {
         _.extend($scope.dataModel, pathModel);
         $scope.footerModel = pathsFooter();
+        $scope.dataModel.selectedLuns = $scope.selected.luns;
         return true;
     };
 

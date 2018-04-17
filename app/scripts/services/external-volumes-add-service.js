@@ -231,11 +231,18 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
                 createPath: attachVolumeService.createPath,
             }
         };
+        result.selectedHostMode = invokeFindHostMode(hosts[0], result.hostModeCandidates);
         var idCoordinates = {};
         attachVolumeService.setPortCoordiantes(result.pathModel.storagePorts, idCoordinates);
         attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, hostModeOptions, idCoordinates);
         result.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight(result.pathModel.selectedHosts, ports);
         return result;
+    };
+
+    var invokeFindHostMode = function (host, hostModeCandidates) {
+        var index = _.indexOf(hostModeCandidates, host.osType);
+        index = index === -1 ? 0 : index;
+        return hostModeCandidates[index];
     };
 
     var getHostModeOptions = function (storageSystemId) {
