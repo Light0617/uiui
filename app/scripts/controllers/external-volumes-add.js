@@ -89,7 +89,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initPorts = function () {
         return setupPortDataModelStatic()
-            .then(onProtocolChange)
+            .then(onProtocolChange);
     };
 
     var onProtocolChange = function () {
@@ -290,7 +290,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             selectServerPath: true,
             isVirtualizeVolume: true,
             selectedServer: $scope.selected.hosts,
-            readyDefer: $q.defer(),
             pathModel: {
                 paths: [],
                 storagePorts: ports,
