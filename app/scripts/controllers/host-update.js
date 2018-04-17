@@ -136,6 +136,10 @@ angular.module('rainierApp')
                                 'host-update-chap-confirm-overwrite-chap-secret-title');
                             $scope.confirmationMessage = synchronousTranslateService.translate(
                                 'host-update-chap-confirm-overwrite-chap-secret-message');
+                            $scope.cancelButtonLabel = synchronousTranslateService.translate(
+                                'cancel-button');
+                            $scope.okButtonLabel = synchronousTranslateService.translate(
+                                'ok-button');
 
                             $scope.ok = function () {
                                 $q.all([

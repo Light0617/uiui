@@ -26,6 +26,8 @@ angular.module('rainierApp')
                             storagePort: messageParameters.storagePort,
                             chapUserNames: messageParameters.chapUserNames
                         });
+                    $scope.cancelButtonLabel = synchronousTranslateService.translate('no');
+                    $scope.okButtonLabel = synchronousTranslateService.translate('yes');
 
                     $scope.ok = function () {
                         payload.forceOverwriteChapSecret = true; // Set option to force to overwrite CHAP secret
