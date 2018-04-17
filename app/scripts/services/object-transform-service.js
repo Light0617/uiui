@@ -460,6 +460,7 @@ angular.module('rainierApp')
             transformGadPair: function (item) {
                 if (item.primary) {
                     item.hasPrimaryHalf = true;
+                    item.primary.displayVolumeId = formatVolumeId(item.primary.volumeId);
                     item.launchPvol = function () {
                         var path = ['storage-systems', item.primary.storageSystemId, 'volumes', item.primary.volumeId].join('/');
                         $location.path(path);
@@ -471,6 +472,7 @@ angular.module('rainierApp')
 
                 if (item.secondary) {
                     item.hasSecondaryHalf = true;
+                    item.secondary.displayVolumeId = formatVolumeId(item.secondary.volumeId);
                     item.launchSvol = function () {
                         jumpToVolumeDetailsByType(item.secondary.storageSystemId, item.secondary.volumeId);
                     };

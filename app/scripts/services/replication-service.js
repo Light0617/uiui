@@ -69,6 +69,7 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
     return {
         GadDevice: function GadDevice() {
             this.volumeId = 'N/A';
+            this.displayVolumeId = 'N/A';
             this.storageSystemId = 'N/A';
             this.ioMode = 'N/A';
             this.state = 'N/A';

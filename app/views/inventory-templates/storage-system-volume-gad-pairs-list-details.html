@@ -25,10 +25,10 @@
     <div class="nested-row-tile" ng-repeat="vp in item.volumePairs track by $index">
         <div class="col-md-2 cell">
         </div>
-        <a class="col-md-2 cell text-resize" ng-click="vp.launchPvol()" ng-if="vp.hasPrimaryHalf" title="{{vp.primary.volumeId}}"><p>{{vp.primary.volumeId}}</p></a>
-        <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasPrimaryHalf" title="{{vp.primary.volumeId}}"><p>{{vp.primary.volumeId}}</p></div>
-        <a class="col-md-2 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.hasSecondaryHalf" title="{{vp.secondary.volumeId}}"><p>{{vp.secondary.volumeId}}</p></a>
-        <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasSecondaryHalf" title="{{vp.secondary.volumeId}}"><p>{{vp.secondary.volumeId}}</p></div>
+        <a class="col-md-2 cell text-resize" ng-click="vp.launchPvol()" ng-if="vp.hasPrimaryHalf" title="{{vp.primary.displayVolumeId}}"><p>{{vp.primary.displayVolumeId}}</p></a>
+        <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasPrimaryHalf" title="{{vp.primary.displayVolumeId}}"><p>{{vp.primary.displayVolumeId}}</p></div>
+        <a class="col-md-2 cell text-resize" ng-click="vp.launchSvol()" ng-if="vp.hasSecondaryHalf" title="{{vp.secondary.displayVolumeId}}"><p>{{vp.secondary.displayVolumeId}}</p></a>
+        <div class="col-md-2 cell text-resize ellipsis" ng-if="!vp.hasSecondaryHalf" title="{{vp.secondary.displayVolumeId}}"><p>{{vp.secondary.displayVolumeId}}</p></div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.primary.status}}"><p>{{vp.primary.status}}</p></div>
         <div class="col-md-1 cell text-resize ellipsis" title="{{vp.secondary.status}}"><p>{{vp.secondary.status}}</p></div>
         <div class="col-md-2 cell text-resize ellipsis" title="{{vp.primary.storageSystemId}}"><p>{{vp.primary.storageSystemId}}</p></div>
