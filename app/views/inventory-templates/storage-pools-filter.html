@@ -109,6 +109,26 @@
         </div>
     </div>
 </div>
+<!--Control group: DDM Enabled-->
+<div class="control-group">
+    <h3>DDM Enabled<span class="read-only" type="text">{{ (filterModel.filter.ddmEnabled === undefined || filterModel.filter.ddmEnabled === null) ? 'ALL' :
+                    (filterModel.filter.ddmEnabled ? 'True' : 'False' )}}</span>
+    </h3>
+
+    <div class="btn-group btn-group-toggle btn-group-justified">
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.ddmEnabled" btn-radio="true" title="Enabled" uncheckable
+                   ng-click="filterModel.filterQuery('ddmEnabled', 'true')">True
+            </label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="filterModel.filter.ddmEnabled" btn-radio="false" title="Disabled" uncheckable
+                   ng-click="filterModel.filterQuery('ddmEnabled', 'false')">False
+            </label>
+        </div>
+    </div>
+</div>
+
 <div class="control-group">
     <h3>{{ 'storage-pool-encryption' | translate }}<span class="read-only"
                                                           type="text">{{dataModel.filter.encryption || 'ALL'}}</span>

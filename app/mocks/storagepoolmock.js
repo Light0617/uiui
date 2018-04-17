@@ -11,11 +11,39 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
     var hdt = [
         {
             'tier': 'Platinum',
-            'capacity': mockUtils.getCapacity(50, 100)
+            'capacity': mockUtils.getCapacity(50, 100),
+            'bufferSpace':{
+                'newPageAssignment':{
+                    'unlimited': false,
+                    'value': 8
+                },
+                'tierRelocation':{
+                    'unlimited': false,
+                    'value': 2
+                }
+            },
+            'performanceUtilization':{
+                'unlimited': false,
+                'value': 0
+            }
         },
         {
             'tier': 'Silver',
-            'capacity': mockUtils.getCapacity(50, 100)
+            'capacity': mockUtils.getCapacity(50, 100),
+            'bufferSpace':{
+                'newPageAssignment':{
+                    'unlimited': false,
+                    'value': 8
+                },
+                'tierRelocation':{
+                    'unlimited': false,
+                    'value': 2
+                }
+            },
+            'performanceUtilization':{
+                'unlimited': false,
+                'value': 0
+            }
         }
     ];
 
@@ -55,7 +83,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                 'poolCount':30
             }
         ],
-        'ddm': mockUtils.trueOrFalse()
+        'ddmEnabled': mockUtils.trueOrFalse()
     };
 
     var monitoringModes = ['PERIODICAL', 'CONTINUOUS', 'PERIODICAL_WITH_ACTIVE_FLASH', 'CONTINUOUS_WITH_ACTIVE_FLASH', 'NONE'];
@@ -102,6 +130,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'utilizationThreshold1': mockUtils.randomInt(1,100),
             'utilizationThreshold2': mockUtils.randomInt(1,100),
             'activeFlashEnabled': mockUtils.trueOrFalse(),
+            'ddmEnabled': mockUtils.trueOrFalse(),
             'tiers': tiers,
             'deduplicationEnabled': mockUtils.trueOrFalse(),
             'deduplicationSystemDataCapacityInBytes': 40.00 * 1024 * 1024 * 1024 * 1024,

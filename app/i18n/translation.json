@@ -147,6 +147,7 @@
     "common-on": "On",
     "common-off": "Off",
     "pool-active-flash": "Active Flash",
+    "pool-ddm": "DDM Enabled",
     "common-gb": "GB",
     "common-tb": "TB",
     "common-pb": "PB",
@@ -258,6 +259,7 @@
     "storage-pools-basic-question": "Intend to use for Snap?",
     "storage-pools-question-active-flash": "Intend to enable active flash?",
     "storage-pools-active-flash-license-info": "Platinum tier parity group and valid license is needed to enable Active Flash for Pool.",
+    "storage-pools-question-ddm": "Intend to enable DDM?",
 
     "storage-pool-id": "Pool ID",
     "storage-pool-label": "Pool Label",
@@ -1198,5 +1200,8 @@
     "external-volume-unvirtualize-confirmation": "Unvirtualize Confirmation",
     "external-volume-unvirtualize-content": "The current external volume will be unvirtualized. Do you want to proceed?",
     "external-volumes-unvirtualize-confirmation": "Unvirtualize Confirmation",
-    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?"
+    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?",
+
+    "false": "NO",
+    "true": "YES"
 }

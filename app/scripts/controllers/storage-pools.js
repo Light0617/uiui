@@ -111,7 +111,8 @@ angular.module('rainierApp')
                             min: 0,
                             max: 1000,
                             unit: 'PB'
-                        }
+                        },
+                        ddmEnabled: undefined
                     },
                     filterQuery: function (key, value, type, arrayClearKey) {
                         var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
@@ -188,7 +189,8 @@ angular.module('rainierApp')
                         enabled: function () {
                             return dataModel.onlyOneSelected() &&
                                 !_.find(dataModel.getSelectedItems(), function(item) {
-                                    return item.isUsingExternalStorage();
+                                    //edit button is disabled for ddm pools
+                                    return item.isUsingExternalStorage() || item.ddmEnabled;
                                 });
                         },
                         onClick: function () {
