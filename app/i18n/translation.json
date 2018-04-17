@@ -1111,6 +1111,8 @@
     "migrate-volumes-step-task-settings": "Task Settings",
     "migrate-volumes-no-pool-confirmation-title": "No pool selected",
     "migrate-volumes-no-pool-confirmation-message": "Select one pool to migrate.",
+    "migrate-volumes-poor-capacity-confirmation-title": "Not enough capacity",
+    "migrate-volumes-poor-capacity-confirmation-message": "Total capacity used in the target pool after the migration would exceed the utilization threshold2 limit. Do you want to proceed?",
     "action-tooltip-migrate-volumes": "Migrate Volumes",
     "action-tooltip-migration-tasks-inventory": "{{migrationTaskCount}} Migration Tasks",
     "assigned-to-migration": "Assigned to Migration",

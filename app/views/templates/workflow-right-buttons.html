@@ -7,7 +7,8 @@
             ng-disabled="dataModel.canGoBack && !dataModel.canGoBack()">{{'common-label-previous' | translate}}
     </button>
 
-    <button type="button" class="btn btn-default" type="button" ng-if="!dataModel.validation && dataModel.next" ng-click="dataModel.next()"
+    <button type="button" class="btn btn-default" type="button"
+            ng-if="!dataModel.validation && dataModel.next && !dataModel.needToConfirm" ng-click="dataModel.next()"
             ng-disabled="dataModel.canGoNext && !dataModel.canGoNext()">{{'common-label-next' | translate}}
     </button>
 
@@ -17,6 +18,12 @@
     <div type="button" class="btn btn-default" ng-if="dataModel.validation && dataModel.next && !dataModel.noAvailableArray"
             ng-attr-confirm="{{!dataModel.itemSelected}}" confirm-title="{{dataModel.confirmTitle}}"
             confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()">
+        {{'common-label-next' | translate}} {{dataModel.next}}
+    </div>
+
+    <div type="button" class="btn btn-default" ng-if="dataModel.needToConfirm && dataModel.next"
+         ng-attr-confirm="{{dataModel.needToConfirm()}}" confirm-title="{{dataModel.confirmTitle}}"
+         confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()">
         {{'common-label-next' | translate}} {{dataModel.next}}
     </div>
 
