@@ -418,8 +418,6 @@ angular.module('rainierApp')
                     item.secondaryVolume.displayId = formatVolumeId(item.secondaryVolume.id);
                     item.launchSvol = function () {
                         jumpToVolumeDetailsByType(item.secondaryVolume.storageSystemId, item.secondaryVolume.id);
-//                        var path = ['storage-systems', item.secondaryVolume.storageSystemId, 'volumes', item.secondaryVolume.id].join('/');
-//                        $location.path(path);
                     };
                 }
 
@@ -475,8 +473,6 @@ angular.module('rainierApp')
                     item.hasSecondaryHalf = true;
                     item.launchSvol = function () {
                         jumpToVolumeDetailsByType(item.secondary.storageSystemId, item.secondary.volumeId);
-//                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
-//                        $location.path(path);
                     };
                 } else {
                     item.hasSecondaryHalf = false;
@@ -680,8 +676,6 @@ angular.module('rainierApp')
                 item.bottomPostFix = 'common-label-used';
                 item.onClick = function () {
                     jumpToVolumeDetailsByType(item.storageSystemId, item.volumeId);
-//                    $location.path(['storage-systems', item.storageSystemId, 'volumes', item.volumeId].join(
-//                        '/'));
                 };
 
                 item.isNormal = function () {
@@ -1035,6 +1029,7 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-volume';
                 item.displayVolumeId = formatVolumeId(item.volumeId);
                 item.capacity = diskSizeService.getDisplaySize(item.size);
+                item.totalCapacity = diskSizeService.getDisplaySize(item.size);
                 item.usedCapacity = diskSizeService.getDisplaySize(item.usedCapacity);
                 item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
                 item.displayCapacity = item.capacity.size + ' ' + item.capacity.unit;

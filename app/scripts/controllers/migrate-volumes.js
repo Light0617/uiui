@@ -49,7 +49,7 @@ angular.module('rainierApp')
             _.forEach(volumes, function (item) {
                 if (item.type === constantService.volumeType.EXTERNAL) {
                     // Use total capacity for External-VOL.
-                    totalVolumeSize += item.capacity.value;
+                    totalVolumeSize += item.totalCapacity.value;
                 } else {
                     totalVolumeSize += item.usedCapacity.value;
                 }
