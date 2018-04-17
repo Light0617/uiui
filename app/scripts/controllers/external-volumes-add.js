@@ -93,18 +93,24 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var onProtocolChange = function () {
         startSpinner();
         return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
-        // .catch() // HANDLE ERROR HERE
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
     var setupPortDataModelStatic = function () {
-        var staticProperties = {
-            protocolCandidates: externalVolumesAddService.getProtocolCandidates(),
-            onProtocolChange: onProtocolChange
-        };
-        staticProperties.selectedProtocol = staticProperties.protocolCandidates[0].key;
-        _.extend($scope.dataModel, staticProperties);
-        return $q.resolve($scope.dataModel);
+        return orchestratorService.storagePorts($scope.storageSystem.storageSystemId).then(function (r) {
+            var staticProperties = {
+                protocolCandidates: externalVolumesAddService.getProtocolCandidates(),
+                onProtocolChange: onProtocolChange
+            };
+            if (r.resources && r.resources[0]) {
+                staticProperties.selectedProtocol = r.resources[0].type;
+            } else {
+                staticProperties.selectedProtocol = staticProperties.protocolCandidates[0].key;
+            }
+            _.extend($scope.dataModel, staticProperties);
+            return $scope.dataModel;
+        });
     };
 
     var getAndSetupPortDataModel = function (storageSystem, protocol) {
@@ -113,6 +119,9 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(function () {
                 $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
                 return true;
+            })
+            .then(function () {
+                return externalVolumesAddService.validateGetPortsResult($scope.dataModel.displayList);
             });
     };
 
@@ -133,7 +142,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 return _.some(dataModel.displayList, externalVolumesAddService.filterSelected);
             },
             next: function () {
-                // TODO warnings for taking time
                 $scope.selected.externalPorts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
                 $scope.selected.protocol = $scope.dataModel.selectedProtocol;
                 initDiscoveredLuns();
@@ -145,13 +153,17 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      * 3. LUNS
      */
     var initDiscoveredLuns = function () {
-        startSpinner();
-        var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
-        portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
-            .then(externalVolumesAddService.validateGetLunsResult)
-            .then(setupLuns)
-            .then($scope.dataModel.goNext)
-            .finally(stopSpinner);
+        externalVolumesAddService.openConfirmationDialog('This operation may take time, Proceed?')
+            .then(function () {
+                startSpinner();
+                var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
+                portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
+                    .then(externalVolumesAddService.validateGetLunsResult)
+                    .then(setupLuns)
+                    .then($scope.dataModel.goNext)
+                    .catch(externalVolumesAddService.handleDiscoverError)
+                    .finally(stopSpinner);
+            });
     };
 
     var setupLuns = function (lunsDataModel) {
@@ -183,9 +195,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         // startSpinner();
         getAndSetupHosts()
             .then($scope.dataModel.goNext)
-            .catch(function (e) {
-                console.log('HI THERE!:', e);
-            })
             .finally(stopSpinner);
     };
 

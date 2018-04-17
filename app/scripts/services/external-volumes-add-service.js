@@ -16,22 +16,69 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('externalVolumesAddService', function (
-    $q, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
+    $q, $modal, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
     paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew
 ) {
 
     /**
      * COMMON
      */
-    var openWarningDialog = function (/*message*/) {
+    var openErrorDialog = function (messageKey) {
+        if (!_.isString(messageKey) && messageKey.message) {
+            messageKey = messageKey.message;
+        }
+        var modalInstance = $modal.open({
+            templateUrl: 'views/templates/error-modal.html',
+            windowClass: 'modal fade confirmation',
+            backdropClass: 'modal-backdrop',
+            controller: function ($scope) {
+                $scope.error = {
+                    title: synchronousTranslateService.translate('error-message-title'),
+                    message: synchronousTranslateService.translate(messageKey)
+                };
+                $scope.cancel = function () {
+                    modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                };
 
+                modalInstance.result.finally(function () {
+                    modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                });
+            }
+        });
+    };
+
+    var openConfirmationDialog = function (message) {
+        var defer = $q.defer();
+        var modelInstance = $modal.open({
+            templateUrl: 'views/templates/basic-confirmation-modal.html',
+            windowClass: 'modal fade confirmation',
+            backdropClass: 'modal-backdrop',
+            controller: function ($scope) {
+                $scope.confirmationDialog = 'Warning';
+                $scope.confirmationMessage = message;
+                $scope.cancel = function () {
+                    modelInstance.dismiss('cancel');
+                    defer.reject(false);
+                };
+                $scope.ok = function () {
+                    modelInstance.close(true);
+                    defer.resolve(true);
+                };
+
+                modelInstance.result.finally(function () {
+                    $scope.cancel();
+                    defer.reject(false);
+                });
+            }
+        });
+        return defer.promise;
     };
 
     var filterSelected = function (i) {
         return i.selected;
     };
 
-    var updateResultTotalCountsFn = function(dataModel) {
+    var updateResultTotalCountsFn = function (dataModel) {
         return function (result) {
             dataModel.nextToken = result.nextToken;
             dataModel.cachedList = result.resources;
@@ -64,6 +111,13 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             });
     };
 
+    var validateGetPortsResult = function (ports) {
+        if (ports.length) {
+            return ports;
+        }
+        return $q.reject({ message: 'No available ports for selected protocol.' });
+    };
+
     /**
      * LUNS
      */
@@ -79,14 +133,13 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var validateGetLunsResult = function (luns) {
         if (!luns.length) {
-            openDialogForFialedToDiscovery();
             return $q.reject();
         }
         return luns;
     };
 
-    var openDialogForFialedToDiscovery = function () {
-        // TODO
+    var handleDiscoverError = function () {
+        openErrorDialog('Failed to discover LUN from selected port.');
     };
 
     /**
@@ -150,15 +203,18 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     return {
         /** COMMON */
-        openWarningDialog: openWarningDialog,
+        openErrorDialog: openErrorDialog,
+        openConfirmationDialog: openConfirmationDialog,
         filterSelected: filterSelected,
         updateResultTotalCountsFn: updateResultTotalCountsFn,
         /** PORTS */
         getProtocolCandidates: getProtocolCandidates,
         getPortsModel: getPortsModel,
+        validateGetPortsResult: validateGetPortsResult,
         /** LUNS */
         getLunsDataModel: getLunsDataModel,
         validateGetLunsResult: validateGetLunsResult,
+        handleDiscoverError: handleDiscoverError,
         /** SERVERS */
         GET_SERVERS_PATH: GET_SERVERS_PATH,
         getHostsModel: getHostsModel,
