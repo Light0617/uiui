@@ -220,7 +220,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     var initPathsModel = function (hostModeOptions, ports, hosts) {
         var result = {
             hostModeCandidates: constantService.osType(),
-            hostModeOptions: hostModeOptions,
+            hostModeOptionCandidates: hostModeOptions,
             selectServerPath: true,
             isVirtualizeVolume: true,
             selectedServer: hosts,
@@ -232,6 +232,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             }
         };
         result.selectedHostMode = invokeFindHostMode(hosts[0], result.hostModeCandidates);
+        result.selectedHostModeOptions = [];
         var idCoordinates = {};
         attachVolumeService.setPortCoordiantes(result.pathModel.storagePorts, idCoordinates);
         attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, [], idCoordinates);

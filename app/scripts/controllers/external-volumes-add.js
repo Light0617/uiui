@@ -301,10 +301,13 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             validation: false,
             canSubmit: function () {
                 var paths = remainingPaths();
-                return paths.length > 0;
+                return paths.length > 0 &&
+                    $scope.dataModel.selectedHostModeOption.length > 0 &&
+                    !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
             },
             submit: function () {
                 $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
+                $scope.selected.hostModeOption = $scope.dataModel.selectedHostModeOption;
                 $scope.selected.paths = remainingPaths();
                 // TODO impl actual api call to use $scope.selected
                 console.log(JSON.stringify($scope.selected));

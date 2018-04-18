@@ -8,6 +8,16 @@
         </select>
     </div>
 
+    <!-- HOST MODE OPTIONS -->
+    <div class="label-value-container">
+        <label class="label">Host Mode Option</label>
+        <select class="form-control"
+                ng-model="dataModel.selectedHostModeOption"
+                ng-options="hmo.id as hmo.displayName for hmo in dataModel.hostModeOptionCandidates"
+                multiple>
+        </select>
+    </div>
+
     <!-- LUNS -->
     <div class="label-value-container">
         <label class="label">Lun / Capacity / ID</label>
