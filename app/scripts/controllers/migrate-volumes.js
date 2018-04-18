@@ -184,7 +184,16 @@ angular.module('rainierApp')
                             this.confirmMessage = synchronousTranslateService.translate('migrate-volumes-no-pool-confirmation-message');
                             return true;
                         }
-                        if (!checkUtilizationThreshold2(dataModel.getSelectedItems()[0])) {
+                        var pool = dataModel.getSelectedItems()[0];
+                        if (pool.status !== constantService.poolStatus.NORMAL) {
+                            var statusObj = {status: pool.status};
+                            this.confirmTitle = synchronousTranslateService.translate(
+                                'migrate-volumes-not-normal-confirmation-title', statusObj);
+                            this.confirmMessage = synchronousTranslateService.translate(
+                                'migrate-volumes-not-normal-confirmation-message', statusObj);
+                            return true;
+                        }
+                        if (!checkUtilizationThreshold2(pool)) {
                             this.confirmTitle = synchronousTranslateService.translate('migrate-volumes-poor-capacity-confirmation-title');
                             this.confirmMessage = synchronousTranslateService.translate('migrate-volumes-poor-capacity-confirmation-message');
                             return true;
