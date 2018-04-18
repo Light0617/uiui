@@ -472,6 +472,8 @@
     "storage-volume-attach-different-protocol-servers": "Cannot attach volumes for different protocol servers.",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name(s) [{{ chapUserNames }}] already exists in the specified Storage Port {{ storagePort }} of {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure you want to proceed?",
+    "storage-volume-attach-no-storage-port-for-server-title": "No Storage Port for Server",
+    "storage-volume-attach-no-storage-port-for-server-message": "There is no Storage Port for specified Server protocol {{ serverProtocol }} in Storage System {{ storageSystemId }}.",
     "no-servers-onboarded": "No servers have been added yet.",
 
     "attach-volumes-number-of-volume": "# of Vol.",
