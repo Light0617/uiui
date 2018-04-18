@@ -48,12 +48,8 @@
         <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.sourcePoolId === 'N/A'}}"
              title="{{vp.sourcePoolId}}"><p>{{vp.sourcePoolId}}</p>
         </div>
-        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourceParityGroup(dataModel.storageSystemId)"
-           ng-show="{{vp.sourceExternalParityGroupId !== 'N/A'}}" title="{{vp.sourceExternalParityGroupId}}">
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.sourceExternalParityGroupId}}">
             <p>{{vp.sourceExternalParityGroupId}}</p>
-        </a>
-        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.sourceExternalParityGroupId === 'N/A'}}"
-             title="{{vp.sourceExternalParityGroupId}}"><p>{{vp.sourceExternalParityGroupId}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetVol(dataModel.storageSystemId)"
            ng-show="{{vp.displayTargetVolumeId !== 'N/A'}}" title="{{vp.displayTargetVolumeId}}">

@@ -67,6 +67,8 @@ angular.module('rainierApp')
                         {
                             iscsiTargetName: hostGroup.iscsiTargetInformation.iscsiTargetName
                         });
+                    $scope.cancelButtonLabel = synchronousTranslateService.translate('no');
+                    $scope.okButtonLabel = synchronousTranslateService.translate('yes');
 
                     $scope.ok = function () {
                         var payload = {

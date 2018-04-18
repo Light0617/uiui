@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                       inventorySettingsService, storageSystemVolumeService, queryService,
                                       paginationService, scrollDataSourceBuilderServiceNew, volumeService,
                                       replicationService, gadVolumeTypeSearchService, migrationTaskService,
-                                      mutualChapService, resourceTrackerService) {
+                                      mutualChapService, resourceTrackerService, virtualizeVolumeService) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -141,12 +141,7 @@ angular.module('rainierApp')
                         type: 'link',
                         enabled: function () {
                             return dataModel.onlyOneSelected() &&
-                                _.find(dataModel.getSelectedItems(), function(volume) {
-                                    return isVolumeGADAware(volume);
-                                }) === undefined &&
-                                !_.some(dataModel.getSelectedItems(), function (vol) {
-                                    return vol.isShredding();
-                                });
+                                _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
                         },
                         onClick: function () {
                             var item = _.first(dataModel.getSelectedItems());
@@ -227,6 +222,17 @@ angular.module('rainierApp')
                             return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(), function (vol) {
                                        return vol.isShredding();
                                    });
+                        }
+                    },
+                    {
+                        icon: 'icon-volume',
+                        tooltip: 'Attach to Storage',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.anySelected();
+                        },
+                        onClick: function () {
+                            virtualizeVolumeService.invokeOpenAttachToStorageFromHost(dataModel.getSelectedItems());
                         }
                     },
                     {

@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
                                                       constantService, resourceTrackerService, replicationService,
-                                                      gadVolumeTypeSearchService, migrationTaskService) {
+                                                      gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -39,10 +39,27 @@ angular.module('rainierApp')
         };
 
         var actions = {
-            'SN2': sn2Action
+            'SN2': sn2Action,
+            'interrupt-shredding': {
+                icon: 'icon-stop',// TODO Change icon
+                title :'interrupt-shredding',
+                tooltip: 'interrupt-shredding',
+                type: 'confirm',
+                confirmTitle: 'interrupt-shredding-confirmation-title',
+                confirmMessage: 'interrupt-shredding-confirmation-message',
+                enabled: function () {
+                    return true;
+                },
+                onClick: function (orchestratorService) {
+                    var payload = {
+                        storageSystemId: storageSystemId
+                    };
+                    orchestratorService.interruptShreddings(payload);
+                }
+            }
         };
 
-        $scope.summaryModel={
+        $scope.summaryModel = {
             getActions: function () {
                 return _.map(actions);
             }
@@ -85,7 +102,9 @@ angular.module('rainierApp')
 
             storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
 
-                ShareDataService.SVolsList = _.filter(result.resources, function(SVol){ return SVol.primaryVolume && SVol.secondaryVolume; });
+                ShareDataService.SVolsList = _.filter(result.resources, function (SVol) {
+                    return SVol.primaryVolume && SVol.secondaryVolume;
+                });
                 ShareDataService.restorePrimaryVolumeId = volumeId;
                 ShareDataService.restorePrimaryVolumeToken = result.nextToken;
 
@@ -95,6 +114,17 @@ angular.module('rainierApp')
                 $location.path(['/storage-systems/', storageSystemId, '/volumes/volume-actions-restore-selection'].join(''));
             });
         };
+
+        var getStorageSystems = function () {
+            return paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
+                result = _.filter(result, function (r) {
+                    return r.storageSystemId !== storageSystemId;
+                });
+                $scope.dataModel.storageSystems = result;
+
+                return $q.resolve(result);
+            });
+        }
 
         paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true, storageSystemId).then(function (result) {
             paginationService.clearQuery();
@@ -119,7 +149,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                            paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -164,24 +194,24 @@ angular.module('rainierApp')
                     migrationType: ''
                 },
                 fetchPreviousVolumeType: function (previousVolumeType) {
-                  $scope.filterModel.filter.previousVolumeType = previousVolumeType;
+                    $scope.filterModel.filter.previousVolumeType = previousVolumeType;
                 },
                 arrayType: (new paginationService.SearchType()).ARRAY,
                 filterQuery: function (key, value, type, arrayClearKey) {
                     gadVolumeTypeSearchService.filterQuery(key, value, type, arrayClearKey, $scope.filterModel);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 migrationFilterQuery: function (type, isManaged) {
                     migrationTaskService.volumeMigrationTypeFilter(type, isManaged, $scope.filterModel.filter.migrationType);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 },
-                sliderQuery: function(key, start, end, unit) {
+                sliderQuery: function (key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 },
@@ -190,7 +220,7 @@ angular.module('rainierApp')
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
                     queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume, storageSystemId).then(function (result) {
                         updateResultTotalCounts(result);
                     });
                 }
@@ -198,16 +228,33 @@ angular.module('rainierApp')
 
             inventorySettingsService.setVolumesGridSettings(dataModel);
 
-            var hasGadVolume = function(selectedVolumes)  {
-                return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
+            var hasGadVolume = function (selectedVolumes) {
+                return _.find(selectedVolumes, function (volume) {
+                    return volume.isGadVolume();
+                }) !== undefined;
             };
 
             var hasShredding = function (selectedVolumes) {
-                return _.some(selectedVolumes, function (vol) { return vol.isShredding(); });
+                return _.some(selectedVolumes, function (vol) {
+                    return vol.isShredding();
+                });
             };
 
             var enableToShred = function (volume) {
                 return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
+            };
+
+            var detachFromTargetStorageDialogSettings = function () {
+                var dialogSettings = {
+                    id: 'detachFromTargetStorageConfirmation',
+                    title: 'storage-volume-detach-from-target',
+                    content: 'storage-volume-detach-from-target-content',
+                    disableRadioButton: true,
+                    itemAttributes: [],
+                    itemAttribute: {}
+                };
+
+                return dialogSettings;
             };
 
             var actions = [
@@ -220,7 +267,7 @@ angular.module('rainierApp')
                     confirmMessage: 'storage-volume-delete-selected-content',
                     enabled: function () {
                         return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
-                               !hasShredding(dataModel.getSelectedItems());
+                            !hasShredding(dataModel.getSelectedItems());
                     },
                     onClick: function () {
 
@@ -244,7 +291,7 @@ angular.module('rainierApp')
                     type: 'link',
                     enabled: function () {
                         return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
-                               !hasShredding(dataModel.getSelectedItems());
+                            !hasShredding(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
@@ -264,6 +311,18 @@ angular.module('rainierApp')
                     onClick: function () {
                         ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
+                    }
+                },
+                // Attach to storage
+                {
+                    icon: 'icon-volume',
+                    tooltip: 'Attach to Storage',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    onClick: function () {
+                        virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
                     }
                 },
                 //Virtualize
@@ -286,12 +345,12 @@ angular.module('rainierApp')
                     icon: 'icon-shred-volume',
                     tooltip: 'shred-volumes',
                     type: 'link',
-                    enabled: function(){
+                    enabled: function () {
                         return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
-                               !_.some(dataModel.getSelectedItems(), function (vol) {
-                                    return !vol.isUnattached() || !enableToShred(vol) ||
-                                           vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
-                               });
+                            !_.some(dataModel.getSelectedItems(), function (vol) {
+                                return !vol.isUnattached() || !enableToShred(vol) ||
+                                    vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
+                            });
                     },
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
@@ -307,7 +366,7 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             flags.push(item.isUnattached());
                         });
-                        if(flags.areAllItemsTrue() ) {
+                        if (flags.areAllItemsTrue()) {
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                             $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
                         } else {
@@ -320,13 +379,13 @@ angular.module('rainierApp')
                                         modelInstance.dismiss('cancel');
                                     };
 
-                                    $scope.ok = function() {
+                                    $scope.ok = function () {
                                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                                         $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
                                         modelInstance.close(true);
                                     };
 
-                                    modelInstance.result.finally(function() {
+                                    modelInstance.result.finally(function () {
                                         $scope.cancel();
                                     });
                                 }
@@ -343,13 +402,41 @@ angular.module('rainierApp')
                     type: 'link',
                     enabled: function () {
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                                function (vol) {
-                                    return vol.isAttached();
-                                }) && !hasGadVolume(dataModel.getSelectedItems());
+                            function (vol) {
+                                return vol.isAttached();
+                            }) && !hasGadVolume(dataModel.getSelectedItems());
                     },
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
                         item.actions.detach.onClick();
+                    }
+                },
+                {
+                    icon: 'icon-detach-volume',
+                    tooltip: 'storage-volume-detach-from-target',
+                    type: 'confirmation-modal',
+                    dialogSettings: detachFromTargetStorageDialogSettings(),
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    confirmClick: function () {
+                        $('#' + this.dialogSettings.id).modal('hide');
+                        var firstItem = _.first(dataModel.getSelectedItems());
+
+                        orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                    },
+                    onClick: function () {
+                        var dialogSettings = this.dialogSettings;
+
+                        getStorageSystems().then(function (result) {
+                            _.each($scope.dataModel.storageSystems, function (storageSystem) {
+                                dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
+                            });
+                            dialogSettings.itemAttribute = {
+                                value: dialogSettings.itemAttributes[0]
+                            };
+                            this.dialogSettings = dialogSettings;
+                        });
                     }
                 },
                 {
@@ -406,7 +493,7 @@ angular.module('rainierApp')
             dataModel.cachedList = result.resources;
             dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
-            dataModel.getResources = function(){
+            dataModel.getResources = function () {
                 return paginationService.get($scope.dataModel.nextToken, GET_VOLUMES_PATH, objectTransformService.transformVolume, false, storageSystemId);
             };
             $scope.dataModel = dataModel;
@@ -414,7 +501,7 @@ angular.module('rainierApp')
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
         });
 
-        var updateResultTotalCounts = function(result) {
+        var updateResultTotalCounts = function (result) {
             $scope.dataModel.nextToken = result.nextToken;
             $scope.dataModel.cachedList = result.resources;
             $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
@@ -424,9 +511,9 @@ angular.module('rainierApp')
             };
         };
 
-        Array.prototype.areAllItemsTrue = function() {
-            for(var i = 0; i < this.length; i++) {
-                if(this[i] === false) {
+        Array.prototype.areAllItemsTrue = function () {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] === false) {
                     return false;
                 }
             }

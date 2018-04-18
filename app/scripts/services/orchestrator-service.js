@@ -84,7 +84,10 @@ angular.module('rainierApp')
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/volume-manager/previrtualize').post(payload));
             },
             previrtualize: function (payload) {
-                return Restangular.all('volume-manager/attach-to-storage').post(payload);
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/attach-to-storage').post(payload));
+            },
+            unprevirtualize: function(storageSystemId, volumeId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/volumes/' + volumeId + '/detach-from-storage').post());
             },
             jobStatus: function(jobId) {
                 return Restangular.one('jobs/' + jobId).get();
@@ -421,6 +424,9 @@ angular.module('rainierApp')
             },
             shredVolumes: function (shredVolumesPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred').post(shredVolumesPayload));
+            },
+            interruptShreddings: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred/interrupt').post(payload));
             },
             deleteVolume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).remove());

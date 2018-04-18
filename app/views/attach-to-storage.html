@@ -1,0 +1,11 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <wizard-header ng-title="'Attach Volumes to Stroage'" icon-class="icon-volume"></wizard-header>
+    <single-step-wizard-body
+            ng-title="Create Path to Target Storage"
+            left-panel-template="views/workflow-templates/attach-to-storage-left-panel.html"
+            right-panel-template="views/workflow-templates/attach-to-storage-right-panel.html"
+            ng-model="dataModel"
+    ></single-step-wizard-body>
+    <wizard-footer ng-model="dataModel.footerModel" ng-if="dataModel.footerModel"></wizard-footer>
+</wizard-page>
