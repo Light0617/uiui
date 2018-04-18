@@ -41,7 +41,7 @@ angular.module('rainierApp')
         var actions = {
             'SN2': sn2Action,
             'interrupt-shredding': {
-                icon: 'icon-stop',// TODO Change icon
+                icon: 'icon-cancel-volume-shredding',// TODO Change icon
                 title :'interrupt-shredding',
                 tooltip: 'interrupt-shredding',
                 type: 'confirm',
@@ -315,7 +315,7 @@ angular.module('rainierApp')
                 },
                 // Attach to storage
                 {
-                    icon: 'icon-volume',
+                    icon: 'icon-attach-vol-to-storage',
                     tooltip: 'Attach to Storage',
                     type: 'link',
                     enabled: function () {
@@ -323,6 +323,34 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
+                    }
+                },
+                {
+                    icon: 'icon-detach-vol-to-storage',
+                    tooltip: 'storage-volume-detach-from-target',
+                    type: 'confirmation-modal',
+                    dialogSettings: detachFromTargetStorageDialogSettings(),
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    confirmClick: function () {
+                        $('#' + this.dialogSettings.id).modal('hide');
+                        var firstItem = _.first(dataModel.getSelectedItems());
+
+                        orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                    },
+                    onClick: function () {
+                        var dialogSettings = this.dialogSettings;
+
+                        getStorageSystems().then(function (result) {
+                            _.each($scope.dataModel.storageSystems, function (storageSystem) {
+                                dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
+                            });
+                            dialogSettings.itemAttribute = {
+                                value: dialogSettings.itemAttributes[0]
+                            };
+                            this.dialogSettings = dialogSettings;
+                        });
                     }
                 },
                 //Virtualize
@@ -409,34 +437,6 @@ angular.module('rainierApp')
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
                         item.actions.detach.onClick();
-                    }
-                },
-                {
-                    icon: 'icon-detach-volume',
-                    tooltip: 'storage-volume-detach-from-target',
-                    type: 'confirmation-modal',
-                    dialogSettings: detachFromTargetStorageDialogSettings(),
-                    enabled: function () {
-                        return dataModel.anySelected();
-                    },
-                    confirmClick: function () {
-                        $('#' + this.dialogSettings.id).modal('hide');
-                        var firstItem = _.first(dataModel.getSelectedItems());
-
-                        orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
-                    },
-                    onClick: function () {
-                        var dialogSettings = this.dialogSettings;
-
-                        getStorageSystems().then(function (result) {
-                            _.each($scope.dataModel.storageSystems, function (storageSystem) {
-                                dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
-                            });
-                            dialogSettings.itemAttribute = {
-                                value: dialogSettings.itemAttributes[0]
-                            };
-                            this.dialogSettings = dialogSettings;
-                        });
                     }
                 },
                 {
