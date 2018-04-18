@@ -113,7 +113,7 @@ angular.module('rainierApp')
         function generateEditFibrePortDialogSettings() {
             var dialogSettings = {
                 id: 'securityEnableDisableConfirmation',
-                title: 'edit-fibre-port-title',
+                dialogTitle: 'edit-fibre-port-title',
                 content: 'edit-fibre-port-content',
                 trueText: 'storage-port-enable-security',
                 falseText: 'storage-port-not-enable-security',
