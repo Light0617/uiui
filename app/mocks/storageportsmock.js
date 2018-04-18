@@ -116,7 +116,7 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
             return mockUtils.response.ok(iscsiPort(1));
         }
         if (_.some(urlResult.queryParams, typeCondition('ISCSI'))) {
-            var iscsis = _.filter([], typeFilter('ISCSI'));
+            var iscsis = _.filter(storagePorts, typeFilter('ISCSI'));
             return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(iscsis, 'storagePorts'));
         }
         if (_.some(urlResult.queryParams, typeCondition('FIBRE'))) {
