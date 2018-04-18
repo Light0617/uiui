@@ -116,7 +116,7 @@
     "common-label-previous": "Previous",
     "common-label-cancel": "Cancel",
     "common-label-reset": "Reset",
-    "common-label-ok": "Ok",
+    "common-label-ok": "OK",
     "common-label-unlimited": "Unlimited",
     "common-label-protected-hosts": "Protected",
     "common-label-unprotected-hosts": "Unprotected",
@@ -531,7 +531,7 @@
     "parity-group-basic-raid-layout": "RAID Layout",
 
     "cancel-button": "Cancel",
-    "ok-button": "Ok",
+    "ok-button": "OK",
     "submit-button": "Submit",
     "yes-button": "Yes",
     "no-button": "No",
