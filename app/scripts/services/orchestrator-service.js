@@ -99,8 +99,8 @@ angular.module('rainierApp')
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/' + storageSystemId + '/virtualize').post(payload));
             },
-            unvirtualizeVolume: function (storageSystemId, volumeId) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/external-volumes/' + volumeId).remove());
+            unvirtualizeVolume: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/unvirtualize').post(payload));
             },
             editReplicationGroup: function (storageSystemId, replicationGroupId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('replication-groups/' + replicationGroupId).patch(payload));
