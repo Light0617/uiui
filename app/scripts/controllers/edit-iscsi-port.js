@@ -79,7 +79,7 @@ angular.module('rainierApp')
         var generatePayload = function (model) {
             var payload = {
                 securitySwitchEnabled: model.securitySwitchEnabled,
-                attribute: model.supportPortAttribute ? storagePortsService.getRawPortAttribute(model.attribute) : undefined,
+                attribute: model.attribute ? storagePortsService.getRawPortAttribute(model.attribute) : undefined,
                 iscsiPortInformation: {
                     ipv6Enabled: model.ipv6Enabled,
                     ipv4Information: {
