@@ -267,7 +267,8 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             },
             next: function () {
                 $scope.selected.hosts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
-                initPaths().then($scope.dataModel.goNext);
+                externalVolumesAddService.checkSelectedHosts($scope.selected.hosts)
+                    .then(initPaths).then($scope.dataModel.goNext);
             },
             previous: function () {
                 initDiscoveredLuns().then($scope.dataModel.goBack);

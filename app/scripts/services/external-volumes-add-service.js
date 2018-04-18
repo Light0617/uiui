@@ -57,6 +57,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             controller: function ($scope) {
                 $scope.confirmationDialog = 'Warning';
                 $scope.confirmationMessage = message;
+                $scope.cancelButtonLabel = 'Cancel';
+                $scope.okButtonLabel = 'OK';
                 $scope.cancel = function () {
                     modelInstance.dismiss('cancel');
                     defer.reject(false);
@@ -210,6 +212,20 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         return hosts;
     };
 
+    var checkSelectedHosts = function (hosts) {
+        var protocols = _.chain(hosts)
+            .map(function (h) {
+                return h.protocol;
+            })
+            .uniq()
+            .value();
+        if (protocols.length !== 1) {
+            openErrorDialog('Cannot virtualize volumes for different protocol servers.');
+            return $q.reject();
+        }
+        return $q.resolve(true);
+    };
+
     /**
      * PATHS
      */
@@ -300,6 +316,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         getHostsModel: getHostsModel,
         getHostsFilterModel: getHostsFilterModel,
         validateGetHostsResult: validateGetHostsResult,
+        checkSelectedHosts: checkSelectedHosts,
         /** PATHS */
         getPathsModel: getPathsModel
     };
