@@ -315,7 +315,7 @@ angular.module('rainierApp')
                 },
                 // Attach to storage
                 {
-                    icon: 'icon-volume',
+                    icon: 'icon-virtualize-volume',
                     tooltip: 'Attach to Storage',
                     type: 'link',
                     enabled: function () {
@@ -323,21 +323,6 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
-                    }
-                },
-                //Virtualize
-                //TODO: need to change the icon
-                {
-                    icon: 'icon-virtualize-volume',
-                    tooltip: 'virtualize-volumes',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.anySelected();;
-                    },
-                    onClick: function () {
-                        ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
-                        ShareDataService.isAddExtVolume = false;
-                        $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
                     }
                 },
                 //Shredding
