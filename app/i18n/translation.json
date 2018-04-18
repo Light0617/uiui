@@ -194,8 +194,8 @@
     "FICON": "FICON",
     "ISCSI": "iSCSI",
     "SCSI": "SCSI",
-    "storage-port-enable-security-title": "Modify Security",
-    "storage-port-enable-security-content": "Modify security for the {{getSelectedCount()}} selected ports to:",
+    "edit-fibre-port-title": "Edit Fibre Port",
+    "edit-fibre-port-content": "Modify port settings for the {{getSelectedCount()}} selected ports to:",
 
     "edit-iscsi-port": "Edit iSCSI Port",
     "edit-iscsi-port-settings": "iSCSI Port Settings",
@@ -789,7 +789,7 @@
     "action-tooltip-unprotect-volumes" : "Unprotect Volumes",
     "action-tooltip-update-volumes" : "Update Volumes",
     "action-tooltip-delete-volumes" : "Delete Volumes",
-    "action-tooltip-toggle-security" : "Enable/Disable Security",
+    "action-tooltip-edit-fibre-port" : "Edit Fibre Port",
     "action-tooltip-unvirtualize" : "Unvirtualize",
 
     "clone-now-tooltip" : "Clone now - Makes a point in time copy of the volume selected using Shadow Image technology",

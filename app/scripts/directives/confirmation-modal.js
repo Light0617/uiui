@@ -10,7 +10,7 @@ angular.module('rainierApp')
     .directive('confirmationModal', function () {
         return {
             scope: {
-                title: '@title',
+                dialogTitle: '@dialogTitle',
                 content: '@content',
                 confirmClick: '&',
                 modalId: '@',

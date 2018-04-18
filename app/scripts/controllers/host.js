@@ -169,7 +169,7 @@ angular.module('rainierApp')
                         type: 'confirmation-modal',
                         dialogSettings: {
                             id: 'detachVolumeConfirmation',
-                            title: 'storage-volume-detach-confirmation',
+                            dialogTitle: 'storage-volume-detach-confirmation',
                             content: 'storage-volume-detach-selected-content',
                             trueText: 'storage-volume-detach-remove-zone',
                             falseText: 'storage-volume-detach-not-remove-zone',
