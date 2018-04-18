@@ -421,14 +421,24 @@ angular.module('rainierApp')
                     },
                     confirmClick: function () {
                         $('#' + this.dialogSettings.id).modal('hide');
-                        var firstItem = _.first(dataModel.getSelectedItems());
 
-                        orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                        var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
+
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            var unprevirtualizePayload  = {
+                                targetStorageSystemId : targetStorageSystemId
+                            };
+
+                            console.log(unprevirtualizePayload);
+
+                            orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
+                        });
+
                     },
                     onClick: function () {
                         var dialogSettings = this.dialogSettings;
 
-                        getStorageSystems().then(function (result) {
+                        getStorageSystems().then(function () {
                             _.each($scope.dataModel.storageSystems, function (storageSystem) {
                                 dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
                             });
