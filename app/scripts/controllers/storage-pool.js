@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
                                              replicationService, resourceTrackerService, gadVolumeTypeSearchService,
-                                             migrationTaskService, $q, constantService) {
+                                             migrationTaskService, $q, constantService, virtualizeVolumeService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -58,6 +58,7 @@ angular.module('rainierApp')
             var ddmEnabled = poolResult.ddmEnabled;
             var actions = [];
             var gridSettings;
+            var dataModel = {};
 
             var hasGadVolume = function(selectedVolumes)  {
                 return _.find(selectedVolumes, function(volume) {return volume.isGadVolume();}) !== undefined;
@@ -144,12 +145,24 @@ angular.module('rainierApp')
 
                         }
                     },
+                    // Attach to storage
+                    {
+                        icon: 'icon-volume',
+                        tooltip: 'Attach to Storage',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.anySelected();
+                        },
+                        onClick: function () {
+                            virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
+                        }
+                    },
                     {
                         icon: 'icon-virtualize-volume',
                         tooltip: 'virtualize-volumes',
                         type: 'link',
                         enabled: function () {
-                            return true;
+                            return dataModel.anySelected();;
                         },
                         onClick: function () {
                             ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
@@ -290,7 +303,7 @@ angular.module('rainierApp')
 
             paginationService.get(null, PATH, transform, true, storageSystemId).then(function (result) {
                 paginationService.clearQuery();
-                var dataModel = {
+                dataModel = {
                     view: 'tile',
                     storagePoolId: storagePoolId,
                     context: 'Volume',

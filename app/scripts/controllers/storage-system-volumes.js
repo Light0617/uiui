@@ -332,7 +332,7 @@ angular.module('rainierApp')
                     tooltip: 'virtualize-volumes',
                     type: 'link',
                     enabled: function () {
-                        return true;
+                        return dataModel.anySelected();;
                     },
                     onClick: function () {
                         ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
