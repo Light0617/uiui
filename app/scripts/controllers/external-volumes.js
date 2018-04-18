@@ -176,17 +176,23 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         // Build reserved resources
-                        var reservedResourcesList = [];
+//                        var reservedResourcesList = [];
                         var volIds = [];
                         _.forEach(dataModel.getSelectedItems(), function (item) {
-                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
+//                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
                             volIds.push(item.volumeId);
                         });
+                        var unvirtualizePayload = {
+                            storageSystemId: storageSystemId,
+                            volumeIds: volIds
+                        };
 
                         // Show popup if resource is present in resource tracker else submit
-                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
-                            resourceTrackerService.storageSystem(), 'Unvirtualize Confirmation', storageSystemId,
-                            volIds, null, orchestratorService.unvirtualizeVolume);
+//                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
+//                            resourceTrackerService.storageSystem(), 'Unvirtualize Confirmation', null, null,
+//                            unvirtualizePayload, orchestratorService.unvirtualizeVolume);
+                        // FIXME Server is not supported of ExternalVolume reservation. So, execute without check.
+                        orchestratorService.unvirtualizeVolume(unvirtualizePayload);
                     }
                 }
             ];
