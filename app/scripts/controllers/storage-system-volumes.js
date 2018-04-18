@@ -124,7 +124,7 @@ angular.module('rainierApp')
 
                 return $q.resolve(result);
             });
-        }
+        };
 
         paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true, storageSystemId).then(function (result) {
             paginationService.clearQuery();
@@ -342,7 +342,7 @@ angular.module('rainierApp')
                     onClick: function () {
                         var dialogSettings = this.dialogSettings;
 
-                        getStorageSystems().then(function (result) {
+                        getStorageSystems().then(function () {
                             _.each($scope.dataModel.storageSystems, function (storageSystem) {
                                 dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
                             });
@@ -360,7 +360,7 @@ angular.module('rainierApp')
                     tooltip: 'virtualize-volumes',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.anySelected();;
+                        return dataModel.anySelected();
                     },
                     onClick: function () {
                         ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
