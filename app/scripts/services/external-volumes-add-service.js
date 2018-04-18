@@ -203,6 +203,13 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         };
     };
 
+    var validateGetHostsResult = function (hosts) {
+        if (!hosts.length) {
+            return $q.reject({ message: 'No available servers for selected protocol.' });
+        }
+        return hosts;
+    };
+
     /**
      * PATHS
      */
@@ -247,8 +254,15 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     };
 
     var getHostModeOptions = function (storageSystemId) {
-        return orchestratorService.storageSystemHostModeOptions(storageSystemId);
-        // .then() check length
+        return orchestratorService.storageSystemHostModeOptions(storageSystemId)
+            .then(validateGetHostModeOptionsResult);
+    };
+
+    var validateGetHostModeOptionsResult = function (result) {
+        if (result.length) {
+            return result;
+        }
+        $q.reject({ message: 'Failed to get available host mode options.' });
     };
 
     var getStoragePorts = function (storageSystemId, protocol) {
@@ -257,8 +271,14 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         return paginationService.getAllPromises(
             null, 'storage-ports?q=type:+' + protocol + '+AND+attributes:TARGET_PORT&sort=storagePortId:ASC',
             false, storageSystemId, objectTransformService.transformPort
-        );
-        // .then() check length
+        ).then(validateGetStoragePortsResult);
+    };
+
+    var validateGetStoragePortsResult = function (result) {
+        if (result.length) {
+            return result;
+        }
+        return $q.reject({ message: 'No available ports for virtualize.' });
     };
 
     return {
@@ -279,6 +299,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         GET_HOSTS_PATH: GET_HOSTS_PATH,
         getHostsModel: getHostsModel,
         getHostsFilterModel: getHostsFilterModel,
+        validateGetHostsResult: validateGetHostsResult,
         /** PATHS */
         getPathsModel: getPathsModel
     };

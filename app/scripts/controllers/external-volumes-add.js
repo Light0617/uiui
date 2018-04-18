@@ -221,19 +221,17 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var initServers = function () {
         startSpinner();
         return getAndSetupHosts()
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
     var getAndSetupHosts = function () {
         return externalVolumesAddService.getHostsModel()
             .then(setupHosts)
-            .then(filterByProtocol)
+            .then(function () {
+                return externalVolumesAddService.validateGetHostsResult($scope.dataModel.displayList);
+            })
             .then(autoSelectHost);
-    };
-
-    var filterByProtocol = function () {
-        $scope.filterModel.filterQuery('protocol', $scope.selected.protocol);
-        return true;
     };
 
     var setupHosts = function (hostsDataModel) {
@@ -282,7 +280,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initPaths = function () {
         startSpinner();
-        return getAndSetupPathsModel($scope.storageSystem.storageSystemId, $scope.selected.hosts, $scope.selected.protocol)
+        return getAndSetupPathsModel(
+            $scope.storageSystem.storageSystemId,
+            $scope.selected.hosts,
+            $scope.selected.hosts[0].protocol
+        )
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
