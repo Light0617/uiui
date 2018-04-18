@@ -429,8 +429,6 @@ angular.module('rainierApp')
                                 targetStorageSystemId : targetStorageSystemId
                             };
 
-                            console.log(unprevirtualizePayload);
-
                             orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
                         });
 
