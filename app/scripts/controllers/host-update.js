@@ -238,6 +238,10 @@ angular.module('rainierApp')
         }
 
         function invokeEndPointPost(hostId, endPointPayload) {
+            if (_.isEmpty(endPointPayload)) {
+                return null;
+            }
+
             if ($scope.dataModel.protocol === 'FIBRE') {
                 return postFibreEndPoint(hostId, endPointPayload);
             } else if ($scope.dataModel.protocol === 'ISCSI') {
