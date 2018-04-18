@@ -29,7 +29,7 @@
                     <div class="tile row row-tile column-headers">
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">&nbsp;</div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
-                                <sort-column-header field="primaryVolume.id" label="{{'repliaction-group-volume-list-pvolid' | translate}}"
+                                <sort-column-header field="primaryVolume.displayId" label="{{'repliaction-group-volume-list-pvolid' | translate}}"
                                                     title="{{'repliaction-group-volume-list-pvolid' | translate}}"
                                                     ng-model="dataModel.sort"></sort-column-header>
                             </div>
@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis">
-                                <sort-column-header field="secondaryVolume.id" label="{{'repliaction-group-volume-list-svolid' | translate}}"
+                                <sort-column-header field="secondaryVolume.displayId" label="{{'repliaction-group-volume-list-svolid' | translate}}"
                                                     title="{{'repliaction-group-volume-list-svolid' | translate}}"
                                                     ng-model="dataModel.sort"></sort-column-header>
                             </div>
@@ -69,15 +69,15 @@
                     <!--Standard Row-->
                     <div class="tile row row-tile" ng-repeat="vp in dataModel.displayList">
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell">&nbsp;</div>
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.id}}">
-                                <p>{{vp.primaryVolume.id}}</p>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.displayId}}">
+                                <p>{{vp.primaryVolume.displayId}}</p>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.primaryVolume.status}}">
                                 <p>{{vp.primaryVolume.status}}</p>
                             </div>
 
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.id}}">
-                                <p>{{vp.secondaryVolume.id}}</p>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.displayId}}">
+                                <p>{{vp.secondaryVolume.displayId}}</p>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 cell ellipsis" title="{{vp.secondaryVolume.status}}">
                                 <p>{{vp.secondaryVolume.status}}</p>

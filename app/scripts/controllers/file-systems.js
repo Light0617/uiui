@@ -135,7 +135,7 @@ angular.module('rainierApp')
                         type: 'confirmation-modal',
                         dialogSettings: {
                             id: 'detachVolumeConfirmation',
-                            title: 'file-system-mount-confirmation',
+                            dialogTitle: 'file-system-mount-confirmation',
                             content: 'file-system-mount-selected-content',
                             trueText: 'file-systems-virtual-machine',
                             falseText: 'file-systems-database',

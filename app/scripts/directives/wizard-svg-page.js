@@ -323,11 +323,7 @@ angular.module('rainierApp')
                     serverEndPoint: endPoint,
                     isVsmPort: port.vsmPort,
                     serverId: serverId,
-                    preVirtualizePayload: {
-                        srcPort: endPoint,
-                        targetWwn: port.wwn,
-                        storagePortType: scope.dataModel.selectedType
-                    }
+                    targetWwn: port.wwn
                 });
 
                 scope.$apply();
@@ -391,11 +387,7 @@ angular.module('rainierApp')
                     serverEndPoint: endPoint,
                     isVsmPort: port.vsmPort,
                     serverId: serverId,
-                    preVirtualizePayload: {
-                        srcPort: endPoint,
-                        targetWwn: port.wwn,
-                        storagePortType: scope.dataModel.selectedType
-                    }
+                    targetWwn: port.wwn
                 });
                 scope.$apply();
             }

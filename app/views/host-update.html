@@ -202,7 +202,7 @@
                          ng-if="dataModel.applyChangesToAttachedVolumes === true && dataModel.existingEndPointsChanged()"
                          confirm
                          confirm-title="{{ 'host-update-confirmation-title' | translate }}"
-                         confirm-message="{{ 'host-update-confirmation-content' | translate }}"
+                         confirm-message="{{ dataModel.applyChangesAttachedVolumesConfirmationMessage }}"
                          ng-click="updateHost()"
                          ng-disabled="!dataModel.isValid()">{{ 'submit-button' | translate }}</div>
                     <button type="button" class="btn btn-default active" title="{{ 'submit-button' | translate }}"

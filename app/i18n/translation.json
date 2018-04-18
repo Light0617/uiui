@@ -116,7 +116,7 @@
     "common-label-previous": "Previous",
     "common-label-cancel": "Cancel",
     "common-label-reset": "Reset",
-    "common-label-ok": "Ok",
+    "common-label-ok": "OK",
     "common-label-unlimited": "Unlimited",
     "common-label-protected-hosts": "Protected",
     "common-label-unprotected-hosts": "Unprotected",
@@ -147,6 +147,7 @@
     "common-on": "On",
     "common-off": "Off",
     "pool-active-flash": "Active Flash",
+    "pool-ddm": "DDM Enabled",
     "common-gb": "GB",
     "common-tb": "TB",
     "common-pb": "PB",
@@ -193,8 +194,8 @@
     "FICON": "FICON",
     "ISCSI": "iSCSI",
     "SCSI": "SCSI",
-    "storage-port-enable-security-title": "Modify Security",
-    "storage-port-enable-security-content": "Modify security for the {{getSelectedCount()}} selected ports to:",
+    "edit-fibre-port-title": "Edit Fibre Port",
+    "edit-fibre-port-content": "Modify port settings for the {{getSelectedCount()}} selected ports to:",
 
     "edit-iscsi-port": "Edit iSCSI Port",
     "edit-iscsi-port-settings": "iSCSI Port Settings",
@@ -258,6 +259,7 @@
     "storage-pools-basic-question": "Intend to use for Snap?",
     "storage-pools-question-active-flash": "Intend to enable active flash?",
     "storage-pools-active-flash-license-info": "Platinum tier parity group and valid license is needed to enable Active Flash for Pool.",
+    "storage-pools-question-ddm": "Intend to enable DDM?",
 
     "storage-pool-id": "Pool ID",
     "storage-pool-label": "Pool Label",
@@ -469,7 +471,7 @@
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
     "storage-volume-attach-different-protocol-servers": "Cannot attach volumes for different protocol servers.",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
-    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name(s) [{{ chapUserNames }}] already exists in the specified Storage Port {{ storagePort }} of {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure?",
+    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name(s) [{{ chapUserNames }}] already exists in the specified Storage Port {{ storagePort }} of {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure you want to proceed?",
     "no-servers-onboarded": "No servers have been added yet.",
 
     "attach-volumes-number-of-volume": "# of Vol.",
@@ -487,6 +489,8 @@
     "storage-volume-detach-not-remove-zone": "Not Remove Zone",
     "storage-volume-detach": "Detach Volume",
     "storage-volume-detach-different-protocol-servers": "Cannot detach volumes from different protocol servers.",
+    "storage-volume-detach-from-target": "Detach From Target Storage",
+    "storage-volume-detach-from-target-content": "Detach volume from storage system: ",
 
     "parity-group-raid-configuration": "RAID Type:",
     "parity-group-disk-type": "Disk Type:",
@@ -527,7 +531,7 @@
     "parity-group-basic-raid-layout": "RAID Layout",
 
     "cancel-button": "Cancel",
-    "ok-button": "Ok",
+    "ok-button": "OK",
     "submit-button": "Submit",
     "yes-button": "Yes",
     "no-button": "No",
@@ -785,7 +789,7 @@
     "action-tooltip-unprotect-volumes" : "Unprotect Volumes",
     "action-tooltip-update-volumes" : "Update Volumes",
     "action-tooltip-delete-volumes" : "Delete Volumes",
-    "action-tooltip-toggle-security" : "Enable/Disable Security",
+    "action-tooltip-edit-fibre-port" : "Edit Fibre Port",
     "action-tooltip-unvirtualize" : "Unvirtualize",
 
     "clone-now-tooltip" : "Clone now - Makes a point in time copy of the volume selected using Shadow Image technology",
@@ -817,7 +821,8 @@
     "host-update-add-wwns": "Add New WWNs",
     "host-update-apply-change": "Apply changes to attached volumes",
     "host-update-confirmation-title": "Update Servers Confirmation",
-    "host-update-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. If there are zones on the fabric switches that were created automatically by HSA, these zones will also be updated (manually created zones will not be affected). Are you sure you want to proceed?",
+    "host-update-fibre-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. If there are zones on the fabric switches that were created automatically by HSA, these zones will also be updated (manually created zones will not be affected). Are you sure you want to proceed?",
+    "host-update-iscsi-confirmation-content": "Performing this action will edit existing host groups on the storage array to reflect changes to the server details. Are you sure you want to proceed?",
     "host-update-server-name": "Server Name",
     "host-update-description": "Description",
     "host-update-ip-address": "IP Address",
@@ -834,7 +839,7 @@
     "host-update-chap-secret": "New CHAP Secret",
 
     "host-update-chap-confirm-overwrite-chap-secret-title": "CHAP Secret Overwrite Confirmation",
-    "host-update-chap-confirm-overwrite-chap-secret-message": "All of CHAP user related to this Server will be overwritten by specified CHAP secret. Are you sure?",
+    "host-update-chap-confirm-overwrite-chap-secret-message": "All of CHAP user related to this Server will be overwritten by specified CHAP secret. Are you sure you want to proceed?",
 
     "host-update-mutual-chap-settings": "Mutual CHAP Settings",
     "host-update-mutual-chap-auth": "Mutual CHAP Auth",
@@ -846,7 +851,7 @@
     "host-edit-mutual-chap-username": "Mutual CHAP User",
     "host-edit-mutual-chap-secret": "Mutual CHAP Secret",
     "host-delete-mutual-chap-user": "Delete Mutual CHAP User",
-    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure?",
+    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure you want to proceed?",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",
@@ -1100,6 +1105,10 @@
     "shred-volumes-invalid-pattern-message": "Enter up to 8 hexadecimal characters.",
     "shred-volumes-invalid-pass-number-message": "Specify pass number between 1 to 7.",
 
+    "interrupt-shredding": "Interrupt Shredding",
+    "interrupt-shredding-confirmation-title": "Interrupt Shredding Confirmation",
+    "interrupt-shredding-confirmation-message": "All running shredding operations in the current storage system will be interrupted. Do you want to proceed?",
+
     "migrate-volumes": "Migrate Volumes",
     "migrate-volumes-title-create": "Migrate Volumes",
     "migrate-volumes-title-update": "Edit Migration Task",
@@ -1107,6 +1116,10 @@
     "migrate-volumes-step-task-settings": "Task Settings",
     "migrate-volumes-no-pool-confirmation-title": "No pool selected",
     "migrate-volumes-no-pool-confirmation-message": "Select one pool to migrate.",
+    "migrate-volumes-poor-capacity-confirmation-title": "Not enough capacity",
+    "migrate-volumes-poor-capacity-confirmation-message": "Total capacity used in the target pool after the migration would exceed the utilization threshold2 limit. Do you want to proceed?",
+    "migrate-volumes-not-normal-confirmation-title": "Pool status is {{status}}",
+    "migrate-volumes-not-normal-confirmation-message": "Migration task may fail since the status of the target pool is {{status}}. Do you want to proceed?",
     "action-tooltip-migrate-volumes": "Migrate Volumes",
     "action-tooltip-migration-tasks-inventory": "{{migrationTaskCount}} Migration Tasks",
     "assigned-to-migration": "Assigned to Migration",
@@ -1191,5 +1204,8 @@
     "external-volume-unvirtualize-confirmation": "Unvirtualize Confirmation",
     "external-volume-unvirtualize-content": "The current external volume will be unvirtualized. Do you want to proceed?",
     "external-volumes-unvirtualize-confirmation": "Unvirtualize Confirmation",
-    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?"
+    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?",
+
+    "false": "NO",
+    "true": "YES"
 }

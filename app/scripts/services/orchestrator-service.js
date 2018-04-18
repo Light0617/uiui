@@ -86,6 +86,9 @@ angular.module('rainierApp')
             previrtualize: function (payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/attach-to-storage').post(payload));
             },
+            unprevirtualize: function(storageSystemId, volumeId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/volumes/' + volumeId + '/detach-from-storage').post());
+            },
             jobStatus: function(jobId) {
                 return Restangular.one('jobs/' + jobId).get();
             },
@@ -96,8 +99,8 @@ angular.module('rainierApp')
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/' + storageSystemId + '/virtualize').post(payload));
             },
-            unvirtualizeVolume: function (storageSystemId, volumeId) {
-                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/external-volumes/' + volumeId).remove());
+            unvirtualizeVolume: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/unvirtualize').post(payload));
             },
             editReplicationGroup: function (storageSystemId, replicationGroupId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).all('replication-groups/' + replicationGroupId).patch(payload));
@@ -421,6 +424,9 @@ angular.module('rainierApp')
             },
             shredVolumes: function (shredVolumesPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred').post(shredVolumesPayload));
+            },
+            interruptShreddings: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/shred/interrupt').post(payload));
             },
             deleteVolume: function (storageSystemId, volumeId) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('storage-systems', storageSystemId).one('volumes', volumeId).remove());

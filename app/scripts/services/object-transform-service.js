@@ -418,8 +418,6 @@ angular.module('rainierApp')
                     item.secondaryVolume.displayId = formatVolumeId(item.secondaryVolume.id);
                     item.launchSvol = function () {
                         jumpToVolumeDetailsByType(item.secondaryVolume.storageSystemId, item.secondaryVolume.id);
-//                        var path = ['storage-systems', item.secondaryVolume.storageSystemId, 'volumes', item.secondaryVolume.id].join('/');
-//                        $location.path(path);
                     };
                 }
 
@@ -462,6 +460,7 @@ angular.module('rainierApp')
             transformGadPair: function (item) {
                 if (item.primary) {
                     item.hasPrimaryHalf = true;
+                    item.primary.displayVolumeId = formatVolumeId(item.primary.volumeId);
                     item.launchPvol = function () {
                         var path = ['storage-systems', item.primary.storageSystemId, 'volumes', item.primary.volumeId].join('/');
                         $location.path(path);
@@ -473,10 +472,9 @@ angular.module('rainierApp')
 
                 if (item.secondary) {
                     item.hasSecondaryHalf = true;
+                    item.secondary.displayVolumeId = formatVolumeId(item.secondary.volumeId);
                     item.launchSvol = function () {
                         jumpToVolumeDetailsByType(item.secondary.storageSystemId, item.secondary.volumeId);
-//                        var path = ['storage-systems', item.secondary.storageSystemId, 'volumes', item.secondary.volumeId].join('/');
-//                        $location.path(path);
                     };
                 } else {
                     item.hasSecondaryHalf = false;
@@ -680,8 +678,6 @@ angular.module('rainierApp')
                 item.bottomPostFix = 'common-label-used';
                 item.onClick = function () {
                     jumpToVolumeDetailsByType(item.storageSystemId, item.volumeId);
-//                    $location.path(['storage-systems', item.storageSystemId, 'volumes', item.volumeId].join(
-//                        '/'));
                 };
 
                 item.isNormal = function () {
@@ -905,6 +901,8 @@ angular.module('rainierApp')
                         ': ' + commonConverterService.convertBooleanToString(item.activeFlashEnabled);
                 }
 
+                var ddmTitle = synchronousTranslateService.translate('pool-ddm') + ': ' + commonConverterService.convertBooleanToString(item.ddmEnabled);
+
                 item.metaData = [
                     {
                         left: true,
@@ -920,6 +918,11 @@ angular.module('rainierApp')
                         left: false,
                         title: synchronousTranslateService.translate(item.type),
                         details: [item.tierNames]
+                    },
+                    {
+                        left: false,
+                        title: ddmTitle,
+                        details: []
                     },
                     {
                         left: false,
@@ -1050,11 +1053,13 @@ angular.module('rainierApp')
                 item.itemIcon = 'icon-volume';
                 item.displayVolumeId = formatVolumeId(item.volumeId);
                 item.capacity = diskSizeService.getDisplaySize(item.size);
+                item.totalCapacity = diskSizeService.getDisplaySize(item.size);
                 item.usedCapacity = diskSizeService.getDisplaySize(item.usedCapacity);
                 item.availableCapacity = diskSizeService.getDisplaySize(item.availableCapacity);
                 item.displayCapacity = item.capacity.size + ' ' + item.capacity.unit;
                 item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
                     'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
+                item.volumeLabel = 'Volume' + item.volumeId;
                 var migrationTypeDisplay;
                 if (item.migrationSummary.ownerTaskId) {
                     migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
@@ -3173,11 +3178,6 @@ angular.module('rainierApp')
                 item.displaySourceVolumeId = formatVolumeId(item.sourceVolumeId);
 
                 // Resource links
-                // TODO When the source volume is external, where is the destination?
-                item.launchSourceVol = function (storageSystemId) {
-                    var path = ['storage-systems', storageSystemId, 'volumes', this.sourceVolumeId].join('/');
-                    $location.path(path);
-                };
                 if (item.sourcePoolId !== null) {
                     item.launchSourcePool = function (storageSystemId) {
                         var path = ['storage-systems', storageSystemId, 'storage-pools', this.sourcePoolId].join('/');
@@ -3187,12 +3187,15 @@ angular.module('rainierApp')
                     item.sourcePoolId = constantService.notAvailable;
                 }
                 if (item.sourceExternalParityGroupId !== null) {
-                    item.launchSourceParityGroup = function (storageSystemId) {
-                        var path = ['storage-systems', storageSystemId, 'external-parity-groups',
-                                    this.sourceExternalParityGroupId].join('/');
+                    item.launchSourceVol = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'external-volumes', this.sourceVolumeId].join('/');
                         $location.path(path);
                     };
                 } else {
+                    item.launchSourceVol = function (storageSystemId) {
+                        var path = ['storage-systems', storageSystemId, 'volumes', this.sourceVolumeId].join('/');
+                        $location.path(path);
+                    };
                     item.sourceExternalParityGroupId = constantService.notAvailable;
                 }
                 if (item.targetVolumeId !== null) {

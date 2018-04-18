@@ -114,7 +114,9 @@ angular.module('rainierApp')
                 },
                 addNewEndPoint: function () {
                     $scope.dataModel.addedEndPoints.splice(0, 0, {value: ''});
-                }
+                },
+                applyChangesAttachedVolumesConfirmationMessage: synchronousTranslateService.translate(
+                    result.protocol === 'FIBRE' ? 'host-update-fibre-confirmation-content' : 'host-update-iscsi-confirmation-content')
             };
 
             $scope.chapPayload = chapPayload;
@@ -134,6 +136,10 @@ angular.module('rainierApp')
                                 'host-update-chap-confirm-overwrite-chap-secret-title');
                             $scope.confirmationMessage = synchronousTranslateService.translate(
                                 'host-update-chap-confirm-overwrite-chap-secret-message');
+                            $scope.cancelButtonLabel = synchronousTranslateService.translate(
+                                'cancel-button');
+                            $scope.okButtonLabel = synchronousTranslateService.translate(
+                                'ok-button');
 
                             $scope.ok = function () {
                                 $q.all([
@@ -232,6 +238,10 @@ angular.module('rainierApp')
         }
 
         function invokeEndPointPost(hostId, endPointPayload) {
+            if (_.isEmpty(endPointPayload)) {
+                return null;
+            }
+
             if ($scope.dataModel.protocol === 'FIBRE') {
                 return postFibreEndPoint(hostId, endPointPayload);
             } else if ($scope.dataModel.protocol === 'ISCSI') {

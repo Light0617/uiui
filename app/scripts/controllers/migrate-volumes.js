@@ -34,6 +34,7 @@ angular.module('rainierApp')
         var migrationTaskId = $routeParams.migrationTaskId;
         var selectedVolumes = ShareDataService.selectedMigrateVolumes;
         var selectedTargetPoolId;
+        var currentTargetPoolId;
 
         // check the type of action.
         var isCreateAction = true;
@@ -49,7 +50,7 @@ angular.module('rainierApp')
             _.forEach(volumes, function (item) {
                 if (item.type === constantService.volumeType.EXTERNAL) {
                     // Use total capacity for External-VOL.
-                    totalVolumeSize += item.capacity.value;
+                    totalVolumeSize += item.totalCapacity.value;
                 } else {
                     totalVolumeSize += item.usedCapacity.value;
                 }
@@ -64,6 +65,11 @@ angular.module('rainierApp')
             var availablePools = [];
             var selectedTargetPoolExist = false;
             _.forEach(pools, function (pool) {
+                if (currentTargetPoolId === pool.storagePoolId) {
+                    availablePools.push(pool);
+                    selectedTargetPoolExist = true;
+                    return;
+                }
                 // HDP or HDT
                 if (pool.type !== 'HDT' && pool.type !== 'HDP') {
                     return;
@@ -77,9 +83,7 @@ angular.module('rainierApp')
                     return;
                 }
                 // Not over utilization threshold2
-                var poolTotalCapacity = pool.availableCapacityInBytes.value + pool.usedCapacityInBytes.value;
-                var utilizationLimitSize = pool.utilizationThreshold2 * poolTotalCapacity / 100;
-                if (pool.usedCapacityInBytes.value + totalVolumeSize > utilizationLimitSize) {
+                if (!checkUtilizationThreshold2(pool)) {
                     return;
                 }
                 availablePools.push(pool);
@@ -90,6 +94,12 @@ angular.module('rainierApp')
                 pool.selected = selectedTargetPoolExist && (pool.storagePoolId === selectedTargetPoolId);
             });
             return availablePools;
+        };
+
+        var checkUtilizationThreshold2 = function (pool) {
+            var poolTotalCapacity = pool.availableCapacityInBytes.value + pool.usedCapacityInBytes.value;
+            var utilizationLimitSize = pool.utilizationThreshold2 * poolTotalCapacity / 100;
+            return (pool.usedCapacityInBytes.value + totalVolumeSize <= utilizationLimitSize);
         };
 
         var updateResultTotalCounts = function(result) {
@@ -168,6 +178,28 @@ angular.module('rainierApp')
                         return dataModel.selectedVolumes && dataModel.selectedVolumes.length <= 300 &&
                                 _.some(dataModel.displayList, 'selected');
                     },
+                    needToConfirm: function () {
+                        if (dataModel.getSelectedCount() !== 1) {
+                            this.confirmTitle = synchronousTranslateService.translate('migrate-volumes-no-pool-confirmation-title');
+                            this.confirmMessage = synchronousTranslateService.translate('migrate-volumes-no-pool-confirmation-message');
+                            return true;
+                        }
+                        var pool = dataModel.getSelectedItems()[0];
+                        if (pool.status !== constantService.poolStatus.NORMAL) {
+                            var statusObj = {status: pool.status};
+                            this.confirmTitle = synchronousTranslateService.translate(
+                                'migrate-volumes-not-normal-confirmation-title', statusObj);
+                            this.confirmMessage = synchronousTranslateService.translate(
+                                'migrate-volumes-not-normal-confirmation-message', statusObj);
+                            return true;
+                        }
+                        if (!checkUtilizationThreshold2(pool)) {
+                            this.confirmTitle = synchronousTranslateService.translate('migrate-volumes-poor-capacity-confirmation-title');
+                            this.confirmMessage = synchronousTranslateService.translate('migrate-volumes-poor-capacity-confirmation-message');
+                            return true;
+                        }
+                        return false;
+                    },
 
                     next: function () {
                         if (dataModel.selectPoolModel.canGoNext && dataModel.selectPoolModel.canGoNext()) {
@@ -178,7 +210,6 @@ angular.module('rainierApp')
                             dataModel.goNext();
                         }
                     },
-                    validation: true,
                     itemSelected: false
                 };
 
@@ -212,11 +243,13 @@ angular.module('rainierApp')
                             }
                         }
                         var payload = {
-                            targetPoolId: targetPool.storagePoolId,
                             migrationTaskName: dataModel.settingModel.migrationTaskName,
                             comments: dataModel.settingModel.comments,
                             schedule: schedule
                         };
+                        if (isCreateAction || currentTargetPoolId !== targetPool.storagePoolId) {
+                            payload.targetPoolId = targetPool.storagePoolId;
+                        }
                         if (isCreateAction) {
                             payload.sourceVolumeIds = sourceVolumeIds;
                             orchestratorService.createMigrationTask(storageSystemId, payload).then(function () {
@@ -323,12 +356,13 @@ angular.module('rainierApp')
                 var sourceExternalVolumeIds = [];
                 _.forEach(pairs, function(item) {
                     if (item.sourceExternalParityGroupId !== constantService.notAvailable) {
-                        sourceExternalVolumeIds.push(item.sourceVolumeId);
+                        sourceExternalVolumeIds.push({text: item.sourceVolumeId});
                     } else {
                         sourceVolumeIds.push({text: item.sourceVolumeId});
                     }
                     selectedTargetPoolId = item.targetPoolId;
                 });
+                currentTargetPoolId = selectedTargetPoolId;
                 var sourceVolumes = [];
                 var sourceExternalVolumes = [];
                 var tasks = [];
@@ -396,7 +430,10 @@ angular.module('rainierApp')
         }, true);
 
         //user can only select one pool
-        $scope.$watch('selectedCount', function (count) {
+        $scope.$watch(function() {
+            return $scope.dataModel.getSelectedCount();
+        }, function () {
+            var count = $scope.dataModel.getSelectedCount();
             if (utilService.isNullOrUndef(count) || count === 0) {
                 selectedTargetPoolId = undefined;
             } else {

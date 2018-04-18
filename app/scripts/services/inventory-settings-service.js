@@ -223,10 +223,12 @@ angular.module('rainierApp')
                     }
                 }
             ];
-            dataModel.addAction = function () {
-                ShareDataService.isAddExtVolume = true;
-                $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
-            };
+            if(dataModel.ddmEnabled !== true) {
+                dataModel.addAction = function () {
+                    ShareDataService.isAddExtVolume = true;
+                    $location.path(['storage-systems', dataModel.storageSystemId, 'external-volumes', 'add'].join('/'));
+                };
+            }
         };
 
         var discoveredLunSettings = function (dataModel) {
