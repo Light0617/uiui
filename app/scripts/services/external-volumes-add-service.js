@@ -46,6 +46,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
                 });
             }
         });
+        throw new Error(messageKey);
     };
 
     var openConfirmationDialog = function (message) {
