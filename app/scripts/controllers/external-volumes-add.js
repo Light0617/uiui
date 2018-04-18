@@ -120,6 +120,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(setupPortDataFilterFooterModel)
             .then(function () {
                 $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
+                $scope.dataModel.sort.setSort(storagePortsService.idKey);
                 return true;
             })
             .then(function () {
@@ -129,6 +130,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupPortDataFilterFooterModel = function (portsModel) {
         _.extend($scope.dataModel, portsModel.dataModel);
+        $scope.dataModel.sort.setSort = storagePortsService.generateSetSortFn($scope.dataModel);
         $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = portsFooter($scope.dataModel);
         $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
@@ -302,12 +304,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             canSubmit: function () {
                 var paths = remainingPaths();
                 return paths.length > 0 &&
-                    $scope.dataModel.selectedHostModeOption.length > 0 &&
+                    $scope.dataModel.selectedHostModeOptions.length > 0 &&
                     !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
             },
             submit: function () {
                 $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
-                $scope.selected.hostModeOption = $scope.dataModel.selectedHostModeOption;
+                $scope.selected.hostModeOption = $scope.dataModel.selectedHostModeOptions;
                 $scope.selected.paths = remainingPaths();
                 // TODO impl actual api call to use $scope.selected
                 console.log(JSON.stringify($scope.selected));

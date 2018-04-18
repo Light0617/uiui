@@ -320,7 +320,6 @@ angular.module('rainierApp')
                 sort: {
                     field: idKey,
                     reverse: true,
-                    setSort: generateSetSortFn(dataModel)
                 }
             };
             dataModel.sort.setSort = generateSetSortFn(dataModel);
@@ -409,6 +408,7 @@ angular.module('rainierApp')
             generateDataModel: generateDataModel,
             generateFilterModel: generateFilterModel,
             updateResultTotalCountsFn: updateResultTotalCountsFn,
+            generateSetSortFn: generateSetSortFn,
             initDataModel: initDataModel,
             initFibreDataModel: initFibreDataModel,
             initIscsiDataModel: initIscsiDataModel
