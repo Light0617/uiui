@@ -71,6 +71,31 @@ angular.module('rainierApp')
             var enableToShred = function (volume) {
                 return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
             };
+
+            var detachFromTargetStorageDialogSettings = function () {
+                var dialogSettings = {
+                    id: 'detachFromTargetStorageConfirmation',
+                    title: 'storage-volume-detach-from-target',
+                    content: 'storage-volume-detach-from-target-content',
+                    disableRadioButton: true,
+                    itemAttributes: [],
+                    itemAttribute: {}
+                };
+
+                return dialogSettings;
+            };
+
+            var getStorageSystems = function () {
+                return paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
+                    result = _.filter(result, function (r) {
+                        return r.storageSystemId !== storageSystemId;
+                    });
+                    $scope.dataModel.storageSystems = result;
+
+                    return $q.resolve(result);
+                });
+            }
+
             if(ddmEnabled){
                 PATH =GET_EXTERNAL_VOLUMES_WITH_POOL_ID_PATH;
                 transform = objectTransformService.transformExternalVolume;
@@ -147,7 +172,7 @@ angular.module('rainierApp')
                     },
                     // Attach to storage
                     {
-                        icon: 'icon-volume',
+                        icon: 'icon-attach-vol-to-storage',
                         tooltip: 'Attach to Storage',
                         type: 'link',
                         enabled: function () {
@@ -155,6 +180,34 @@ angular.module('rainierApp')
                         },
                         onClick: function () {
                             virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
+                        }
+                    },
+                    {
+                        icon: 'icon-detach-vol-to-storage',
+                        tooltip: 'storage-volume-detach-from-target',
+                        type: 'confirmation-modal',
+                        dialogSettings: detachFromTargetStorageDialogSettings(),
+                        enabled: function () {
+                            return dataModel.anySelected();
+                        },
+                        confirmClick: function () {
+                            $('#' + this.dialogSettings.id).modal('hide');
+                            var firstItem = _.first(dataModel.getSelectedItems());
+
+                            orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                        },
+                        onClick: function () {
+                            var dialogSettings = this.dialogSettings;
+
+                            getStorageSystems().then(function (result) {
+                                _.each($scope.dataModel.storageSystems, function (storageSystem) {
+                                    dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
+                                });
+                                dialogSettings.itemAttribute = {
+                                    value: dialogSettings.itemAttributes[0]
+                                };
+                                this.dialogSettings = dialogSettings;
+                            });
                         }
                     },
                     {
