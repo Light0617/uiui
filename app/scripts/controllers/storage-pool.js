@@ -95,7 +95,7 @@ angular.module('rainierApp')
                     if(result.length > 0) {
                         return $q.resolve(result);
                     }else{
-                        return $q.reject('Cannot find any storage system.');
+                        return $q.reject('storage-system-not-found-error');
                     }
                 });
             };
@@ -198,7 +198,7 @@ angular.module('rainierApp')
                             $('#' + this.dialogSettings.id).modal('hide');
                             var firstItem = _.first(dataModel.getSelectedItems());
                             var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
-                            if(targetStorageSystemId !== null) {
+                            if(targetStorageSystemId !== null && targetStorageSystemId !== undefined) {
                                 orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
                             }
                         },
