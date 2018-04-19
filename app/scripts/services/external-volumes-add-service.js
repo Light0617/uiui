@@ -27,8 +27,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     var openErrorDialog = function (messageKey) {
         if (!_.isString(messageKey) && messageKey.message) {
             messageKey = messageKey.message;
-        } else if (!_.isString(messageKey) && messageKey.status && messageKey.statusText) {
-            messageKey = messageKey.statusText;
+        } else if (!_.isString(messageKey) && messageKey.data && messageKey.data.message) {
+            messageKey = messageKey.data.message;
         }
         var modalInstance = $modal.open({
             templateUrl: 'views/templates/error-modal.html',

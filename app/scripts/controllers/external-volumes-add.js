@@ -152,7 +152,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 $scope.selected.protocol = $scope.dataModel.selectedProtocol;
                 initDiscoveredLuns()
                     .then($scope.dataModel.goNext)
-                    .then(externalVolumesAddService.openErrorDialog);
+                    .catch(externalVolumesAddService.openErrorDialog);
             }
         };
     };
@@ -282,7 +282,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             previous: function () {
                 initDiscoveredLuns()
                     .then($scope.dataModel.goBack)
-                    .then(externalVolumesAddService.openErrorDialog);
+                    .catch(externalVolumesAddService.openErrorDialog);
             }
         };
     };
