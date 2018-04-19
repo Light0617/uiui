@@ -2,6 +2,13 @@
     <h2>{{'Select Discovered Luns' | translate}}</h2>
 </div>
 <div class="scroll-wizard-container">
+    <label class="smallMarginTop" ng-if="dataModel.filteredList.length && dataModel.isAllSelected && dataModel.toggleSelectAll">
+        <input type="checkbox"
+               ng-checked="dataModel.isAllSelected()"
+               ng-click="dataModel.toggleSelectAll()"
+        >
+        {{ 'inventoryview-select-all' | translate }}
+    </label>
     <div class="inventory tiles-view">
         <div class="tile-container flex-grid inventory-panel">
             <div class="tile resource-tile" ng-repeat="item in dataModel.filteredList">

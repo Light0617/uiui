@@ -119,6 +119,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return externalVolumesAddService.getPortsModel(storageSystem, protocol)
             .then(setupPortDataFilterFooterModel)
             .then(function () {
+                externalVolumesAddService.setupSelectAllFunctionsDisplayList($scope.dataModel);
                 $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
                 $scope.dataModel.sort.setSort(storagePortsService.idKey);
                 return true;
@@ -178,6 +179,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.footerModel = lunsFooter($scope.dataModel);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         scrollDataSourceBuilderService.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
+        externalVolumesAddService.setupSelectAllFunctionsFilteredList($scope.dataModel);
         return true;
     };
 
@@ -241,6 +243,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.filterModel = externalVolumesAddService.getHostsFilterModel($scope.dataModel);
         scrollDataSourceBuilderService.setupDataLoader($scope, hostsDataModel.hosts, 'hostSearch');
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, hostsDataModel.hosts, 'hostSearch');
+        externalVolumesAddService.setupSelectAllFunctionsDisplayList($scope.dataModel);
         return true;
     };
 

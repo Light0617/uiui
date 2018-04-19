@@ -94,6 +94,42 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         };
     };
 
+    var setupSelectAllFunctionsFilteredList = function (dataModel) {
+        dataModel.isAllSelected = function () {
+            return _.every(dataModel.filteredList, filterSelected);
+        };
+        dataModel.toggleSelectAll = function () {
+            if (dataModel.isAllSelected()) {
+                _.each(dataModel.filteredList, function (i) {
+                    i.selected = false;
+                });
+            } else {
+                _.each(dataModel.filteredList, function (i) {
+                    i.selected = !false;
+                });
+            }
+        };
+        return dataModel;
+    };
+
+    var setupSelectAllFunctionsDisplayList = function (dataModel) {
+        dataModel.isAllSelected = function () {
+            return _.every(dataModel.displayList, filterSelected);
+        };
+        dataModel.toggleSelectAll = function () {
+            if (dataModel.isAllSelected()) {
+                _.each(dataModel.displayList, function (i) {
+                    i.selected = false;
+                });
+            } else {
+                _.each(dataModel.displayList, function (i) {
+                    i.selected = !false;
+                });
+            }
+        };
+        return dataModel;
+    };
+
     /**
      * PORTS
      */
@@ -305,6 +341,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         openConfirmationDialog: openConfirmationDialog,
         filterSelected: filterSelected,
         updateResultTotalCountsFn: updateResultTotalCountsFn,
+        setupSelectAllFunctionsDisplayList: setupSelectAllFunctionsDisplayList,
+        setupSelectAllFunctionsFilteredList: setupSelectAllFunctionsFilteredList,
         /** PORTS */
         getProtocolCandidates: getProtocolCandidates,
         getPortsModel: getPortsModel,
