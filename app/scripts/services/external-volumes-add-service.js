@@ -100,7 +100,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var setupSelectAllFunctionsFilteredList = function (dataModel) {
         dataModel.isAllSelected = function () {
-            return _.every(dataModel.filteredList, filterSelected);
+            return dataModel.filteredList.length && _.every(dataModel.filteredList, filterSelected);
         };
         dataModel.toggleSelectAll = function () {
             if (dataModel.isAllSelected()) {
@@ -118,7 +118,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var setupSelectAllFunctionsDisplayList = function (dataModel) {
         dataModel.isAllSelected = function () {
-            return _.every(dataModel.displayList, filterSelected);
+            return dataModel.displayList.length && _.every(dataModel.displayList, filterSelected);
         };
         dataModel.toggleSelectAll = function () {
             if (dataModel.isAllSelected()) {
