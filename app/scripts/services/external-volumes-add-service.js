@@ -332,7 +332,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         if (result.length) {
             return result;
         }
-        return $q.reject({ message: 'No available ports for virtualize.' });
+        return $q.reject({ message: 'No available ports with selected server protocol for virtualize.' });
     };
 
     return {
