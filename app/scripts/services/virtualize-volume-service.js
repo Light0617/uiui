@@ -126,6 +126,7 @@ angular.module('rainierApp')
                 return Math.max(sourceHeight, targetHeight);
             },
             constructVirtualizePayload: constructVirtualizePayload,
-            invokeOpenAttachToStorage: invokeOpenAttachToStorage
+            invokeOpenAttachToStorage: invokeOpenAttachToStorage,
+            remainingPaths: remainingPaths
         };
     });

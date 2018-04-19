@@ -319,7 +319,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         return {
             validation: false,
             canSubmit: function () {
-                var paths = remainingPaths();
+                var paths = virtualizeVolumeService.remainingPaths($scope.dataModel.pathModel.paths);
                 return paths.length > 0 &&
                     $scope.dataModel.selectedHostModeOptions.length > 0 &&
                     !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
@@ -327,7 +327,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             submit: function () {
                 $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
                 $scope.selected.hostModeOptions = $scope.dataModel.selectedHostModeOptions;
-                $scope.selected.paths = remainingPaths();
+                $scope.selected.paths = virtualizeVolumeService.remainingPaths($scope.dataModel.pathModel.paths);
                 var payload = virtualizeVolumeService.constructVirtualizePayload($scope.selected);
                 orchestratorService.virtualizeVolumes($scope.selected.storageSystem.storageSystemId, payload).then(function() { backToPreviousView(); });
             },
@@ -337,12 +337,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     .catch(externalVolumesAddService.openErrorDialog);
             }
         };
-    };
-
-    var remainingPaths = function () {
-        return _.filter($scope.dataModel.pathModel.paths, function (p) {
-            return !p.deleted;
-        });
     };
 
     initCommonAndPort();
