@@ -191,7 +191,10 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     var GET_HOSTS_PATH = 'compute/servers';
 
     var getHosts = function () {
-        return paginationService.get(null, GET_HOSTS_PATH, objectTransformService.transformHost, true);
+        return paginationService.get(null, GET_HOSTS_PATH, objectTransformService.transformHost, true)
+            .catch(function() {
+                return $q.reject('Failed to get hosts.');
+            });
     };
 
     var initHostsModel = function (getHostsResult) {

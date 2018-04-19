@@ -65,7 +65,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
         setupStorageSystem(storageSystemId)
             .then(initPorts)
-            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
@@ -90,12 +89,13 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initPorts = function () {
         return setupPortDataModelStatic()
-            .then(onProtocolChange);
+            .then(onProtocolChange)
     };
 
     var onProtocolChange = function () {
         startSpinner();
         return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
