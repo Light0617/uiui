@@ -126,7 +126,11 @@ angular.module('rainierApp')
                     return;
                 }
 
-                if ($scope.dataModel.chap && !utilService.isNullOrUndefOrBlank($scope.dataModel.chap.chapSecret)) {
+                if ($scope.dataModel.chap && $scope.dataModel.chap.chapEnabled === true &&
+                    $scope.dataModel.chap.updateChapCredential === true &&
+                    !utilService.isNullOrUndefOrBlank($scope.dataModel.chap.chapSecret)) {
+
+                    var hasDiffChapUser = differentChapPayload($scope.dataModel.chap, $scope.dataModel.originalChap);
                     var modelInstance = $modal.open({
                         templateUrl: 'views/templates/basic-confirmation-modal.html',
                         windowClass: 'modal fade confirmation',
@@ -142,11 +146,15 @@ angular.module('rainierApp')
                                 'ok-button');
 
                             $scope.ok = function () {
-                                $q.all([
-                                    updateHostEndPoints(),
-                                    updateHostFields()
-                                ]).then(function () {
-                                    $scope.cancel();
+                                var updateTasks = [];
+                                var endPointDiffPayload = createEndPointDiffPayload();
+                                if (!_.isEmpty(endPointDiffPayload) || hasDiffChapUser) {
+                                    updateTasks.push(invokeEndPointPost(hostId, endPointDiffPayload));
+                                }
+                                updateTasks.push(updateHostFields());
+
+                                $q.all(updateTasks).then(function () {
+                                    modelInstance.close(true);
                                     window.history.back();
                                 }, function () {
                                     modelInstance.close(true);
@@ -164,7 +172,7 @@ angular.module('rainierApp')
                     });
                 } else {
                     $q.all([
-                        updateHostEndPoints(),
+                        invokeEndPointPost(hostId, createEndPointDiffPayload()),
                         updateHostFields()
                     ]).then(function () {
                         window.history.back();
@@ -238,10 +246,6 @@ angular.module('rainierApp')
         }
 
         function invokeEndPointPost(hostId, endPointPayload) {
-            if (_.isEmpty(endPointPayload)) {
-                return null;
-            }
-
             if ($scope.dataModel.protocol === 'FIBRE') {
                 return postFibreEndPoint(hostId, endPointPayload);
             } else if ($scope.dataModel.protocol === 'ISCSI') {
@@ -250,8 +254,7 @@ angular.module('rainierApp')
             return $q.resolve();
         }
 
-        function updateHostEndPoints() {
-
+        function createEndPointDiffPayload() {
             var updatedEndPoints = [];
             var endPointDiffPayload = [];
             _.forEach($scope.dataModel.updatedEndPoints, function (e) {
@@ -284,8 +287,7 @@ angular.module('rainierApp')
                     );
                 }
             }
-
-            return invokeEndPointPost(hostId, endPointDiffPayload);
+            return endPointDiffPayload;
         }
 
         function updateHostFields() {
