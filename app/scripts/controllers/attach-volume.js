@@ -29,7 +29,8 @@ angular.module('rainierApp')
         objectTransformService,
         attachVolumeService,
         replicationService,
-        $timeout) {
+        $timeout,
+        validatePortTypeService) {
 
         var selectedServers = ShareDataService.pop('selectedServers') || [];
         var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
@@ -141,6 +142,17 @@ angular.module('rainierApp')
                     if(!dataModel.selectModel.showPopUpOnAnyAttachedVolume()) {
                         return;
                     }
+                    var serverProtocol = selectedServers[0].protocol;
+                    if (!_.any(dataModel.storagePorts, function (port) {
+                            return port.type === serverProtocol;
+                        })) {
+
+                        validatePortTypeService.openNoStoragePortTypeWarning(
+                            serverProtocol, dataModel.selectedStorageSystem);
+
+                        return;
+                    }
+
                     $timeout(function () {
                         dataModel.attachModel.selectedVolumes = _.where(dataModel.displayList, 'selected');
                         _.forEach(dataModel.attachModel.selectedVolumes, function(volume) {
@@ -156,7 +168,7 @@ angular.module('rainierApp')
                 itemSelected: false
             };
             dataModel.process = function(resources){
-                // Only support for fibre port for now
+                // Only support for fibre and iscsi port for now
                 resources = _.filter(resources, function(storagePort) {
                     return storagePort.type === 'FIBRE' || 'ISCSI';
                 });

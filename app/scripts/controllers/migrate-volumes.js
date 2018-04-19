@@ -74,8 +74,8 @@ angular.module('rainierApp')
                 if (pool.type !== 'HDT' && pool.type !== 'HDP') {
                     return;
                 }
-                // Not 'HSA-reserved'
-                if (pool.label.indexOf(constantService.prefixReservedStoragePool) !== -1) {
+                // Not 'HSA-reserved' or Not DDM
+                if (pool.isReservedPool || pool.ddmEnabled) {
                     return;
                 }
                 // Not source pool
@@ -340,6 +340,20 @@ angular.module('rainierApp')
 
                 scrollDataSourceBuilderService.setupDataLoader($scope, storagePools, 'storagePoolSearch');
 
+                //user can only select one pool
+                $scope.$watch(function() {
+                    return $scope.dataModel.getSelectedCount();
+                }, function () {
+                    var count = $scope.dataModel.getSelectedCount();
+                    if (utilService.isNullOrUndef(count) || count === 0) {
+                        selectedTargetPoolId = undefined;
+                    } else {
+                        selectedTargetPoolId = $scope.dataModel.getSelectedItems()[0].storagePoolId;
+                    }
+                    _.map($scope.dataModel.filteredList, function (storagePool) {
+                        storagePool.disabledCheckBox = !(count === 0 || (count === 1 && storagePool.storagePoolId === selectedTargetPoolId));
+                    });
+                });
             });
         };
 
@@ -428,21 +442,6 @@ angular.module('rainierApp')
                 $scope.dataModel.settingModel.schedule.time = new Date();
             }
         }, true);
-
-        //user can only select one pool
-        $scope.$watch(function() {
-            return $scope.dataModel.getSelectedCount();
-        }, function () {
-            var count = $scope.dataModel.getSelectedCount();
-            if (utilService.isNullOrUndef(count) || count === 0) {
-                selectedTargetPoolId = undefined;
-            } else {
-                selectedTargetPoolId = $scope.dataModel.getSelectedItems()[0].storagePoolId;
-            }
-            _.map($scope.dataModel.filteredList, function (storagePool) {
-                storagePool.disabledCheckBox = !(count === 0 || (count === 1 && storagePool.storagePoolId === selectedTargetPoolId));
-            });
-        });
 
         $scope.$watch('dataModel.settingModel.schedule.date', function (newVal) {
             if ($scope.dataModel.settingModel) {

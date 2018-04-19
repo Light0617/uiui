@@ -20,7 +20,8 @@ angular.module('rainierApp')
                                                         paginationService, queryService, objectTransformService,
                                                         cronStringConverterService, attachVolumeService, replicationService,
                                                         volumeService, constantService, storageSystemCapabilitiesService,
-                                                        synchronousTranslateService, $location, $timeout, editChapService) {
+                                                        synchronousTranslateService, $location, $timeout,
+                                                        editChapService, validatePortTypeService) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -139,6 +140,7 @@ angular.module('rainierApp')
                         selectServerPath: true,
                         selectedServers: selectedServers,
                         selectedHostModeOption: hostModeOption,
+                        selectedStorageSystem: $scope.dataModel.selectedStorageSystem,
                         hostModes: hostModes,
                         hostMode: attachVolumeService.getMatchedHostMode(hostGroupResults, hostModes[0]),
                         hostModeOptions: results,
@@ -417,6 +419,15 @@ angular.module('rainierApp')
                 return;
             }
             createModel.next = function() {
+                var serverProtocol = selectedServers[0].protocol;
+                if (!_.any($scope.dataModel.storagePorts, function (port) {
+                        return port.type === serverProtocol;
+                    })) {
+
+                    validatePortTypeService.openNoStoragePortTypeWarning(
+                        serverProtocol, attachModel.selectedStorageSystem);
+                    return;
+                }
 
                 var selectedVolumes = volumesGroupsModel.getVolumeGroups();
                 attachModel.selectedVolumes = selectedVolumes;

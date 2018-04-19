@@ -225,14 +225,14 @@ angular.module('rainierApp')
                         }
                     },
                     {
-                        icon: 'icon-volume',
+                        icon: 'icon-attach-vol-to-storage',
                         tooltip: 'Attach to Storage',
                         type: 'link',
                         enabled: function () {
                             return dataModel.anySelected();
                         },
                         onClick: function () {
-                            virtualizeVolumeService.invokeOpenAttachToStorageFromHost(dataModel.getSelectedItems());
+                            virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
                         }
                     },
                     {

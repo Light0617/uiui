@@ -6,7 +6,7 @@
         <p>{{ confirmationMessage }}</p>
     </div>
     <div class="modal-footer btn-group-confirm">
-        <button type="button" class="btn btn-default" ng-click="cancel()">{{ cancelButtonLabel }}</button>
+        <button ng-if="cancelButtonLabel" type="button" class="btn btn-default" ng-click="cancel()">{{ cancelButtonLabel }}</button>
         <button type="button" class="btn btn-default active" ng-click="ok()">{{ okButtonLabel }}</button>
     </div>
 </div>
