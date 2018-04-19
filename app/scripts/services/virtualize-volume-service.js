@@ -12,29 +12,42 @@ angular.module('rainierApp')
         $location, $modal, ShareDataService, utilService, attachVolumeService, synchronousTranslateService
     ) {
 
-        function constructVirtualizePayload(dataModel) {
+        var remainingPaths = function (paths) {
+            return _.filter(paths, function (p) {
+                return !p.deleted;
+            });
+        };
+
+        var getIscsiInitiatorNames = function (hosts, hostId) {
+            var server = _.find(hosts, function(host) {
+                return host.serverId === hostId;
+            });
+            return server && server.iscsiNames ? server.iscsiNames : [];
+        };
+
+        var constructVirtualizePayload = function (scope) {
             var serverMap = new Map();
             var payload = {
-                targetPortsInfo: [],
+                targetPorts: [],
                 serverInfos: [],
-                luns: [],
-                storageSystemId: dataModel.storageSystemId,
-                hostMode: dataModel.attachModel.selectedHostMode,
-                hostModeOptions: dataModel.attachModel.selectedHostModeOption,
+                externalLuns: [],
+                storageSystemId: scope.storageSystem.storageSystemId,
+                hostMode: scope.dataModel.selectedHostMode,
+                hostModeOptions: scope.dataModel.selectedHostModeOptions,
                 enableZoning: false,
                 useDefaultHostModeOptions: false,
                 forceOverwriteChapSecret: false
             };
-            _.each(dataModel.preVirtualizationPaths, function (path) {
-                payload.targetPortsInfo.push(path.storagePortId);
+            _.each(scope.selected.externalPorts, function (port) {
+                payload.targetPorts.push(port.storagePortId);
             });
-            _.each(dataModel.pathModel.paths, function (path) {
+            _.each(remainingPaths(scope.dataModel.pathModel.paths), function (path) {
                 var key = path.storagePortId + path.serverId;
                 var serverInfo = {
                     targetPortForHost: path.storagePortId,
                     serverId: parseInt(path.serverId),
                     serverWwn: [path.serverEndPoint],
-                    iscsInitiatorNames: ['', '']
+                    iscsiInitiatorNames: getIscsiInitiatorNames(scope.selected.hosts, parseInt(path.serverId))
                 };
                 if(serverMap.has(key)) {
                     serverMap.get(key).serverWwn.push(path.serverEndPoint);
@@ -43,11 +56,16 @@ angular.module('rainierApp')
                 }
             });
             payload.serverInfos = Array.from(serverMap.values());
-            _.each(dataModel.selectedDiscoveredVolumes, function (vol) {
-                payload.luns.push(parseInt(vol.volumeId));
+            _.each(scope.selected.luns, function (lun) {
+                payload.externalLuns.push({
+                    portId: lun.portId,
+                    wwn: lun.wwn,
+                    lunId: lun.lunId,
+                    externalIscsiInformation: lun.externalIscsiInformation
+                });
             });
             return payload;
-        }
+        };
 
         var extractCommonSourceStorageId = function (volumes) {
             var vols = volumes;

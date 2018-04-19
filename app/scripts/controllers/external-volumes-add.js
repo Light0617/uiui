@@ -19,7 +19,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     $q, $scope, $window, $routeParams, externalVolumesAddService, utilService, viewModelService,
     storagePortsService, orchestratorService, objectTransformService, storageSystemCapabilitiesService,
     scrollDataSourceBuilderServiceNew, synchronousTranslateService, scrollDataSourceBuilderService,
-    portDiscoverService
+    portDiscoverService, virtualizeVolumeService
 ) {
     /**
      * 1. initCommonAndPort
@@ -321,12 +321,8 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
             },
             submit: function () {
-                $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
-                $scope.selected.hostModeOption = $scope.dataModel.selectedHostModeOptions;
-                $scope.selected.paths = remainingPaths();
-                // TODO impl actual api call to use $scope.selected
-                console.log(JSON.stringify($scope.selected));
-                backToPreviousView();
+                var payload = virtualizeVolumeService.constructVirtualizePayload($scope);
+                orchestratorService.virtualizeVolumes(storageSystemId, payload).then(function() { backToPreviousView(); });
             },
             previous: function () {
                 initServers()
