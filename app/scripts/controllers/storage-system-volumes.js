@@ -315,7 +315,7 @@ angular.module('rainierApp')
                 },
                 // Attach to storage
                 {
-                    icon: 'icon-virtualize-volume',
+                    icon: 'icon-attach-vol-to-storage',
                     tooltip: 'Attach to Storage',
                     type: 'link',
                     enabled: function () {

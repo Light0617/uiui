@@ -158,20 +158,6 @@ angular.module('rainierApp')
                         }
                     },
                     {
-                        icon: 'icon-virtualize-volume',
-                        tooltip: 'virtualize-volumes',
-                        type: 'link',
-                        enabled: function () {
-                            return dataModel.anySelected();;
-                        },
-                        onClick: function () {
-                            ShareDataService.selectedVirtualizeVolumes = _.first(dataModel.getSelectedItems(), 14);
-                            ShareDataService.isAddExtVolume = false;
-                            $location.path(['storage-systems', storageSystemId, 'volumes', 'virtualize-volumes'].join('/'));
-                        }
-                    },
-
-                    {
                         icon: 'icon-shred-volume',
                         tooltip: 'shred-volumes',
                         type: 'link',
