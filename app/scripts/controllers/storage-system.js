@@ -248,32 +248,24 @@ angular.module('rainierApp')
                 total : result.numberOfVolumes,
                 volumesByType : []
             };
+            var currentType = [];
            for (var volumeTypeEntry in result.volumeCountByType) {
                 if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) { 
                     var item = {};
                     item.type = volumeTypeEntry;
                     item.count = result.volumeCountByType[volumeTypeEntry];
                     $scope.volumesSummary.volumesByType.push(item);
+                    currentType.push(item.type);
                  }
             }
-            
-        });
+            var volumeType = ['HDP', 'HDT', 'HTI'];
 
-        orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
-            $scope.externalVolumesSummary = {
-                total : result.numberOfVolumes,
-                volumesByType : []
-            };
-            for (var volumeTypeEntry in result.volumeCountByType) {
-                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-                    var item = {};
-                    item.type = volumeTypeEntry;
-                    item.count = result.volumeCountByType[volumeTypeEntry];
-                    $scope.externalVolumesSummary.volumesByType.push(item);
-                }
+            var missingType = _.difference(volumeType, currentType);
+            for(var i in missingType) {
+                $scope.volumesSummary.volumesByType.push ({type: missingType[i], count : 0});
             }
-
         });
+
 
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
             var pgs = result;
@@ -297,6 +289,25 @@ angular.module('rainierApp')
             $scope.externalParityGroupsSummary = {
                 count : (result.numberOfExternalParityGroups ? result.numberOfExternalParityGroups : 0)
             };
+        });
+
+        orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
+            $scope.externalVolumesSummary = {
+                total : 0,
+                volumesByType : []
+            };
+            for (var volumeTypeEntry in result.volumeCountByType) {
+                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
+                    var item = {};
+                    item.type = 'External';
+                    item.count = result.volumeCountByType[volumeTypeEntry] === null ? 0 : result.volumeCountByType[volumeTypeEntry];
+                    $scope.externalVolumesSummary.volumesByType.push(item);
+                }
+            }
+            if(result.volumeCountByType.count === null || result.volumeCountByType.count === undefined) {
+                $scope.externalVolumesSummary.volumesByType.push({type: 'EXTERNAL', count: 0});
+            }
+
         });
 
         paginationService.getAllPromises(null, GET_MIGRATION_TASKS_PATH, true, storageSystemId,
