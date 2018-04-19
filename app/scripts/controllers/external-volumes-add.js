@@ -55,10 +55,14 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             'selectPorts', 'selectLuns', 'selectServers', 'selectPaths'
         ]);
         $scope.selected = {
+            storageSystem: undefined,
             externalPorts: [],
             protocol: undefined,
             luns: [],
-            hosts: []
+            hosts: [],
+            hostMode: undefined,
+            hostModeOptions: [],
+            paths: []
         };
         startSpinner();
         var storageSystemId = extractStorageSystemId();
@@ -71,7 +75,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var setupStorageSystem = function (storageSystemId) {
         return orchestratorService.storageSystem(storageSystemId)
             .then(function (result) {
-                $scope.storageSystem = result;
+                $scope.selected.storageSystem = result;
                 return result;
             });
     };
@@ -94,13 +98,13 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var onProtocolChange = function () {
         startSpinner();
-        return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
+        return getAndSetupPortDataModel($scope.selected.storageSystem, $scope.dataModel.selectedProtocol)
             .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
     var setupPortDataModelStatic = function () {
-        return orchestratorService.storagePorts($scope.storageSystem.storageSystemId).then(function (r) {
+        return orchestratorService.storagePorts($scope.selected.storageSystem.storageSystemId).then(function (r) {
             var staticProperties = {
                 protocolCandidates: externalVolumesAddService.getProtocolCandidates(),
                 onProtocolChange: onProtocolChange
@@ -165,7 +169,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(function () {
                 startSpinner();
                 var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
-                return portDiscoverService.discoverUnmanagedLuns(portIds, $scope.storageSystem.storageSystemId)
+                return portDiscoverService.discoverUnmanagedLuns(portIds, $scope.selected.storageSystem.storageSystemId)
                     .then(externalVolumesAddService.validateGetLunsResult)
                     .then(setupLuns)
                     .then(autoSelectLuns)
@@ -293,7 +297,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var initPaths = function () {
         startSpinner();
         return getAndSetupPathsModel(
-            $scope.storageSystem.storageSystemId,
+            $scope.selected.storageSystem.storageSystemId,
             $scope.selected.hosts,
             $scope.selected.hosts[0].protocol
         ).finally(stopSpinner);
@@ -321,8 +325,11 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
             },
             submit: function () {
-                var payload = virtualizeVolumeService.constructVirtualizePayload($scope);
-                orchestratorService.virtualizeVolumes($scope.storageSystem.storageSystemId, payload).then(function() { backToPreviousView(); });
+                $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
+                $scope.selected.hostModeOptions = $scope.dataModel.selectedHostModeOptions;
+                $scope.selected.paths = remainingPaths();
+                var payload = virtualizeVolumeService.constructVirtualizePayload($scope.selected);
+                orchestratorService.virtualizeVolumes($scope.selected.storageSystem.storageSystemId, payload).then(function() { backToPreviousView(); });
             },
             previous: function () {
                 initServers()

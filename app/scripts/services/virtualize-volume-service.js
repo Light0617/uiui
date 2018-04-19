@@ -25,29 +25,29 @@ angular.module('rainierApp')
             return server && server.iscsiNames ? server.iscsiNames : [];
         };
 
-        var constructVirtualizePayload = function (scope) {
+        var constructVirtualizePayload = function (selected) {
             var serverMap = new Map();
             var payload = {
                 targetPorts: [],
                 serverInfos: [],
                 externalLuns: [],
-                storageSystemId: scope.storageSystem.storageSystemId,
-                hostMode: scope.dataModel.selectedHostMode,
-                hostModeOptions: scope.dataModel.selectedHostModeOptions,
+                storageSystemId: selected.storageSystem.storageSystemId,
+                hostMode: selected.hostMode,
+                hostModeOptions: selected.hostModeOptions,
                 enableZoning: false,
                 useDefaultHostModeOptions: false,
                 forceOverwriteChapSecret: false
             };
-            _.each(scope.selected.externalPorts, function (port) {
+            _.each(selected.externalPorts, function (port) {
                 payload.targetPorts.push(port.storagePortId);
             });
-            _.each(remainingPaths(scope.dataModel.pathModel.paths), function (path) {
+            _.each(remainingPaths(selected.paths), function (path) {
                 var key = path.storagePortId + path.serverId;
                 var serverInfo = {
                     targetPortForHost: path.storagePortId,
                     serverId: parseInt(path.serverId),
                     serverWwn: [path.serverEndPoint],
-                    iscsiInitiatorNames: getIscsiInitiatorNames(scope.selected.hosts, parseInt(path.serverId))
+                    iscsiInitiatorNames: getIscsiInitiatorNames(selected.hosts, parseInt(path.serverId))
                 };
                 if(serverMap.has(key)) {
                     serverMap.get(key).serverWwn.push(path.serverEndPoint);
@@ -56,7 +56,7 @@ angular.module('rainierApp')
                 }
             });
             payload.serverInfos = Array.from(serverMap.values());
-            _.each(scope.selected.luns, function (lun) {
+            _.each(selected.luns, function (lun) {
                 payload.externalLuns.push({
                     portId: lun.portId,
                     wwn: lun.wwn,
