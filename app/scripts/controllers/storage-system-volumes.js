@@ -41,7 +41,7 @@ angular.module('rainierApp')
         var actions = {
             'SN2': sn2Action,
             'interrupt-shredding': {
-                icon: 'icon-stop',// TODO Change icon
+                icon: 'icon-cancel-volume-shredding',// TODO Change icon
                 title :'interrupt-shredding',
                 tooltip: 'interrupt-shredding',
                 type: 'confirm',
@@ -122,9 +122,13 @@ angular.module('rainierApp')
                 });
                 $scope.dataModel.storageSystems = result;
 
-                return $q.resolve(result);
+                if(result.length > 0) {
+                    return $q.resolve(result);
+                }else{
+                    return $q.reject('storage-system-not-found-error');
+                }
             });
-        }
+        };
 
         paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true, storageSystemId).then(function (result) {
             paginationService.clearQuery();
@@ -325,6 +329,37 @@ angular.module('rainierApp')
                         virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
                     }
                 },
+                {
+                    icon: 'icon-detach-vol-to-storage',
+                    tooltip: 'storage-volume-detach-from-target',
+                    type: 'confirmation-modal',
+                    dialogSettings: detachFromTargetStorageDialogSettings(),
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    confirmClick: function () {
+                        $('#' + this.dialogSettings.id).modal('hide');
+                        var firstItem = _.first(dataModel.getSelectedItems());
+                        var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
+                        if(targetStorageSystemId !== null && targetStorageSystemId !== undefined) {
+                            orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                        }
+                    },
+                    onClick: function () {
+                        var dialogSettings = this.dialogSettings;
+
+                        getStorageSystems().then(function () {
+                            _.each($scope.dataModel.storageSystems, function (storageSystem) {
+                                dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
+                            });
+                            dialogSettings.itemAttribute = {
+                                value: dialogSettings.itemAttributes[0]
+                            };
+                        }).catch(function(e){
+                            dialogSettings.content = e;
+                        });
+                    }
+                },
                 //Shredding
                 {
                     icon: 'icon-shred-volume',
@@ -394,34 +429,6 @@ angular.module('rainierApp')
                     onClick: function () {
                         var item = _.first(dataModel.getSelectedItems());
                         item.actions.detach.onClick();
-                    }
-                },
-                {
-                    icon: 'icon-detach-volume',
-                    tooltip: 'storage-volume-detach-from-target',
-                    type: 'confirmation-modal',
-                    dialogSettings: detachFromTargetStorageDialogSettings(),
-                    enabled: function () {
-                        return dataModel.anySelected();
-                    },
-                    confirmClick: function () {
-                        $('#' + this.dialogSettings.id).modal('hide');
-                        var firstItem = _.first(dataModel.getSelectedItems());
-
-                        orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
-                    },
-                    onClick: function () {
-                        var dialogSettings = this.dialogSettings;
-
-                        getStorageSystems().then(function (result) {
-                            _.each($scope.dataModel.storageSystems, function (storageSystem) {
-                                dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
-                            });
-                            dialogSettings.itemAttribute = {
-                                value: dialogSettings.itemAttributes[0]
-                            };
-                            this.dialogSettings = dialogSettings;
-                        });
                     }
                 },
                 {
