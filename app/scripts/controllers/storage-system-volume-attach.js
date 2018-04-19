@@ -9,9 +9,11 @@
  */
 angular.module('rainierApp')
     .controller('StorageSystemVolumeAttachCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
-                                                           paginationService, queryService, synchronousTranslateService, scrollDataSourceBuilderServiceNew,
-                                                           ShareDataService, $location, $routeParams, viewModelService,
-                                                           attachVolumeService, constantService, replicationService
+                                                           paginationService, queryService, synchronousTranslateService,
+                                                           scrollDataSourceBuilderServiceNew, ShareDataService,
+                                                           $location, $routeParams, viewModelService,
+                                                           attachVolumeService, constantService, replicationService,
+                                                           validatePortTypeService
     ) {
 
         var storageSystemId = $routeParams.storageSystemId;
@@ -161,6 +163,16 @@ angular.module('rainierApp')
                     var selectedServers = _.where(dataModel.displayList, 'selected');
 
                     if (!attachVolumeService.invokeServerProtocolCheckAndOpen(selectedServers)) {
+                        return;
+                    }
+
+                    var serverProtocol = selectedServers[0].protocol;
+                    if (!_.any($scope.dataModel.storagePorts, function (port) {
+                            return port.type === serverProtocol;
+                        })) {
+
+                        validatePortTypeService.openNoStoragePortTypeWarning(
+                            serverProtocol, dataModel.selectedStorageSystem);
                         return;
                     }
 
