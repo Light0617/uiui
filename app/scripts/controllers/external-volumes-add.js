@@ -65,6 +65,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
         setupStorageSystem(storageSystemId)
             .then(initPorts)
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
@@ -95,7 +96,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var onProtocolChange = function () {
         startSpinner();
         return getAndSetupPortDataModel($scope.storageSystem, $scope.dataModel.selectedProtocol)
-            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
@@ -150,7 +150,9 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             next: function () {
                 $scope.selected.externalPorts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
                 $scope.selected.protocol = $scope.dataModel.selectedProtocol;
-                initDiscoveredLuns().then($scope.dataModel.goNext);
+                initDiscoveredLuns()
+                    .then($scope.dataModel.goNext)
+                    .then(externalVolumesAddService.openErrorDialog);
             }
         };
     };
@@ -167,7 +169,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     .then(externalVolumesAddService.validateGetLunsResult)
                     .then(setupLuns)
                     .then(autoSelectLuns)
-                    .catch(externalVolumesAddService.handleDiscoverError)
                     .finally(stopSpinner);
             });
     };
@@ -209,10 +210,14 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 _.forEach($scope.dataModel.unbinders, function (unbind) {
                     unbind();
                 });
-                initServers().then($scope.dataModel.goNext);
+                initServers()
+                    .then($scope.dataModel.goNext)
+                    .catch(externalVolumesAddService.openErrorDialog);
             },
             previous: function () {
-                initPorts().then($scope.dataModel.goBack);
+                initPorts()
+                    .then($scope.dataModel.goBack)
+                    .catch(externalVolumesAddService.openErrorDialog);
             }
         };
     };
@@ -223,7 +228,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var initServers = function () {
         startSpinner();
         return getAndSetupHosts()
-            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
@@ -271,10 +275,14 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             next: function () {
                 $scope.selected.hosts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
                 externalVolumesAddService.checkSelectedHosts($scope.selected.hosts)
-                    .then(initPaths).then($scope.dataModel.goNext);
+                    .then(initPaths)
+                    .then($scope.dataModel.goNext)
+                    .catch(externalVolumesAddService.openErrorDialog);
             },
             previous: function () {
-                initDiscoveredLuns().then($scope.dataModel.goBack);
+                initDiscoveredLuns()
+                    .then($scope.dataModel.goBack)
+                    .then(externalVolumesAddService.openErrorDialog);
             }
         };
     };
@@ -288,9 +296,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             $scope.storageSystem.storageSystemId,
             $scope.selected.hosts,
             $scope.selected.hosts[0].protocol
-        )
-            .catch(externalVolumesAddService.openErrorDialog)
-            .finally(stopSpinner);
+        ).finally(stopSpinner);
     };
 
     var getAndSetupPathsModel = function (storageSystemId, hosts, protocol) {
@@ -323,7 +329,9 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 backToPreviousView();
             },
             previous: function () {
-                initServers().then($scope.dataModel.goBack);
+                initServers()
+                    .then($scope.dataModel.goBack)
+                    .catch(externalVolumesAddService.openErrorDialog);
             }
         };
     };

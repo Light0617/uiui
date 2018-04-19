@@ -46,7 +46,6 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
                 });
             }
         });
-        throw new Error(messageKey);
     };
 
     var openConfirmationDialog = function (message) {
@@ -173,14 +172,9 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var validateGetLunsResult = function (luns) {
         if (!luns.length) {
-            return $q.reject();
+            return $q.reject({message: 'Failed to discover LUN from selected port.'});
         }
         return luns;
-    };
-
-    var handleDiscoverError = function () {
-        openErrorDialog('Failed to discover LUN from selected port.');
-        return true;
     };
 
     /**
@@ -258,8 +252,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             .uniq()
             .value();
         if (protocols.length !== 1) {
-            openErrorDialog('Cannot virtualize volumes for different protocol servers.');
-            return $q.reject();
+            return $q.reject('Cannot virtualize volumes for different protocol servers.');
         }
         return $q.resolve(true);
     };
@@ -350,7 +343,6 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         /** LUNS */
         getLunsDataModel: getLunsDataModel,
         validateGetLunsResult: validateGetLunsResult,
-        handleDiscoverError: handleDiscoverError,
         /** SERVERS */
         GET_HOSTS_PATH: GET_HOSTS_PATH,
         getHostsModel: getHostsModel,
