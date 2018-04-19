@@ -424,12 +424,14 @@ angular.module('rainierApp')
 
                         var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
 
-                        _.forEach(dataModel.getSelectedItems(), function (item) {
-                            var unprevirtualizePayload  = {
-                                targetStorageSystemId : targetStorageSystemId
-                            };
-                            orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
-                        });
+                        if(targetStorageSystemId !== null && targetStorageSystemId !== undefined){
+                            _.forEach(dataModel.getSelectedItems(), function (item) {
+                                var unprevirtualizePayload  = {
+                                    targetStorageSystemId : targetStorageSystemId
+                                };
+                                orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
+                            });
+                        }
 
                     },
                     onClick: function () {
