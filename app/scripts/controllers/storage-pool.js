@@ -92,7 +92,11 @@ angular.module('rainierApp')
                     });
                     $scope.dataModel.storageSystems = result;
 
-                    return $q.resolve(result);
+                    if(result.length > 0) {
+                        return $q.resolve(result);
+                    }else{
+                        return $q.reject("Can't find any storage system.");
+                    }
                 });
             };
 
@@ -193,8 +197,10 @@ angular.module('rainierApp')
                         confirmClick: function () {
                             $('#' + this.dialogSettings.id).modal('hide');
                             var firstItem = _.first(dataModel.getSelectedItems());
-
-                            orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                            var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
+                            if(targetStorageSystemId != null) {
+                                orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                            }
                         },
                         onClick: function () {
                             var dialogSettings = this.dialogSettings;
@@ -206,7 +212,8 @@ angular.module('rainierApp')
                                 dialogSettings.itemAttribute = {
                                     value: dialogSettings.itemAttributes[0]
                                 };
-                                this.dialogSettings = dialogSettings;
+                            }).catch(function(e){
+                                dialogSettings.content = e;
                             });
                         }
                     },
