@@ -25,6 +25,9 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
      * COMMON
      */
     var openErrorDialog = function (messageKey) {
+        if (_.isUndefined(messageKey)) {
+            return;
+        }
         if (!_.isString(messageKey) && messageKey.message) {
             messageKey = messageKey.message;
         } else if (!_.isString(messageKey) && messageKey.data && messageKey.data.message) {
@@ -63,7 +66,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
                 $scope.okButtonLabel = 'OK';
                 $scope.cancel = function () {
                     modelInstance.dismiss('cancel');
-                    defer.reject(false);
+                    defer.reject();
                 };
                 $scope.ok = function () {
                     modelInstance.close(true);
@@ -72,7 +75,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
                 modelInstance.result.finally(function () {
                     $scope.cancel();
-                    defer.reject(false);
+                    defer.reject();
                 });
             }
         });
