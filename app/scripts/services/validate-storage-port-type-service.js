@@ -23,19 +23,14 @@ angular.module('rainierApp')
                             serverProtocol: synchronousTranslateService.translate(serverProtocol),
                             storageSystemId: storageSystem.storageSystemId
                         });
-                    $scope.cancelButtonLabel = synchronousTranslateService.translate('cancel-button');
                     $scope.okButtonLabel = synchronousTranslateService.translate('ok-button');
 
                     $scope.ok = function () {
                         modelInstance.close(true);
                     };
 
-                    $scope.cancel = function () {
-                        modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
-                    };
-
                     modelInstance.result.finally(function () {
-                        $scope.cancel();
+                        modelInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
                     });
                 }
             });
