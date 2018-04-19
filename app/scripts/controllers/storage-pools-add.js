@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StoragePoolsAddCtrl', function ($scope, $routeParams, $timeout, orchestratorService, diskSizeService,
                                                  storagePoolService, objectTransformService, paginationService,
                                                  resourceTrackerService, storageSystemCapabilitiesService, utilService,
-                                                 parityGroupService) {
+                                                 parityGroupService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         var GET_PARITY_GROUPS_PATH = 'parity-groups';
@@ -223,6 +223,11 @@ angular.module('rainierApp')
                     storageSystemCapabilitiesService.editableSubscriptionLimit(storageSystem.model)
             };
 
+            $scope.model.filterPoolType = function (type) {
+                return !$scope.model.ddmEnabled || type === constantService.poolType.HDP ||
+                    type === constantService.poolType.HDT;
+            };
+
             $scope.payload = {
                 submit: function () {
                     var setSubscriptionLimit = function (payload, subscriptionLimit) {
@@ -264,7 +269,6 @@ angular.module('rainierApp')
                         var utilizationThreshold2 = $scope.model.utilizationThreshold2;
 
                         if($scope.model.ddmEnabled){
-                            type = 'HDP';
                             utilizationThreshold1 = null;
                             utilizationThreshold2 = null;
                         }
@@ -327,9 +331,7 @@ angular.module('rainierApp')
                             }
                         } else {
                             isInvalid = _.size($scope.model.selectedParityGroups) === 0;
-                            if(!$scope.model.ddmEnabled) {
-                                isInvalid = isInvalid || _.isEmpty($scope.model.poolType);
-                            }
+                            isInvalid = isInvalid || _.isEmpty($scope.model.poolType);
                         }
                     }
 
