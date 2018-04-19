@@ -11,7 +11,8 @@
     </div>
 </div>
 <div class="scroll-wizard-container">
-    <label class="smallMarginTop" ng-if="dataModel.displayList.length && dataModel.isAllSelected && dataModel.toggleSelectAll">
+    <label class="smallMarginTop"
+           ng-if="dataModel.displayList.length && dataModel.isAllSelected && dataModel.toggleSelectAll">
         <input type="checkbox"
                ng-checked="dataModel.isAllSelected()"
                ng-click="dataModel.toggleSelectAll()"
