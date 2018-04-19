@@ -27,6 +27,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     var openErrorDialog = function (messageKey) {
         if (!_.isString(messageKey) && messageKey.message) {
             messageKey = messageKey.message;
+        } else if (!_.isString(messageKey) && messageKey.status && messageKey.statusText) {
+            messageKey = messageKey.statusText;
         }
         var modalInstance = $modal.open({
             templateUrl: 'views/templates/error-modal.html',
@@ -147,6 +149,9 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             .then(function (result) {
                 result.dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute(storageSystem.model.storageSystemModel);
                 return result;
+            })
+            .catch(function () {
+                throw new Error('Failed to get storage ports.');
             });
     };
 
@@ -172,7 +177,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var validateGetLunsResult = function (luns) {
         if (!luns.length) {
-            return $q.reject({message: 'Failed to discover LUN from selected port.'});
+            return $q.reject({ message: 'Failed to discover LUN from selected port.' });
         }
         return luns;
     };
