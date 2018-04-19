@@ -192,7 +192,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var getHosts = function () {
         return paginationService.get(null, GET_HOSTS_PATH, objectTransformService.transformHost, true)
-            .catch(function() {
+            .catch(function () {
                 return $q.reject('Failed to get hosts.');
             });
     };
@@ -313,14 +313,17 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var getHostModeOptions = function (storageSystemId) {
         return orchestratorService.storageSystemHostModeOptions(storageSystemId)
-            .then(validateGetHostModeOptionsResult);
+            .then(validateGetHostModeOptionsResult)
+            .catch(function () {
+                return $q.reject('Failed to get available host mode options.');
+            });
     };
 
     var validateGetHostModeOptionsResult = function (result) {
         if (result.length) {
             return result;
         }
-        $q.reject({ message: 'Failed to get available host mode options.' });
+        return $q.reject({ message: 'Failed to get available host mode options.' });
     };
 
     var getStoragePorts = function (storageSystemId, protocol) {
@@ -329,7 +332,12 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         return paginationService.getAllPromises(
             null, 'storage-ports?q=type:+' + protocol + '+AND+attributes:TARGET_PORT&sort=storagePortId:ASC',
             false, storageSystemId, objectTransformService.transformPort
-        ).then(validateGetStoragePortsResult);
+        )
+            .catch(function () {
+                // TODO existing bug: paginationSerivce does not throws error when api returns unnormal status
+                return $q.reject('Failed to get available storage ports for virtualize.');
+            })
+            .then(validateGetStoragePortsResult);
     };
 
     var validateGetStoragePortsResult = function (result) {

@@ -89,7 +89,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initPorts = function () {
         return setupPortDataModelStatic()
-            .then(onProtocolChange)
+            .then(onProtocolChange);
     };
 
     var onProtocolChange = function () {
