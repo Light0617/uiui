@@ -293,19 +293,24 @@ angular.module('rainierApp')
 
         orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
             $scope.externalVolumesSummary = {
-                total : 0,
+                total : result.numberOfVolumes,
                 volumesByType : []
             };
+            var existingType = [];
             for (var volumeTypeEntry in result.volumeCountByType) {
                 if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
                     var item = {};
-                    item.type = 'External';
-                    item.count = result.volumeCountByType[volumeTypeEntry] === null ? 0 : result.volumeCountByType[volumeTypeEntry];
+                    item.type = volumeTypeEntry;
+                    item.count = result.volumeCountByType[volumeTypeEntry];
                     $scope.externalVolumesSummary.volumesByType.push(item);
+                    existingType.push('EXTERNAL');
                 }
             }
-            if(result.volumeCountByType.count === null || result.volumeCountByType.count === undefined) {
-                $scope.externalVolumesSummary.volumesByType.push({type: 'EXTERNAL', count: 0});
+            var volumeType = ['EXTERNAL'];
+
+            var missingType = _.difference(volumeType, existingType);
+            for(var i in missingType) {
+                $scope.externalVolumesSummary.volumesByType.push ({type: missingType[i], count : 0});
             }
 
         });
