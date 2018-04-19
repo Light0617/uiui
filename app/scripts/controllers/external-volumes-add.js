@@ -322,7 +322,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             },
             submit: function () {
                 var payload = virtualizeVolumeService.constructVirtualizePayload($scope);
-                orchestratorService.virtualizeVolumes(storageSystemId, payload).then(function() { backToPreviousView(); });
+                orchestratorService.virtualizeVolumes($scope.storageSystem.storageSystemId, payload).then(function() { backToPreviousView(); });
             },
             previous: function () {
                 initServers()
