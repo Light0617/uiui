@@ -248,21 +248,22 @@ angular.module('rainierApp')
                 total: result.numberOfVolumes,
                 volumesByType: []
             };
-            var existingType = [];
+            var map = [];
+            var volumeType = ['HDP', 'HDT', 'HTI'];
+            for(var type in volumeType) {
+                map[volumeType[type]] = {type : volumeType[type], count: 0};
+            }
+
             for (var volumeTypeEntry in result.volumeCountByType) {
                 if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-                    var item = {};
-                    item.type = volumeTypeEntry;
-                    item.count = result.volumeCountByType[volumeTypeEntry];
-                    $scope.volumesSummary.volumesByType.push(item);
-                    existingType.push(item.type);
+                    map[volumeTypeEntry] = {
+                        type : volumeTypeEntry,
+                        count: result.volumeCountByType[volumeTypeEntry] + map[volumeTypeEntry].count
+                    };
                 }
             }
-            var volumeType = ['HDP', 'HDT', 'HTI'];
-
-            var missingType = _.difference(volumeType, existingType);
-            for (var i in missingType) {
-                $scope.volumesSummary.volumesByType.push({type: missingType[i], count: 0});
+            for(var index in map) {
+                $scope.volumesSummary.volumesByType.push(map[index]);
             }
         });
 
