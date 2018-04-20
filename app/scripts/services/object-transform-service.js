@@ -620,6 +620,13 @@ angular.module('rainierApp')
                     default:
                         item.dataProtectionStatus = 'Unprotected';
                 }
+                var volumeIcon = function () {
+                    if (item.type === constantService.volumeType.EXTERNAL) {
+                        return 'icon-external-volume';
+                    } else {
+                        return 'icon-volume';
+                    }
+                };
                 switch (item.dataProtectionStatus) {
                     case 'Protected':
                         item.itemIcon = 'icon-primary-volume';
@@ -628,10 +635,10 @@ angular.module('rainierApp')
                         item.itemIcon = 'icon-secondary-volume';
                         break;
                     case 'Unprotected':
-                        item.itemIcon = 'icon-volume';
+                        item.itemIcon = volumeIcon();
                         break;
                     default:
-                        item.itemIcon = 'icon-volume';
+                        item.itemIcon = volumeIcon();
                 }
 
 
@@ -657,7 +664,7 @@ angular.module('rainierApp')
                             item.itemIcon = 'icon-secondary-volume';
                             break;
                         default:
-                            item.itemIcon = 'icon-volume';
+                            item.itemIcon = volumeIcon();
                     }
                 }
                 switch (item.dkcDataSavingType) {
@@ -1050,7 +1057,7 @@ angular.module('rainierApp')
             },
             transformExternalVolume: function (item) {
                 appendAssignedToMigrationFn(item);
-                item.itemIcon = 'icon-volume';
+                item.itemIcon = 'icon-external-volume';
                 item.displayVolumeId = formatVolumeId(item.volumeId);
                 item.capacity = diskSizeService.getDisplaySize(item.size);
                 item.totalCapacity = diskSizeService.getDisplaySize(item.size);
