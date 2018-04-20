@@ -110,10 +110,10 @@ angular.module('rainierApp')
                         return _.contains(poolTypes, pool.type);
                     })
                     .filter(function (pool) {
-                        return pool.isReservedPool !== true;
+                        return !pool.isReservedPool && !pool.ddmEnabled;
                     })
                     .map(function (pool) {
-                        pool.displayLabel = pool.snapshotPoolLabel();
+                        pool.displayLabel = pool.snapshotPoolLabelWithPoolId();
                         return pool;
                     })
                     .sortBy('storagePoolId')
