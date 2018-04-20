@@ -245,40 +245,26 @@ angular.module('rainierApp')
 
         orchestratorService.volumeSummary(storageSystemId).then(function (result) {
             $scope.volumesSummary = {
-                total : result.numberOfVolumes,
-                volumesByType : []
+                total: result.numberOfVolumes,
+                volumesByType: []
             };
-           for (var volumeTypeEntry in result.volumeCountByType) {
-                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) { 
-                    var item = {};
-                    item.type = volumeTypeEntry;
-                    item.count = result.volumeCountByType[volumeTypeEntry];
-                    $scope.volumesSummary.volumesByType.push(item);
-                 }
+            var map = [];
+            var volumeType = ['HDP', 'HDT', 'HTI'];
+            for(var type in volumeType) {
+                map[volumeType[type]] = {type : volumeType[type], count: 0};
             }
-            
-        });
 
-        orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
-            $scope.externalVolumesSummary = {
-                total : result.numberOfVolumes,
-                volumesByType : []
-            };
-            // Currently number of available types is only one.
-            // If number of types is increased in the future, use below commented codes. And rethink type label.
-            $scope.externalVolumesSummary.volumesByType.push({
-                type: synchronousTranslateService.translate('common-external-volumes'),
-                count: result.numberOfVolumes
-            });
-//            for (var volumeTypeEntry in result.volumeCountByType) {
-//                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-//                    var item = {};
-//                    item.type = volumeTypeEntry;
-//                    item.count = result.volumeCountByType[volumeTypeEntry];
-//                    $scope.externalVolumesSummary.volumesByType.push(item);
-//                }
-//            }
-
+            for (var volumeTypeEntry in result.volumeCountByType) {
+                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
+                    map[volumeTypeEntry] = {
+                        type : volumeTypeEntry,
+                        count: result.volumeCountByType[volumeTypeEntry] + map[volumeTypeEntry].count
+                    };
+                }
+            }
+            for(var index in map) {
+                $scope.volumesSummary.volumesByType.push(map[index]);
+            }
         });
 
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
@@ -304,6 +290,19 @@ angular.module('rainierApp')
                 count : (result.numberOfExternalParityGroups ? result.numberOfExternalParityGroups : 0)
             };
         });
+
+         orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
+            $scope.externalVolumesSummary = {
+                total : result.numberOfVolumes,
+                volumesByType : []
+            };
+            // Currently number of available types is only one.
+            $scope.externalVolumesSummary.volumesByType.push({
+                type: synchronousTranslateService.translate('common-external-volumes'),
+                count: result.numberOfVolumes
+            });
+        });
+
 
         paginationService.getAllPromises(null, GET_MIGRATION_TASKS_PATH, true, storageSystemId,
             objectTransformService.transformMigrationTask).then(function (result) {
