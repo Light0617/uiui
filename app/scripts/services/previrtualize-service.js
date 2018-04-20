@@ -75,12 +75,12 @@ angular.module('rainierApp')
         var createPrevirtualizePayloadPortInfo = function (
             srcPort,
             targetWwn,
-            iscsiTargetInformation
+            targetPort
         ) {
             return {
                 srcPort: srcPort,
                 targetWwn: targetWwn,
-                iscsiTargetInformation: iscsiTargetInformation
+                targetPort: targetPort
             };
         };
 

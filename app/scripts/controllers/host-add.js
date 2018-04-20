@@ -188,13 +188,13 @@ angular.module('rainierApp')
             _.each(hosts, function (host) {
                 var converted = convertCsvToHost(host);
 
-                if (_.isEmpty(host)) {
-                    return;
+                if (_.isEmpty(host) || _.isEmpty(converted.name)) {
+                  return;
                 }
-                if (converted.wwns) {
-                    dataModel.hostsModel.addFibreHost(converted, fibreIndex++);
-                } else if (converted.iscsiNames) {
+                if (converted.iscsiNames) {
                     dataModel.hostsModel.addIscsiHost(converted, iscsiIndex++);
+                } else {
+                    dataModel.hostsModel.addFibreHost(converted, fibreIndex++);
                 }
             });
         });

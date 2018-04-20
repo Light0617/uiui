@@ -1,5 +1,5 @@
 <div class="header-row">
-        <h2>{{'workflow-title-select-servers' | translate}}</h2>
+    <h2>{{'Select Discovered Luns' | translate}}</h2>
 </div>
 <div class="scroll-wizard-container">
     <label class="smallMarginTop"
@@ -11,15 +11,14 @@
         {{ 'inventoryview-select-all' | translate }}
     </label>
     <div class="inventory tiles-view">
-        <div class="tile-container flex-grid inventory-panel" infinite-scroll='dataModel.loadMore()'
-             infinite-scroll-distance='1' infinite-scroll-container="'.scroll-wizard-container'">
-            <div class="tile resource-tile" ng-repeat="item in dataModel.displayList">
+        <div class="tile-container flex-grid inventory-panel">
+            <div class="tile resource-tile" ng-repeat="item in dataModel.filteredList">
                 <ng-include src="'views/templates/inventory-item-tile.html'"></ng-include>
             </div>
             <div class="tile resource-tile invisible">&nbsp;</div>
         </div>
         <div class="controls-column filter-panel"
-             ng-include="'views/templates/hosts-view-search-panel.html'">
+             ng-include="'views/templates/discovered-luns-view-search-panel.html'">
         </div>
     </div>
 </div>
