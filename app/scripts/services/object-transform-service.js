@@ -620,6 +620,13 @@ angular.module('rainierApp')
                     default:
                         item.dataProtectionStatus = 'Unprotected';
                 }
+                var volumeIcon = function () {
+                    if (item.type === constantService.volumeType.EXTERNAL) {
+                        return 'icon-external-volume';
+                    } else {
+                        return 'icon-volume';
+                    }
+                };
                 switch (item.dataProtectionStatus) {
                     case 'Protected':
                         item.itemIcon = 'icon-primary-volume';
@@ -628,10 +635,10 @@ angular.module('rainierApp')
                         item.itemIcon = 'icon-secondary-volume';
                         break;
                     case 'Unprotected':
-                        item.itemIcon = 'icon-volume';
+                        item.itemIcon = volumeIcon();
                         break;
                     default:
-                        item.itemIcon = 'icon-volume';
+                        item.itemIcon = volumeIcon();
                 }
 
 
@@ -657,7 +664,7 @@ angular.module('rainierApp')
                             item.itemIcon = 'icon-secondary-volume';
                             break;
                         default:
-                            item.itemIcon = 'icon-volume';
+                            item.itemIcon = volumeIcon();
                     }
                 }
                 switch (item.dkcDataSavingType) {
@@ -839,6 +846,21 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
+                    var properties = [i.portId, i.wwn, wwnService.appendColon(i.wwn), i.lunId, i.eVolIdC];
+
+                    // iscsi
+                    if (i.externalIscsiInformation) {
+                        var iscsi = i.externalIscsiInformation;
+                        properties.push(iscsi.ipAddress);
+                        properties.push(iscsi.iscsiName);
+                    }
+
+                    var searchKey = _.filter(properties, function (i) {
+                        return !utilService.isNullOrUndef(i);
+                    }).join(' ');
+
+                    i.searchKey = searchKey;
+                    i.itemIcon = 'icon-manage';
                     i.capacity = diskSizeService.getDisplaySize(i.capacity);
                     i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
                     i.metaData = [
@@ -850,7 +872,7 @@ angular.module('rainierApp')
                         {
                             left: false,
                             title: wwnService.appendColon(i.wwn),
-                            details: [i.displayCapacity]
+                            details: [i.displayCapacity, i.eVolIdC]
                         }
                     ];
                 });
@@ -1035,7 +1057,7 @@ angular.module('rainierApp')
             },
             transformExternalVolume: function (item) {
                 appendAssignedToMigrationFn(item);
-                item.itemIcon = 'icon-volume';
+                item.itemIcon = 'icon-external-volume';
                 item.displayVolumeId = formatVolumeId(item.volumeId);
                 item.capacity = diskSizeService.getDisplaySize(item.size);
                 item.totalCapacity = diskSizeService.getDisplaySize(item.size);
@@ -3117,26 +3139,6 @@ angular.module('rainierApp')
                     item.defaultSortKey = Number.MAX_VALUE;
                 }
 
-                // status
-                item.toDisplayStatus = function () {
-                    switch (this.status) {
-                        case 'SCHEDULED':
-                            return synchronousTranslateService.translate('migration-task-status-scheduled');
-                        case 'IN_PROGRESS':
-                            return synchronousTranslateService.translate('migration-task-status-in-progress');
-                        case 'SUCCESS':
-                            return synchronousTranslateService.translate('migration-task-status-success');
-                        case 'FAILED':
-                            return synchronousTranslateService.translate('migration-task-status-failed');
-                        case 'SUCCESS_WITH_ERRORS':
-                            return synchronousTranslateService.translate('migration-task-status-success-with-errors');
-                        default:
-                            if (this.status) {
-                                return this.status.charAt(0).toUpperCase() + this.status.toLowerCase().slice(1);
-                            }
-                            return constantService.notAvailable;
-                    }
-                };
                 item.isScheduled = function () {
                     return this.status === 'SCHEDULED';
                 };

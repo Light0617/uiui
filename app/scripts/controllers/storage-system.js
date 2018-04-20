@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                objectTransformService, diskSizeService, synchronousTranslateService,
                                                paginationService, replicationGroupsService,
                                                capacityAlertService, dpAlertService, jobsAlertService, hwAlertService,
-                                               replicationService, migrationTaskService) {
+                                               replicationService, migrationTaskService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -245,27 +245,26 @@ angular.module('rainierApp')
 
         orchestratorService.volumeSummary(storageSystemId).then(function (result) {
             $scope.volumesSummary = {
-                total : result.numberOfVolumes,
-                volumesByType : []
+                total: result.numberOfVolumes,
+                volumesByType: []
             };
             var existingType = [];
-           for (var volumeTypeEntry in result.volumeCountByType) {
-                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) { 
+            for (var volumeTypeEntry in result.volumeCountByType) {
+                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
                     var item = {};
                     item.type = volumeTypeEntry;
                     item.count = result.volumeCountByType[volumeTypeEntry];
                     $scope.volumesSummary.volumesByType.push(item);
                     existingType.push(item.type);
-                 }
+                }
             }
             var volumeType = ['HDP', 'HDT', 'HTI'];
 
             var missingType = _.difference(volumeType, existingType);
-            for(var i in missingType) {
-                $scope.volumesSummary.volumesByType.push ({type: missingType[i], count : 0});
+            for (var i in missingType) {
+                $scope.volumesSummary.volumesByType.push({type: missingType[i], count: 0});
             }
         });
-
 
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
             var pgs = result;
@@ -291,42 +290,43 @@ angular.module('rainierApp')
             };
         });
 
-        orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
+         orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
             $scope.externalVolumesSummary = {
                 total : result.numberOfVolumes,
                 volumesByType : []
             };
-            var existingType = [];
-            for (var volumeTypeEntry in result.volumeCountByType) {
-                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-                    var item = {};
-                    item.type = volumeTypeEntry;
-                    item.count = result.volumeCountByType[volumeTypeEntry];
-                    $scope.externalVolumesSummary.volumesByType.push(item);
-                    existingType.push(volumeTypeEntry);
-                }
-            }
-            var volumeType = ['EXTERNAL'];
-
-            var missingType = _.difference(volumeType, existingType);
-            for(var i in missingType) {
-                $scope.externalVolumesSummary.volumesByType.push ({type: missingType[i], count : 0});
-            }
-
+            // Currently number of available types is only one.
+            // If number of types is increased in the future, use below commented codes. And rethink type label.
+            $scope.externalVolumesSummary.volumesByType.push({
+                type: synchronousTranslateService.translate('common-external-volumes'),
+                count: result.numberOfVolumes
+            });
+//            for (var volumeTypeEntry in result.volumeCountByType) {
+//                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
+//                    var item = {};
+//                    item.type = volumeTypeEntry;
+//                    item.count = result.volumeCountByType[volumeTypeEntry];
+//                    $scope.externalVolumesSummary.volumesByType.push(item);
+//                }
+//            }
         });
+
 
         paginationService.getAllPromises(null, GET_MIGRATION_TASKS_PATH, true, storageSystemId,
             objectTransformService.transformMigrationTask).then(function (result) {
             migrationTaskService.mergeJobInfo(result).then(function (resources) {
                 var mgs = resources;
                 $scope.migrationTasks = mgs;
+                var grouping = {};
+                _.forEach(_.groupBy(mgs, 'status'), function (g) {
+                    grouping[_.first(g).status] = g.length;
+                });
                 $scope.migrationTasksSummary = {
                     total : mgs.length,
-                    // TODO NEWRAIN-8105: Should statues have the order?
-                    migrationTasksByStatus : _.map(_.groupBy(mgs, 'status'), function (g){
+                    migrationTasksByStatus : _.map(constantService.migrationTaskStatus, function (status) {
                         return {
-                            status : _.first(g).toDisplayStatus(),
-                            count : g.length
+                            status : migrationTaskService.toDisplayStatus(status),
+                            count : (grouping.hasOwnProperty(status) ? grouping[status] : 0)
                         };
                     })
                 };

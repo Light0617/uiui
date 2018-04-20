@@ -94,31 +94,32 @@ angular.module('rainierApp')
 
                 var self = this;
                 self.resultItems = resultItems;
+                var unbinders = [];
 
-                scope.$watch('dataModel.view', function () {
-
-                    updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
-
-                }, true);
-                scope.$watch('dataModel.search', function () {
+                unbinders.push(scope.$watch('dataModel.view', function () {
 
                     updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
 
-                }, true);
-                scope.$watch('dataModel.sort', function () {
-                    updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
-
-                }, true);
-                scope.$watch('dataModel.deleteActivated', function () {
+                }, true));
+                unbinders.push(scope.$watch('dataModel.search', function () {
 
                     updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
 
-                }, true);
+                }, true));
+                unbinders.push(scope.$watch('dataModel.sort', function () {
+                    updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
 
-                scope.$watch('dataModel.hiddenUpdated', function () {
+                }, true));
+                unbinders.push(scope.$watch('dataModel.deleteActivated', function () {
 
                     updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
-                }, true);
+
+                }, true));
+
+                unbinders.push(scope.$watch('dataModel.hiddenUpdated', function () {
+
+                    updateDisplayList(scope, self.resultItems, filerName, noAdd, postProcessor);
+                }, true));
 
                 self.addResultItems = function (items) {
                     self.resultItems = self.resultItems.concat(items);
@@ -163,11 +164,11 @@ angular.module('rainierApp')
                     return getSelectedCount();
                 };
 
-                scope.$watch(function () {
+                unbinders.push(scope.$watch(function () {
                     return scope.dataModel.allSelected();
                 }, function (val) {
                     scope.dataModel.shouldSelectAll = val;
-                });
+                }));
 
                 scope.dataModel.toggleSelectAll = function () {
                     var selected = this.shouldSelectAll || false;
@@ -182,6 +183,7 @@ angular.module('rainierApp')
                     return !_.isEmpty(this.getSelectedItems());
                 };
 
+                self.unbinders = unbinders;
                 return self;
             }
         };

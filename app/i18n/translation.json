@@ -260,6 +260,7 @@
     "storage-pools-question-active-flash": "Intend to enable active flash?",
     "storage-pools-active-flash-license-info": "Platinum tier parity group and valid license is needed to enable Active Flash for Pool.",
     "storage-pools-question-ddm": "Intend to enable DDM?",
+    "storage-pools-add-pool-type": "Pool Type",
 
     "storage-pool-id": "Pool ID",
     "storage-pool-label": "Pool Label",
@@ -1202,6 +1203,7 @@
     "fail-to-discover-error": "There is no volume discovered on the selected port. Please check your physical connection.",
     "job-failed-error": "Create Path From Source Job failed. Please go to Job page to check the reason.",
     "fail-to-get-job-status-error": "Fail to get job status.",
+    "storage-system-not-found-error": "Cannot find any storage system.",
 
     "external-volume-unvirtualize-confirmation": "Unvirtualize Confirmation",
     "external-volume-unvirtualize-content": "The current external volume will be unvirtualized. Do you want to proceed?",

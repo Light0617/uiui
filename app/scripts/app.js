@@ -94,6 +94,13 @@ angular
                     labelKey: 'virtualize-volumes'
                 }
             })
+            .when('/storage-systems/:storageSystemId/external-volumes/add', {
+                templateUrl: 'views/external-volumes-add.html',
+                controller: 'ExternalVolumesAddCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'Add External Volumes'
+                }
+            })
             .when('/hosts/create-and-attach-volumes', {
                 templateUrl: 'views/create-and-attach-volumes.html',
                 controller: 'CreateAndAttachVolumesCtrl',
@@ -595,14 +602,14 @@ angular
                     labelKey: 'Attach Volumes to Storage'
                 }
             })
-            .when('/storage-systems/:storageSystemId/external-volumes/add', {
-                templateUrl: 'views/virtualize-volumes.html',
-                controller: 'VirtualizeVolumesCtrl',
-                breadcrumbOptions: {
-                    labelKey: 'common-external-volumes-add'
-                },
-                // TODO helpContext
-            })
+            // .when('/storage-systems/:storageSystemId/external-volumes/add', {
+            //     templateUrl: 'views/virtualize-volumes.html',
+            //     controller: 'VirtualizeVolumesCtrl',
+            //     breadcrumbOptions: {
+            //         labelKey: 'common-external-volumes-add'
+            //     },
+            //     // TODO helpContext
+            // })
             .when('/storage-systems/:storageSystemId/external-volumes/:volumeId', {
                 templateUrl: 'views/external-volume.html',
                 controller: 'ExternalVolumeCtrl',

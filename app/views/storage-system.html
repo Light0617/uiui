@@ -325,12 +325,11 @@
                 </a>
             </div>
 
-
             <!--Meta-tile External-Volume formatted-->
             <div class="tile meta-tile sixth">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/external-volumes'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
-                        <div class="resource-icon icon-volume icon-lg-md"></div>
+                        <div class="resource-icon icon-external-volume icon-lg-md"></div>
                         <div class="label-value-container resource-data">
                             <p class="label" ng-if="dataModel.accessible">{{ 'common-external-volumes' | translate}}</p>
                             <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
@@ -349,7 +348,6 @@
             </div>
 
             <!--Meta-tile MigrationTasks formatted-->
-            <!-- TODO NEWRAIN-8105: Panel layout style. If number of panels exceeds 6, it looks rather unlikely. -->
             <div class="tile meta-tile sixth" ng-if="migrationTasksSummary && migrationTasksSummary.total > 0">
                 <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/migration-tasks'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
