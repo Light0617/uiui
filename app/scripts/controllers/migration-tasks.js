@@ -231,7 +231,7 @@ angular.module('rainierApp')
                     sizeClass: 'seventh',
                     sortField: 'status',
                     getDisplayValue: function (item) {
-                        return item.toDisplayStatus();
+                        return migrationTaskService.toDisplayStatus(item.status);
                     },
                     getType: function (item) {
                         return !item.isScheduled() ? 'hyperLink' : '';
