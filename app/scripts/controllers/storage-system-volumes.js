@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
                                                       constantService, resourceTrackerService, replicationService,
-                                                      gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q) {
+                                                      gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -342,7 +342,7 @@ angular.module('rainierApp')
 
                         var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
 
-                        if(targetStorageSystemId !== null && targetStorageSystemId !== undefined){
+                        if(utilService.isNullOrUndef(targetStorageSystemId)){
                             _.forEach(dataModel.getSelectedItems(), function (item) {
                                 var unprevirtualizePayload  = {
                                     targetStorageSystemId : targetStorageSystemId
