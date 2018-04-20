@@ -49,7 +49,30 @@ angular.module('rainierApp')
             },
         };
 
-        $scope.filterModel = {};
+        $scope.filterModel = {
+            filter: {
+                freeText: '',
+                volumeType: '',
+                previousVolumeType: '',
+                provisioningStatus: '',
+                replicationType: [],
+                protectionStatusList: [],
+                migrationType: '',
+                volumeStatus: '',
+                snapshotex: false,
+                snapshotfc: false,
+                snapshot: false,
+                clone: false,
+                protected: false,
+                unprotected: false,
+                secondary: false,
+                size: {
+                    min: 0,
+                    max: 1000,
+                    unit: 'PB'
+                }
+            }
+        };
 
         paginationService.get(null, GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, true, storageSystemId).then(function (result) {
             paginationService.clearQuery();
@@ -84,30 +107,8 @@ angular.module('rainierApp')
                 volumeMigrationAvailable: false
             };
 
-            $scope.filterModel = {
+            $scope.filterModel = _.extend($scope.filterModel, {
                 $replicationRawTypes: replicationService.rawTypes,
-                filter: {
-                    freeText: '',
-                    volumeType: '',
-                    previousVolumeType: '',
-                    provisioningStatus: '',
-                    replicationType: [],
-                    protectionStatusList: [],
-                    migrationType: '',
-                    volumeStatus: '',
-                    snapshotex: false,
-                    snapshotfc: false,
-                    snapshot: false,
-                    clone: false,
-                    protected: false,
-                    unprotected: false,
-                    secondary: false,
-                    size: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    }
-                },
                 fetchPreviousVolumeType: function (previousVolumeType) {
                     $scope.filterModel.filter.previousVolumeType = previousVolumeType;
                 },
@@ -139,7 +140,7 @@ angular.module('rainierApp')
                         updateResultTotalCounts(result);
                     });
                 }
-            };
+            });
 
             inventorySettingsService.setExternalVolumeGridSettings(dataModel);
 
