@@ -331,7 +331,8 @@ angular.module('rainierApp')
                             }
                         } else {
                             isInvalid = _.size($scope.model.selectedParityGroups) === 0;
-                            isInvalid = isInvalid || _.isEmpty($scope.model.poolType);
+                            isInvalid = isInvalid || _.isEmpty($scope.model.poolType) ||
+                                !$scope.model.filterPoolType($scope.model.poolType);
                         }
                     }
 
