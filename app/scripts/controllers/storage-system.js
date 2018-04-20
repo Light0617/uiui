@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                objectTransformService, diskSizeService, synchronousTranslateService,
                                                paginationService, replicationGroupsService,
                                                capacityAlertService, dpAlertService, jobsAlertService, hwAlertService,
-                                               replicationService, migrationTaskService) {
+                                               replicationService, migrationTaskService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -272,7 +272,12 @@ angular.module('rainierApp')
                     $scope.externalVolumesSummary.volumesByType.push(item);
                 }
             }
-
+            if ($scope.externalVolumesSummary.volumesByType.length === 0) {
+                $scope.externalVolumesSummary.volumesByType.push({
+                    type: constantService.volumeType.EXTERNAL,
+                    count: 0
+                });
+            }
         });
 
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
