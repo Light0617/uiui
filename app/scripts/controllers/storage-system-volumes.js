@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
                                                       constantService, resourceTrackerService, replicationService,
-                                                      gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q) {
+                                                      gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
         var GET_VOLUMES_PATH = 'volumes';
@@ -340,13 +340,21 @@ angular.module('rainierApp')
                     },
                     confirmClick: function () {
                         $('#' + this.dialogSettings.id).modal('hide');
-                        var firstItem = _.first(dataModel.getSelectedItems());
+
                         var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
-                        if(targetStorageSystemId !== null && targetStorageSystemId !== undefined) {
-                            orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+
+                        if(utilService.isNullOrUndef(targetStorageSystemId)){
+                            _.forEach(dataModel.getSelectedItems(), function (item) {
+                                var unprevirtualizePayload  = {
+                                    targetStorageSystemId : targetStorageSystemId
+                                };
+                                orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
+                            });
                         }
                     },
                     onClick: function () {
+                        this.dialogSettings.itemAttributes = [];
+
                         var dialogSettings = this.dialogSettings;
 
                         getStorageSystems().then(function () {
