@@ -78,7 +78,8 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
             'migrationTaskName': 'VolumeMigration-' + num,
             'jobId': (job !== undefined)? job.jobId : 'N/A',
             'schedule': schedule,
-            'comments': 'Migration task comments.'
+            'comments': 'Migration task comments.',
+            'migrationPairCount': numOfVols
         };
     };
 
@@ -121,6 +122,7 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
         }
 
         return {
+            'migrationPairId': volNumber,
             'migrationTaskId': parentId,
             'sourceVolumeId': volNumber + volNumBase,
             'sourcePoolId': (isSourcePool === 0)? mockUtils.randomInt(0, 10) : null,

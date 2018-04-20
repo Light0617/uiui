@@ -212,15 +212,23 @@ angular.module('rainierApp')
                 },
                 {
                     title: synchronousTranslateService.translate('migration-task-list-name'),
-                    sizeClass: 'sixth',
+                    sizeClass: 'eighth',
                     sortField: 'migrationTaskName',
                     getDisplayValue: function (item) {
                         return item.migrationTaskName;
                     }
                 },
                 {
+                    title: synchronousTranslateService.translate('migration-task-list-number-of-pairs'),
+                    sizeClass: 'twelfth',
+                    sortField: 'migrationPairCount',
+                    getDisplayValue: function (item) {
+                        return item.migrationPairCount;
+                    }
+                },
+                {
                     title: synchronousTranslateService.translate('migration-task-list-scheduled-date'),
-                    sizeClass: 'sixth',
+                    sizeClass: 'eighth',
                     sortField: 'scheduleDate',
                     getDisplayValue: function (item) {
                         return item.toDisplayDate(item.scheduleDate);
@@ -228,7 +236,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: synchronousTranslateService.translate('migration-task-list-status'),
-                    sizeClass: 'seventh',
+                    sizeClass: 'eighth',
                     sortField: 'status',
                     getDisplayValue: function (item) {
                         return migrationTaskService.toDisplayStatus(item.status);
@@ -243,7 +251,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: synchronousTranslateService.translate('migration-task-list-job-start'),
-                    sizeClass: 'sixth',
+                    sizeClass: 'eighth',
                     sortField: 'jobStartDate',
                     getDisplayValue: function (item) {
                         return item.toDisplayDate(item.jobStartDate);
@@ -251,7 +259,7 @@ angular.module('rainierApp')
                 },
                 {
                     title: synchronousTranslateService.translate('migration-task-list-job-end'),
-                    sizeClass: 'sixth',
+                    sizeClass: 'eighth',
                     sortField: 'jobEndDate',
                     getDisplayValue: function (item) {
                         return item.toDisplayDate(item.jobEndDate);
@@ -259,7 +267,7 @@ angular.module('rainierApp')
                 },
                  {
                      title: synchronousTranslateService.translate('migration-task-list-comments'),
-                     sizeClass: 'sixth',
+                     sizeClass: 'eighth',
                      sortField: 'comments',
                      getDisplayValue: function (item) {
                          return item.comments;
