@@ -260,6 +260,7 @@
     "storage-pools-question-active-flash": "Intend to enable active flash?",
     "storage-pools-active-flash-license-info": "Platinum tier parity group and valid license is needed to enable Active Flash for Pool.",
     "storage-pools-question-ddm": "Intend to enable DDM?",
+    "storage-pools-add-pool-type": "Pool Type",
 
     "storage-pool-id": "Pool ID",
     "storage-pool-label": "Pool Label",
