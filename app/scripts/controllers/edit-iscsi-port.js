@@ -90,7 +90,7 @@ angular.module('rainierApp')
             };
 
             if ($scope.dataModel.supportPortAttribute === true) {
-                payload['attribute'] = model.attribute ?
+                payload.attribute = model.attribute ?
                     storagePortsService.getRawPortAttribute(model.attribute) : undefined;
             }
 
