@@ -177,9 +177,6 @@ angular.module('rainierApp')
             },
             disk: function() {
                 return 'DISK';
-            },
-            hostGroup: function() {
-                return 'HOST_GROUP';
             }
         };
         return resourceTrackerService;

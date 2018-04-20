@@ -8,7 +8,7 @@
  * Factory of the rainierApp
  */
 angular.module('rainierApp')
-    .factory('mutualChapService', function (orchestratorService, $modal, resourceTrackerService,
+    .factory('mutualChapService', function (orchestratorService, $modal,
                                             synchronousTranslateService, utilService) {
         var editMutualChapUser = function (hostGroup) {
             var modelInstance = $modal.open({
@@ -32,15 +32,8 @@ angular.module('rainierApp')
                                 }
                             }
                         };
-
-                        var reservedResourcesList = [];
-                        reservedResourcesList.push(hostGroup.hostGroupId + '=' + resourceTrackerService.hostGroup());
-
-                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList,  hostGroup.storageSystemId,
-                            resourceTrackerService.storageSystem(),
-                            'host-edit-mutual-chap-user', hostGroup.storageSystemId, hostGroup.hostGroupId, payload,
-                            orchestratorService.editMutualChapUser);
-
+                        orchestratorService.editMutualChapUser(
+                            hostGroup.storageSystemId, hostGroup.hostGroupId, payload);
                         $scope.cancel();
                     };
 
@@ -88,14 +81,8 @@ angular.module('rainierApp')
                                 }
                             }
                         };
-
-                        var reservedResourcesList = [];
-                        reservedResourcesList.push(hostGroup.hostGroupId + '=' + resourceTrackerService.hostGroup());
-
-                        resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList,  hostGroup.storageSystemId,
-                            resourceTrackerService.storageSystem(),
-                            'host-edit-mutual-chap-user', hostGroup.storageSystemId, hostGroup.hostGroupId, payload,
-                            orchestratorService.editMutualChapUser);
+                        orchestratorService.editMutualChapUser(
+                            hostGroup.storageSystemId, hostGroup.hostGroupId, payload);
                         $scope.cancel();
                     };
 
