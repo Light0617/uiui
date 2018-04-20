@@ -297,19 +297,10 @@ angular.module('rainierApp')
                 volumesByType : []
             };
             // Currently number of available types is only one.
-            // If number of types is increased in the future, use below commented codes. And rethink type label.
             $scope.externalVolumesSummary.volumesByType.push({
                 type: synchronousTranslateService.translate('common-external-volumes'),
                 count: result.numberOfVolumes
             });
-//            for (var volumeTypeEntry in result.volumeCountByType) {
-//                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-//                    var item = {};
-//                    item.type = volumeTypeEntry;
-//                    item.count = result.volumeCountByType[volumeTypeEntry];
-//                    $scope.externalVolumesSummary.volumesByType.push(item);
-//                }
-//            }
         });
 
 
