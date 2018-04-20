@@ -3139,26 +3139,6 @@ angular.module('rainierApp')
                     item.defaultSortKey = Number.MAX_VALUE;
                 }
 
-                // status
-                item.toDisplayStatus = function () {
-                    switch (this.status) {
-                        case 'SCHEDULED':
-                            return synchronousTranslateService.translate('migration-task-status-scheduled');
-                        case 'IN_PROGRESS':
-                            return synchronousTranslateService.translate('migration-task-status-in-progress');
-                        case 'SUCCESS':
-                            return synchronousTranslateService.translate('migration-task-status-success');
-                        case 'FAILED':
-                            return synchronousTranslateService.translate('migration-task-status-failed');
-                        case 'SUCCESS_WITH_ERRORS':
-                            return synchronousTranslateService.translate('migration-task-status-success-with-errors');
-                        default:
-                            if (this.status) {
-                                return this.status.charAt(0).toUpperCase() + this.status.toLowerCase().slice(1);
-                            }
-                            return constantService.notAvailable;
-                    }
-                };
                 item.isScheduled = function () {
                     return this.status === 'SCHEDULED';
                 };

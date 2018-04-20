@@ -91,7 +91,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
     var generateMockStoragePool = function(v) {
         var capacityInfo = mockUtils.getCapacityInformation(100, 150);
         var tiers = mockUtils.trueOrFalse() ? hdp : hdt;
-        var fmcCompress = mockUtils.trueOrFalse() ? 'YES' : 'NO';
+        var fmcCompress = _.sample(['YES', 'NO', 'PARTIAL']);
         return {
             'availableCapacityInBytes': capacityInfo.freeCapacity,
             'availableLogicalCapacityInBytes': mockUtils.getCapacity(50, 100),

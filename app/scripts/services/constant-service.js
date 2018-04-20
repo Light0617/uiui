@@ -152,6 +152,13 @@ angular.module('rainierApp')
                 FULL: 'FULL',
                 SUSPENDED: 'SUSPENDED',
                 FAILED: 'FAILED'
+            },
+            migrationTaskStatus: {
+                SCHEDULED: 'SCHEDULED',
+                IN_PROGRESS: 'IN_PROGRESS',
+                SUCCESS: 'SUCCESS',
+                FAILED: 'FAILED',
+                SUCCESS_WITH_ERRORS: 'SUCCESS_WITH_ERRORS'
             }
         };
     });

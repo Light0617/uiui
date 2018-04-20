@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                objectTransformService, diskSizeService, synchronousTranslateService,
                                                paginationService, replicationGroupsService,
                                                capacityAlertService, dpAlertService, jobsAlertService, hwAlertService,
-                                               replicationService, migrationTaskService) {
+                                               replicationService, migrationTaskService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
@@ -310,13 +310,16 @@ angular.module('rainierApp')
             migrationTaskService.mergeJobInfo(result).then(function (resources) {
                 var mgs = resources;
                 $scope.migrationTasks = mgs;
+                var grouping = {};
+                _.forEach(_.groupBy(mgs, 'status'), function (g) {
+                    grouping[_.first(g).status] = g.length;
+                });
                 $scope.migrationTasksSummary = {
                     total : mgs.length,
-                    // TODO NEWRAIN-8105: Should statues have the order?
-                    migrationTasksByStatus : _.map(_.groupBy(mgs, 'status'), function (g){
+                    migrationTasksByStatus : _.map(constantService.migrationTaskStatus, function (status) {
                         return {
-                            status : _.first(g).toDisplayStatus(),
-                            count : g.length
+                            status : migrationTaskService.toDisplayStatus(status),
+                            count : (grouping.hasOwnProperty(status) ? grouping[status] : 0)
                         };
                     })
                 };

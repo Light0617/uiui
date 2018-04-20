@@ -65,7 +65,42 @@ angular.module('rainierApp')
             }
         };
 
-        $scope.filterModel = {};
+        $scope.filterModel = {
+            filter: {
+                freeText: '',
+                volumeType: '',
+                previousVolumeType: '',
+                provisioningStatus: '',
+                dkcDataSavingType: '',
+                replicationType: [],
+                protectionStatusList: [],
+                snapshotex: false,
+                snapshotfc: false,
+                snapshot: false,
+                clone: false,
+                protected: false,
+                unprotected: false,
+                secondary: false,
+                gadActivePrimary: false,
+                gadActiveSecondary: false,
+                gadNotAvailable: false,
+                freeCapacity: {
+                    min: 0,
+                    max: 1000,
+                    unit: 'PB'
+                },
+                totalCapacity: {
+                    min: 0,
+                    max: 1000,
+                    unit: 'PB'
+                },
+                utilization: {
+                    min: 0,
+                    max: 100
+                },
+                migrationType: ''
+            }
+        };
 
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             storageSystem = result;
@@ -161,42 +196,8 @@ angular.module('rainierApp')
                 }
             };
 
-            $scope.filterModel = {
+            $scope.filterModel = _.extend($scope.filterModel, {
                 $replicationRawTypes: replicationService.rawTypes,
-                filter: {
-                    freeText: '',
-                    volumeType: '',
-                    previousVolumeType: '',
-                    provisioningStatus: '',
-                    dkcDataSavingType: '',
-                    replicationType: [],
-                    protectionStatusList: [],
-                    snapshotex: false,
-                    snapshotfc: false,
-                    snapshot: false,
-                    clone: false,
-                    protected: false,
-                    unprotected: false,
-                    secondary: false,
-                    gadActivePrimary: false,
-                    gadActiveSecondary: false,
-                    gadNotAvailable: false,
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    utilization: {
-                        min: 0,
-                        max: 100
-                    },
-                    migrationType: ''
-                },
                 fetchPreviousVolumeType: function (previousVolumeType) {
                     $scope.filterModel.filter.previousVolumeType = previousVolumeType;
                 },
@@ -228,7 +229,7 @@ angular.module('rainierApp')
                         updateResultTotalCounts(result);
                     });
                 }
-            };
+            });
 
             inventorySettingsService.setVolumesGridSettings(dataModel);
 

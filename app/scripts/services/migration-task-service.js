@@ -160,6 +160,26 @@ angular.module('rainierApp')
         });
     };
 
+    var toDisplayStatus = function (status) {
+        switch (status) {
+            case constantService.migrationTaskStatus.SCHEDULED:
+                return synchronousTranslateService.translate('migration-task-status-scheduled');
+            case constantService.migrationTaskStatus.IN_PROGRESS:
+                return synchronousTranslateService.translate('migration-task-status-in-progress');
+            case constantService.migrationTaskStatus.SUCCESS:
+                return synchronousTranslateService.translate('migration-task-status-success');
+            case constantService.migrationTaskStatus.FAILED:
+                return synchronousTranslateService.translate('migration-task-status-failed');
+            case constantService.migrationTaskStatus.SUCCESS_WITH_ERRORS:
+                return synchronousTranslateService.translate('migration-task-status-success-with-errors');
+            default:
+                if (status) {
+                    return status.charAt(0).toUpperCase() + status.toLowerCase().slice(1);
+                }
+                return constantService.notAvailable;
+        }
+    };
+
     return {
         getMigrationPairs: getMigrationPairs,
         getAllMigrationPairs: getAllMigrationPairs,
@@ -169,6 +189,7 @@ angular.module('rainierApp')
         isMigrationAvailable: isMigrationAvailable,
         isAllMigrationAvailable: isAllMigrationAvailable,
         getVolumes: getVolumes,
-        getExternalVolumes: getExternalVolumes
+        getExternalVolumes: getExternalVolumes,
+        toDisplayStatus: toDisplayStatus
     };
 });

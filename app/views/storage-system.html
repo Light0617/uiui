@@ -325,29 +325,6 @@
                 </a>
             </div>
 
-            <!--Meta-tile MigrationTasks formatted-->
-            <!-- TODO NEWRAIN-8105: Panel layout style. If number of panels exceeds 6, it looks rather unlikely. -->
-            <div class="tile meta-tile sixth" ng-if="migrationTasksSummary && migrationTasksSummary.total > 0">
-                <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/migration-tasks'}}" class="control-tile">
-                    <div class="tile-row icon-header-row">
-                        <div class="resource-icon icon-migrate-volume icon-lg-md"></div>
-                        <div class="label-value-container resource-data">
-                            <p class="label" ng-if="dataModel.accessible">{{ 'common-migration-tasks' | translate}}</p>
-                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
-                            <h1>{{migrationTasksSummary.total}}</h1>
-                        </div>
-                    </div>
-                    <div class="tile-row micro-tiles-row">
-                        <ul class="micro-tiles">
-                            <li class="micro-tile" ng-repeat="mg in migrationTasksSummary.migrationTasksByStatus">
-                                <p class="label">{{mg.status | translate}}</p>
-                                <p class="value">{{mg.count}}</p>
-                            </li>
-                        </ul>
-                    </div>
-                </a>
-            </div>
-
             <!--Meta-tile External-Volume formatted-->
             <div class="tile meta-tile sixth">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/external-volumes'}}" class="control-tile">
@@ -364,6 +341,28 @@
                             <li class="micro-tile" ng-repeat="g in externalVolumesSummary.volumesByType">
                                 <p class="label">{{g.type | translate}}</p>
                                 <p class="value">{{g.count}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+
+            <!--Meta-tile MigrationTasks formatted-->
+            <div class="tile meta-tile sixth" ng-if="migrationTasksSummary && migrationTasksSummary.total > 0">
+                <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/migration-tasks'}}" class="control-tile">
+                    <div class="tile-row icon-header-row">
+                        <div class="resource-icon icon-migrate-volume icon-lg-md"></div>
+                        <div class="label-value-container resource-data">
+                            <p class="label" ng-if="dataModel.accessible">{{ 'common-migration-tasks' | translate}}</p>
+                            <p ng-if="!dataModel.accessible" class="label">{{'storage-systems-not-accessible' | translate }}</p>
+                            <h1>{{migrationTasksSummary.total}}</h1>
+                        </div>
+                    </div>
+                    <div class="tile-row micro-tiles-row">
+                        <ul class="micro-tiles">
+                            <li class="micro-tile" ng-repeat="mg in migrationTasksSummary.migrationTasksByStatus">
+                                <p class="label">{{mg.status | translate}}</p>
+                                <p class="value">{{mg.count}}</p>
                             </li>
                         </ul>
                     </div>
