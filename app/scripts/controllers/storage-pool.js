@@ -571,7 +571,7 @@ angular.module('rainierApp')
                         return true;
                     };
                     result.showFmcDetails = function() {
-                        if (result.fmcCompressed === 'YES') {
+                        if (result.fmcCompressed === 'YES' || result.fmcCompressed === 'PARTIAL') {
                             return true;
                         } else {
                             return false;
