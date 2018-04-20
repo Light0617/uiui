@@ -79,7 +79,6 @@ angular.module('rainierApp')
         var generatePayload = function (model) {
             var payload = {
                 securitySwitchEnabled: model.securitySwitchEnabled,
-                attribute: model.attribute ? storagePortsService.getRawPortAttribute(model.attribute) : undefined,
                 iscsiPortInformation: {
                     ipv6Enabled: model.ipv6Enabled,
                     ipv4Information: {
@@ -89,6 +88,12 @@ angular.module('rainierApp')
                     }
                 }
             };
+
+            if (model.supportPortAttribute === true) {
+                payload['attribute'] = model.attribute ?
+                    storagePortsService.getRawPortAttribute(model.attribute) : undefined;
+            }
+
             if (payload.iscsiPortInformation.ipv6Enabled) {
                 payload.iscsiPortInformation.ipv6Information = {
                     linklocalAddressingMode: model.ipv6.linklocalManual ? storagePortsService.addressingMode.manual : storagePortsService.addressingMode.auto,
