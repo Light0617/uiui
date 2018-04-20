@@ -237,6 +237,9 @@ angular.module('rainierApp')
                         icon: 'icon-attach-volume',
                         tooltip: 'action-tooltip-attach-volumes',
                         type: 'link',
+                        enabled: function () {
+                            return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
+                        },
                         onClick: function () {
                             var flags = [];
                             _.forEach(dataModel.getSelectedItems(), function (item) {
