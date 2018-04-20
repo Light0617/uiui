@@ -303,7 +303,7 @@ angular.module('rainierApp')
                     item.type = volumeTypeEntry;
                     item.count = result.volumeCountByType[volumeTypeEntry];
                     $scope.externalVolumesSummary.volumesByType.push(item);
-                    existingType.push('EXTERNAL');
+                    existingType.push(volumeTypeEntry);
                 }
             }
             var volumeType = ['EXTERNAL'];
