@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                objectTransformService, diskSizeService, synchronousTranslateService,
                                                paginationService, replicationGroupsService,
                                                capacityAlertService, dpAlertService, jobsAlertService, hwAlertService,
-                                               replicationService, migrationTaskService, constantService) {
+                                               replicationService, migrationTaskService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolsSummary;
         var dataProtection;
