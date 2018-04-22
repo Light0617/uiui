@@ -174,7 +174,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             cachedList: luns,
             search: {
                 freeText: ''
-            }
+            },
+            sort: {}
         };
     };
 

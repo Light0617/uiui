@@ -48,7 +48,10 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
             produceId: 'OPEN-V',
             eVolIdC: 'HITACHI 50402840004F',
             externalIscsiInformation: iscsi ? iscsiTargetInformation() : undefined,
-            isDDM: (mocksize > 4000000000000) ? true : false
+            isDDM: (mocksize > 4000000000000) ? true : false,
+            productId: 'VSP Gx00',
+            serialNumber: '410304',
+            vendorId: 'HITACHI'
         };
     };
 
