@@ -2,6 +2,10 @@
      infinite-scroll-distance='0' infinite-scroll-disabled="!item.opened || dataModel.busyLoadingMoreChildren">
     <div class="tile nested-row-tile column-headers">
         <div class="twelfth cell text-resize ellipsis"
+             title="{{'migration-task-pair-list-pair-id' | translate}}">
+            <p class="sort-column-header">{{'migration-task-pair-list-pair-id' | translate}}</p>
+        </div>
+        <div class="eighth cell text-resize ellipsis"
              title="{{'migration-task-pair-list-src-vol-id' | translate}}">
             <p class="sort-column-header">{{'migration-task-pair-list-src-vol-id' | translate}}</p>
         </div>
@@ -14,7 +18,7 @@
             <p class="sort-column-header">{{'migration-task-pair-list-src-pg-id' | translate}}</p>
         </div>
 
-        <div class="twelfth cell text-resize ellipsis"
+        <div class="eighth cell text-resize ellipsis"
              title="{{'migration-task-pair-list-tgt-vol-id' | translate}}">
             <p class="sort-column-header">{{'migration-task-pair-list-tgt-vol-id' | translate}}</p>
         </div>
@@ -23,23 +27,25 @@
             <p class="sort-column-header">{{'migration-task-pair-list-tgt-pool-id' | translate}}</p>
         </div>
 
-        <div class="twelfth cell text-resize ellipsis"
+        <div class="eighth cell text-resize ellipsis"
              title="{{'migration-task-pair-list-status' | translate}}">
             <p class="sort-column-header">{{'migration-task-pair-list-status' | translate}}</p>
         </div>
-        <div class="twelfth cell text-resize ellipsis"
+        <div class="eighth cell text-resize ellipsis"
              title="{{'migration-task-pair-list-copy-progress' | translate}}">
             <p class="sort-column-header">{{'migration-task-pair-list-copy-progress' | translate}}</p>
         </div>
 
-        <div class="twelfth cell text-resize ellipsis"
+        <div class="eighth cell text-resize ellipsis"
              title="{{'migration-task-pair-list-copy-group' | translate}}">
             <p class="sort-column-header">{{'migration-task-pair-list-copy-group' | translate}}</p>
         </div>
     </div>
     <!--Nested List Tile-->
     <div ng-if="item.volumePairs" class="tile row-tile nested-row-tile panel-body" ng-repeat="vp in item.volumePairs">
-        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourceVol(dataModel.storageSystemId)"
+        <div class="twelfth cell text-resize ellipsis" title="{{vp.migrationPairId}}"><p>{{vp.migrationPairId}}</p>
+        </div>
+        <a class="eighth cell text-resize ellipsis" ng-click="vp.launchSourceVol(dataModel.storageSystemId)"
            title="{{vp.displaySourceVolumeId}}"><p>{{vp.displaySourceVolumeId}}</p>
         </a>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourcePool(dataModel.storageSystemId)"
@@ -51,11 +57,11 @@
         <div class="twelfth cell text-resize ellipsis" title="{{vp.sourceExternalParityGroupId}}">
             <p>{{vp.sourceExternalParityGroupId}}</p>
         </div>
-        <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetVol(dataModel.storageSystemId)"
+        <a class="eighth cell text-resize ellipsis" ng-click="vp.launchTargetVol(dataModel.storageSystemId)"
            ng-show="{{vp.displayTargetVolumeId !== 'N/A'}}" title="{{vp.displayTargetVolumeId}}">
             <p>{{vp.displayTargetVolumeId}}</p>
         </a>
-        <div class="twelfth cell text-resize ellipsis" ng-show="{{vp.displayTargetVolumeId === 'N/A'}}"
+        <div class="eighth cell text-resize ellipsis" ng-show="{{vp.displayTargetVolumeId === 'N/A'}}"
              title="{{vp.displayTargetVolumeId}}"><p>{{vp.displayTargetVolumeId}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetPool(dataModel.storageSystemId)"
@@ -65,12 +71,12 @@
              title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>
         </div>
 
-        <div class="twelfth cell text-resize ellipsis" title="{{vp.status}}"><p>{{vp.toDisplayStatus()}}</p>
+        <div class="eighth cell text-resize ellipsis" title="{{vp.status}}"><p>{{vp.toDisplayStatus()}}</p>
         </div>
-        <div class="twelfth cell text-resize ellipsis" title="{{vp.copyProgress}}">
+        <div class="eighth cell text-resize ellipsis" title="{{vp.copyProgress}}">
             <p>{{vp.copyProgress}}</p>
         </div>
-        <div class="twelfth cell text-resize ellipsis" title="{{vp.copyGroupName}}">
+        <div class="eighth cell text-resize ellipsis" title="{{vp.copyGroupName}}">
             <p>{{vp.copyGroupName}}</p>
         </div>
     </div>
