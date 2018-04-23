@@ -273,8 +273,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     var setHostFilter = function () {
-        $scope.filterModel.filterQuery('');
-        return true;
+        return $scope.filterModel.filterQuery('');
     };
 
     var hostsFooter = function (dataModel) {
