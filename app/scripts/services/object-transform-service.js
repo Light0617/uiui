@@ -852,15 +852,20 @@ angular.module('rainierApp')
                         i.displayWwn = wwnService.appendColon(i.wwn);
                     }
 
-                    var properties = [i.portId, i.wwn, i.displayWwn, i.lunId, i.eVolIdC];
+                    i.hwInfo = [i.vendorId, i.productId, i.serialNumber];
+                    i.hwInfo = _.filter(i.hwInfo, function (v) {
+                        return !utilService.isNullOrUndef(v);
+                    }).join(' ');
+                    var properties = [i.hwInfo, i.lunId, i.portId, i.wwn, i.displayWwn, i.eVolIdC];
 
                     // iscsi
                     if (i.externalIscsiInformation) {
                         var iscsi = i.externalIscsiInformation;
                         properties.push(iscsi.ipAddress);
                         properties.push(iscsi.iscsiName);
-                        i.iscsiName = iscsi.iscsiName;
-                        i.ipAddress = iscsi.ipAddress;
+                        i.endPoint = iscsi.ipAddress + ' ' + iscsi.iscsiName;
+                    } else {
+                        i.endPoint = wwnService.appendColon(i.wwn);
                     }
 
                     var searchKey = _.filter(properties, function (i) {
@@ -871,16 +876,17 @@ angular.module('rainierApp')
                     i.itemIcon = 'icon-manage';
                     i.capacity = diskSizeService.getDisplaySize(i.capacity);
                     i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
+
                     i.metaData = [
                         {
                             left: true,
                             title: i.lunId,
-                            details: [i.portId]
+                            details: [i.portId, i.displayCapacity, i.endPoint]
                         },
                         {
                             left: false,
-                            title: i.displayWwn ? i.displayWwn : i.iscsiName,
-                            details: [i.ipAddress, i.displayCapacity, i.eVolIdC]
+                            title: i.hwInfo,
+                            details: [i.eVolIdC]
                         }
                     ];
                 });
