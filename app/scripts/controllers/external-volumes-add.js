@@ -179,7 +179,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupLuns = function (lunsDataModel) {
         objectTransformService.transformDiscoveredLun(lunsDataModel);
-        lunsDataModel = _.sortBy(lunsDataModel, 'searchKey');
+        lunsDataModel = _.sortBy(lunsDataModel, ['hwInfo', 'lunId']);
         _.extend($scope.dataModel, externalVolumesAddService.getLunsDataModel(lunsDataModel));
         $scope.filterModel = undefined;
         $scope.footerModel = lunsFooter($scope.dataModel);
