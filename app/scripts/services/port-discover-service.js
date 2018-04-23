@@ -33,6 +33,8 @@ angular.module('rainierApp')
                     .uniq('lunNSourceEndPoint')
                     .value();
                 return $q.resolve(result);
+            }).catch(function () {
+                return $q.reject('Failed to discover luns from selected ports.');
             });
         };
 

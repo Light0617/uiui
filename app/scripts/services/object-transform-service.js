@@ -846,13 +846,21 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
-                    var properties = [i.portId, i.wwn, wwnService.appendColon(i.wwn), i.lunId, i.eVolIdC];
+                    if(i.externalIscsiInformation) {
+                        i.wwn = undefined;
+                    } else {
+                        i.displayWwn = wwnService.appendColon(i.wwn);
+                    }
+
+                    var properties = [i.portId, i.wwn, i.displayWwn, i.lunId, i.eVolIdC];
 
                     // iscsi
                     if (i.externalIscsiInformation) {
                         var iscsi = i.externalIscsiInformation;
                         properties.push(iscsi.ipAddress);
                         properties.push(iscsi.iscsiName);
+                        i.iscsiName = iscsi.iscsiName;
+                        i.ipAddress = iscsi.ipAddress;
                     }
 
                     var searchKey = _.filter(properties, function (i) {
@@ -871,8 +879,8 @@ angular.module('rainierApp')
                         },
                         {
                             left: false,
-                            title: wwnService.appendColon(i.wwn),
-                            details: [i.displayCapacity, i.eVolIdC]
+                            title: i.displayWwn ? i.displayWwn : i.iscsiName,
+                            details: [i.ipAddress, i.displayCapacity, i.eVolIdC]
                         }
                     ];
                 });

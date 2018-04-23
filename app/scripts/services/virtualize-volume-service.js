@@ -22,7 +22,7 @@ angular.module('rainierApp')
             var server = _.find(hosts, function(host) {
                 return host.serverId === hostId;
             });
-            return server && server.iscsiNames ? server.iscsiNames : [];
+            return server && server.iscsiNames ? server.iscsiNames : undefined;
         };
 
         var constructVirtualizePayload = function (selected) {
@@ -43,7 +43,7 @@ angular.module('rainierApp')
                 var serverInfo = {
                     targetPortForHost: path.storagePortId,
                     serverId: parseInt(path.serverId),
-                    serverWwns: [path.serverEndPoint],
+                    serverWwns: path.targetWwn ? [path.targetWwn] : undefined,
                     iscsiInitiatorNames: getIscsiInitiatorNames(selected.hosts, parseInt(path.serverId))
                 };
                 serverInfo.protocol = serverInfo.serverWwns ? 'FIBRE' : 'ISCSI';
@@ -59,7 +59,10 @@ angular.module('rainierApp')
                     portId: lun.portId,
                     wwn: lun.wwn,
                     lunId: lun.lunId,
-                    externalIscsiInformation: lun.externalIscsiInformation
+                    externalIscsiInformation: lun.externalIscsiInformation ? {
+                        ipAddress: lun.externalIscsiInformation.ipAddress,
+                        iscsiName: lun.externalIscsiInformation.iscsiName
+                    } : undefined
                 });
             });
             return payload;
