@@ -206,7 +206,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             cachedList: getHostsResult.resources,
             search: {
                 freeText: ''
-            }
+            },
+            sort: {}
         };
         dataModel.displayList = getHostsResult.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
         dataModel.getResources = function () {

@@ -242,6 +242,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(function () {
                 return externalVolumesAddService.validateGetHostsResult($scope.dataModel.displayList);
             })
+            .then(setHostFilter)
             .then(autoSelectHost);
     };
 
@@ -268,6 +269,11 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .each(function (i) {
                 i.selected = true;
             });
+        return true;
+    };
+
+    var setHostFilter = function () {
+        $scope.filterModel.filterQuery('');
         return true;
     };
 
