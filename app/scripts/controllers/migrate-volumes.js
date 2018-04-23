@@ -44,6 +44,10 @@ angular.module('rainierApp')
             migrationTaskId = parseInt(migrationTaskId);
         }
 
+        orchestratorService.tiers().then(function (result) {
+            $scope.tiers = result.tiers;
+        });
+
         // calculate volume information
         var calculateVolumes = function (volumes) {
             $scope.dataModel.selectedVolumes = volumes;
@@ -293,6 +297,7 @@ angular.module('rainierApp')
                         }
                     },
                     poolTypeHtiDisabled: true,
+                    ddmNotAvailable: true,
                     filterQuery: function (key, value, type, arrayClearKey) {
                         var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                         paginationService.setFilterSearch(queryObject);
@@ -412,6 +417,14 @@ angular.module('rainierApp')
                 });
             });
         };
+
+        $scope.$watchGroup(['dataModel', 'tiers'], function (values) {
+            var dataModel = values[0];
+            if (!dataModel) {
+                return;
+            }
+            dataModel.tiers = values[1];
+        });
 
         // Get candidate pools
         if (isCreateAction) {
