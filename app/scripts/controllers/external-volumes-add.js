@@ -179,6 +179,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupLuns = function (lunsDataModel) {
         objectTransformService.transformDiscoveredLun(lunsDataModel);
+        lunsDataModel = _.sortBy(lunsDataModel, ['hwInfo', 'lunId']);
         _.extend($scope.dataModel, externalVolumesAddService.getLunsDataModel(lunsDataModel));
         $scope.filterModel = undefined;
         $scope.footerModel = lunsFooter($scope.dataModel);
@@ -241,6 +242,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(function () {
                 return externalVolumesAddService.validateGetHostsResult($scope.dataModel.displayList);
             })
+            .then(setHostFilter)
             .then(autoSelectHost);
     };
 
@@ -268,6 +270,10 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 i.selected = true;
             });
         return true;
+    };
+
+    var setHostFilter = function () {
+        return $scope.filterModel.filterQuery('');
     };
 
     var hostsFooter = function (dataModel) {
@@ -329,7 +335,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 $scope.selected.hostModeOptions = $scope.dataModel.selectedHostModeOptions;
                 $scope.selected.paths = virtualizeVolumeService.remainingPaths($scope.dataModel.pathModel.paths);
                 var payload = virtualizeVolumeService.constructVirtualizePayload($scope.selected);
-                orchestratorService.virtualizeVolumes($scope.selected.storageSystem.storageSystemId, payload).then(function() { backToPreviousView(); });
+                orchestratorService.virtualizeVolumes(
+                    $scope.selected.storageSystem.storageSystemId,
+                    payload
+                ).then(function () {
+                    backToPreviousView();
+                });
             },
             previous: function () {
                 initServers()

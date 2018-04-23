@@ -174,7 +174,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             cachedList: luns,
             search: {
                 freeText: ''
-            }
+            },
+            sort: {}
         };
     };
 
@@ -205,7 +206,8 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             cachedList: getHostsResult.resources,
             search: {
                 freeText: ''
-            }
+            },
+            sort: {}
         };
         dataModel.displayList = getHostsResult.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
         dataModel.getResources = function () {
@@ -232,8 +234,9 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             filterQuery: function (key, value, type, arrayClearKey) {
                 var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                 paginationService.setFilterSearch(queryObject);
-                paginationService.getQuery(GET_HOSTS_PATH, objectTransformService.transformHost).then(function (result) {
+                return paginationService.getQuery(GET_HOSTS_PATH, objectTransformService.transformHost).then(function (result) {
                     dataModel.updateResultTotalCounts(result);
+                    return true;
                 });
             },
             searchQuery: function (value) {
