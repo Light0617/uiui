@@ -129,6 +129,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     };
 
     var updateProtocol = function () {
+        deleteLines();
         var targetPorts = filterByProtocol($scope.dataModel.targetStoragePorts);
         var sourcePorts = filterByProtocol($scope.dataModel.sourceStoragePorts);
         if (targetPorts.length && sourcePorts.length) {
@@ -139,6 +140,12 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             // TODO SHOW DIALOG
             attachToStorageService.openNoPortDialog($scope.dataModel.selectedProtocol);
             return $q.reject();
+        }
+    };
+
+    var deleteLines = function () {
+        if ($scope.dataModel.deleteAllLines && $scope.dataModel.pathModel) {
+            $scope.dataModel.deleteAllLines($scope.dataModel.pathModel);
         }
     };
 
@@ -167,9 +174,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     };
 
     var updateTarget = function (targetStorageSystemId) {
-        if ($scope.dataModel.deleteAllLines && $scope.dataModel.pathModel) {
-            $scope.dataModel.deleteAllLines($scope.dataModel.pathModel);
-        }
+        deleteLines();
         return getStoragePorts(targetStorageSystemId)
             .then(function (ports) {
                 $scope.dataModel.targetStoragePorts =

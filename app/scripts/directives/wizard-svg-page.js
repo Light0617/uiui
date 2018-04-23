@@ -750,6 +750,9 @@ angular.module('rainierApp')
                         d3service.d3().then(function(d3) {
                             var selectedSvg = d3.select('#topology-editor');
                             builder._buildTopologicalEditor(d3, selectedSvg, linkScope, redrawLines);
+                            scope.dataModel.pathModel.deleteSelected = deleteSelected;
+                            scope.dataModel.pathModel.selectNone = selectNone;
+                            scope.dataModel.pathModel.showSuggest = showSuggest;
                         });
                     }, 600);
                 };
