@@ -250,9 +250,10 @@ angular.module('rainierApp')
             };
             var map = [];
             var volumeType = ['HDP', 'HDT', 'HTI'];
-            for(var type in volumeType) {
-                map[volumeType[type]] = {type : volumeType[type], count: 0};
-            }
+
+            _.each(volumeType, function (element) {
+                map[element] = {type : element, count: 0};
+            })
 
             for (var volumeTypeEntry in result.volumeCountByType) {
                 if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
@@ -263,7 +264,9 @@ angular.module('rainierApp')
                 }
             }
             for(var index in map) {
-                $scope.volumesSummary.volumesByType.push(map[index]);
+                if(_.contains(volumeType, index)){
+                    $scope.volumesSummary.volumesByType.push(map[index]);
+                }
             }
         });
 
