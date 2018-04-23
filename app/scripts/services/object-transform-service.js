@@ -856,17 +856,18 @@ angular.module('rainierApp')
                     i.hwInfo = _.filter(i.hwInfo, function (v) {
                         return !utilService.isNullOrUndef(v);
                     }).join(' ');
-                    var properties = [i.hwInfo, i.lunId, i.portId, i.wwn, i.displayWwn, i.eVolIdC];
 
                     // iscsi
                     if (i.externalIscsiInformation) {
                         var iscsi = i.externalIscsiInformation;
-                        properties.push(iscsi.ipAddress);
-                        properties.push(iscsi.iscsiName);
-                        i.endPoint = iscsi.ipAddress + ' ' + iscsi.iscsiName;
-                    } else {
-                        i.endPoint = wwnService.appendColon(i.wwn);
+                        i.ipAddress = iscsi.ipAddress;
+                        i.iscsiName = iscsi.iscsiName;
                     }
+
+                    var properties = [
+                        i.hwInfo, i.lunId, i.portId, i.ipAddress,
+                        i.iscsiName, i.wwn, i.displayWwn, i.eVolIdC
+                    ];
 
                     var searchKey = _.filter(properties, function (i) {
                         return !utilService.isNullOrUndef(i);
@@ -881,7 +882,7 @@ angular.module('rainierApp')
                         {
                             left: true,
                             title: i.lunId,
-                            details: [i.portId, i.displayCapacity, i.endPoint]
+                            details: [i.portId, i.displayCapacity, i.displayWwn, i.iscsiName, i.ipAddress]
                         },
                         {
                             left: false,
