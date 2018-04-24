@@ -22,7 +22,7 @@ angular.module('rainierApp')
             var server = _.find(hosts, function(host) {
                 return host.serverId === hostId;
             });
-            return server && server.iscsiNames ? server.iscsiNames : [];
+            return server && server.iscsiNames && server.iscsiNames.length ? server.iscsiNames : undefined;
         };
 
         var constructVirtualizePayload = function (selected) {
@@ -30,13 +30,11 @@ angular.module('rainierApp')
             var payload = {
                 targetPorts: [],
                 serverInfos: [],
-                externalLuns: [],
-                storageSystemId: selected.storageSystem.storageSystemId,
+                luns: [],
+                storageSystemIdentifier: selected.storageSystem.storageSystemId,
+                enableZoning: selected.autoCreateZone,
                 hostMode: selected.hostMode,
-                hostModeOptions: selected.hostModeOptions,
-                enableZoning: false,
-                useDefaultHostModeOptions: false,
-                forceOverwriteChapSecret: false
+                hostModeOptions: selected.hostModeOptions
             };
             _.each(selected.externalPorts, function (port) {
                 payload.targetPorts.push(port.storagePortId);
@@ -46,9 +44,10 @@ angular.module('rainierApp')
                 var serverInfo = {
                     targetPortForHost: path.storagePortId,
                     serverId: parseInt(path.serverId),
-                    serverWwn: [path.serverEndPoint],
+                    serverWwns: path.targetWwn ? [path.targetWwn] : undefined,
                     iscsiInitiatorNames: getIscsiInitiatorNames(selected.hosts, parseInt(path.serverId))
                 };
+                serverInfo.protocol = serverInfo.serverWwns ? 'FIBRE' : 'ISCSI';
                 if(serverMap.has(key)) {
                     serverMap.get(key).serverWwn.push(path.serverEndPoint);
                 } else {
@@ -57,11 +56,14 @@ angular.module('rainierApp')
             });
             payload.serverInfos = Array.from(serverMap.values());
             _.each(selected.luns, function (lun) {
-                payload.externalLuns.push({
+                payload.luns.push({
                     portId: lun.portId,
                     wwn: lun.wwn,
                     lunId: lun.lunId,
-                    externalIscsiInformation: lun.externalIscsiInformation
+                    externalIscsiInformation: lun.externalIscsiInformation ? {
+                        ipAddress: lun.externalIscsiInformation.ipAddress,
+                        iscsiName: lun.externalIscsiInformation.iscsiName
+                    } : undefined
                 });
             });
             return payload;

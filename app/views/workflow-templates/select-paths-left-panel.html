@@ -18,6 +18,21 @@
         </select>
     </div>
 
+    <!-- Auto Create Zone -->
+    <div class="label-value-container">
+        <label class="label" for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto Create Zone</label>
+    </div>
+    <div id="auto-create-zone" class="btn-group btn-group-justified" data-toggle="buttons">
+        <label class="btn btn-primary btn-dark" ng-model="dataModel.autoCreateZone"
+               btn-radio="true">
+            <input autocomplete="off" checked="" type="radio"/>Yes
+        </label>
+        <label class="btn btn-primary btn-dark" ng-model="dataModel.autoCreateZone"
+               btn-radio="false">
+            <input autocomplete="off" checked="" type="radio"/>No
+        </label>
+    </div>
+
     <!-- LUNS -->
     <div class="label-value-container">
         <label class="label">Lun / Capacity / ID</label>
