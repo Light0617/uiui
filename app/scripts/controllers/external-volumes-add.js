@@ -62,6 +62,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             hosts: [],
             hostMode: undefined,
             hostModeOptions: [],
+            autoCreateZone: false,
             paths: []
         };
         startSpinner();
@@ -331,15 +332,19 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
             },
             submit: function () {
+                startSpinner();
                 $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
                 $scope.selected.hostModeOptions = $scope.dataModel.selectedHostModeOptions;
                 $scope.selected.paths = virtualizeVolumeService.remainingPaths($scope.dataModel.pathModel.paths);
+                $scope.selected.autoCreateZone = $scope.dataModel.autoCreateZone;
                 var payload = virtualizeVolumeService.constructVirtualizePayload($scope.selected);
                 orchestratorService.virtualizeVolumes(
                     $scope.selected.storageSystem.storageSystemId,
                     payload
                 ).then(function () {
                     backToPreviousView();
+                }).finalize(function () {
+                    stopSpinner();
                 });
             },
             previous: function () {

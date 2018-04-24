@@ -292,6 +292,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             selectServerPath: true,
             isVirtualizeVolume: true,
             selectedServer: hosts,
+            autoCreateZone: false,
             pathModel: {
                 selectedHosts: hosts,
                 paths: [],

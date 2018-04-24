@@ -22,7 +22,7 @@ angular.module('rainierApp')
             var server = _.find(hosts, function(host) {
                 return host.serverId === hostId;
             });
-            return server && server.iscsiNames ? server.iscsiNames : undefined;
+            return server && server.iscsiNames && server.iscsiNames.length ? server.iscsiNames : undefined;
         };
 
         var constructVirtualizePayload = function (selected) {
@@ -32,6 +32,7 @@ angular.module('rainierApp')
                 serverInfos: [],
                 luns: [],
                 storageSystemIdentifier: selected.storageSystem.storageSystemId,
+                enableZoning: selected.autoCreateZone,
                 hostMode: selected.hostMode,
                 hostModeOptions: selected.hostModeOptions
             };
