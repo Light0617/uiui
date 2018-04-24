@@ -337,8 +337,9 @@ angular.module('rainierApp')
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                     paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
+                    return paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
                         dataModel.updateResultTotalCounts(result);
+                        return true;
                     });
                 },
                 sliderQuery: function (key, start, end, unit) {
@@ -351,8 +352,9 @@ angular.module('rainierApp')
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject(idKey, new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
+                    return paginationService.getQuery(getStoragePortsPath, objectTransformService.transformPort, storageSystemId()).then(function (result) {
                         dataModel.updateResultTotalCounts(result);
+                        return true;
                     });
                 }
             };
