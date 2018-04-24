@@ -126,6 +126,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(function () {
                 externalVolumesAddService.setupSelectAllFunctionsDisplayList($scope.dataModel);
                 $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
+                $scope.filterModel.filterQuery('securitySwitchEnabled', 'true');
                 $scope.dataModel.sort.setSort(storagePortsService.idKey);
                 return true;
             })
@@ -140,6 +141,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = portsFooter($scope.dataModel);
         $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
+        $scope.filterModel.hideSecuritySwitchFilter = true;
         scrollDataSourceBuilderService.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
 
