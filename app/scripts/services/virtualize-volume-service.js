@@ -40,8 +40,8 @@ angular.module('rainierApp')
             var payload = {
                 targetPorts: [],
                 serverInfos: [],
-                luns: [],
-                storageSystemIdentifier: selected.storageSystem.storageSystemId,
+                externalLuns: [],
+                storageSystemId: selected.storageSystem.storageSystemId,
                 enableZoning: selected.autoCreateZone,
                 hostMode: selected.hostMode,
                 hostModeOptions: createHostModeOptionsPayload(selected.hostModeOptions)
@@ -66,7 +66,7 @@ angular.module('rainierApp')
             });
             payload.serverInfos = Array.from(serverMap.values());
             _.each(selected.luns, function (lun) {
-                payload.luns.push({
+                payload.externalLuns.push({
                     portId: lun.portId,
                     wwn: lun.wwn,
                     lunId: lun.lunId,
