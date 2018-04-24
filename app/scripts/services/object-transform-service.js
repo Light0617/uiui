@@ -846,13 +846,20 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
-                    var properties = [i.portId, i.wwn, wwnService.appendColon(i.wwn), i.lunId, i.eVolIdC];
+                    i.hwInfo = [i.vendorId, i.productId, i.serialNumber];
+                    i.hwInfo = _.filter(i.hwInfo, function (v) {
+                        return !utilService.isNullOrUndef(v);
+                    }).join(' ');
+                    var properties = [i.hwInfo, i.lunId, i.portId, i.wwn, wwnService.appendColon(i.wwn), i.eVolIdC];
 
                     // iscsi
                     if (i.externalIscsiInformation) {
                         var iscsi = i.externalIscsiInformation;
                         properties.push(iscsi.ipAddress);
                         properties.push(iscsi.iscsiName);
+                        i.endPoint = iscsi.ipAddress + ' ' + iscsi.iscsiName;
+                    } else {
+                        i.endPoint = wwnService.appendColon(i.wwn);
                     }
 
                     var searchKey = _.filter(properties, function (i) {
@@ -863,16 +870,17 @@ angular.module('rainierApp')
                     i.itemIcon = 'icon-manage';
                     i.capacity = diskSizeService.getDisplaySize(i.capacity);
                     i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
+
                     i.metaData = [
                         {
                             left: true,
                             title: i.lunId,
-                            details: [i.portId]
+                            details: [i.portId, i.displayCapacity, i.endPoint]
                         },
                         {
                             left: false,
-                            title: wwnService.appendColon(i.wwn),
-                            details: [i.displayCapacity, i.eVolIdC]
+                            title: i.hwInfo,
+                            details: [i.eVolIdC]
                         }
                     ];
                 });
