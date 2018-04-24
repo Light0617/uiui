@@ -256,13 +256,11 @@ angular.module('rainierApp')
                         if (isCreateAction) {
                             payload.sourceVolumeIds = sourceVolumeIds;
                             resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
-                                resourceTrackerService.storageSystem(),
-                                synchronousTranslateService.translate('migrate-volumes-resource-reserved-confirmation-create'),
+                                resourceTrackerService.storageSystem(), 'migrate-volumes-resource-reserved-confirmation-create',
                                 storageSystemId, null, payload, orchestratorService.createMigrationTask);
                         } else {
                             resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
-                                resourceTrackerService.storageSystem(),
-                                synchronousTranslateService.translate('migrate-volumes-resource-reserved-confirmation-edit'),
+                                resourceTrackerService.storageSystem(), 'migrate-volumes-resource-reserved-confirmation-edit',
                                 storageSystemId, migrationTaskId, payload, orchestratorService.updateMigrationTask);
                         }
                     },
