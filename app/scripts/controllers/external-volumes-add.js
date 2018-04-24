@@ -343,7 +343,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     payload
                 ).then(function () {
                     backToPreviousView();
-                }).finalize(function () {
+                }).finally(function () {
                     stopSpinner();
                 });
             },
