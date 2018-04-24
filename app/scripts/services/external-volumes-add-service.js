@@ -277,15 +277,17 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     var getPathsModel = function (storageSystemId, hosts, protocol) {
         return $q.all([
             getHostModeOptions(storageSystemId),
+            getHostGroups(storageSystemId),
             getStoragePorts(storageSystemId, protocol)
         ]).then(function (result) {
             var hostModeOptions = result[0];
-            var ports = result[1];
-            return initPathsModel(hostModeOptions, ports, hosts);
+            var hostGroups = result[1];
+            var ports = result[2];
+            return initPathsModel(hostModeOptions, hostGroups, ports, hosts);
         });
     };
 
-    var initPathsModel = function (hostModeOptions, ports, hosts) {
+    var initPathsModel = function (hostModeOptions, hostGroups, ports, hosts) {
         var result = {
             hostModeCandidates: constantService.osType(),
             hostModeOptionCandidates: hostModeOptions,
@@ -301,7 +303,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             }
         };
         result.selectedHostMode = invokeFindHostMode(hosts[0], result.hostModeCandidates);
-        result.selectedHostModeOptions = [999];
+        result.selectedHostModeOptions = attachVolumeService.getMatchedHostModeOption(hostGroups);
         var idCoordinates = {};
         attachVolumeService.setPortCoordiantes(result.pathModel.storagePorts, idCoordinates);
         attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, [], idCoordinates);
@@ -321,6 +323,15 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             .catch(function () {
                 return $q.reject('Failed to get available host mode options.');
             });
+    };
+
+    var getHostGroups = function (storageSystemId) {
+        return paginationService.getAllPromises(
+            null, 'host-groups', false, storageSystemId,
+            objectTransformService.transformHostGroups, false
+        ).catch(function () {
+            return $q.reject('Failed to get host groups');
+        });
     };
 
     var validateGetHostModeOptionsResult = function (result) {
