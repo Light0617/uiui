@@ -110,7 +110,7 @@
     </div>
 </div>
 <!--Control group: DDM Enabled-->
-<div class="control-group">
+<div class="control-group" ng-if="!filterModel.ddmNotAvailable">
     <h3>DDM Enabled<span class="read-only" type="text">{{ (filterModel.filter.ddmEnabled === undefined || filterModel.filter.ddmEnabled === null) ? 'ALL' :
                     (filterModel.filter.ddmEnabled ? 'True' : 'False' )}}</span>
     </h3>
