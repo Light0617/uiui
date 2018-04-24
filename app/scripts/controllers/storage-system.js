@@ -248,23 +248,18 @@ angular.module('rainierApp')
                 total: result.numberOfVolumes,
                 volumesByType: []
             };
-            var map = [];
-            var volumeType = ['HDP', 'HDT', 'HTI'];
-            for(var type in volumeType) {
-                map[volumeType[type]] = {type : volumeType[type], count: 0};
-            }
+
+            var map = new Map([['HDP',0],['HDT',0],['HTI',0]]);
 
             for (var volumeTypeEntry in result.volumeCountByType) {
                 if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-                    map[volumeTypeEntry] = {
-                        type : volumeTypeEntry,
-                        count: result.volumeCountByType[volumeTypeEntry] + map[volumeTypeEntry].count
-                    };
+                    map.set(volumeTypeEntry, result.volumeCountByType[volumeTypeEntry] + map.get(volumeTypeEntry));
                 }
             }
-            for(var index in map) {
-                $scope.volumesSummary.volumesByType.push(map[index]);
-            }
+
+            map.forEach(function (value, key) {
+                $scope.volumesSummary.volumesByType.push({type: key, count: value});
+            });
         });
 
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
