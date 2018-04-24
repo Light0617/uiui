@@ -181,7 +181,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var validateGetLunsResult = function (luns) {
         if (!luns.length) {
-            return $q.reject({ message: 'Failed to discover LUN from selected port.' });
+            return $q.reject({ message: 'There is no available luns discovered from selected ports.' });
         }
         return luns;
     };
