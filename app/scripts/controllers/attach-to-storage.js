@@ -130,8 +130,8 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
 
     var updateProtocol = function () {
         deleteLines();
-        var targetPorts = filterTargetPorts($scope.dataModel.targetStoragePorts);
-        var sourcePorts = filterSourcePorts($scope.dataModel.sourceStoragePorts);
+        var targetPorts = filterPorts($scope.dataModel.targetStoragePorts);
+        var sourcePorts = filterPorts($scope.dataModel.sourceStoragePorts);
         if (targetPorts.length && sourcePorts.length) {
             $scope.dataModel.pathModel = attachToStorageService.generatePathModel(sourcePorts, targetPorts);
             return $q.resolve();
@@ -149,7 +149,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         }
     };
 
-    var filterSourcePorts = function (ports) {
+    var filterPorts = function (ports) {
         return _.filter(ports, function (p) {
             var protocol = $scope.dataModel.selectedProtocol;
             var protocolMatched = p.type === protocol;
@@ -158,12 +158,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             } else {
                 return protocolMatched;
             }
-        });
-    };
-
-    var filterTargetPorts = function (ports) {
-        return _.filter(ports, function (p) {
-            return p.type === $scope.dataModel.selectedProtocol;
         });
     };
 
