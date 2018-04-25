@@ -14,7 +14,7 @@ angular.module('rainierApp')
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
                                              replicationService, resourceTrackerService, gadVolumeTypeSearchService,
-                                             migrationTaskService, $q, constantService, virtualizeVolumeService) {
+                                             migrationTaskService, $q, constantService, virtualizeVolumeService, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -196,10 +196,14 @@ angular.module('rainierApp')
                         },
                         confirmClick: function () {
                             $('#' + this.dialogSettings.id).modal('hide');
-                            var firstItem = _.first(dataModel.getSelectedItems());
                             var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
-                            if(targetStorageSystemId !== null && targetStorageSystemId !== undefined) {
-                                orchestratorService.unprevirtualize(storageSystemId, firstItem.volumeId);
+                            if(!utilService.isNullOrUndef(targetStorageSystemId)) {
+                                _.forEach(dataModel.getSelectedItems(), function (item) {
+                                    var unprevirtualizePayload  = {
+                                        targetStorageSystemId : targetStorageSystemId
+                                    };
+                                    orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
+                                });
                             }
                         },
                         onClick: function () {

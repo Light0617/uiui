@@ -66,7 +66,7 @@
     </div>
 </div>
 <!--Control group: Security Switch Enabled-->
-<div class="control-group">
+<div class="control-group" ng-if="!filterModel.hideSecuritySwitchFilter">
     <h3>{{'storage-port-security-switch-enabled' | translate}} <span class="read-only" type="text">
                     {{ (filterModel.filter.securitySwitchEnabled === undefined || filterModel.filter.securitySwitchEnabled === null) ? 'All' :
                     (filterModel.filter.securitySwitchEnabled ? 'Enabled' : 'Disabled' )}}</span>

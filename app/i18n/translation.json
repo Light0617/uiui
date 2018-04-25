@@ -1146,6 +1146,8 @@
     "migrate-volumes-invalid-time-message": "Enter time within the format 'HH:mm [AM|PM]'.",
     "migrate-volumes-invalid-date-message": "Enter date with valid date format.",
     "has-migration-tasks": "Migration Tasks Exist",
+    "migrate-volumes-resource-reserved-confirmation-create": "Migrate Volumes Confirmation",
+    "migrate-volumes-resource-reserved-confirmation-edit": "Edit Migration Task Confirmation",
     "migration-tasks-exist": "True",
     "migration-tasks-not-exist": "False",
 

@@ -62,6 +62,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             hosts: [],
             hostMode: undefined,
             hostModeOptions: [],
+            autoCreateZone: false,
             paths: []
         };
         startSpinner();
@@ -124,7 +125,11 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(setupPortDataFilterFooterModel)
             .then(function () {
                 externalVolumesAddService.setupSelectAllFunctionsDisplayList($scope.dataModel);
-                $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT');
+                $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT').then(function () {
+                    if (protocol === 'FIBRE') {
+                        $scope.filterModel.filterQuery('securitySwitchEnabled', 'true');
+                    }
+                });
                 $scope.dataModel.sort.setSort(storagePortsService.idKey);
                 return true;
             })
@@ -139,6 +144,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
         $scope.footerModel = portsFooter($scope.dataModel);
         $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
+        $scope.filterModel.hideSecuritySwitchFilter = true;
         scrollDataSourceBuilderService.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
 
@@ -331,15 +337,19 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     !utilService.isNullOrUndef($scope.dataModel.selectedHostMode);
             },
             submit: function () {
+                startSpinner();
                 $scope.selected.hostMode = $scope.dataModel.selectedHostMode;
                 $scope.selected.hostModeOptions = $scope.dataModel.selectedHostModeOptions;
                 $scope.selected.paths = virtualizeVolumeService.remainingPaths($scope.dataModel.pathModel.paths);
+                $scope.selected.autoCreateZone = $scope.dataModel.autoCreateZone;
                 var payload = virtualizeVolumeService.constructVirtualizePayload($scope.selected);
                 orchestratorService.virtualizeVolumes(
                     $scope.selected.storageSystem.storageSystemId,
                     payload
                 ).then(function () {
                     backToPreviousView();
+                }).finally(function () {
+                    stopSpinner();
                 });
             },
             previous: function () {
