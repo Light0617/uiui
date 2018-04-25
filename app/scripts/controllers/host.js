@@ -225,33 +225,6 @@ angular.module('rainierApp')
                         }
                     },
                     {
-                        icon: 'icon-attach-vol-to-storage',
-                        tooltip: 'Attach to Storage',
-                        type: 'link',
-                        enabled: function () {
-                            return dataModel.anySelected();
-                        },
-                        onClick: function () {
-                            virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
-                        }
-                    },
-                    {
-                        icon: 'icon-migrate-volume',
-                        tooltip: 'action-tooltip-migrate-volumes',
-                        type: 'link',
-                        enabled: function () {
-                            return isVolumesInSameStorageSystem(dataModel.getSelectedItems()) &&
-                                licenseStatusOfVolumeMigration[dataModel.getSelectedItems()[0].storageSystemId] &&
-                                dataModel.getSelectedCount() <= 300 &&
-                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
-                        },
-                        onClick: function () {
-                            ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
-                            var storageSystemId = ShareDataService.selectedMigrateVolumes[0].storageSystemId;
-                            $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
-                        }
-                    },
-                    {
                         icon: 'icon-remove-volume',
                         tooltip: 'action-tooltip-unprotect-volumes',
                         type: 'link',
@@ -277,6 +250,33 @@ angular.module('rainierApp')
                                 function (vol) {
                                     return volumeService.restorable(vol);
                                 });
+                        }
+                    },
+                    {
+                        icon: 'icon-attach-vol-to-storage',
+                        tooltip: 'Attach to Storage',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.anySelected();
+                        },
+                        onClick: function () {
+                            virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
+                        }
+                    },
+                    {
+                        icon: 'icon-migrate-volume',
+                        tooltip: 'action-tooltip-migrate-volumes',
+                        type: 'link',
+                        enabled: function () {
+                            return isVolumesInSameStorageSystem(dataModel.getSelectedItems()) &&
+                                licenseStatusOfVolumeMigration[dataModel.getSelectedItems()[0].storageSystemId] &&
+                                dataModel.getSelectedCount() <= 300 &&
+                                migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
+                            var storageSystemId = ShareDataService.selectedMigrateVolumes[0].storageSystemId;
+                            $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
                         }
                     }
                 ];
