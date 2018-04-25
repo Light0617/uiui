@@ -130,8 +130,8 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
 
     var updateProtocol = function () {
         deleteLines();
-        var targetPorts = filterByProtocol($scope.dataModel.targetStoragePorts);
-        var sourcePorts = filterByProtocol($scope.dataModel.sourceStoragePorts);
+        var targetPorts = filterPorts($scope.dataModel.targetStoragePorts);
+        var sourcePorts = filterPorts($scope.dataModel.sourceStoragePorts);
         if (targetPorts.length && sourcePorts.length) {
             $scope.dataModel.pathModel = attachToStorageService.generatePathModel(sourcePorts, targetPorts);
             return $q.resolve();
@@ -149,9 +149,15 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         }
     };
 
-    var filterByProtocol = function (ports) {
+    var filterPorts = function (ports) {
         return _.filter(ports, function (p) {
-            return p.type === $scope.dataModel.selectedProtocol;
+            var protocol = $scope.dataModel.selectedProtocol;
+            var protocolMatched = p.type === protocol;
+            if (protocol === 'FIBRE') {
+                return protocolMatched && p.securitySwitchEnabled;
+            } else {
+                return protocolMatched;
+            }
         });
     };
 
@@ -203,7 +209,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     // NOT DEPENDS ON DataModel
     var filterSourceStoragePort = function (port) {
         return !port.isVsmPort &&
-            port.securitySwitchEnabled &&
             _.any(port.attributes, function (attr) {
                 return attr === 'Target';
             });

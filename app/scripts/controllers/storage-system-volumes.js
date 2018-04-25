@@ -343,7 +343,7 @@ angular.module('rainierApp')
 
                         var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
 
-                        if(utilService.isNullOrUndef(targetStorageSystemId)){
+                        if(!utilService.isNullOrUndef(targetStorageSystemId)){
                             _.forEach(dataModel.getSelectedItems(), function (item) {
                                 var unprevirtualizePayload  = {
                                     targetStorageSystemId : targetStorageSystemId

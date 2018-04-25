@@ -19,10 +19,20 @@ angular.module('rainierApp')
         };
 
         var getIscsiInitiatorNames = function (hosts, hostId) {
-            var server = _.find(hosts, function(host) {
+            var server = _.find(hosts, function (host) {
                 return host.serverId === hostId;
             });
             return server && server.iscsiNames && server.iscsiNames.length ? server.iscsiNames : undefined;
+        };
+
+        var createHostModeOptionsPayload = function (selectedHostModeOptions) {
+            if (_.any(selectedHostModeOptions, function (i) {
+                return i === 999;
+            })) {
+                return undefined;
+            } else {
+                return selectedHostModeOptions;
+            }
         };
 
         var constructVirtualizePayload = function (selected) {
@@ -30,11 +40,11 @@ angular.module('rainierApp')
             var payload = {
                 targetPorts: [],
                 serverInfos: [],
-                luns: [],
-                storageSystemIdentifier: selected.storageSystem.storageSystemId,
+                externalLuns: [],
+                storageSystemId: selected.storageSystem.storageSystemId,
                 enableZoning: selected.autoCreateZone,
                 hostMode: selected.hostMode,
-                hostModeOptions: selected.hostModeOptions
+                hostModeOptions: createHostModeOptionsPayload(selected.hostModeOptions)
             };
             _.each(selected.externalPorts, function (port) {
                 payload.targetPorts.push(port.storagePortId);
@@ -48,7 +58,7 @@ angular.module('rainierApp')
                     iscsiInitiatorNames: getIscsiInitiatorNames(selected.hosts, parseInt(path.serverId))
                 };
                 serverInfo.protocol = serverInfo.serverWwns ? 'FIBRE' : 'ISCSI';
-                if(serverMap.has(key)) {
+                if (serverMap.has(key)) {
                     serverMap.get(key).serverWwn.push(path.serverEndPoint);
                 } else {
                     serverMap.set(key, serverInfo);
@@ -56,7 +66,7 @@ angular.module('rainierApp')
             });
             payload.serverInfos = Array.from(serverMap.values());
             _.each(selected.luns, function (lun) {
-                payload.luns.push({
+                payload.externalLuns.push({
                     portId: lun.portId,
                     wwn: lun.wwn,
                     lunId: lun.lunId,
@@ -98,7 +108,7 @@ angular.module('rainierApp')
                         modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
                     };
 
-                    modalInstance.result.finally(function() {
+                    modalInstance.result.finally(function () {
                         modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
                     });
                 }
@@ -117,7 +127,7 @@ angular.module('rainierApp')
         };
 
         return {
-            getViewBoxHeight: function(sourcePorts, targetPorts, sourceCoordinates, targetCoordinates) {
+            getViewBoxHeight: function (sourcePorts, targetPorts, sourceCoordinates, targetCoordinates) {
                 attachVolumeService.setPortCoordiantes(sourcePorts, sourceCoordinates);
                 attachVolumeService.setPortCoordiantes(targetPorts, targetCoordinates);
 

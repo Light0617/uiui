@@ -224,8 +224,11 @@ angular.module('rainierApp')
                     },
                     submit: function () {
                         dataModel.goNext();
+                        var reservedResourcesList = [];
                         var targetPool = getTargetPool();
+                        reservedResourcesList.push(targetPool.storagePoolId + '=' + resourceTrackerService.storagePool());
                         var sourceVolumeIds = _.map(dataModel.selectedVolumes, function (volume) {
+                            reservedResourcesList.push(volume.volumeId + '=' + resourceTrackerService.volume());
                             return volume.volumeId;
                         });
                         var schedule = null;
@@ -256,13 +259,13 @@ angular.module('rainierApp')
                         }
                         if (isCreateAction) {
                             payload.sourceVolumeIds = sourceVolumeIds;
-                            orchestratorService.createMigrationTask(storageSystemId, payload).then(function () {
-                                window.history.back();
-                            });
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
+                                resourceTrackerService.storageSystem(), 'migrate-volumes-resource-reserved-confirmation-create',
+                                storageSystemId, null, payload, orchestratorService.createMigrationTask);
                         } else {
-                            orchestratorService.updateMigrationTask(storageSystemId, migrationTaskId, payload).then(function () {
-                                window.history.back();
-                            });
+                            resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
+                                resourceTrackerService.storageSystem(), 'migrate-volumes-resource-reserved-confirmation-edit',
+                                storageSystemId, migrationTaskId, payload, orchestratorService.updateMigrationTask);
                         }
                     },
                     previous: function () {
@@ -399,7 +402,7 @@ angular.module('rainierApp')
                 }
 
                 $q.all(tasks).then(function () {
-                    calculateVolumes(sourceVolumes);
+                    calculateVolumes(sourceVolumes.concat(sourceExternalVolumes));
                     getPools(storageSystemId, function(dataModel) {
                         dataModel.settingModel.migrationTaskName = migrationTask.migrationTaskName;
                         dataModel.settingModel.comments = migrationTask.comments;
