@@ -38,7 +38,6 @@ angular.module('rainierApp')
                     dataModel.storageSystems.push(storageSystem);
                 }
             });
-            //dataModel.selectedStorageSystem = dataModel.storageSystems[0];
             selectInitialStorageSystem(dataModel.storageSystems.concat(), dataModel);
             dataModel.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
             dataModel.decimalNumberRegexp = /^[^.]+$/;
