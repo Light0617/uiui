@@ -120,16 +120,21 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             })
             .then(updateTarget)
             .then(buildSvgFn(false))
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(spinner);
     };
 
     var onTargetStorageSystemChange = function () {
         var currentTargetStorageSystem = $scope.dataModel.selectedTargetStorageSystemId;
-        updateTarget(currentTargetStorageSystem).then(buildSvgFn(true));
+        updateTarget(currentTargetStorageSystem)
+            .then(buildSvgFn(true))
+            .catch(externalVolumesAddService.openErrorDialog);
     };
 
     var onProtocolChange = function () {
-        updateProtocol().then(buildSvgFn(true));
+        updateProtocol()
+            .then(buildSvgFn(true))
+            .catch(externalVolumesAddService.openErrorDialog);
     };
 
     var updateProtocol = function () {
