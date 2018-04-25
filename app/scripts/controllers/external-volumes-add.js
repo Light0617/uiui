@@ -125,8 +125,10 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(setupPortDataFilterFooterModel)
             .then(function () {
                 externalVolumesAddService.setupSelectAllFunctionsDisplayList($scope.dataModel);
-                $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT').then(function(){
-                    $scope.filterModel.filterQuery('securitySwitchEnabled', 'true');
+                $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT').then(function () {
+                    if (protocol === 'FIBRE') {
+                        $scope.filterModel.filterQuery('securitySwitchEnabled', 'true');
+                    }
                 });
                 $scope.dataModel.sort.setSort(storagePortsService.idKey);
                 return true;
