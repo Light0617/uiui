@@ -1127,7 +1127,7 @@
     "action-tooltip-migration-tasks-inventory": "{{migrationTaskCount}} Migration Tasks",
     "assigned-to-migration": "Assigned to Migration",
     "assigned-to-migration-unmanaged": "Assigned to Migration(Unmanaged)",
-    "yes-unmanaged": "Yes(Unmanaged)",
+    "yes-unmanaged": "Yes (Unmanaged)",
 
     "migrate-volumes-label-selected-volumes": "{{length}} Selected Volumes",
     "migrate-volumes-label-target-pool": "Target Pool",

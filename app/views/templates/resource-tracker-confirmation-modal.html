@@ -7,7 +7,9 @@
         <p>{{'resource-tracker-error-message' | translate }}</p>
     </div>
     <div class="modal-footer btn-group-confirm">
-        <button type="button" class="btn btn-default active" selected="selected" ng-click="cancel()">No</button>
-        <button type="button" class="btn btn-default " selected="selected" ng-click="ok()">Yes</button>
+        <button type="button" class="btn btn-default active" selected="selected" ng-click="cancel()">
+            {{ 'common-label-cancel' | translate}}</button>
+        <button type="button" class="btn btn-default " selected="selected" ng-click="ok()">
+            {{ 'common-label-ok' | translate}}</button>
     </div>
 </div>
