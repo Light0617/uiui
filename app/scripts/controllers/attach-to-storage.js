@@ -27,7 +27,8 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     attachToStorageService,
     previrtualizeService,
     synchronousTranslateService,
-    utilService
+    utilService,
+    externalVolumesAddService
 ) {
     // INITIALIZE dataModel
     var initialDataModel = function () {
@@ -58,14 +59,17 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
     };
 
     var submit = function () {
+        spinner(true);
         var payload = previrtualizeService.createPrevirtualizePayload(
             $scope.dataModel.sourceStorageSystemId,
             $scope.dataModel.selectedTargetStorageSystemId,
             attachToStorageService.portsInfo($scope.dataModel.pathModel.paths),
             $scope.dataModel.selectedVolumeIds
         );
-        orchestratorService.previrtualize(payload);
-        backToPreviousView();
+        orchestratorService.previrtualize(payload)
+            .then(backToPreviousView)
+            .catch(externalVolumesAddService.openErrorDialog)
+            .finally(spinner);
     };
 
     var spinner = function (waiting) {
