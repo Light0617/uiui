@@ -70,7 +70,7 @@ angular.module('rainierApp')
                     portId: lun.portId,
                     wwn: lun.wwn,
                     lunId: lun.lunId,
-                    externalIscsiInformation: lun.externalIscsiInformation ? {
+                    iscsiInfo: lun.externalIscsiInformation ? {
                         ipAddress: lun.externalIscsiInformation.ipAddress,
                         iscsiName: lun.externalIscsiInformation.iscsiName
                     } : undefined
