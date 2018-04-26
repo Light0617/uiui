@@ -21,6 +21,9 @@
     <div ng-attr-class="{{action.icon}}"></div>
 
 </div>
+<div class="btn icon-btn icon-sm" ng-if="action.type === 'spacer'">
+    <div ng-attr-class="no-icon"></div>
+</div>
 <div ng-repeat-end class="btn icon-btn icon-sm" ng-attr-title="{{action.tooltip | translate }}" ng-if="action.type  === 'confirm'"
      ng-click="!action.enabled() || action.onClick(orchestratorService, true)" confirm
      confirm-title="{{ action.confirmTitle | translate}}"

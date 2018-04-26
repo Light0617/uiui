@@ -305,6 +305,123 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    icon: 'icon-attach-volume',
+                    tooltip: 'action-tooltip-attach-volumes',
+                    type: 'link',
+                    onClick: function () {
+                        var flags = [];
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            flags.push(item.isUnattached());
+                        });
+                        if (flags.areAllItemsTrue()) {
+                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                            $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
+                        } else {
+                            var modelInstance = $modal.open({
+                                templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
+                                windowClass: 'modal fade confirmation',
+                                backdropClass: 'modal-backdrop',
+                                controller: function ($scope) {
+                                    $scope.cancel = function () {
+                                        modelInstance.dismiss('cancel');
+                                    };
+
+                                    $scope.ok = function () {
+                                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
+                                        $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
+                                        modelInstance.close(true);
+                                    };
+
+                                    modelInstance.result.finally(function () {
+                                        $scope.cancel();
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    enabled: function () {
+                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
+                    }
+                },
+                {
+                    icon: 'icon-detach-volume',
+                    tooltip: 'storage-volume-detach',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return vol.isAttached();
+                            }) && !hasGadVolume(dataModel.getSelectedItems());
+                    },
+                    onClick: function () {
+                        var item = _.first(dataModel.getSelectedItems());
+                        item.actions.detach.onClick();
+                    }
+                },
+                {
+                    type: 'spacer'
+                },
+                {
+                    icon: 'icon-data-protection',
+                    tooltip: 'action-tooltip-protect-volumes',
+                    type: 'link',
+                    onClick: function () {
+                        ShareDataService.volumesList = dataModel.getSelectedItems();
+                        $location.path(['storage-systems', storageSystemId,
+                            'volumes/protect'].join('/'));
+                    },
+                    enabled: function () {
+                        return dataModel.anySelected() &&
+                            _.all(dataModel.getSelectedItems(),
+                                function (vol) {
+                                    return (vol.isAttached() || vol.isUnmanaged()) && !vol.isShredding();
+                                });
+                    }
+                },
+                {
+                    icon: 'icon-remove-volume',
+                    tooltip: 'action-tooltip-unprotect-volumes',
+                    type: 'link',
+                    onClick: function () {
+                        volumeUnprotectActions(dataModel.getSelectedItems());
+                    },
+                    enabled: function () {
+                        return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return vol.isUnprotected();
+                            });
+                    }
+                },
+                {
+                    icon: 'icon-refresh',
+                    tooltip: 'action-tooltip-restore-volumes',
+                    type: 'link',
+                    onClick: function () {
+                        volumeRestoreAction('restore', dataModel.getSelectedItems());
+                    },
+                    enabled: function () {
+                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
+                            function (vol) {
+                                return volumeService.restorable(vol);
+                            });
+                    }
+                },
+                {
+                    type: 'spacer'
+                },
+                // Attach to storage
+                {
+                    icon: 'icon-attach-vol-to-storage',
+                    tooltip: 'action-tooltip-attach-to-storage',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    onClick: function () {
+                        virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
+                    }
+                },
+                {
                     icon: 'icon-migrate-volume',
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
@@ -316,18 +433,6 @@ angular.module('rainierApp')
                     onClick: function () {
                         ShareDataService.selectedMigrateVolumes = dataModel.getSelectedItems();
                         $location.path(['storage-systems', storageSystemId, 'migrate-volumes'].join('/'));
-                    }
-                },
-                // Attach to storage
-                {
-                    icon: 'icon-attach-vol-to-storage',
-                    tooltip: 'Attach to Storage',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.anySelected();
-                    },
-                    onClick: function () {
-                        virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
                     }
                 },
                 {
@@ -384,105 +489,6 @@ angular.module('rainierApp')
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                         $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
-                    }
-                },
-                {
-                    icon: 'icon-attach-volume',
-                    tooltip: 'action-tooltip-attach-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        var flags = [];
-                        _.forEach(dataModel.getSelectedItems(), function (item) {
-                            flags.push(item.isUnattached());
-                        });
-                        if (flags.areAllItemsTrue()) {
-                            ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                            $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
-                        } else {
-                            var modelInstance = $modal.open({
-                                templateUrl: 'views/templates/attach-volume-confirmation-modal.html',
-                                windowClass: 'modal fade confirmation',
-                                backdropClass: 'modal-backdrop',
-                                controller: function ($scope) {
-                                    $scope.cancel = function () {
-                                        modelInstance.dismiss('cancel');
-                                    };
-
-                                    $scope.ok = function () {
-                                        ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
-                                        $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
-                                        modelInstance.close(true);
-                                    };
-
-                                    modelInstance.result.finally(function () {
-                                        $scope.cancel();
-                                    });
-                                }
-                            });
-                        }
-                    },
-                    enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems());
-                    }
-                },
-                {
-                    icon: 'icon-detach-volume',
-                    tooltip: 'storage-volume-detach',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return vol.isAttached();
-                            }) && !hasGadVolume(dataModel.getSelectedItems());
-                    },
-                    onClick: function () {
-                        var item = _.first(dataModel.getSelectedItems());
-                        item.actions.detach.onClick();
-                    }
-                },
-                {
-                    icon: 'icon-data-protection',
-                    tooltip: 'action-tooltip-protect-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        ShareDataService.volumesList = dataModel.getSelectedItems();
-                        $location.path(['storage-systems', storageSystemId,
-                            'volumes/protect'].join('/'));
-                    },
-                    enabled: function () {
-                        return dataModel.anySelected() &&
-                            _.all(dataModel.getSelectedItems(),
-                                function (vol) {
-                                    return (vol.isAttached() || vol.isUnmanaged()) && !vol.isShredding();
-                                });
-                    }
-                },
-                {
-                    icon: 'icon-remove-volume',
-                    tooltip: 'action-tooltip-unprotect-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        volumeUnprotectActions(dataModel.getSelectedItems());
-                    },
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return vol.isUnprotected();
-                            });
-                    }
-                },
-                {
-                    icon: 'icon-refresh',
-                    tooltip: 'action-tooltip-restore-volumes',
-                    type: 'link',
-                    onClick: function () {
-                        volumeRestoreAction('restore', dataModel.getSelectedItems());
-                    },
-                    enabled: function () {
-                        return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                            function (vol) {
-                                return volumeService.restorable(vol);
-                            });
                     }
                 }
             ];
