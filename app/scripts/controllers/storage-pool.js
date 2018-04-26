@@ -526,7 +526,7 @@ angular.module('rainierApp')
                             confirmTitle: 'storage-pool-delete-one-confirmation',
                             confirmMessage: 'storage-pool-delete-current-content',
                             enabled: function () {
-                                return result.label.indexOf('HSA-reserved') === -1;
+                                return !result.isReservedPool && !result.isUsingExternalStorage();
                             },
                             onClick: function (orchestratorService) {
 
@@ -545,7 +545,7 @@ angular.module('rainierApp')
                             icon: 'icon-edit',
                             type: 'link',
                             enabled: function () {
-                                return result.label.indexOf('HSA-reserved') === -1 && !result.ddmEnabled;
+                                return !result.isReservedPool && !result.ddmEnabled;
                             },
                             onClick: function () {
                                 $location.path(['storage-systems', storageSystemId,
