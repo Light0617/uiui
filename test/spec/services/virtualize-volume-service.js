@@ -20,58 +20,45 @@ describe('Service: virtualizeVolumeService tests', function () {
 
     describe('constructVirtualizePayload', function () {
         it('should return virtualize payload from dataModel', function () {
-            var scope = {
+            var selected = {
+                externalPorts: [
+                    {
+                        storagePortId: 'CL66-B'
+                    },
+                    {
+                        storagePortId: 'CL25-B'
+                    }
+                ],
+                luns: [
+                    {
+                        portId: 'CL10-B',
+                        wwn: '66A5763BAFE03799',
+                        lunId: 1,
+                        externalIscsiInformation: null
+                    }
+                ],
+                hostMode: 'LINUX',
                 storageSystem: {
                     storageSystemId: '510001'
                 },
-                selected: {
-                    externalPorts: [
-                        {
-                            storagePortId: 'CL66-B'
-                        },
-                        {
-                            storagePortId: 'CL25-B'
-                        }
-                    ],
-                    luns: [
-                        {
-                            portId: 'CL10-B',
-                            wwn: '66A5763BAFE03799',
-                            lunId: 1,
-                            externalIscsiInformation: null
-                        }
-                    ]
-                },
-                dataModel: {
-                    selectedHostModeOptions: [999],
-                    selectedHostMode: 'LINUX',
-                    pathModel: {
-                        paths: [
-                            {
-                                storagePortId: 'CL66-B',
-                                serverId: '198',
-                                serverEndPoint: '3054E1B674315000'
-                            },
-                            {
-                                storagePortId: 'CL25-B',
-                                serverId: '198',
-                                serverEndPoint: '3054E1B674315000'
-                            },
-                            {
-                                storagePortId: 'CL25-B',
-                                serverId: '198',
-                                serverEndPoint: '84AE235E1F5CA000'
-                            }
-                        ]
+                hostModeOptions: [999, 0],
+                enableZoning: false,
+                paths: [
+                    {
+                        storagePortId: 'CL66-B',
+                        serverId: 198,
+                        targetWwn: '3054E1B674315000',
+                        serverEndPoint: '3054E1B674315000'
                     },
-                    selectedDiscoveredVolumes: [
-                        {
-                            volumeId: '186'
-                        }
-                    ]
-                }
+                    {
+                        storagePortId: 'CL25-B',
+                        serverId: 198,
+                        targetWwn: '3054E1B674315000',
+                        serverEndPoint: '3054E1B674315000'
+                    }
+                ]
             };
-            var result = virtualizeVolumeService.constructVirtualizePayload(scope);
+            var result = virtualizeVolumeService.constructVirtualizePayload(selected);
             expect(result.hostMode).toEqual('LINUX');
             expect(result.targetPorts[0]).toEqual('CL66-B');
             expect(result.targetPorts[1]).toEqual('CL25-B');
@@ -79,14 +66,14 @@ describe('Service: virtualizeVolumeService tests', function () {
             expect(result.externalLuns[0].portId).toEqual('CL10-B');
             expect(result.externalLuns[0].wwn).toEqual('66A5763BAFE03799');
             expect(result.externalLuns[0].lunId).toEqual(1);
-            expect(result.hostModeOptions[0]).toEqual(999);
+            expect(result.hostModeOptions).toBeUndefined();
+            expect(result.enableZoning).toBeFalsy();
             expect(result.serverInfos[0].serverId).toEqual(198);
             expect(result.serverInfos[0].targetPortForHost).toEqual('CL66-B');
-            expect(result.serverInfos[0].serverWwn[0]).toEqual('3054E1B674315000');
+            expect(result.serverInfos[0].serverWwns[0]).toEqual('3054E1B674315000');
             expect(result.serverInfos[1].serverId).toEqual(198);
             expect(result.serverInfos[1].targetPortForHost).toEqual('CL25-B');
-            expect(result.serverInfos[1].serverWwn[0]).toEqual('3054E1B674315000');
-            expect(result.serverInfos[1].serverWwn[1]).toEqual('84AE235E1F5CA000');
+            expect(result.serverInfos[1].serverWwns[0]).toEqual('3054E1B674315000');
         });
     });
 });
