@@ -169,11 +169,21 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
      * LUNS
      */
     var getLunsDataModel = function (luns) {
+        var vendors = _.chain(luns).map(function (l) {
+            return l.vendorId;
+        }).uniq().value();
+        var serialNumbers = _.chain(luns).map(function (l) {
+            return l.serialNumber;
+        }).uniq().value();
         return {
             displayList: luns,
             cachedList: luns,
+            vendors: vendors,
+            serialNumbers: serialNumbers,
             search: {
-                freeText: ''
+                freeText: '',
+                vendor: '',
+                serialNumber: ''
             },
             sort: {}
         };

@@ -6,3 +6,21 @@
 </form>
 <!--Display description-->
 <h3 class="eightyPercentWidth"> {{ 'discovered-luns-showing-x-of-y' | translate:dataModel.itemCounts}}</h3>
+
+<div class="control-group">
+    <select id="vendor"
+            class="inline btn-group-justified"
+            ng-model="dataModel.search.vendor"
+            ng-options="vendor for vendor in dataModel.vendors">
+        <option value="" selected>Select Vendor</option>
+    </select>
+</div>
+
+<div class="control-group">
+    <select id="sn"
+            class="inline btn-group-justified"
+            ng-model="dataModel.search.serialNumber"
+            ng-options="serialNumber for serialNumber in dataModel.serialNumbers">
+        <option value="" selected>Select Serial Number</option>
+    </select>
+</div>

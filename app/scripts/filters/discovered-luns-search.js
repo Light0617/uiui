@@ -19,12 +19,22 @@
 angular.module('rainierApp')
     .filter('discoveredLunsSearch', function () {
         return function (input, search) {
-            if (!search || !search.freeText.length) {
-                return input;
+            var filtered = input;
+            if (search && search.freeText && search.freeText.length) {
+                filtered = _.filter(filtered, function (item) {
+                    return item.searchKey.indexOf(search.freeText) !== -1;
+                });
             }
-            var filtered = _.filter(input, function (item) {
-                return item.searchKey.indexOf(search.freeText) !== -1;
-            });
+            if (search && search.vendor && search.vendor.length) {
+                filtered = _.filter(filtered, function (item) {
+                    return item.vendorId === search.vendor;
+                });
+            }
+            if (search && search.serialNumber && search.serialNumber.length) {
+                filtered = _.filter(filtered, function (item) {
+                    return item.serialNumber === search.serialNumber;
+                });
+            }
             return filtered;
         };
     });

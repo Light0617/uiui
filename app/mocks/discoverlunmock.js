@@ -40,18 +40,19 @@ rainierAppMock.factory('discoverLunMock', function (mockUtils, storagePortsMock)
         var iscsi = _.sample([true, false]);
         var v = _.random(1, 255);
         var mocksize = mockUtils.getCapacity(100, 200);
+        var vendor = _.sample(['HITACHI', 'EMC', 'JYOTI', 'ERNEST']);
         return {
             portId: 'CL' + v + '-' + _.sample(['A', 'B']),
             wwn: wwns()[0],
             lunId: 1,
             capacity: mocksize,
             produceId: 'OPEN-V',
-            eVolIdC: 'HITACHI 50402840004F',
+            eVolIdC: vendor + ' 50402840004F',
             externalIscsiInformation: iscsi ? iscsiTargetInformation() : undefined,
             isDDM: (mocksize > 4000000000000) ? true : false,
             productId: 'VSP Gx00',
-            serialNumber: '410304',
-            vendorId: 'HITACHI'
+            serialNumber: _.sample(['410304', '50101', '410033']),
+            vendorId: vendor
         };
     };
 
