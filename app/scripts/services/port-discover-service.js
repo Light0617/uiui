@@ -52,7 +52,7 @@ angular.module('rainierApp')
                         message: 'Failed to discover luns from ' + portId + ' .'
                     }
                 });
-            }
+            };
         };
 
         var appendSourceEndPointToDiscoveredLuns = function (lun) {
