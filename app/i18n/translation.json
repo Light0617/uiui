@@ -794,6 +794,7 @@
     "action-tooltip-delete-volumes" : "Delete Volumes",
     "action-tooltip-edit-fibre-port" : "Edit Fibre Port",
     "action-tooltip-unvirtualize" : "Unvirtualize",
+    "action-tooltip-attach-to-storage" : "Attach to Storage",
 
     "clone-now-tooltip" : "Clone now - Makes a point in time copy of the volume selected using Shadow Image technology",
     "full-copy-tooltip" : "Full Copy - Makes a continuous copy of the volumes selected using Shadow Image technology",

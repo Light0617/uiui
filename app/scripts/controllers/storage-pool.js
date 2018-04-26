@@ -284,7 +284,7 @@ angular.module('rainierApp')
                     // Attach to storage
                     {
                         icon: 'icon-attach-vol-to-storage',
-                        tooltip: 'Attach to Storage',
+                        tooltip: 'action-tooltip-attach-to-storage',
                         type: 'link',
                         enabled: function () {
                             return dataModel.anySelected();
