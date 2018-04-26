@@ -18,13 +18,6 @@ angular.module('rainierApp')
             });
         };
 
-        var getIscsiInitiatorNames = function (hosts, hostId) {
-            var server = _.find(hosts, function (host) {
-                return host.serverId === hostId;
-            });
-            return server && server.iscsiNames && server.iscsiNames.length ? server.iscsiNames : undefined;
-        };
-
         var createHostModeOptionsPayload = function (selectedHostModeOptions) {
             if (_.any(selectedHostModeOptions, function (i) {
                 return i === 999;
@@ -37,6 +30,7 @@ angular.module('rainierApp')
 
         var constructVirtualizePayload = function (selected) {
             var serverMap = new Map();
+            var serverProtocol = selected.hosts[0].protocol;
             var payload = {
                 targetPorts: [],
                 serverInfos: [],
@@ -54,10 +48,10 @@ angular.module('rainierApp')
                 var serverInfo = {
                     targetPortForHost: path.storagePortId,
                     serverId: parseInt(path.serverId),
-                    serverWwns: path.targetWwn ? [path.targetWwn] : undefined,
-                    iscsiInitiatorNames: getIscsiInitiatorNames(selected.hosts, parseInt(path.serverId))
+                    serverWwns: serverProtocol === 'FIBRE' ? [path.serverEndPoint] : undefined,
+                    iscsiInitiatorNames: serverProtocol === 'ISCSI' ? [path.serverEndPoint] : undefined
                 };
-                serverInfo.protocol = serverInfo.serverWwns ? 'FIBRE' : 'ISCSI';
+                serverInfo.protocol = serverProtocol;
                 if (serverMap.has(key)) {
                     serverMap.get(key).serverWwn.push(path.serverEndPoint);
                 } else {
