@@ -294,6 +294,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
             selectServerPath: true,
             isVirtualizeVolume: true,
             selectedServer: hosts,
+            selectedProtocol: hosts[0].protocol,
             autoCreateZone: false,
             pathModel: {
                 selectedHosts: hosts,

@@ -21,7 +21,8 @@ angular.module('rainierApp')
         ) {
             return $q.all(
                 _.map(targetPortIds, function (portId) {
-                    return orchestratorService.discoverLun(portId, targetStorageSystemId, {});
+                    return orchestratorService.discoverLun(portId, targetStorageSystemId, {})
+                        .then(checkDiscoveredLunsLengthFn(portId));
                 })
             ).then(function (luns) {
                 var result = _.chain(luns)
@@ -39,6 +40,19 @@ angular.module('rainierApp')
                 }
                 return $q.reject('Failed to discover luns from selected ports.');
             });
+        };
+
+        var checkDiscoveredLunsLengthFn = function (portId) {
+            return function (luns) {
+                if (luns.length) {
+                    return luns;
+                }
+                return $q.reject({
+                    data: {
+                        message: 'Failed to discover luns from ' + portId + ' .'
+                    }
+                });
+            }
         };
 
         var appendSourceEndPointToDiscoveredLuns = function (lun) {

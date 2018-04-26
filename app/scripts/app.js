@@ -87,13 +87,6 @@ angular
                     labelKey: 'shred-volumes'
                 }
             })
-            .when('/storage-systems/:storageSystemId/volumes/virtualize-volumes', {
-                templateUrl: 'views/virtualize-volumes.html',
-                controller: 'VirtualizeVolumesCtrl',
-                breadcrumbOptions: {
-                    labelKey: 'virtualize-volumes'
-                }
-            })
             .when('/storage-systems/:storageSystemId/external-volumes/add', {
                 templateUrl: 'views/external-volumes-add.html',
                 controller: 'ExternalVolumesAddCtrl',
@@ -602,14 +595,6 @@ angular
                     labelKey: 'Attach Volumes to Storage'
                 }
             })
-            // .when('/storage-systems/:storageSystemId/external-volumes/add', {
-            //     templateUrl: 'views/virtualize-volumes.html',
-            //     controller: 'VirtualizeVolumesCtrl',
-            //     breadcrumbOptions: {
-            //         labelKey: 'common-external-volumes-add'
-            //     },
-            //     // TODO helpContext
-            // })
             .when('/storage-systems/:storageSystemId/external-volumes/:volumeId', {
                 templateUrl: 'views/external-volume.html',
                 controller: 'ExternalVolumeCtrl',

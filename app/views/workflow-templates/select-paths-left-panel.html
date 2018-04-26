@@ -19,10 +19,12 @@
     </div>
 
     <!-- Auto Create Zone -->
-    <div class="label-value-container">
-        <label class="label" for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto Create Zone</label>
+    <div class="label-value-container" ng-if="dataModel.selectedProtocol === 'FIBRE'">
+        <label class="label" for="auto-create-zone" ng-attr-title="{{'auto-create-zone-tooltip' | translate}}">Auto
+            Create Zone</label>
     </div>
-    <div id="auto-create-zone" class="btn-group btn-group-justified" data-toggle="buttons">
+    <div id="auto-create-zone" class="btn-group btn-group-justified" data-toggle="buttons"
+         ng-if="dataModel.selectedProtocol === 'FIBRE'">
         <label class="btn btn-primary btn-dark" ng-model="dataModel.autoCreateZone"
                btn-radio="true">
             <input autocomplete="off" checked="" type="radio"/>Yes
