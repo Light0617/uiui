@@ -17,7 +17,8 @@
     </div>
 </div>
 
-<div class="tile-row resource-info" ng-click="item.onClick()">
+<div class="tile-row resource-info" ng-click="item.onClick()"
+     ng-class="item.displayLinks && item.displayLinks.length > 0 ? '' : 'resource-info-long'">
     <div ng-attr-class="icon resource-icon icon-md {{item.itemIcon}}"></div>
     <div class="simple-resource-tile-column">
         <div class="label-value-container resource-data" ng-repeat="md in item.metaData">
@@ -64,7 +65,7 @@
     </div>     
 </div>
 
-<div class="tile-row related-resources controls-row">
+<div class="tile-row related-resources controls-row" ng-if="item.displayLinks && item.displayLinks.length > 0">
     <div class="btn-group btn-group-justified" data-toggle="buttons" ng-repeat="link in item.displayLinks">
         <a class="btn btn-primary btn-light btn-sm" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}}</a>
     </div>
