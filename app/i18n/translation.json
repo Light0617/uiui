@@ -421,6 +421,8 @@
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
 
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volumes",
+    "host-create-attach-invalid-storage-confirm-title": "Unavailable Storage System",
+    "host-create-attach-invalid-storage-confirm-message": "Selecetd storage system {{storageSystemId}} is not available.",
 
     "disk-manage": "Disk Management",
 

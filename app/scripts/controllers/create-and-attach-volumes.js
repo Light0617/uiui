@@ -21,7 +21,7 @@ angular.module('rainierApp')
                                                         cronStringConverterService, attachVolumeService, replicationService,
                                                         volumeService, constantService, storageSystemCapabilitiesService,
                                                         synchronousTranslateService, $location, $timeout,
-                                                        editChapService, validatePortTypeService) {
+                                                        editChapService, validatePortTypeService, $q, $modal) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -38,7 +38,7 @@ angular.module('rainierApp')
                     dataModel.storageSystems.push(storageSystem);
                 }
             });
-            dataModel.selectedStorageSystem = dataModel.storageSystems[0];
+            selectInitialStorageSystem(dataModel.storageSystems.concat(), dataModel);
             dataModel.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
             dataModel.decimalNumberRegexp = /^[^.]+$/;
             dataModel.validLabel = function(volumeGroup){
@@ -59,38 +59,98 @@ angular.module('rainierApp')
                 dataModel.storagePorts = resources;
             };
             dataModel.canSubmit = true;
-            $scope.dataModel = dataModel;
         });
 
-        var handleSelectedStorageSystemChange = function(selectedStorageSystem) {
-            if (!selectedStorageSystem) {
-                return;
-            }
-
-            buildSummaryModel(selectedStorageSystem);
-
-            paginationService.getAllPromises(null, 'storage-pools', true, selectedStorageSystem.storageSystemId,
-                objectTransformService.transformPool).then(function (result) {
-                $scope.dataModel.storagePools = result;
+        var selectInitialStorageSystem = function (storageSystems, dataModel) {
+            getStorageSystemInfo(storageSystems[0], dataModel).then(function (storageSystem) {
+                dataModel.selectedStorageSystem = storageSystem;
+                initComplete(dataModel);
+            }, function () {
+                if (storageSystems.length > 1) {
+                    selectInitialStorageSystem(storageSystems.slice(1), dataModel);
+                } else {
+                    initComplete(dataModel);
+                }
             });
-
-            orchestratorService.storageSystem(selectedStorageSystem.storageSystemId).then(function(result) {
-                $scope.dataModel.storageSystemModel = result.model;
-                paginationService.getAll(null, getPortsPath + getPortsSort, true, selectedStorageSystem.storageSystemId, result.model, $scope.dataModel);
-            });
-
-            paginationService.getAllPromises(null, 'replication-groups', true, selectedStorageSystem.storageSystemId,
-                objectTransformService.transformReplicationGroup).then(function (result) {
-                    $scope.dataModel.copyGroups = result;
-                });
         };
 
-        var buildSummaryModel = function(selectedStorageSystem) {
-            $scope.dataModel.summaryModel = viewModelService.buildSummaryModel(selectedStorageSystem);
+        var initComplete = function (dataModel) {
+            $scope.dataModel = dataModel;
+
+            $scope.$watch('dataModel.createModel.volumesGroupsModel.volumes', function(volumeGroups) {
+
+                var arrayCopy = subscriptionUpdateModel.getUpdatedModel($scope.dataModel.selectedStorageSystem, volumeGroups);
+                if (arrayCopy) {
+                    $timeout(function() {
+                        buildSummaryModel(arrayCopy, $scope.dataModel);
+                    });
+                }
+            }, true);
+
+            $scope.$watch('dataModel.protectModel.schedule.hourStartMinute', function(value) {
+                $scope.dataModel.protectModel.minuteDisplay = cronStringConverterService.addSuffix(value);
+            });
+        };
+
+        var getStorageSystemInfo = function (selectedStorageSystem, dataModel) {
+            return $q.all([
+                paginationService.getAllPromises(null, 'storage-pools', true, selectedStorageSystem.storageSystemId,
+                    objectTransformService.transformPool),
+
+                orchestratorService.storageSystem(selectedStorageSystem.storageSystemId),
+
+                paginationService.getAllPromises(null, 'replication-groups', true, selectedStorageSystem.storageSystemId,
+                    objectTransformService.transformReplicationGroup)
+            ]).then(function (results) {
+                buildSummaryModel(selectedStorageSystem, dataModel);
+
+                dataModel.storagePools = results[0];
+
+                dataModel.storageSystemModel = results[1].model;
+                paginationService.getAll(null, getPortsPath + getPortsSort, true, selectedStorageSystem.storageSystemId,
+                    results[1].model, dataModel);
+
+                dataModel.copyGroups = results[2];
+
+                return selectedStorageSystem;
+            });
+        };
+
+        var openUnavailableStorageDialog = function (storageSystem) {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('host-create-attach-invalid-storage-confirm-title'),
+                        message: synchronousTranslateService.translate('host-create-attach-invalid-storage-confirm-message',
+                            {storageSystemId: storageSystem.storageSystemId})
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modalInstance.result.finally(function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    });
+                }
+            });
+        };
+
+        var buildSummaryModel = function(selectedStorageSystem, dataModel) {
+            dataModel.summaryModel = viewModelService.buildSummaryModel(selectedStorageSystem);
         };
 
         $scope.$watch('dataModel.selectedStorageSystem', function(selected) {
-            handleSelectedStorageSystemChange(selected);
+            if (!selected) {
+                return;
+            }
+
+            getStorageSystemInfo(selected, $scope.dataModel).then(null, function () {
+                $scope.dataModel.storagePools = [];
+                openUnavailableStorageDialog(selected);
+            });
         });
 
         $scope.$watch('dataModel.storagePools', function(pools) {
@@ -195,16 +255,6 @@ angular.module('rainierApp')
         });
 
         var subscriptionUpdateModel = viewModelService.newSubscriptionUpdateModel();
-
-        $scope.$watch('dataModel.createModel.volumesGroupsModel.volumes', function(volumeGroups) {
-
-            var arrayCopy = subscriptionUpdateModel.getUpdatedModel($scope.dataModel.selectedStorageSystem, volumeGroups);
-            if (arrayCopy) {
-                $timeout(function() {
-                    buildSummaryModel(arrayCopy);
-                });
-            }
-        }, true);
 
         $scope.$watch('dataModel.copyGroups', function(copyGroups) {
             if (!copyGroups) {
@@ -400,10 +450,6 @@ angular.module('rainierApp')
             $scope.dataModel.protectModel.copyGroup = validCopyGroups[0];
             $scope.dataModel.protectModel.validCopyGroups = validCopyGroups;
         }
-
-        $scope.$watch('dataModel.protectModel.schedule.hourStartMinute', function(value) {
-            $scope.dataModel.protectModel.minuteDisplay = cronStringConverterService.addSuffix(value);
-        });
 
         $scope.$watchGroup(['dataModel.createModel', 'dataModel.attachModel'], function(vals) {
             if (_.some(vals, function(v) {
