@@ -41,19 +41,20 @@ describe('Service: virtualizeVolumeService tests', function () {
                 storageSystem: {
                     storageSystemId: '510001'
                 },
+                hosts: [{
+                    protocol: 'FIBRE'
+                }],
                 hostModeOptions: [999, 0],
                 enableZoning: false,
                 paths: [
                     {
                         storagePortId: 'CL66-B',
                         serverId: 198,
-                        targetWwn: '3054E1B674315000',
                         serverEndPoint: '3054E1B674315000'
                     },
                     {
                         storagePortId: 'CL25-B',
                         serverId: 198,
-                        targetWwn: '3054E1B674315000',
                         serverEndPoint: '3054E1B674315000'
                     }
                 ]
