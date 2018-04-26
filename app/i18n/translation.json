@@ -1204,6 +1204,8 @@
     "workflow-title-select-server": "Select Server",
     "workflow-title-create-paths": "Create Paths",
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
+    "attach-to-storage-no-ports-title": "Unavailable Storage or Protocol",
+    "attach-to-storage-no-ports-message": "The target storage system does not have the port of the selected protocol. Please reselect the target storage system or another protocol.",
 
     "fail-to-discover-error": "There is no volume discovered on the selected port. Please check your physical connection.",
     "job-failed-error": "Create Path From Source Job failed. Please go to Job page to check the reason.",

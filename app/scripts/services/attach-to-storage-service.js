@@ -66,16 +66,15 @@ angular.module('rainierApp')
             });
         };
 
-        var openNoPortDialog = function (protocolKey) {
-            var protocol = synchronousTranslateService.translate(protocolKey);
+        var openNoPortDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'views/templates/error-modal.html',
                 windowClass: 'modal fade confirmation',
                 backdropClass: 'modal-backdrop',
                 controller: function ($scope) {
                     $scope.error = {
-                        title: synchronousTranslateService.translate('error-message-title'),
-                        message: 'There is no suitable ' + protocol + ' ports on the source or the target storage.'
+                        title: synchronousTranslateService.translate('attach-to-storage-no-ports-title'),
+                        message: synchronousTranslateService.translate('attach-to-storage-no-ports-message')
                     };
                     $scope.cancel = function () {
                         modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));

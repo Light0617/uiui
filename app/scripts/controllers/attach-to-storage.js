@@ -146,8 +146,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             return $q.resolve();
         } else {
             $scope.dataModel.pathModel = undefined;
-            // TODO SHOW DIALOG
-            attachToStorageService.openNoPortDialog($scope.dataModel.selectedProtocol);
+            attachToStorageService.openNoPortDialog();
             return $q.reject();
         }
     };
@@ -198,6 +197,9 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
                         .sortBy('storagePortId')
                         .value();
                 return $q.resolve();
+            }, function () {
+                $scope.dataModel.targetStoragePorts = [];
+                return $q.resolve();
             })
             .then(updateProtocol);
     };
@@ -236,6 +238,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             objectTransformService.transformStorageSystem
         ).then(function (storageSystems) {
             var filtered = _.chain(storageSystems)
+                .sortBy('storageSystemId')
                 .map(function (s) {
                     return s.storageSystemId;
                 })
