@@ -58,7 +58,11 @@ angular.module('rainierApp')
                     serverMap.set(key, serverInfo);
                 }
             });
-            payload.serverInfos = Array.from(serverMap.values());
+
+             serverMap.forEach(function (value, key) {
+                 payload.serverInfos.push(value);
+             });
+
             _.each(selected.luns, function (lun) {
                 payload.externalLuns.push({
                     portId: lun.portId,
