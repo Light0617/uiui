@@ -68,7 +68,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         );
         orchestratorService.previrtualize(payload)
             .then(backToPreviousView)
-            .catch(externalVolumesAddService.openErrorDialog)
             .finally(spinner);
     };
 
