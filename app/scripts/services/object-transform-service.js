@@ -906,9 +906,6 @@ angular.module('rainierApp')
                     return this.externalParityGroupIds && this.externalParityGroupIds.length > 0;
                 };
 
-                if (item.isUsingExternalStorage()) {
-                    item.disabledCheckBox = true;
-                }
                 if (item.label.indexOf(constantService.prefixReservedStoragePool) === 0) {
                     item.disabledCheckBox = true;
                     item.isReservedPool = true;
@@ -1016,7 +1013,7 @@ angular.module('rainierApp')
                         confirmTitle: 'storage-pool-delete-one-confirmation',
                         confirmMessage: 'storage-pool-delete-current-content',
                         enabled: function () {
-                            return !item.disabledCheckBox;
+                            return !item.disabledCheckBox && !item.isUsingExternalStorage();
                         },
                         onClick: function (orchestratorService, goback) {
                             orchestratorService.deleteStoragePool(item.storageSystemId, item.storagePoolId)
@@ -1032,7 +1029,7 @@ angular.module('rainierApp')
                         icon: 'icon-edit',
                         type: 'link',
                         enabled: function () {
-                            return !item.disabledCheckBox;
+                            return !item.disabledCheckBox && !item.ddmEnabled;
                         },
                         onClick: function () {
                             $location.path(['storage-systems', item.storageSystemId,
