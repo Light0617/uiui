@@ -78,21 +78,27 @@ angular
                 controller: 'MigrateVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes'
-                }
+                },
+                // TODO: Help contents
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/volumes/shred-volumes', {
                 templateUrl: 'views/shred-volumes.html',
                 controller: 'ShredVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'shred-volumes'
-                }
+                },
+                // TODO: Help contents
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/external-volumes/add', {
                 templateUrl: 'views/external-volumes-add.html',
                 controller: 'ExternalVolumesAddCtrl',
                 breadcrumbOptions: {
                     labelKey: 'Add External Volumes'
-                }
+                },
+                // TODO: Help contents
+                helpContext: ''
             })
             .when('/hosts/create-and-attach-volumes', {
                 templateUrl: 'views/create-and-attach-volumes.html',
@@ -168,40 +174,45 @@ angular
                 controller: 'volumeActionsRestoreSelectionCtrl',
                 breadcrumbOptions: {
                     labelKey: 'restore-volume'
-                }
+                },
                 //TODO:Help context
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/volume-actions-restore-selection', {
                 templateUrl: 'views/volume-actions-restore-selection.html',
                 controller: 'volumeActionsRestoreSelectionCtrl',
                 breadcrumbOptions: {
                     labelKey: 'restore-volume'
-                }
+                },
                 //TODO:Help context
+                helpContext: ''
             })
             .when('/data-protection-monitoring/volume-actions-restore-selection', {
                 templateUrl: 'views/volume-actions-restore-selection.html',
                 controller: 'volumeActionsRestoreSelectionCtrl',
                 breadcrumbOptions: {
                     labelKey: 'restore-volume'
-                }
+                },
                 //TODO:Help context
+                helpContext: ''
             })
             .when('/hosts/:hostId/volume-actions-restore-selection', {
                 templateUrl: 'views/volume-actions-restore-selection.html',
                 controller: 'volumeActionsRestoreSelectionCtrl',
                 breadcrumbOptions: {
                     labelKey: 'restore-volume'
-                }
+                },
                 //TODO:Help context
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/data-protection-monitoring/volume-actions-restore-selection', {
                 templateUrl: 'views/volume-actions-restore-selection.html',
                 controller: 'volumeActionsRestoreSelectionCtrl',
                 breadcrumbOptions: {
                     labelKey: 'restore-volume'
-                }
+                },
                 //TODO:Help context'
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/replication-groups', {
                 templateUrl: 'views/replication-groups.html',
@@ -244,8 +255,9 @@ angular
                 controller: 'replicationGroupActionsConfirmationCtrl',
                 breadcrumbOptions: {
                     labelKey: 'common-replication-group-action-confirmation'
-                }
+                },
                 //TODO:Help context
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/replication-groups/edit', {
                 templateUrl: 'views/replication-group-edit.html',
@@ -593,7 +605,9 @@ angular
                 controller: 'AttachToStorageCtrl',
                 breadcrumbOptions: {
                     labelKey: 'Attach Volumes to Storage'
-                }
+                },
+                // TODO: Help contents
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/external-volumes/:volumeId', {
                 templateUrl: 'views/external-volume.html',
@@ -980,24 +994,26 @@ angular
                 },
                 //TODO:Help context
                 // helpContext: 'C_CREATE_ATTACH'
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/migration-tasks/:migrationTaskId/update', {
                 templateUrl: 'views/migrate-volumes.html',
                 controller: 'MigrateVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes-title-update'
-                }
+                },
                 //TODO:Help context
-                // helpContext: 'C_CREATE_ATTACH'
+                helpContext: ''
             })
             .when('/storage-systems/:storageSystemId/migrate-volumes', {
                 templateUrl: 'views/migrate-volumes.html',
                 controller: 'MigrateVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes'
-                }
+                },
                 //TODO:Help context
                 // helpContext: 'C_CREATE_ATTACH'
+                helpContext: ''
             })
             .otherwise({
                 redirectTo: '/'
