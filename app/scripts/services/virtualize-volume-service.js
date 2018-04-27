@@ -59,7 +59,7 @@ angular.module('rainierApp')
                 }
             });
 
-             serverMap.forEach(function (value, key) {
+             serverMap.forEach(function (value) {
                  payload.serverInfos.push(value);
              });
 

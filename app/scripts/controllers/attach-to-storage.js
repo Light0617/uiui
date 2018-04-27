@@ -146,8 +146,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             return $q.resolve();
         } else {
             $scope.dataModel.pathModel = undefined;
-            attachToStorageService.openNoPortDialog();
-            return $q.reject();
+            return $q.reject('attach-to-storage-no-ports-message');
         }
     };
 
