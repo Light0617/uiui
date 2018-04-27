@@ -272,10 +272,10 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             return $q.resolve(result);
         }).then(function (r) {
             if (!r.targetStorageSystemIdCandidates.length) {
-                // TODO show dialog for empty storage
+                return $q.reject('Cannot find available storage.');
             }
             if (!r.sourceStoragePorts.length) {
-                // TODO show dialog for empty ports
+                return $q.reject('Cannot find available ports.');
             }
             return $q.resolve(r);
         });
