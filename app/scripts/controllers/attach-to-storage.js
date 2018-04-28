@@ -68,7 +68,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         );
         console.log(JSON.stringify(payload));
         orchestratorService.previrtualize(payload)
-            .then(backToPreviousView)
+            .then(externalVolumesAddService.backToPreviousView)
             .finally(spinner);
     };
 
@@ -85,7 +85,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         };
         var shareData = extractFromShareDataService();
         if (!shareData) {
-            backToPreviousView();
+            externalVolumesAddService.backToPreviousView();
             return $q.reject();
         }
         _.extend($scope.dataModel, shareData);
@@ -215,15 +215,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
                 $scope.dataModel.build(redrawLines);
             });
         };
-    };
-
-    var backToPreviousView = function () {
-        // Timeout is not best way but this is only way to support IE
-        // with keeping location context  (from volumes/pools/host).
-        // https://stackoverflow.com/a/14992909
-        setTimeout(function () {
-            $window.history.back();
-        }, 100);
     };
 
     // NOT DEPENDS ON DataModel

@@ -31,10 +31,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
 
     /* UTILITIES */
-    var backToPreviousView = function () {
-        $window.history.back();
-    };
-
     var startSpinner = function () {
         spinner(true);
     };
@@ -84,7 +80,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     var extractStorageSystemId = function () {
         var result = $routeParams.storageSystemId;
         if (utilService.isNullOrUndef(result)) {
-            backToPreviousView();
+            externalVolumesAddService.backToPreviousView();
         }
         return result;
     };
@@ -347,7 +343,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                     $scope.selected.storageSystem.storageSystemId,
                     payload
                 ).then(function () {
-                    backToPreviousView();
+                    externalVolumesAddService.backToPreviousView();
                 }).finally(function () {
                     stopSpinner();
                 });
