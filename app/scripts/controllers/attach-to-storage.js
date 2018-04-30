@@ -66,7 +66,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             attachToStorageService.portsInfo($scope.dataModel.pathModel.paths),
             $scope.dataModel.selectedVolumeIds
         );
-        console.log(JSON.stringify(payload));
         orchestratorService.previrtualize(payload)
             .then(externalVolumesAddService.backToPreviousView)
             .finally(spinner);
