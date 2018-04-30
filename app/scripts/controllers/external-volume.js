@@ -38,14 +38,13 @@ angular.module('rainierApp')
             });
 
             $scope.unvirtualize = function () {
-                // Build reserved resources
-                var reservedResourcesList = [];
-                reservedResourcesList.push($scope.model.volumeId + '=' + resourceTrackerService.volume());
+                var unvirtualizePayload = {
+                    storageSystemId: storageSystemId,
+                    volumeIds: [volumeId]
+                };
 
-                // Show popup if resource is present in resource tracker else submit
-                resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId,
-                    resourceTrackerService.storageSystem(), 'Unvirtualize Confirmation', $scope.model.storageSystemId,
-                    $scope.model.volumeId, null, orchestratorService.unvirtualizeVolume);
+                // This code comes from external-volumes.js.
+                orchestratorService.unvirtualizeVolume(unvirtualizePayload);
             };
 
             $scope.isUnvirtualizeAvailable = function () {
