@@ -16,7 +16,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('externalVolumesAddService', function (
-    $q, $modal, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
+    $q, $modal, $window, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
     paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew,
     constantService, attachVolumeService, queryService
 ) {
@@ -24,6 +24,15 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     /**
      * COMMON
      */
+    var backToPreviousView = function () {
+        // Timeout is not best way but this is only way to support IE
+        // with keeping location context  (from volumes/pools/host).
+        // https://stackoverflow.com/a/14992909
+        setTimeout(function () {
+            $window.history.back();
+        }, 100);
+    };
+
     var openErrorDialog = function (messageKey) {
         if (_.isUndefined(messageKey)) {
             return;
@@ -375,6 +384,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     return {
         /** COMMON */
+        backToPreviousView: backToPreviousView,
         openErrorDialog: openErrorDialog,
         openConfirmationDialog: openConfirmationDialog,
         filterSelected: filterSelected,

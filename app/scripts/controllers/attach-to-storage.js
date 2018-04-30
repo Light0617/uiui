@@ -66,9 +66,9 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             attachToStorageService.portsInfo($scope.dataModel.pathModel.paths),
             $scope.dataModel.selectedVolumeIds
         );
+        console.log(JSON.stringify(payload));
         orchestratorService.previrtualize(payload)
-            .then(backToPreviousView)
-            .catch(externalVolumesAddService.openErrorDialog)
+            .then(externalVolumesAddService.backToPreviousView)
             .finally(spinner);
     };
 
@@ -83,7 +83,12 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
         $scope.dataModel.isStepActive = function () {
             return true;
         };
-        _.extend($scope.dataModel, extractFromShareDataService());
+        var shareData = extractFromShareDataService();
+        if (!shareData) {
+            externalVolumesAddService.backToPreviousView();
+            return $q.reject();
+        }
+        _.extend($scope.dataModel, shareData);
         return $q.resolve();
     };
 
@@ -146,8 +151,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             return $q.resolve();
         } else {
             $scope.dataModel.pathModel = undefined;
-            attachToStorageService.openNoPortDialog();
-            return $q.reject();
+            return $q.reject('attach-to-storage-no-ports-message');
         }
     };
 
@@ -179,7 +183,7 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             utilService.isNullOrUndef(result.selectedVolumes) ||
             !result.selectedVolumes.length
         ) {
-            backToPreviousView();
+            return undefined;
         }
         result.selectedVolumeIds = _.map(result.selectedVolumes, function (v) {
             return v.volumeId;
@@ -211,10 +215,6 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
                 $scope.dataModel.build(redrawLines);
             });
         };
-    };
-
-    var backToPreviousView = function () {
-        $window.history.back();
     };
 
     // NOT DEPENDS ON DataModel
@@ -273,10 +273,10 @@ angular.module('rainierApp').controller('AttachToStorageCtrl', function (
             return $q.resolve(result);
         }).then(function (r) {
             if (!r.targetStorageSystemIdCandidates.length) {
-                // TODO show dialog for empty storage
+                return $q.reject('Cannot find available storage.');
             }
             if (!r.sourceStoragePorts.length) {
-                // TODO show dialog for empty ports
+                return $q.reject('Cannot find available ports.');
             }
             return $q.resolve(r);
         });

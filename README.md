@@ -17,6 +17,8 @@ Run `grunt serve --proxy-host=localhost --proxy-use-https=true` for preview with
 
 Run `grunt servemock` for preview with ui mock data.
 
+Run `grunt serve:dist --proxy-host=<somewhere> --proxy-use-https=true --allow-remote` for testing IE.
+
 ## Testing
 
 Running `grunt test` will run the unit tests with karma.

@@ -244,22 +244,20 @@ angular.module('rainierApp')
         });
 
         orchestratorService.volumeSummary(storageSystemId).then(function (result) {
+            var required = { 'HDP': 0, 'HTI': 0, 'HDT': 0 };
+            var countByTypeObject = _.extend(required, result.volumeCountByType);
+            var keys = _.keys(countByTypeObject);
+            var countByTypeArray = _.map(keys,function(k) {
+                return {
+                    type: k,
+                    count: countByTypeObject[k]
+                };
+            });
+
             $scope.volumesSummary = {
                 total: result.numberOfVolumes,
-                volumesByType: []
+                volumesByType: countByTypeArray
             };
-
-            var map = new Map([['HDP',0],['HDT',0],['HTI',0]]);
-
-            for (var volumeTypeEntry in result.volumeCountByType) {
-                if (result.volumeCountByType.hasOwnProperty(volumeTypeEntry)) {
-                    map.set(volumeTypeEntry, result.volumeCountByType[volumeTypeEntry] + map.get(volumeTypeEntry));
-                }
-            }
-
-            map.forEach(function (value, key) {
-                $scope.volumesSummary.volumesByType.push({type: key, count: value});
-            });
         });
 
         paginationService.getAllPromises(null, GET_PARITY_GROUPS_PATH, true, storageSystemId, objectTransformService.transformParityGroup).then(function (result) {
