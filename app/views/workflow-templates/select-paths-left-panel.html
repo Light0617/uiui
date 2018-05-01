@@ -13,6 +13,7 @@
         <label class="label">Host Mode Option</label>
         <select class="form-control"
                 ng-model="dataModel.selectedHostModeOptions"
+                ng-change="dataModel.checkSelectedHostModeOptions(dataModel)"
                 ng-options="hmo.id as hmo.displayName for hmo in dataModel.hostModeOptionCandidates"
                 multiple>
         </select>
