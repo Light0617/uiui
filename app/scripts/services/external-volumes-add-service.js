@@ -322,13 +322,57 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
                 createPath: attachVolumeService.createPath,
             }
         };
+
+        result.checkSelectedHostModeOptions = checkSelectedHostModeOptions;
         result.selectedHostMode = invokeFindHostMode(hosts[0], result.hostModeCandidates);
         result.selectedHostModeOptions = attachVolumeService.getMatchedHostModeOption(hostGroups);
+        result.prevSelectedHostModeOptions = result.selectedHostModeOptions;
+
         var idCoordinates = {};
         attachVolumeService.setPortCoordiantes(result.pathModel.storagePorts, idCoordinates);
         attachVolumeService.setEndPointCoordinates(result.pathModel.selectedHosts, [], idCoordinates);
         result.pathModel.viewBoxHeight = attachVolumeService.getViewBoxHeight(result.pathModel.selectedHosts, ports);
         return result;
+    };
+
+    var checkSelectedHostModeOptions = function (dataModel) {
+        var before = dataModel.prevSelectedHostModeOptions;
+        var after = dataModel.selectedHostModeOptions;
+
+        if (autoAdded(before, after)) {
+            deleteExceptAuto(dataModel);
+        } else if (exceptAutoAdded(before, after)) {
+            deleteAuto(dataModel);
+        }
+        dataModel.prevSelectedHostModeOptions = dataModel.selectedHostModeOptions;
+    };
+
+    var autoAdded = function (before, after) {
+        return containsHostModeOptionsAuto(after) &&
+            !containsHostModeOptionsAuto(before) &&
+            after.length > 1;
+    };
+
+    var deleteExceptAuto = function (dataModel) {
+        dataModel.selectedHostModeOptions = [999];
+    };
+
+    var exceptAutoAdded = function (before, after) {
+        return containsHostModeOptionsAuto(before) &&
+            containsHostModeOptionsAuto(after) &&
+            after.length > 1;
+    };
+
+    var deleteAuto = function (dataModel) {
+        dataModel.selectedHostModeOptions = _.reject(dataModel.selectedHostModeOptions, function (hmo) {
+            return hmo === 999;
+        });
+    };
+
+    var containsHostModeOptionsAuto = function (selectedHostModeOptions) {
+        return _.any(selectedHostModeOptions, function (i) {
+            return i === 999;
+        });
     };
 
     var invokeFindHostMode = function (host, hostModeCandidates) {
