@@ -107,21 +107,6 @@ angular.module('rainierApp')
                 gridSettings = inventorySettingsService.setExternalVolumeGridSettings;
                 actions = [
                     {
-                        icon: 'icon-detach-volume',
-                        tooltip: 'storage-volume-detach',
-                        type: 'link',
-                        enabled: function () {
-                            return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                                function (vol) {
-                                    return vol.isAttached();
-                                }) && !hasGadVolume(dataModel.getSelectedItems());
-                        },
-                        onClick: function () {
-                            var item = _.first(dataModel.getSelectedItems());
-                            item.actions.detach.onClick();
-                        }
-                    },
-                    {
                         icon: 'icon-migrate-volume',
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',

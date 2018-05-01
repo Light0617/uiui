@@ -122,7 +122,7 @@ angular.module('rainierApp')
                     var hostGroup = hostGroups[i];
                     if (hostGroup.hostModeOptions.length !== selectedHostModeOptions.length) {
                         //if edit lun path and the hostmode does not match then return the host mode of the first host mode option
-                        return (isEditLunPath === true) ? selectedHostModeOptions : defaultHostModeOption;
+                        return (isEditLunPath === true) && selectedHostModeOptions.length ? selectedHostModeOptions : defaultHostModeOption;
                     } else {
                         for (var j = 0; j < hostGroup.hostModeOptions.length; j++) {
                             if (!isHostModeOptionFound(hostGroup.hostModeOptions[j], selectedHostModeOptions)) {
