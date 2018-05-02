@@ -30,7 +30,7 @@ rainierAppMock.factory('volumeMock', function (mockUtils, storagePortsMock) {
             'HTI': 2,
             'HDT': 30
         },
-        'numberOfVolumes': 64
+        'numberOfVolumes': 62
     };
 
     var wwns = function () {

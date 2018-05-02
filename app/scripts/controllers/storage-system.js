@@ -285,15 +285,20 @@ angular.module('rainierApp')
         });
 
          orchestratorService.externalVolumeSummary(storageSystemId).then(function (result) {
-            $scope.externalVolumesSummary = {
-                total : result.numberOfVolumes,
-                volumesByType : []
-            };
-            // Currently number of available types is only one.
-            $scope.externalVolumesSummary.volumesByType.push({
-                type: synchronousTranslateService.translate('common-external-volumes'),
-                count: result.numberOfVolumes
-            });
+             var required = { 'EXTERNAL': 0};
+             var countByTypeObject = _.extend(required, result.volumeCountByType);
+             var keys = _.keys(countByTypeObject);
+             var countByTypeArray = _.map(keys,function(k) {
+                 return {
+                     type: k,
+                     count: countByTypeObject[k]
+                 };
+             });
+
+             $scope.externalVolumesSummary = {
+                 total: result.numberOfVolumes,
+                 volumesByType: countByTypeArray
+             };
         });
 
 
