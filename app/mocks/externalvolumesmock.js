@@ -32,6 +32,13 @@ rainierAppMock.factory('externalVolumesMock', function(mockUtils) {
         };
     };
 
+    var ExternalVolumeSummaryMock = {
+        'volumeCountByType': {
+            'EXTERNAL': 66
+        },
+        'numberOfVolumes': 66
+    };
+
     var externalVolumes = _.chain(new Array(100))
         .map(function(v, i) { return externalVolume(i); })
         .value();
@@ -40,11 +47,10 @@ rainierAppMock.factory('externalVolumesMock', function(mockUtils) {
         _.each(externalVolumes, function (volume) {
             volume.storageSystemId = urlResult.resourceId + '';
         });
-//        if (urlResult.subResourceId === 'summary') {
-//            return mockUtils.response.ok(volumeSummaryMock);
-//        }
-//        else
-        if (urlResult.subResourceId) {
+       if (urlResult.subResourceId === 'summary') {
+           return mockUtils.response.ok(ExternalVolumeSummaryMock);
+       }
+       else if (urlResult.subResourceId) {
             var volume = mockUtils.fromCollection(externalVolumes, Number(urlResult.subResourceId), 'volumeId');
             return (volume) ? mockUtils.response.ok(volume) : mockUtils.response.notFound('Unable to find volume with matching Id.');
         }
