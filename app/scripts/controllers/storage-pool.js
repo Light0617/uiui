@@ -351,7 +351,7 @@ angular.module('rainierApp')
                 dataModel = {
                     view: 'tile',
                     storagePoolId: storagePoolId,
-                    context: 'Volume',
+                    context: 'poolDetails',
                     storageSystemId: storageSystemId,
                     nextToken: result.nextToken,
                     total: result.total,
