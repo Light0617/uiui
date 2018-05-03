@@ -25,7 +25,7 @@ angular.module('rainierApp')
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
-        var getPortsSort = '?sort=storagePortId:ASC';
+        var getPortsSort = '?sort=storagePortId:ASC&q=attributes:TARGET_PORT';
         if (!selectedServers || selectedServers.length === 0) {
             $location.path('hosts');
         }

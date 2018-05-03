@@ -21,7 +21,7 @@ angular.module('rainierApp')
         var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
         var INVALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-invalid-tooltip');
         var GET_PORTS_PATH = 'storage-ports';
-        var GET_PORTS_SORT = '?sort=storagePortId:ASC';
+        var GET_PORTS_SORT = '?sort=storagePortId:ASC&q=attributes:TARGET_PORT';
         var GET_HOSTS_PATH = 'compute/servers';
         var GET_HOST_GROUPS_PATH = 'host-groups';
         var dataModel = viewModelService.newWizardViewModel(['select', 'attach', 'paths']);

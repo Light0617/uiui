@@ -43,7 +43,7 @@ angular.module('rainierApp')
             paginationService.getAllPromises(null, 'storage-pools', true, selectedStorageSystem.storageSystemId, objectTransformService.transformPool)
                 .then (function (result) {
                 var filteredPools = _.filter(result, function(pool) {
-                    return pool.type !== synchronousTranslateService.translate('HTI');
+                    return pool.type !== synchronousTranslateService.translate('HTI') && !pool.ddmEnabled;
                 });
                 $scope.dataModel.storagePools = filteredPools;
                 if(autoSelectedPoolId!==undefined) {

@@ -36,7 +36,7 @@ angular.module('rainierApp')
         var VALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-valid-tooltip');
         var INVALID_TOOLTIP = synchronousTranslateService.translate('storage-volume-attach-invalid-tooltip');
         var getPortsPath = 'storage-ports';
-        var getPortsSort = '?sort=storagePortId:ASC';
+        var getPortsSort = '?sort=storagePortId:ASC&q=attributes:TARGET_PORT';
         var getVolumesPath = 'volumes';
         ShareDataService.showProvisioningStatus = true;
         $scope.canSubmit = true;
