@@ -60,7 +60,6 @@ angular.module('rainierApp')
             return _.map(paths, function (p) {
                 return previrtualizeService.createPrevirtualizePayloadPortInfo(
                     p.serverEndPoint,
-                    p.targetWwn ? p.targetWwn : null,
                     p.storagePortId
                 );
             });
