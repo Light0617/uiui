@@ -172,7 +172,7 @@ angular.module('rainierApp')
                         return dataModel.anySelected() &&
                             //block deleting if the migration status is true
                             !_.some(dataModel.getSelectedItems(), function (vol) {
-                                return vol.isMigrating();
+                                return vol.isMigrating() || vol.status === 'BLOCKED';
                             });
                     },
                     onClick: function () {
