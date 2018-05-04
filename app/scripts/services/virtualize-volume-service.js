@@ -52,10 +52,12 @@ angular.module('rainierApp')
                     iscsiInitiatorNames: serverProtocol === 'ISCSI' ? [path.serverEndPoint] : undefined
                 };
                 serverInfo.protocol = serverProtocol;
-                if (serverMap.has(key)) {
-                    serverMap.get(key).serverWwn.push(path.serverEndPoint);
-                } else {
+                if (!serverMap.has(key)) {
                     serverMap.set(key, serverInfo);
+                } else if(serverMap.get(key).serverWwns) {
+                    serverMap.get(key).serverWwns.push(path.serverEndPoint);
+                } else if(serverMap.get(key).iscsiInitiatorNames) {
+                    serverMap.get(key).iscsiInitiatorNames.push(path.serverEndPoint);
                 }
             });
 
