@@ -1,7 +1,7 @@
 <div class="summary-container-default stage flex-row" id="top-info" ng-if="dataModel">
         <!--Alerts Panel-->
         <div class="alert-panel quarter">
-            <alert-tile service="dataModel.capacityAlert"></alert-tile>
+            <hsa-alert-tile service="dataModel.capacityAlert"></hsa-alert-tile>
         </div>
     <div class="tile data-viz-container fifth dv-pdv" ng-repeat="usageGraph in dataModel.usageGraphs">
             <array-polar-data-visualization class="utilization" ng-model="usageGraph"
