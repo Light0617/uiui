@@ -191,7 +191,10 @@ angular.module('rainierApp')
                 if (_.isEmpty(host) || _.isEmpty(converted.name)) {
                   return;
                 }
-                if (converted.iscsiNames) {
+
+                if (converted.iscsiNames && converted.wwns) {
+                    dataModel.hostsModel.addFibreHost(converted, fibreIndex++);
+                } else if (converted.iscsiNames) {
                     dataModel.hostsModel.addIscsiHost(converted, iscsiIndex++);
                 } else {
                     dataModel.hostsModel.addFibreHost(converted, fibreIndex++);
