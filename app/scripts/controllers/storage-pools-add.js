@@ -139,6 +139,9 @@ angular.module('rainierApp')
         $scope.$watch('model.diskSizesByTier', dataVizModelForBasic, true);
 
         $scope.$watch('model.poolType', function (val) {
+            if (!$scope.model) {
+                return;
+            }
             var poolType = val;
             $scope.model.disableUtilization = poolType === 'HTI' && $scope.model.wizardType === 'advanced';
             $scope.model.utilizationThreshold1 = defaultLow;
@@ -159,6 +162,9 @@ angular.module('rainierApp')
         });
 
         $scope.$watch('model.htiPool', function () {
+            if (!$scope.model) {
+                return;
+            }
             $scope.model.templateUtilizationThreshold1 = defaultLow;
             if (!utilService.isNullOrUndef($scope.model.templateSubscriptionLimit)) {
                 $scope.model.templateSubscriptionLimit.value = defaultSubscriptionLimitValue;
@@ -263,12 +269,12 @@ angular.module('rainierApp')
                         var isSuspendSnapshot = _.isBoolean($scope.model.suspendSnapshot) ?
                             $scope.model.suspendSnapshot : null;
 
-
                         var type = $scope.model.poolType;
                         var utilizationThreshold1 = $scope.model.utilizationThreshold1;
                         var utilizationThreshold2 = $scope.model.utilizationThreshold2;
 
                         if($scope.model.ddmEnabled){
+                            type = constantService.poolType.HDP;
                             utilizationThreshold1 = null;
                             utilizationThreshold2 = null;
                         }
@@ -331,8 +337,10 @@ angular.module('rainierApp')
                             }
                         } else {
                             isInvalid = _.size($scope.model.selectedParityGroups) === 0;
-                            isInvalid = isInvalid || _.isEmpty($scope.model.poolType) ||
-                                !$scope.model.filterPoolType($scope.model.poolType);
+                            if (!$scope.model.ddmEnabled) {
+                                isInvalid = isInvalid || _.isEmpty($scope.model.poolType) ||
+                                    !$scope.model.filterPoolType($scope.model.poolType);
+                            }
                         }
                     }
 
