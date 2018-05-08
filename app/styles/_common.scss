@@ -172,3 +172,7 @@
 .resource-tile .tile-row.resource-info-long {
   height: 240px !important;
 }
+
+.error-modal-body p {
+  word-wrap: break-word;
+}
