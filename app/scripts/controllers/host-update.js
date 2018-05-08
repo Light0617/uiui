@@ -228,6 +228,10 @@ angular.module('rainierApp')
         }
 
         function postFibreEndPoint (hostId, endPointPayload) {
+            if (endPointPayload.length === 0) {
+                return $q.resolve();
+            }
+
             // In UI, when users want to update the attached volumes, we also update the zones.
             return orchestratorService.updateHostWwn(hostId, {
                 'updates': endPointPayload,
@@ -236,7 +240,7 @@ angular.module('rainierApp')
             });
         }
 
-        function postIscsiEndPoint (hostId, endPointPayload) {
+        function postIscsiEndPointAndChap (hostId, endPointPayload) {
             var chapPayload = $scope.chapPayload($scope.dataModel.chap);
             return orchestratorService.updateHostIscsi(hostId, {
                 updateAttachedVolumes: $scope.dataModel.applyChangesToAttachedVolumes,
@@ -246,12 +250,10 @@ angular.module('rainierApp')
         }
 
         function invokeEndPointPost (hostId, endPointPayload) {
-            if (endPointPayload.length === 0) {
-                return $q.resolve();
-            } else if ($scope.dataModel.protocol === 'FIBRE') {
+            if ($scope.dataModel.protocol === 'FIBRE') {
                 return postFibreEndPoint(hostId, endPointPayload);
             } else if ($scope.dataModel.protocol === 'ISCSI') {
-                return postIscsiEndPoint(hostId, endPointPayload);
+                return postIscsiEndPointAndChap(hostId, endPointPayload);
             }
             return $q.resolve();
         }
