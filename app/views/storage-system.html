@@ -192,7 +192,7 @@
         <div class="resource-row">
             
             <!--Meta-tile Parity Groups formatted-->
-            <div class="tile meta-tile sixth">
+            <div class="tile meta-tile sixth meta-tile-max-width">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/parity-groups'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-parity-group icon-lg-md"></div>
@@ -214,7 +214,7 @@
             </div>
             
             <!--Meta-tile Pools formatted-->
-            <div class="tile meta-tile sixth">
+            <div class="tile meta-tile sixth meta-tile-max-width">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/storage-pools'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-pools icon-lg-md"></div>
@@ -237,7 +237,7 @@
             
             
             <!--Meta-tile Volumes formatted-->
-            <div class="tile meta-tile sixth">
+            <div class="tile meta-tile sixth meta-tile-max-width">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/volumes'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-volume icon-lg-md"></div>
@@ -260,7 +260,7 @@
             
             
             <!--Meta-tile Ports formatted-->
-            <div class="tile meta-tile sixth">
+            <div class="tile meta-tile sixth meta-tile-max-width">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/storage-ports'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-ports icon-lg-md"></div>
@@ -282,7 +282,7 @@
             </div>
             
             <!--Meta-tile Replication-groups formatted-->
-            <div class="tile meta-tile sixth">
+            <div class="tile meta-tile sixth meta-tile-max-width">
                 <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/replication-groups'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-replication-group icon-lg-md"></div>
@@ -304,7 +304,7 @@
             </div>
 
             <!--Meta-tile External-Parity Groups formatted-->
-            <div class="tile meta-tile sixth" ng-if="externalParityGroupsSummary && externalParityGroupsSummary.count > 0">
+            <div class="tile meta-tile sixth meta-tile-max-width" ng-if="externalParityGroupsSummary && externalParityGroupsSummary.count > 0">
                 <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/external-parity-groups'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-external-parity-group icon-lg-md"></div>
@@ -326,7 +326,7 @@
             </div>
 
             <!--Meta-tile External-Volume formatted-->
-            <div class="tile meta-tile sixth">
+            <div class="tile meta-tile sixth meta-tile-max-width">
                 <a ng-attr-href="{{ '#/storage-systems/' +dataModel.storageSystemId + '/external-volumes'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-external-volume icon-lg-md"></div>
@@ -348,7 +348,7 @@
             </div>
 
             <!--Meta-tile MigrationTasks formatted-->
-            <div class="tile meta-tile sixth" ng-if="migrationTasksSummary && migrationTasksSummary.total > 0">
+            <div class="tile meta-tile sixth meta-tile-max-width" ng-if="migrationTasksSummary && migrationTasksSummary.total > 0">
                 <a ng-attr-href="{{ '#/storage-systems/' + dataModel.storageSystemId + '/migration-tasks'}}" class="control-tile">
                     <div class="tile-row icon-header-row">
                         <div class="resource-icon icon-migrate-volume icon-lg-md"></div>
