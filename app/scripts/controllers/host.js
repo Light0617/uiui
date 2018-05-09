@@ -8,12 +8,14 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('HostCtrl', function ($scope, $routeParams, $window, $timeout, $location, $q, orchestratorService,
-                                      objectTransformService, scrollDataSourceBuilderService, ShareDataService,
-                                      inventorySettingsService, storageSystemVolumeService, queryService,
-                                      paginationService, scrollDataSourceBuilderServiceNew, volumeService,
-                                      replicationService, gadVolumeTypeSearchService, migrationTaskService,
-                                      mutualChapService, resourceTrackerService, virtualizeVolumeService) {
+    .controller('HostCtrl', function (
+        $scope, $routeParams, $window, $timeout, $location, $q, orchestratorService,
+        objectTransformService, scrollDataSourceBuilderService, ShareDataService,
+        inventorySettingsService, storageSystemVolumeService, queryService,
+        paginationService, scrollDataSourceBuilderServiceNew, volumeService,
+        replicationService, gadVolumeTypeSearchService, migrationTaskService,
+        mutualChapService, resourceTrackerService, virtualizeVolumeService, constantService
+    ) {
         var hostId = $routeParams.hostId;
         var ATTACHED_VOLUMES_PATH = 'compute/servers/attached-volumes';
         var hostGroupsInStorageSystem = {};
@@ -134,6 +136,13 @@ angular.module('rainierApp')
 
                 var zoneEnabled = host.protocol === 'FIBRE';
 
+                var noExternalVolumes = function (dataModel) {
+                    var items = dataModel.getSelectedItems();
+                    return _.every(items, function(item) {
+                        return item.type !== constantService.volumeType.EXTERNAL;
+                    });
+                };
+
                 var actions = [
                     {
                         icon: 'icon-edit',
@@ -141,6 +150,7 @@ angular.module('rainierApp')
                         type: 'link',
                         enabled: function () {
                             return dataModel.onlyOneSelected() &&
+                                noExternalVolumes(dataModel) &&
                                 _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
                         },
                         onClick: function () {
@@ -154,7 +164,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-edit-lun-path',
                         type: 'link',
                         enabled: function () {
-                            return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems());
+                            return isVolumesPartOfSameHostGroup(dataModel.getSelectedItems()) && noExternalVolumes(dataModel);
                         },
                         onClick: function () {
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
@@ -180,6 +190,7 @@ angular.module('rainierApp')
                         },
                         enabled: function () {
                             return dataModel.anySelected() &&
+                                noExternalVolumes(dataModel) &&
                                 _.find(dataModel.getSelectedItems(), function(volume) {return isVolumeGADAware(volume);}) === undefined;
                         },
                         confirmClick: function () {
@@ -219,9 +230,11 @@ angular.module('rainierApp')
 
                         },
                         enabled: function () {
-                            return dataModel.anySelected() && !_.some(dataModel.getSelectedItems(), function (vol) {
-                                       return vol.isShredding();
-                                   });
+                            return dataModel.anySelected() &&
+                                noExternalVolumes(dataModel) &&
+                                !_.some(dataModel.getSelectedItems(), function (vol) {
+                                    return vol.isShredding();
+                                });
                         }
                     },
                     {
@@ -232,8 +245,9 @@ angular.module('rainierApp')
                             volumeUnprotectActions(dataModel.getSelectedItems());
                         },
                         enabled: function () {
-                            return dataModel.onlyOneSelected() && !_.some(dataModel.getSelectedItems(),
-                                function (vol) {
+                            return dataModel.onlyOneSelected() &&
+                                noExternalVolumes(dataModel) &&
+                                !_.some(dataModel.getSelectedItems(), function (vol) {
                                     return vol.isUnprotected();
                                 });
                         }
@@ -246,8 +260,9 @@ angular.module('rainierApp')
                             volumeRestoreAction('restore', dataModel.getSelectedItems());
                         },
                         enabled: function () {
-                            return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
-                                function (vol) {
+                            return dataModel.onlyOneSelected() &&
+                                noExternalVolumes(dataModel) &&
+                                _.some(dataModel.getSelectedItems(), function (vol) {
                                     return volumeService.restorable(vol);
                                 });
                         }
@@ -257,7 +272,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-attach-to-storage',
                         type: 'link',
                         enabled: function () {
-                            return dataModel.anySelected();
+                            return dataModel.anySelected() && noExternalVolumes(dataModel);
                         },
                         onClick: function () {
                             virtualizeVolumeService.invokeOpenAttachToStorage(dataModel.getSelectedItems());
