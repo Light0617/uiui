@@ -107,7 +107,16 @@ angular.module('rainierApp')
                         result.description !== $scope.dataModel.updatedDescription ||
                         result.ipAddress !== $scope.dataModel.updatedIpAddress ||
                         result.osType !== $scope.dataModel.updatedOsType;
-                    return valid && different;
+
+                    var isMoreThanOneEndpoint =
+                        _.some($scope.dataModel.updatedEndPoints, function (endPoint) {
+                            return !utilService.isNullOrUndefOrBlank(endPoint.value);
+                        }) ||
+                        _.some($scope.dataModel.addedEndPoints, function (endPoint) {
+                            return !utilService.isNullOrUndefOrBlank(endPoint.value);
+                        });
+
+                    return valid && different && isMoreThanOneEndpoint;
                 },
                 deleteEndPoint: function (index) {
                     $scope.dataModel.addedEndPoints.splice(index, 1);
