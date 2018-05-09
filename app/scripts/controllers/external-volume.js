@@ -48,7 +48,7 @@ angular.module('rainierApp')
             };
 
             $scope.isUnvirtualizeAvailable = function () {
-                return !$scope.model.isMigrating();
+                return !$scope.model.isMigrating() && $scope.model.provisioningStatus !== 'UNMANAGED';
             };
 
             $scope.migrateVolume = function () {
