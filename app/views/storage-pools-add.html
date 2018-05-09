@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" ng-if="model.wizardType === 'advanced'">
+                    <div class="form-group" ng-if="model.wizardType === 'advanced' && !model.ddmEnabled">
                         <label for="storage-pool-type">{{'storage-pool-type' | translate}}</label>
                         <select class="form-control" id="storage-pool-type" ng-model="model.poolType"
                                 ng-options="pt | translate for pt in model.availablePoolTypes" ng-if="!model.ddmEnabled"
