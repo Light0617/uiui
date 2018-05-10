@@ -356,6 +356,7 @@
     "storage-volume-filter-thin": "Thin",
     "storage-volume-filter-tiered": "Tiered",
     "storage-volume-filter-snap": "Snap",
+    "storage-volume-filter-external": "External",
     "storage-volume-filter-free-space": "Free Space",
     "storage-volume-filter-size-of-volume": "Size of Volume",
     "storage-volume-filter-attached": "Attached",

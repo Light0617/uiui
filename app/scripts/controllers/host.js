@@ -481,6 +481,7 @@ angular.module('rainierApp')
         };
 
         $scope.filterModel = {
+            externalVisible: true,
             $replicationRawTypes: replicationService.rawTypes,
             filter: {
                 freeText: '',
