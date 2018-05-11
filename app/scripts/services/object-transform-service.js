@@ -1708,7 +1708,8 @@ angular.module('rainierApp')
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-subscription'),
-                                color: subscribedCapacityColor
+                                color: subscribedCapacityColor,
+                                unStacked: true
                             },
                             {
                                 capacity: diskSizeService.getDisplaySize(item.totalUsableCapacity),
@@ -1723,7 +1724,8 @@ angular.module('rainierApp')
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-physical-capacity'),
-                                color: availableParityGroupCapacityColor
+                                color: availableParityGroupCapacityColor,
+                                unStacked: true
                             }
                         ]
                     ];
@@ -1812,7 +1814,8 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
-                            color: subscribedCapacityColor
+                            color: subscribedCapacityColor,
+                            unStacked: true
                         },
                         {
                             capacity: diskSizeService.getDisplaySize(item.totalUsableCapacity),
@@ -1827,7 +1830,8 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-physical-capacity'),
-                            color: availableParityGroupCapacityColor
+                            color: availableParityGroupCapacityColor,
+                            unStacked: true
                         }
                     ]
                 ];
@@ -2201,7 +2205,8 @@ angular.module('rainierApp')
                                 })('subscription-capacity-tooltip'),
                                 percentage: storageSystem.subscribedCapacityPercentage,
                                 capacity: diskSizeService.getDisplaySize(storageSystem.subscribedCapacity),
-                                color: subscribedCapacityColor
+                                color: subscribedCapacityColor,
+                                unStacked: true
                             },
                             {
                                 label: (function (key) {
@@ -2216,7 +2221,8 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key, variable);
                                 })('physical-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity),
-                                color: unallocatedColor
+                                color: unallocatedColor,
+                                unStacked: true
                             }
                         ]]
                     }
