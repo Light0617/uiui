@@ -79,8 +79,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes'
                 },
-                // TODO: Help contents
-                helpContext: ''
+                helpContext: 'T_MIGRATING_VOLUMES'
             })
             .when('/storage-systems/:storageSystemId/volumes/shred-volumes', {
                 templateUrl: 'views/shred-volumes.html',
@@ -88,8 +87,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'shred-volumes'
                 },
-                // TODO: Help contents
-                helpContext: ''
+                helpContext: 'T_SHREDDING_VOLUMES'
             })
             .when('/storage-systems/:storageSystemId/external-volumes/add', {
                 templateUrl: 'views/external-volumes-add.html',
@@ -97,8 +95,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'Add External Volumes'
                 },
-                // TODO: Help contents
-                helpContext: ''
+                helpContext: 'T_VIRTUALIZING_VOLUMES'
             })
             .when('/hosts/create-and-attach-volumes', {
                 templateUrl: 'views/create-and-attach-volumes.html',
@@ -445,7 +442,7 @@ angular
             })
             .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes', {
                 breadcrumbOptions: {
-                    labelKey: 'common-storage-system-volumes',
+                    labelKey: 'common-storage-system-volumes'
                 },
                 templateUrl: 'views/storage-pool.html',
                 controller: 'StoragePoolCtrl',
@@ -456,7 +453,8 @@ angular
                 controller: 'ShredVolumesCtrl',
                 breadcrumbOptions: {
                     labelKey: 'shred-volumes'
-                }
+                },
+                helpContext: 'T_SHREDDING_VOLUMES'
             })
             .when('/storage-systems/:storageSystemId/storage-pools/:storagePoolId/volumes/:volumeId', {
                 templateUrl: 'views/storage-system-volume.html',
@@ -547,7 +545,8 @@ angular
                 controller: 'EditIscsiPortCtrl',
                 breadcrumbOptions: {
                     labelKey: 'edit-iscsi-port'
-                }
+                },
+                helpContext: 'T_EDIT_ISCSI_PORT'
             })
             .when('/storage-systems/:storageSystemId/parity-groups', {
                 templateUrl: 'views/parity-groups.html',
@@ -598,7 +597,7 @@ angular
                         'migration-tasks'
                     ]
                 },
-                helpContext: 'R_EXTERNAL_PG_INV'
+                helpContext: 'R_EXT_VOLS_INV'
             })
             .when('/storage-systems/:storageSystemId/attach-to-storage', {
                 templateUrl: 'views/attach-to-storage.html',
@@ -606,14 +605,12 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'Attach Volumes to Storage'
                 },
-                // TODO: Help contents
-                helpContext: ''
+                helpContext: 'T_PREVIRTUALIZING_VOLUMES'
             })
             .when('/storage-systems/:storageSystemId/external-volumes/:volumeId', {
                 templateUrl: 'views/external-volume.html',
                 controller: 'ExternalVolumeCtrl',
-                // TODO helpContext
-                helpContext: 'R_VOLUME_DETAILS'
+                helpContext: 'R_EXT_VOL_DETAIL'
             })
             .when('/monitoring', {
                 templateUrl: 'views/monitoring.html',
@@ -992,9 +989,7 @@ angular
                         'replication-groups'
                     ]
                 },
-                //TODO:Help context
-                // helpContext: 'C_CREATE_ATTACH'
-                helpContext: ''
+                helpContext: 'T_INTERRUPTING_MIGRATION_IN_PROGRESS'
             })
             .when('/storage-systems/:storageSystemId/migration-tasks/:migrationTaskId/update', {
                 templateUrl: 'views/migrate-volumes.html',
@@ -1002,8 +997,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes-title-update'
                 },
-                //TODO:Help context
-                helpContext: ''
+                helpContext: 'T_EDIT_MIGRATION_TASK'
             })
             .when('/storage-systems/:storageSystemId/migrate-volumes', {
                 templateUrl: 'views/migrate-volumes.html',
@@ -1011,9 +1005,7 @@ angular
                 breadcrumbOptions: {
                     labelKey: 'migrate-volumes'
                 },
-                //TODO:Help context
-                // helpContext: 'C_CREATE_ATTACH'
-                helpContext: ''
+                helpContext: 'T_MIGRATING_VOLUMES'
             })
             .otherwise({
                 redirectTo: '/'
