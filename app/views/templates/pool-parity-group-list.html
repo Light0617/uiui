@@ -35,7 +35,7 @@
         <div class="icon icon-parity-group icon-lg" ng-if="!pg.encryption"></div>
         <div class="icon icon-encrypted-parity-group icon-lg" ng-if="pg.encryption"></div>
         <div class="resource-data">
-            <div class="inline-values" ng-if="pg.status !== 'EXTERNALIZED'">
+            <div class="inline-values-wizard" ng-if="pg.status !== 'EXTERNALIZED'">
                 <disk-size ng-model="pg.topSize" post-fix="/" wrapped-in="p"></disk-size>&nbsp;
                 <disk-size ng-model="pg.topTotal" post-fix="" wrapped-in="p"></disk-size>
             </div>
@@ -45,7 +45,7 @@
             <div class="data-viz bar" ng-if="pg.compression">
                 <usage-indicator-bar class="block data-viz-container" ng-model="pg.compressionUsageBar"></usage-indicator-bar>
             </div>
-            <div class="inline-values">
+            <div class="inline-values-wizard">
                 <disk-size ng-model="pg.physicalCapacity" post-fix="/"  wrapped-in="p" ng-if="pg.compression"></disk-size>&nbsp;
                 <disk-size ng-model="pg.topTotal" wrapped-in="p" ng-if="pg.compression"></disk-size>
             </div>
