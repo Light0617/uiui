@@ -1217,7 +1217,9 @@
     "external-volume-unvirtualize-confirmation": "Unvirtualize Confirmation",
     "external-volume-unvirtualize-content": "The current external volume will be unvirtualized. Do you want to proceed?",
     "external-volumes-unvirtualize-confirmation": "Unvirtualize Confirmation",
-    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. Do you want to proceed?",
+    "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. This action will detach and delete external volume and delete the underlying external parity group. Do you want to proceed?",
+    "external-volumes-unvirtualize-remove-zone": "Remove Zone",
+    "external-volumes-unvirtualize-keep-zone-intact": "Keep Zone Intact",
 
     "false": "NO",
     "true": "YES"
