@@ -6,7 +6,7 @@
  * @description
  * # hsaArrayPolarDataVisualization
  */
-angular.module('bel-services')
+angular.module('rainierApp')
   .directive('hsaArrayPolarDataVisualization', function (d3service) {
     var radius = 70;
     var circleWidth = 20;
