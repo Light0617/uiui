@@ -29,7 +29,6 @@ angular.module('rainierApp')
         };
 
         var constructVirtualizePayload = function (selected) {
-            var serverMap = new Map();
             var serverProtocol = selected.hosts[0].protocol;
             var payload = {
                 targetPorts: [],
@@ -40,30 +39,20 @@ angular.module('rainierApp')
                 hostMode: selected.hostMode,
                 hostModeOptions: createHostModeOptionsPayload(selected.hostModeOptions)
             };
+
             _.each(selected.externalPorts, function (port) {
                 payload.targetPorts.push(port.storagePortId);
             });
-            _.each(remainingPaths(selected.paths), function (path) {
-                var key = path.storagePortId + path.serverId;
-                var serverInfo = {
+
+            payload.serverInfos = _.map(selected.paths, function (path) {
+                return {
                     targetPortForHost: path.storagePortId,
                     serverId: parseInt(path.serverId),
                     serverWwns: serverProtocol === 'FIBRE' ? [path.serverEndPoint] : undefined,
-                    iscsiInitiatorNames: serverProtocol === 'ISCSI' ? [path.serverEndPoint] : undefined
+                    iscsiInitiatorNames: serverProtocol === 'ISCSI' ? [path.serverEndPoint] : undefined,
+                    protocol: serverProtocol
                 };
-                serverInfo.protocol = serverProtocol;
-                if (!serverMap.has(key)) {
-                    serverMap.set(key, serverInfo);
-                } else if(serverMap.get(key).serverWwns) {
-                    serverMap.get(key).serverWwns.push(path.serverEndPoint);
-                } else if(serverMap.get(key).iscsiInitiatorNames) {
-                    serverMap.get(key).iscsiInitiatorNames.push(path.serverEndPoint);
-                }
             });
-
-             serverMap.forEach(function (value) {
-                 payload.serverInfos.push(value);
-             });
 
             _.each(selected.luns, function (lun) {
                 payload.externalLuns.push({
