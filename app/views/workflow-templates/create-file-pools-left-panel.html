@@ -13,9 +13,11 @@
     </form>
 </div>
 <div class="polar-data-viz-concentric">
-    <array-polar-data-visualization class="utilization dataviz-pdv"
-                                    ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
-                                    no-break-down="dataModel.summaryModel.noBreakdown" no-legend-box="true" ng-if="!dataModel.expand"></array-polar-data-visualization>
+    <hsa-array-polar-data-visualization class="utilization dataviz-pdv"
+                                        ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
+                                        no-break-down="dataModel.summaryModel.noBreakdown"
+                                        no-legend-box="true" ng-if="!dataModel.expand">
+    </hsa-array-polar-data-visualization>
 </div>
 <ul class="legend" ng-if="!dataModel.expand">
     <li ng-repeat="keyAndColor in dataModel.keyAndColors">

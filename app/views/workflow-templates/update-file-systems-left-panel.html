@@ -4,9 +4,10 @@
     </input>
 </div>
 <div class="polar-data-viz-concentric">
-    <array-polar-data-visualization class="utilization dataviz-pdv"
+    <hsa-array-polar-data-visualization class="utilization dataviz-pdv"
                                     ng-model="dataModel.summaryModel.arrayDataVisualizationModel"
-                                    no-break-down="dataModel.summaryModel.noBreakdown" no-legend-box="true"></array-polar-data-visualization>
+                                    no-break-down="dataModel.summaryModel.noBreakdown" no-legend-box="true">
+    </hsa-array-polar-data-visualization>
 </div>
 <ul class="legend">
     <li ng-repeat="keyAndColor in dataModel.keyAndColors">

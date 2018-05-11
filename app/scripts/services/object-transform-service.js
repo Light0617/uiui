@@ -50,7 +50,8 @@ angular.module('rainierApp')
                         };
                         return synchronousTranslateService.translate(key, variable);
                     })('used-capacity-tooltip'),
-                    color: thinUsedColor
+                    color: thinUsedColor,
+                    stacked: true
                 },
                 {
                     capacity: freeCapacity,
@@ -65,7 +66,8 @@ angular.module('rainierApp')
                         };
                         return synchronousTranslateService.translate(key, variable);
                     })('free-capacity-tooltip'),
-                    color: thinFreeColor
+                    color: thinFreeColor,
+                    stacked: true
                 }
             ];
         };
@@ -1139,7 +1141,8 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key, variable);
                                 })('volumes-used-capacity-tooltip'),
                                 capacity: item.usedCapacity,
-                                color: thinUsedColor
+                                color: thinUsedColor,
+                                stacked: true
                             },
                             {
                                 label: (function (key) {
@@ -1154,7 +1157,8 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key, variable);
                                 })('volumes-free-capacity-tooltip'),
                                 capacity: item.availableCapacity,
-                                color: thinFreeColor
+                                color: thinFreeColor,
+                                stacked: true
                             }]
                         ]
                     }
@@ -1568,7 +1572,8 @@ angular.module('rainierApp')
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-file-physical-capacity'),
-                                color: physicalCapacityColor
+                                color: physicalCapacityColor,
+                                stacked: true
                             },
                             {
                                 label: (function (key) {
@@ -1582,7 +1587,8 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key, variable);
                                 })('allocated-capacity-tooltip'),
                                 capacity: item.poolCapacity,
-                                color: allocatedColor
+                                color: allocatedColor,
+                                stacked: true
                             },
                             {
                                 label: (function (key) {
@@ -1597,7 +1603,8 @@ angular.module('rainierApp')
                                 })('unallocated-capacity-tooltip'),
                                 capacity: item.unallocatedToPoolsCapacity,
                                 legendDisplay: item.unallocatedToPoolsCapacity,
-                                color: unallocatedColor
+                                color: unallocatedColor,
+                                stacked: true
                             }
                         ],
                         [
@@ -1618,6 +1625,7 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-used-breakdown'),
                                 color: thinUsedColor,
+                                stacked: true,
                                 breakdown: [
                                     {
                                         capacity: diskSizeService.getDisplaySize(dataProtection.protectedCapacity),
@@ -1677,7 +1685,8 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key, variable);
                                 })('free-capacity-tooltip'),
                                 legendDisplay: item.physicalFree,
-                                color: thinFreeColor
+                                color: thinFreeColor,
+                                stacked: true
                             },
                             {
                                 label: (function (key) {
@@ -1692,7 +1701,8 @@ angular.module('rainierApp')
                                     return synchronousTranslateService.translate(key, variable);
                                 })('file-used-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(file.usedCapacity),
-                                color: fileUsedCapacityColor
+                                color: fileUsedCapacityColor,
+                                stacked: true
                             }
                         ],
                         [
@@ -1708,8 +1718,7 @@ angular.module('rainierApp')
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-subscription'),
-                                color: subscribedCapacityColor,
-                                unStacked: true
+                                color: subscribedCapacityColor
                             },
                             {
                                 capacity: diskSizeService.getDisplaySize(item.totalUsableCapacity),
@@ -1724,8 +1733,7 @@ angular.module('rainierApp')
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-physical-capacity'),
-                                color: availableParityGroupCapacityColor,
-                                unStacked: true
+                                color: availableParityGroupCapacityColor
                             }
                         ]
                     ];
@@ -1745,7 +1753,8 @@ angular.module('rainierApp')
                                 };
                                 return synchronousTranslateService.translate(key, variable);
                             })('allocated-capacity-tooltip'),
-                            color: allocatedColor
+                            color: allocatedColor,
+                            stacked: true
                         },
                         {
                             capacity: item.unallocatedToPoolsCapacity,
@@ -1761,7 +1770,8 @@ angular.module('rainierApp')
                                 return synchronousTranslateService.translate(key, variable);
                             })('unallocated-capacity-tooltip'),
                             legendDisplay: item.unallocatedToPoolsCapacity,
-                            color: unallocatedColor
+                            color: unallocatedColor,
+                            stacked: true
                         }
                     ],
                     [
@@ -1782,7 +1792,8 @@ angular.module('rainierApp')
                                 return synchronousTranslateService.translate(key);
                             })('common-label-used-breakdown'),
                             breakdown: breakdown,
-                            color: thinUsedColor
+                            color: thinUsedColor,
+                            stacked: true
                         },
                         {
                             capacity: item.physicalFree,
@@ -1798,7 +1809,8 @@ angular.module('rainierApp')
                                 return synchronousTranslateService.translate(key, variable);
                             })('free-capacity-tooltip'),
                             legendDisplay: item.physicalFree,
-                            color: thinFreeColor
+                            color: thinFreeColor,
+                            stacked: true
                         }
                     ],
                     [
@@ -1814,8 +1826,7 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-subscription'),
-                            color: subscribedCapacityColor,
-                            unStacked: true
+                            color: subscribedCapacityColor
                         },
                         {
                             capacity: diskSizeService.getDisplaySize(item.totalUsableCapacity),
@@ -1830,8 +1841,7 @@ angular.module('rainierApp')
                             label: (function (key) {
                                 return synchronousTranslateService.translate(key);
                             })('common-label-physical-capacity'),
-                            color: availableParityGroupCapacityColor,
-                            unStacked: true
+                            color: availableParityGroupCapacityColor
                         }
                     ]
                 ];
@@ -2206,7 +2216,7 @@ angular.module('rainierApp')
                                 percentage: storageSystem.subscribedCapacityPercentage,
                                 capacity: diskSizeService.getDisplaySize(storageSystem.subscribedCapacity),
                                 color: subscribedCapacityColor,
-                                unStacked: true
+                                stacked: true
                             },
                             {
                                 label: (function (key) {
@@ -2222,7 +2232,7 @@ angular.module('rainierApp')
                                 })('physical-capacity-tooltip'),
                                 capacity: diskSizeService.getDisplaySize(storageSystem.totalUsableCapacity),
                                 color: unallocatedColor,
-                                unStacked: true
+                                stacked: true
                             }
                         ]]
                     }
@@ -2358,7 +2368,8 @@ angular.module('rainierApp')
                                     tooltip: (function (key) {
                                         return synchronousTranslateService.translate(key);
                                     })('allocated-capacity-tooltip'),
-                                    capacity: item.poolCapacity
+                                    capacity: item.poolCapacity,
+                                    stacked: true
                                 },
                                 free: {
                                     label: (function (key) {
@@ -2367,7 +2378,8 @@ angular.module('rainierApp')
                                     tooltip: (function (key) {
                                         return synchronousTranslateService.translate(key);
                                     })('unallocated-capacity-tooltip'),
-                                    capacity: item.unallocatedToPoolsCapacity
+                                    capacity: item.unallocatedToPoolsCapacity,
+                                    stacked: true
                                 }
                             },
                             {
@@ -2573,22 +2585,24 @@ angular.module('rainierApp')
                             capacity: item.totalCapacity
                         },
                         items: [
-                            [{
-                                label: (function (key) {
-                                    return synchronousTranslateService.translate(
-                                        key);
-                                })('common-label-used'),
-                                tooltip: (function (key) {
-                                    var usedCapacityObject = item.usedCapacity;
-                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
-                                    var variable = {
-                                        usedCapacity: usedCapacityAmount
-                                    };
-                                    return synchronousTranslateService.translate(key, variable);
-                                })('used-capacity-tooltip'),
-                                capacity: item.usedCapacity,
-                                color: thinUsedColor
-                            },
+                            [
+                                {
+                                    label: (function (key) {
+                                        return synchronousTranslateService.translate(
+                                            key);
+                                    })('common-label-used'),
+                                    tooltip: (function (key) {
+                                        var usedCapacityObject = item.usedCapacity;
+                                        var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                        var variable = {
+                                            usedCapacity: usedCapacityAmount
+                                        };
+                                        return synchronousTranslateService.translate(key, variable);
+                                    })('used-capacity-tooltip'),
+                                    capacity: item.usedCapacity,
+                                    color: thinUsedColor,
+                                    stacked: true
+                                },
                                 {
                                     label: (function (key) {
                                         return synchronousTranslateService.translate(
@@ -2603,8 +2617,10 @@ angular.module('rainierApp')
                                         return synchronousTranslateService.translate(key, variable);
                                     })('free-capacity-tooltip'),
                                     capacity: item.availableCapacity,
-                                    color: thinFreeColor
-                                }]
+                                    color: thinFreeColor,
+                                    stacked: true
+                                }
+                            ]
                         ]
                     },
                     alerts: {
@@ -2876,13 +2892,15 @@ angular.module('rainierApp')
                                     label: 'Used Capacity',
                                     tooltip: 'Used Capacity',
                                     capacity: diskSizeService.getDisplaySize(parseInt(item.usedCapacity) + parseInt(selectedDisplayCapacity.value)),
-                                    color: '#3D84F5'
+                                    color: '#3D84F5',
+                                    stacked: true
                                 },
                                 {
                                     label: 'Free Capacity',
                                     tooltip: 'Free Capacity',
                                     capacity: diskSizeService.getDisplaySize(freeCapacity),
-                                    color: '#1A2B45'
+                                    color: '#1A2B45',
+                                    stacked: true
                                 }
                             ]
                         ]
@@ -2916,11 +2934,13 @@ angular.module('rainierApp')
                             {
                                 used: {
                                     capacity: diskSizeService.getDisplaySize(totalCapacity),
-                                    color: '#3D84F5'
+                                    color: '#3D84F5',
+                                    stacked: true
                                 },
                                 free: {
                                     capacity: diskSizeService.getDisplaySize(overCommitCapacity - totalCapacity),
-                                    color: '#1A2B45'
+                                    color: '#1A2B45',
+                                    stacked: true
                                 }
                             }
                         ]
