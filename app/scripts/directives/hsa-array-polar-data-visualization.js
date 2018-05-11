@@ -779,6 +779,11 @@ angular.module('rainierApp')
         }
 
         cbwy += space * 4;
+        var width = 290;
+        var textY = 55;
+        var rectY = 40;
+        var circleY = 50;
+        var offset = 26;
 
         if(data.view !== 'file' && !data.tiers && !data.savings) {
           if (onlyShowBreakDown === true) {
@@ -902,11 +907,6 @@ angular.module('rainierApp')
             .text('%');
         }
         else if(data.view !== 'file' && data.savings) {
-          var width = 290;
-          var textY = 55;
-          var rectY = 40;
-          var circleY = 50;
-          var offset = 26;
           _.each(data.savingsBreakdown, function(savings) {
 
             breakdownView.append('circle')
@@ -941,11 +941,6 @@ angular.module('rainierApp')
           });
         }
         else{
-          var width = 290;
-          var textY = 55;
-          var rectY = 40;
-          var circleY = 50;
-          var offset = 26;
           var index = 0;
           _.each(data.tierBreakdown, function(tier) {
             breakdownView.append('circle')
