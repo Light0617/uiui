@@ -144,6 +144,22 @@ angular.module('rainierApp')
 
             inventorySettingsService.setExternalVolumeGridSettings(dataModel);
 
+
+            function generateUnvirtualizeDialogSettings () {
+                var dialogSettings = {
+                    id: 'securityEnableDisableConfirmation',
+                    dialogTitle: 'external-volumes-unvirtualize-confirmation',
+                    content: 'external-volumes-unvirtualize-content',
+                    trueText: 'external-volumes-unvirtualize-remove-zone',
+                    falseText: 'external-volumes-unvirtualize-keep-zone-intact',
+                    switchEnabled: {
+                        value: false
+                    }
+                };
+
+                return dialogSettings;
+            }
+
             var actions = [
                 // volume migration
                 {
@@ -164,10 +180,9 @@ angular.module('rainierApp')
                 {
                     icon: 'icon-delete',
                     tooltip: 'action-tooltip-unvirtualize',
-                    type: 'confirm',
+                    type: 'confirmation-modal',
+                    dialogSettings: generateUnvirtualizeDialogSettings(),
 
-                    confirmTitle: 'external-volumes-unvirtualize-confirmation',
-                    confirmMessage: 'external-volumes-unvirtualize-content',
                     enabled: function () {
                         return dataModel.anySelected() &&
                             //block deleting if the migration status is true
@@ -177,9 +192,11 @@ angular.module('rainierApp')
                                     vol.provisioningStatus === 'UNMANAGED';
                             });
                     },
-                    onClick: function () {
+
+                    confirmClick: function () {
                         // Build reserved resources
 //                        var reservedResourcesList = [];
+                        var enabled = this.dialogSettings.switchEnabled.value;
                         var volIds = [];
                         _.forEach(dataModel.getSelectedItems(), function (item) {
 //                            reservedResourcesList.push(item.volumeId + '=' + resourceTrackerService.volume());
@@ -187,7 +204,8 @@ angular.module('rainierApp')
                         });
                         var unvirtualizePayload = {
                             storageSystemId: storageSystemId,
-                            volumeIds: volIds
+                            volumeIds: volIds,
+                            cleanupZones: enabled
                         };
 
                         // Show popup if resource is present in resource tracker else submit
