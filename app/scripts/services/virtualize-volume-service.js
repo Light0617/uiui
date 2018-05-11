@@ -50,7 +50,6 @@ angular.module('rainierApp')
                     serverId: parseInt(path.serverId),
                     serverWwns: serverProtocol === 'FIBRE' ? [path.serverEndPoint] : undefined,
                     iscsiInitiatorNames: serverProtocol === 'ISCSI' ? [path.serverEndPoint] : undefined,
-                    protocol: serverProtocol
                 };
             });
 
