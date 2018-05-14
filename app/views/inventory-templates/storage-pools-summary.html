@@ -4,8 +4,9 @@
             <hsa-alert-tile service="dataModel.capacityAlert"></hsa-alert-tile>
         </div>
     <div class="tile data-viz-container fifth dv-pdv" ng-repeat="usageGraph in dataModel.usageGraphs">
-            <array-polar-data-visualization class="utilization" ng-model="usageGraph"
-                                            no-break-down="true" no-legend-box="true"></array-polar-data-visualization>
+            <hsa-array-polar-data-visualization class="utilization" ng-model="usageGraph"
+                                            no-break-down="true" no-legend-box="true">
+            </hsa-array-polar-data-visualization>
 
             <ul class="legend">
                 <li class="legend-item thin-used" title="{{usageGraph.items[0][0].tooltip}}">{{usageGraph.items[0][0].label}} {{usageGraph.items[0][0].capacity.size}} {{usageGraph.items[0][0].capacity.unit}}</li>
