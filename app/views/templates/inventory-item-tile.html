@@ -29,8 +29,8 @@
         <div ng-attr-class="icon icon-lg {{item.itemIcon}}"></div>
         <div class="resource-data col-margin" ng-if="item.usage">
             <div class="inline-values-wizard" ng-if="item.status !== 'EXTERNALIZED'">
-                <disk-size ng-model="item.topSize" post-fix="/" wrapped-in="p"></disk-size>&nbsp;
-                <disk-size ng-model="item.topTotal" post-fix="" wrapped-in="p"></disk-size>
+                <disk-size ng-model="item.topSize" post-fix="/" wrapped-in="p" ng-attr-title="{{item.topSize.size + item.topSize.unit}}"></disk-size>&nbsp;
+                <disk-size ng-model="item.topTotal" post-fix="" wrapped-in="p" ng-attr-title="{{item.topTotal.size + item.topTotal.unit}}"></disk-size>
             </div>
 
             <div class="data-viz bar" ng-if="item.status !== 'EXTERNALIZED'">
