@@ -1560,22 +1560,6 @@ angular.module('rainierApp')
                     var unifiedItems = [
                         [
                             {
-                                capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
-                                tooltip: (function (key) {
-                                    var physicalCapacityObject = diskSizeService.getDisplaySize(file.physicalCapacity);
-                                    var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
-                                    var variable = {
-                                        filePhysicalCapacity: physicalCapacityAmount
-                                    };
-                                    return synchronousTranslateService.translate(key, variable);
-                                })('file-physical-capacity-tooltip'),
-                                label: (function (key) {
-                                    return synchronousTranslateService.translate(key);
-                                })('common-label-file-physical-capacity'),
-                                color: physicalCapacityColor,
-                                stacked: true
-                            },
-                            {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
                                 })('common-label-allocated'),
@@ -1589,6 +1573,22 @@ angular.module('rainierApp')
                                 capacity: item.poolCapacity,
                                 color: allocatedColor,
                                 stacked: true
+                            },
+                            {
+                                capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
+                                tooltip: (function (key) {
+                                    var physicalCapacityObject = diskSizeService.getDisplaySize(file.physicalCapacity);
+                                    var physicalCapacityAmount = physicalCapacityObject.size + physicalCapacityObject.unit;
+                                    var variable = {
+                                        filePhysicalCapacity: physicalCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('file-physical-capacity-tooltip'),
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-file-physical-capacity'),
+                                color: physicalCapacityColor,
+                                subsetValue: true
                             },
                             {
                                 label: (function (key) {
@@ -1861,7 +1861,8 @@ angular.module('rainierApp')
                                     };
                                     return synchronousTranslateService.translate(key, variable);
                                 })('allocated-capacity-tooltip'),
-                                color: allocatedColor
+                                color: allocatedColor,
+                                stacked: true
                             },
                             {
                                 label: (function (key) {
@@ -1877,7 +1878,8 @@ angular.module('rainierApp')
                                 })('unallocated-capacity-tooltip'),
                                 capacity: item.unallocatedToPoolsCapacity,
                                 legendDisplay: item.unallocatedToPoolsCapacity,
-                                color: unallocatedColor
+                                color: unallocatedColor,
+                                stacked: true
                             }
                         ],
                         [

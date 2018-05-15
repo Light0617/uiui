@@ -219,6 +219,10 @@ angular.module('rainierApp')
         if(_.first(options.circles).capacity) {
           sortedCircles = options.circles;
           totalValue = _.reduce(sortedCircles, function (result, circle) {
+            if (circle.subsetValue) {
+              return result;
+            }
+
             result += circle.capacity.value;
             return result;
           }, 0);
@@ -249,7 +253,7 @@ angular.module('rainierApp')
             endAngle = 0;
           }
 
-          if (item.stacked) {
+          if (item.stacked && !item.subsetValue) {
             endAngle += startAngle;
           }
 
@@ -265,7 +269,9 @@ angular.module('rainierApp')
             .outerRadius(circleRadius)
             .startAngle(item.stacked ? startAngle : 0);
 
-          startAngle = endAngle;
+          if (!item.subsetValue) {
+            startAngle = endAngle;
+          }
 
           var line = circlesContainer.append('path')
             .datum({endAngle: startAngle})
@@ -1024,7 +1030,8 @@ angular.module('rainierApp')
             index: item.index || index,
             radius: finalRadius,
             circles: cloned,
-            stacked: item.stacked
+            stacked: item.stacked,
+            subsetValue: item.subsetValue
           };
           finalRadius += circleWidth + space;
           return circleObject;
