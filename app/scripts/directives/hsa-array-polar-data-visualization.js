@@ -218,9 +218,10 @@ angular.module('rainierApp')
 
         if(_.first(options.circles).capacity) {
           sortedCircles = options.circles;
-          totalValue = _.reduce(sortedCircles, function (circle1, circle2) {
-            return circle1.capacity.value + circle2.capacity.value;
-          });
+          totalValue = _.reduce(sortedCircles, function (result, circle) {
+            result += circle.capacity.value;
+            return result;
+          }, 0);
           if(totalValue === 0) {
             _.last(sortedCircles).capacity.value = 1;
             totalValue = 1;
