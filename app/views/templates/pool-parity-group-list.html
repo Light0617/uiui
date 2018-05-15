@@ -36,8 +36,8 @@
         <div class="icon icon-encrypted-parity-group icon-lg" ng-if="pg.encryption"></div>
         <div class="resource-data">
             <div class="inline-values-wizard" ng-if="pg.status !== 'EXTERNALIZED'">
-                <disk-size ng-model="pg.topSize" post-fix="/" wrapped-in="p" ng-attr-title="{{pg.topSize.size + pg.topSize.unit}}"></disk-size>&nbsp;
-                <disk-size ng-model="pg.topTotal" post-fix="" wrapped-in="p" ng-attr-title="{{pg.topSize.size + pg.topSize.unit}}"></disk-size>
+                <disk-size ng-model="pg.topSize" post-fix="/" wrapped-in="p" ng-attr-title="{{pg.topSize.size + pg.topSize.unit + '/'}}"></disk-size>&nbsp;
+                <disk-size ng-model="pg.topTotal" post-fix="" wrapped-in="p" ng-attr-title="{{pg.topTotal.size + pg.topTotal.unit}}"></disk-size>
             </div>
             <div class="data-viz bar">
                 <usage-indicator-bar class="block data-viz-container" ng-model="pg"></usage-indicator-bar>
@@ -46,8 +46,8 @@
                 <usage-indicator-bar class="block data-viz-container" ng-model="pg.compressionUsageBar"></usage-indicator-bar>
             </div>
             <div class="inline-values-wizard">
-                <disk-size ng-model="pg.physicalCapacity" post-fix="/"  wrapped-in="p" ng-if="pg.compression" ng-attr-title="{{pg.topSize.size + pg.topSize.unit}}"></disk-size>&nbsp;
-                <disk-size ng-model="pg.topTotal" wrapped-in="p" ng-if="pg.compression" ng-attr-title="{{pg.topSize.size + pg.topSize.unit}}"></disk-size>
+                <disk-size ng-model="pg.physicalCapacity" post-fix="/"  wrapped-in="p" ng-if="pg.compression" ng-attr-title="{{pg.physicalCapacity.size + pg.physicalCapacity.unit + '/'}}"></disk-size>&nbsp;
+                <disk-size ng-model="pg.topTotal" wrapped-in="p" ng-if="pg.compression" ng-attr-title="{{pg.topTotal.size + pg.topTotal.unit}}"></disk-size>
             </div>
         </div>
     </div>
