@@ -269,12 +269,12 @@ angular.module('rainierApp')
             .outerRadius(circleRadius)
             .startAngle(item.stacked ? startAngle : 0);
 
-          if (!item.subsetValue) {
+          if (item.stacked && !item.subsetValue) {
             startAngle = endAngle;
           }
 
           var line = circlesContainer.append('path')
-            .datum({endAngle: startAngle})
+            .datum({endAngle: item.stacked && index === 0 ? startAngle : 0})
             .attr('d', arc)
             .attr('index', item.label ? ++index : -1)
             .attr('stroke-width', circleWidth)
