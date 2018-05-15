@@ -1886,23 +1886,6 @@ angular.module('rainierApp')
                             {
                                 label: (function (key) {
                                     return synchronousTranslateService.translate(key);
-                                })('common-label-file-pool-used'),
-                                tooltip: (function (key) {
-                                    var usedCapacityObject = diskSizeService.getDisplaySize(file.usedCapacity);
-                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
-                                    var variable = {
-                                        fileUsedCapacity: usedCapacityAmount
-                                    };
-                                    return synchronousTranslateService.translate(key, variable);
-                                })('file-used-capacity-tooltip'),
-                                capacity: diskSizeService.getDisplaySize(file.usedCapacity),
-                                breakdown: 'none',
-                                color: fileUsedCapacityColor,
-                                stacked: true
-                            },
-                            {
-                                label: (function (key) {
-                                    return synchronousTranslateService.translate(key);
                                 })('common-label-file-physical-capacity'),
                                 tooltip: (function (key) {
                                     var physicalCapacityObject = diskSizeService.getDisplaySize(file.physicalCapacity);
@@ -1915,6 +1898,23 @@ angular.module('rainierApp')
                                 capacity: diskSizeService.getDisplaySize(file.physicalCapacity),
                                 color: fileFreeCapacityColor,
                                 stacked: true
+                            },
+                            {
+                                label: (function (key) {
+                                    return synchronousTranslateService.translate(key);
+                                })('common-label-file-pool-used'),
+                                tooltip: (function (key) {
+                                    var usedCapacityObject = diskSizeService.getDisplaySize(file.usedCapacity);
+                                    var usedCapacityAmount = usedCapacityObject.size + usedCapacityObject.unit;
+                                    var variable = {
+                                        fileUsedCapacity: usedCapacityAmount
+                                    };
+                                    return synchronousTranslateService.translate(key, variable);
+                                })('file-used-capacity-tooltip'),
+                                capacity: diskSizeService.getDisplaySize(file.usedCapacity),
+                                breakdown: 'none',
+                                color: fileUsedCapacityColor,
+                                subsetValue: true
                             },
                             {
                                 percentage: parseInt(file.physicalCapacity > 0 ? file.overcommitCapacity * 100 / file.physicalCapacity : 0),
