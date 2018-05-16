@@ -221,6 +221,27 @@ angular.module('rainierApp')
                     getDisplayValue: function(item) {
                         return item.mappedVolumeId;
                     }
+                },
+                {
+                    title: 'common-external-storage-serial',
+                    sizeClass: 'sixteenth',
+                    getDisplayValue: function(item) {
+                        return item.externalStorageSystemId;
+                    }
+                },
+                {
+                    title: 'common-external-storage-vendor',
+                    sizeClass: 'sixteenth',
+                    getDisplayValue: function(item) {
+                        return item.externalStorageVendor;
+                    }
+                },
+                {
+                    title: 'common-external-storage-model',
+                    sizeClass: 'sixteenth',
+                    getDisplayValue: function(item) {
+                        return item.externalStorageProduct;
+                    }
                 }
             ];
             if(dataModel.ddmEnabled !== true) {

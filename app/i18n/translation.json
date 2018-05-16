@@ -142,6 +142,9 @@
     "common-external-volumes-add": "Create External Volumes",
     "common-external-parity-group-id": "External Parity Group ID",
     "common-external-mapped-volume-id": "Mapped Volume ID",
+    "common-external-storage-serial": "External Storage System",
+    "common-external-storage-vendor": "External Vendor",
+    "common-external-storage-model": "External Model",
     "common-replication-group-action-confirmation": "Replication Group Action Confirmation",
     "common-replication-group-action": "{{pageAction}} Replication Group",
     "common-on": "On",
@@ -1221,6 +1224,9 @@
     "external-volumes-unvirtualize-content": "The selected {{getSelectedCount()}} external volumes in the current storage system will be unvirtualized. This action will detach and delete external volume and delete the underlying external parity group. Do you want to proceed?",
     "external-volumes-unvirtualize-remove-zone": "Remove Zone",
     "external-volumes-unvirtualize-keep-zone-intact": "Keep Zone Intact",
+
+    "external-volumes-external-storage-system": "External Storage System: {{externalStorageSystemId}}",
+    "external-volumes-external-vendor-and-model": "External Vendor & Model: {{externalStorageVendor}} {{externalStorageProduct}}",
 
     "false": "NO",
     "true": "YES"

@@ -1118,6 +1118,28 @@ angular.module('rainierApp')
                         '/'));
                 };
             },
+            mergeExtParityGroupToExternalVolume: function (item, externalParityGroup) {
+                if (externalParityGroup) {
+                    item.externalStorageVendor = externalParityGroup.externalStorageVendor;
+                    item.externalStorageProduct = externalParityGroup.externalStorageProduct;
+                    item.externalStorageSystemId = externalParityGroup.externalStorageSystemId;
+                    item.detailMetaData = [];
+                    if (item.externalStorageSystemId) {
+                        item.detailMetaData.push({
+                            detailData: (function (key) {
+                                return synchronousTranslateService.translate(key, item);
+                            })('external-volumes-external-storage-system')
+                        });
+                    }
+                    if (item.externalStorageVendor && item.externalStorageProduct) {
+                        item.detailMetaData.push({
+                            detailData: (function (key) {
+                                return synchronousTranslateService.translate(key, item);
+                            })('external-volumes-external-vendor-and-model')
+                        });
+                    }
+                }
+            },
             transformToExternalVolumeSummaryModel: function (item) {
                 return {
                     arrayDataVisualizationModel: {
