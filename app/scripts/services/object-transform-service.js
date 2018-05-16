@@ -1097,7 +1097,8 @@ angular.module('rainierApp')
                             migrationTypeDisplay,
                             item.externalParityGroupId,
                             item.displayMappedVolumeId,
-                            item.displayCapacity
+                            item.displayCapacity,
+                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
                         ], function(v) {
                             return !utilService.isNullOrUndef(v);
                         })
