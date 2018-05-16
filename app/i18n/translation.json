@@ -1171,7 +1171,8 @@
     "migration-task-pair-list-status": "Status",
     "migration-task-pair-list-copy-progress": "Copy Progress(%)",
     "migration-task-pair-list-copy-group": "Copy Group",
-    "migration-task-pair-list-migrated-tooltip": "The volume has been migrated",
+    "migration-task-pair-list-migrated-tooltip-src": "{{displaySourceVolumeId}} The volume has been migrated",
+    "migration-task-pair-list-migrated-tooltip-tgt": "{{displayTargetVolumeId}} The volume has been migrated",
 
     "migration-task-status": "Migration Job Status",
     "migration-task-status-scheduled": "Scheduled",
