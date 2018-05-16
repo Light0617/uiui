@@ -65,7 +65,8 @@
             <p>{{vp.displayTargetVolumeId}}</p>
         </a>
         <div class="eighth cell text-resize ellipsis" ng-show="{{vp.isMigrated() || vp.displayTargetVolumeId === 'N/A'}}"
-             title="{{'migration-task-pair-list-migrated-tooltip' | translate}}"><p>{{vp.displayTargetVolumeId}}</p>
+             title="{{vp.isMigrated() ? 'migration-task-pair-list-migrated-tooltip' : 'N/A' | translate}}">
+            <p>{{vp.displayTargetVolumeId}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetPool(dataModel.storageSystemId)"
            ng-show="{{vp.targetPoolId !== 'N/A'}}" title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>
