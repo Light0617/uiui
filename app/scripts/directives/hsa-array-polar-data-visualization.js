@@ -218,9 +218,14 @@ angular.module('rainierApp')
 
         if(_.first(options.circles).capacity) {
           sortedCircles = options.circles;
-          totalValue = _.reduce(sortedCircles, function (circle1, circle2) {
-            return circle1.capacity.value + circle2.capacity.value;
-          });
+          totalValue = _.reduce(sortedCircles, function (result, circle) {
+            if (circle.subsetValue) {
+              return result;
+            }
+
+            result += circle.capacity.value;
+            return result;
+          }, 0);
           if(totalValue === 0) {
             _.last(sortedCircles).capacity.value = 1;
             totalValue = 1;
@@ -248,7 +253,7 @@ angular.module('rainierApp')
             endAngle = 0;
           }
 
-          if (item.stacked) {
+          if (item.stacked && !item.subsetValue) {
             endAngle += startAngle;
           }
 
@@ -264,10 +269,12 @@ angular.module('rainierApp')
             .outerRadius(circleRadius)
             .startAngle(item.stacked ? startAngle : 0);
 
-          startAngle = endAngle;
+          if (item.stacked && !item.subsetValue) {
+            startAngle = endAngle;
+          }
 
           var line = circlesContainer.append('path')
-            .datum({endAngle: startAngle})
+            .datum({endAngle: item.stacked && index === 0 ? startAngle : 0})
             .attr('d', arc)
             .attr('index', item.label ? ++index : -1)
             .attr('stroke-width', circleWidth)
@@ -1023,7 +1030,8 @@ angular.module('rainierApp')
             index: item.index || index,
             radius: finalRadius,
             circles: cloned,
-            stacked: item.stacked
+            stacked: item.stacked,
+            subsetValue: item.subsetValue
           };
           finalRadius += circleWidth + space;
           return circleObject;
