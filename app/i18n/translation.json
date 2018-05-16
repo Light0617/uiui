@@ -423,7 +423,7 @@
 
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volumes",
     "host-create-attach-invalid-storage-confirm-title": "Unavailable Storage System",
-    "host-create-attach-invalid-storage-confirm-message": "Selecetd storage system {{storageSystemId}} is not available.",
+    "host-create-attach-invalid-storage-confirm-message": "Selected storage system {{storageSystemId}} is not available.",
 
     "disk-manage": "Disk Management",
 
@@ -1109,12 +1109,12 @@
     "shred-volumes-advanced-panel-pass-pattern-label": "Pattern",
     "shred-volumes-advanced-panel-pass-pattern-prefix": "00000000-",
     "shred-volumes-advanced-panel-pass-pattern-suffix": "-00000000",
-    "shred-volumes-invalid-pattern-message": "Enter up to 8 hexadecimal characters.",
+    "shred-volumes-invalid-pattern-message": "Enter a hexadecimal value of up to 8 digits.",
     "shred-volumes-invalid-pass-number-message": "Specify pass number between 1 to 7.",
 
     "interrupt-shredding": "Interrupt Shredding",
     "interrupt-shredding-confirmation-title": "Interrupt Shredding Confirmation",
-    "interrupt-shredding-confirmation-message": "All running shredding operations in the current storage system will be interrupted. Do you want to proceed?",
+    "interrupt-shredding-confirmation-message": "All shredding operations that are currently running on the storage system will be interrupted. Are you sure you want to proceed?",
 
     "migrate-volumes": "Migrate Volumes",
     "migrate-volumes-title-create": "Migrate Volumes",
@@ -1124,9 +1124,9 @@
     "migrate-volumes-no-pool-confirmation-title": "No pool selected",
     "migrate-volumes-no-pool-confirmation-message": "Select one pool to migrate.",
     "migrate-volumes-poor-capacity-confirmation-title": "Not enough capacity",
-    "migrate-volumes-poor-capacity-confirmation-message": "Total capacity used in the target pool after the migration would exceed the utilization threshold2 limit. Do you want to proceed?",
+    "migrate-volumes-poor-capacity-confirmation-message": "After migration, the total used capacity in the target pool will exceed utilization threshold 2. Do you want to proceed?",
     "migrate-volumes-not-normal-confirmation-title": "Pool status is {{status}}",
-    "migrate-volumes-not-normal-confirmation-message": "Migration task may fail since the status of the target pool is {{status}}. Do you want to proceed?",
+    "migrate-volumes-not-normal-confirmation-message": "The migration task might fail, because the status of the target pool is {{status}}. Are you sure you want to proceed?",
     "action-tooltip-migrate-volumes": "Migrate Volumes",
     "action-tooltip-migration-tasks-inventory": "{{migrationTaskCount}} Migration Tasks",
     "assigned-to-migration": "Assigned to Migration",
@@ -1209,7 +1209,7 @@
     "workflow-title-create-paths": "Create Paths",
     "capacity-efficiency-savings-ratio": "Capacity Efficiency",
     "attach-to-storage-no-ports-title": "Unavailable Storage or Protocol",
-    "attach-to-storage-no-ports-message": "The target storage system does not have the port of the selected protocol. Please reselect the target storage system or another protocol.",
+    "attach-to-storage-no-ports-message": "The port of the selected protocol does not exist on the target storage system. Select a different target storage system or a different protocol.",
 
     "fail-to-discover-error": "There is no volume discovered on the selected port. Please check your physical connection.",
     "job-failed-error": "Create Path From Source Job failed. Please go to Job page to check the reason.",
