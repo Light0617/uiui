@@ -127,7 +127,7 @@ rainierAppMock.factory('migrationTaskMock', function (mockUtils, jobMock, storag
             'sourceVolumeId': volNumber + volNumBase,
             'sourcePoolId': (isSourcePool === 0)? mockUtils.randomInt(0, 10) : null,
             'sourceExternalParityGroupId': (isSourcePool === 1)? '1-' + mockUtils.randomInt(0, 64) : null,
-            'targetVolumeId': (status !== 'NOT_MIGRATED') ? 300 + volNumber + volNumBase : null,
+            'targetVolumeId': (status !== 'NOT_MIGRATED')? 300 + volNumber + volNumBase : null,
             'targetPoolId': targetPoolId,
             'status': status,
             'copyProgress': copyProgress,

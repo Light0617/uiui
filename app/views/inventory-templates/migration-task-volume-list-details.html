@@ -46,8 +46,11 @@
         <div class="twelfth cell text-resize ellipsis" title="{{vp.migrationPairId}}"><p>{{vp.migrationPairId}}</p>
         </div>
         <a class="eighth cell text-resize ellipsis" ng-click="vp.launchSourceVol(dataModel.storageSystemId)"
-           title="{{vp.displaySourceVolumeId}}"><p>{{vp.displaySourceVolumeId}}</p>
+           ng-show="{{!vp.isMigrated()}}" title="{{vp.displaySourceVolumeId}}"><p>{{vp.displaySourceVolumeId}}</p>
         </a>
+        <div class="eighth cell text-resize ellipsis" ng-show="{{vp.isMigrated()}}"
+             title="{{'migration-task-pair-list-migrated-tooltip' | translate}}"><p>{{vp.displaySourceVolumeId}}</p>
+        </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchSourcePool(dataModel.storageSystemId)"
            ng-show="{{vp.sourcePoolId !== 'N/A'}}" title="{{vp.sourcePoolId}}"><p>{{vp.sourcePoolId}}</p>
         </a>
@@ -58,11 +61,11 @@
             <p>{{vp.sourceExternalParityGroupId}}</p>
         </div>
         <a class="eighth cell text-resize ellipsis" ng-click="vp.launchTargetVol(dataModel.storageSystemId)"
-           ng-show="{{vp.displayTargetVolumeId !== 'N/A'}}" title="{{vp.displayTargetVolumeId}}">
+           ng-show="{{!vp.isMigrated() && vp.displayTargetVolumeId !== 'N/A'}}" title="{{vp.displayTargetVolumeId}}">
             <p>{{vp.displayTargetVolumeId}}</p>
         </a>
-        <div class="eighth cell text-resize ellipsis" ng-show="{{vp.displayTargetVolumeId === 'N/A'}}"
-             title="{{vp.displayTargetVolumeId}}"><p>{{vp.displayTargetVolumeId}}</p>
+        <div class="eighth cell text-resize ellipsis" ng-show="{{vp.isMigrated() || vp.displayTargetVolumeId === 'N/A'}}"
+             title="{{'migration-task-pair-list-migrated-tooltip' | translate}}"><p>{{vp.displayTargetVolumeId}}</p>
         </div>
         <a class="twelfth cell text-resize ellipsis" ng-click="vp.launchTargetPool(dataModel.storageSystemId)"
            ng-show="{{vp.targetPoolId !== 'N/A'}}" title="{{vp.targetPoolId}}"><p>{{vp.targetPoolId}}</p>
