@@ -166,14 +166,6 @@ angular.module('rainierApp')
                     type: 'id'
                 },
                 {
-                    title: 'storage-systems-serial-number',
-                    sizeClass: 'sixteenth',
-                    sortField: 'storageSystemId',
-                    getDisplayValue: function(item) {
-                        return item.storageSystemId;
-                    }
-                },
-                {
                     title: 'common-name',
                     sizeClass: 'sixteenth',
                     sortField: 'label',

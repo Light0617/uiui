@@ -1087,33 +1087,6 @@ angular.module('rainierApp')
                 item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
                     'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
                 item.volumeLabel = 'Volume' + item.volumeId;
-                var migrationTypeDisplay;
-                if (item.migrationSummary.ownerTaskId) {
-                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
-                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
-                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
-                }
-                item.metaData = [
-                    {
-                        left: true,
-                        title: item.label,
-                        details: [item.displayVolumeId]
-                    },
-                    {
-                        left: true,
-                        title: item.storageSystemId,
-                        details: _.filter([
-                            item.provisioningStatus,
-                            migrationTypeDisplay,
-                            item.externalParityGroupId,
-                            item.displayMappedVolumeId,
-                            item.displayCapacity,
-                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
-                        ], function(v) {
-                            return !utilService.isNullOrUndef(v);
-                        })
-                    }
-                ];
 
                 item.isAttached = function () {
                     return (this.provisioningStatus === 'ATTACHED');
@@ -1128,6 +1101,42 @@ angular.module('rainierApp')
                     $location.path(['storage-systems', item.storageSystemId, 'external-volumes', item.volumeId].join(
                         '/'));
                 };
+            },
+            mergeExtParityGroupToExternalVolume: function (item, externalParityGroup) {
+                if (externalParityGroup) {
+                    item.externalStorageVendor = externalParityGroup.externalStorageVendor;
+                    item.externalStorageProduct = externalParityGroup.externalStorageProduct;
+                    item.externalStorageSystemId = externalParityGroup.externalStorageSystemId;
+                    item.externalVendorAndModel = item.externalStorageVendor + ' ' + item.externalStorageProduct;
+                }
+                var migrationTypeDisplay;
+                if (item.migrationSummary.ownerTaskId) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
+                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
+                }
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.label,
+                        details: [item.displayVolumeId]
+                    },
+                    {
+                        left: true,
+                        title: item.externalStorageSystemId,
+                        details: _.filter([
+                            item.externalVendorAndModel,
+                            item.provisioningStatus,
+                            migrationTypeDisplay,
+                            item.externalParityGroupId,
+                            item.displayMappedVolumeId,
+                            item.displayCapacity,
+                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
+                        ], function(v) {
+                            return !utilService.isNullOrUndef(v);
+                        })
+                    }
+                ];
             },
             transformToExternalVolumeSummaryModel: function (item) {
                 return {

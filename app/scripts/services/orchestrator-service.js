@@ -294,6 +294,12 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            storageExternalParityGroup: function (storageSystemId, externalParityGroupId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('external-parity-groups', externalParityGroupId).get().then(function (result) {
+                    objectTransformService.transformExternalParityGroup(result);
+                    return result;
+                }));
+            },
             storagePool: function (storageSystemId, storagePoolId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('storage-pools', storagePoolId).get().then(function (result) {
                     objectTransformService.transformPool(result);
