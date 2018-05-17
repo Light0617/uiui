@@ -686,7 +686,13 @@ angular.module('rainierApp')
                 item.topPostFix = 'common-label-total';
                 item.bottomPostFix = 'common-label-used';
                 item.onClick = function () {
-                    jumpToVolumeDetailsByType(item.storageSystemId, item.volumeId);
+                    if (utilService.isNullOrUndef(this.type)) {
+                        jumpToVolumeDetailsByType(this.storageSystemId, this.volumeId);
+                    } else if (this.type === constantService.volumeType.EXTERNAL) {
+                        $location.path(['storage-systems', this.storageSystemId, 'external-volumes', this.volumeId].join('/'));
+                    } else {
+                        $location.path(['storage-systems', this.storageSystemId, 'volumes', this.volumeId].join('/'));
+                    }
                 };
 
                 item.isNormal = function () {
