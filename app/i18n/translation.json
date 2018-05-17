@@ -474,7 +474,7 @@
     "storage-volume-attach-valid-tooltip": "LUN",
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
     "storage-volume-attach-different-protocol-servers": "Volumes cannot be attached to multiple servers at the same time if those servers use differing protocols.",
-    "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "Confirm CHAP Secret Overwrite",
+    "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "One or more of the specified CHAP user names [{{ chapUserNames }}] already exist on storage port {{ storagePort }} of the specified storage system {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified server. Are you sure you want to proceed?",
     "storage-volume-attach-no-storage-port-for-server-title": "No Compatible Storage Port for the Server",
     "storage-volume-attach-no-storage-port-for-server-message": "Storage system {{ storageSystemId }} has no storage ports that are compatible with the specified server's protocol {{ serverProtocol }}.",
@@ -845,7 +845,7 @@
     "host-update-chap-user": "New CHAP User",
     "host-update-chap-secret": "New CHAP Secret",
 
-    "host-update-chap-confirm-overwrite-chap-secret-title": "Confirm CHAP Secret Overwrite",
+    "host-update-chap-confirm-overwrite-chap-secret-title": "CHAP Secret Overwrite Confirmation",
     "host-update-chap-confirm-overwrite-chap-secret-message": "All of the CHAP users related to this server will be overwritten by the specified CHAP secret. Are you sure you want to proceed?",
 
     "host-update-mutual-chap-settings": "Mutual CHAP Settings",
