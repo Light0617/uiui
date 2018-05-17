@@ -3268,6 +3268,10 @@ angular.module('rainierApp')
                             return this.status.charAt(0).toUpperCase() + this.status.toLowerCase().slice(1);
                     }
                 };
+
+                item.isMigrated = function () {
+                    return this.status === 'MIGRATED';
+                };
             }
         };
 
