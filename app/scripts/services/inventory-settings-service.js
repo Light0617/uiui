@@ -174,6 +174,14 @@ angular.module('rainierApp')
                     }
                 },
                 {
+                    title: 'common-name',
+                    sizeClass: 'sixteenth',
+                    sortField: 'label',
+                    getDisplayValue: function(item) {
+                        return item.label;
+                    }
+                },
+                {
                     title: 'common-label-total',
                     sizeClass: 'sixteenth',
                     sortField: 'size',

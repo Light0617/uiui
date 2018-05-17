@@ -1096,9 +1096,13 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title: item.displayVolumeId,
+                        title: item.label,
+                        details: [item.displayVolumeId]
+                    },
+                    {
+                        left: true,
+                        title: item.storageSystemId,
                         details: _.filter([
-                            item.storageSystemId,
                             item.provisioningStatus,
                             migrationTypeDisplay,
                             item.externalParityGroupId,

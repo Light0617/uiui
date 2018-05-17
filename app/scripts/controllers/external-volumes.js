@@ -135,6 +135,7 @@ angular.module('rainierApp')
                 searchQuery: function (value) {
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
+                    queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
                     paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
