@@ -1225,9 +1225,6 @@
     "external-volumes-unvirtualize-remove-zone": "Remove Zone",
     "external-volumes-unvirtualize-keep-zone-intact": "Keep Zone Intact",
 
-    "external-volumes-external-storage-system": "External Storage System: {{externalStorageSystemId}}",
-    "external-volumes-external-vendor-and-model": "External Vendor & Model: {{externalStorageVendor}} {{externalStorageProduct}}",
-
     "false": "NO",
     "true": "YES"
 }

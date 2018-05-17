@@ -1081,29 +1081,6 @@ angular.module('rainierApp')
                 item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
                     'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
                 item.volumeLabel = 'Volume' + item.volumeId;
-                var migrationTypeDisplay;
-                if (item.migrationSummary.ownerTaskId) {
-                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
-                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
-                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
-                }
-                item.metaData = [
-                    {
-                        left: true,
-                        title: item.displayVolumeId,
-                        details: _.filter([
-                            item.storageSystemId,
-                            item.provisioningStatus,
-                            migrationTypeDisplay,
-                            item.externalParityGroupId,
-                            item.displayMappedVolumeId,
-                            item.displayCapacity,
-                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
-                        ], function(v) {
-                            return !utilService.isNullOrUndef(v);
-                        })
-                    }
-                ];
 
                 item.isAttached = function () {
                     return (this.provisioningStatus === 'ATTACHED');
@@ -1124,22 +1101,32 @@ angular.module('rainierApp')
                     item.externalStorageVendor = externalParityGroup.externalStorageVendor;
                     item.externalStorageProduct = externalParityGroup.externalStorageProduct;
                     item.externalStorageSystemId = externalParityGroup.externalStorageSystemId;
-                    var details = [];
-                    if (item.externalStorageSystemId) {
-                        details.push(
-                            synchronousTranslateService.translate('external-volumes-external-storage-system', item));
-                    }
-                    if (item.externalStorageVendor && item.externalStorageProduct) {
-                        details.push(
-                            synchronousTranslateService.translate('external-volumes-external-vendor-and-model', item));
-                    }
-                    if (details.length > 0) {
-                        item.metaData.push({
-                            left: true,
-                            details: details
-                        });
-                    }
+                    item.externalVendorAndModel = item.externalStorageVendor + ' ' + item.externalStorageProduct;
                 }
+                var migrationTypeDisplay;
+                if (item.migrationSummary.ownerTaskId) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
+                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
+                }
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.displayVolumeId,
+                        details: _.filter([
+                            item.externalStorageSystemId,
+                            item.externalVendorAndModel,
+                            item.provisioningStatus,
+                            migrationTypeDisplay,
+                            item.externalParityGroupId,
+                            item.displayMappedVolumeId,
+                            item.displayCapacity,
+                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
+                        ], function(v) {
+                            return !utilService.isNullOrUndef(v);
+                        })
+                    }
+                ];
             },
             transformToExternalVolumeSummaryModel: function (item) {
                 return {
