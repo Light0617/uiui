@@ -1124,19 +1124,19 @@ angular.module('rainierApp')
                     item.externalStorageVendor = externalParityGroup.externalStorageVendor;
                     item.externalStorageProduct = externalParityGroup.externalStorageProduct;
                     item.externalStorageSystemId = externalParityGroup.externalStorageSystemId;
-                    item.detailMetaData = [];
+                    var details = [];
                     if (item.externalStorageSystemId) {
-                        item.detailMetaData.push({
-                            detailData: (function (key) {
-                                return synchronousTranslateService.translate(key, item);
-                            })('external-volumes-external-storage-system')
-                        });
+                        details.push(
+                            synchronousTranslateService.translate('external-volumes-external-storage-system', item));
                     }
                     if (item.externalStorageVendor && item.externalStorageProduct) {
-                        item.detailMetaData.push({
-                            detailData: (function (key) {
-                                return synchronousTranslateService.translate(key, item);
-                            })('external-volumes-external-vendor-and-model')
+                        details.push(
+                            synchronousTranslateService.translate('external-volumes-external-vendor-and-model', item));
+                    }
+                    if (details.length > 0) {
+                        item.metaData.push({
+                            left: true,
+                            details: details
                         });
                     }
                 }
