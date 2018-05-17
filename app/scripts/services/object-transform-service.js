@@ -686,7 +686,13 @@ angular.module('rainierApp')
                 item.topPostFix = 'common-label-total';
                 item.bottomPostFix = 'common-label-used';
                 item.onClick = function () {
-                    jumpToVolumeDetailsByType(item.storageSystemId, item.volumeId);
+                    if (utilService.isNullOrUndef(this.type)) {
+                        jumpToVolumeDetailsByType(this.storageSystemId, this.volumeId);
+                    } else if (this.type === constantService.volumeType.EXTERNAL) {
+                        $location.path(['storage-systems', this.storageSystemId, 'external-volumes', this.volumeId].join('/'));
+                    } else {
+                        $location.path(['storage-systems', this.storageSystemId, 'volumes', this.volumeId].join('/'));
+                    }
                 };
 
                 item.isNormal = function () {
@@ -1081,29 +1087,6 @@ angular.module('rainierApp')
                 item.displayMappedVolumeId = !utilService.isNullOrUndef(item.mappedVolumeId) ?
                     'Mapped Volume ID: ' + item.mappedVolumeId : undefined;
                 item.volumeLabel = 'Volume' + item.volumeId;
-                var migrationTypeDisplay;
-                if (item.migrationSummary.ownerTaskId) {
-                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
-                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
-                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
-                }
-                item.metaData = [
-                    {
-                        left: true,
-                        title: item.displayVolumeId,
-                        details: _.filter([
-                            item.storageSystemId,
-                            item.provisioningStatus,
-                            migrationTypeDisplay,
-                            item.externalParityGroupId,
-                            item.displayMappedVolumeId,
-                            item.displayCapacity,
-                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
-                        ], function(v) {
-                            return !utilService.isNullOrUndef(v);
-                        })
-                    }
-                ];
 
                 item.isAttached = function () {
                     return (this.provisioningStatus === 'ATTACHED');
@@ -1118,6 +1101,42 @@ angular.module('rainierApp')
                     $location.path(['storage-systems', item.storageSystemId, 'external-volumes', item.volumeId].join(
                         '/'));
                 };
+            },
+            mergeExtParityGroupToExternalVolume: function (item, externalParityGroup) {
+                if (externalParityGroup) {
+                    item.externalStorageVendor = externalParityGroup.externalStorageVendor;
+                    item.externalStorageProduct = externalParityGroup.externalStorageProduct;
+                    item.externalStorageSystemId = externalParityGroup.externalStorageSystemId;
+                    item.externalVendorAndModel = item.externalStorageVendor + ' ' + item.externalStorageProduct;
+                }
+                var migrationTypeDisplay;
+                if (item.migrationSummary.ownerTaskId) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration');
+                } else if (item.migrationSummary.migrationType === constantService.migrationType.MIGRATION) {
+                    migrationTypeDisplay = synchronousTranslateService.translate('assigned-to-migration-unmanaged');
+                }
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.label,
+                        details: [item.displayVolumeId]
+                    },
+                    {
+                        left: true,
+                        title: item.externalStorageSystemId,
+                        details: _.filter([
+                            item.externalVendorAndModel,
+                            item.provisioningStatus,
+                            migrationTypeDisplay,
+                            item.externalParityGroupId,
+                            item.displayMappedVolumeId,
+                            item.displayCapacity,
+                            item.status !== constantService.volumeStatus.NORMAL ? item.status : null
+                        ], function(v) {
+                            return !utilService.isNullOrUndef(v);
+                        })
+                    }
+                ];
             },
             transformToExternalVolumeSummaryModel: function (item) {
                 return {
@@ -3267,6 +3286,10 @@ angular.module('rainierApp')
                         default:
                             return this.status.charAt(0).toUpperCase() + this.status.toLowerCase().slice(1);
                     }
+                };
+
+                item.isMigrated = function () {
+                    return this.status === 'MIGRATED';
                 };
             }
         };

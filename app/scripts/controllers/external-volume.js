@@ -63,6 +63,10 @@ angular.module('rainierApp')
             $scope.valueOrNA = function (value) {
                 return value ? value : constantService.notAvailable;
             };
+
+            return orchestratorService.storageExternalParityGroup(storageSystemId, result.externalParityGroupId);
+        }).then(function (externalParityGroup) {
+            objectTransformService.mergeExtParityGroupToExternalVolume($scope.model, externalParityGroup);
         });
 
         // TODO CopyPair informations. It is required API for externalVolumes.

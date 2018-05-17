@@ -19,6 +19,7 @@ angular.module('rainierApp')
     ) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_EXTERNAL_VOLUMES_PATH = 'external-volumes';
+        var GET_EXTERNAL_PARITY_GROUPS_PATH = 'external-parity-groups';
         ShareDataService.showProvisioningStatus = true;
         ShareDataService.showPoolBreadCrumb = false;
         $scope.dataModel = {
@@ -74,7 +75,19 @@ angular.module('rainierApp')
             }
         };
 
-        paginationService.get(null, GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, true, storageSystemId).then(function (result) {
+        var externalParityGroupMap = {};
+        var transformExternalVolume = function (item) {
+            objectTransformService.transformExternalVolume(item);
+            var externalParityGroup = externalParityGroupMap[item.externalParityGroupId];
+            objectTransformService.mergeExtParityGroupToExternalVolume(item, externalParityGroup);
+        };
+
+        paginationService.getAllPromises(null, GET_EXTERNAL_PARITY_GROUPS_PATH, true, storageSystemId).then(function (results) {
+            _.forEach(results, function (item) {
+                externalParityGroupMap[item.externalParityGroupId] = item;
+            });
+            return paginationService.get(null, GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, true, storageSystemId);
+        }).then(function (result) {
             paginationService.clearQuery();
             var dataModel = {
                 view: 'tile',
@@ -98,7 +111,7 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
+                            paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, storageSystemId).then(function(result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -116,27 +129,28 @@ angular.module('rainierApp')
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                     paginationService.setFilterSearch(queryObject);
-                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 migrationFilterQuery: function (type, isManaged) {
                     migrationTaskService.volumeMigrationTypeFilter(type, isManaged, $scope.filterModel.filter.migrationType);
-                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 sliderQuery: function(key, start, end, unit) {
                     paginationService.setSliderSearch(key, start, end, unit);
-                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 },
                 searchQuery: function (value) {
                     var queryObjects = [];
                     queryObjects.push(new paginationService.QueryObject('volumeId', new paginationService.SearchType().INT, value));
+                    queryObjects.push(new paginationService.QueryObject('label', new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, storageSystemId).then(function(result) {
+                    paginationService.getQuery(GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, storageSystemId).then(function(result) {
                         updateResultTotalCounts(result);
                     });
                 }
@@ -226,7 +240,7 @@ angular.module('rainierApp')
             dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
 
             dataModel.getResources = function(){
-                return paginationService.get($scope.dataModel.nextToken, GET_EXTERNAL_VOLUMES_PATH, objectTransformService.transformExternalVolume, false, storageSystemId);
+                return paginationService.get($scope.dataModel.nextToken, GET_EXTERNAL_VOLUMES_PATH, transformExternalVolume, false, storageSystemId);
             };
             $scope.dataModel = dataModel;
 
