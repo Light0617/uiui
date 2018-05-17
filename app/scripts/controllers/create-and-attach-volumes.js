@@ -157,12 +157,18 @@ angular.module('rainierApp')
             if (!pools) {
                 return;
             }
+            var availablePools = _.chain(pools)
+                .filter(function (pool) {
+                    return !pool.ddmEnabled;
+                })
+                .sortBy('label')
+                .value();
             $scope.dataModel.createModel = {
                 storageSystemSelectable: true,
-                volumesGroupsModel: viewModelService.newCreateVolumeModel(pools)
+                volumesGroupsModel: viewModelService.newCreateVolumeModel(availablePools)
             };
 
-            var filteredPools = filterStoragePools($scope.dataModel.selectedStorageSystem, pools);
+            var filteredPools = filterStoragePools($scope.dataModel.selectedStorageSystem, availablePools);
             $scope.dataModel.snapshotPoolModel = {
                 targetPool: filteredPools[0],
                 filteredPools: filteredPools,
