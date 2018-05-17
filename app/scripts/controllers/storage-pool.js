@@ -69,7 +69,12 @@ angular.module('rainierApp')
             };
 
             var enableToShred = function (volume) {
-                return volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED;
+                return volume.isUnattached() &&
+                    (volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED) &&
+                    volume.capacitySavingType === 'No' &&
+                    !volume.isSnapshotPair() &&
+                    volume.dataProtectionSummary.replicationType.indexOf('CLONE') === -1 &&
+                    volume.migrationSummary.migrationType !== constantService.migrationType.MIGRATION;
             };
 
             var detachFromTargetStorageDialogSettings = function () {
@@ -334,8 +339,7 @@ angular.module('rainierApp')
                         enabled: function(){
                             return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                 !_.some(dataModel.getSelectedItems(), function (vol) {
-                                    return !vol.isUnattached() || !enableToShred(vol)  ||
-                                        vol.capacitySavingType !== 'No' || vol.isSnapshotPair();
+                                    return !enableToShred(vol);
                                 });
                         },
                         onClick: function () {
