@@ -476,11 +476,11 @@
     "host-attach-zero-selected": "Select at least one host to attach selected volumes to.",
     "storage-volume-attach-valid-tooltip": "LUN",
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
-    "storage-volume-attach-different-protocol-servers": "Cannot attach volumes for different protocol servers.",
+    "storage-volume-attach-different-protocol-servers": "Volumes cannot be attached to multiple servers at the same time if those servers use differing protocols.",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
-    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "The specified CHAP user name(s) [{{ chapUserNames }}] already exists in the specified Storage Port {{ storagePort }} of {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified Server. Are you sure you want to proceed?",
-    "storage-volume-attach-no-storage-port-for-server-title": "No Storage Port for Server",
-    "storage-volume-attach-no-storage-port-for-server-message": "There is no suitable Storage Port for specified Server protocol {{ serverProtocol }} in Storage System {{ storageSystemId }}.",
+    "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "One or more of the specified CHAP user names [{{ chapUserNames }}] already exist on storage port {{ storagePort }} of the specified storage system {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified server. Are you sure you want to proceed?",
+    "storage-volume-attach-no-storage-port-for-server-title": "No Compatible Storage Port for the Server",
+    "storage-volume-attach-no-storage-port-for-server-message": "Storage system {{ storageSystemId }} has no storage ports that are compatible with the specified server's protocol {{ serverProtocol }}.",
     "no-servers-onboarded": "No servers have been added yet.",
 
     "attach-volumes-number-of-volume": "# of Vol.",
@@ -497,7 +497,7 @@
     "storage-volume-detach-remove-zone": "Remove Zone",
     "storage-volume-detach-not-remove-zone": "Not Remove Zone",
     "storage-volume-detach": "Detach Volume",
-    "storage-volume-detach-different-protocol-servers": "Cannot detach volumes from different protocol servers.",
+    "storage-volume-detach-different-protocol-servers": "Volumes cannot be detached from multiple servers at the same time if those servers use differing protocols.",
     "storage-volume-detach-from-target": "Detach From Target Storage",
     "storage-volume-detach-from-target-content": "Detach volume from storage system: ",
 
@@ -849,7 +849,7 @@
     "host-update-chap-secret": "New CHAP Secret",
 
     "host-update-chap-confirm-overwrite-chap-secret-title": "CHAP Secret Overwrite Confirmation",
-    "host-update-chap-confirm-overwrite-chap-secret-message": "All of CHAP user related to this Server will be overwritten by specified CHAP secret. Are you sure you want to proceed?",
+    "host-update-chap-confirm-overwrite-chap-secret-message": "All of the CHAP users related to this server will be overwritten by the specified CHAP secret. Are you sure you want to proceed?",
 
     "host-update-mutual-chap-settings": "Mutual CHAP Settings",
     "host-update-mutual-chap-auth": "Mutual CHAP Auth",
@@ -861,7 +861,7 @@
     "host-edit-mutual-chap-username": "Mutual CHAP User",
     "host-edit-mutual-chap-secret": "Mutual CHAP Secret",
     "host-delete-mutual-chap-user": "Delete Mutual CHAP User",
-    "host-delete-mutual-chap-user-message": "Delete Mutual CHAP user from iSCSI Target [{{ iscsiTargetName }}]. Are you sure you want to proceed?",
+    "host-delete-mutual-chap-user-message": "The Mutual CHAP user will be deleted from the iSCSI target [{{ iscsiTargetName }}]. Are you sure you want to proceed?",
 
     "valid-copy-group-name": "Replication Group Name",
     "invalid-copy-group-name": "No Replication Group Name Needed",
@@ -1174,6 +1174,8 @@
     "migration-task-pair-list-status": "Status",
     "migration-task-pair-list-copy-progress": "Copy Progress(%)",
     "migration-task-pair-list-copy-group": "Copy Group",
+    "migration-task-pair-list-migrated-tooltip-src": "{{displaySourceVolumeId}} The volume has been migrated",
+    "migration-task-pair-list-migrated-tooltip-tgt": "{{displayTargetVolumeId}} The volume has been migrated",
 
     "migration-task-status": "Migration Job Status",
     "migration-task-status-scheduled": "Scheduled",

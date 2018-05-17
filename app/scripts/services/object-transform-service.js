@@ -686,7 +686,13 @@ angular.module('rainierApp')
                 item.topPostFix = 'common-label-total';
                 item.bottomPostFix = 'common-label-used';
                 item.onClick = function () {
-                    jumpToVolumeDetailsByType(item.storageSystemId, item.volumeId);
+                    if (utilService.isNullOrUndef(this.type)) {
+                        jumpToVolumeDetailsByType(this.storageSystemId, this.volumeId);
+                    } else if (this.type === constantService.volumeType.EXTERNAL) {
+                        $location.path(['storage-systems', this.storageSystemId, 'external-volumes', this.volumeId].join('/'));
+                    } else {
+                        $location.path(['storage-systems', this.storageSystemId, 'volumes', this.volumeId].join('/'));
+                    }
                 };
 
                 item.isNormal = function () {
@@ -1112,9 +1118,13 @@ angular.module('rainierApp')
                 item.metaData = [
                     {
                         left: true,
-                        title: item.displayVolumeId,
+                        title: item.label,
+                        details: [item.displayVolumeId]
+                    },
+                    {
+                        left: true,
+                        title: item.externalStorageSystemId,
                         details: _.filter([
-                            item.externalStorageSystemId,
                             item.externalVendorAndModel,
                             item.provisioningStatus,
                             migrationTypeDisplay,
@@ -3276,6 +3286,10 @@ angular.module('rainierApp')
                         default:
                             return this.status.charAt(0).toUpperCase() + this.status.toLowerCase().slice(1);
                     }
+                };
+
+                item.isMigrated = function () {
+                    return this.status === 'MIGRATED';
                 };
             }
         };

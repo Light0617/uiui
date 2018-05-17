@@ -30,7 +30,7 @@
             <p class="value" ng-if="!$first" ng-attr-title="{{md.title}}">{{md.title}}</p>
             <p class="value" ng-repeat="detail in md.details track by $index" ng-attr-title="{{md.detailsToolTips[$index] || detail}}">{{detail}}</p>     
             <p class="value" ng-repeat="detail in md.detailsNoSlash track by $index" ng-attr-title="{{md.detailsToolTips[$index] || detail}}">{{detail}}</p>
-        </div> 
+        </div>
         <div class="resource-data" ng-if="item.usage">
             <div class="inline-values" ng-if="item.status !== 'EXTERNALIZED'">
                 <disk-size ng-model="item.topSize" post-fix="/" wrapped-in="p"></disk-size>&nbsp;
