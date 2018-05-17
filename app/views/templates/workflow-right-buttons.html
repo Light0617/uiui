@@ -23,7 +23,8 @@
 
     <div type="button" class="btn btn-default" ng-if="dataModel.needToConfirm && dataModel.next"
          ng-attr-confirm="{{dataModel.needToConfirm()}}" confirm-title="{{dataModel.confirmTitle}}"
-         confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()">
+         confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()"
+         ng-disabled="dataModel.canGoNext && !dataModel.canGoNext()">
         {{'common-label-next' | translate}} {{dataModel.next}}
     </div>
 
