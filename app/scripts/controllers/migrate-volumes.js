@@ -180,7 +180,7 @@ angular.module('rainierApp')
                     confirmMessage: synchronousTranslateService.translate('migrate-volumes-no-pool-confirmation-message'),
                     canGoNext: function () {
                         return dataModel.selectedVolumes && dataModel.selectedVolumes.length <= 300 &&
-                                _.some(dataModel.displayList, 'selected');
+                            storagePools.length > 0;
                     },
                     needToConfirm: function () {
                         if (dataModel.getSelectedCount() !== 1) {
@@ -206,7 +206,7 @@ angular.module('rainierApp')
                     },
 
                     next: function () {
-                        if (dataModel.selectPoolModel.canGoNext && dataModel.selectPoolModel.canGoNext()) {
+                        if (_.some(dataModel.displayList, 'selected')) {
                             if (!dataModel.settingModel.migrationTaskName) {
                                 var poolLabel = getTargetPool().label;
                                 dataModel.settingModel.migrationTaskName = poolLabel.replace(/[^a-zA-Z0-9-_]/g, '_');
