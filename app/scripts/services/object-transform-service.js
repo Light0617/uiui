@@ -153,9 +153,9 @@ angular.module('rainierApp')
             }
 
             if (identifier === '') {
-                item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress].join('');
+                item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress, ':', item.svpHttpsPortNumber].join('');
             } else {
-                item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress, identifier, '/emergency.do'].join('');
+                item.hdvmSnLaunchUrl = ['https://', item.svpIpAddress,  ':', item.svpHttpsPortNumber, identifier, '/emergency.do'].join('');
             }
         }
 
