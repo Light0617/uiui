@@ -102,7 +102,7 @@ angular.module('rainierApp')
                     sizeClass: 'twelfth',
                     sortField: '',
                     getDisplayValue: function (item) {
-                        return item.primary.volumeId;
+                        return item.primary.displayVolumeId;
                     },
                     type: 'hyperLink',
                     onClick: function (item) {
@@ -115,7 +115,7 @@ angular.module('rainierApp')
                     sizeClass: 'twelfth',
                     sortField: '',
                     getDisplayValue: function (item) {
-                        return item.secondary.volumeId;
+                        return item.secondary.displayVolumeId;
                     },
                     type: 'hyperLink',
                     onClick: function (item) {
