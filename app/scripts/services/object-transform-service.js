@@ -1119,12 +1119,9 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.label,
-                        details: [item.displayVolumeId]
-                    },
-                    {
-                        left: true,
-                        title: item.externalStorageSystemId,
                         details: _.filter([
+                            item.displayVolumeId,
+                            item.externalStorageSystemId,
                             item.externalVendorAndModel,
                             item.provisioningStatus,
                             migrationTypeDisplay,
