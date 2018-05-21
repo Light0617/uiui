@@ -38,7 +38,7 @@ angular.module('rainierApp')
                 if (e.data && e.data.message) {
                     return $q.reject(e);
                 }
-                return $q.reject('Failed to discover luns from selected ports.');
+                return $q.reject('Failed to discover luns from selected ports because of a timeout or some network issues.');
             });
         };
 
@@ -49,7 +49,7 @@ angular.module('rainierApp')
                 }
                 return $q.reject({
                     data: {
-                        message: 'Failed to discover luns from ' + portId + ' .'
+                        message: 'Selected port ' + portId + ' does not have any available luns.'
                     }
                 });
             };
