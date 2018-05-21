@@ -168,10 +168,18 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     };
 
     var validateGetPortsResult = function (ports) {
-        if (ports.length) {
-            return ports;
+        // TODO should rewrite with query
+        var filtered = _.chain(ports)
+            .filter(function (p) {
+                return _.some(p.attributes, 'EXTERNAL_INITIATOR_PORT');
+            }).filter(function (p) {
+                return p.type !== 'FIBRE' || (p.type === 'FIBRE' && p.securitySwitchEnabled);
+            });
+
+        if (filtered.length) {
+            return filtered;
         }
-        return $q.reject({ message: 'No available ports for selected protocol.' });
+        return $q.reject({message: 'No available ports for selected protocol.'});
     };
 
     /**
@@ -200,7 +208,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var validateGetLunsResult = function (luns) {
         if (!luns.length) {
-            return $q.reject({ message: 'There are no available luns discovered from selected ports.' });
+            return $q.reject({message: 'There are no available luns discovered from selected ports.'});
         }
         return luns;
     };
@@ -272,7 +280,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
 
     var validateGetHostsResult = function (hosts) {
         if (!hosts.length) {
-            return $q.reject({ message: 'No available servers for selected protocol.' });
+            return $q.reject({message: 'No available servers for selected protocol.'});
         }
         return hosts;
     };
@@ -402,7 +410,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         if (result.length) {
             return result;
         }
-        return $q.reject({ message: 'Failed to get available host mode options.' });
+        return $q.reject({message: 'Failed to get available host mode options.'});
     };
 
     var getStoragePorts = function (storageSystemId, protocol) {
@@ -423,7 +431,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         if (result.length) {
             return result;
         }
-        return $q.reject({ message: 'No available storage ports for selected servers.' });
+        return $q.reject({message: 'No available storage ports for selected servers.'});
     };
 
     return {
