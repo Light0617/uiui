@@ -184,6 +184,7 @@
     "common-filter-snapshot-ex": "Snap on Snap",
     "common-filter-snapshot-fc": "Snap Clone",
     "common-filter-clone": "Clone",
+    "common-filter-unprotected": "Unprotected",
 
     "storage-port-type": "Port Type:",
     "storage-port-speed": "Port Speed:",

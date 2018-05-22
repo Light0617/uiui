@@ -132,4 +132,10 @@
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? filterModel.$replicationRawTypes.CLONE : '', filterModel.arrayType, filterModel.$replicationRawTypes.CLONE)">
         {{'common-filter-clone' | translate}}
     </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.unprotected"
+               ng-init="filterModel.filter.unprotected=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.protection', filterModel.filter.unprotected ? filterModel.$replicationRawTypes.UN_PROTECTED : '', filterModel.stringType, filterModel.$replicationRawTypes.UN_PROTECTED)">
+        {{'common-filter-unprotected' | translate}}
+    </label>
 </div>
