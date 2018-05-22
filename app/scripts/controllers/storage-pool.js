@@ -107,11 +107,9 @@ angular.module('rainierApp')
 
             if(ddmEnabled){
                 PATH =GET_EXTERNAL_VOLUMES_WITH_POOL_ID_PATH;
-                var externalParityGroupMap = {};
                 transform = function (item) {
                     objectTransformService.transformExternalVolume(item);
-                    var externalParityGroup = externalParityGroupMap[item.externalParityGroupId];
-                    objectTransformService.mergeExtParityGroupToExternalVolume(item, externalParityGroup);
+                    objectTransformService.mergeExtParityGroupToExternalVolume(item, null);
                 };
 
                 FILTER_PATH = GET_EXTERNAL_VOLUMES_PATH;
