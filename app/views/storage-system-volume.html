@@ -10,7 +10,7 @@
            title="{{ 'action-tooltip-update-volumes' | translate}}" > <span class="icon-edit icon-sm"></span>
         </a>
 
-        <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-delete-volumes' | translate}}"
+        <a class="btn icon-btn icon-sm confirm-parent" title="{{ 'action-tooltip-delete-volumes' | translate}}"
            ng-if="!model.disabledCheckBox && !model.isGadVolume() && !model.isShredding()"
            confirm
            confirm-title="{{ 'storage-volume-delete-one-confirmation' | translate}}"

@@ -15,13 +15,14 @@
     <!--"validation" here is to check whether this page has pre-submit validation on it or not, since we can't do pre-submit validation for all the pages in patch, -->
     <!--and this file is a template used everywhere, I have to add a new value to ng-if here. Once pre-submit validation is finished, this can be removed. -->
     <!--Changeing "button" to "div" is because in Firefox, "on-click" will be triggered first when you use "confirm" directive in "button" which will block pop-up windows showing. -->
-    <div type="button" class="btn btn-default" ng-if="dataModel.validation && dataModel.next && !dataModel.noAvailableArray"
-            ng-attr-confirm="{{!dataModel.itemSelected}}" confirm-title="{{dataModel.confirmTitle}}"
-            confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()">
+    <div type="button" class="btn btn-default confirm-parent"
+         ng-if="dataModel.validation && dataModel.next && !dataModel.noAvailableArray"
+         ng-attr-confirm="{{!dataModel.itemSelected}}" confirm-title="{{dataModel.confirmTitle}}"
+         confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()">
         {{'common-label-next' | translate}} {{dataModel.next}}
     </div>
 
-    <div type="button" class="btn btn-default" ng-if="dataModel.needToConfirm && dataModel.next"
+    <div type="button" class="btn btn-default confirm-parent" ng-if="dataModel.needToConfirm && dataModel.next"
          ng-attr-confirm="{{dataModel.needToConfirm()}}" confirm-title="{{dataModel.confirmTitle}}"
          confirm-message="{{dataModel.confirmMessage}}"  ng-click="dataModel.next()"
          ng-disabled="dataModel.canGoNext && !dataModel.canGoNext()">
