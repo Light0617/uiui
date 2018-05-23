@@ -2816,7 +2816,7 @@ angular.module('rainierApp')
                 item.displayLinks = [];
                 item.usageBare = 0;
                 if (item.availableCapacityInBytes.size !== 0) {
-                    item.usageBare = Math.round(item.usedCapacityInBytes.size * 100 / item.capacityInBytes.size);
+                    item.usageBare = Math.round((item.capacityInBytes.size - item.availableCapacityInBytes.size) * 100 / item.capacityInBytes.size);
                 }
                 item.usagePercentage = item.usageBare;
                 item.usage = item.usageBare + '%';
