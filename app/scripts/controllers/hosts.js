@@ -286,6 +286,7 @@ angular.module('rainierApp')
                 clone: false
             },
             arrayType: (new paginationService.SearchType()).ARRAY,
+            stringType: (new paginationService.SearchType()).STRING,
             filterQuery: function (key, value, type, arrayClearKey) {
                 var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
                 paginationService.setFilterSearch(queryObject);

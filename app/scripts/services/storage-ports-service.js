@@ -80,10 +80,6 @@ angular.module('rainierApp')
             };
         };
 
-        var init = function () {
-            initSummaryActions();
-        };
-
         var commonGridSettings = function (specificSettings, model) {
             var result = _.union(
                 [
@@ -132,6 +128,8 @@ angular.module('rainierApp')
         };
 
         var initSummary = function (hwAlertService) {
+            initSummaryActions();
+
             return paginationService
                 .get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId())
                 .then(function (result) {
@@ -392,8 +390,6 @@ angular.module('rainierApp')
         var initIscsiDataModel = function (storageSystemId) {
             return initDataModel(storageSystemId, 'ISCSI');
         };
-
-        init();
 
         return {
             portAttributes: portAttributes,

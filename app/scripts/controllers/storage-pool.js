@@ -107,7 +107,11 @@ angular.module('rainierApp')
 
             if(ddmEnabled){
                 PATH =GET_EXTERNAL_VOLUMES_WITH_POOL_ID_PATH;
-                transform = objectTransformService.transformExternalVolume;
+                transform = function (item) {
+                    objectTransformService.transformExternalVolume(item);
+                    objectTransformService.mergeExtParityGroupToExternalVolume(item, null);
+                };
+
                 FILTER_PATH = GET_EXTERNAL_VOLUMES_PATH;
                 gridSettings = inventorySettingsService.setExternalVolumeGridSettings;
                 actions = [
