@@ -171,10 +171,10 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         // TODO should rewrite with query
         var filtered = _.chain(ports)
             .filter(function (p) {
-                return _.some(p.attributes, 'EXTERNAL_INITIATOR_PORT');
+                return p.attributes.indexOf('External') >= 0;
             }).filter(function (p) {
                 return p.type !== 'FIBRE' || (p.type === 'FIBRE' && p.securitySwitchEnabled);
-            });
+            }).value();
 
         if (filtered.length) {
             return filtered;
