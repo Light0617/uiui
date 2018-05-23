@@ -277,7 +277,7 @@ angular.module('rainierApp')
 
           var line = circlesContainer.append('path')
             .datum({
-                index: item.label ? index : -1,
+                index: item.label && item.stacked ? index : index * -1,
                 endAngle: item.stacked && index === 1 ? startAngle : 0,
                 stacked: item.stacked
             })
@@ -378,7 +378,7 @@ angular.module('rainierApp')
 
         circlesContainer.selectAll('#donut-path').sort(function (a, b) {
             if (!a.stacked && !b.stacked) {
-                return 1;
+                return a.index - b.index;
             }
             return b.index - a.index;
         });
