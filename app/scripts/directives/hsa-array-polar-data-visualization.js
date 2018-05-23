@@ -249,6 +249,8 @@ angular.module('rainierApp')
           var currentTotal = totalValue ? totalValue : currentValue;
           var endAngle = currentValue ? currentValue * angle360 / currentTotal : item.percentage * angle360 / 100;
 
+          index += 1;
+
           if (isNaN(endAngle)) {
             endAngle = 0;
           }
@@ -274,16 +276,17 @@ angular.module('rainierApp')
           }
 
           var line = circlesContainer.append('path')
-            .datum({endAngle: item.stacked && index === 0 ? startAngle : 0})
+            .datum({
+                index: item.label && item.stacked ? index : index * -1,
+                endAngle: item.stacked && index === 1 ? startAngle : 0,
+                stacked: item.stacked
+            })
             .attr('d', arc)
-            .attr('index', item.label ? ++index : -1)
+            .attr('index', item.label ? index : -1)
+            .attr('id', 'donut-path')
             .attr('stroke-width', circleWidth)
             .attr('stroke', item.color)
             .attr('stroke-linejoin', 'round');
-
-          circlesContainer.selectAll('path').sort(function (a, b) {
-            return a.index !== b.index ? -1 : 1;
-          });
 
           line.transition()
             .ease('cubic-in-out')
@@ -371,6 +374,13 @@ angular.module('rainierApp')
             appendToolTip(ofHide, item);
           }
           appendToolTip(line, item);
+        });
+
+        circlesContainer.selectAll('#donut-path').sort(function (a, b) {
+            if (!a.stacked && !b.stacked) {
+                return a.index - b.index;
+            }
+            return b.index - a.index;
         });
       },
       _buildLegendLayout: function (options) {
