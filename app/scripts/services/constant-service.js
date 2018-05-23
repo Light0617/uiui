@@ -159,6 +159,11 @@ angular.module('rainierApp')
                 SUCCESS: 'SUCCESS',
                 FAILED: 'FAILED',
                 SUCCESS_WITH_ERRORS: 'SUCCESS_WITH_ERRORS'
+            },
+            dataProtectionCoverage: {
+                PROTECTED: 'PROTECTED',
+                PARTIAL: 'PARTIAL',
+                UNPROTECTED: 'UNPROTECTED'
             }
         };
     });
