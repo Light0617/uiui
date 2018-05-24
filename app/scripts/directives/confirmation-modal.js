@@ -17,7 +17,7 @@ angular.module('rainierApp')
                 switchEnabled: '=',
                 trueText: '@trueText',
                 falseText: '@falseText',
-                requireSelection: '&',
+                requireSelection: '=',
                 disableRadioButton: '=',
                 itemAttribute: '=',
                 itemAttributes: '='

@@ -198,6 +198,9 @@ angular.module('rainierApp')
                     dialogSettings: generateUnvirtualizeDialogSettings(),
 
                     enabled: function () {
+                        this.dialogSettings.disableRadioButton = !_.some(dataModel.getSelectedItems(), function (item) {
+                            return item.provisioningStatus === 'ATTACHED';
+                        });
                         return dataModel.anySelected() &&
                             //block deleting if the migration status is true
                             !_.some(dataModel.getSelectedItems(), function (vol) {
@@ -210,6 +213,7 @@ angular.module('rainierApp')
                     confirmClick: function () {
                         // Build reserved resources
 //                        var reservedResourcesList = [];
+
                         var enabled = this.dialogSettings.switchEnabled.value;
                         var volIds = [];
                         _.forEach(dataModel.getSelectedItems(), function (item) {
