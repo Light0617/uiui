@@ -32,7 +32,7 @@
             <p class="value" ng-repeat="detail in md.detailsNoSlash track by $index" ng-attr-title="{{md.detailsToolTips[$index] || detail}}">{{detail}}</p>
         </div>
         <div class="resource-data" ng-if="item.usage">
-            <div ng-class="{'inline-values-wizard': layout === true, 'inline-values': layout === undefined || false}"
+            <div ng-class="{'inline-values-wizard': layout === true, 'inline-values': layout === undefined}"
                  ng-if="item.status !== 'EXTERNALIZED'">
                 <disk-size ng-model="item.topSize" post-fix="/" wrapped-in="p" ng-attr-title="{{item.topSize.size + item.topSize.unit + '/'}}"></disk-size>&nbsp;
                 <disk-size ng-model="item.topTotal" post-fix="" wrapped-in="p" ng-attr-title="{{item.topTotal.size + item.topTotal.unit + '/'}}"></disk-size>
