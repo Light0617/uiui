@@ -7,14 +7,23 @@
             <span class="icon-migrate-volume icon-sm"></span>
         </div>
 
-        <a class="btn icon-btn icon-sm" title="{{ 'action-tooltip-unvirtualize' | translate}}"
-           ng-if="!model.disabledCheckBox && isUnvirtualizeAvailable()"
-           confirm
-           confirm-title="{{ 'external-volume-unvirtualize-confirmation' | translate}}"
-           confirm-message="{{ 'external-volume-unvirtualize-content' | translate}}"
-           ng-click="model.disabledCheckBox || unvirtualize()">
+        <div class="btn icon-btn icon-sm" ng-attr-title="{{ 'action-tooltip-unvirtualize' | translate }}"
+             ng-if="!model.disabledCheckBox && isUnvirtualizeAvailable()" data-toggle="modal"
+             ng-attr-data-target="#{{model.dialogSettings.id}}">
             <span class="icon-delete icon-sm"></span>
-        </a>
+        </div>
+        <confirmation-modal ng-if="!model.disabledCheckBox && isUnvirtualizeAvailable()"
+                            dialog-title="{{ model.dialogSettings.dialogTitle | translate}}"
+                            content="{{ model.dialogSettings.content  | translate:dataModel}}"
+                            true-text="{{ model.dialogSettings.trueText  | translate:dataModel}}"
+                            false-text="{{ model.dialogSettings.falseText  | translate:dataModel}}"
+                            confirm-click="unvirtualize()"
+                            switch-enabled="model.dialogSettings.switchEnabled"
+                            modal-id="{{model.dialogSettings.id}}"
+                            require-selection="model.dialogSettings.requireSelection"
+                            disable-radio-button="model.dialogSettings.disableRadioButton"
+                            item-attributes="model.dialogSettings.itemAttributes"
+                            item-attribute="model.dialogSettings.itemAttribute"></confirmation-modal>
 
     </page-title>
 

@@ -105,7 +105,7 @@
 
 
 <div class="control-group">
-    <h3>{{'storage-volume-filter-protection-type' | translate}}</h3>
+    <h3>{{'hosts-data-protection-type' | translate}}</h3>
 </div>
 <div class="btn-group btn-group-justified btn-group-vertical">
     <label class="btn btn-primary">
@@ -132,10 +132,28 @@
                ng-change="filterModel.filterQuery('dataProtectionSummary.replicationType', filterModel.filter.clone ? filterModel.$replicationRawTypes.CLONE : '', filterModel.arrayType, filterModel.$replicationRawTypes.CLONE)">
         {{'common-filter-clone' | translate}}
     </label>
+</div>
+
+<div class="control-group">
+    <h3>{{'storage-volume-filter-protection-type' | translate}}</h3>
+</div>
+<div class="btn-group btn-group-justified btn-group-vertical">
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.protected"
+               ng-init="filterModel.filter.protected=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.protection', filterModel.filter.protected ? filterModel.$dataProtectionCoverage.PROTECTED : '', filterModel.arrayType, filterModel.$dataProtectionCoverage.PROTECTED)">
+        {{'common-filter-protected' | translate}}
+    </label>
+    <label class="btn btn-primary">
+        <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.partial"
+               ng-init="filterModel.filter.partial=false"
+               ng-change="filterModel.filterQuery('dataProtectionSummary.protection', filterModel.filter.partial ? filterModel.$dataProtectionCoverage.PARTIAL : '', filterModel.arrayType, filterModel.$dataProtectionCoverage.PARTIAL)">
+        {{'common-filter-partial' | translate}}
+    </label>
     <label class="btn btn-primary">
         <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.unprotected"
                ng-init="filterModel.filter.unprotected=false"
-               ng-change="filterModel.filterQuery('dataProtectionSummary.protection', filterModel.filter.unprotected ? filterModel.$replicationRawTypes.UN_PROTECTED : '', filterModel.stringType, filterModel.$replicationRawTypes.UN_PROTECTED)">
+               ng-change="filterModel.filterQuery('dataProtectionSummary.protection', filterModel.filter.unprotected ? filterModel.$dataProtectionCoverage.UNPROTECTED : '', filterModel.arrayType, filterModel.$dataProtectionCoverage.UNPROTECTED)">
         {{'common-filter-unprotected' | translate}}
     </label>
 </div>

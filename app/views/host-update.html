@@ -198,7 +198,7 @@
                     <button type="button" class="btn btn-default" id="cancel" title="{{ 'cancel-button' | translate }}" back-button>
                         {{ 'cancel-button' | translate }}
                     </button>
-                    <div type="button" class="btn btn-default active" title="{{ 'submit-button' | translate }}"
+                    <div type="button" class="btn btn-default active confirm-parent" title="{{ 'submit-button' | translate }}"
                          ng-if="dataModel.applyChangesToAttachedVolumes === true && dataModel.existingEndPointsChanged()"
                          confirm
                          confirm-title="{{ 'host-update-confirmation-title' | translate }}"

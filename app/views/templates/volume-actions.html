@@ -15,7 +15,7 @@
             <input type="checkbox" ng-model="dataModel.allItemsSelected" ng-change="selectAll()">Select All
         </label>
     </div>
-    <div class="btn icon-btn icon-sm" title="Delete" ng-if="dataModel.hasDelete" confirm confirm-title="{{ 'storage-volume-delete-confirmation' | translate}}" confirm-message="{{ dataModel.getSelectedVolumeCount() === 0 ? ('storage-volume-delete-zero-selected' | translate) :  ('storage-volume-delete-selected-content' | translate:dataModel) }}" ng-click="deleteSelectedConfirmOk()">
+    <div class="btn icon-btn icon-sm confirm-parent" title="Delete" ng-if="dataModel.hasDelete" confirm confirm-title="{{ 'storage-volume-delete-confirmation' | translate}}" confirm-message="{{ dataModel.getSelectedVolumeCount() === 0 ? ('storage-volume-delete-zero-selected' | translate) :  ('storage-volume-delete-selected-content' | translate:dataModel) }}" ng-click="deleteSelectedConfirmOk()">
         <span class="icon icon-delete"></span>
     </div>
     <div class="btn icon-btn icon-sm" title="Attach Volumes" ng-click="attachVolumes()">
@@ -31,16 +31,16 @@
     <div class="btn icon-btn icon-sm" title="Protect" ng-click="protectSelectedVolumes()" ng-disabled="dataModel.getSelectedVolumeCount()===0">
         <span class="icon icon-data-protection"></span>
     </div>
-    <div class="btn icon-btn icon-sm" title="Unprotect" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-delete-unprotected-selected' | translate) :  ('volume-actions-delete-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+    <div class="btn icon-btn icon-sm confirm-parent" title="Unprotect" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-delete-unprotected-selected' | translate) :  ('volume-actions-delete-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
         <span class="icon icon-remove-volume"></span>
     </div>
-    <div class="btn icon-btn icon-sm" title="Suspend" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-suspend-unprotected-selected' | translate) :  ('volume-actions-suspend-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+    <div class="btn icon-btn icon-sm confirm-parent" title="Suspend" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-suspend-unprotected-selected' | translate) :  ('volume-actions-suspend-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
         <span class="icon-pause"></span>
     </div>
-    <div class="btn icon-btn icon-sm" title="Resume" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-resume-unprotected-selected' | translate) :  ('volume-actions-resume-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+    <div class="btn icon-btn icon-sm confirm-parent" title="Resume" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-resume-unprotected-selected' | translate) :  ('volume-actions-resume-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
         <span class="icon-play"></span>
     </div>
-    <div class="btn icon-btn icon-sm" title="Restore" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-restore-unprotected-selected' | translate) :  ('volume-actions-restore-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
+    <div class="btn icon-btn icon-sm confirm-parent" title="Restore" ng-disabled="dataModel.getSelectedVolumeCount()===0" confirm confirm-title="{{ 'volume-actions-confirmation' | translate}}" confirm-message="{{ dataModel.containUnprotectedVolume() ? ('volume-actions-restore-unprotected-selected' | translate) :  ('volume-actions-restore-selected-content' | translate:dataModel) }}" ng-click="volumeActions('suspend')">
         <span class="icon icon-refresh"></span>
     </div>
 </div>

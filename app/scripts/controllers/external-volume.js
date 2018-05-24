@@ -25,6 +25,16 @@ angular.module('rainierApp')
             $scope.summaryModel = summaryModel;
             result.orchestratorService = orchestratorService;
             $scope.model = result;
+            $scope.model.dialogSettings = {
+                id: 'securityEnableDisableConfirmation',
+                dialogTitle: 'external-volumes-unvirtualize-confirmation',
+                content: 'external-volumes-unvirtualize-content',
+                trueText: 'external-volumes-unvirtualize-remove-zone',
+                falseText: 'external-volumes-unvirtualize-keep-zone-intact',
+                switchEnabled: {
+                    value: false
+                }
+            };
 
             if (result.poolId !== null && result.poolId !== undefined) {
                 orchestratorService.storagePool(storageSystemId, result.poolId).then(function (result) {
@@ -38,9 +48,11 @@ angular.module('rainierApp')
             });
 
             $scope.unvirtualize = function () {
+                var enabled = $scope.model.dialogSettings.switchEnabled.value;
                 var unvirtualizePayload = {
                     storageSystemId: storageSystemId,
-                    volumeIds: [volumeId]
+                    volumeIds: [volumeId],
+                    cleanupZones: enabled
                 };
 
                 // This code comes from external-volumes.js.
@@ -48,7 +60,8 @@ angular.module('rainierApp')
             };
 
             $scope.isUnvirtualizeAvailable = function () {
-                return !$scope.model.isMigrating() && $scope.model.provisioningStatus !== 'UNMANAGED';
+                return !$scope.model.isMigrating() && $scope.model.provisioningStatus !== 'UNMANAGED' &&
+                    $scope.model.status !== 'BLOCKED';
             };
 
             $scope.migrateVolume = function () {

@@ -255,6 +255,7 @@ angular.module('rainierApp')
 
         $scope.filterModel = {
             $replicationRawTypes: replicationService.rawTypes,
+            $dataProtectionCoverage: constantService.dataProtectionCoverage,
             showAllFilters: true,
             filterOperatingSystem: function () {
                 var enabledOperatingSystemType = [];

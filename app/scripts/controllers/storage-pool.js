@@ -388,7 +388,7 @@ angular.module('rainierApp')
                     }
                 };
 
-                dataModel.addAction = (poolResult.type === 'HTI' || poolResult.label.indexOf('HSA-reserved-') === 0) && (!ddmEnabled);
+                dataModel.hideAddIcon = poolResult.type === 'HTI' || poolResult.label.indexOf('HSA-reserved-') === 0 || ddmEnabled;
 
                 migrationTaskService.checkLicense(storageSystemId).then(function (result) {
                     dataModel.volumeMigrationAvailable = result;
