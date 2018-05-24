@@ -62,6 +62,7 @@ angular.module('rainierApp')
             var dataModel = {
                 selectServerPath: true,
                 canSubmit: true,
+                wizardLayout: true,
                 view: 'tile',
                 selectedStorageSystem: selectedStorageSystem,
                 storageSystems: storageSystems,
