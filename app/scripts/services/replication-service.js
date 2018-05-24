@@ -19,8 +19,7 @@ angular.module('rainierApp').factory('replicationService', function (synchronous
         CLONE: 'CLONE',
         SNAP: 'SNAP',
         SNAP_ON_SNAP: 'SNAP_ON_SNAP',
-        SNAP_CLONE: 'SNAP_CLONE',
-        UN_PROTECTED: 'UNPROTECTED'
+        SNAP_CLONE: 'SNAP_CLONE'
     };
     var tooltip = {
         CLONE: function () {
