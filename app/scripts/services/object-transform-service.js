@@ -2815,8 +2815,8 @@ angular.module('rainierApp')
                 item.storageSystemId = storageSystemId;
                 item.displayLinks = [];
                 item.usageBare = 0;
-                if (item.availableCapacityInBytes.size !== 0) {
-                    item.usageBare = Math.round((item.capacityInBytes.size - item.availableCapacityInBytes.size) * 100 / item.capacityInBytes.size);
+                if (item.capacityInBytes.value !== 0) {
+                    item.usageBare = Math.round(item.usedCapacityInBytes.value * 100 / item.capacityInBytes.value);
                 }
                 item.usagePercentage = item.usageBare;
                 item.usage = item.usageBare + '%';
