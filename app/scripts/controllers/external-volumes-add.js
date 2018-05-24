@@ -167,7 +167,10 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      * 3. LUNS
      */
     var initDiscoveredLuns = function () {
-        return externalVolumesAddService.openConfirmationDialog('This operation may take time, Proceed?')
+        return externalVolumesAddService.openConfirmationDialog(
+            'This request will scan the port to find all available external LUNs.' +
+            ' Thus, it may take some time. Do you want to proceed?'
+        )
             .then(function () {
                 startSpinner();
                 var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
