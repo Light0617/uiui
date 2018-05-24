@@ -135,6 +135,7 @@ angular.module('rainierApp')
                     title: isCreateAction ? 'migrate-volumes-title-create' : 'migrate-volumes-title-update',
                     noPageTitle: true,
                     onlyOperation: true,
+                    wizardLayout: true,
                     view: 'tile',
                     storageSystemId: storageSystemId,
                     total: result.length,

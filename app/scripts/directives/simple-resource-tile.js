@@ -19,6 +19,7 @@ angular.module('rainierApp')
         return {
             scope: {
                 item: '=',
+                layout: '='
             },
             templateUrl: 'views/templates/simple-resource-tile.html',
             restrict: 'E'
