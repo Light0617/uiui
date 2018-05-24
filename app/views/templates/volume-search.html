@@ -174,25 +174,28 @@
 
     <!--Control group: Data Protection -->
     <div class="control-group">
-        <p>Data Protection</p>
-
-        <div class="checkbox pull-bottom">
-            <label>
-                <input type="checkbox" ng-model="filterModel.filter.protected" ng-init="filterModel.filter.protected=false"
-                       ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.protected ? 'P-VOL' : '', filterModel.arrayType, 'P-VOL')">Protected
-            </label>
-        </div>
-        <div class="checkbox pull-bottom">
-            <label>
-                <input type="checkbox" ng-model="filterModel.filter.unprotected" ng-init="filterModel.filter.unprotected=false"
-                       ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.unprotected ? 'UNPROTECTED' : '', filterModel.arrayType, 'UNPROTECTED')">Unprotected
-            </label>
-        </div>
-        <div class="checkbox pull-bottom">
-            <label>
-                <input type="checkbox" ng-model="filterModel.filter.secondary" ng-init="filterModel.filter.secondary=false"
-                       ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.secondary ? 'S-VOL' : '', filterModel.arrayType, 'S-VOL')">Secondary
-            </label>
-        </div>
+        <h3>{{'storage-volume-filter-data-protection-type' | translate}}</h3>
     </div>
+
+    <div class="btn-group btn-group-justified btn-group-vertical">
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.protected"
+                   ng-init="filterModel.filter.protected=false"
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.protected ? 'P-VOL' : '', filterModel.arrayType, 'P-VOL')">
+            {{'common-filter-protected' | translate}}
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.unprotected"
+                   ng-init="filterModel.filter.unprotected=false"
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.unprotected ? 'UNPROTECTED' : '', filterModel.arrayType, 'UNPROTECTED')">
+            {{'common-filter-unprotected' | translate}}
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" data-toggle="buttons-checkbox" ng-model="filterModel.filter.secondary"
+                   ng-init="filterModel.filter.secondary=false"
+                   ng-change="filterModel.filterQuery('dataProtectionSummary.volumeType', filterModel.filter.secondary ? 'S-VOL' : '', filterModel.arrayType, 'S-VOL')">
+            {{'common-filter-secondary' | translate}}
+        </label>
+    </div>
+
 </div>

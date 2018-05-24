@@ -187,6 +187,7 @@
     "common-filter-unprotected": "Unprotected",
     "common-filter-protected": "Protected",
     "common-filter-partial": "Partial",
+    "common-filter-secondary": "Secondary",
 
     "storage-port-type": "Port Type:",
     "storage-port-speed": "Port Speed:",
@@ -373,6 +374,7 @@
     "storage-volume-filter-data-protection": "Data Protection",
     "storage-volume-filter-data-protection-volume-type": "Data Protection Volume Type",
     "storage-volume-filter-volume-status": "Select Status Filter",
+    "storage-volume-filter-data-protection-type": "Data Protection",
 
     "storage-volume-summary-protected-volumes": "Protected Volumes",
     "storage-volume-summary-unprotected-volumes": "Unprotected Volumes",
