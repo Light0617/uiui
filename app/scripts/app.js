@@ -610,7 +610,7 @@ angular
             .when('/storage-systems/:storageSystemId/external-volumes/:volumeId', {
                 templateUrl: 'views/external-volume.html',
                 controller: 'ExternalVolumeCtrl',
-                helpContext: 'R_EXT_VOL_DETAIL'
+                helpContext: 'R_EXT_VOLS_INV'
             })
             .when('/monitoring', {
                 templateUrl: 'views/monitoring.html',
