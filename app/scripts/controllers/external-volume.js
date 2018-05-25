@@ -33,7 +33,9 @@ angular.module('rainierApp')
                 falseText: 'external-volumes-unvirtualize-keep-zone-intact',
                 switchEnabled: {
                     value: false
-                }
+                },
+                disableRadioButton: result.provisioningStatus === 'UNATTACHED'
+
             };
 
             if (result.poolId !== null && result.poolId !== undefined) {
