@@ -1107,7 +1107,15 @@ angular.module('rainierApp')
                     item.externalStorageVendor = externalParityGroup.externalStorageVendor;
                     item.externalStorageProduct = externalParityGroup.externalStorageProduct;
                     item.externalStorageSystemId = externalParityGroup.externalStorageSystemId;
-                    item.externalVendorAndModel = item.externalStorageVendor + ' ' + item.externalStorageProduct;
+                    var vendorModels = _.filter([
+                        externalParityGroup.externalStorageVendor,
+                        externalParityGroup.externalStorageProduct
+                    ], function(v) {
+                        return !utilService.isNullOrUndef(v);
+                    });
+                    if (vendorModels.length > 0) {
+                        item.externalVendorAndModel = vendorModels.join(' ');
+                    }
                 }
                 var migrationTypeDisplay;
                 if (item.migrationSummary.ownerTaskId) {
