@@ -16,10 +16,6 @@ angular.module('rainierApp')
                 hideBreadcrumb: '='
             },
             link: function(scope) {
-                //Flag to disable the overlay if there are no new features.
-                //Need to set to true if there are new features in the future
-                scope.hasNewFeature = false;
-
                 scope.hideOverlay = true;
                 scope.username = authService.getUser().name;
                 var PRODUCT_NAME = synchronousTranslateService.translate('product-name');
@@ -172,11 +168,8 @@ angular.module('rainierApp')
                                     optionDataModel: scope.versionModel
                                 }
                             ]
-                        }
-                    ]
-                };
-                if(scope.hasNewFeature === true) {
-                    scope.ribbonModel.buttons.push(
+                        },
+                        // Overlay button
                         {
                             buttonIcon: 'icon-information',
                             buttonTitle: synchronousTranslateService.translate('common-information'),
@@ -185,8 +178,9 @@ angular.module('rainierApp')
                                 scope.versionModel.toggleOverlayContent();
                             }
                         }
-                    );
-                }
+                    ]
+                };
+
             }
         };
     });
