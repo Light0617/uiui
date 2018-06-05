@@ -150,8 +150,10 @@ module.exports = function(grunt) {
         var mergeJson = function(overrideJson, originalJson, destFilePath) {
             var overrides = grunt.file.readJSON(overrideJson);
             var original = grunt.file.readJSON(originalJson);
-            var merged = Object.assign(original, overrides);
-            grunt.file.write(destFilePath, JSON.stringify(merged, null, 2));
+            for (var attr in overrides) {
+              original[attr] = overrides[attr];
+            }
+            grunt.file.write(destFilePath, JSON.stringify(original, null, 2));
         };
 
         /**
