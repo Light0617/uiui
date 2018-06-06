@@ -269,11 +269,12 @@ angular.module('rainierApp')
             }
             if(item.volumeId !== item.virtualStorageMachineInformation.virtualVolumeId ||
                 item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                var virtualVolumeIdWithHex = formatVolumeId(item.virtualStorageMachineInformation.virtualVolumeId);
                 if(hasBrackets === true) {
                     displayVirtualVolumeId = '(' + synchronousTranslateService.translate('virtual') + ': ' +
-                        item.virtualStorageMachineInformation.virtualVolumeId + ')';
+                        virtualVolumeIdWithHex + ')';
                 } else {
-                    displayVirtualVolumeId = item.virtualStorageMachineInformation.virtualVolumeId;
+                    displayVirtualVolumeId = virtualVolumeIdWithHex;
                 }
 
             }
