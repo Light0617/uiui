@@ -68,6 +68,7 @@
 
 <div class="tile-row related-resources controls-row" ng-if="item.displayLinks && item.displayLinks.length > 0">
     <div class="btn-group btn-group-justified" data-toggle="buttons" ng-repeat="link in item.displayLinks">
-        <a class="btn btn-primary btn-light btn-sm" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}}</a>
+        <a ng-if="link.href" class="btn btn-primary btn-light btn-sm" ng-href="{{link.href}}" title="{{link.label}}">{{link.label}}</a>
+        <a ng-if="link.onClick" class="btn btn-primary btn-light btn-sm" ng-click="link.onClick()" title="{{link.label}}">{{link.label}}</a>
     </div>
 </div>

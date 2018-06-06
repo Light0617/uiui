@@ -15,9 +15,19 @@ angular.module('rainierApp')
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
         var autoSelectedPoolId = ShareDataService.pop('autoSelectedPoolId');
+        var noVirtualizeKey = synchronousTranslateService.translate('no-virtualize');
 
-        paginationService.getAllPromises(null, GET_STORAGE_SYSTEMS_PATH, true, null,
-            objectTransformService.transformStorageSystem).then(function (result) {
+        var isMyVSM = function (vsm) {
+            return _.chain(vsm.physicalStorageSystems)
+                .map(function(storage) { return storage.storageSystemId; })
+                .include(storageSystemId)
+                .value();
+        };
+
+        paginationService.getAllPromises(
+            null, GET_STORAGE_SYSTEMS_PATH, true, null,
+            objectTransformService.transformStorageSystem
+        ).then(function (result) {
             var storageSystems = result;
             var selectable = _.isUndefined(storageSystemId);
 
@@ -29,10 +39,19 @@ angular.module('rainierApp')
                 storageSystems: storageSystems,
                 selectedStorageSystem: storageSystem,
                 storageSystemSelectable: selectable,
-                autoSelectedPoolId: autoSelectedPoolId
+                autoSelectedPoolId: autoSelectedPoolId,
+                vsm: noVirtualizeKey
             };
 
             $scope.dataModel = dataModel;
+            return orchestratorService.virtualStorageMachines();
+        }).then(function (vsms) {
+            $scope.dataModel.virtualStorageMachineIds = _.chain(vsms.resources)
+                .filter(function(vsm) { return vsm.storageSystemId !== storageSystemId; })
+                .filter(isMyVSM)
+                .map(function(vsm) { return vsm.virtualStorageMachineId; })
+                .value();
+            $scope.dataModel.virtualStorageMachineIds.unshift(noVirtualizeKey);
         });
 
         $scope.$watch('dataModel.selectedStorageSystem', function (selectedStorageSystem) {
@@ -72,7 +91,8 @@ angular.module('rainierApp')
                     var volumes = volumesGroupsModel.mapToPayloads(volumesGroupsModel.getVolumeGroups(), autoSelectedPoolId);
                     var payload = {
                         storageSystemId: storageSystemId,
-                        volumes: volumes
+                        volumes: volumes,
+                        virtualStorageMachineId: $scope.dataModel.vsm === noVirtualizeKey ? undefined : $scope.dataModel.vsm
                     };
 
                     // Build reserved resources
@@ -100,6 +120,9 @@ angular.module('rainierApp')
         var subscriptionUpdateModel = viewModelService.newSubscriptionUpdateModel();
 
         $scope.$watch('dataModel.createModel.volumesGroupsModel.volumes', function (volumeGroups) {
+            if(!$scope.dataModel) {
+                return;
+            }
 
             var arrayCopy = subscriptionUpdateModel.getUpdatedModel($scope.dataModel.selectedStorageSystem, volumeGroups);
             if (!arrayCopy) {

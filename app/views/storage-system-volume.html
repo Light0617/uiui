@@ -51,7 +51,13 @@
                     </div>
                     <div class="label-value-container">
                         <p class="label">{{ 'virtual-volume-id' | translate}}</p>
-                        <p class="value" ng-attr-title="{{model.gadSummary.virtualLdevId}}">{{model.gadSummary.virtualLdevId}}</p>
+                        <p class="value" ng-attr-title="{{model.virtualStorageMachineInformation.virtualVolumeId}}">
+                            {{model.virtualStorageMachineInformation.virtualVolumeId}}
+                        </p>
+                    </div>
+                    <div class="label-value-container">
+                        <p class="label">{{ 'virtual-storage-system-id' | translate}}</p>
+                        <p class="value">{{model.virtualStorageMachineInformation.storageSystemId}}</p>
                     </div>
                     <div class="label-value-container">
                         <p class="label" ng-if="model.poolId">{{ 'storage-pool-id' | translate}}</p>
