@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService,
                                                  storageAdvisorEmbeddedSessionService, utilService,
-                                                 Restangular) {
+                                                 Restangular, $window) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -238,6 +238,63 @@ angular.module('rainierApp')
             });
         }
 
+        function registerDisplayVirtualStorageSystemId(item) {
+            var displayVirtualStorageSystemId = null;
+
+            // note that property "virtualStorageMachineInformation" and "storageSystemId" are non-nullable
+            if(item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                displayVirtualStorageSystemId = '(' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId + ')';
+            }
+            return displayVirtualStorageSystemId;
+        }
+
+        function registerDisplayPhysicalVirtualStorageSystemId(item) {
+            var displayPhysicalVirtualStorageSystemId = item.storageSystemId;
+
+            // note that property "virtualStorageMachineInformation" and "storageSystemId" are non-nullable
+            if(item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                displayPhysicalVirtualStorageSystemId += ' (' + synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId + ')';
+            }
+            return displayPhysicalVirtualStorageSystemId;
+        }
+
+        function registerDisplayVirtualVolumeId (item, hasBrackets) {
+            var displayVirtualVolumeId = null;
+
+            // note that property "virtualStorageMachineInformation" is non-nullable
+            if(!item.virtualStorageMachineInformation.virtualVolumeId) {
+                item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
+            }
+            if(item.volumeId !== item.virtualStorageMachineInformation.virtualVolumeId ||
+                item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
+                var virtualVolumeIdWithHex = formatVolumeId(item.virtualStorageMachineInformation.virtualVolumeId);
+                if(hasBrackets === true) {
+                    displayVirtualVolumeId = '(' + synchronousTranslateService.translate('virtual') + ': ' +
+                        virtualVolumeIdWithHex + ')';
+                } else {
+                    displayVirtualVolumeId = virtualVolumeIdWithHex;
+                }
+
+            }
+            return displayVirtualVolumeId;
+        }
+
+        function storageSystemIcon(item) {
+            if (item.unified) {
+                return 'icon-cluster';
+            } else {
+                return 'icon-storage-system';
+            }
+        }
+
+        function storageSystemOnClick(item) {
+            return function () {
+                $location.path(['storage-systems', item.storageSystemId].join('/'));
+            };
+        }
+
         transforms = {
 
             transformVolumeId: function(id) {
@@ -288,19 +345,12 @@ angular.module('rainierApp')
                 item.getIcons = function () {
                     return icons;
                 };
+                item.itemIcon = storageSystemIcon(item);
                 item.topTotal = item.total;
                 item.topSize = item.physicalUsed;
-                if (item.unified) {
-                    item.itemIcon = 'icon-cluster';
-                }
-                else {
-                    item.itemIcon = 'icon-storage-system';
-                }
                 item.topPostFix = 'common-label-total';
                 item.bottomPostFix = 'common-label-used';
-                item.onClick = function () {
-                    $location.path(['storage-systems', item.storageSystemId].join('/'));
-                };
+                item.onClick = storageSystemOnClick(item);
 
                 item.actions = {
                     'delete': {
@@ -440,24 +490,46 @@ angular.module('rainierApp')
             },
             transformVirtualStorageMachine: function (item) {
                 item.noSelection = true;
-                item.displayPhysicalStorageSystems = item.physicalStorageSystems.join(', ');
                 item.metaData = [
                     {
                         left: true,
                         title: item.storageSystemId,
-                        details: [item.productModel]
-                    },
-                    {
-                        left: false,
-                        title: item.pairHACount,
-                        details: [item.displayPhysicalStorageSystems]
+                        details: [item.model]
                     }
                 ];
                 item.itemIcon = 'icon-vsm';
                 item.onClick = function () {
                     ShareDataService.virtualStorageMachine = item;
-                    $location.path(['virtual-storage-machines', item.serialModelNumber].join('/'));
+                    $location.path(['virtual-storage-machines', item.virtualStorageMachineId].join('/'));
                 };
+            },
+            transformVSMStorageSystems: function (item) {
+                item.noSelection = true;
+                item.metaData = [
+                    {
+                        left: true,
+                        title: item.storageSystemName,
+                        details: [item.storageSystemId, item.svpIpAddress]
+                    },
+                    {
+                        left: false,
+                        title: item.model,
+                        details: []
+                    }
+                ];
+                item.itemIcon = storageSystemIcon(item);
+                item.onClick = storageSystemOnClick(item);
+                transformHdvmSnLaunchUrl(item);
+                item.hdvmSnLaunchUrl;
+                item.displayLinks = [
+                    {
+                        onClick: function() {
+                            $window.open(item.hdvmSnLaunchUrl);
+                        },
+                        icon: 'icon-storage-navigator-settings',
+                        label: synchronousTranslateService.translate('storage-system-launch-hdvm')
+                    }
+                ];
             },
             transformGadPair: function (item) {
                 if (item.primary) {
@@ -570,15 +642,24 @@ angular.module('rainierApp')
                     return icons;
                 };
 
+                item.displayVirtualStorageSystemId = registerDisplayVirtualStorageSystemId(item);
+                item.displayPhysicalVirtualStorageSystemId = registerDisplayPhysicalVirtualStorageSystemId(item);
+                item.displayVirtualVolumeIdWithBrackets = registerDisplayVirtualVolumeId(item, true);
+                item.displayVirtualVolumeId = registerDisplayVirtualVolumeId(item, false);
+
                 item.metaData = [
                     {
                         left: true,
                         title: item.label,
-                        details: [item.displayVolumeId]
+                        details: [item.displayVolumeId, item.displayVirtualVolumeIdWithBrackets]
                     },
                     {
                         left: false,
                         title: item.storageSystemId,
+                        details: [item.displayVirtualStorageSystemId]
+                    },
+                    {
+                        left: false,
                         details: [item.displayedDpType],
                         detailsToolTips: [_.map(item.dataProtectionSummary.replicationType, function (type) {
                             return replicationService.tooltip(type);
