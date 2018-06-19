@@ -489,11 +489,11 @@ angular.module('rainierApp')
                 }
             },
             transformVirtualStorageMachine: function (item) {
-                item.noSelection = true;
+                item.noSelection = false;
                 item.metaData = [
                     {
                         left: true,
-                        title: item.storageSystemId,
+                        title: item.virtualStorageMachineId,
                         details: [item.model]
                     }
                 ];
