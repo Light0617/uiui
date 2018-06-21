@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('VirtualStorageMachinesCtrl', function ($scope, $timeout, $window, orchestratorService,
                                                         objectTransformService, synchronousTranslateService,
-                                                        scrollDataSourceBuilderService) {
+                                                        scrollDataSourceBuilderService, $location) {
 
 
         orchestratorService.virtualStorageMachines().then(function (result) {
@@ -25,7 +25,7 @@ angular.module('rainierApp')
 
             $scope.dataModel = {
                 title: 'Virtual storage machines',
-                onlyOperation: true,
+                onlyOperation: false,
                 view: 'tile',
                 total: virtualStorageMachines.length,
                 search: {
@@ -65,6 +65,10 @@ angular.module('rainierApp')
 
                     }
                 ]
+            };
+
+            $scope.dataModel.addAction = function () {
+                $location.path(['create-vsm']);
             };
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');

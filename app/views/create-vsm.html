@@ -1,0 +1,34 @@
+<common-page-header></common-page-header>
+
+<!--TODO: page name should be verified-->
+<wizard-page>
+    <!--Wizard header-->
+    <!--TODO: icon class should be modified-->
+    <wizard-header ng-title="'create-virtual-storage-machine' | translate" icon-class="icon-volume">
+    </wizard-header>
+
+    <wizard-body>
+        <!--TODO: stepper name should modified-->
+        <wizard-advanced-stepper>
+        <wizard-advanced-stepper-button ng-title="'common-virtual-storage-machines' | translate"
+        step-completed="dataModel.isStepCompleted('select')"
+        step-active="dataModel.isStepActive('select')"></wizard-advanced-stepper-button>
+        </wizard-advanced-stepper>
+
+        <!--<wizard-left-right-content ng-if="dataModel.isStepActive('page1')"-->
+        <wizard-left-right-content
+            class="virtualize-volume-wizard"
+            left-panel-template="views/workflow-templates/left-panel.html"
+            right-panel-template="views/workflow-templates/right-panel.html"
+            ng-model="dataModel"
+            page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
+
+    </wizard-body>
+
+    <!--TODO: footer name should modified-->
+    <wizard-footer ng-if="dataModel.isStepActive('page1')"
+        ng-model="dataModel.page1">
+    </wizard-footer>
+
+</wizard-page>

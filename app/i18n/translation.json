@@ -383,6 +383,7 @@
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
     "common-virtual-storage-machine-id": "Virtual Storage Machine ID",
+    "create-virtual-storage-machine": "Create VSM",
     "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
     "volume-pair-count": "GAD Pair Count",
@@ -430,6 +431,7 @@
     "lun-existing-label": "Existing",
     "lun-new-label": "New",
     "auto-create-zone-tooltip": "Select Yes if you want to create zones between the Storage port and Server WWNs",
+    "use-same-model-tooltip": "Intend to use the same model/serial number of existing storage",
 
     "host-create-attach-protect-volumes": "Create, Attach and Protect Volumes",
     "host-create-attach-invalid-storage-confirm-title": "Unavailable Storage System",

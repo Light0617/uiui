@@ -1,0 +1,45 @@
+<div class="fieldset">
+
+    <!-- Select same model/serial number of existing storage -->
+    <!--TODO: replace <br> with css or a existing class-->
+    <div class="label-value-container">
+        <label class="label" for="same-model-selection">Intend to use the same model/serial <br>number of existing storage?</label>
+    </div>
+    <div id="same-model-selection" class="btn-group btn-group-justified" data-toggle="buttons">
+        <label class="btn btn-primary btn-dark" ng-model="dataModel.sameModelSelection"
+               btn-radio="true">
+            <input autocomplete="off" checked="" type="radio"/>Yes
+        </label>
+        <label class="btn btn-primary btn-dark" ng-model="dataModel.sameModelSelection"
+               btn-radio="false">
+            <input autocomplete="off" checked="" type="radio"/>No
+        </label>
+    </div>
+
+    <!-- Virtual Model -->
+    <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
+        <label class="label">Virtual Model</label>
+        <select class="form-control"
+                ng-model="dataModel.selectedVirtualModel"
+                ng-options="m for m in dataModel.VirtualModelCandidates">
+        </select>
+    </div>
+
+    <!-- Virtual Serial Number -->
+    <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
+        <label class="label">Virtual Serial Number</label>
+        <input class="form-control"
+                ng-model="dataModel.serialNumber">
+        </input>
+    </div>
+
+    <!-- Storage System -->
+    <div class="label-value-container" ng-if="dataModel.sameModelSelection">
+        <label class="label">Storage System</label>
+        <select class="form-control"
+                ng-model="dataModel.useSameModel"
+                ng-options="m for m in dataModel.selectedStorageSystem">
+        </select>
+    </div>
+
+</div>

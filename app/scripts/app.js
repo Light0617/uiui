@@ -1015,6 +1015,15 @@ angular
                 },
                 helpContext: 'T_MIGRATING_VOLUMES'
             })
+            .when('/create-vsm',{
+                templateUrl: 'views/create-vsm.html',
+                controller: 'CreateVsmCtrl',
+                // TODO: add info for labelKey, helpContext
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: 'R_VSM_INVENTORY'
+            })
             .otherwise({
                 redirectTo: '/'
             });
