@@ -18,9 +18,9 @@
 
 angular.module('rainierApp').controller('CreateVsmCtrl', function ($scope, $timeout, orchestratorService,
                                                                    objectTransformService, synchronousTranslateService,
-                                                                   scrollDataSourceBuilderService,
+                                                                   scrollDataSourceBuilderServiceNew,
                                                                    $location, diskSizeService, paginationService,
-                                                                   constantService) {
+                                                                   constantService, viewModelService, $q, $modal) {
 
     var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
 
@@ -29,11 +29,28 @@ angular.module('rainierApp').controller('CreateVsmCtrl', function ($scope, $time
         var storageSystems = result;
         var hasFileUsageBar = false;
 
-        var dataModel = {
+
+         var dataModel = {
             view: 'tile',
             hasFileUsageBar: hasFileUsageBar,
-            displayList: result.resources,
+            displayList: result,
             sameModelSelection: false,
+            selectedVirtualModel: {},
+            canGoNext: function () {
+                return true;
+            },
+            next: function () {
+                if(dataModel.sameModelSelection) {
+                    dataModel.goNext();
+                }
+                else {
+                    checkVirtualSerialNumber()
+                        .then(dataModel.goNext)
+                        .catch(openErrorDialog);
+                }
+
+
+            },
             search: {
                 freeText: '',
                 freeCapacity: {
@@ -64,14 +81,104 @@ angular.module('rainierApp').controller('CreateVsmCtrl', function ($scope, $time
             }
         };
 
+        angular.extend(dataModel, viewModelService.newWizardViewModel(['addPhysicalStorageSystems', 'addVolumes', 'addHostGroups']));
+
         dataModel.VirtualModelCandidates = constantService.virtualModelOptions();
+
+
+        //use _.range([start], stop, [step]) instead?
+        var RAID500_600_700 = [1, 99999];
+        var HM700 = [200001, 299999];
+        var RAID800_850 = [300001, 399999];
+        var HM800_850 = [400001, 499999];
+
+        var vsmModelRange = {
+            VSP_F900: HM800_850,
+            VSP_G900: HM800_850,
+            VSP_F700: HM800_850,
+            VSP_G700: HM800_850,
+            VSP_F370: HM800_850,
+            VSP_G370: HM800_850,
+            VSP_F350: HM800_850,
+            VSP_G350: HM800_850,
+            VSP_F800_AND_VSP_G800: HM800_850,
+            VSP_F400_F600_AND_VSP_G400_G600: HM800_850,
+            VSP_G200: HM800_850,
+            HUS_VM: HM700,
+            VSP_F1500_AND_VSP_G1000_G1500: HM800_850,
+            VSP: RAID500_600_700,
+            USP_VM: RAID500_600_700,
+            USP_V: RAID500_600_700,
+            NSC: RAID500_600_700,
+            USP: RAID500_600_700
+        };
+
+        dataModel.vsmModelRange = vsmModelRange;
+
 
         $scope.dataModel = dataModel;
 
-        scrollDataSourceBuilderService.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
 
+        scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
+
+        var updateResultTotalCounts = function (result) {
+            $scope.dataModel.nextToken = result.nextToken;
+            $scope.dataModel.cachedList = result.resources;
+            $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+            $scope.dataModel.itemCounts = {
+                filtered: $scope.dataModel.displayList.length,
+                total: $scope.dataModel.total
+            };
+        };
+
+        var checkVirtualSerialNumber = function () {
+            var vsnRange = dataModel.placeholder;
+            var vsnInput = dataModel.serialNumber;
+            if(vsnInput<vsnRange[0] || vsnInput>vsnRange[1]) {
+                return $q.reject('Input vsnInput is out of range');
+            }
+            return $q.resolve(true);
+        };
+
+        var openErrorDialog = function (messageKey) {
+            if (_.isUndefined(messageKey)) {
+                return;
+            }
+            if (!_.isString(messageKey) && messageKey.message) {
+                messageKey = messageKey.message;
+            } else if (!_.isString(messageKey) && messageKey.data && messageKey.data.message) {
+                messageKey = messageKey.data.message;
+            }
+            var modalInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('error-message-title'),
+                        message: synchronousTranslateService.translate(messageKey)
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modalInstance.result.finally(function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    });
+                }
+            });
+        };
 
     });
+
+    //validation can be done by clicking next button
+
+    $scope.$watch('dataModel.selectedVirtualModel', function () {
+        if($scope.dataModel.selectedVirtualModel !== undefined) {
+            var index = $scope.dataModel.selectedVirtualModel;
+            $scope.dataModel.placeholder = $scope.dataModel.vsmModelRange[index];
+        }
+    }, true);
 
 
 });

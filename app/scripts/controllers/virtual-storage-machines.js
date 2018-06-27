@@ -67,9 +67,16 @@ angular.module('rainierApp')
                 ]
             };
 
-            $scope.dataModel.addAction = function () {
-                $location.path(['create-vsm']);
-            };
+            // $scope.dataModel.addAction = function () {
+            //     $location.path(['create-vsm']);
+            // };
+
+            // $timeout(function () {
+                $scope.dataModel.addAction = function () {
+                    $location.path(['virtual-storage-machines1', 'add'].join('/'));
+                    //$scope.$apply();
+                };
+            // });
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');
         }

@@ -4,31 +4,29 @@
 <wizard-page>
     <!--Wizard header-->
     <!--TODO: icon class should be modified-->
-    <wizard-header ng-title="'create-virtual-storage-machine' | translate" icon-class="icon-volume">
+    <wizard-header ng-title="'create-virtual-storage-machine' | translate" icon-class="icon-vsm">
     </wizard-header>
 
     <wizard-body>
-        <!--TODO: stepper name should modified-->
         <wizard-advanced-stepper>
-        <wizard-advanced-stepper-button ng-title="'common-virtual-storage-machines' | translate"
-        step-completed="dataModel.isStepCompleted('select')"
-        step-active="dataModel.isStepActive('select')"></wizard-advanced-stepper-button>
+        <wizard-advanced-stepper-button ng-title="'add-physical-storage-systems' | translate"
+            step-completed="dataModel.isStepCompleted('add-physical-storage-systems')"
+            step-active="dataModel.isStepActive('addPhysicalStorageSystems')"></wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
-        <!--<wizard-left-right-content ng-if="dataModel.isStepActive('page1')"-->
-        <wizard-left-right-content
+        <wizard-left-right-content ng-if="dataModel.isStepActive('addPhysicalStorageSystems')"
             class="virtualize-volume-wizard"
-            left-panel-template="views/workflow-templates/left-panel.html"
-            right-panel-template="views/workflow-templates/right-panel.html"
+            left-panel-template="views/workflow-templates/add-physical-storage-systems-left-panel.html"
+            right-panel-template="views/workflow-templates/add-physical-storage-systems-right-panel.html"
             ng-model="dataModel"
             page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
     </wizard-body>
 
-    <!--TODO: footer name should modified-->
-    <wizard-footer ng-if="dataModel.isStepActive('page1')"
-        ng-model="dataModel.page1">
+
+    <wizard-footer ng-if="dataModel.isStepActive('addPhysicalStorageSystems')"
+        ng-model="dataModel">
     </wizard-footer>
 
 </wizard-page>

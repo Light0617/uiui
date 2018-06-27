@@ -1015,7 +1015,7 @@ angular
                 },
                 helpContext: 'T_MIGRATING_VOLUMES'
             })
-            .when('/create-vsm',{
+            .when('/virtual-storage-machines1/add',{
                 templateUrl: 'views/create-vsm.html',
                 controller: 'CreateVsmCtrl',
                 // TODO: add info for labelKey, helpContext
