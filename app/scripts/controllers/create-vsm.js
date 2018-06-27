@@ -132,10 +132,16 @@ angular.module('rainierApp').controller('CreateVsmCtrl', function ($scope, $time
         };
 
         var checkVirtualSerialNumber = function () {
-            var vsnRange = dataModel.placeholder;
-            var vsnInput = dataModel.serialNumber;
-            if(vsnInput<vsnRange[0] || vsnInput>vsnRange[1]) {
-                return $q.reject('Input vsnInput is out of range');
+            // var vsnRange = dataModel.placeholder;
+            // var vsnInput = dataModel.serialNumber;
+            // if(vsnInput<vsnRange[0] || vsnInput>vsnRange[1]) {
+            //     return $q.reject('The Virtual Model or Serial Number can`t be the same');
+            // }
+            var selectedStorageSystemIds = _.map(dataModel.getSelectedItems(), function (storageSystems) {
+                return storageSystems.storageSystemId;
+            });
+            if(_.contains(selectedStorageSystemIds, dataModel.serialNumber)) {
+                return $q.reject('The Virtual Model or Serial Number can`t be the same');
             }
             return $q.resolve(true);
         };
@@ -172,6 +178,7 @@ angular.module('rainierApp').controller('CreateVsmCtrl', function ($scope, $time
     });
 
     //validation can be done by clicking next button
+
 
     $scope.$watch('dataModel.selectedVirtualModel', function () {
         if($scope.dataModel.selectedVirtualModel !== undefined) {
