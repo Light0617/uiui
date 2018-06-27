@@ -13,7 +13,7 @@
 angular.module('rainierApp')
     .controller('StorageSystemsAddCtrl', function($scope, orchestratorService) {
         $scope.model = {
-            svpIpAddress: '',
+            ipAddress: '',
             username: '',
             password: ''
 
