@@ -7,7 +7,12 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
         var total = 64;
 
         while (total-- !== 0) {
-            var mockStorageSystem = generateMockStorageSystem(total);
+            var mockStorageSystem;
+            if (total % 2 === 0) {
+                mockStorageSystem = generateMockStorageSystem(total);
+            } else {
+                mockStorageSystem = generateMockStorageSystemWithoutSvp(total);
+            }
             storageSystems.push(mockStorageSystem);
         }
     };
@@ -39,8 +44,20 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'unusedDisksCapacity': mockUtils.getCapacity(200, 1000),
             'accessible': true,
             'gadSummary': _.sample(['Incomplete', 'Not Available']),
-            'migrationTaskCount': _.sample([0, 10, 30, 120])
+            'migrationTaskCount': _.sample([0, 10, 30, 120]),
+            'primaryGumNumber': null,
+            'username': 'maintenance'
         };
+    };
+
+    var generateMockStorageSystemWithoutSvp = function(v) {
+        var mock = generateMockStorageSystem(v);
+        var specificElementsWithoutSvp = {
+            'storageSystemName': 'SVP-less Storage' + v,
+            'svpIpAddress': null,
+            'primaryGumNumber': _.sample([1, 2])
+        };
+        return angular.extend(mock, specificElementsWithoutSvp);
     };
 
     var handleGetRequest = function (urlResult){

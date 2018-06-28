@@ -172,11 +172,11 @@ angular.module('rainierApp')
 
                 },
                 {
-                    title: 'storage-systems-svp-ip-address',
+                    title: 'storage-systems-ip-address',
                     sizeClass: 'sixth',
-                    sortField: 'svpIpAddress',
+                    sortField: 'ipAddress',
                     getDisplayValue: function (item) {
-                        return item.svpIpAddress;
+                        return item.ipAddress;
                     }
 
                 },
