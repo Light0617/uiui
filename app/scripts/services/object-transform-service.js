@@ -306,11 +306,25 @@ angular.module('rainierApp')
                 transformHdvmSnLaunchUrl(item);
 
                 item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
+                item.ipAddress = item.svpIpAddress;
+
+                if (utilService.isNullOrUndef(item.svpIpAddress)) {
+                    switch (item.primaryGumNumber) {
+                        case 1:
+                            item.ipAddress = item.gum1IpAddress;
+                            break;
+                        case 2:
+                            item.ipAddress = item.gum2IpAddress;
+                            break;
+                        default:
+                    }
+                }
+
                 item.metaData = [
                     {
                         left: true,
                         title: item.storageSystemName,
-                        details: [item.storageSystemId, item.svpIpAddress]
+                        details: [item.storageSystemId, item.ipAddress]
                     },
                     {
                         left: false,
