@@ -152,7 +152,7 @@
                             <p class="value">{{dataModel.model}}</p>
                         </div>
                         <div class="label-value-container">
-                            <p class="label">SVP Version</p>
+                            <p class="label">{{'storage-systems-firmware-version' | translate }}</p>
                             <p class="value">{{dataModel.firmwareVersion}}
                                 <i ng-if="dataModel.firmwareVersionIsSupported === false" class="critical">({{'unsupported-storage-system-firmware' | translate}})</i>
                             </p>
@@ -174,7 +174,7 @@
                             <p class="value"><disk-size wrapped-in="span" ng-model="dataModel.unusedDisksCapacity"></disk-size></p>
                         </div>
                         <div class="label-value-container">
-                            <p class="label">{{'storage-systems-svp-ip-address' |translate }}</p>
+                            <p class="label">{{'storage-systems-ip-address' | translate }}</p>
                             <p class="value">{{dataModel.ipAddress}}</p>
                         </div>
                         <div class="label-value-container">

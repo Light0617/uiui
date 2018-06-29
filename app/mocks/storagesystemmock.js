@@ -8,7 +8,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
 
         while (total-- !== 0) {
             var mockStorageSystem;
-            if (total % 2 === 0) {
+            if (mockUtils.randomInt(0, 2) > 0) {
                 mockStorageSystem = generateMockStorageSystem(total);
             } else {
                 mockStorageSystem = generateMockStorageSystemWithoutSvp(total);
@@ -27,11 +27,11 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'storageSystemId': '2200' + v,
             'storageSystemName': 'Storage' + v,
             'unified': mockUtils.trueOrFalse(),
-            'model': 'VSP G1000',
+            'model': 'VSP G1500',
             'svpIpAddress': '10.20.90.1' + v,
             'gum1IpAddress': '10.20.90.2' + v,
             'gum2IpAddress': '10.20.90.3' + v,
-            'firmwareVersion': 'v1.0',
+            'firmwareVersion': '80-06-40-00/02',
             'horcmVersion': 'v1.0',
             'cacheCapacity': mockUtils.getCapacity(400, 600),
             'totalUsableCapacity': total,
@@ -55,7 +55,10 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
         var specificElementsWithoutSvp = {
             'storageSystemName': 'SVP-less Storage' + v,
             'svpIpAddress': null,
-            'primaryGumNumber': _.sample([1, 2])
+            'primaryGumNumber': _.sample([1, 2]),
+            'model': 'VSP G900',
+            'unified': false,
+            'firmwareVersion': '88-02-01-60/00'
         };
         return angular.extend(mock, specificElementsWithoutSvp);
     };

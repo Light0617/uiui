@@ -162,18 +162,23 @@ angular.module('rainierApp')
         function transformStorageSystemSettings(item) {
             var result = [];
 
-            result.push(storageNavigatorSessionService.getNavigatorSessionAction(
-                item.storageSystemId, sessionScopeEncryptionKeys));
+            var hasSvpIpAddress = !utilService.isNullOrUndef(item.svpIpAddress);
+            if (hasSvpIpAddress) {
+                result.push(storageNavigatorSessionService.getNavigatorSessionAction(
+                    item.storageSystemId, sessionScopeEncryptionKeys));
+            }
 
             if (constantService.isHM850Series(item.model)) {
                 result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
             }
 
-            result.push({
-                type: 'hyperlink',
-                title: 'storage-system-launch-hdvm',
-                href: item.hdvmSnLaunchUrl
-            });
+            if (hasSvpIpAddress) {
+                result.push({
+                    type: 'hyperlink',
+                    title: 'storage-system-launch-hdvm',
+                    href: item.hdvmSnLaunchUrl
+                });
+            }
 
             return result;
         }
