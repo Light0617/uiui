@@ -559,6 +559,7 @@
     "storage-systems-serial-number": "S/N",
     "storage-systems-name": "Name",
     "storage-systems-model": "Model",
+    "storage-systems-firmware-version": "Firmware Version",
     "storage-systems-svp-ip-address": "SVP IP Address",
     "storage-systems-ip-address": "IP Address",
     "storage-systems-gum-1-ip-address": "Maintenance Utility 1 IP Address",
