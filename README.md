@@ -23,6 +23,8 @@ Run `grunt serve:dist --proxy-host=<somewhere> --proxy-use-https=true --allow-re
 
 Running `grunt test` will run the unit tests with karma.
 
+Running `grunt jshint` will run the jshint to analyze code.
+
 ## Branding
 
 Run 'grunt brand' to list all supported brands.

@@ -539,7 +539,6 @@ angular.module('rainierApp')
                 item.itemIcon = storageSystemIcon(item);
                 item.onClick = storageSystemOnClick(item);
                 transformHdvmSnLaunchUrl(item);
-                item.hdvmSnLaunchUrl;
                 item.displayLinks = [
                     {
                         onClick: function() {
