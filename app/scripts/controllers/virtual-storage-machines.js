@@ -23,11 +23,11 @@ angular.module('rainierApp')
         function initView(result) {
             var virtualStorageMachines = result.resources ? result.resources : [];
 
-            $scope.dataModel = {
+            var dataModel = {
                 title: 'Virtual storage machines',
-                onlyOperation: true,
                 view: 'tile',
                 total: virtualStorageMachines.length,
+
                 search: {
                     freeText: ''
                 },
@@ -49,9 +49,9 @@ angular.module('rainierApp')
                     {
                         title: synchronousTranslateService.translate('virtual-storage-system-id'),
                         sizeClass: 'sixth',
-                        sortField: 'storageSystemId',
+                        sortField: 'virtualStorageMachineId',
                         getDisplayValue: function (item) {
-                            return item.storageSystemId;
+                            return item.virtualStorageMachineId;
                         },
                         type: 'id'
                     },
@@ -64,8 +64,42 @@ angular.module('rainierApp')
                         }
 
                     }
-                ]
+                ],
+                displayList: virtualStorageMachines
             };
+
+            var actions = [
+                {
+                    icon: 'icon-delete',
+                    tooltip :'action-tooltip-delete',
+                    type: 'confirm',
+                    confirmTitle: 'storage-system-delete-confirmation',
+                    confirmMessage: 'storage-system-delete-selected-content',
+                    enabled: function () {
+                        return dataModel.anySelected();
+                    },
+                    onClick: function () {
+                        //TODO
+                    }
+                },
+                {
+                    icon: 'icon-edit',
+                    tooltip: 'action-tooltip-edit',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected();
+                    },
+                    onClick: function () {
+                        //TODO
+                    }
+                }
+            ];
+
+            dataModel.getActions = function () {
+                return actions;
+            };
+
+            $scope.dataModel = dataModel;
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');
         }
