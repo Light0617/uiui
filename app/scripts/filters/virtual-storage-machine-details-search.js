@@ -22,10 +22,10 @@ angular.module('rainierApp')
                 return input;
             }
             var array = _.filter(input, function (item) {
-                var id = item.storageSystemId.toString().indexOf(search.freeText) > -1;
-                var name = item.storageSystemName.toString().indexOf(search.freeText) > -1;
-                var ip = item.svpIpAddress.toString().indexOf(search.freeText) > -1;
-                var model = item.model.toString().indexOf(search.freeText) > -1;
+                var id = item.storageSystemId == null ? false : (item.storageSystemId.toString().indexOf(search.freeText) > -1);
+                var name = item.storageSystemName == null ? false : (item.storageSystemName.toString().indexOf(search.freeText) > -1);
+                var ip = item.svpIpAddress == null ? false : (item.svpIpAddress.toString().indexOf(search.freeText) > -1);
+                var model = item.model == null ? false : (item.model.toString().indexOf(search.freeText) > -1);
                 return id || name || ip || model;
 
             });
