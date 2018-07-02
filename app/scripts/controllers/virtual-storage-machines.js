@@ -23,7 +23,7 @@ angular.module('rainierApp')
         function initView(result) {
             var virtualStorageMachines = result.resources ? result.resources : [];
 
-            $scope.dataModel = {
+            var dataModel = {
                 title: 'Virtual storage machines',
                 view: 'tile',
                 total: virtualStorageMachines.length,
@@ -79,9 +79,7 @@ angular.module('rainierApp')
                         return dataModel.anySelected();
                     },
                     onClick: function () {
-                        _.forEach(dataModel.getSelectedItems(), function (item) {
-                            item.actions.delete.onClick(orchestratorService);
-                        });
+                        //TODO
                     }
                 },
                 {
@@ -92,17 +90,16 @@ angular.module('rainierApp')
                         return dataModel.onlyOneSelected();
                     },
                     onClick: function () {
-                        if(dataModel.onlyOneSelected()) {
-                            var item = _.first(dataModel.getSelectedItems());
-                            item.actions.edit.onClick();
-                        }
+                        //TODO
                     }
                 }
             ];
 
-            $scope.dataModel.getActions = function () {
-                return  actions;
+            dataModel.getActions = function () {
+                return actions;
             };
+
+            $scope.dataModel = dataModel;
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');
         }
