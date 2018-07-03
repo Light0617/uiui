@@ -93,6 +93,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(extractLuns)
             .then(setupLuns)
             .then(autoSelectLuns)
+            .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
@@ -102,7 +103,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
 
     var setupLuns = function (lunsDataModel) {
         objectTransformService.transformDiscoveredLun(lunsDataModel);
-        lunsDataModel = _.sortBy(lunsDataModel, ['hwInfo', 'externalDeviceId']);
+        lunsDataModel = _.sortBy(lunsDataModel, ['mapped', 'externalDeviceId']);
         _.extend($scope.dataModel, externalVolumesAddService.getLunsDataModel(lunsDataModel));
         $scope.filterModel = undefined;
         $scope.footerModel = lunsFooter($scope.dataModel);

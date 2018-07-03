@@ -38,10 +38,10 @@
 
     <!-- LUNS -->
     <div class="label-value-container">
-        <label class="label">Lun / Capacity / ID</label>
+        <label class="label">ID / CAPACITY</label>
         <label ng-repeat="l in dataModel.selectedLuns" class="value"
-               title="{{l.lunId}} / {{l.displayCapacity}} / {{l.eVolIdC}}">
-            {{ l.lunId }} / {{ l.displayCapacity }} / {{ l.eVolIdC }}
+               title="{{l.externalDeviceId}} / {{l.displayCapacity}}">
+            {{ l.externalDeviceId }} / {{ l.displayCapacity }}
         </label>
     </div>
 </div>

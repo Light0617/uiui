@@ -16,7 +16,7 @@ rainierAppMock.run(function(
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
     replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
     monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock,
-    migrationTaskMock, rainierJobsMock, discoverLunMock, externalVolumesMock
+    migrationTaskMock, rainierJobsMock, discoverLunMock, externalVolumesMock, externalDevicesMock
 
 ) {
 
@@ -325,6 +325,8 @@ rainierAppMock.run(function(
                 return authMock.authenticateAndCall(urlResult, migrationTaskMock.handle);
             case 'migration-pairs':
                 return authMock.authenticateAndCall(urlResult, migrationTaskMock.handlePairs);
+            case 'external-devices':
+                return authMock.authenticateAndCall(urlResult, externalDevicesMock.handle);
 
         }
     };

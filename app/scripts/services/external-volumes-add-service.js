@@ -92,7 +92,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     };
 
     var filterSelected = function (i) {
-        return i.selected;
+        return i.selected && !i.mapped;
     };
 
     var updateResultTotalCountsFn = function (dataModel) {
@@ -213,7 +213,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         if (!utilService.isNullOrUndef(result.resources) && result.resources.length) {
             return result;
         }
-        return $q.reject({message: 'There are no available volumes discovered from selected ports.'});
+        return $q.reject({message: 'There are no available discovered volumes.'});
     };
 
     /**
