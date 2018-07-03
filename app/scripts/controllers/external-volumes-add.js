@@ -92,6 +92,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
             .then(externalVolumesAddService.validateGetLunsResult)
             .then(extractLuns)
             .then(setupLuns)
+            .then(externalVolumesAddService.validateMappedLunsResult)
             .then(autoSelectLuns)
             .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
@@ -110,7 +111,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         scrollDataSourceBuilderService.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         externalVolumesAddService.setupSelectAllFunctionsFilteredList($scope.dataModel);
-        return true;
+        return lunsDataModel;
     };
 
     var autoSelectLuns = function () {

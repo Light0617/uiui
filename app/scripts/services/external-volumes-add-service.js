@@ -216,6 +216,18 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         return $q.reject({message: 'There are no available discovered volumes.'});
     };
 
+    var validateMappedLunsResult = function (resources) {
+        var anyUnmapped = _.any(resources, function (resource) {
+            return !resource.mapped;
+        });
+        if (anyUnmapped) {
+            return resources;
+        } else {
+            return $q.reject({message: 'There are no available discovered volumes. ' +
+                'Please discover external volumes from the storage ports view.'});
+        }
+    };
+
     /**
      * SERVERS
      */
@@ -453,6 +465,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         /** LUNS */
         getLunsDataModel: getLunsDataModel,
         validateGetLunsResult: validateGetLunsResult,
+        validateMappedLunsResult: validateMappedLunsResult,
         /** SERVERS */
         GET_HOSTS_PATH: GET_HOSTS_PATH,
         getHostsModel: getHostsModel,
