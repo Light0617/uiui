@@ -192,15 +192,18 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         var serialNumbers = _.chain(luns).map(function (l) {
             return l.serialNumber;
         }).uniq().value();
+        var mappedCandidates = ['YES', 'NO'];
         return {
             displayList: luns,
             cachedList: luns,
             vendors: vendors,
             serialNumbers: serialNumbers,
+            mappedCandidates: mappedCandidates,
             search: {
                 freeText: '',
                 vendor: '',
-                serialNumber: ''
+                serialNumber: '',
+                mapped: ''
             },
             sort: {}
         };

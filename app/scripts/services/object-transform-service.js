@@ -993,7 +993,8 @@ angular.module('rainierApp')
                     i.capacity = diskSizeService.getDisplaySize(i.size);
                     i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
                     i.displayMappedValue = 'Mapped: ' + (i.mapped ? 'YES' : 'NO');
-                    i.displayExternalLuns = 'Luns: ' + i.externalLuns.join(', ');
+                    i.displayExternalLuns = 'Lun Ids: ' + i.externalLuns.join(', ');
+                    i.disabledCheckBox = i.mapped;
 
                     i.metaData = [
                         {
@@ -1003,7 +1004,7 @@ angular.module('rainierApp')
                         },
                         {
                             left: false,
-                            title: i.portIds.join(' '),
+                            title: i.portIds.join(', '),
                             details: [i.endPoints.join(', '), i.displayExternalLuns]
                         }
                     ];

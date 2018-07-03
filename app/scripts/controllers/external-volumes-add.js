@@ -51,7 +51,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         $scope.dataModel.view = 'tile';
         $scope.selected = {
             storageSystem: undefined,
-            externalPorts: [],
             protocol: undefined,
             luns: [],
             hosts: [],
@@ -89,7 +88,6 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
      */
     var initDiscoveredLuns = function () {
         startSpinner();
-        // var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
         return orchestratorService.externalDevices($scope.selected.storageSystem.storageSystemId)
             .then(externalVolumesAddService.validateGetLunsResult)
             .then(extractLuns)
