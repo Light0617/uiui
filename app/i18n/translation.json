@@ -1107,7 +1107,7 @@
     "clone-tooltip": "Clone – ShadowImage (SI)",
 
     "data-reduction-savings-ratio": "Data Reduction",
-    "capacity-efficiency-savings-ratio": "Capacity Efficiency",
+    "capacity-efficiency-savings-ratio": "Total Efficiency",
 
     "shred-volumes": "Shred Volumes",
     "shred-volumes-wizard-title": "Shredding Algorithm",
@@ -1220,8 +1220,6 @@
     "workflow-title-select-ports": "Select Ports",
     "workflow-title-select-discovered-volumes": "Select Discovered Luns",
     "workflow-title-select-server": "Select Server",
-    "workflow-title-create-paths": "Create Paths",
-    "capacity-efficiency-savings-ratio": "Capacity Efficiency",
     "attach-to-storage-no-ports-title": "Unavailable Storage or Protocol",
     "attach-to-storage-no-ports-message": "The port of the selected protocol does not exist on the target storage system. Select a different target storage system or a different protocol.",
 
