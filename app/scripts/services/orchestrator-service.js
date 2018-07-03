@@ -100,6 +100,10 @@ angular.module('rainierApp')
                 var url = 'storage-systems/' + storageSystemId + '/external-devices/discover';
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all(url).post(payload));
             },
+            externalDevices: function (storageSystemId) {
+                var url = 'storage-systems/' + storageSystemId + '/external-devices';
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one(url).get());
+            },
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/virtualize').post(payload));
             },

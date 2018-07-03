@@ -18,7 +18,7 @@
 angular.module('rainierApp').factory('externalVolumesAddService', function (
     $q, $modal, $window, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
     paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew,
-    constantService, attachVolumeService, queryService
+    constantService, attachVolumeService, queryService, utilService
 ) {
 
     /**
@@ -206,11 +206,11 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         };
     };
 
-    var validateGetLunsResult = function (luns) {
-        if (!luns.length) {
-            return $q.reject({message: 'There are no available luns discovered from selected ports.'});
+    var validateGetLunsResult = function (result) {
+        if (!utilService.isNullOrUndef(result.resources) && result.resources.length) {
+            return result;
         }
-        return luns;
+        return $q.reject({message: 'There are no available volumes discovered from selected ports.'});
     };
 
     /**

@@ -767,7 +767,7 @@
     "storage-pools-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Pools",
     "storage-ports-showing-x-of-y": "Showing {{filtered}} of {{total}} Ports",
     "storage-volumes-showing-x-of-y": "Showing {{filtered}} of {{total}} Volumes",
-    "discovered-luns-showing-x-of-y": "Showing {{filtered}} of {{total}} Discovered Luns",
+    "discovered-luns-showing-x-of-y": "Showing {{filtered}} of {{total}} Discovered Volumes",
     "fabric-switch-showing-x-of-y": "Showing {{filtered}} of {{total}} Fabric Switch",
     "parity-groups-showing-x-of-y": "Showing {{filtered}} of {{total}} Parity Groups",
     "external-parity-groups-showing-x-of-y": "Showing {{filtered}} of {{total}} External Parity Groups",
