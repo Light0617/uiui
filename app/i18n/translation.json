@@ -576,6 +576,7 @@
     "storage-system-launch-hdvm": "Launch HDvM-SN",
     "storage-system-launch-hsae": "Launch Storage Advisor Embedded",
     "storage-system-launch-smu": "Launch HNAS SMU",
+    "storage-system-detail-launch": "Go To Storage System Details",
     "storage-system-settings": "Initial Setup Wizard (Settings)",
     "storage-systems-update": "Update Storage System",
     "storage-system-launch-security": "Configure Encryption",

@@ -523,7 +523,7 @@ angular.module('rainierApp')
                 };
             },
             transformVSMStorageSystems: function (item) {
-                item.noSelection = true;
+                item.noSelection = false;
                 item.metaData = [
                     {
                         left: true,
@@ -537,17 +537,21 @@ angular.module('rainierApp')
                     }
                 ];
                 item.itemIcon = storageSystemIcon(item);
-                item.onClick = storageSystemOnClick(item);
-                transformHdvmSnLaunchUrl(item);
+                item.onClick = function () {
+                    var path = $location.path();
+                    $location.path([path, 'physical-storage-system', item.storageSystemId].join('/'));
+                }
+
                 item.displayLinks = [
                     {
                         onClick: function() {
-                            $window.open(item.hdvmSnLaunchUrl);
+                            return $location.path(['storage-systems', item.storageSystemId].join('/'));
                         },
                         icon: 'icon-storage-navigator-settings',
-                        label: synchronousTranslateService.translate('storage-system-launch-hdvm')
+                        label: synchronousTranslateService.translate('storage-system-detail-launch')
                     }
                 ];
+
             },
             transformGadPair: function (item) {
                 if (item.primary) {
