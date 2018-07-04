@@ -107,6 +107,9 @@ angular.module('rainierApp')
             virtualizeVolumes: function(storageSystemId, payload){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('external-volume-manager/create').post(payload));
             },
+            deleteExternalVolumes: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('/external-volume-manager/delete').post(payload));
+            },
             unvirtualizeVolume: function (payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('volume-manager/unvirtualize').post(payload));
             },

@@ -231,7 +231,7 @@ angular.module('rainierApp')
 //                            resourceTrackerService.storageSystem(), 'Unvirtualize Confirmation', null, null,
 //                            unvirtualizePayload, orchestratorService.unvirtualizeVolume);
                         // FIXME Server is not supported of ExternalVolume reservation. So, execute without check.
-                        orchestratorService.unvirtualizeVolume(unvirtualizePayload);
+                        orchestratorService.deleteExternalVolumes(unvirtualizePayload);
                     }
                 }
             ];
