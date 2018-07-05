@@ -336,7 +336,7 @@
     "storage-volume-not-protected": "This volume is not protected.",
     "storage-volumes-add": "Create Volumes",
     "storage-volumes-add-unmatched-compress-techs": "Unmatched Compress Technologies",
-    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, the following conditions are recommended before creating the volume.",
+    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, the following solutions are recommended before creating the volume.",
     "storage-volumes-add-unmatched-compress-techs-message-solution1": "Enable FMD Compression for all FMD drives in target Pool",
     "storage-volumes-add-unmatched-compress-techs-message-solution2": "Select 'No' for 'Capacity Saving' for Volume in this wizard",
     "storage-volumes-add-unmatched-compress-techs-message-footer": "Do you want to proceed?",
