@@ -486,7 +486,7 @@ angular.module('rainierApp')
                 var selectedVolumes = volumesGroupsModel.getVolumeGroups();
                 attachModel.selectedVolumes = selectedVolumes;
 
-                createVolumeService.validatePoolThenAction($scope.dataModel.goNext,
+                createVolumeService.validatePoolsForCreateAttachProtect($scope.dataModel.goNext,
                     attachModel.selectedStorageSystem.storageSystemId, attachModel.selectedVolumes);
             };
             createModel.canGoNext = function() {

@@ -90,7 +90,8 @@ angular.module('rainierApp')
                 submit: function () {
                     var volumes = volumesGroupsModel.mapToPayloads(
                         volumesGroupsModel.getVolumeGroups(), autoSelectedPoolId);
-                    createVolumeService.validatePoolThenCreateVolumes(storageSystemId, volumes, $scope.dataModel.vsm);
+                    createVolumeService.validatePoolsForCreateVolumes(
+                        storageSystemId, volumes, $scope.dataModel.vsm);
                 }
 
             };

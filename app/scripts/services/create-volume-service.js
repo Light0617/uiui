@@ -96,7 +96,7 @@ angular.module('rainierApp')
             return promises;
         };
 
-        var createPromise = function(storageSystemId, volumes) {
+        var createPromiseForCreateVolume = function(storageSystemId, volumes) {
             var targetPoolIdsWithVolumeCompression = [];
             _.forEach(volumes, function (vol) {
                 if(!utilService.isNullOrUndef(vol.poolId) && vol.dkcDataSavingType === 'COMPRESSION') {
@@ -123,9 +123,30 @@ angular.module('rainierApp')
             return pushPromises(storageSystemId, targetPoolIdsWithVolumeCompression);
         };
 
+        var createPromiseForUpdateVolume = function(storageSystemId, volDataSavingType, poolId) {
+            var targetPoolIdsWithVolumeCompression = [];
+
+            if(volDataSavingType === 'COMPRESSION') {
+                targetPoolIdsWithVolumeCompression.push(poolId);
+            }
+            return pushPromises(storageSystemId, targetPoolIdsWithVolumeCompression);
+        };
+
         return {
             createVolumes: createVolumes,
-            validatePoolThenAction: function(okAction, storageSystemId, volumes) {
+            validatePoolsForCreateVolumes: function(storageSystemId, volumes, vsm) {
+                var promises = createPromiseForCreateVolume(storageSystemId, volumes);
+                hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
+
+                $q.all(promises).then(function () {
+                    if (hasAnyPoolWhichHasAllOfPgsCompressionSupported) {
+                        warnUnmatchedCompressTechs(createVolumes, storageSystemId, volumes, vsm);
+                    } else {
+                        createVolumes(storageSystemId, volumes, vsm);
+                    }
+                });
+            },
+            validatePoolsForCreateAttachProtect: function(okAction, storageSystemId, volumes) {
                 var promises = createPromiseForCreateAndAttach(storageSystemId, volumes);
                 hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
 
@@ -137,15 +158,15 @@ angular.module('rainierApp')
                     }
                 });
             },
-            validatePoolThenCreateVolumes: function(storageSystemId, volumes, vsm) {
-                var promises = createPromise(storageSystemId, volumes);
+            validatePoolForUpdateVolume: function(okAction, storageSystemId, volDataSavingType, poolId) {
+                var promises = createPromiseForUpdateVolume(storageSystemId, volDataSavingType, poolId);
                 hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
 
                 $q.all(promises).then(function () {
                     if (hasAnyPoolWhichHasAllOfPgsCompressionSupported) {
-                        warnUnmatchedCompressTechs(createVolumes, storageSystemId, volumes, vsm);
+                        warnUnmatchedCompressTechs(okAction, storageSystemId);
                     } else {
-                        createVolumes(storageSystemId, volumes, vsm);
+                        okAction.call({});
                     }
                 });
             }
