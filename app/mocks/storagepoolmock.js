@@ -91,7 +91,11 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
     var generateMockStoragePool = function(v) {
         var capacityInfo = mockUtils.getCapacityInformation(100, 150);
         var tiers = mockUtils.trueOrFalse() ? hdp : hdt;
-        var fmcCompress = mockUtils.trueOrFalse();
+        var fmcCompress = _.sample(['YES', 'NO', 'PARTIAL']);
+        var parityGroupCompress = fmcCompress === 'YES' ? true
+            : fmcCompress === 'NO' ? false
+                : mockUtils.trueOrFalse();
+
         return {
             'availableCapacityInBytes': capacityInfo.freeCapacity,
             'availableLogicalCapacityInBytes': mockUtils.getCapacity(50, 100),
@@ -112,14 +116,14 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                 {
                     'id': '1-1',
                     'encryption': false,
-                    'compression': fmcCompress,
-                    'compressionSupported': fmcCompress
+                    'compression': parityGroupCompress,
+                    'compressionSupported': parityGroupCompress
                 },
                 {
                     'id': '1-2',
                     'encryption': false,
-                    'compression': fmcCompress,
-                    'compressionSupported': fmcCompress
+                    'compression': parityGroupCompress,
+                    'compressionSupported': parityGroupCompress
                 }
             ],
             'storageSystemId': '22000',
