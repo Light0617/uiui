@@ -11,7 +11,7 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumesAddCtrl', function ($scope, $routeParams, $timeout, $window, $filter,
                                                          orchestratorService, diskSizeService, viewModelService,
                                                          volumeService, synchronousTranslateService, paginationService,
-                                                         objectTransformService, ShareDataService, resourceTrackerService) {
+                                                         objectTransformService, ShareDataService, createVolumeService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
         var autoSelectedPoolId = ShareDataService.pop('autoSelectedPoolId');
@@ -88,24 +88,9 @@ angular.module('rainierApp')
                     return $scope.dataModel.createModel.volumesGroupsModel.isValid();
                 },
                 submit: function () {
-                    var volumes = volumesGroupsModel.mapToPayloads(volumesGroupsModel.getVolumeGroups(), autoSelectedPoolId);
-                    var payload = {
-                        storageSystemId: storageSystemId,
-                        volumes: volumes,
-                        virtualStorageMachineId: $scope.dataModel.vsm === noVirtualizeKey ? undefined : $scope.dataModel.vsm
-                    };
-
-                    // Build reserved resources
-                    var reservedResourcesList = [];
-                    _.forEach(volumes, function (vol) {
-                        if(vol.poolId !== null) {
-                            reservedResourcesList.push(vol.poolId + '=' + resourceTrackerService.storagePool());
-                        }
-                    });
-
-                    // Show popup if resource is present in resource tracker else submit
-                    resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                        'Create Volumes Confirmation', null, null, payload, orchestratorService.createVolumes);
+                    var volumes = volumesGroupsModel.mapToPayloads(
+                        volumesGroupsModel.getVolumeGroups(), autoSelectedPoolId);
+                    createVolumeService.validatePoolThenCreateVolumes(storageSystemId, volumes, $scope.dataModel.vsm);
                 }
 
             };

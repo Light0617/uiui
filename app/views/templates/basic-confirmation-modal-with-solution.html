@@ -1,0 +1,17 @@
+<div class="confirmation">
+    <div class="modal-header">
+        <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ confirmationTitle }}</h1>
+    </div>
+    <div class="modal-body">
+        <p>{{ confirmationMessageHeader }}</p>
+        <ul>
+            <li>{{ confirmationMessageSolution1 }}</li>
+            <li ng-if="confirmationMessageSolution2">{{ confirmationMessageSolution2 }}</li>
+        </ul>
+        <p>{{ confirmationMessageFooter }}</p>
+    </div>
+    <div class="modal-footer btn-group-confirm">
+        <button ng-if="cancelButtonLabel" type="button" class="btn btn-default" ng-click="cancel()">{{ cancelButtonLabel }}</button>
+        <button type="button" class="btn btn-default active" ng-click="ok()">{{ okButtonLabel }}</button>
+    </div>
+</div>
