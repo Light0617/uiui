@@ -12,6 +12,7 @@ angular.module('rainierApp')
                                               resourceTrackerService, $q, $modal, utilService) {
 
         var noVirtualizeKey = synchronousTranslateService.translate('no-virtualize');
+        var hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
 
         var createVolumes = function (storageSystemId, volumes, vsm) {
             var payload = {
@@ -34,7 +35,7 @@ angular.module('rainierApp')
                 'Create Volumes Confirmation', null, null, payload, orchestratorService.createVolumes);
         };
 
-        var warnUnmatchedCompressTechs = function (storageSystemId, volumes, vsm) {
+        var warnUnmatchedCompressTechs = function (okAction, storageSystemId, volumes, vsm) {
             var modelInstance = $modal.open({
                 templateUrl: 'views/templates/basic-confirmation-modal-with-solution.html',
                 windowClass: 'modal fade confirmation',
@@ -54,7 +55,7 @@ angular.module('rainierApp')
                     $scope.okButtonLabel = synchronousTranslateService.translate('common-label-ok');
 
                     $scope.ok = function () {
-                        createVolumes(storageSystemId, volumes, vsm);
+                        okAction.call({}, storageSystemId, volumes, vsm);
                         $scope.cancel();
                     };
 
@@ -69,47 +70,82 @@ angular.module('rainierApp')
             });
         };
 
+        var checkAnyPoolWhichAllPgsCompressionEnabled = function (storageSystemId, poolId) {
+            return orchestratorService.storagePool(storageSystemId, poolId).then(function (pool) {
+                var poolPgs = pool.parityGroups;
+                if (utilService.isNullOrUndef(poolPgs) || _.isEmpty(poolPgs)) {
+                    return;
+                }
+
+                var isAllOfPgCompressionSupported = _.every(poolPgs, function (poolPg) {
+                    return poolPg.compressionSupported;
+                });
+
+                if (isAllOfPgCompressionSupported) {
+                    hasAnyPoolWhichHasAllOfPgsCompressionSupported = true;
+                }
+            });
+        };
+
+        var pushPromises = function (storageSystemId, poolIds) {
+            var promises = [];
+            _.forEach(poolIds, function (poolId) {
+                promises.push(checkAnyPoolWhichAllPgsCompressionEnabled(storageSystemId, poolId));
+            });
+
+            return promises;
+        };
+
+        var createPromise = function(storageSystemId, volumes) {
+            var targetPoolIdsWithVolumeCompression = [];
+            _.forEach(volumes, function (vol) {
+                if(!utilService.isNullOrUndef(vol.poolId) && vol.dkcDataSavingType === 'COMPRESSION') {
+                    if (!_.contains(targetPoolIdsWithVolumeCompression, vol.poolId)) {
+                        targetPoolIdsWithVolumeCompression.push(vol.poolId);
+                    }
+                }
+            });
+
+            return pushPromises(storageSystemId, targetPoolIdsWithVolumeCompression);
+        };
+
+        var createPromiseForCreateAndAttach = function(storageSystemId, volumes) {
+            var targetPoolIdsWithVolumeCompression = [];
+            _.forEach(volumes, function (vol) {
+                if(!utilService.isNullOrUndef(vol.pool) && !utilService.isNullOrUndef(vol.pool.storagePoolId) &&
+                    vol.dataSavingTypeValue  === 'COMPRESSION') {
+                    if (!_.contains(targetPoolIdsWithVolumeCompression, vol.pool.storagePoolId)) {
+                        targetPoolIdsWithVolumeCompression.push(vol.pool.storagePoolId);
+                    }
+                }
+            });
+
+            return pushPromises(storageSystemId, targetPoolIdsWithVolumeCompression);
+        };
+
         return {
             createVolumes: createVolumes,
-            validatePoolThenCreateVolumes: function(storageSystemId, volumes, vsm) {
-                var targetPoolIdsWithVolumeCompression = [];
-                _.forEach(volumes, function (vol) {
-                    if(vol.poolId !== null && vol.dkcDataSavingType === 'COMPRESSION') {
-                        if (!_.contains(targetPoolIdsWithVolumeCompression, vol.poolId)) {
-                            targetPoolIdsWithVolumeCompression.push(vol.poolId);
-                        }
-                    }
-                });
-
-                var hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
-
-                var checkAnyPoolWhichAllPgsCompressionEnabled = function (poolId) {
-                    return orchestratorService.storagePool(storageSystemId, poolId).then(function (pool) {
-                        var poolPgs = pool.parityGroups;
-                        if (utilService.isNullOrUndef(poolPgs) || _.isEmpty(poolPgs)) {
-                            return;
-                        }
-
-                        var isAllOfPgCompressionSupported = _.every(poolPgs, function (poolPg) {
-                            return poolPg.compressionSupported;
-                        });
-
-                        if (isAllOfPgCompressionSupported) {
-                            hasAnyPoolWhichHasAllOfPgsCompressionSupported = true;
-                        }
-                    });
-                };
-
-                var promises = [];
-                _.forEach(targetPoolIdsWithVolumeCompression, function (poolId) {
-                    promises.push(checkAnyPoolWhichAllPgsCompressionEnabled(poolId));
-                });
+            validatePoolThenAction: function(okAction, storageSystemId, volumes) {
+                var promises = createPromiseForCreateAndAttach(storageSystemId, volumes);
+                hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
 
                 $q.all(promises).then(function () {
-                    if (!hasAnyPoolWhichHasAllOfPgsCompressionSupported) {
-                        createVolumes(storageSystemId, volumes, vsm);
+                    if (hasAnyPoolWhichHasAllOfPgsCompressionSupported) {
+                        warnUnmatchedCompressTechs(okAction, storageSystemId, volumes);
                     } else {
-                        warnUnmatchedCompressTechs(storageSystemId, volumes, vsm);
+                        okAction.call({});
+                    }
+                });
+            },
+            validatePoolThenCreateVolumes: function(storageSystemId, volumes, vsm) {
+                var promises = createPromise(storageSystemId, volumes);
+                hasAnyPoolWhichHasAllOfPgsCompressionSupported = false;
+
+                $q.all(promises).then(function () {
+                    if (hasAnyPoolWhichHasAllOfPgsCompressionSupported) {
+                        warnUnmatchedCompressTechs(createVolumes, storageSystemId, volumes, vsm);
+                    } else {
+                        createVolumes(storageSystemId, volumes, vsm);
                     }
                 });
             }
