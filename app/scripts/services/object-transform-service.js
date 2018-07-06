@@ -80,11 +80,14 @@ angular.module('rainierApp')
         };
 
         var formatVolumeId = function (id) {
-            if (utilService.isNullOrUndef(id)) {
+            if (utilService.isNullOrUndef(id) || parseInt(id) < 0) {
               return '';
             }
             if (typeof id === 'string' || id instanceof String) {
               id = parseInt(id);
+            }
+            if(_.isNaN(id)) {
+                return '';
             }
             var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
             var formatted = hexId.match(/.{1,2}/g).join(':');
