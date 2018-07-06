@@ -218,6 +218,9 @@
     "edit-iscsi-port-global-address": "Global Address",
     "edit-iscsi-port-ipv6-default-gateway": "IPv6 Default Gateway",
 
+    "discover-external-storages-confirmation": "Discover External Storages Confirmation",
+    "discover-external-storages-selected-content": "This request will scan the port to find all available external storage systems, Thus, it may take some time. Do you want to proceed?",
+
     "storage-port-fc-wwn": "WWN",
     "storage-port-fc-speed": "Speed",
     "storage-port-fc-fabric": "Fabric",
@@ -765,7 +768,7 @@
     "storage-pools-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Pools",
     "storage-ports-showing-x-of-y": "Showing {{filtered}} of {{total}} Ports",
     "storage-volumes-showing-x-of-y": "Showing {{filtered}} of {{total}} Volumes",
-    "discovered-luns-showing-x-of-y": "Showing {{filtered}} of {{total}} Discovered Luns",
+    "discovered-luns-showing-x-of-y": "Showing {{filtered}} of {{total}} Discovered Volumes",
     "fabric-switch-showing-x-of-y": "Showing {{filtered}} of {{total}} Fabric Switch",
     "parity-groups-showing-x-of-y": "Showing {{filtered}} of {{total}} Parity Groups",
     "external-parity-groups-showing-x-of-y": "Showing {{filtered}} of {{total}} External Parity Groups",
@@ -811,6 +814,7 @@
     "action-tooltip-edit-fibre-port" : "Edit Fibre Port",
     "action-tooltip-unvirtualize" : "Unvirtualize",
     "action-tooltip-attach-to-storage" : "Attach to Storage",
+    "action-tooltip-discover-external-storages": "Discover External Storages",
 
     "clone-now-tooltip" : "Clone now - Makes a point in time copy of the volume selected using Shadow Image technology",
     "full-copy-tooltip" : "Full Copy - Makes a continuous copy of the volumes selected using Shadow Image technology",

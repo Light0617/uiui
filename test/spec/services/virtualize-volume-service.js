@@ -21,20 +21,11 @@ describe('Service: virtualizeVolumeService tests', function () {
     describe('constructVirtualizePayload', function () {
         it('should return virtualize payload from dataModel', function () {
             var selected = {
-                externalPorts: [
-                    {
-                        storagePortId: 'CL66-B'
-                    },
-                    {
-                        storagePortId: 'CL25-B'
-                    }
-                ],
                 luns: [
                     {
-                        portId: 'CL10-B',
-                        wwn: '66A5763BAFE03799',
-                        lunId: 1,
-                        externalIscsiInformation: null
+                        externalDeviceId: 'HITACHI 50405F7702BC'
+                    }, {
+                        externalDeviceId: 'EMC 50405F7702BD'
                     }
                 ],
                 hostMode: 'LINUX',
@@ -45,10 +36,15 @@ describe('Service: virtualizeVolumeService tests', function () {
                     protocol: 'FIBRE'
                 }],
                 hostModeOptions: [999, 0],
-                enableZoning: false,
+                autoCreateZone: true,
                 paths: [
                     {
                         storagePortId: 'CL66-B',
+                        serverId: 197,
+                        serverEndPoint: '3054E1B674314999'
+                    },
+                    {
+                        storagePortId: 'CL25-B',
                         serverId: 198,
                         serverEndPoint: '3054E1B674315000'
                     },
@@ -60,21 +56,22 @@ describe('Service: virtualizeVolumeService tests', function () {
                 ]
             };
             var result = virtualizeVolumeService.constructVirtualizePayload(selected);
-            expect(result.hostMode).toEqual('LINUX');
-            expect(result.targetPorts[0]).toEqual('CL66-B');
-            expect(result.targetPorts[1]).toEqual('CL25-B');
             expect(result.storageSystemId).toEqual('510001');
-            expect(result.externalLuns[0].portId).toEqual('CL10-B');
-            expect(result.externalLuns[0].wwn).toEqual('66A5763BAFE03799');
-            expect(result.externalLuns[0].lunId).toEqual(1);
-            expect(result.hostModeOptions).toBeUndefined();
-            expect(result.enableZoning).toBeFalsy();
-            expect(result.serverInfos[0].serverId).toEqual(198);
-            expect(result.serverInfos[0].targetPortForHost).toEqual('CL66-B');
-            expect(result.serverInfos[0].serverWwns[0]).toEqual('3054E1B674315000');
-            expect(result.serverInfos[1].serverId).toEqual(198);
-            expect(result.serverInfos[1].targetPortForHost).toEqual('CL25-B');
-            expect(result.serverInfos[1].serverWwns[0]).toEqual('3054E1B674315000');
+            expect(result.attachExternalVolumeToServer.intendedImageType).toEqual('LINUX');
+            expect(result.attachExternalVolumeToServer.hostModeOptions).toBeUndefined();
+            expect(result.attachExternalVolumeToServer.enableZoning).toEqual(true);
+            expect(result.attachExternalVolumeToServer.ports.length).toEqual(3);
+            expect(result.attachExternalVolumeToServer.ports[0].portIds[0]).toEqual('CL66-B');
+            expect(result.attachExternalVolumeToServer.ports[0].serverId).toEqual(197);
+            expect(result.attachExternalVolumeToServer.ports[0].serverWwns[0]).toEqual('3054E1B674314999');
+            expect(result.attachExternalVolumeToServer.ports[1].portIds[0]).toEqual('CL25-B');
+            expect(result.attachExternalVolumeToServer.ports[1].serverId).toEqual(198);
+            expect(result.attachExternalVolumeToServer.ports[1].serverWwns[0]).toEqual('3054E1B674315000');
+            expect(result.attachExternalVolumeToServer.ports[2].portIds[0]).toEqual('CL25-B');
+            expect(result.attachExternalVolumeToServer.ports[2].serverId).toEqual(198);
+            expect(result.attachExternalVolumeToServer.ports[2].serverWwns[0]).toEqual('3054E1B674315000');
+            expect(result.externalDevices[0].externalDeviceId).toEqual('HITACHI 50405F7702BC');
+            expect(result.externalDevices[1].externalDeviceId).toEqual('EMC 50405F7702BD');
         });
     });
 });

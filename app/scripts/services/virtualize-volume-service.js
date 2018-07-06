@@ -28,43 +28,37 @@ angular.module('rainierApp')
             }
         };
 
-        var constructVirtualizePayload = function (selected) {
-            var serverProtocol = selected.hosts[0].protocol;
-            var payload = {
-                targetPorts: [],
-                serverInfos: [],
-                externalLuns: [],
-                storageSystemId: selected.storageSystem.storageSystemId,
-                enableZoning: selected.autoCreateZone,
-                hostMode: selected.hostMode,
-                hostModeOptions: createHostModeOptionsPayload(selected.hostModeOptions)
-            };
-
-            _.each(selected.externalPorts, function (port) {
-                payload.targetPorts.push(port.storagePortId);
-            });
-
-            payload.serverInfos = _.map(selected.paths, function (path) {
+        var constructExternalDevicesPayload = function (luns) {
+            return _.map(luns, function (lun) {
                 return {
-                    targetPortForHost: path.storagePortId,
-                    serverId: parseInt(path.serverId),
-                    serverWwns: serverProtocol === 'FIBRE' ? [path.serverEndPoint] : undefined,
-                    iscsiInitiatorNames: serverProtocol === 'ISCSI' ? [path.serverEndPoint] : undefined,
+                    externalDeviceId: lun.externalDeviceId
                 };
             });
+        };
 
-            _.each(selected.luns, function (lun) {
-                payload.externalLuns.push({
-                    portId: lun.portId,
-                    wwn: lun.wwn,
-                    lunId: lun.lunId,
-                    iscsiInfo: lun.externalIscsiInformation ? {
-                        ipAddress: lun.externalIscsiInformation.ipAddress,
-                        iscsiName: lun.externalIscsiInformation.iscsiName
-                    } : undefined
-                });
+        var constructPortsPayload = function (paths, protocol) {
+            return _.map(paths, function (path) {
+                return {
+                    serverId: parseInt(path.serverId),
+                    serverWwns: protocol === 'FIBRE' ? [path.serverEndPoint] : undefined,
+                    iscsiInitiatorNames: protocol === 'ISCSI' ? [path.serverEndPoint] : undefined,
+                    portIds: [path.storagePortId]
+                };
             });
-            return payload;
+        };
+
+        var constructVirtualizePayload = function (selected) {
+            var serverProtocol = selected.hosts[0].protocol;
+            return {
+                storageSystemId: selected.storageSystem.storageSystemId,
+                externalDevices: constructExternalDevicesPayload(selected.luns),
+                attachExternalVolumeToServer: {
+                    intendedImageType: selected.hostMode,
+                    hostModeOptions: createHostModeOptionsPayload(selected.hostModeOptions),
+                    enableZoning: selected.autoCreateZone,
+                    ports: constructPortsPayload(selected.paths, serverProtocol)
+                }
+            };
         };
 
         var extractCommonSourceStorageId = function (volumes) {

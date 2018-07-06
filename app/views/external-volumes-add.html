@@ -8,17 +8,7 @@
 
         <!-- STEPPER -->
         <wizard-advanced-stepper>
-            <wizard-advanced-stepper-button ng-title="'Select Ports'"
-                                            step-completed="dataModel.isStepCompleted('selectPorts')"
-                                            step-active="dataModel.isStepActive('selectPorts')">
-            </wizard-advanced-stepper-button>
-            <!--
-            <wizard-advanced-stepper-button ng-title="Select WWN / iSCSI"
-                                            step-completed="dataModel.isStepCompleted('selectEndPoints')"
-                                            step-active="dataModel.isStepActive('selectEndPoints')">
-            </wizard-advanced-stepper-button>
-            -->
-            <wizard-advanced-stepper-button ng-title="'Select Luns'"
+            <wizard-advanced-stepper-button ng-title="'Select Volumes'"
                                             step-completed="dataModel.isStepCompleted('selectLuns')"
                                             step-active="dataModel.isStepActive('selectLuns')">
             </wizard-advanced-stepper-button>
@@ -33,24 +23,8 @@
         </wizard-advanced-stepper>
 
         <!-- CONTENT -->
-        <wizard-single-panel-content ng-if="dataModel.isStepActive('selectPorts')"
-                                     ng-title="'Select Ports'"
-                                     ng-model="dataModel"
-                                     class="single-panel"
-                                     filter-model="filterModel"
-                                     panel-template="views/workflow-templates/select-ports-panel.html">
-        </wizard-single-panel-content>
-        <!--
-        <wizard-left-right-content ng-if="dataModel.isStepActive('selectEndPoints')"
-                                   class="virtualize-volume-wizard"
-                                   left-panel-template="views/workflow-templates/external-volumes-add-endpoints-left-panel.html"
-                                   right-panel-template="views/workflow-templates/external-volumes-add-endpoints-right-panel.html"
-                                   ng-model="dataModel.endpointsModel"
-                                   page-name="create-and-attach-volumes">
-        </wizard-left-right-content>
-        -->
         <wizard-single-panel-content ng-if="dataModel.isStepActive('selectLuns')"
-                                     ng-title="'Select Luns'"
+                                     ng-title="'Select Volumes'"
                                      ng-model="dataModel"
                                      class="single-panel"
                                      filter-model="filterModel"
@@ -73,14 +47,6 @@
     </wizard-body>
 
     <!-- FOOTER -->
-    <wizard-footer ng-if="dataModel.isStepActive('selectPorts')"
-                   ng-model="footerModel">
-    </wizard-footer>
-    <!--
-    <wizard-footer ng-if="dataModel.isStepActive('selectEndPoints')"
-                   ng-model="dataModel">
-    </wizard-footer>
-    -->
     <wizard-footer ng-if="dataModel.isStepActive('selectLuns')"
                    ng-model="footerModel">
     </wizard-footer>

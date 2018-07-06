@@ -260,8 +260,35 @@ angular.module('rainierApp')
                             item.storagePortId, 'edit-iscsi-port'
                         ].join('/'));
                     }
-                }
+                },
+                discoverExternalStoragesAction(dataModel)
             ];
+        };
+
+        var discoverExternalStoragesAction = function (dataModel) {
+            return {
+                icon: 'icon-view',
+                type: 'confirm',
+                tooltip: 'action-tooltip-discover-external-storages',
+                confirmTitle: 'discover-external-storages-confirmation',
+                confirmMessage: 'discover-external-storages-selected-content',
+                enabled: function () {
+                    if (!dataModel.anySelected()) {
+                        return false;
+                    }
+
+                    var isExternalPort = function (port) {
+                        return _.contains(port.attributes, 'External');
+                    };
+                    return _.chain(dataModel.getSelectedItems()).every(isExternalPort).value();
+                },
+                onClick: function () {
+                    var storagePortIds = _.map(dataModel.getSelectedItems(), function(port) { return port.storagePortId; });
+                    var storageSystemId = dataModel.getSelectedItems()[0].storageSystemId;
+                    var payload = {storagePortIds: storagePortIds};
+                    orchestratorService.discoverExternalDevices(storageSystemId, payload);
+                }
+            };
         };
 
         var getRawPortAttribute = function (displayPortAttribute) {
@@ -403,6 +430,7 @@ angular.module('rainierApp')
             fibreGridSettings: fibreGridSettings,
             getRawPortAttribute: getRawPortAttribute,
             iscsiActions: iscsiActions,
+            discoverExternalStoragesAction: discoverExternalStoragesAction,
             generateDataModel: generateDataModel,
             generateFilterModel: generateFilterModel,
             updateResultTotalCountsFn: updateResultTotalCountsFn,

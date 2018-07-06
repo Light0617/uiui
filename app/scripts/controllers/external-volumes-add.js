@@ -22,12 +22,10 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     portDiscoverService, virtualizeVolumeService
 ) {
     /**
-     * 1. initCommonAndPort
-     * 2. initPorts > next()
-     * 3. TBD: SCOPE DISCUSSING initWwns
-     * 4. previous() < initLuns  > next()
-     * 5. previous() < initServers  > next()
-     * 6. previous() < initPaths  > submit()
+     * 0. initCommonSettings
+     * 1. initLuns  > next()
+     * 2. previous() < initServers  > next()
+     * 3. previous() < initPaths  > submit()
      */
 
     /* UTILITIES */
@@ -48,11 +46,11 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     /* INITIALIZATION */
     var initCommonAndPort = function () {
         $scope.dataModel = viewModelService.newWizardViewModel([
-            'selectPorts', 'selectLuns', 'selectServers', 'selectPaths'
+            'selectLuns', 'selectServers', 'selectPaths'
         ]);
+        $scope.dataModel.view = 'tile';
         $scope.selected = {
             storageSystem: undefined,
-            externalPorts: [],
             protocol: undefined,
             luns: [],
             hosts: [],
@@ -65,7 +63,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
         var storageSystemId = extractStorageSystemId();
 
         setupStorageSystem(storageSystemId)
-            .then(initPorts)
+            .then(initDiscoveredLuns)
             .finally(stopSpinner);
     };
 
@@ -86,112 +84,34 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     /**
-     *  1. PORTS GET/SETUPS
+     * 1. LUNS
      */
-    var initPorts = function () {
-        return setupPortDataModelStatic()
-            .then(onProtocolChange);
-    };
-
-    var onProtocolChange = function () {
+    var initDiscoveredLuns = function () {
         startSpinner();
-        return getAndSetupPortDataModel($scope.selected.storageSystem, $scope.dataModel.selectedProtocol)
+        return orchestratorService.externalDevices($scope.selected.storageSystem.storageSystemId)
+            .then(externalVolumesAddService.validateGetLunsResult)
+            .then(extractLuns)
+            .then(setupLuns)
+            .then(externalVolumesAddService.validateMappedLunsResult)
+            .then(autoSelectLuns)
             .catch(externalVolumesAddService.openErrorDialog)
             .finally(stopSpinner);
     };
 
-    var setupPortDataModelStatic = function () {
-        return orchestratorService.storagePorts($scope.selected.storageSystem.storageSystemId).then(function (r) {
-            var staticProperties = {
-                protocolCandidates: externalVolumesAddService.getProtocolCandidates(),
-                onProtocolChange: onProtocolChange
-            };
-            if (r.resources && r.resources[0]) {
-                staticProperties.selectedProtocol = r.resources[0].type;
-            } else {
-                staticProperties.selectedProtocol = staticProperties.protocolCandidates[0].key;
-            }
-            _.extend($scope.dataModel, staticProperties);
-            return $scope.dataModel;
-        });
-    };
-
-    var getAndSetupPortDataModel = function (storageSystem, protocol) {
-        return externalVolumesAddService.getPortsModel(storageSystem, protocol)
-            .then(setupPortDataFilterFooterModel)
-            .then(function () {
-                externalVolumesAddService.setupSelectAllFunctionsDisplayList($scope.dataModel);
-                $scope.filterModel.filterQuery('attributes', 'EXTERNAL_INITIATOR_PORT').then(function () {
-                    if (protocol === 'FIBRE') {
-                        $scope.filterModel.filterQuery('securitySwitchEnabled', 'true');
-                    }
-                });
-                $scope.dataModel.sort.setSort(storagePortsService.idKey);
-                return true;
-            })
-            .then(function () {
-                return externalVolumesAddService.validateGetPortsResult($scope.dataModel.displayList);
-            });
-    };
-
-    var setupPortDataFilterFooterModel = function (portsModel) {
-        _.extend($scope.dataModel, portsModel.dataModel);
-        $scope.dataModel.sort.setSort = storagePortsService.generateSetSortFn($scope.dataModel);
-        $scope.dataModel.updateResultTotalCounts = externalVolumesAddService.updateResultTotalCountsFn($scope.dataModel);
-        $scope.footerModel = portsFooter($scope.dataModel);
-        $scope.filterModel = storagePortsService.generateFilterModel($scope.dataModel);
-        $scope.filterModel.hideSecuritySwitchFilter = true;
-        scrollDataSourceBuilderService.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
-        scrollDataSourceBuilderServiceNew.setupDataLoader($scope, portsModel.ports, 'storagePortSearch', true);
-
-        return true;
-    };
-
-    var portsFooter = function (dataModel) {
-        return {
-            validation: false,
-            canGoNext: function () {
-                return _.some(dataModel.displayList, externalVolumesAddService.filterSelected);
-            },
-            next: function () {
-                $scope.selected.externalPorts = _.filter(dataModel.displayList, externalVolumesAddService.filterSelected);
-                $scope.selected.protocol = $scope.dataModel.selectedProtocol;
-                initDiscoveredLuns()
-                    .then($scope.dataModel.goNext)
-                    .catch(externalVolumesAddService.openErrorDialog);
-            }
-        };
-    };
-
-    /**
-     * 3. LUNS
-     */
-    var initDiscoveredLuns = function () {
-        return externalVolumesAddService.openConfirmationDialog(
-            'This request will scan the port to find all available external LUNs.' +
-            ' Thus, it may take some time. Do you want to proceed?'
-        )
-            .then(function () {
-                startSpinner();
-                var portIds = _.map($scope.selected.externalPorts, 'storagePortId');
-                return portDiscoverService.discoverUnmanagedLuns(portIds, $scope.selected.storageSystem.storageSystemId)
-                    .then(externalVolumesAddService.validateGetLunsResult)
-                    .then(setupLuns)
-                    .then(autoSelectLuns)
-                    .finally(stopSpinner);
-            });
+    var extractLuns = function (result) {
+        return result.resources;
     };
 
     var setupLuns = function (lunsDataModel) {
         objectTransformService.transformDiscoveredLun(lunsDataModel);
-        lunsDataModel = _.sortBy(lunsDataModel, ['hwInfo', 'lunId']);
+        lunsDataModel = _.sortBy(lunsDataModel, ['mapped', 'externalDeviceId']);
         _.extend($scope.dataModel, externalVolumesAddService.getLunsDataModel(lunsDataModel));
         $scope.filterModel = undefined;
         $scope.footerModel = lunsFooter($scope.dataModel);
         scrollDataSourceBuilderServiceNew.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         scrollDataSourceBuilderService.setupDataLoader($scope, lunsDataModel, 'discoveredLunsSearch');
         externalVolumesAddService.setupSelectAllFunctionsFilteredList($scope.dataModel);
-        return true;
+        return lunsDataModel;
     };
 
     var autoSelectLuns = function () {
@@ -223,17 +143,12 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
                 initServers()
                     .then($scope.dataModel.goNext)
                     .catch(externalVolumesAddService.openErrorDialog);
-            },
-            previous: function () {
-                initPorts()
-                    .then($scope.dataModel.goBack)
-                    .catch(externalVolumesAddService.openErrorDialog);
             }
         };
     };
 
     /**
-     * 4. Servers
+     * 2. Servers
      */
     var initServers = function () {
         startSpinner();
@@ -303,7 +218,7 @@ angular.module('rainierApp').controller('ExternalVolumesAddCtrl', function (
     };
 
     /**
-     * 5. Paths
+     * 3. Paths
      */
     var initPaths = function () {
         startSpinner();
