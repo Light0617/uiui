@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .controller('StorageSystemVolumeUpdateCtrl', function ($scope, $routeParams, orchestratorService, diskSizeService,
-                                                           volumeService, resourceTrackerService) {
+                                                           volumeService, resourceTrackerService, createVolumeService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
@@ -28,14 +28,19 @@ angular.module('rainierApp')
 
             updatedModel.submit = function () {
                 var updateVolumePayload = buildUpdateVolumePayload(dataModel, updatedModel);
-                // Build reserved resources
-                var reservedResourcesList = [];
-                reservedResourcesList.push(volumeId + '=' + resourceTrackerService.volume());
-                reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
 
-                // Show popup if resource is present in resource tracker else submit
-                resourceTrackerService.showReservedPopUpOrSubmit(reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
-                    'Update Volume Confirmation', storageSystemId, volumeId, updateVolumePayload, orchestratorService.updateVolume);
+                createVolumeService.validatePoolForUpdateVolume(function () {
+                    // Build reserved resources
+                    var reservedResourcesList = [];
+                    reservedResourcesList.push(volumeId + '=' + resourceTrackerService.volume());
+                    reservedResourcesList.push(poolId + '=' + resourceTrackerService.storagePool());
+
+                    // Show popup if resource is present in resource tracker else submit
+                    resourceTrackerService.showReservedPopUpOrSubmit(
+                        reservedResourcesList, storageSystemId, resourceTrackerService.storageSystem(),
+                        'Update Volume Confirmation', storageSystemId, volumeId, updateVolumePayload,
+                        orchestratorService.updateVolume);
+                }, storageSystemId, updateVolumePayload.dkcDataSavingType, poolId);
             };
 
             updatedModel.canSubmit = function () {
