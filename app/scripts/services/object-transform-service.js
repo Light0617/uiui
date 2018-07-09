@@ -86,6 +86,9 @@ angular.module('rainierApp')
             if (typeof id === 'string' || id instanceof String) {
               id = parseInt(id);
             }
+            if (_.isNaN(id) || id < 0) {
+                return '';
+            }
             var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
             var formatted = hexId.match(/.{1,2}/g).join(':');
             return id + ' (' + formatted + ')';
