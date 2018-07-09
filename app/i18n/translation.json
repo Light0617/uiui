@@ -398,6 +398,10 @@
     "virtual-volume-id": "Virtual Volume Id",
     "quorum-Id": "Quorum Id",
     "open-gad-pairs": "Open GAD Pairs",
+    "physical-storage-system-summary-resource": "Resource",
+    "physical-storage-system-summary-defined": "Defined",
+    "physical-storage-system-summary-undefined": "Undefined",
+    "physical-storage-system-summary-info": "Additional Info",
 
     "gad-pairs": "GAD pairs",
     "gad-display-type": "GAD",
