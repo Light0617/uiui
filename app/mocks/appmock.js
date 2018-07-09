@@ -14,7 +14,7 @@ rainierAppMock.run(function(
     serversMock, volumeMock, filePoolMock, evsMock, fileSystemMock, sharesMock, exportsMock, tiersMock,
     filePoolTemplateMock, filePoolExpandTemplateMock, unifiedReportingMock, clusterMock, ethernetInterfaceMock, tierSummaryMock, savingsSummaryMock,
     parityGroupMock, storagePortsMock, externalParityGroupMock, storagePoolTemplateMock, diskMock, parityGroupTemplateMock,
-    replicationgroupmock, volumepairmock, virtualStorageMachineMock, physicalStorageSystemInVsmMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
+    replicationgroupmock, volumepairmock, virtualStorageMachineMock, fabricmock, licensemock, monitorCapacityMock, monitorHardwareMock,
     monitorHardwareMockById, monitorCapacityMockById, resourceTrackerMock, hostModeOptionsMock, hostGroupsMock, volumeManagerMock,
     migrationTaskMock, rainierJobsMock, discoverLunMock, externalVolumesMock, externalDevicesMock
 
@@ -50,7 +50,6 @@ rainierAppMock.run(function(
     replicationgroupmock.init();
     volumepairmock.init();
     virtualStorageMachineMock.init();
-    physicalStorageSystemInVsmMock.init();
     fabricmock.init();
     serversMock.init();
     migrationTaskMock.init();
@@ -171,7 +170,7 @@ rainierAppMock.run(function(
             case 'monitoring':
                 return monitorGroupSwitcher(urlResult);
             case 'virtual-storage-machines':
-                return virtualStorageMachineSwitcher(urlResult);
+                return authMock.authenticateAndCall(urlResult, virtualStorageMachineMock.handle);
             case 'resource-tracker':
                 return resourceTrackerReservedResources(urlResult);
             case 'volume-manager':
@@ -213,14 +212,6 @@ rainierAppMock.run(function(
         switch(urlResult.resourceId) {
             case 'tiers':
                 return authMock.authenticateAndCall(urlResult, tiersMock.handle);
-        }
-    };
-
-    var virtualStorageMachineSwitcher = function(urlResult) {
-        if(urlResult.subType){
-            return authMock.authenticateAndCall(urlResult, physicalStorageSystemInVsmMock.handle);
-        }else{
-            return authMock.authenticateAndCall(urlResult, virtualStorageMachineMock.handle);
         }
     };
 
