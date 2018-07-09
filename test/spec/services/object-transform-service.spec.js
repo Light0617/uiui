@@ -8,7 +8,7 @@
 
 'use strict';
 
-describe('Service: virtualizeVolumeService tests', function () {
+describe('Service: objectTransformService tests', function () {
     var objectTransformService;
 
     beforeEach(function () {
