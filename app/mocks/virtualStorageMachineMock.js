@@ -12,11 +12,11 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
         }
     };
 
-    var generateVirtualStorageMachines = function (v) {
-        var virtualStorageSystemId = '41000' + v;
-        var physicalStorageSystemId = '41000' + _.random(1, 20);
+    var generateVirtualStorageMachines = function () {
+        // var virtualStorageSystemId = '41000' + v;
+        // var physicalStorageSystemId = '41000' + _.random(1, 20);
         return {
-            virtualStorageMachineId: '6cad-a341-ac61-90a5',
+            virtualStorageMachineId: '220063-HM800',
             storageSystemId: '220063',
             model: 'HM800',
             pairHACount: _.random(1, 50),

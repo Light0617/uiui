@@ -7,7 +7,12 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
         var total = 64;
 
         while (total-- !== 0) {
-            var mockStorageSystem = generateMockStorageSystem(total);
+            var mockStorageSystem;
+            if (mockUtils.randomInt(0, 2) > 0) {
+                mockStorageSystem = generateMockStorageSystem(total);
+            } else {
+                mockStorageSystem = generateMockStorageSystemWithoutSvp(total);
+            }
             storageSystems.push(mockStorageSystem);
         }
     };
@@ -22,11 +27,11 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'storageSystemId': '2200' + v,
             'storageSystemName': 'Storage' + v,
             'unified': mockUtils.trueOrFalse(),
-            'model': 'VSP G1000',
+            'model': 'VSP G1500',
             'svpIpAddress': '10.20.90.1' + v,
             'gum1IpAddress': '10.20.90.2' + v,
             'gum2IpAddress': '10.20.90.3' + v,
-            'firmwareVersion': 'v1.0',
+            'firmwareVersion': '80-06-40-00/02',
             'horcmVersion': 'v1.0',
             'cacheCapacity': mockUtils.getCapacity(400, 600),
             'totalUsableCapacity': total,
@@ -39,8 +44,23 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'unusedDisksCapacity': mockUtils.getCapacity(200, 1000),
             'accessible': true,
             'gadSummary': _.sample(['Incomplete', 'Not Available']),
-            'migrationTaskCount': _.sample([0, 10, 30, 120])
+            'migrationTaskCount': _.sample([0, 10, 30, 120]),
+            'primaryGumNumber': null,
+            'username': 'maintenance'
         };
+    };
+
+    var generateMockStorageSystemWithoutSvp = function(v) {
+        var mock = generateMockStorageSystem(v);
+        var specificElementsWithoutSvp = {
+            'storageSystemName': 'SVP-less Storage' + v,
+            'svpIpAddress': null,
+            'primaryGumNumber': _.sample([1, 2]),
+            'model': 'VSP G900',
+            'unified': false,
+            'firmwareVersion': '88-02-01-60/00'
+        };
+        return angular.extend(mock, specificElementsWithoutSvp);
     };
 
     var handleGetRequest = function (urlResult){

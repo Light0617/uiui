@@ -32,8 +32,11 @@
         <input class="form-control"
                placeholder="{{'The range is between: '+ dataModel.placeholder}}"
                ng-model="dataModel.serialNumber"
+               validate-serial-number required
                ng-disabled="!dataModel.getSelectedItems().length > 0">
         </input>
+        <p ng-show="dataModel.validationForm.serialNumber.$error.number"
+           class="validation-text">{{'file-server-invalid-ip' | translate }}</p>
     </div>
 
     <!-- Storage System -->

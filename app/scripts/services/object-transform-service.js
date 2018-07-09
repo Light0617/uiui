@@ -162,18 +162,23 @@ angular.module('rainierApp')
         function transformStorageSystemSettings(item) {
             var result = [];
 
-            result.push(storageNavigatorSessionService.getNavigatorSessionAction(
-                item.storageSystemId, sessionScopeEncryptionKeys));
+            var hasSvpIpAddress = !utilService.isNullOrUndef(item.svpIpAddress);
+            if (hasSvpIpAddress) {
+                result.push(storageNavigatorSessionService.getNavigatorSessionAction(
+                    item.storageSystemId, sessionScopeEncryptionKeys));
+            }
 
             if (constantService.isHM850Series(item.model)) {
                 result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
             }
 
-            result.push({
-                type: 'hyperlink',
-                title: 'storage-system-launch-hdvm',
-                href: item.hdvmSnLaunchUrl
-            });
+            if (hasSvpIpAddress) {
+                result.push({
+                    type: 'hyperlink',
+                    title: 'storage-system-launch-hdvm',
+                    href: item.hdvmSnLaunchUrl
+                });
+            }
 
             return result;
         }
@@ -306,11 +311,25 @@ angular.module('rainierApp')
                 transformHdvmSnLaunchUrl(item);
 
                 item.firmwareVersionIsSupported = versionService.isStorageSystemVersionSupported(item.firmwareVersion);
+                item.ipAddress = item.svpIpAddress;
+
+                if (utilService.isNullOrUndef(item.svpIpAddress)) {
+                    switch (item.primaryGumNumber) {
+                        case 1:
+                            item.ipAddress = item.gum1IpAddress;
+                            break;
+                        case 2:
+                            item.ipAddress = item.gum2IpAddress;
+                            break;
+                        default:
+                    }
+                }
+
                 item.metaData = [
                     {
                         left: true,
                         title: item.storageSystemName,
-                        details: [item.storageSystemId, item.svpIpAddress]
+                        details: [item.storageSystemId, item.ipAddress]
                     },
                     {
                         left: false,
@@ -489,11 +508,11 @@ angular.module('rainierApp')
                 }
             },
             transformVirtualStorageMachine: function (item) {
-                item.noSelection = true;
+                item.noSelection = false;
                 item.metaData = [
                     {
                         left: true,
-                        title: item.storageSystemId,
+                        title: item.virtualStorageMachineId,
                         details: [item.model]
                     }
                 ];
@@ -520,7 +539,6 @@ angular.module('rainierApp')
                 item.itemIcon = storageSystemIcon(item);
                 item.onClick = storageSystemOnClick(item);
                 transformHdvmSnLaunchUrl(item);
-                item.hdvmSnLaunchUrl;
                 item.displayLinks = [
                     {
                         onClick: function() {
