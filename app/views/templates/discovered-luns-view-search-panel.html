@@ -8,6 +8,15 @@
 <h3 class="eightyPercentWidth"> {{ 'discovered-luns-showing-x-of-y' | translate:dataModel.itemCounts}}</h3>
 
 <div class="control-group">
+    <select id="mapped"
+            class="inline btn-group-justified"
+            ng-model="dataModel.search.mapped"
+            ng-options="mappedValue for mappedValue in dataModel.mappedCandidates">
+        <option value="" selected>Select Mapped Status</option>
+    </select>
+</div>
+
+<div class="control-group">
     <select id="vendor"
             class="inline btn-group-justified"
             ng-model="dataModel.search.vendor"

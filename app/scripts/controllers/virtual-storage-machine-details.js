@@ -94,7 +94,6 @@ angular.module('rainierApp')
         var generateDataModel = function (result) {
             var dataModel = {
                 title: synchronousTranslateService.translate('common-virtual-storage-machine') + ' ' + $routeParams.virtualStorageMachineId,
-                onlyOperation: true,
                 view: 'tile',
                 nextToken: result.nextToken,
                 total: result.total,
@@ -148,10 +147,40 @@ angular.module('rainierApp')
         var initModel = function () {
             getResources().then(function (result) {
                 $scope.dataModel = generateDataModel(result);
+                var dataModel = $scope.dataModel;
                 scrollDataSourceBuilderService.setupDataLoader(
                     $scope, result.resources, 'virtualStorageMachineDetailsSearch'
                 );
                 $scope.summaryModel = generateSummaryModel(ShareDataService.virtualStorageMachine);
+                var actions = [
+                    {
+                        icon: 'icon-delete',
+                        tooltip :'action-tooltip-delete',
+                        type: 'confirm',
+                        confirmTitle: 'storage-system-delete-confirmation',
+                        confirmMessage: 'storage-system-delete-selected-content',
+                        enabled: function () {
+                            return dataModel.anySelected();
+                        },
+                        onClick: function () {
+                            //TODO
+                        }
+                    },
+                    {
+                        icon: 'icon-edit',
+                        tooltip: 'action-tooltip-edit',
+                        type: 'link',
+                        enabled: function () {
+                            return dataModel.onlyOneSelected();
+                        },
+                        onClick: function () {
+                            //TODO
+                        }
+                    }
+                ];
+                $scope.dataModel.getActions = function () {
+                    return  actions;
+                };
             });
         };
 

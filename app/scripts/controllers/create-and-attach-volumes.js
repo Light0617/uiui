@@ -21,7 +21,8 @@ angular.module('rainierApp')
                                                         cronStringConverterService, attachVolumeService, replicationService,
                                                         volumeService, constantService, storageSystemCapabilitiesService,
                                                         synchronousTranslateService, $location, $timeout,
-                                                        editChapService, validatePortTypeService, $q, $modal) {
+                                                        editChapService, validatePortTypeService, $q, $modal,
+                                                        createVolumeService) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -484,7 +485,9 @@ angular.module('rainierApp')
 
                 var selectedVolumes = volumesGroupsModel.getVolumeGroups();
                 attachModel.selectedVolumes = selectedVolumes;
-                $scope.dataModel.goNext();
+
+                createVolumeService.validatePoolsForCreateAttachProtect($scope.dataModel.goNext,
+                    attachModel.selectedStorageSystem.storageSystemId, attachModel.selectedVolumes);
             };
             createModel.canGoNext = function() {
                 return volumesGroupsModel.isValid();

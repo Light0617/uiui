@@ -18,7 +18,7 @@
 angular.module('rainierApp').factory('externalVolumesAddService', function (
     $q, $modal, $window, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
     paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew,
-    constantService, attachVolumeService, queryService
+    constantService, attachVolumeService, queryService, utilService
 ) {
 
     /**
@@ -92,7 +92,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
     };
 
     var filterSelected = function (i) {
-        return i.selected;
+        return i.selected && !i.mapped;
     };
 
     var updateResultTotalCountsFn = function (dataModel) {
@@ -192,25 +192,40 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         var serialNumbers = _.chain(luns).map(function (l) {
             return l.serialNumber;
         }).uniq().value();
+        var mappedCandidates = ['YES', 'NO'];
         return {
             displayList: luns,
             cachedList: luns,
             vendors: vendors,
             serialNumbers: serialNumbers,
+            mappedCandidates: mappedCandidates,
             search: {
                 freeText: '',
                 vendor: '',
-                serialNumber: ''
+                serialNumber: '',
+                mapped: ''
             },
             sort: {}
         };
     };
 
-    var validateGetLunsResult = function (luns) {
-        if (!luns.length) {
-            return $q.reject({message: 'There are no available luns discovered from selected ports.'});
+    var validateGetLunsResult = function (result) {
+        if (!utilService.isNullOrUndef(result.resources) && result.resources.length) {
+            return result;
         }
-        return luns;
+        return $q.reject({message: 'There are no available discovered volumes.'});
+    };
+
+    var validateMappedLunsResult = function (resources) {
+        var anyUnmapped = _.any(resources, function (resource) {
+            return !resource.mapped;
+        });
+        if (anyUnmapped) {
+            return resources;
+        } else {
+            return $q.reject({message: 'There are no available discovered volumes. ' +
+                'Please discover external volumes from the storage ports view.'});
+        }
     };
 
     /**
@@ -450,6 +465,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         /** LUNS */
         getLunsDataModel: getLunsDataModel,
         validateGetLunsResult: validateGetLunsResult,
+        validateMappedLunsResult: validateMappedLunsResult,
         /** SERVERS */
         GET_HOSTS_PATH: GET_HOSTS_PATH,
         getHostsModel: getHostsModel,

@@ -523,7 +523,7 @@ angular.module('rainierApp')
                 };
             },
             transformVSMStorageSystems: function (item) {
-                item.noSelection = true;
+                item.noSelection = false;
                 item.metaData = [
                     {
                         left: true,
@@ -537,17 +537,21 @@ angular.module('rainierApp')
                     }
                 ];
                 item.itemIcon = storageSystemIcon(item);
-                item.onClick = storageSystemOnClick(item);
-                transformHdvmSnLaunchUrl(item);
+                item.onClick = function () {
+                    var path = $location.path();
+                    $location.path([path, 'physical-storage-system', item.storageSystemId].join('/'));
+                }
+
                 item.displayLinks = [
                     {
                         onClick: function() {
-                            $window.open(item.hdvmSnLaunchUrl);
+                            return $location.path(['storage-systems', item.storageSystemId].join('/'));
                         },
                         icon: 'icon-storage-navigator-settings',
-                        label: synchronousTranslateService.translate('storage-system-launch-hdvm')
+                        label: synchronousTranslateService.translate('storage-system-detail-launch')
                     }
                 ];
+
             },
             transformGadPair: function (item) {
                 if (item.primary) {
@@ -953,48 +957,59 @@ angular.module('rainierApp')
             },
             transformDiscoveredLun: function(items){
                 _.each(items, function(i){
-                    if(i.externalIscsiInformation) {
-                        i.wwn = undefined;
-                    } else {
-                        i.displayWwn = wwnService.appendColon(i.wwn);
-                    }
+                    i.serialNumber = i.externalStorageSystemInformation.serialNumber;
+                    i.vendorId = i.externalStorageSystemInformation.vendorId;
+                    i.productId = i.externalStorageSystemInformation.productId;
 
                     i.hwInfo = [i.vendorId, i.productId, i.serialNumber];
                     i.hwInfo = _.filter(i.hwInfo, function (v) {
                         return !utilService.isNullOrUndef(v);
                     }).join(' ');
 
-                    // iscsi
-                    if (i.externalIscsiInformation) {
-                        var iscsi = i.externalIscsiInformation;
-                        i.ipAddress = iscsi.ipAddress;
-                        i.iscsiName = iscsi.iscsiName;
+                    if(i.externalPaths && i.externalPaths.length) {
+                        i.portIds = [];
+                        i.endPoints = [];
+                        i.externalLuns = [];
+                        _.forEach(i.externalPaths, function(path) {
+                            i.portIds.push(path.portId);
+                            i.externalLuns.push(path.externalLun);
+                           if(i.externalIscsiInformation) {
+                               i.endPoints.push(
+                                   path.externalIscsiInformation.iscsiName +
+                                   path.externalIscsiInformation.ipAddress
+                               );
+                           } else {
+                               i.endPoints.push(wwnService.appendColon(path.externalWwn));
+                           }
+                        });
                     }
 
                     var properties = [
-                        i.hwInfo, i.lunId, i.portId, i.ipAddress,
-                        i.iscsiName, i.wwn, i.displayWwn, i.eVolIdC
+                        i.hwInfo, i.externalDeviceId, i.productId, i.portIds.join(' '),
+                        i.endPoints.join(' '),
                     ];
 
                     var searchKey = _.filter(properties, function (i) {
-                        return !utilService.isNullOrUndef(i);
+                        return !utilService.isNullOrUndef(i) && i.length;
                     }).join(' ');
 
                     i.searchKey = searchKey;
-                    i.itemIcon = 'icon-manage';
-                    i.capacity = diskSizeService.getDisplaySize(i.capacity);
+                    i.capacity = diskSizeService.getDisplaySize(i.size);
                     i.displayCapacity = i.capacity.size + ' ' + i.capacity.unit;
+                    i.displayMappedValue = 'Mapped: ' + (i.mapped ? 'YES' : 'NO');
+                    i.displayExternalLuns = 'Lun Ids: ' + i.externalLuns.join(', ');
+                    i.disabledCheckBox = i.mapped;
 
                     i.metaData = [
                         {
                             left: true,
-                            title: i.lunId,
-                            details: [i.portId, i.displayCapacity, i.displayWwn, i.iscsiName, i.ipAddress]
+                            title: i.externalDeviceId,
+                            details: [i.hwInfo, i.displayCapacity, i.displayMappedValue]
                         },
                         {
                             left: false,
-                            title: i.hwInfo,
-                            details: [i.eVolIdC]
+                            title: i.portIds.join(', '),
+                            details: [i.endPoints.join(', '), i.displayExternalLuns]
                         }
                     ];
                 });

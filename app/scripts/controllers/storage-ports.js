@@ -132,8 +132,9 @@ angular.module('rainierApp')
                 dataModel.showPortAttributeFilter = storageSystemCapabilitiesService.supportPortAttribute($scope.storageSystemModel);
                 dataModel.chartData = $scope.summaryModel.chartData;
                 var editFibrePortAction = generateEditFibrePortAction(dataModel);
+                var discoverExternalStoragesAction = storagePortsService.discoverExternalStoragesAction(dataModel);
                 dataModel.getActions = function () {
-                    return [editFibrePortAction];
+                    return [editFibrePortAction, discoverExternalStoragesAction];
                 };
                 $scope.dataModel = dataModel;
                 $scope.dataModel.updateResultTotalCounts = storagePortsService.updateResultTotalCountsFn(dataModel);

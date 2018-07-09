@@ -35,6 +35,12 @@ angular.module('rainierApp')
                     return item.serialNumber === search.serialNumber;
                 });
             }
+            if (search && search.mapped && search.mapped.length) {
+                var filterValue = search.mapped === 'YES';
+                filtered = _.filter(filtered, function (item) {
+                    return item.mapped === filterValue;
+                });
+            }
             return filtered;
         };
     });

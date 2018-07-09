@@ -218,6 +218,9 @@
     "edit-iscsi-port-global-address": "Global Address",
     "edit-iscsi-port-ipv6-default-gateway": "IPv6 Default Gateway",
 
+    "discover-external-storages-confirmation": "Discover External Storages Confirmation",
+    "discover-external-storages-selected-content": "This request will scan the port to find all available external storage systems, Thus, it may take some time. Do you want to proceed?",
+
     "storage-port-fc-wwn": "WWN",
     "storage-port-fc-speed": "Speed",
     "storage-port-fc-fabric": "Fabric",
@@ -335,6 +338,11 @@
     "storage-volume-unprotected": "Unprotected",
     "storage-volume-not-protected": "This volume is not protected.",
     "storage-volumes-add": "Create Volumes",
+    "storage-volumes-add-unmatched-compress-techs": "Unmatched Compress Technologies",
+    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, the following solutions are recommended before creating the volume.",
+    "storage-volumes-add-unmatched-compress-techs-message-solution1": "Enable FMD Compression for all FMD drives in target Pool",
+    "storage-volumes-add-unmatched-compress-techs-message-solution2": "Select 'No' for 'Capacity Saving' for Volume in this wizard",
+    "storage-volumes-add-unmatched-compress-techs-message-footer": "Do you want to proceed?",
     "storage-volume-update": "Update Volume",
     "storage-volume-update-expand": "Expand Volume",
     "storage-volume-update-storage-system": "Storage System",
@@ -581,6 +589,7 @@
     "storage-system-launch-hdvm": "Launch HDvM-SN",
     "storage-system-launch-hsae": "Launch Storage Advisor Embedded",
     "storage-system-launch-smu": "Launch HNAS SMU",
+    "storage-system-detail-launch": "Go To Storage System Details",
     "storage-system-settings": "Initial Setup Wizard (Settings)",
     "storage-systems-update": "Update Storage System",
     "storage-system-launch-security": "Configure Encryption",
@@ -769,7 +778,7 @@
     "storage-pools-showing-x-of-y": "Showing {{filtered}} of {{total}} Storage Pools",
     "storage-ports-showing-x-of-y": "Showing {{filtered}} of {{total}} Ports",
     "storage-volumes-showing-x-of-y": "Showing {{filtered}} of {{total}} Volumes",
-    "discovered-luns-showing-x-of-y": "Showing {{filtered}} of {{total}} Discovered Luns",
+    "discovered-luns-showing-x-of-y": "Showing {{filtered}} of {{total}} Discovered Volumes",
     "fabric-switch-showing-x-of-y": "Showing {{filtered}} of {{total}} Fabric Switch",
     "parity-groups-showing-x-of-y": "Showing {{filtered}} of {{total}} Parity Groups",
     "external-parity-groups-showing-x-of-y": "Showing {{filtered}} of {{total}} External Parity Groups",
@@ -815,6 +824,7 @@
     "action-tooltip-edit-fibre-port" : "Edit Fibre Port",
     "action-tooltip-unvirtualize" : "Unvirtualize",
     "action-tooltip-attach-to-storage" : "Attach to Storage",
+    "action-tooltip-discover-external-storages": "Discover External Storages",
 
     "clone-now-tooltip" : "Clone now - Makes a point in time copy of the volume selected using Shadow Image technology",
     "full-copy-tooltip" : "Full Copy - Makes a continuous copy of the volumes selected using Shadow Image technology",
@@ -1112,7 +1122,7 @@
     "clone-tooltip": "Clone – ShadowImage (SI)",
 
     "data-reduction-savings-ratio": "Data Reduction",
-    "capacity-efficiency-savings-ratio": "Capacity Efficiency",
+    "capacity-efficiency-savings-ratio": "Total Efficiency",
 
     "shred-volumes": "Shred Volumes",
     "shred-volumes-wizard-title": "Shredding Algorithm",
@@ -1225,8 +1235,6 @@
     "workflow-title-select-ports": "Select Ports",
     "workflow-title-select-discovered-volumes": "Select Discovered Luns",
     "workflow-title-select-server": "Select Server",
-    "workflow-title-create-paths": "Create Paths",
-    "capacity-efficiency-savings-ratio": "Capacity Efficiency",
     "attach-to-storage-no-ports-title": "Unavailable Storage or Protocol",
     "attach-to-storage-no-ports-message": "The port of the selected protocol does not exist on the target storage system. Select a different target storage system or a different protocol.",
 
