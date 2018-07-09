@@ -665,6 +665,11 @@ angular
                 },
                 helpContext: 'R_VSM_INVENTORY'
             })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/physical-storage-systems/:physicalStorageSystemId', {
+                templateUrl: 'views/physical-storage-system-in-vsm.html',
+                controller: 'PhysicalStorageSystemInVsmCtrl',
+                helpContext: 'R_VSM_INVENTORY'
+            })
             .when('/fabric-switches/add', {
                 templateUrl: 'views/fabric-switch-add.html',
                 controller: 'FabricSwitchAddCtrl',
