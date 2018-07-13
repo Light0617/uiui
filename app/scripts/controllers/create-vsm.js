@@ -31,14 +31,44 @@ angular.module('rainierApp')
 
 
              var dataModel = {
-                view: 'tile',
-                hasFileUsageBar: hasFileUsageBar,
-                displayList: result,
-                sameModelSelection: false,
-                selectedVirtualModel: {},
-                validationForm: {
-                    serialNumber: ''
+                 view: 'tile',
+                 hasFileUsageBar: hasFileUsageBar,
+                 displayList: result,
+                 sameModelSelection: false,
+                 selectedVirtualModel: {},
+                 virtualModelCandidates: ['VSP_F900'],
+                 virtualModel: {},
+                 subTitle: 'Add Volume Ids From Each Storage Systems',
+                 validationForm: {
+                     serialNumber: ''
+                 },
+                 getPorts: [],
+                 hostGroupsModel: {1:1},
+                 setStorageSystems: function (ss) {
+                     var getSelectedItems = dataModel.getSelectedItems();
+                     var index = _.indexOf(getSelectedItems, ss);
+                     var selectedStorageSystem = getSelectedItems[index];
+                     getSelectedItems.splice(index, 1);
+                     getSelectedItems.unshift(selectedStorageSystem);
+                     dataModel.getSelectedItems = function() {
+                         return getSelectedItems;
+                     };
+
+                     orchestratorService.storagePorts(ss.storageSystemId).then(function(result) {
+                         dataModel.getPorts = result.resources;
+                     });
+
+               },
+
+                setStoragePort: function (sp) {
+                    var getPorts = dataModel.getPorts;
+                    var index = _.indexOf(getPorts, sp);
+                    var selectedPort = getPorts[index];
+                    getPorts.splice(index, 1);
+                    getPorts.unshift(selectedPort);
+                    dataModel.getPorts = getPorts;
                 },
+
                 canGoNext: function () {
                     return true;
                 },
@@ -53,6 +83,9 @@ angular.module('rainierApp')
                     }
 
 
+                },
+                previous: function() {
+                    dataModel.goBack();
                 },
                 search: {
                     freeText: '',
@@ -84,7 +117,7 @@ angular.module('rainierApp')
                 }
             };
 
-            angular.extend(dataModel, viewModelService.newWizardViewModel(['addPhysicalStorageSystems', 'addVolumes', 'addHostGroups']));
+            angular.extend(dataModel, viewModelService.newWizardViewModel(['addPhysicalStorageSystems', 'addVolumesToVsm', 'addHostGroupsToVsm']));
 
             dataModel.VirtualModelCandidates = constantService.virtualModelOptions();
 
@@ -190,8 +223,30 @@ angular.module('rainierApp')
         }, true);
 
 
-    })
+        $scope.$watch('dataModel.getPorts' , function () {
+            var hostGroupsModel = {
+                hostGroups: [],
+                add: function () {
+                    var storageSystemId = $scope.dataModel.getSelectedItems()[0].storageSystemId;
+                    var storagePortId = $scope.dataModel.getPorts[0].storagePortId;
+                    var numberOfHostGroups = $scope.dataModel.numberOfHostGroups;
+                    hostGroupsModel.hostGroups.push({
+                        storageSystemId: storageSystemId,
+                        storagePortId: storagePortId,
+                        numberOfHostGroups: numberOfHostGroups
+                    });
+                },
+            };
+            $scope.dataModel.hostGroupsModel = hostGroupsModel;
+            console.log('storage pot id is : ', $scope.dataModel.hostGroupsModel);
+        });
 
+
+    });
+
+
+
+    /** text validation
     .directive('validateSerialNumber', function(validateIpService) {
         return {
             restrict: 'A',
@@ -227,3 +282,4 @@ angular.module('rainierApp')
             }
         };
     });
+     **/

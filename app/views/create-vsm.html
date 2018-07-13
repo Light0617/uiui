@@ -9,9 +9,17 @@
 
     <wizard-body>
         <wizard-advanced-stepper>
-        <wizard-advanced-stepper-button ng-title="'add-physical-storage-systems' | translate"
-            step-completed="dataModel.isStepCompleted('add-physical-storage-systems')"
-            step-active="dataModel.isStepActive('addPhysicalStorageSystems')"></wizard-advanced-stepper-button>
+            <wizard-advanced-stepper-button ng-title="'add-physical-storage-systems' | translate"
+                step-completed="dataModel.isStepCompleted('addPhysicalStorageSystems')"
+                step-active="dataModel.isStepActive('addPhysicalStorageSystems')"></wizard-advanced-stepper-button>
+
+            <wizard-advanced-stepper-button ng-title="'add-volumes-to-vsm' | translate"
+                step-completed="dataModel.isStepCompleted('addVolumesToVsm')"
+                step-active="dataModel.isStepActive('addVolumesToVsm')"></wizard-advanced-stepper-button>
+
+            <wizard-advanced-stepper-button ng-title="'add-host-groups-to-vsm' | translate"
+                step-completed="dataModel.isStepCompleted('addHostGroupsToVsm')"
+                step-active="dataModel.isStepActive('addHostGroupsToVsm')"></wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('addPhysicalStorageSystems')"
@@ -22,11 +30,35 @@
             page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
+        <wizard-left-right-content ng-if="dataModel.isStepActive('addVolumesToVsm')"
+           ng-title="dataModel.subTitle"
+           class="virtualize-volume-wizard"
+           left-panel-template="views/workflow-templates/add-volumes-to-vsm-left-panel.html"
+           right-panel-template="views/workflow-templates/add-volumes-to-vsm-right-panel.html"
+           ng-model="dataModel"
+           page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
+
+        <wizard-left-right-content ng-if="dataModel.isStepActive('addHostGroupsToVsm')"
+           class="virtualize-volume-wizard"
+           left-panel-template="views/workflow-templates/add-host-groups-to-vsm-left-panel.html"
+           right-panel-template="views/workflow-templates/add-host-groups-to-vsm-right-panel.html"
+           ng-model="dataModel"
+           page-name="create-and-attach-volumes">
+        </wizard-left-right-content>
     </wizard-body>
 
 
     <wizard-footer ng-if="dataModel.isStepActive('addPhysicalStorageSystems')"
         ng-model="dataModel">
+    </wizard-footer>
+
+    <wizard-footer ng-if="dataModel.isStepActive('addVolumesToVsm')"
+       ng-model="dataModel">
+    </wizard-footer>
+
+    <wizard-footer ng-if="dataModel.isStepActive('addHostGroupsToVsm')"
+       ng-model="dataModel">
     </wizard-footer>
 
 </wizard-page>

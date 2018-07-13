@@ -1,0 +1,21 @@
+<div class="tile-view list-view">
+    <div class="tile row row-tile column-headers">
+        <div class="col-md-3 col-sm-3 col-xs-3 cell"><p>NUMBER OF VOLUMES</p></div>
+        <div class="col-md-3 col-sm-3 col-xs-3 cell"><p>STORAGE SYSTEM ID</p></div>
+
+    </div>
+    <form name="validationForm.rightPanel" novalidate>
+        <div class="tile row row-tile removable disabled" ng-repeat="v in dataModel.getSelectedItems()">
+
+            <div class="col-md-3 col-sm-3 col-xs-3 cell control validation-form">
+                <input type="number" ng-class="{'ng-invalid': v.hasDuplicatedLun}" min="0" ng-min="0" ng-max="2047" ng-pattern="v.decimalNumberRegexp"
+                       class="form-valid" name="lun" ng-model="v.lun" placeholder="eg. 100" title="{{v.validationTooltip}}">
+            </div>
+
+            <div class="col-md-3 col-sm-3 col-xs-3 cell control">
+                <input type="text" disabled="disabled" class="form-control" ng-model="v.storageSystemId">
+            </div>
+
+        </div>
+    </form>
+</div>
