@@ -1119,6 +1119,12 @@
     "data-reduction-savings-ratio": "Data Reduction",
     "capacity-efficiency-savings-ratio": "Total Efficiency",
 
+    "total-efficiency": "Total Efficiency",
+    "total-efficiency-total-data-reduction": "Data Reduction",
+    "total-efficiency-provisioning": "Provisioning Efficiency",
+    "total-efficiency-snapshot": "Snapshot Efficiency",
+    "total-efficiency-calculation-period": "Calculation Period",
+
     "shred-volumes": "Shred Volumes",
     "shred-volumes-wizard-title": "Shredding Algorithm",
     "shred-volumes-shredding-mode": "Shredding Mode",

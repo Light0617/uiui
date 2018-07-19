@@ -8,7 +8,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
 
         while (total-- !== 0) {
             var mockStorageSystem;
-            if (mockUtils.randomInt(0, 2) > 0) {
+            if (mockUtils.randomInt(0, 1) > 0) {
                 mockStorageSystem = generateMockStorageSystem(total);
             } else {
                 mockStorageSystem = generateMockStorageSystemWithoutSvp(total);
@@ -58,7 +58,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'primaryGumNumber': _.sample([1, 2]),
             'model': 'VSP G900',
             'unified': false,
-            'firmwareVersion': '88-02-01-60/00'
+            'firmwareVersion': '88-03-01-60/00'
         };
         return angular.extend(mock, specificElementsWithoutSvp);
     };

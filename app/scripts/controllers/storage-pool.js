@@ -588,6 +588,7 @@ angular.module('rainierApp')
                     result.dispDeduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
 
                     $scope.poolDataModel = result;
+                    $scope.totalEfficiencyModel = result.totalEfficiency;
 
 
                     return $q.resolve(result);
