@@ -29,21 +29,25 @@ angular.module('rainierApp')
             var storageSystems = result;
             var hasFileUsageBar = false;
 
-
              var dataModel = {
+                 validationForm: {
+                     serialNumber: ''
+                 },
+                 payload: {
+                     serialNumber: ''
+                 },
                  view: 'tile',
                  hasFileUsageBar: hasFileUsageBar,
                  displayList: result,
                  sameModelSelection: false,
                  selectedVirtualModel: {},
-                 virtualModelCandidates: ['VSP_F900'],
                  virtualModel: {},
                  subTitle: 'Add Volume Ids From Each Storage Systems',
-                 validationForm: {
-                     serialNumber: ''
-                 },
+                 serialNumber: '',
                  getPorts: [],
-                 hostGroupsModel: {1:1},
+                 remove: function (index) {
+                   $scope.dataModel.hostGroupsModel.hostGroups.splice(index, 1);
+                 },
                  setStorageSystems: function (ss) {
                      var getSelectedItems = dataModel.getSelectedItems();
                      var index = _.indexOf(getSelectedItems, ss);
@@ -168,16 +172,11 @@ angular.module('rainierApp')
             };
 
             var checkVirtualSerialNumber = function () {
-                // var vsnRange = dataModel.placeholder;
-                // var vsnInput = dataModel.serialNumber;
-                // if(vsnInput<vsnRange[0] || vsnInput>vsnRange[1]) {
-                //     return $q.reject('The Virtual Model or Serial Number can`t be the same');
-                // }
                 var selectedStorageSystemIds = _.map(dataModel.getSelectedItems(), function (storageSystems) {
                     return storageSystems.storageSystemId;
                 });
-                if(_.contains(selectedStorageSystemIds, dataModel.serialNumber)) {
-                    return $q.reject('The Virtual Model or Serial Number can`t be the same');
+                if(_.contains(selectedStorageSystemIds, dataModel.payload.serialNumber)) {
+                    return $q.reject('The serial number can`t be the same as one of the selected storage system ids');
                 }
                 return $q.resolve(true);
             };
@@ -238,48 +237,51 @@ angular.module('rainierApp')
                 },
             };
             $scope.dataModel.hostGroupsModel = hostGroupsModel;
-            console.log('storage pot id is : ', $scope.dataModel.hostGroupsModel);
+        });
+
+        $scope.$watch('dataModel.useSameModel', function () {
+            if($scope.dataModel.useSameModel !== null || $scope.dataModel.useSameModel !== undefined) {
+                console.log($scope.dataModel.useSameModel);
+                var useSameModel = $scope.dataModel.useSameModel;
+                if($scope.dataModel.payload.serialNumber === '') {
+                    $scope.dataModel.payload.serialNumber = useSameModel.storageSystemId;
+                }
+                if($scope.dataModel.serialNumber === '') {
+                    $scope.dataModel.serialNumber = useSameModel.model;
+                }
+            }
         });
 
 
-    });
+    })
 
-
-
-    /** text validation
-    .directive('validateSerialNumber', function(validateIpService) {
+    .directive('validateSerialNumber', function() {
         return {
             restrict: 'A',
             require: 'ngModel',
             link: function($scope, element, attr, ngModel) {
-                function validateRange(range) {
-                    return (range > 0 && range < 129);
-                }
 
-                function validateIP(value) {
-                    //var splitIp = value.split('/');
-                    var validRange = true;
-                    var validIp = false;
-                    // if (validateIpService.isIPv4(value)) {
-                    //     $scope.dataModel.payload.ipv6 = false;
-                    // }
-                    // else if (validateIpService.isIPv6(_.first(splitIp))) {
-                    //     $scope.dataModel.payload.ipv6 = true;
-                    //     $scope.dataModel.payload.subnetMask = '';
-                    //     validRange = ((splitIp.length === 2) && validateRange(_.last(splitIp)));
-                    // }
-                    // else {
-                    //     validIp = false;
-                    // }
+                function validateNumber(value) {
+                    var range = $scope.dataModel.placeholder;
+                    var validNumber = true;
 
-                    ngModel.$setValidity('number', validIp);
-                    // ngModel.$setValidity('range', validRange);
+                    if(value === "") {
+                        validNumber = true;
+                    }
+
+                    else if(value >= range[0] && value <= range[1]) {
+                        validNumber = true;
+                    }
+                    else {
+                        validNumber = false;
+                    }
+
+                    ngModel.$setValidity('number', validNumber);
 
                     return value;
                 }
 
-                ngModel.$parsers.push(validateIP);
+                ngModel.$parsers.push(validateNumber);
             }
         };
     });
-     **/

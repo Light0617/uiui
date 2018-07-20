@@ -405,6 +405,7 @@
     "virtual-volume-id": "Virtual Volume Id",
     "quorum-Id": "Quorum Id",
     "open-gad-pairs": "Open GAD Pairs",
+    "vsm-invalid-number": "Please input the serial number based on VSM model",
 
     "gad-pairs": "GAD pairs",
     "gad-display-type": "GAD",

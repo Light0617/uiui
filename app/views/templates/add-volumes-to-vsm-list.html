@@ -24,28 +24,40 @@
     <!--data-->
     <div class="tile row row-tile active" ng-repeat="hostGroup in dataModel.hostGroupsModel.hostGroups">
         <!--number of host group-->
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
+        <div class="col-lg-3 col-md-3 col-sm-3 cell control">
             <input type="number" class="form-control" placeholder="1"  min="1"
                    ng-model="hostGroup.numberOfHostGroups" ng-change="dataModel.validLabel(volumeGroup)">
         </div>
         <!--port id-->
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <select class="form-control"
-                    ng-model="hostGroup.storagePortId"
-                    ng-options="pt.storagePortId for pt in dataModel.hostGroupsModel.hostGroups"
-                    ng-change="volumeGroup.pool = null">
-            </select>
+        <div class="col-lg-3 col-md-3 col-sm-3 cell control">
+            <!--<select class="form-control"-->
+                    <!--ng-model="hostGroup.storagePortId"-->
+                    <!--ng-options="pt.storagePortId for pt in dataModel.hostGroupsModel.hostGroups"-->
+                    <!--ng-change="volumeGroup.pool = null">-->
+            <!--</select>-->
+
+            <input class="form-control"
+                   ng-model="hostGroup.storagePortId"
+                   disabled="true">
+            </input>
+
         </div>
         <!--storage system-->
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <select class="form-control" ng-model="hostGroup.storageSystemId"
-                    ng-options="pt | translate for pt in dataModel.createModel.volumesGroupsModel.poolTypes"
-                    ng-change="volumeGroup.pool = null">
-            </select>
+        <div class="col-lg-3 col-md-3 col-sm-3 cell control">
+            <!--<select class="form-control" ng-model="hostGroup.storageSystemId"-->
+                    <!--ng-options="pt | translate for pt in dataModel.createModel.volumesGroupsModel.poolTypes"-->
+                    <!--ng-change="volumeGroup.pool = null">-->
+            <!--</select>-->
+
+            <input class="form-control"
+                   ng-model="hostGroup.storageSystemId"
+                   disabled="true">
+            </input>
+
         </div>
 
-        <div class="col-lg-1 col-md-1 col-sm-1 cell control">
-            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="volumeGroup.remove()"></button>
+        <div class="col-lg-3 col-md-3 col-sm-3 cell control">
+            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="dataModel.remove($index)"></button>
         </div>
 
         <!--<div class="col-lg-12 col-md-12 col-sm-12 autoHeight" ng-if="!volumeGroup.labelIsValid">-->
