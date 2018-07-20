@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService,
                                                  storageAdvisorEmbeddedSessionService, utilService,
-                                                 Restangular, $window) {
+                                                 Restangular) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -543,7 +543,7 @@ angular.module('rainierApp')
                 item.onClick = function () {
                     var path = $location.path();
                     $location.path([path, 'physical-storage-system', item.storageSystemId].join('/'));
-                }
+                };
 
                 item.displayLinks = [
                     {
