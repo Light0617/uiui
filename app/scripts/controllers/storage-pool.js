@@ -553,24 +553,29 @@ angular.module('rainierApp')
                     result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
                     result.logicalCapacityInBytes = getSizeDisplayText(logicalCapacityDisplaySize);
                     result.usedLogicalCapacityInBytes = getSizeDisplayText(usedCapacityDisplaySize);
-                    result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
+                    result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(
+                        result.availableLogicalCapacityInBytes));
                     result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
                     result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
                     result.fmcCapacityData = transformToPoolSummaryModel(logicalCapacityDisplaySize, usedCapacityDisplaySize);
 
 
-                    result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
-                    result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+                    if (result.compressionDetails) {
+                        result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
+                        result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+                        result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
+                    }
                     result.deduplicationSystemDataCapacityInBytes = getSizeDisplayText(
                         diskSizeService.getDisplaySize(result.deduplicationSystemDataCapacityInBytes));
-                    result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
 
-                    result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
-                    result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
-                    result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+                    if (result.fmcCompressionDetails) {
+                        result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
+                        result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
+                        result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+                    }
 
                     result.showCompressionDetails = function () {
-                        if (result.deduplicationEnabled === true) {
+                        if (result.deduplicationEnabled === true || utilService.isNullOrUndef(result.compressionDetails)) {
                             return true;
                         } else if (result.compressionDetails.compressionRate === 1 &&
                             (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
@@ -606,6 +611,8 @@ angular.module('rainierApp')
 
                             softwareSavingRate.patternMatchingRate =
                                 totalEfficiencyService.getBoxChartValue(softwareSavingRate.patternMatchingRate);
+
+                            $scope.softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
                         }
 
                         var fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
@@ -619,12 +626,17 @@ angular.module('rainierApp')
 
                             fmdSavingRate.patternMatchingRate =
                                 totalEfficiencyService.getBoxChartValue(fmdSavingRate.patternMatchingRate);
+
+                            $scope.fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
                         }
+
+                        result.totalEfficiency.calculationStartTime =
+                            totalEfficiencyService.getPeriodValue(result.totalEfficiency.calculationStartTime);
+                        result.totalEfficiency.calculationEndTime =
+                            totalEfficiencyService.getPeriodValue(result.totalEfficiency.calculationEndTime);
+                        $scope.totalEfficiencyModel = result.totalEfficiency;
                     }
 
-                    $scope.totalEfficiencyModel = result.totalEfficiency;
-                    $scope.softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
-                    $scope.fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
 
                     return $q.resolve(result);
              }).catch(function(e){

@@ -121,10 +121,11 @@
 
                     <div class="label-value-container">
                         <p class="label">{{ 'total-efficiency-calculation-period' | translate }}</p>
-                        <p class="value" title="{{ totalEfficiencyModel.calculationStartTime }} - {{ totalEfficiencyModel.calculationEndTime }}"
+                        <p class="value"
+                           title="{{ totalEfficiencyModel.calculationStartTime }} - {{ totalEfficiencyModel.calculationEndTime }}"
                            ng-if="totalEfficiencyModel.calculationStartTime && totalEfficiencyModel.calculationEndTime">
                             {{ totalEfficiencyModel.calculationStartTime }} - {{ totalEfficiencyModel.calculationEndTime }}</p>
-                        <p class="value" ng-if="!totalEfficiencyModel.calculationStartTime">-</p>
+                        <p class="value" ng-if="!totalEfficiencyModel.calculationStartTime || !totalEfficiencyModel.calculationEndTime">-</p>
                     </div>
 
                 </div>

@@ -37,6 +37,14 @@ angular.module('rainierApp')
             },
             getBoxChartValue: function (model) {
                 return model.status === constantService.CALCULATED ? transformToBoxChartData(model.value) : null;
+            },
+            getPeriodValue: function (value) {
+                switch (value) {
+                    case constantService.CALCULATION_IN_PROGRESS:
+                        return null;
+                    default:
+                        return value;
+                }
             }
         };
     });
