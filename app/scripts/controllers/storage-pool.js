@@ -14,7 +14,8 @@ angular.module('rainierApp')
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
                                              replicationService, resourceTrackerService, gadVolumeTypeSearchService,
-                                             migrationTaskService, $q, constantService, virtualizeVolumeService, utilService) {
+                                             migrationTaskService, $q, constantService, virtualizeVolumeService,
+                                             utilService, totalEfficiencyService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -588,8 +589,42 @@ angular.module('rainierApp')
                     result.dispDeduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
 
                     $scope.poolDataModel = result;
-                    $scope.totalEfficiencyModel = result.totalEfficiency;
 
+                    if (result.totalEfficiency !== undefined && result.totalEfficiency.dataReductionRate !== undefined) {
+
+                        var softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
+
+                        if (softwareSavingRate) {
+                            softwareSavingRate.totalSoftwareSavingRate =
+                                totalEfficiencyService.getDisplayValue(softwareSavingRate.totalSoftwareSavingRate);
+
+                            softwareSavingRate.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.compressionRate);
+
+                            softwareSavingRate.deduplicationRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.deduplicationRate);
+
+                            softwareSavingRate.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.patternMatchingRate);
+                        }
+
+                        var fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
+
+                        if (fmdSavingRate) {
+                            fmdSavingRate.totalFmdSavingRate =
+                                totalEfficiencyService.getDisplayValue(fmdSavingRate.totalFmdSavingRate);
+
+                            fmdSavingRate.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingRate.compressionRate);
+
+                            fmdSavingRate.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingRate.patternMatchingRate);
+                        }
+                    }
+
+                    $scope.totalEfficiencyModel = result.totalEfficiency;
+                    $scope.softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
+                    $scope.fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
 
                     return $q.resolve(result);
              }).catch(function(e){

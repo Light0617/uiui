@@ -164,6 +164,9 @@ angular.module('rainierApp')
                 PROTECTED: 'PROTECTED',
                 PARTIAL: 'PARTIAL',
                 UNPROTECTED: 'UNPROTECTED'
-            }
+            },
+            CALCULATED: 'CALCULATED',
+            CALCULATION_IN_PROGRESS: 'CALCULATION_IN_PROGRESS',
+            HYPHEN: '-'
         };
     });

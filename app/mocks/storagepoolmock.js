@@ -189,7 +189,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                     },
                     'fmdSavingRate': {
                         'totalFmdSavingRate':  {
-                            'status': 'CALCULATED',
+                            'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
                             'value': 2.21
                         },
                         'compressionRate':  {
