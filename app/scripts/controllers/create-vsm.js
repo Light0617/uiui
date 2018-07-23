@@ -29,233 +29,196 @@ angular.module('rainierApp')
                                            constantService,
                                            viewModelService,
                                            $q,
-                                           $modal) {
+                                           $modal,
+                                           createVsmService) {
+        /*
+         * 0. Initial process for all pages
+         */
+        var init = function () {
 
-        var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
+        };
 
-        paginationService.getAllPromises(null,
-                                         GET_STORAGE_SYSTEM_PATH,
-                                         true,
-                                         null,
-                                         objectTransformService.transformStorageSystem)
-            .then(function (result) {
+        /*
+         * 1. Add Physical Storage Systems
+         */
+        var initAddPhysicalStorageSystemView = function () {
+            var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
 
-            var storageSystems = result;
-            var hasFileUsageBar = false;
+            paginationService.getAllPromises(null,
+                GET_STORAGE_SYSTEM_PATH,
+                true,
+                null,
+                objectTransformService.transformStorageSystem)
+                .then(function (result) {
 
-            var dataModel = {
-                validationForm: {
-                    serialNumber: ''
-                },
-                payload: {
-                    serialNumber: '',
-                    selectedVirtualModel: '',
-                    physicalStorageSystems: []
-                },
-                view: 'tile',
-                hasFileUsageBar: hasFileUsageBar,
-                displayList: result,
-                sameModelSelection: false,
-                virtualModel: {},
-                subTitle: 'Add Volume Ids From Each Storage Systems',
-                serialNumber: '',
-                getPorts: [],
-                remove: function (index) {
-                  $scope.dataModel.hostGroupsModel.hostGroups.splice(index, 1);
-                },
-                setStorageSystems: function (ss) {
-                    var getSelectedItems = dataModel.getSelectedItems();
-                    var index = _.indexOf(getSelectedItems, ss);
-                    var selectedStorageSystem = getSelectedItems[index];
-                    getSelectedItems.splice(index, 1);
-                    getSelectedItems.unshift(selectedStorageSystem);
-                    dataModel.getSelectedItems = function() {
-                        return getSelectedItems;
-                    };
+                    var storageSystems = result;
+                    var hasFileUsageBar = false;
 
-                    orchestratorService.storagePorts(ss.storageSystemId).then(function(result) {
-                        dataModel.getPorts = result.resources;
-                    });
-
-                },
-
-                setStoragePort: function (sp) {
-                    var getPorts = dataModel.getPorts;
-                    var index = _.indexOf(getPorts, sp);
-                    var selectedPort = getPorts[index];
-                    getPorts.splice(index, 1);
-                    getPorts.unshift(selectedPort);
-                    dataModel.getPorts = getPorts;
-                },
-
-                canGoNext: function () {
-                    return true;
-                },
-                next: function () {
-                    if(dataModel.sameModelSelection) {
-                        dataModel.goNext();
-                    }
-                    else {
-                        checkVirtualSerialNumber()
-                            .then(dataModel.goNext)
-                            .catch(openErrorDialog);
-                    }
-
-
-                },
-                previous: function() {
-                    dataModel.goBack();
-                },
-                search: {
-                    freeText: '',
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    hasMigrationTasks: null
-                },
-                sort: {
-                    field: 'storageSystemId',
-                    reverse: false,
-                    setSort: function (f) {
-                        $timeout(function () {
-                            if ($scope.dataModel.sort.field === f) {
-                                $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                            } else {
-                                $scope.dataModel.sort.field = f;
-                                $scope.dataModel.sort.reverse = false;
-                            }
-                       });
-                   }
-                },
-                updateSelectedVirtualModel: function () {
-                    if($scope.dataModel.payload.selectedVirtualModel !== undefined) {
-                        var index = $scope.dataModel.payload.selectedVirtualModel;
-                        $scope.dataModel.placeholder = $scope.dataModel.vsmModelRange[index];
-                    }
-                },
-                updateSelectedStorageSystem: function () {
-                    if($scope.dataModel.useSameModel !== null || $scope.dataModel.useSameModel !== undefined) {
-                        var useSameModel = $scope.dataModel.useSameModel;
-                        $scope.dataModel.payload.serialNumber = useSameModel.storageSystemId;
-                        $scope.dataModel.payload.selectedVirtualModel = useSameModel.model;
-                    }
-                },
-                updateHostGroupsModel: function () {
-                    var hostGroupsModel = {
-                        hostGroups: [],
-                        add: function () {
-                            var storageSystemId = $scope.dataModel.getSelectedItems()[0].storageSystemId;
-                            var storagePortId = $scope.dataModel.getPorts[0].storagePortId;
-                            var numberOfHostGroups = $scope.dataModel.numberOfHostGroups;
-                            hostGroupsModel.hostGroups.push({
-                                storageSystemId: storageSystemId,
-                                storagePortId: storagePortId,
-                                numberOfHostGroups: numberOfHostGroups
-                            });
+                    var dataModel = {
+                        validationForm: {
+                            serialNumber: ''
                         },
+                        payload: {
+                            serialNumber: '',
+                            selectedVirtualModel: '',
+                            physicalStorageSystems: []
+                        },
+                        view: 'tile',
+                        hasFileUsageBar: hasFileUsageBar,
+                        displayList: result,
+                        sameModelSelection: false,
+                        virtualModel: {},
+                        subTitle: 'Add Volume Ids From Each Storage Systems',
+                        serialNumber: '',
+                        getPorts: [],
+                        remove: function (index) {
+                            $scope.dataModel.hostGroupsModel.hostGroups.splice(index, 1);
+                        },
+                        setStorageSystems: function (ss) {
+                            var getSelectedItems = dataModel.getSelectedItems();
+                            var index = _.indexOf(getSelectedItems, ss);
+                            var selectedStorageSystem = getSelectedItems[index];
+                            getSelectedItems.splice(index, 1);
+                            getSelectedItems.unshift(selectedStorageSystem);
+                            dataModel.getSelectedItems = function () {
+                                return getSelectedItems;
+                            };
+
+                            orchestratorService.storagePorts(ss.storageSystemId).then(function (result) {
+                                dataModel.getPorts = result.resources;
+                            });
+
+                        },
+
+                        setStoragePort: function (sp) {
+                            var getPorts = dataModel.getPorts;
+                            var index = _.indexOf(getPorts, sp);
+                            var selectedPort = getPorts[index];
+                            getPorts.splice(index, 1);
+                            getPorts.unshift(selectedPort);
+                            dataModel.getPorts = getPorts;
+                        },
+
+                        canGoNext: function () {
+                            return true;
+                        },
+                        next: function () {
+                            if (dataModel.sameModelSelection) {
+                                dataModel.goNext();
+                            }
+                            else {
+                                createVsmService.checkVirtualSerialNumber(
+                                    _.map(dataModel.getSelectedItems(), function (selected) {
+                                        return selected.storageSystemId;
+                                    }),
+                                    dataModel.payload.serialNumber
+                                )
+                                    .then(dataModel.goNext)
+                                    .catch(createVsmService.openErrorDialog);
+                            }
+                        },
+                        previous: function () {
+                            dataModel.goBack();
+                        },
+                        search: {
+                            freeText: '',
+                            freeCapacity: {
+                                min: 0,
+                                max: 1000,
+                                unit: 'PB'
+                            },
+                            totalCapacity: {
+                                min: 0,
+                                max: 1000,
+                                unit: 'PB'
+                            },
+                            hasMigrationTasks: null
+                        },
+                        sort: {
+                            field: 'storageSystemId',
+                            reverse: false,
+                            setSort: function (f) {
+                                $timeout(function () {
+                                    if ($scope.dataModel.sort.field === f) {
+                                        $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
+                                    } else {
+                                        $scope.dataModel.sort.field = f;
+                                        $scope.dataModel.sort.reverse = false;
+                                    }
+                                });
+                            }
+                        },
+                        updateSelectedVirtualModel: function () {
+                            if ($scope.dataModel.payload.selectedVirtualModel !== undefined) {
+                                var key = $scope.dataModel.payload.selectedVirtualModel;
+                                var selected = createVsmService.vsmModelRange[key];
+                                $scope.dataModel.placeholder = selected.min + ' to ' + selected.max;
+                            }
+                        },
+                        updateSelectedStorageSystem: function () {
+                            if ($scope.dataModel.useSameModel !== null || $scope.dataModel.useSameModel !== undefined) {
+                                var useSameModel = $scope.dataModel.useSameModel;
+                                $scope.dataModel.payload.serialNumber = useSameModel.storageSystemId;
+                                $scope.dataModel.payload.selectedVirtualModel = useSameModel.model;
+                            }
+                        },
+                        updateHostGroupsModel: function () {
+                            var hostGroupsModel = {
+                                hostGroups: [],
+                                add: function () {
+                                    var storageSystemId = $scope.dataModel.getSelectedItems()[0].storageSystemId;
+                                    var storagePortId = $scope.dataModel.getPorts[0].storagePortId;
+                                    var numberOfHostGroups = $scope.dataModel.numberOfHostGroups;
+                                    hostGroupsModel.hostGroups.push({
+                                        storageSystemId: storageSystemId,
+                                        storagePortId: storagePortId,
+                                        numberOfHostGroups: numberOfHostGroups
+                                    });
+                                },
+                            };
+                            $scope.dataModel.hostGroupsModel = hostGroupsModel;
+                        }
                     };
-                    $scope.dataModel.hostGroupsModel = hostGroupsModel;
-                }
-            };
 
-            angular.extend(dataModel, viewModelService.newWizardViewModel(['addPhysicalStorageSystems', 'addVolumesToVsm', 'addHostGroupsToVsm']));
+                    angular.extend(dataModel, viewModelService.newWizardViewModel(['addPhysicalStorageSystems', 'addVolumesToVsm', 'addHostGroupsToVsm']));
 
-            dataModel.VirtualModelCandidates = constantService.virtualModelOptions();
+                    dataModel.VirtualModelCandidates = constantService.virtualModelOptions();
 
+                    var vsmModelRange = createVsmService.vsmModelRange;
 
-            //use _.range([start], stop, [step]) instead?
-            var RAID500_600_700 = [1, 99999];
-            var HM700 = [200001, 299999];
-            var RAID800_850 = [300001, 399999];
-            var HM800_850 = [400001, 499999];
-
-            var vsmModelRange = {
-                VSP_F900: HM800_850,
-                VSP_G900: HM800_850,
-                VSP_F700: HM800_850,
-                VSP_G700: HM800_850,
-                VSP_F370: HM800_850,
-                VSP_G370: HM800_850,
-                VSP_F350: HM800_850,
-                VSP_G350: HM800_850,
-                VSP_F800_AND_VSP_G800: HM800_850,
-                VSP_F400_F600_AND_VSP_G400_G600: HM800_850,
-                VSP_G200: HM800_850,
-                HUS_VM: HM700,
-                VSP_F1500_AND_VSP_G1000_G1500: HM800_850,
-                VSP: RAID500_600_700,
-                USP_VM: RAID500_600_700,
-                USP_V: RAID500_600_700,
-                NSC: RAID500_600_700,
-                USP: RAID500_600_700
-            };
-
-            dataModel.vsmModelRange = vsmModelRange;
+                    dataModel.vsmModelRange = vsmModelRange;
 
 
-            $scope.dataModel = dataModel;
+                    $scope.dataModel = dataModel;
 
 
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
+                    scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
 
-            var updateResultTotalCounts = function (result) {
-                $scope.dataModel.nextToken = result.nextToken;
-                $scope.dataModel.cachedList = result.resources;
-                $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-                $scope.dataModel.itemCounts = {
-                    filtered: $scope.dataModel.displayList.length,
-                    total: $scope.dataModel.total
-                };
-            };
-
-            var checkVirtualSerialNumber = function () {
-                var selectedStorageSystemIds = _.map(dataModel.getSelectedItems(), function (storageSystems) {
-                    return storageSystems.storageSystemId;
-                });
-                if(_.contains(selectedStorageSystemIds, dataModel.payload.serialNumber)) {
-                    return $q.reject('The serial number can`t be the same as one of the selected storage system ids');
-                }
-                return $q.resolve(true);
-            };
-
-            var openErrorDialog = function (messageKey) {
-                if (_.isUndefined(messageKey)) {
-                    return;
-                }
-                if (!_.isString(messageKey) && messageKey.message) {
-                    messageKey = messageKey.message;
-                } else if (!_.isString(messageKey) && messageKey.data && messageKey.data.message) {
-                    messageKey = messageKey.data.message;
-                }
-                var modalInstance = $modal.open({
-                    templateUrl: 'views/templates/error-modal.html',
-                    windowClass: 'modal fade confirmation',
-                    backdropClass: 'modal-backdrop',
-                    controller: function ($scope) {
-                        $scope.error = {
-                            title: synchronousTranslateService.translate('error-message-title'),
-                            message: synchronousTranslateService.translate(messageKey)
+                    var updateResultTotalCounts = function (result) {
+                        $scope.dataModel.nextToken = result.nextToken;
+                        $scope.dataModel.cachedList = result.resources;
+                        $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+                        $scope.dataModel.itemCounts = {
+                            filtered: $scope.dataModel.displayList.length,
+                            total: $scope.dataModel.total
                         };
-                        $scope.cancel = function () {
-                            modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
-                        };
+                    };
 
-                        modalInstance.result.finally(function () {
-                            modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
-                        });
-                    }
                 });
-            };
-        });
 
-        //validation can be done by clicking next button
+        };
+
+        /*
+         * 2. Add Volumes to VSM
+         */
+        var initAddVolumesToVsm = function () {};
+
+        /*
+         * 3. Add Host Groups to VSM
+         */
+        var initAddHostGroupToVsm = function () {};
+
+        initAddPhysicalStorageSystemView();
 
     });
 
