@@ -559,8 +559,7 @@ angular.module('rainierApp')
                     result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
                     result.fmcCapacityData = transformToPoolSummaryModel(logicalCapacityDisplaySize, usedCapacityDisplaySize);
 
-
-                    if (result.compressionDetails) {
+                    if (!utilService.isNullOrUndef(result.compressionDetails)) {
                         result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
                         result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
                         result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
@@ -568,6 +567,11 @@ angular.module('rainierApp')
                     result.deduplicationSystemDataCapacityInBytes = getSizeDisplayText(
                         diskSizeService.getDisplaySize(result.deduplicationSystemDataCapacityInBytes));
 
+                    if (!utilService.isNullOrUndef(result.fmcCompressionDetails)) {
+                        result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
+                        result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
+                        result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+                    }
                     if (result.fmcCompressionDetails) {
                         result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
                         result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
@@ -577,18 +581,18 @@ angular.module('rainierApp')
                     result.showCompressionDetails = function () {
                         if (result.deduplicationEnabled === true) {
                             return true;
-                        } else if (result.compressionDetails.compressionRate === 1 &&
-                            (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
+                        }
+
+                        var compressionDetails = result.compressionDetails;
+                        if (utilService.isNullOrUndef(compressionDetails)) {
                             return false;
                         }
-                        return true;
+
+                        return !(compressionDetails.compressionRate === 1 &&
+                            (compressionDetails.savingsPercentage === 0 || compressionDetails.savingsPercentage === null));
                     };
                     result.showFmcDetails = function() {
-                        if (result.fmcCompressed === 'YES' || result.fmcCompressed === 'PARTIAL') {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return result.fmcCompressed === 'YES' || result.fmcCompressed === 'PARTIAL';
                     };
 
                     result.dispDeduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
