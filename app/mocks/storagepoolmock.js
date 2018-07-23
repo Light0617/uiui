@@ -199,7 +199,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                             },
                             'patternMatchingRate':  {
                                 'status': 'CALCULATION_IN_PROGRESS',
-                                'value': 3.22
+                                'value': null
                             }
                         }
                     },
