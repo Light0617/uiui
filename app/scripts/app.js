@@ -644,6 +644,23 @@ angular
                 },
                 helpContext: 'C_CREATE_PARITY_GROUPS'
             })
+            .when('/virtual-storage-machines', {
+                templateUrl: 'views/virtual-storage-machines.html',
+                controller: 'VirtualStorageMachinesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: 'R_VSM_INVENTORY'
+            })
+            .when('/virtual-storage-machines/add',{
+                templateUrl: 'views/create-vsm.html',
+                controller: 'CreateVsmCtrl',
+                // TODO: add info for labelKey, helpContext
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: ''
+            })
             .when('/virtual-storage-machines/:virtualStorageMachineId/gad-pairs', {
                 templateUrl: 'views/virtual-storage-machine-gad-pairs.html',
                 controller: 'VirtualStorageMachineGadPairsCtrl',
@@ -655,14 +672,6 @@ angular
             .when('/virtual-storage-machines/:virtualStorageMachineId', {
                 templateUrl: 'views/virtual-storage-machine-details.html',
                 controller: 'VirtualStorageMachineDetailsCtrl',
-                helpContext: 'R_VSM_INVENTORY'
-            })
-            .when('/virtual-storage-machines', {
-                templateUrl: 'views/virtual-storage-machines.html',
-                controller: 'VirtualStorageMachinesCtrl',
-                breadcrumbOptions: {
-                    labelKey: 'common-virtual-storage-machines'
-                },
                 helpContext: 'R_VSM_INVENTORY'
             })
             .when('/fabric-switches/add', {
@@ -1014,15 +1023,6 @@ angular
                     labelKey: 'migrate-volumes'
                 },
                 helpContext: 'T_MIGRATING_VOLUMES'
-            })
-            .when('/virtual-storage-machines1/add',{
-                templateUrl: 'views/create-vsm.html',
-                controller: 'CreateVsmCtrl',
-                // TODO: add info for labelKey, helpContext
-                breadcrumbOptions: {
-                    labelKey: 'common-virtual-storage-machines'
-                },
-                helpContext: 'R_VSM_INVENTORY'
             })
             .otherwise({
                 redirectTo: '/'

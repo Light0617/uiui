@@ -107,7 +107,7 @@ angular.module('rainierApp')
 
             // $timeout(function () {
                 $scope.dataModel.addAction = function () {
-                    $location.path(['virtual-storage-machines1', 'add'].join('/'));
+                    $location.path(['virtual-storage-machines', 'add'].join('/'));
                     //$scope.$apply();
                 };
             // });
