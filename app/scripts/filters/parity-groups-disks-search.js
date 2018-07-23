@@ -26,7 +26,7 @@ angular.module('rainierApp')
                     (_.isEmpty(search.speed) || search.speed === item.speed.toString()) &&
                     (_.isEmpty(search.purpose) || search.purpose === item.purpose) &&
                     (_.isEmpty(search.freeText) ||
-                    item.diskId.indexOf(search.freeText) > -1);
+                    item.diskId.indexOf(search.freeText) > -1 || item.location.indexOf(search.freeText) > -1);
 
                 pass = item.selected || pass;
                 return pass;
