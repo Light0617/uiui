@@ -8,8 +8,8 @@
         <div class="tile row row-tile removable disabled" ng-repeat="v in dataModel.getSelectedItems()">
 
             <div class="col-md-3 col-sm-3 col-xs-3 cell control validation-form">
-                <input type="number" ng-class="{'ng-invalid': v.hasDuplicatedLun}" min="0" ng-min="0" ng-max="2047" ng-pattern="v.decimalNumberRegexp"
-                       class="form-valid" name="lun" ng-model="v.lun" placeholder="eg. 100" title="{{v.validationTooltip}}">
+                <input type="number" min="0" ng-max="65000"
+                       class="form-valid" ng-model="v.lun" placeholder="eg. 100" >
             </div>
 
             <div class="col-md-3 col-sm-3 col-xs-3 cell control">

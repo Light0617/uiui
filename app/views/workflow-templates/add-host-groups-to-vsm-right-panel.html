@@ -39,9 +39,9 @@
 
         <fieldset class="fieldset label-value-container">
             <label for="number-host-groups" class="label">{{'number-of-host-groups' | translate}}</label>
-            <input id="number-host-groups" class="form-control" placeholder="eg. 100" type="number" min="1"
+            <input id="number-host-groups" class="form-control" placeholder="eg. 100" type="number" min="0" max="256"
                    ng-model="dataModel.numberOfHostGroups"
-                   ng-change="dataModel.validLabel(volumeGroup)"/>
+                   ng-change="dataModel.updateHostGroupsModel()"/>
         </fieldset>
 
 

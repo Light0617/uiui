@@ -22,8 +22,9 @@
         <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
             <label class="label">Virtual Model</label>
             <select class="form-control"
-                    ng-model="dataModel.selectedVirtualModel"
+                    ng-model="dataModel.payload.selectedVirtualModel"
                     ng-options="m for m in dataModel.VirtualModelCandidates"
+                    ng-change="dataModel.updateSelectedVirtualModel()"
                     ng-disabled="!dataModel.getSelectedItems().length > 0">
             </select>
         </div>
@@ -48,6 +49,7 @@
             <select class="form-control"
                     ng-model="dataModel.useSameModel"
                     ng-options="m.storageSystemId for m in dataModel.getSelectedItems()"
+                    ng-change="dataModel.updateSelectedStorageSystem()"
                     ng-disabled="!dataModel.getSelectedItems().length > 0">
             </select>
         </div>
