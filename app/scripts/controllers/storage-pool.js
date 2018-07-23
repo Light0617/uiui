@@ -575,7 +575,7 @@ angular.module('rainierApp')
                     }
 
                     result.showCompressionDetails = function () {
-                        if (result.deduplicationEnabled === true || utilService.isNullOrUndef(result.compressionDetails)) {
+                        if (result.deduplicationEnabled === true) {
                             return true;
                         } else if (result.compressionDetails.compressionRate === 1 &&
                             (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
@@ -595,7 +595,8 @@ angular.module('rainierApp')
 
                     $scope.poolDataModel = result;
 
-                    if (result.totalEfficiency !== undefined && result.totalEfficiency.dataReductionRate !== undefined) {
+                    if (!utilService.isNullOrUndef(result.totalEfficiency) &&
+                        !utilService.isNullOrUndef(result.totalEfficiency.dataReductionRate)) {
 
                         var softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
 
