@@ -159,7 +159,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
 
     var generateMockStoragePoolWithTotalEfficiency = function(v) {
         return angular.extend(generateMockStoragePoolWithoutTotalEfficiency(v),
-            mockUtils.trueOrFalse() ? getIrregularCase(v) : {
+            mockUtils.trueOrFalse() ? getIrregularCase() : {
                 'totalEfficiency': {
                     'totalEfficiencyRate': {
                         'status': 'CALCULATED',
@@ -217,7 +217,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             });
     };
 
-    var getIrregularCase = function(v) {
+    var getIrregularCase = function() {
         return mockUtils.trueOrFalse() ?
             {
                 'compressionDetails': null,
