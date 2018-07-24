@@ -1119,6 +1119,27 @@
     "data-reduction-savings-ratio": "Data Reduction",
     "capacity-efficiency-savings-ratio": "Total Efficiency",
 
+    "total-efficiency": "Total Efficiency",
+    "total-efficiency-total-data-reduction": "Data Reduction",
+
+    "total-efficiency-software-saving": "Software Compression and Deduplication",
+
+    "total-efficiency-software-total-savings-ratio": "Total Saving Ratio",
+    "total-efficiency-software-compression-ratio": "Compression Ratio",
+    "total-efficiency-software-deduplication-ratio": "Deduplication Ratio",
+    "total-efficiency-software-pattern-matching-ratio": "Pattern Matching Ratio",
+
+    "total-efficiency-fmd-saving": "FMD Compression",
+
+    "total-efficiency-fmd-total-savings-ratio": "Total Saving Ratio",
+    "total-efficiency-fmd-compression-ratio": "Compression Ratio",
+    "total-efficiency-fmd-pattern-matching-ratio": "Pattern Matching Ratio",
+
+    "total-efficiency-provisioning": "Provisioning Efficiency",
+    "total-efficiency-snapshot": "Snapshot Efficiency",
+    "total-efficiency-calculation-period": "Calculation Period",
+    "total-efficiency-calculation-in-progress": "Calculation in Progress",
+
     "shred-volumes": "Shred Volumes",
     "shred-volumes-wizard-title": "Shredding Algorithm",
     "shred-volumes-shredding-mode": "Shredding Mode",
