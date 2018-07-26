@@ -543,7 +543,7 @@ angular.module('rainierApp')
                 item.onClick = function () {
                     var path = $location.path();
 
-                    $location.path([path, 'physical-storage-system', item.storageSystemId].join('/'));
+                    $location.path([path, 'physical-storage-systems', item.storageSystemId].join('/'));
                 };
 
                 item.displayLinks = [

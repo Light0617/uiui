@@ -9,7 +9,91 @@
  */
 angular.module('rainierApp')
     .factory('volumeService', function (replicationService) {
+        var getStorageSystems = function () {
+            return paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
+                result = _.filter(result, function (r) {
+                    return r.storageSystemId !== storageSystemId;
+                });
+                $scope.dataModel.storageSystems = result;
+
+                if(result.length > 0) {
+                    return $q.resolve(result);
+                }else{
+                    return $q.reject('storage-system-not-found-error');
+                }
+            });
+        };
+
+        var volumeRestoreAction = function (action, selectedVolumes) {
+
+            var volumeId = 0;
+            if (selectedVolumes && selectedVolumes.length > 0) {
+                volumeId = selectedVolumes[0].volumeId;
+            }
+
+            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
+
+                ShareDataService.SVolsList = _.filter(result.resources, function (SVol) {
+                    return SVol.primaryVolume && SVol.secondaryVolume;
+                });
+                ShareDataService.restorePrimaryVolumeId = volumeId;
+                ShareDataService.restorePrimaryVolumeToken = result.nextToken;
+
+                _.forEach(ShareDataService.SVolsList, function (volume) {
+                    volume.selected = false;
+                });
+                $location.path(['/storage-systems/', storageSystemId, '/volumes/volume-actions-restore-selection'].join(''));
+            });
+        };
+
+        var volumeUnprotectActions = function (selectedVolume) {
+            ShareDataService.volumeListForUnprotect = selectedVolume;
+
+            $location.path(['storage-systems', storageSystemId, 'volumes', 'unprotect'].join('/'));
+        };
+
+        var hasGadVolume = function (selectedVolumes) {
+            return _.find(selectedVolumes, function (volume) {
+                return volume.isGadVolume();
+            }) !== undefined;
+        };
+
+        var hasShredding = function (selectedVolumes) {
+            return _.some(selectedVolumes, function (vol) {
+                return vol.isShredding();
+            });
+        };
+
+        var enableToShred = function (volume) {
+            return volume.isUnattached() &&
+                (volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED) &&
+                volume.capacitySavingType === 'No' &&
+                !volume.isSnapshotPair() &&
+                volume.dataProtectionSummary.replicationType.indexOf('CLONE') === -1 &&
+                volume.migrationSummary.migrationType !== constantService.migrationType.MIGRATION;
+        };
+
+        var detachFromTargetStorageDialogSettings = function () {
+            var dialogSettings = {
+                id: 'detachFromTargetStorageConfirmation',
+                title: 'storage-volume-detach-from-target',
+                content: 'storage-volume-detach-from-target-content',
+                disableRadioButton: true,
+                itemAttributes: [],
+                itemAttribute: {}
+            };
+
+            return dialogSettings;
+        };
+
         return {
+            getStorageSystems: getStorageSystems,
+            volumeRestoreAction: volumeRestoreAction,
+            volumeUnprotectActions: volumeUnprotectActions,
+            hasGadVolume: hasGadVolume,
+            hasShredding: hasShredding,
+            enableToShred: enableToShred,
+            detachFromTargetStorageDialogSettings: detachFromTargetStorageDialogSettings,
             validateCombinedLabel: function (label, suffix, volumeCount) {
                 if (label === null && suffix === null) {
                     return true;
