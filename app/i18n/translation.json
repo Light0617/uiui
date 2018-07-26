@@ -67,6 +67,7 @@
     "common-expand-all": "Expand All",
     "common-collapse-all": "Collapse All",
     "common-label-total": "Total",
+    "common-label-details": "Details",
     "common-label-tier-used": "Used",
     "total-usable-capacity-tooltip": "Total Usable Capacity",
 
@@ -1120,6 +1121,7 @@
     "capacity-efficiency-savings-ratio": "Total Efficiency",
 
     "total-efficiency": "Total Efficiency",
+    "total-efficiency-details": "Total Efficiency Details",
     "total-efficiency-total-data-reduction": "Data Reduction",
 
     "total-efficiency-software-saving": "Software Compression and Deduplication",
@@ -1138,6 +1140,8 @@
     "total-efficiency-provisioning": "Provisioning Efficiency",
     "total-efficiency-snapshot": "Snapshot Efficiency",
     "total-efficiency-calculation-period": "Calculation Period",
+    "total-efficiency-calculation-start-time": "Calculation Start Time",
+    "total-efficiency-calculation-end-time": "Calculation End Time",
     "total-efficiency-calculation-in-progress": "Calculation in Progress",
 
     "shred-volumes": "Shred Volumes",
@@ -1267,5 +1271,6 @@
     "external-volumes-unvirtualize-keep-zone-intact": "Keep Zone Intact",
 
     "false": "NO",
-    "true": "YES"
+    "true": "YES",
+    "close-button-label": "Close"
 }

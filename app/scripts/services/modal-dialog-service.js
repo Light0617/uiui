@@ -28,6 +28,38 @@ angular.module('rainierApp')
                 });
 
                 return defer.promise;
+            },
+            showTotalEfficiencyDialog: function (totalEfficiencyModel) {
+                var defer = $q.defer();
+
+                var modalInstance = $modal.open({
+                    templateUrl: 'views/templates/total-efficiency-modal.html',
+                    windowClass: 'modal confirmation',
+                    backdropClass: 'modal-backdrop',
+                    controller: function ($scope, $modalInstance) {
+                        $scope.totalEfficiencyModel = totalEfficiencyModel;
+
+                        if (totalEfficiencyModel) {
+                            $scope.dataReductionRate = totalEfficiencyModel.dataReductionRate;
+                            if (totalEfficiencyModel.dataReductionRate) {
+                                $scope.softwareSavingRate = totalEfficiencyModel.dataReductionRate.softwareSavingRate;
+                                $scope.fmdSavingRate = totalEfficiencyModel.dataReductionRate.fmdSavingRate;
+                            }
+                        }
+
+                        $scope.ok = function () {
+                            modalInstance.close();
+                            defer.resolve();
+                        };
+
+                        $scope.cancel = function () {
+                            $modalInstance.dismiss();
+                            defer.reject();
+                        };
+                    }
+                });
+
+                return defer.promise;
             }
         };
     });
