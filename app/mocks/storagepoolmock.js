@@ -162,13 +162,13 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             mockUtils.trueOrFalse() ? getIrregularCase() : {
                 'totalEfficiency': {
                     'totalEfficiencyRate': {
-                        'status': 'CALCULATED',
-                        'value': 20.8
+                        'status': 'CALCULATED_WITH_EXCEEDED',
+                        'value': 99999.99
                     },
                     'dataReductionRate': {
                         'totalDataReductionRate':  {
-                            'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
-                            'value': 1.84
+                            'status': 'CALCULATED',
+                            'value': 99999.99
                         },
                         'softwareSavingRate': {
                             'totalSoftwareSavingRate':  {
