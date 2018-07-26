@@ -12,6 +12,8 @@ angular.module('rainierApp')
         return {
             /* jshint ignore:start */
             firmwareVersionPrefix: {
+                SVOS830_HM850: '88-03-0', // TODO: update firmware version for HM series v8.3 after version fixed
+                SVOS830_Rx00:  '80-06-6', // TODO: update firmware version for RAID series v8.3 after version fixed
                 SVOS820_HM850: '88-02-0',
                 SVOS820_Rx00:  '80-06-4',
                 SVOS810_HM850: '88-01-0',

@@ -67,6 +67,7 @@
     "common-expand-all": "Expand All",
     "common-collapse-all": "Collapse All",
     "common-label-total": "Total",
+    "common-label-details": "Details",
     "common-label-tier-used": "Used",
     "total-usable-capacity-tooltip": "Total Usable Capacity",
 
@@ -339,7 +340,7 @@
     "storage-volume-not-protected": "This volume is not protected.",
     "storage-volumes-add": "Create Volumes",
     "storage-volumes-add-unmatched-compress-techs": "Unmatched Compress Technologies",
-    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, the following solutions are recommended before creating the volume.",
+    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, make sure the following conditions are satisfied before creating the volume.",
     "storage-volumes-add-unmatched-compress-techs-message-solution1": "Enable FMD Compression for all FMD drives in target Pool",
     "storage-volumes-add-unmatched-compress-techs-message-solution2": "Select 'No' for 'Capacity Saving' for Volume in this wizard",
     "storage-volumes-add-unmatched-compress-techs-message-footer": "Do you want to proceed?",
@@ -1123,6 +1124,30 @@
     "data-reduction-savings-ratio": "Data Reduction",
     "capacity-efficiency-savings-ratio": "Total Efficiency",
 
+    "total-efficiency": "Total Efficiency",
+    "total-efficiency-details": "Total Efficiency Details",
+    "total-efficiency-total-data-reduction": "Data Reduction",
+
+    "total-efficiency-software-saving": "Software Compression and Deduplication",
+
+    "total-efficiency-software-total-savings-ratio": "Total Saving Ratio",
+    "total-efficiency-software-compression-ratio": "Compression Ratio",
+    "total-efficiency-software-deduplication-ratio": "Deduplication Ratio",
+    "total-efficiency-software-pattern-matching-ratio": "Pattern Matching Ratio",
+
+    "total-efficiency-fmd-saving": "FMD Compression",
+
+    "total-efficiency-fmd-total-savings-ratio": "Total Saving Ratio",
+    "total-efficiency-fmd-compression-ratio": "Compression Ratio",
+    "total-efficiency-fmd-pattern-matching-ratio": "Pattern Matching Ratio",
+
+    "total-efficiency-provisioning": "Provisioning Efficiency",
+    "total-efficiency-snapshot": "Snapshot Efficiency",
+    "total-efficiency-calculation-period": "Calculation Period",
+    "total-efficiency-calculation-start-time": "Calculation Start Time",
+    "total-efficiency-calculation-end-time": "Calculation End Time",
+    "total-efficiency-calculation-in-progress": "Calculation in Progress",
+
     "shred-volumes": "Shred Volumes",
     "shred-volumes-wizard-title": "Shredding Algorithm",
     "shred-volumes-shredding-mode": "Shredding Mode",
@@ -1250,5 +1275,6 @@
     "external-volumes-unvirtualize-keep-zone-intact": "Keep Zone Intact",
 
     "false": "NO",
-    "true": "YES"
+    "true": "YES",
+    "close-button-label": "Close"
 }

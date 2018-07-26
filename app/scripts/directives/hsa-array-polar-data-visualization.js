@@ -7,7 +7,7 @@
  * # hsaArrayPolarDataVisualization
  */
 angular.module('rainierApp')
-  .directive('hsaArrayPolarDataVisualization', function (d3service) {
+  .directive('hsaArrayPolarDataVisualization', function (d3service, modalDialogService, synchronousTranslateService) {
     var radius = 70;
     var circleWidth = 20;
     var space = 3;
@@ -793,6 +793,32 @@ angular.module('rainierApp')
             .attr('class', 'header')
             .text('Savings');
 
+          if (data.totalEfficiencyDetails && scope.totalEfficiency) {
+              breakdownView.append('rect')
+                  .on('click', function () {
+                      scope.popupTotalEfficiencyDialog(data);
+                  })
+                  .attr('y', legendItemsHeight - buttonHeight - switchTopMargin + space)
+                  .attr('cursor', 'pointer')
+                  .attr('height', buttonHeight)
+                  .attr('width', buttonWidth)
+                  .attr('fill', '#599628')
+                  .attr('stroke', 'gray')
+                  .attr('x', bwItemLeft * 1.47 + switchMargin + buttonWidth);
+
+              breakdownView.append('text')
+                  .on('click', function () {
+                      scope.popupTotalEfficiencyDialog(data);
+                  })
+                  .attr('fill', 'white')
+                  .attr('y', legendItemsHeight - buttonHeight + space)
+                  .attr('cursor', 'pointer')
+                  .attr('height', bwItemHeight)
+                  .attr('x', bwItemLeft * 1.47 + switchMargin + buttonWidth + space * 4)
+                  .attr('font-size', 10)
+                  .attr('class', 'header')
+                  .text(synchronousTranslateService.translate('common-label-details'));
+          }
         }
 
         cbwy += space * 4;
@@ -1218,10 +1244,11 @@ angular.module('rainierApp')
 
     return {
       scope: {
-        data: '=ngModel',
-        noBreakDown :'=',
-        noLegendBox : '=',
-        onlyBreakDown : '='
+          data: '=ngModel',
+          noBreakDown: '=',
+          noLegendBox: '=',
+          onlyBreakDown: '=',
+          totalEfficiency: '='
       },
       restrict: 'E',
       link: function postLink(scope, element) {
@@ -1245,6 +1272,9 @@ angular.module('rainierApp')
             }
 
             builder.buildLayout(d3, svg, data, scope.noBreakDown, scope.noLegendBox, scope.onlyBreakDown, scope);
+          };
+          scope.popupTotalEfficiencyDialog = function () {
+            modalDialogService.showTotalEfficiencyDialog(scope.totalEfficiency);
           };
         });
       }
