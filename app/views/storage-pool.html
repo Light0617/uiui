@@ -109,8 +109,12 @@
 
                     <div class="label-value-container">
                         <p class="label">{{ 'total-efficiency-provisioning' | translate }}</p>
-                        <total-efficiency-value ng-model="totalEfficiencyModel.provisioningEfficiencyPercentage">
-                        </total-efficiency-value>
+                        <p class="value"
+                           ng-if="totalEfficiencyModel.provisioningEfficiencyPercentage.status === 'CALCULATED'"
+                           title="{{ totalEfficiencyModel.provisioningEfficiencyPercentage.value }} %">
+                            {{ totalEfficiencyModel.provisioningEfficiencyPercentage.value }} %</p>
+                        <p class="value"
+                           ng-if="totalEfficiencyModel.provisioningEfficiencyPercentage.status !== 'CALCULATED'">-</p>
                     </div>
 
                     <div class="label-value-container">

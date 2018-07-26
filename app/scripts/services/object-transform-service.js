@@ -1634,15 +1634,49 @@ angular.module('rainierApp')
                 });
             },
 
-            transformSavingsSummary: function (capacitySavingsSummary, model) {
-                model.arrayDataVisualizationModel.savingsBreakdown.push({
-                    name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
-                    savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ? capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '
-                });
-                model.arrayDataVisualizationModel.savingsBreakdown.push({
-                    name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
-                    savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ? capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '
-                });
+            getTotalEfficiencyValue: function (model) {
+                return model.status === constantService.CALCULATED ? model.value + ' : 1' : '-';
+            },
+
+            transformSavingsSummary: function (capacitySavingsSummary, model, totalEfficiency) {
+                if (utilService.isNullOrUndef(totalEfficiency)) {
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
+                        savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ?
+                            capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
+                        savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ?
+                            capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '
+                    });
+                } else {
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency'),
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.totalEfficiencyRate)
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-total-data-reduction'),
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.dataReductionRate.totalDataReductionRate)
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-provisioning'),
+                        savingsRatio: totalEfficiency.provisioningEfficiencyPercentage.status === constantService.CALCULATED ?
+                            totalEfficiency.provisioningEfficiencyPercentage.value + ' %' : '-'
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-snapshot'),
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.snapshotEfficiencyRate)
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-calculation-start-time'),
+                        savingsRatio: totalEfficiency.calculationStartTime ? totalEfficiency.calculationStartTime : '-'
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-calculation-end-time'),
+                        savingsRatio: totalEfficiency.calculationEndTime ? totalEfficiency.calculationEndTime : '-'
+                    });
+                }
             },
 
             transformStorageSystemsSummary: function (item) {
@@ -2091,16 +2125,19 @@ angular.module('rainierApp')
                             this.tiers = true;
                             this.savings = false;
                             this.protection = false;
+                            this.totalEfficiencyDetails = false;
                         },
                         showProtectionBreakDown: function () {
                             this.protection = true;
                             this.tiers = false;
                             this.savings = false;
+                            this.totalEfficiencyDetails = false;
                         },
                         showSavingsBreakDown: function () {
                             this.savings = true;
                             this.tiers = false;
                             this.protection = false;
+                            this.totalEfficiencyDetails = true;
                         },
                         switchToUnified: function () {
                             this.view = 'unified';
@@ -2118,6 +2155,7 @@ angular.module('rainierApp')
                         tiers: true,
                         protection: false,
                         savings: false,
+                        totalEfficiencyDetails: false,
                         view: 'block',
                         unified: item.unified,
                         total: {

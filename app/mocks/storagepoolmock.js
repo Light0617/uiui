@@ -298,11 +298,11 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'softwareSavingRate': null,
                         'fmdSavingRate': null
                     },
-                    'snapshotEfficiencyRate':  {
+                    'snapshotEfficiencyRate':  null,
+                    'provisioningEfficiencyPercentage': {
                         'status': 'CALCULATED',
-                        'value': 10.37
+                        'value': 170
                     },
-                    'provisioningEfficiencyPercentage': null,
                     'calculationStartTime': '2018-05-15T10:05',
                     'calculationEndTime': '2018-05-15T10:38'
                 }
