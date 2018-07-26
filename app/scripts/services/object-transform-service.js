@@ -1661,7 +1661,8 @@ angular.module('rainierApp')
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-provisioning'),
-                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.provisioningEfficiencyPercentage)
+                        savingsRatio: totalEfficiency.provisioningEfficiencyPercentage.status === constantService.CALCULATED ?
+                            totalEfficiency.provisioningEfficiencyPercentage.value + ' %' : '-'
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-snapshot'),
