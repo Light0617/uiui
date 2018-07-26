@@ -1634,8 +1634,15 @@ angular.module('rainierApp')
                 });
             },
 
-            getTotalEfficiencyValue: function (model) {
-                return model.status === constantService.CALCULATED ? model.value + ' : 1' : '-';
+            getTotalEfficiencyValue: function (model, suffixString) {
+                switch (model.status) {
+                    case constantService.CALCULATED:
+                        return model.value + suffixString;
+                    case constantService.CALCULATED_WITH_EXCEEDED:
+                        return '> ' + model.value + suffixString;
+                    default:
+                        return constantService.HYPHEN;
+                }
             },
 
             transformSavingsSummary: function (capacitySavingsSummary, model, totalEfficiency) {
@@ -1653,20 +1660,20 @@ angular.module('rainierApp')
                 } else {
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency'),
-                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.totalEfficiencyRate)
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.totalEfficiencyRate, ' : 1')
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-total-data-reduction'),
-                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.dataReductionRate.totalDataReductionRate)
+                        savingsRatio: this.getTotalEfficiencyValue(
+                            totalEfficiency.dataReductionRate.totalDataReductionRate, ' : 1')
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-provisioning'),
-                        savingsRatio: totalEfficiency.provisioningEfficiencyPercentage.status === constantService.CALCULATED ?
-                            totalEfficiency.provisioningEfficiencyPercentage.value + ' %' : '-'
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.provisioningEfficiencyPercentage, ' %')
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-snapshot'),
-                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.snapshotEfficiencyRate)
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.snapshotEfficiencyRate, ' : 1')
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-calculation-start-time'),
