@@ -23,6 +23,9 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            addDefinedVolumeToVsm: function(virtualStorageMachineId, payload){
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('add-existing-volumes').post(payload));
+            },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {
                     var externalReplicationGroup = function (type) {

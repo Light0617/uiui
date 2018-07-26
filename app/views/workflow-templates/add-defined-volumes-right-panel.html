@@ -1,0 +1,13 @@
+<div class="scroll-wizard-container single-pane">
+    <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 tile-container flex-grid" ng-if="dataModel.view=== 'tile'"
+         infinite-scroll='dataModel.loadMore()' infinite-scroll-distance='1' infinite-scroll-container='infiniteScrollContainerElement'>
+
+        <div class="tile resource-tile simple-resource-tile" ng-repeat="item in dataModel.displayList track by $index">
+            <simple-resource-tile item="item" layout="dataModel.wizardLayout" class="repeat-tile-container"></simple-resource-tile>
+        </div>
+    </div>
+</div>
+
+<!--<div ng-if="dataModel.displayList == null">-->
+<!--No available volume, Please select another storage system.-->
+<!--</div>-->

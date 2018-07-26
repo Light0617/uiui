@@ -391,6 +391,7 @@
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
     "common-virtual-storage-machine-id": "Virtual Storage Machine ID",
+    "add-defined-vols-to-vsm": "Add Defined Volumes to VSM",
     "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
     "volume-pair-count": "GAD Pair Count",
