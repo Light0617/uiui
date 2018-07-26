@@ -45,41 +45,7 @@ angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
             search: {
                 freeText: ''
             },
-            changeSelectedStorageSystem: changeSelectedStorageSystem,
-            sort: {
-                field: 'storageSystemId',
-                reverse: false,
-                setSort: function (f) {
-                    $timeout(function () {
-                        if ($scope.dataModel.sort.field === f) {
-                            $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
-                        } else {
-                            $scope.dataModel.sort.field = f;
-                            $scope.dataModel.sort.reverse = false;
-                        }
-                    });
-                }
-            },
-            gridSettings: [
-                {
-                    title: synchronousTranslateService.translate('virtual-storage-system-id'),
-                    sizeClass: 'sixth',
-                    sortField: 'virtualStorageMachineId',
-                    getDisplayValue: function (item) {
-                        return item.virtualStorageMachineId;
-                    },
-                    type: 'id'
-                },
-                {
-                    title: synchronousTranslateService.translate('storage-systems-model'),
-                    sizeClass: 'sixth',
-                    sortField: 'productModel',
-                    getDisplayValue: function (item) {
-                        return item.model;
-                    }
-
-                }
-            ],
+            changeSelectedStorageSystem: changeSelectedStorageSystem
         };
 
 
