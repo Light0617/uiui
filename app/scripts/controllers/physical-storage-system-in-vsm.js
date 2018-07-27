@@ -398,31 +398,6 @@ angular.module('rainierApp')
         };
 
 
-        var getPhysicalStorageSystemSummary = function(){
-            return orchestratorService.physicalStorageSystemSummaryInVsm(virtualStorageMachineId,
-                physicalStorageSystemId).then(function(result){
-                var summaryModel = [];
-                var item = {
-                    resource: 'Volume',
-                    defined: result.definedVolumeCount,
-                    undefined: result.undefinedVolumeCount,
-                    info: null
-                };
-                summaryModel.push(item);
-
-                _.each(result.hostGroupSummaryList, function(h){
-                    var item = {
-                        resource: 'Host Group',
-                        defined: h.definedHostGroupCount,
-                        undefined: h.undefinedHostGroupCount,
-                        info: h.storagePort
-                    };
-                    summaryModel.push(item);
-                });
-                $scope.summaryModel = summaryModel;
-            });
-        };
-
         var updateResultTotalCounts = function (result) {
             $scope.dataModel.nextToken = result.nextToken;
             $scope.dataModel.cachedList = result.resources;
@@ -435,6 +410,5 @@ angular.module('rainierApp')
 
         initModels();
         getVolumeInventory();
-        getPhysicalStorageSystemSummary();
 
     });
