@@ -383,7 +383,7 @@ angular.module('rainierApp')
                         }
                     },
                     {
-                        icon: 'icon-delete',
+                        icon: 'icon-delete',//TODO: change icon
                         tooltip: 'action-tooltip-delete',
                         type: 'confirm',
 
@@ -394,7 +394,6 @@ angular.module('rainierApp')
                                 !volumeService.hasShredding(dataModel.getSelectedItems());
                         },
                         onClick: function () {
-                            //TODO
                             var payload = {
                                 volumeIds: _.map(dataModel.getSelectedItems(), function(v){
                                     return v.volumeId;
