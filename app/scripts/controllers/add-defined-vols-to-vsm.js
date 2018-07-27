@@ -83,8 +83,8 @@ angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
                 dataModel.total = result.total;
                 dataModel.currentPageCount = 0;
                 dataModel.cachedList = _.filter(result.resources, function(r){
-                    return (r.volumeId === r.virtualStorageMachineInformation.virtualVolumeId)
-                        && (r.storageSystemId === r.virtualStorageMachineInformation.storageSystemId);
+                    return (r.volumeId === r.virtualStorageMachineInformation.virtualVolumeId) &&
+                        (r.storageSystemId === r.virtualStorageMachineInformation.storageSystemId);
                 });
                 dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
