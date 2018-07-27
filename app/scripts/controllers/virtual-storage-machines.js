@@ -73,13 +73,15 @@ angular.module('rainierApp')
                     icon: 'icon-delete',
                     tooltip :'action-tooltip-delete',
                     type: 'confirm',
-                    confirmTitle: 'storage-system-delete-confirmation',
-                    confirmMessage: 'storage-system-delete-selected-content',
+                    confirmTitle: 'virtual-storage-machine-delete-confirmation',
+                    confirmMessage: 'virtual-storage-machine-delete-selected-content',
                     enabled: function () {
                         return dataModel.anySelected();
                     },
                     onClick: function () {
-                        //TODO
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            item.actions.delete.onClick(orchestratorService);
+                        });
                     }
                 },
                 {

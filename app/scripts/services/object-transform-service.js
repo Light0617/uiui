@@ -524,6 +524,21 @@ angular.module('rainierApp')
                     ShareDataService.virtualStorageMachine = item;
                     $location.path(['virtual-storage-machines', item.virtualStorageMachineId].join('/'));
                 };
+                item.actions = {
+                    'delete': {
+                        icon: 'icon-delete',
+                        tooltip: 'action-tooltip-delete',
+                        type: 'confirm',
+                        confirmTitle: 'virtual-storage-machine-delete-confirmation',
+                        confirmMessage: 'virtual-storage-machine-delete-selected-content',
+                        enabled: function () {
+                            return true;
+                        },
+                        onClick: function (orchestratorService) {
+                            return orchestratorService.deleteVirtualStorageMachine(item.virtualStorageMachineId);
+                        }
+                    }
+                }
             },
             transformVSMStorageSystems: function (item) {
                 item.noSelection = false;
