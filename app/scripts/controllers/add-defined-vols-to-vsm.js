@@ -16,9 +16,9 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
-    $scope, $modal, $routeParams, ShareDataService, orchestratorService, constantService, scrollDataSourceBuilderServiceNew,
-    viewModelService, synchronousTranslateService, paginationService, queryService, objectTransformService,
-    attachVolumeService, replicationService, externalVolumesAddService, $timeout){
+    $scope, $modal, $routeParams, ShareDataService, orchestratorService, constantService,
+    scrollDataSourceBuilderServiceNew, viewModelService, synchronousTranslateService, paginationService, queryService,
+    objectTransformService, attachVolumeService, replicationService, externalVolumesAddService){
 
     var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
     var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
@@ -66,27 +66,31 @@ angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
     };
 
     var changeSelectedStorageSystem = function(){
-        paginationService.get(null, 'volumes', objectTransformService.transformVolume, false, $scope.dataModel.selectedStorageSystem).then(function(result){
-            _.forEach(result.resources, function(volume) {
-                volume.selected = false;
-            });
+        var dataModel = $scope.dataModel;
+        paginationService.get(null, 'volumes', objectTransformService.transformVolume, false,
+            dataModel.selectedStorageSystem).then(
+            function(result){
+                _.forEach(result.resources, function(volume) {
+                    volume.selected = false;
+                });
 
-            $scope.dataModel.getResources = function(){
-                queryService.setSort('volumeId', false);
-                return paginationService.get($scope.dataModel.nextToken, 'volumes', objectTransformService.transformVolume,
-                    false, $scope.dataModel.selectedStorageSystem.storageSystemId);
-            };
-            $scope.dataModel.nextToken = result.nextToken;
-            $scope.dataModel.total = result.total;
-            $scope.dataModel.currentPageCount = 0;
-            $scope.dataModel.cachedList = _.filter(result.resources, function(r){
-                return (r.volumeId === r.virtualStorageMachineInformation.virtualVolumeId)
-                    && (r.storageSystemId === r.virtualStorageMachineInformation.storageSystemId);
+                dataModel.getResources = function(){
+                    queryService.setSort('volumeId', false);
+                    return paginationService.get(dataModel.nextToken, 'volumes', objectTransformService.transformVolume,
+                        false, dataModel.selectedStorageSystem.storageSystemId);
+                };
+                dataModel.nextToken = result.nextToken;
+                dataModel.total = result.total;
+                dataModel.currentPageCount = 0;
+                dataModel.cachedList = _.filter(result.resources, function(r){
+                    return (r.volumeId === r.virtualStorageMachineInformation.virtualVolumeId)
+                        && (r.storageSystemId === r.virtualStorageMachineInformation.storageSystemId);
+                });
+                dataModel.displayList = dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
+                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
+                dataModel.allItemsSelected = false;
+                $scope.dataModel = dataModel;
             });
-            $scope.dataModel.displayList = $scope.dataModel.cachedList.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-            scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
-            $scope.dataModel.allItemsSelected = false;
-        });
     };
 
     var constructAddDefinedVolumePayload = function(){
