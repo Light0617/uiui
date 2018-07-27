@@ -170,7 +170,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                             'status': 'CALCULATED',
                             'value': 99999.99
                         },
-                        'softwareSavingRate': {
+                        'softwareSavingEfficiency': {
                             'totalSoftwareSavingRate':  {
                                 'status': 'CALCULATED',
                                 'value': 1.52
@@ -188,7 +188,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                                 'value': 1.08
                             }
                         },
-                        'fmdSavingRate': {
+                        'fmdSavingEfficiency': {
                             'totalFmdSavingRate':  {
                                 'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
                                 'value': 2.21
@@ -221,6 +221,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
         return mockUtils.trueOrFalse() ?
             {
                 'compressionDetails': null,
+                'fmcCompressed': false,
                 'fmcCompressionDetails': null,
                 'dataReductionSavingsRate': null,
                 'capacityEfficiencyRate': null,
@@ -234,7 +235,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                             'status': 'CALCULATION_IN_PROGRESS',
                             'value': null
                         },
-                        'softwareSavingRate': {
+                        'softwareSavingEfficiency': {
                             'totalSoftwareSavingRate':  {
                                 'status': 'CALCULATION_IN_PROGRESS',
                                 'value': null
@@ -252,7 +253,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                                 'value': null
                             }
                         },
-                        'fmdSavingRate': {
+                        'fmdSavingEfficiency': {
                             'totalFmdSavingRate':  {
                                 'status': 'CALCULATION_IN_PROGRESS',
                                 'value': null
@@ -282,6 +283,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             :
             {
                 'compressionDetails': null,
+                'fmcCompressed': false,
                 'fmcCompressionDetails': null,
                 'dataReductionSavingsRate': null,
                 'capacityEfficiencyRate': null,
@@ -295,8 +297,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                             'status': 'CALCULATED',
                             'value': 1.84
                         },
-                        'softwareSavingRate': null,
-                        'fmdSavingRate': null
+                        'softwareSavingEfficiency': null,
+                        'fmdSavingEfficiency': null
                     },
                     'snapshotEfficiencyRate':  null,
                     'provisioningEfficiencyPercentage': {
