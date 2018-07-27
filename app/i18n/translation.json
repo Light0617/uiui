@@ -394,6 +394,8 @@
     "common-virtual-storage-machine-id": "Virtual Storage Machine ID",
     "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
+    "virtual-storage-machine-defined-vol-remove-confirmation": "Remove defined volume from VSM confirmation",
+    "virtual-storage-machine-defined-vol-remove-content":"The selected {{getSelectedCount()}} volumes will be removed from current VSM. Do you want to proceed?",
     "volume-pair-count": "GAD Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
     "virtual-volume-id": "Virtual Volume Id",

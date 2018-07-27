@@ -381,6 +381,27 @@ angular.module('rainierApp')
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                             $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
                         }
+                    },
+                    {
+                        icon: 'icon-delete',
+                        tooltip: 'action-tooltip-delete',
+                        type: 'confirm',
+
+                        confirmTitle: 'virtual-storage-machine-defined-vol-remove-confirmation',
+                        confirmMessage: 'virtual-storage-machine-defined-vol-remove-content',
+                        enabled: function () {
+                            return dataModel.anySelected() && !volumeService.hasGadVolume(dataModel.getSelectedItems()) &&
+                                !volumeService.hasShredding(dataModel.getSelectedItems());
+                        },
+                        onClick: function () {
+                            //TODO
+                            var payload = {
+                                volumeIds: _.map(dataModel.getSelectedItems(), function(v){
+                                    return v.volumeId;
+                                })
+                            }
+                            orchestratorService.removeDefinedVolumeFromVsm(virtualStorageMachineId, payload);
+                        }
                     }
                 ];
 
