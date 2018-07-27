@@ -1680,11 +1680,11 @@ angular.module('rainierApp')
                         name: synchronousTranslateService.translate('total-efficiency'),
                         savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.totalEfficiencyRate, ' : 1')
                     });
-                    if (totalEfficiency.dataReductionRate && totalEfficiency.dataReductionRate.totalDataReductionRate) {
+                    if (totalEfficiency.dataReductionEfficiency && totalEfficiency.dataReductionEfficiency.totalDataReductionRate) {
                         model.arrayDataVisualizationModel.savingsBreakdown.push({
                             name: synchronousTranslateService.translate('total-efficiency-total-data-reduction'),
                             savingsRatio: this.getTotalEfficiencyValue(
-                                totalEfficiency.dataReductionRate.totalDataReductionRate, ' : 1')
+                                totalEfficiency.dataReductionEfficiency.totalDataReductionRate, ' : 1')
                         });
                     }
                     if (totalEfficiency.provisioningEfficiencyPercentage) {
