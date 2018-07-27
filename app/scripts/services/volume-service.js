@@ -10,7 +10,8 @@
 angular.module('rainierApp')
     .factory('volumeService', function (replicationService) {
         var getStorageSystems = function () {
-            return paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
+            return paginationService.getAllPromises(null, 'storage-systems', true, null,
+                objectTransformService.transformStorageSystem).then(function (result) {
                 result = _.filter(result, function (r) {
                     return r.storageSystemId !== storageSystemId;
                 });
@@ -31,7 +32,8 @@ angular.module('rainierApp')
                 volumeId = selectedVolumes[0].volumeId;
             }
 
-            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId, storageSystemId).then(function (result) {
+            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId,
+                storageSystemId).then(function (result) {
 
                 ShareDataService.SVolsList = _.filter(result.resources, function (SVol) {
                     return SVol.primaryVolume && SVol.secondaryVolume;
