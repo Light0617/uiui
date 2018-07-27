@@ -23,11 +23,6 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
-            physicalStorageSystemSummaryInVsm: function(virtualStorageMachineId, physicalStorageSystemId) {
-                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('physical-storage-systems', physicalStorageSystemId).one('summary').get().then(function (result) {
-                    return result;
-                }));
-            },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {
                     var externalReplicationGroup = function (type) {
