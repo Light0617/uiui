@@ -287,7 +287,8 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-restore-volumes',
                         type: 'link',
                         onClick: function () {
-                            volumeRestoreAction('restore', dataModel.getSelectedItems(), storageSystemId);
+                            volumeService.volumeRestoreAction('restore', dataModel.getSelectedItems(),
+                                storageSystemId, storageSystemVolumeService);
                         },
                         enabled: function () {
                             return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
@@ -352,8 +353,9 @@ angular.module('rainierApp')
 
                             var dialogSettings = this.dialogSettings;
 
-                            getStorageSystems().then(function () {
-                                _.each($scope.dataModel.storageSystems, function (storageSystem) {
+                            volumeService.getStorageSystems(paginationService, orchestratorService, storageSystemId)
+                                .then(function (result) {
+                                _.each(result, function (storageSystem) {
                                     dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
                                 });
                                 dialogSettings.itemAttribute = {
@@ -407,45 +409,6 @@ angular.module('rainierApp')
                 filtered: $scope.dataModel.displayList.length,
                 total: $scope.dataModel.total
             };
-        };
-
-        var getStorageSystems = function () {
-            return paginationService.getAllPromises(null, 'storage-systems', true, null,
-                objectTransformService.transformStorageSystem).then(function (result) {
-                result = _.filter(result, function (r) {
-                    return r.storageSystemId !== storageSystemId;
-                });
-                $scope.dataModel.storageSystems = result;
-
-                if(result.length > 0) {
-                    return $q.resolve(result);
-                }else{
-                    return $q.reject('storage-system-not-found-error');
-                }
-            });
-        };
-
-        var volumeRestoreAction = function (action, selectedVolumes, storageSystemId) {
-
-            var volumeId = 0;
-            if (selectedVolumes && selectedVolumes.length > 0) {
-                volumeId = selectedVolumes[0].volumeId;
-            }
-
-            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId,
-                storageSystemId).then(function (result) {
-
-                ShareDataService.SVolsList = _.filter(result.resources, function (SVol) {
-                    return SVol.primaryVolume && SVol.secondaryVolume;
-                });
-                ShareDataService.restorePrimaryVolumeId = volumeId;
-                ShareDataService.restorePrimaryVolumeToken = result.nextToken;
-
-                _.forEach(ShareDataService.SVolsList, function (volume) {
-                    volume.selected = false;
-                });
-                $location.path(['/storage-systems/', storageSystemId, '/volumes/volume-actions-restore-selection'].join(''));
-            });
         };
 
         initModels();

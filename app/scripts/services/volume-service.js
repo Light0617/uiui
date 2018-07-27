@@ -11,6 +11,44 @@ angular.module('rainierApp')
     .factory('volumeService', function (replicationService, ShareDataService, $q,
     $location, constantService) {
 
+        var getStorageSystems = function (paginationService, objectTransformService, storageSystemId) {
+            return paginationService.getAllPromises(null, 'storage-systems', true, null,
+                objectTransformService.transformStorageSystem).then(function (result) {
+                result = _.filter(result, function (r) {
+                    return r.storageSystemId !== storageSystemId;
+                });
+
+                if(result.length > 0) {
+                    return $q.resolve(result);
+                }else{
+                    return $q.reject('storage-system-not-found-error');
+                }
+            });
+        };
+
+        var volumeRestoreAction = function (action, selectedVolumes, storageSystemId, storageSystemVolumeService) {
+
+            var volumeId = 0;
+            if (selectedVolumes && selectedVolumes.length > 0) {
+                volumeId = selectedVolumes[0].volumeId;
+            }
+
+            storageSystemVolumeService.getVolumePairsAsPVolWithoutSnapshotFullcopy(null, volumeId,
+                storageSystemId).then(function (result) {
+
+                ShareDataService.SVolsList = _.filter(result.resources, function (SVol) {
+                    return SVol.primaryVolume && SVol.secondaryVolume;
+                });
+                ShareDataService.restorePrimaryVolumeId = volumeId;
+                ShareDataService.restorePrimaryVolumeToken = result.nextToken;
+
+                _.forEach(ShareDataService.SVolsList, function (volume) {
+                    volume.selected = false;
+                });
+                $location.path(['/storage-systems/', storageSystemId, '/volumes/volume-actions-restore-selection'].join(''));
+            });
+        };
+
         var volumeUnprotectActions = function (selectedVolume, storageSystemId) {
             ShareDataService.volumeListForUnprotect = selectedVolume;
 
@@ -52,6 +90,8 @@ angular.module('rainierApp')
         };
 
         return {
+            getStorageSystems: getStorageSystems,
+            volumeRestoreAction: volumeRestoreAction,
             volumeUnprotectActions: volumeUnprotectActions,
             hasGadVolume: hasGadVolume,
             hasShredding: hasShredding,
