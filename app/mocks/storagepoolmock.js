@@ -221,6 +221,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
         return mockUtils.trueOrFalse() ?
             {
                 'compressionDetails': null,
+                'fmcCompressed': false,
                 'fmcCompressionDetails': null,
                 'dataReductionSavingsRate': null,
                 'capacityEfficiencyRate': null,
@@ -282,6 +283,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             :
             {
                 'compressionDetails': null,
+                'fmcCompressed': false,
                 'fmcCompressionDetails': null,
                 'dataReductionSavingsRate': null,
                 'capacityEfficiencyRate': null,
