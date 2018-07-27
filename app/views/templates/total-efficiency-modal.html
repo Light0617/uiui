@@ -33,52 +33,52 @@
             </div>
         </div>
 
-        <div class="top-m-20" ng-if="softwareSavingRate">
+        <div class="top-m-20" ng-if="softwareSavingEfficiency">
             <h2>{{ 'total-efficiency-software-saving' | translate }}</h2>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-software-total-savings-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="softwareSavingRate.totalSoftwareSavingRate">
+                <total-efficiency-value ng-model="softwareSavingEfficiency.totalSoftwareSavingRate">
                 </total-efficiency-value>
             </div>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-software-compression-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="softwareSavingRate.compressionRate">
+                <total-efficiency-value ng-model="softwareSavingEfficiency.compressionRate">
                 </total-efficiency-value>
             </div>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-software-deduplication-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="softwareSavingRate.deduplicationRate">
+                <total-efficiency-value ng-model="softwareSavingEfficiency.deduplicationRate">
                 </total-efficiency-value>
             </div>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-software-pattern-matching-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="softwareSavingRate.patternMatchingRate">
+                <total-efficiency-value ng-model="softwareSavingEfficiency.patternMatchingRate">
                 </total-efficiency-value>
             </div>
         </div>
 
-        <div class="top-m-20" ng-if="fmdSavingRate">
+        <div class="top-m-20" ng-if="fmdSavingEfficiency">
             <h2>{{ 'total-efficiency-fmd-saving' | translate }}</h2>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-fmd-total-savings-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="fmdSavingRate.totalFmdSavingRate">
+                <total-efficiency-value ng-model="fmdSavingEfficiency.totalFmdSavingRate">
                 </total-efficiency-value>
             </div>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-fmd-compression-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="fmdSavingRate.compressionRate">
+                <total-efficiency-value ng-model="fmdSavingEfficiency.compressionRate">
                 </total-efficiency-value>
             </div>
 
             <div class="label-value-container">
                 <p class="label">{{ 'total-efficiency-fmd-pattern-matching-ratio' | translate }}</p>
-                <total-efficiency-value ng-model="fmdSavingRate.deduplicationRate">
+                <total-efficiency-value ng-model="fmdSavingEfficiency.deduplicationRate">
                 </total-efficiency-value>
             </div>
         </div>

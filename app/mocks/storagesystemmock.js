@@ -64,7 +64,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                         'status': 'CALCULATED',
                         'value': 99999.99
                     },
-                    'softwareSavingRate': {
+                    'softwareSavingEfficiency': {
                         'totalSoftwareSavingRate':  {
                             'status': 'CALCULATED',
                             'value': 1.52
@@ -82,7 +82,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                             'value': 1.08
                         }
                     },
-                    'fmdSavingRate': {
+                    'fmdSavingEfficiency': {
                         'totalFmdSavingRate':  {
                             'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
                             'value': 2.21

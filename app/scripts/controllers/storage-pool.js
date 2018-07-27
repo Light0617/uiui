@@ -597,37 +597,37 @@ angular.module('rainierApp')
                     if (!utilService.isNullOrUndef(result.totalEfficiency) &&
                         !utilService.isNullOrUndef(result.totalEfficiency.dataReductionRate)) {
 
-                        var softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
+                        var softwareSavingEfficiency = result.totalEfficiency.dataReductionRate.softwareSavingEfficiency;
 
-                        if (softwareSavingRate) {
-                            softwareSavingRate.totalSoftwareSavingRate =
-                                totalEfficiencyService.getDisplayValue(softwareSavingRate.totalSoftwareSavingRate);
+                        if (softwareSavingEfficiency) {
+                            softwareSavingEfficiency.totalSoftwareSavingRate =
+                                totalEfficiencyService.getDisplayValue(softwareSavingEfficiency.totalSoftwareSavingRate);
 
-                            softwareSavingRate.compressionRate =
-                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.compressionRate);
+                            softwareSavingEfficiency.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.compressionRate);
 
-                            softwareSavingRate.deduplicationRate =
-                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.deduplicationRate);
+                            softwareSavingEfficiency.deduplicationRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.deduplicationRate);
 
-                            softwareSavingRate.patternMatchingRate =
-                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.patternMatchingRate);
+                            softwareSavingEfficiency.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.patternMatchingRate);
 
-                            $scope.softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
+                            $scope.softwareSavingEfficiency = result.totalEfficiency.dataReductionRate.softwareSavingEfficiency;
                         }
 
-                        var fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
+                        var fmdSavingEfficiency = result.totalEfficiency.dataReductionRate.fmdSavingEfficiency;
 
-                        if (fmdSavingRate) {
-                            fmdSavingRate.totalFmdSavingRate =
-                                totalEfficiencyService.getDisplayValue(fmdSavingRate.totalFmdSavingRate);
+                        if (fmdSavingEfficiency) {
+                            fmdSavingEfficiency.totalFmdSavingRate =
+                                totalEfficiencyService.getDisplayValue(fmdSavingEfficiency.totalFmdSavingRate);
 
-                            fmdSavingRate.compressionRate =
-                                totalEfficiencyService.getBoxChartValue(fmdSavingRate.compressionRate);
+                            fmdSavingEfficiency.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.compressionRate);
 
-                            fmdSavingRate.patternMatchingRate =
-                                totalEfficiencyService.getBoxChartValue(fmdSavingRate.patternMatchingRate);
+                            fmdSavingEfficiency.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.patternMatchingRate);
 
-                            $scope.fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
+                            $scope.fmdSavingEfficiency = result.totalEfficiency.dataReductionRate.fmdSavingEfficiency;
                         }
 
                         result.totalEfficiency.calculationStartTime =
