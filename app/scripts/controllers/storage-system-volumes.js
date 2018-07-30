@@ -116,10 +116,6 @@ angular.module('rainierApp')
             summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
             $scope.summaryModel.dpAlert.update();
-
-            return migrationTaskService.checkLicense(storageSystemId);
-        }).then(function (result) {
-            $scope.dataModel.volumeMigrationAvailable = result;
         });
 
         var volumeUnprotectActions = function (selectedVolume) {
@@ -431,8 +427,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.volumeMigrationAvailable &&
-                            dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                        return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                             migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                     },
                     onClick: function () {

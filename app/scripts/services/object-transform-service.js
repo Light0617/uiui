@@ -538,7 +538,7 @@ angular.module('rainierApp')
                             return orchestratorService.deleteVirtualStorageMachine(item.virtualStorageMachineId);
                         }
                     }
-                }
+                };
             },
             transformVSMStorageSystems: function (item) {
                 item.noSelection = false;
