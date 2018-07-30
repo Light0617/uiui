@@ -40,10 +40,10 @@ angular.module('rainierApp')
                         $scope.totalEfficiencyModel = totalEfficiencyModel;
 
                         if (totalEfficiencyModel) {
-                            $scope.dataReductionRate = totalEfficiencyModel.dataReductionRate;
-                            if (totalEfficiencyModel.dataReductionRate) {
-                                $scope.softwareSavingEfficiency = totalEfficiencyModel.dataReductionRate.softwareSavingEfficiency;
-                                $scope.fmdSavingEfficiency = totalEfficiencyModel.dataReductionRate.fmdSavingEfficiency;
+                            $scope.dataReductionEfficiency = totalEfficiencyModel.dataReductionEfficiency;
+                            if (totalEfficiencyModel.dataReductionEfficiency) {
+                                $scope.softwareSavingEfficiency = totalEfficiencyModel.dataReductionEfficiency.softwareSavingEfficiency;
+                                $scope.fmdSavingEfficiency = totalEfficiencyModel.dataReductionEfficiency.fmdSavingEfficiency;
                             }
                         }
 

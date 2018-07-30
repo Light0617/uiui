@@ -794,6 +794,7 @@ angular.module('rainierApp')
             .text('Savings');
 
           if (data.totalEfficiencyDetails && scope.totalEfficiency) {
+              var xOffset = 15;
               breakdownView.append('rect')
                   .on('click', function () {
                       scope.popupTotalEfficiencyDialog(data);
@@ -801,10 +802,10 @@ angular.module('rainierApp')
                   .attr('y', legendItemsHeight - buttonHeight - switchTopMargin + space)
                   .attr('cursor', 'pointer')
                   .attr('height', buttonHeight)
-                  .attr('width', buttonWidth)
+                  .attr('width', buttonWidth - xOffset)
                   .attr('fill', '#599628')
                   .attr('stroke', 'gray')
-                  .attr('x', bwItemLeft * 1.47 + switchMargin + buttonWidth);
+                  .attr('x', bwItemLeft * 1.47 + switchMargin + buttonWidth + xOffset);
 
               breakdownView.append('text')
                   .on('click', function () {
@@ -814,7 +815,7 @@ angular.module('rainierApp')
                   .attr('y', legendItemsHeight - buttonHeight + space)
                   .attr('cursor', 'pointer')
                   .attr('height', bwItemHeight)
-                  .attr('x', bwItemLeft * 1.47 + switchMargin + buttonWidth + space * 4)
+                  .attr('x', bwItemLeft * 1.47 + switchMargin + buttonWidth + space * 4 + xOffset / 2)
                   .attr('font-size', 10)
                   .attr('class', 'header')
                   .text(synchronousTranslateService.translate('common-label-details'));

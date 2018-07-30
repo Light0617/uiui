@@ -165,7 +165,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED_WITH_EXCEEDED',
                         'value': 99999.99
                     },
-                    'dataReductionRate': {
+                    'dataReductionEfficiency': {
                         'totalDataReductionRate':  {
                             'status': 'CALCULATED',
                             'value': 99999.99
@@ -211,8 +211,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED',
                         'value': 170
                     },
-                    'calculationStartTime': '2018-05-15T10:05',
-                    'calculationEndTime': '2018-05-15T10:38'
+                    'calculationStartTime': '2018-05-15T10:05:48',
+                    'calculationEndTime': '2018-05-15T10:38:37'
                 }
             });
     };
@@ -230,7 +230,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATION_IN_PROGRESS',
                         'value': null
                     },
-                    'dataReductionRate': {
+                    'dataReductionEfficiency': {
                         'totalDataReductionRate':  {
                             'status': 'CALCULATION_IN_PROGRESS',
                             'value': null
@@ -292,7 +292,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED',
                         'value': 20.8
                     },
-                    'dataReductionRate': {
+                    'dataReductionEfficiency': {
                         'totalDataReductionRate':  {
                             'status': 'CALCULATED',
                             'value': 1.84
@@ -305,8 +305,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED',
                         'value': 170
                     },
-                    'calculationStartTime': '2018-05-15T10:05',
-                    'calculationEndTime': '2018-05-15T10:38'
+                    'calculationStartTime': '2018-05-15T10:05:01',
+                    'calculationEndTime': '2018-05-15T10:38:00'
                 }
             };
     };

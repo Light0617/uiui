@@ -589,9 +589,9 @@ angular.module('rainierApp')
                     $scope.poolDataModel = result;
 
                     if (!utilService.isNullOrUndef(result.totalEfficiency) &&
-                        !utilService.isNullOrUndef(result.totalEfficiency.dataReductionRate)) {
+                        !utilService.isNullOrUndef(result.totalEfficiency.dataReductionEfficiency)) {
 
-                        var softwareSavingEfficiency = result.totalEfficiency.dataReductionRate.softwareSavingEfficiency;
+                        var softwareSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.softwareSavingEfficiency;
 
                         if (softwareSavingEfficiency) {
                             softwareSavingEfficiency.totalSoftwareSavingRate =
@@ -606,10 +606,10 @@ angular.module('rainierApp')
                             softwareSavingEfficiency.patternMatchingRate =
                                 totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.patternMatchingRate);
 
-                            $scope.softwareSavingEfficiency = result.totalEfficiency.dataReductionRate.softwareSavingEfficiency;
+                            $scope.softwareSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.softwareSavingEfficiency;
                         }
 
-                        var fmdSavingEfficiency = result.totalEfficiency.dataReductionRate.fmdSavingEfficiency;
+                        var fmdSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.fmdSavingEfficiency;
 
                         if (fmdSavingEfficiency) {
                             fmdSavingEfficiency.totalFmdSavingRate =
@@ -621,7 +621,7 @@ angular.module('rainierApp')
                             fmdSavingEfficiency.patternMatchingRate =
                                 totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.patternMatchingRate);
 
-                            $scope.fmdSavingEfficiency = result.totalEfficiency.dataReductionRate.fmdSavingEfficiency;
+                            $scope.fmdSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.fmdSavingEfficiency;
                         }
 
                         result.totalEfficiency.calculationStartTime =
