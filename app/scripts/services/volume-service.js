@@ -9,7 +9,7 @@
  */
 angular.module('rainierApp')
     .factory('volumeService', function (replicationService, ShareDataService, $q,
-    $location, constantService) {
+                                        $location, constantService) {
 
         var getStorageSystems = function (paginationService, objectTransformService, storageSystemId) {
             return paginationService.getAllPromises(null, 'storage-systems', true, null,
@@ -18,9 +18,9 @@ angular.module('rainierApp')
                     return r.storageSystemId !== storageSystemId;
                 });
 
-                if(result.length > 0) {
+                if (result.length > 0) {
                     return $q.resolve(result);
-                }else{
+                } else {
                     return $q.reject('storage-system-not-found-error');
                 }
             });
@@ -286,10 +286,10 @@ angular.module('rainierApp')
 
                         var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
 
-                        if(!utilService.isNullOrUndef(targetStorageSystemId)){
+                        if (!utilService.isNullOrUndef(targetStorageSystemId)) {
                             _.forEach(dataModel.getSelectedItems(), function (item) {
-                                var unprevirtualizePayload  = {
-                                    targetStorageSystemId : targetStorageSystemId
+                                var unprevirtualizePayload = {
+                                    targetStorageSystemId: targetStorageSystemId
                                 };
                                 orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
                             });
@@ -308,7 +308,7 @@ angular.module('rainierApp')
                                 dialogSettings.itemAttribute = {
                                     value: dialogSettings.itemAttributes[0]
                                 };
-                            }).catch(function(e){
+                            }).catch(function (e) {
                             dialogSettings.content = e;
                         });
                     }
@@ -366,9 +366,12 @@ angular.module('rainierApp')
             restorable: restorable,
             getDkcDataSavingTypes: function () {
                 return [
-                    { label: 'volume-capacity-saving-type-filter-compression', value: 'COMPRESSION' },
-                    { label: 'volume-capacity-saving-type-filter-deduplication-and-compression', value: 'DEDUPLICATION_AND_COMPRESSION' },
-                    { label: 'volume-capacity-saving-type-filter-no', value: 'NONE' }
+                    {label: 'volume-capacity-saving-type-filter-compression', value: 'COMPRESSION'},
+                    {
+                        label: 'volume-capacity-saving-type-filter-deduplication-and-compression',
+                        value: 'DEDUPLICATION_AND_COMPRESSION'
+                    },
+                    {label: 'volume-capacity-saving-type-filter-no', value: 'NONE'}
                 ];
             },
             getVolumeSizeUnits: function () {
