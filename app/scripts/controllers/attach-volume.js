@@ -137,6 +137,10 @@ angular.module('rainierApp')
                 },
 
                 next: function () {
+                    if(attachVolumeService.isMultipleVsm(dataModel.getSelectedItems())) {
+                        attachVolumeService.openAttachMultipleVsmErrorModal();
+                        return;
+                    }
                     if (dataModel.selectModel.canGoNext && !dataModel.selectModel.canGoNext()) {
                         return;
                     }

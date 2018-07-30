@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
-                                                      constantService, resourceTrackerService, replicationService,
+                                                      constantService, resourceTrackerService, replicationService, attachVolumeService,
                                                       gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
@@ -314,7 +314,9 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             flags.push(item.isUnattached());
                         });
-                        if (flags.areAllItemsTrue()) {
+                        if (attachVolumeService.isMultipleVsm(dataModel.getSelectedItems())) {
+                            attachVolumeService.openAttachMultipleVsmErrorModal();
+                        } else if (flags.areAllItemsTrue()) {
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                             $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
                         } else {
