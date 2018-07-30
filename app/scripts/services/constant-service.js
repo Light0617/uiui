@@ -167,6 +167,7 @@ angular.module('rainierApp')
             },
             CALCULATED: 'CALCULATED',
             CALCULATION_IN_PROGRESS: 'CALCULATION_IN_PROGRESS',
+            CALCULATED_WITH_EXCEEDED: 'CALCULATED_WITH_EXCEEDED',
             HYPHEN: '-'
         };
     });

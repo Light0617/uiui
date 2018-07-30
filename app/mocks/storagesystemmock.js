@@ -22,8 +22,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
         var physicalUsed = mockUtils.getCapacity(500, 700);
         var used = mockUtils.getCapacity(200, 400);
 
-
-        return {
+        var mockStorageSystem = {
             'storageSystemId': '2200' + v,
             'storageSystemName': 'Storage' + v,
             'unified': mockUtils.trueOrFalse(),
@@ -48,6 +47,68 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
             'primaryGumNumber': null,
             'username': 'maintenance'
         };
+
+        return mockUtils.trueOrFalse() ?
+            mockStorageSystem : generateMockStorageSystemWithTotalEfficiecny(mockStorageSystem);
+    };
+
+    var generateMockStorageSystemWithTotalEfficiecny = function(mockStorageSystem) {
+        return angular.extend(mockStorageSystem, {
+            'totalEfficiency': {
+                'totalEfficiencyRate': {
+                    'status': 'CALCULATED_WITH_EXCEEDED',
+                    'value': 99999.99
+                },
+                'dataReductionEfficiency': {
+                    'totalDataReductionRate':  {
+                        'status': 'CALCULATED',
+                        'value': 99999.99
+                    },
+                    'softwareSavingEfficiency': {
+                        'totalSoftwareSavingRate':  {
+                            'status': 'CALCULATED',
+                            'value': 1.52
+                        },
+                        'compressionRate':  {
+                            'status': 'CALCULATED',
+                            'value': 1.15
+                        },
+                        'deduplicationRate':  {
+                            'status': 'CALCULATED',
+                            'value': 1.34
+                        },
+                        'patternMatchingRate':  {
+                            'status': 'CALCULATED',
+                            'value': 1.08
+                        }
+                    },
+                    'fmdSavingEfficiency': {
+                        'totalFmdSavingRate':  {
+                            'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
+                            'value': 2.21
+                        },
+                        'compressionRate':  {
+                            'status': 'CALCULATED',
+                            'value': 2.14
+                        },
+                        'patternMatchingRate':  {
+                            'status': 'CALCULATION_IN_PROGRESS',
+                            'value': null
+                        }
+                    }
+                },
+                'snapshotEfficiencyRate':  {
+                    'status': 'CALCULATED',
+                    'value': 10.37
+                },
+                'provisioningEfficiencyPercentage':  {
+                    'status': 'CALCULATED',
+                    'value': 170
+                },
+                'calculationStartTime': '2018-05-15T10:05:33',
+                'calculationEndTime': '2018-05-15T10:38:59'
+            }
+        });
     };
 
     var generateMockStorageSystemWithoutSvp = function(v) {
