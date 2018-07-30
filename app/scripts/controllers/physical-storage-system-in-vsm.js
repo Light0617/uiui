@@ -21,17 +21,17 @@ angular.module('rainierApp')
         paginationService, ShareDataService, queryService, gadVolumeTypeSearchService, migrationTaskService,
         scrollDataSourceBuilderService, rainierQueryService, scrollDataSourceBuilderServiceNew,
         synchronousTranslateService, orchestratorService, replicationService, inventorySettingsService,
-        resourceTrackerService, volumeService, virtualizeVolumeService, utilService, $modal, $q, storageSystemVolumeService
-    ) {
+        resourceTrackerService, volumeService, virtualizeVolumeService, utilService, $modal, $q, storageSystemVolumeService) {
+
         var physicalStorageSystemId = $routeParams.physicalStorageSystemId;
         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
         var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
         var storageSystemId = virtualStorageMachineIdList[0];
-        var GET_VOLUMES_PATH = 'volumes?q=virtualStorageMachineInformation.virtualStorageMachineId:'+virtualStorageMachineId;
+        var GET_VOLUMES_PATH = 'volumes?q=virtualStorageMachineInformation.virtualStorageMachineId:' + virtualStorageMachineId;
 
-        var title = 'Physical Storage System '+ physicalStorageSystemId + ' in ' + virtualStorageMachineId;
+        var title = 'Physical Storage System ' + physicalStorageSystemId + ' in ' + virtualStorageMachineId;
 
-        var initModels = function() {
+        var initModels = function () {
             $scope.filterModel = {
                 filter: {
                     freeText: '',
@@ -102,13 +102,13 @@ angular.module('rainierApp')
         };
 
 
-        var getVolumeInventory = function(){
+        var getVolumeInventory = function () {
             return paginationService.get(null, GET_VOLUMES_PATH, objectTransformService.transformVolume, true,
                 physicalStorageSystemId).then(function (result) {
                 paginationService.clearQuery();
 
                 $scope.filterModel = setFilterModel();
-                $scope.dataModel = setDateModel();
+                $scope.dataModel = setDataModel();
 
                 updateResultTotalCounts(result);
 
@@ -117,23 +117,23 @@ angular.module('rainierApp')
             });
         };
 
-        var setDateModel = function() {
+        var setDataModel = function () {
             var actions = volumeService.getActions($scope.dataModel, resourceTrackerService, orchestratorService, $modal,
                 storageSystemId, storageSystemVolumeService, virtualizeVolumeService, utilService,
                 paginationService, migrationTaskService);
 
-            return _.extend($scope.dataModel,{
-                getActions: function(){
+            return _.extend($scope.dataModel, {
+                getActions: function () {
                     return actions;
                 },
-                getResources: function(){
+                getResources: function () {
                     return paginationService.get($scope.dataModel.nextToken, GET_VOLUMES_PATH,
                         objectTransformService.transformVolume, false, storageSystemId);
                 }
             });
         };
 
-        var setFilterModel = function() {
+        var setFilterModel = function () {
             return _.extend($scope.filterModel, {
                 $replicationRawTypes: replicationService.rawTypes,
                 fetchPreviousVolumeType: function (previousVolumeType) {
