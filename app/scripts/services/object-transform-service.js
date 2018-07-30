@@ -81,7 +81,7 @@ angular.module('rainierApp')
 
         var formatVolumeId = function (id) {
             if (utilService.isNullOrUndef(id)) {
-              return '';
+              return 'undefined';
             }
             if (typeof id === 'string' || id instanceof String) {
               id = parseInt(id);
@@ -251,8 +251,8 @@ angular.module('rainierApp')
 
             // note that property "virtualStorageMachineInformation" and "storageSystemId" are non-nullable
             if(item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
-                displayVirtualStorageSystemId = '(' + synchronousTranslateService.translate('virtual')  + ': ' +
-                    item.virtualStorageMachineInformation.storageSystemId + ')';
+                displayVirtualStorageSystemId = synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId ;
             }
             return displayVirtualStorageSystemId;
         }
@@ -272,9 +272,6 @@ angular.module('rainierApp')
             var displayVirtualVolumeId = null;
 
             // note that property "virtualStorageMachineInformation" is non-nullable
-            if(!item.virtualStorageMachineInformation.virtualVolumeId) {
-                item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
-            }
             if(item.volumeId !== item.virtualStorageMachineInformation.virtualVolumeId ||
                 item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
                 var virtualVolumeIdWithHex = formatVolumeId(item.virtualStorageMachineInformation.virtualVolumeId);
@@ -282,7 +279,8 @@ angular.module('rainierApp')
                     displayVirtualVolumeId = '(' + synchronousTranslateService.translate('virtual') + ': ' +
                         virtualVolumeIdWithHex + ')';
                 } else {
-                    displayVirtualVolumeId = virtualVolumeIdWithHex;
+                    displayVirtualVolumeId = synchronousTranslateService.translate('virtual') + ': ' +
+                        virtualVolumeIdWithHex;
                 }
 
             }
@@ -676,7 +674,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.label,
-                        details: [item.displayVolumeId, item.displayVirtualVolumeIdWithBrackets]
+                        details: [item.displayVolumeId, item.displayVirtualVolumeId]
                     },
                     {
                         left: false,
