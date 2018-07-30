@@ -483,6 +483,41 @@ angular.module('rainierApp')
             return true;
         };
 
+        var openAttachMultipleVsmErrorModal = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/templates/error-modal.html',
+                windowClass: 'modal fade confirmation',
+                backdropClass: 'modal-backdrop',
+                controller: function ($scope) {
+                    $scope.error = {
+                        title: synchronousTranslateService.translate('error-message-title'),
+                        message: synchronousTranslateService.translate('storage-volume-attach-different-vsms')
+                    };
+                    $scope.cancel = function () {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    };
+
+                    modalInstance.result.finally(function() {
+                        modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
+                    });
+                }
+            });
+        };
+
+        var isMultipleVsm = function (volumes) {
+            var vsms = _.chain(volumes)
+                .map(function (v) {
+                    if(v.virtualStorageMachineInformation) {
+                        return v.virtualStorageMachineInformation.virtualStorageMachineId;
+                    }
+                    return undefined;
+                })
+                .uniq()
+                .value();
+
+            return vsms.length > 1;
+        };
+
         var openAttachMultipleProtocolServersErrorModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'views/templates/error-modal.html',
@@ -559,6 +594,8 @@ angular.module('rainierApp')
             setEnableZoningFn: setEnableZoningFn,
             setEndPointCoordinates: setEndPointCoordinates,
             setPortCoordiantes: setPortCoordinates,
-            setSourcePortCoordinates: setSourcePortCoordinates
+            setSourcePortCoordinates: setSourcePortCoordinates,
+            openAttachMultipleVsmErrorModal: openAttachMultipleVsmErrorModal,
+            isMultipleVsm: isMultipleVsm
         };
     });
