@@ -30,7 +30,12 @@ angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
             physicalStorageSystemId: undefined,
             volumeIds: []
         };
-        getPhysicalStorageSystemIds().then(initView);
+        getPhysicalStorageSystemIds()
+            .then(initView)
+            .catch(function(e){
+                externalVolumesAddService.openErrorDialog(e);
+                externalVolumesAddService.backToPreviousView();
+            });
     };
 
     var initView = function () {
