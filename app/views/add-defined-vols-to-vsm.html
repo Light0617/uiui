@@ -1,0 +1,15 @@
+<common-page-header></common-page-header>
+<wizard-page>
+    <!--Wizard header-->
+    <wizard-header ng-title="'add-defined-vols-to-vsm'| translate" icon-class="icon-add-volume"></wizard-header>
+    <single-step-wizard-body
+            left-panel-template="views/workflow-templates/add-defined-volumes-left-panel.html"
+            right-panel-template="views/workflow-templates/add-defined-volumes-right-panel.html"
+            ng-model="dataModel"
+            ng-title="Select Volumes"
+            page-name="add-defined-vols-to-vsm">
+    </single-step-wizard-body>
+
+    <wizard-footer ng-model="footerModel">
+    </wizard-footer>
+</wizard-page>

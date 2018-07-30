@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('VirtualStorageMachinesCtrl', function ($scope, $timeout, $window, orchestratorService,
                                                         objectTransformService, synchronousTranslateService,
-                                                        scrollDataSourceBuilderService) {
+                                                        scrollDataSourceBuilderService, $location) {
 
 
         orchestratorService.virtualStorageMachines().then(function (result) {
@@ -93,6 +93,19 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         //TODO
+                    }
+                },
+                {
+                    icon: 'icon-add-volume',
+                    tooltip: 'action-tooltip-edit',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected();
+                    },
+                    onClick: function () {
+                        var selectedVsm = _.where(dataModel.displayList, 'selected');
+                        var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
+                        $location.path(['virtual-storage-machines', virtualStorageMachineId, 'add-existing-volumes'].join('/'));
                     }
                 }
             ];
