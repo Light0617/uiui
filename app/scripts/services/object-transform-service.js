@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService,
                                                  storageAdvisorEmbeddedSessionService, utilService,
-                                                 Restangular) {
+                                                 Restangular, switchAccessPointService) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -162,7 +162,7 @@ angular.module('rainierApp')
             }
         }
 
-        function transformStorageSystemSettings(item) {
+        function transformStorageSystemSettings(item, orchestratorService) {
             var result = [];
 
             var hasSvpIpAddress = !utilService.isNullOrUndef(item.svpIpAddress);
@@ -173,6 +173,9 @@ angular.module('rainierApp')
 
             if (constantService.isHM850Series(item.model)) {
                 result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
+                if (!hasSvpIpAddress) {
+                    result.push(switchAccessPointService.getLink(item, orchestratorService));
+                }
             }
 
             if (hasSvpIpAddress) {
