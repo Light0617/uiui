@@ -466,6 +466,9 @@ angular.module('rainierApp')
             updateStorageSystem: function (storageSystemId, updateStorageSystemPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId).post(updateStorageSystemPayload));
             },
+            switchAccessPoint: function (storageSystemId, switchAccessPointPayload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/switch-access-point').post(switchAccessPointPayload));
+            },
             migrationTasks: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('migration-tasks').get());
             },
