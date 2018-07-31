@@ -217,7 +217,7 @@ rainierAppMock.run(function(
     };
 
     var virtualStorageMachineSwitcher = function(urlResult) {
-        if(urlResult.subType){
+        if(urlResult.subType === 'physical-storage-systems'){
             return authMock.authenticateAndCall(urlResult, physicalStorageSystemInVsmMock.handle);
         }else{
             return authMock.authenticateAndCall(urlResult, virtualStorageMachineMock.handle);

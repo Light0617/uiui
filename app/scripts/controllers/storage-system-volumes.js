@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
                                                       storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
-                                                      constantService, resourceTrackerService, replicationService,
+                                                      constantService, resourceTrackerService, replicationService, attachVolumeService,
                                                       gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storageSystem;
@@ -116,10 +116,6 @@ angular.module('rainierApp')
             summaryModel.getActions = $scope.summaryModel.getActions;
             $scope.summaryModel = summaryModel;
             $scope.summaryModel.dpAlert.update();
-
-            return migrationTaskService.checkLicense(storageSystemId);
-        }).then(function (result) {
-            $scope.dataModel.volumeMigrationAvailable = result;
         });
 
         var volumeUnprotectActions = function (selectedVolume) {
@@ -318,7 +314,9 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             flags.push(item.isUnattached());
                         });
-                        if (flags.areAllItemsTrue()) {
+                        if (attachVolumeService.isMultipleVsm(dataModel.getSelectedItems())) {
+                            attachVolumeService.openAttachMultipleVsmErrorModal();
+                        } else if (flags.areAllItemsTrue()) {
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                             $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
                         } else {
@@ -431,8 +429,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.volumeMigrationAvailable &&
-                            dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                        return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                             migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                     },
                     onClick: function () {

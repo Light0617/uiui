@@ -59,12 +59,12 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                     'status': 'CALCULATED_WITH_EXCEEDED',
                     'value': 99999.99
                 },
-                'dataReductionRate': {
+                'dataReductionEfficiency': {
                     'totalDataReductionRate':  {
                         'status': 'CALCULATED',
                         'value': 99999.99
                     },
-                    'softwareSavingRate': {
+                    'softwareSavingEfficiency': {
                         'totalSoftwareSavingRate':  {
                             'status': 'CALCULATED',
                             'value': 1.52
@@ -82,7 +82,7 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                             'value': 1.08
                         }
                     },
-                    'fmdSavingRate': {
+                    'fmdSavingEfficiency': {
                         'totalFmdSavingRate':  {
                             'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
                             'value': 2.21
@@ -105,8 +105,8 @@ rainierAppMock.factory('storageSystemMock', function(mockUtils) {
                     'status': 'CALCULATED',
                     'value': 170
                 },
-                'calculationStartTime': '2018-05-15T10:05',
-                'calculationEndTime': '2018-05-15T10:38'
+                'calculationStartTime': '2018-05-15T10:05:33',
+                'calculationEndTime': '2018-05-15T10:38:59'
             }
         });
     };

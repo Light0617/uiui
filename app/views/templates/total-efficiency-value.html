@@ -1,9 +1,14 @@
-<p class="value" ng-if="model.status === 'CALCULATED'" title="{{ model.value }} : 1">
-    {{ model.value }} : 1
-</p>
-<p class="value" ng-if="model.status === 'CALCULATED_WITH_EXCEEDED'" title="> {{ model.value }} : 1">
-    > {{ model.value }} : 1
-</p>
-<p class="value" ng-if="model.status !== 'CALCULATED' && model.status !== 'CALCULATED_WITH_EXCEEDED'">
-    -
-</p>
+<span ng-if="model">
+    <p class="value" ng-if="model.status === 'CALCULATED'" title="{{ model.value }} : 1">
+        {{ model.value }} : 1
+    </p>
+    <p class="value" ng-if="model.status === 'CALCULATED_WITH_EXCEEDED'" title="> {{ model.value }} : 1">
+        > {{ model.value }} : 1
+    </p>
+    <p class="value" ng-if="model.status !== 'CALCULATED' && model.status !== 'CALCULATED_WITH_EXCEEDED'">
+        -
+    </p>
+</span>
+<span ng-if="!model">
+    <p class="value">-</p>
+</span>

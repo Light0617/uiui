@@ -524,6 +524,21 @@ angular.module('rainierApp')
                     ShareDataService.virtualStorageMachine = item;
                     $location.path(['virtual-storage-machines', item.virtualStorageMachineId].join('/'));
                 };
+                item.actions = {
+                    'delete': {
+                        icon: 'icon-delete',
+                        tooltip: 'action-tooltip-delete',
+                        type: 'confirm',
+                        confirmTitle: 'virtual-storage-machine-delete-confirmation',
+                        confirmMessage: 'virtual-storage-machine-delete-selected-content',
+                        enabled: function () {
+                            return true;
+                        },
+                        onClick: function (orchestratorService) {
+                            return orchestratorService.deleteVirtualStorageMachine(item.virtualStorageMachineId);
+                        }
+                    }
+                };
             },
             transformVSMStorageSystems: function (item) {
                 item.noSelection = false;
@@ -1636,6 +1651,9 @@ angular.module('rainierApp')
             },
 
             getTotalEfficiencyValue: function (model, suffixString) {
+                if (utilService.isNullOrUndef(model)) {
+                    return constantService.HYPHEN;
+                }
                 switch (model.status) {
                     case constantService.CALCULATED:
                         return model.value + suffixString;
@@ -1663,26 +1681,35 @@ angular.module('rainierApp')
                         name: synchronousTranslateService.translate('total-efficiency'),
                         savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.totalEfficiencyRate, ' : 1')
                     });
-                    model.arrayDataVisualizationModel.savingsBreakdown.push({
-                        name: synchronousTranslateService.translate('total-efficiency-total-data-reduction'),
-                        savingsRatio: this.getTotalEfficiencyValue(
-                            totalEfficiency.dataReductionRate.totalDataReductionRate, ' : 1')
-                    });
-                    model.arrayDataVisualizationModel.savingsBreakdown.push({
-                        name: synchronousTranslateService.translate('total-efficiency-provisioning'),
-                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.provisioningEfficiencyPercentage, ' %')
-                    });
-                    model.arrayDataVisualizationModel.savingsBreakdown.push({
-                        name: synchronousTranslateService.translate('total-efficiency-snapshot'),
-                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.snapshotEfficiencyRate, ' : 1')
-                    });
+                    if (totalEfficiency.dataReductionEfficiency && totalEfficiency.dataReductionEfficiency.totalDataReductionRate) {
+                        model.arrayDataVisualizationModel.savingsBreakdown.push({
+                            name: synchronousTranslateService.translate('total-efficiency-total-data-reduction'),
+                            savingsRatio: this.getTotalEfficiencyValue(
+                                totalEfficiency.dataReductionEfficiency.totalDataReductionRate, ' : 1')
+                        });
+                    }
+                    if (totalEfficiency.provisioningEfficiencyPercentage) {
+                        model.arrayDataVisualizationModel.savingsBreakdown.push({
+                            name: synchronousTranslateService.translate('total-efficiency-provisioning'),
+                            savingsRatio: this.getTotalEfficiencyValue(
+                                totalEfficiency.provisioningEfficiencyPercentage, ' %')
+                        });
+                    }
+                    if (totalEfficiency.snapshotEfficiencyRate) {
+                        model.arrayDataVisualizationModel.savingsBreakdown.push({
+                            name: synchronousTranslateService.translate('total-efficiency-snapshot'),
+                            savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.snapshotEfficiencyRate, ' : 1')
+                        });
+                    }
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-calculation-start-time'),
-                        savingsRatio: totalEfficiency.calculationStartTime ? totalEfficiency.calculationStartTime : '-'
+                        savingsRatio: totalEfficiency.calculationStartTime ?
+                            totalEfficiency.calculationStartTime : constantService.HYPHEN
                     });
                     model.arrayDataVisualizationModel.savingsBreakdown.push({
                         name: synchronousTranslateService.translate('total-efficiency-calculation-end-time'),
-                        savingsRatio: totalEfficiency.calculationEndTime ? totalEfficiency.calculationEndTime : '-'
+                        savingsRatio: totalEfficiency.calculationEndTime ?
+                            totalEfficiency.calculationEndTime : constantService.HYPHEN
                     });
                 }
             },
