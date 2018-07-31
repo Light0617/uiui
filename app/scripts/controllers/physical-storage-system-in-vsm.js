@@ -21,7 +21,8 @@ angular.module('rainierApp')
         paginationService, ShareDataService, queryService, gadVolumeTypeSearchService, migrationTaskService,
         scrollDataSourceBuilderService, rainierQueryService, scrollDataSourceBuilderServiceNew,
         synchronousTranslateService, orchestratorService, replicationService, inventorySettingsService,
-        resourceTrackerService, volumeService, virtualizeVolumeService, utilService, $modal, $q, storageSystemVolumeService) {
+        resourceTrackerService, volumeService, virtualizeVolumeService, utilService, $modal, $q,
+        storageSystemVolumeService, attachVolumeService) {
 
         var physicalStorageSystemId = $routeParams.physicalStorageSystemId;
         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
@@ -120,7 +121,7 @@ angular.module('rainierApp')
         var setDataModel = function () {
             var actions = volumeService.getActions($scope.dataModel, resourceTrackerService, orchestratorService, $modal,
                 storageSystemId, storageSystemVolumeService, virtualizeVolumeService, utilService,
-                paginationService, migrationTaskService);
+                paginationService, migrationTaskService, attachVolumeService);
 
             return _.extend($scope.dataModel, {
                 getActions: function () {
