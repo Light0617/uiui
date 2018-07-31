@@ -1143,9 +1143,9 @@
 
     "total-efficiency-provisioning": "Provisioning Efficiency",
     "total-efficiency-snapshot": "Snapshot Efficiency",
-    "total-efficiency-calculation-period": "Calculation Period",
-    "total-efficiency-calculation-start-time": "Calculation Start Time",
-    "total-efficiency-calculation-end-time": "Calculation End Time",
+    "total-efficiency-calculation-period": "Calculation Period (UTC)",
+    "total-efficiency-calculation-start-time": "Calculation Start Time (UTC)",
+    "total-efficiency-calculation-end-time": "Calculation End Time (UTC)",
     "total-efficiency-calculation-in-progress": "Calculation in Progress",
 
     "shred-volumes": "Shred Volumes",
