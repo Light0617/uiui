@@ -6,97 +6,136 @@
     </page-title>
 
     <div class="summary-container-default">
-        <div class="tile meta-tile quarter">
+        <div class="tile meta-tile quarter pool-summary-tile">
 
-                <div class="resource-data resource-data-columns" ng-if="summaryModel">
+            <div class="resource-data resource-data-columns" ng-if="summaryModel">
 
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-label' | translate}}</p>
-                                <p class="value" title="{{poolDataModel.label}}">{{poolDataModel.label}}</p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-type' | translate}}</p>
-                                <p class="value">{{poolDataModel.type | translate}}</p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-tier' | translate}}</p>
-                                <p class="value" title="{{poolDataModel.tierNames}}">{{poolDataModel.tierNames}}</p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-encryption' | translate}}</p>
-                                <p class="value">{{poolDataModel.encrypted | translate}}</p>
-                            </div>
-
-                            <div class="label-value-container" ng-if="poolDataModel.containsPlatinum">
-
-                                    <p class="label">{{ 'pool-active-flash' | translate }}</p>
-                                    <p class="value">{{poolDataModel.activeFlashEnabled}}</p>
-
-                            </div>
-
-                            <div class="label-value-container">
-
-                                <p class="label">{{ 'pool-ddm' | translate }}</p>
-                                <p class="value">{{poolDataModel.ddmEnabled | translate}}</p>
-
-                            </div>
-
-                            <div class="label-value-container" ng-if="storageSystemDataModel.unified">
-
-                                    <p class="label">{{ 'common-label-nas-boot' | translate }}</p>
-                                    <p class="value">{{poolDataModel.nasBoot}}</p>
-
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-subscription-limit' | translate}}</p>
-                                <p class="value">{{poolDataModel.subscriptionLimit.unlimited? 'common-label-unlimited':
-                                    poolDataModel.subscriptionLimit.value | translate}}</p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-deduplication' | translate}}</p>
-                                <p class="value" title="{{ poolDataModel.deduplicationEnabled ?
-                                 ( 'dsd-volume-capacity-tooltip' | translate:
-                                 { dsdVolCapacity: poolDataModel.deduplicationSystemDataCapacityInBytes }) : '' }}">
-                                    {{poolDataModel.dispDeduplicationEnabled}}</p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-parity-group-ids' | translate}}</p>
-                                <span ng-repeat="parityGroup in poolDataModel.parityGroups track by $index">{{parityGroup.id}}<span
-                                        class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
-                                        title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <p></p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'storage-pool-external-parity-group-ids' | translate}}</p>
-                                <span ng-repeat="externalParityGroupId in poolDataModel.externalParityGroupIds track by $index">{{externalParityGroupId}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <span ng-if="poolDataModel.externalParityGroupIds.length === 0"> - </span>
-                                <p></p>
-                            </div>
-
-                            <div class="label-value-container">
-                                <p class="label">{{ 'data-reduction-savings-ratio' | translate }}</p>
-                                <span ng-if="poolDataModel.dataReductionSavingsRate !== 0"> {{poolDataModel.dataReductionSavingsRate}} : 1&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <span ng-if="poolDataModel.dataReductionSavingsRate === 0"> - </span>
-                                <p></p>
-                            </div>
-
-                            <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
-                                <p class="label">{{ 'capacity-efficiency-savings-ratio' | translate }}</p>
-                                <span ng-if="poolDataModel.capacityEfficiencyRate !== 0"> {{poolDataModel.capacityEfficiencyRate}} : 1&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <span ng-if="poolDataModel.capacityEfficiencyRate === 0"> - </span>
-                            </div>
-
-
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-label' | translate}}</p>
+                    <p class="value" title="{{poolDataModel.label}}">{{poolDataModel.label}}</p>
                 </div>
 
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-type' | translate}}</p>
+                    <p class="value">{{poolDataModel.type | translate}}</p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-tier' | translate}}</p>
+                    <p class="value" title="{{poolDataModel.tierNames}}">{{poolDataModel.tierNames}}</p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-encryption' | translate}}</p>
+                    <p class="value">{{poolDataModel.encrypted | translate}}</p>
+                </div>
+
+                <div class="label-value-container" ng-if="poolDataModel.containsPlatinum">
+                    <p class="label">{{ 'pool-active-flash' | translate }}</p>
+                    <p class="value">{{poolDataModel.activeFlashEnabled}}</p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'pool-ddm' | translate }}</p>
+                    <p class="value">{{poolDataModel.ddmEnabled | translate}}</p>
+                </div>
+
+                <div class="label-value-container" ng-if="storageSystemDataModel.unified">
+                    <p class="label">{{ 'common-label-nas-boot' | translate }}</p>
+                    <p class="value">{{poolDataModel.nasBoot}}</p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-subscription-limit' | translate}}</p>
+                    <p class="value">{{poolDataModel.subscriptionLimit.unlimited? 'common-label-unlimited':
+                        poolDataModel.subscriptionLimit.value | translate}}</p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-deduplication' | translate}}</p>
+                    <p class="value" title="{{ poolDataModel.deduplicationEnabled ?
+                     ( 'dsd-volume-capacity-tooltip' | translate:
+                     { dsdVolCapacity: poolDataModel.deduplicationSystemDataCapacityInBytes }) : '' }}">
+                        {{poolDataModel.dispDeduplicationEnabled}}</p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-parity-group-ids' | translate}}</p>
+                    <span ng-repeat="parityGroup in poolDataModel.parityGroups track by $index">{{parityGroup.id}}<span
+                            class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
+                            title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <p></p>
+                </div>
+
+                <div class="label-value-container">
+                    <p class="label">{{ 'storage-pool-external-parity-group-ids' | translate}}</p>
+                    <span ng-repeat="externalParityGroupId in poolDataModel.externalParityGroupIds track by $index">{{externalParityGroupId}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span ng-if="poolDataModel.externalParityGroupIds.length === 0"> - </span>
+                    <p></p>
+                </div>
+
+
+                <div ng-if="totalEfficiencyModel === undefined">
+                    <div class="label-value-container" ng-if="poolDataModel.type!=='HTI'">
+                        <p class="label">{{ 'capacity-efficiency-savings-ratio' | translate }}</p>
+                        <p class="value" ng-if="poolDataModel.capacityEfficiencyRate !== 0">
+                            {{poolDataModel.capacityEfficiencyRate}} : 1</p>
+                        <p class="value" ng-if="poolDataModel.capacityEfficiencyRate === 0"> - </p>
+                    </div>
+
+                    <div class="label-value-container">
+                        <p class="label">{{ 'data-reduction-savings-ratio' | translate }}</p>
+                        <p class="value" ng-if="poolDataModel.dataReductionSavingsRate !== 0">
+                            {{poolDataModel.dataReductionSavingsRate}} : 1</p>
+                        <p class="value" ng-if="poolDataModel.dataReductionSavingsRate === 0"> - </p>
+                        <p></p>
+                    </div>
+                </div>
+
+                <div ng-if="totalEfficiencyModel !== undefined">
+
+                    <div class="label-value-container">
+                        <p class="label">{{ 'total-efficiency' | translate }}</p>
+                        <total-efficiency-value ng-model="totalEfficiencyModel.totalEfficiencyRate">
+                        </total-efficiency-value>
+                    </div>
+
+                    <div class="label-value-container">
+                        <p class="label">{{ 'total-efficiency-total-data-reduction' | translate }}</p>
+                        <total-efficiency-value
+                                ng-model="totalEfficiencyModel.dataReductionEfficiency.totalDataReductionRate">
+                        </total-efficiency-value>
+                    </div>
+
+                    <div class="label-value-container" ng-if="totalEfficiencyModel.provisioningEfficiencyPercentage">
+                        <p class="label">{{ 'total-efficiency-provisioning' | translate }}</p>
+                        <total-efficiency-percentage-value
+                                ng-model="totalEfficiencyModel.provisioningEfficiencyPercentage">
+                        </total-efficiency-percentage-value>
+                    </div>
+
+                    <div class="label-value-container" ng-if="totalEfficiencyModel.snapshotEfficiencyRate">
+                        <p class="label">{{ 'total-efficiency-snapshot' | translate }}</p>
+                        <total-efficiency-value ng-model="totalEfficiencyModel.snapshotEfficiencyRate">
+                        </total-efficiency-value>
+                    </div>
+
+                    <div class="label-value-container">
+                        <p class="label">{{ 'total-efficiency-calculation-start-time' | translate }}</p>
+                        <p class="value" title="{{ totalEfficiencyModel.calculationStartTime }}"
+                           ng-if="totalEfficiencyModel.calculationStartTime">{{ totalEfficiencyModel.calculationStartTime }}</p>
+                        <p class="value" ng-if="!totalEfficiencyModel.calculationStartTime">-</p>
+                    </div>
+
+                    <div class="label-value-container">
+                        <p class="label">{{ 'total-efficiency-calculation-end-time' | translate }}</p>
+                        <p class="value" title="{{ totalEfficiencyModel.calculationEndTime }}"
+                           ng-if="totalEfficiencyModel.calculationEndTime">{{ totalEfficiencyModel.calculationEndTime }}</p>
+                        <p class="value" ng-if="!totalEfficiencyModel.calculationEndTime">-</p>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
         <div class="tile fifth" ng-if="poolDataModel">
@@ -165,87 +204,204 @@
         </div>
     </div>
 
-    <div class="container-fluid resource-detail tiles-view" ng-if="poolDataModel.showCompressionDetails() || poolDataModel.showFmcDetails()">
-        <div class="resource-row">
-            <div class="tile meta-tile half" ng-if="!poolDataModel.showCompressionDetails()">
-                <div class="alert alert-info" role="alert">
-                    <h3>{{'storage-pool-dedup-comp-not-configured' | translate}}</h3>
-                </div>
-            </div>
-            <div class="tile meta-tile third" ng-if="poolDataModel.showCompressionDetails()">
-                <div class="two-column-header-row">
-                    <h2>{{'storage-pool-dkc_compression' | translate }}</h2>
-                </div>
-                <div class="tile-row nested-tiles">
-                    <div class="tile third">
-                        <h4 class="label">{{'storage-pool-compression-ratio' | translate }}</h4>
-                        <div class="tile-row data-viz-container">
-                            <ratio-data-visualization ng-model="poolDataModel.compressionRatioProportion"></ratio-data-visualization>
-                        </div>
-                    </div>
-                    <div class="tile third">
-                        <h4 class="label">{{'storage-pool-deduplication-ratio' | translate }}</h4>
-                        <div class="tile-row data-viz-container">
-                            <ratio-data-visualization ng-model="poolDataModel.deduplicationRatioProportion">
-                            </ratio-data-visualization>
-                        </div>
-                        
+    <div ng-if="totalEfficiencyModel !== undefined">
+        <div class="container-fluid resource-detail tiles-view">
+            <div class="resource-row">
+                <div class="tile meta-tile half" ng-if="softwareSavingEfficiency === undefined">
+                    <div class="alert alert-info" role="alert">
+                        <h3>{{'storage-pool-dedup-comp-not-configured' | translate}}</h3>
                     </div>
                 </div>
-                <div class="tile-row footer-row">
-                    <h4 class="label">{{'storage-pool-savings-percentage' | translate }}</h4>
-                    <div class="data-viz bar">
-                        <usage-indicator-bar-2 class="data-viz-container" ng-model="poolDataModel.savingsPercentageBar"></usage-indicator-bar-2>
+                <div class="tile meta-tile half" ng-if="softwareSavingEfficiency !== undefined">
+                    <div class="two-column-header-row">
+                        <h2>{{ 'total-efficiency-software-saving' | translate }}</h2>
                     </div>
-                </div>
-            </div>
-            <div class="tile meta-tile half" ng-if="!poolDataModel.showFmcDetails()">
-                <div class="alert alert-info" role="alert">
-                    <h3>{{'storage-pool-dc2-compression-not-configured' | translate}}</h3>
-                </div>
-            </div>
-            <div class="tile meta-tile half" ng-if="poolDataModel.showFmcDetails()">
-                <div class="two-column-header-row">
-                    <h2>{{'storage-pool-compression' | translate }}</h2>
-                    <p>{{ 'storage-pool-compressed-parity-group-ids' | translate}}
-                        <span ng-repeat="parityGroup in poolDataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span
-                                class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
-                                title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </p>
-                </div>
 
-                <div class="tile-row columns">
                     <div class="meta-tile-tile half">
+                        <div class="tile-row footer-row">
+                            <h4 class="label">{{'total-efficiency-software-total-savings-ratio' | translate }}</h4>
+                            {{ softwareSavingEfficiency.totalSoftwareSavingRate | default }}
+                        </div>
+
                         <div class="tile-row nested-tiles">
                             <div class="tile third">
-                                <h4 class="label">{{'storage-pool-compression-ratio' | translate }}</h4>
-                                <div class="tile-row data-viz-container">
-                                    <ratio-data-visualization ng-model="poolDataModel.fmcCompressionRatio"></ratio-data-visualization>
+                                <h4 class="label">{{'total-efficiency-software-compression-ratio' | translate }}</h4>
+                                <div ng-if="softwareSavingEfficiency.compressionRate" class="tile-row data-viz-container">
+                                    <ratio-data-visualization ng-model="softwareSavingEfficiency.compressionRate">
+                                    </ratio-data-visualization>
                                 </div>
+                                <p ng-if="!softwareSavingEfficiency.compressionRate">-</p>
                             </div>
                             <div class="tile third">
-                                <h4 class="label">{{'storage-pool-expansion-ratio' | translate }}</h4>
-                                <div class="tile-row data-viz-container">
-                                    <ratio-data-visualization ng-model="poolDataModel.fmcExpansionRatio"></ratio-data-visualization>
+                                <h4 class="label">{{'total-efficiency-software-deduplication-ratio' | translate }}</h4>
+                                <div ng-if="softwareSavingEfficiency.deduplicationRate" class="tile-row data-viz-container">
+                                    <ratio-data-visualization ng-model="softwareSavingEfficiency.deduplicationRate">
+                                    </ratio-data-visualization>
+                                </div>
+                                <p ng-if="!softwareSavingEfficiency.deduplicationRate">-</p>
+                            </div>
+                            <div class="tile third">
+                                <h4 class="label">{{'total-efficiency-software-pattern-matching-ratio' | translate
+                                    }}</h4>
+                                <div ng-if="softwareSavingEfficiency.patternMatchingRate" class="tile-row data-viz-container">
+                                    <ratio-data-visualization ng-model="softwareSavingEfficiency.patternMatchingRate">
+                                    </ratio-data-visualization>
+                                </div>
+                                <p ng-if="!softwareSavingEfficiency.patternMatchingRate">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tile meta-tile half" ng-if="!poolDataModel.showFmcDetails()">
+                    <div class="alert alert-info" role="alert">
+                        <h3>{{'storage-pool-dc2-compression-not-configured' | translate}}</h3>
+                    </div>
+                </div>
+                <div class="tile meta-tile half" ng-if="poolDataModel.showFmcDetails()">
+                    <div class="two-column-header-row">
+                        <h2>{{ 'total-efficiency-fmd-saving' | translate }}</h2>
+                        <p>{{ 'storage-pool-compressed-parity-group-ids' | translate}}
+                            <span ng-repeat="parityGroup in poolDataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span
+                                    class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
+                                    title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </p>
+                    </div>
+
+                    <div class="tile-row columns">
+                        <div class="meta-tile-tile half">
+                            <div class="meta-tile-tile half">
+                                <div class="tile-row footer-row">
+                                    <h4 class="label">{{'total-efficiency-fmd-total-savings-ratio' | translate }}</h4>
+                                    {{ fmdSavingEfficiency.totalFmdSavingRate | default }}
+                                </div>
+
+                                <div class="tile-row nested-tiles">
+                                    <div class="tile third">
+                                        <h4 class="label">{{'total-efficiency-fmd-compression-ratio' | translate }}</h4>
+                                        <div ng-if="fmdSavingEfficiency.compressionRate" class="tile-row data-viz-container">
+                                            <ratio-data-visualization ng-model="fmdSavingEfficiency.compressionRate">
+                                            </ratio-data-visualization>
+                                        </div>
+                                        <p ng-if="!fmdSavingEfficiency.compressionRate">-</p>
+                                    </div>
+                                    <div class="tile third">
+                                        <h4 class="label">{{'total-efficiency-fmd-pattern-matching-ratio' | translate
+                                            }}</h4>
+                                        <div ng-if="fmdSavingEfficiency.patternMatchingRate" class="tile-row data-viz-container">
+                                            <ratio-data-visualization ng-model="fmdSavingEfficiency.patternMatchingRate">
+                                            </ratio-data-visualization>
+                                        </div>
+                                        <p ng-if="!fmdSavingEfficiency.patternMatchingRate">-</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tile-row footer-row">
-                            <h4 class="label">{{'storage-pool-savings-percentage' | translate }}</h4>
-                            <div class="data-viz bar">
-                                <usage-indicator-bar-2 class="data-viz-container" ng-model="poolDataModel.fmcSavingsPercentageBar"></usage-indicator-bar-2>
+
+                        <div class="tile ddv-container">
+                            <h4 class="label">{{'storage-pool-logical-capacity' | translate }}</h4>
+                            <div class="tile-row data-viz-container">
+                                <polar-data-visualization class="utilization-data-viz udv"
+                                                          ng-model="poolDataModel.fmcCapacityData.item"></polar-data-visualization>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <div class="tile ddv-container">
-                        <h4 class="label">{{'storage-pool-logical-capacity' | translate }}</h4>
-                        <div class="tile-row data-viz-container">
-                            <polar-data-visualization class="utilization-data-viz udv"
-                                                      ng-model="poolDataModel.fmcCapacityData.item"></polar-data-visualization>
-                        </div>
+
+    <div ng-if="totalEfficiencyModel === undefined">
+        <div class="container-fluid resource-detail tiles-view"
+             ng-if="poolDataModel.showCompressionDetails() || poolDataModel.showFmcDetails()">
+            <div class="resource-row">
+                <div class="tile meta-tile half" ng-if="!poolDataModel.showCompressionDetails()">
+                    <div class="alert alert-info" role="alert">
+                        <h3>{{'storage-pool-dedup-comp-not-configured' | translate}}</h3>
+                    </div>
+                </div>
+                <div class="tile meta-tile half" ng-if="poolDataModel.showCompressionDetails()">
+                    <div class="two-column-header-row">
+                        <h2>{{'storage-pool-dkc_compression' | translate }}</h2>
                     </div>
 
+                    <div class="tile-row nested-tiles">
+                        <div class="tile third">
+                            <h4 class="label">{{'storage-pool-compression-ratio' | translate }}</h4>
+                            <div class="tile-row data-viz-container">
+                                <ratio-data-visualization
+                                        ng-model="poolDataModel.compressionRatioProportion"></ratio-data-visualization>
+                            </div>
+                        </div>
+                        <div class="tile third">
+                            <h4 class="label">{{'storage-pool-deduplication-ratio' | translate }}</h4>
+                            <div class="tile-row data-viz-container">
+                                <ratio-data-visualization ng-model="poolDataModel.deduplicationRatioProportion">
+                                </ratio-data-visualization>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tile-row footer-row">
+                        <h4 class="label">{{'storage-pool-savings-percentage' | translate }}</h4>
+                        <div class="data-viz bar">
+                            <usage-indicator-bar-2 class="data-viz-container"
+                                                   ng-model="poolDataModel.savingsPercentageBar"></usage-indicator-bar-2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tile meta-tile half" ng-if="!poolDataModel.showFmcDetails()">
+                    <div class="alert alert-info" role="alert">
+                        <h3>{{'storage-pool-dc2-compression-not-configured' | translate}}</h3>
+                    </div>
+                </div>
+                <div class="tile meta-tile half" ng-if="poolDataModel.showFmcDetails()">
+                    <div class="two-column-header-row">
+                        <h2>{{ 'storage-pool-compression' | translate }}</h2>
+                        <p>{{ 'storage-pool-compressed-parity-group-ids' | translate}}
+                            <span ng-repeat="parityGroup in poolDataModel.compressedParityGroups track by $index">{{parityGroup.id}}<span
+                                    class="icon icon-sm icon-password" ng-if="parityGroup.encryption"
+                                    title="{{ 'storage-pool-encrypted' | translate }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </p>
+                    </div>
+
+                    <div class="tile-row columns">
+                        <div class="meta-tile-tile half">
+                            <div class="tile-row nested-tiles">
+                                <div class="tile third">
+                                    <h4 class="label">{{'storage-pool-compression-ratio' | translate }}</h4>
+                                    <div class="tile-row data-viz-container">
+                                        <ratio-data-visualization ng-model="poolDataModel.fmcCompressionRatio">
+                                        </ratio-data-visualization>
+                                    </div>
+                                </div>
+                                <div class="tile third">
+                                    <h4 class="label">{{'storage-pool-expansion-ratio' | translate }}</h4>
+                                    <div class="tile-row data-viz-container">
+                                        <ratio-data-visualization ng-model="poolDataModel.fmcExpansionRatio">
+                                        </ratio-data-visualization>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tile-row footer-row">
+                                <h4 class="label">{{'storage-pool-savings-percentage' | translate }}</h4>
+                                <div class="data-viz bar">
+                                    <usage-indicator-bar-2 class="data-viz-container"
+                                                           ng-model="poolDataModel.fmcSavingsPercentageBar">
+                                    </usage-indicator-bar-2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tile ddv-container">
+                            <h4 class="label">{{'storage-pool-logical-capacity' | translate }}</h4>
+                            <div class="tile-row data-viz-container">
+                                <polar-data-visualization class="utilization-data-viz udv"
+                                                          ng-model="poolDataModel.fmcCapacityData.item"></polar-data-visualization>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

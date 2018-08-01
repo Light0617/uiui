@@ -346,7 +346,7 @@ angular.module('rainierApp')
                     submit: function () {
                         addHostGroupsToSelected();
                         var payload = createPaylaod();
-                        orchestratorService.createvirtualStorageMachine(payload);
+                        orchestratorService.createVirtualStorageMachine(payload);
                     },
                     previous: function () {
                         initAddVolumesToVsm();

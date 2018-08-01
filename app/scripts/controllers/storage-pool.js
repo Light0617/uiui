@@ -14,7 +14,8 @@ angular.module('rainierApp')
                                              storageSystemVolumeService, $location, queryService, $timeout,
                                              synchronousTranslateService, commonConverterService, $modal,
                                              replicationService, resourceTrackerService, gadVolumeTypeSearchService,
-                                             migrationTaskService, $q, constantService, virtualizeVolumeService, utilService) {
+                                             migrationTaskService, $q, constantService, virtualizeVolumeService,
+                                             utilService, totalEfficiencyService) {
         var storageSystemId = $routeParams.storageSystemId;
         var storagePoolId = $routeParams.storagePoolId;
         var GET_VOLUMES_WITH_POOL_ID_FILTER_PATH = 'volumes?q=poolId:'+storagePoolId;
@@ -120,8 +121,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',
                         enabled: function () {
-                            return dataModel.volumeMigrationAvailable &&
-                                dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                            return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                 migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                         },
                         onClick: function () {
@@ -292,8 +292,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',
                         enabled: function () {
-                            return dataModel.volumeMigrationAvailable &&
-                                dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                            return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                 migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                         },
                         onClick: function () {
@@ -389,10 +388,6 @@ angular.module('rainierApp')
                 };
 
                 dataModel.hideAddIcon = poolResult.type === 'HTI' || poolResult.label.indexOf('HSA-reserved-') === 0 || ddmEnabled;
-
-                migrationTaskService.checkLicense(storageSystemId).then(function (result) {
-                    dataModel.volumeMigrationAvailable = result;
-                });
 
                 $scope.filterModel = {
                     ddmEnabled: $scope.poolDataModel.ddmEnabled,
@@ -552,42 +547,89 @@ angular.module('rainierApp')
                     result.subscriptionLimit.value = addPercentageSign(result.subscriptionLimit.value);
                     result.logicalCapacityInBytes = getSizeDisplayText(logicalCapacityDisplaySize);
                     result.usedLogicalCapacityInBytes = getSizeDisplayText(usedCapacityDisplaySize);
-                    result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(result.availableLogicalCapacityInBytes));
+                    result.availableLogicalCapacityInBytes = getSizeDisplayText(diskSizeService.getDisplaySize(
+                        result.availableLogicalCapacityInBytes));
                     result.activeFlashEnabled = commonConverterService.convertBooleanToString(result.activeFlashEnabled);
                     result.nasBoot = commonConverterService.convertBooleanToString(result.nasBoot);
                     result.fmcCapacityData = transformToPoolSummaryModel(logicalCapacityDisplaySize, usedCapacityDisplaySize);
 
-
-                    result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
-                    result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+                    if (!utilService.isNullOrUndef(result.compressionDetails)) {
+                        result.compressionRatioProportion = transformToCompressRatio(result.compressionDetails.compressionRate);
+                        result.deduplicationRatioProportion = transformToCompressRatio(result.compressionDetails.deduplicationRate);
+                        result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
+                    }
                     result.deduplicationSystemDataCapacityInBytes = getSizeDisplayText(
                         diskSizeService.getDisplaySize(result.deduplicationSystemDataCapacityInBytes));
-                    result.savingsPercentageBar = transformToUsageBarData(result.compressionDetails.savingsPercentage);
 
-                    result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
-                    result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
-                    result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+                    if (!utilService.isNullOrUndef(result.fmcCompressionDetails)) {
+                        result.fmcExpansionRatio = transformToExpansionRatio(result.fmcCompressionDetails.expansionRate);
+                        result.fmcCompressionRatio = transformToCompressRatio(result.fmcCompressionDetails.compressionRate);
+                        result.fmcSavingsPercentageBar = transformToUsageBarData(result.fmcCompressionDetails.savingsPercentage);
+                    }
 
                     result.showCompressionDetails = function () {
                         if (result.deduplicationEnabled === true) {
                             return true;
-                        } else if (result.compressionDetails.compressionRate === 1 &&
-                            (result.compressionDetails.savingsPercentage === 0 || result.compressionDetails.savingsPercentage === null)) {
+                        }
+
+                        var compressionDetails = result.compressionDetails;
+                        if (utilService.isNullOrUndef(compressionDetails)) {
                             return false;
                         }
-                        return true;
+
+                        return !(compressionDetails.compressionRate === 1 &&
+                            (compressionDetails.savingsPercentage === 0 || compressionDetails.savingsPercentage === null));
                     };
                     result.showFmcDetails = function() {
-                        if (result.fmcCompressed === 'YES' || result.fmcCompressed === 'PARTIAL') {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return result.fmcCompressed === 'YES' || result.fmcCompressed === 'PARTIAL';
                     };
 
                     result.dispDeduplicationEnabled = commonConverterService.convertBooleanToString(result.deduplicationEnabled);
 
                     $scope.poolDataModel = result;
+
+                    if (!utilService.isNullOrUndef(result.totalEfficiency) &&
+                        !utilService.isNullOrUndef(result.totalEfficiency.dataReductionEfficiency)) {
+
+                        var softwareSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.softwareSavingEfficiency;
+
+                        if (softwareSavingEfficiency) {
+                            softwareSavingEfficiency.totalSoftwareSavingRate =
+                                totalEfficiencyService.getDisplayValue(softwareSavingEfficiency.totalSoftwareSavingRate);
+
+                            softwareSavingEfficiency.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.compressionRate);
+
+                            softwareSavingEfficiency.deduplicationRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.deduplicationRate);
+
+                            softwareSavingEfficiency.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.patternMatchingRate);
+
+                            $scope.softwareSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.softwareSavingEfficiency;
+                        }
+
+                        var fmdSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.fmdSavingEfficiency;
+
+                        if (fmdSavingEfficiency) {
+                            fmdSavingEfficiency.totalFmdSavingRate =
+                                totalEfficiencyService.getDisplayValue(fmdSavingEfficiency.totalFmdSavingRate);
+
+                            fmdSavingEfficiency.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.compressionRate);
+
+                            fmdSavingEfficiency.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.patternMatchingRate);
+
+                            $scope.fmdSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.fmdSavingEfficiency;
+                        }
+
+                        result.totalEfficiency.calculationStartTime =
+                            totalEfficiencyService.getPeriodValue(result.totalEfficiency.calculationStartTime);
+                        result.totalEfficiency.calculationEndTime =
+                            totalEfficiencyService.getPeriodValue(result.totalEfficiency.calculationEndTime);
+                        $scope.totalEfficiencyModel = result.totalEfficiency;
+                    }
 
 
                     return $q.resolve(result);

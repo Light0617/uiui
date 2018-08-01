@@ -67,6 +67,7 @@
     "common-expand-all": "Expand All",
     "common-collapse-all": "Collapse All",
     "common-label-total": "Total",
+    "common-label-details": "Details",
     "common-label-tier-used": "Used",
     "total-usable-capacity-tooltip": "Total Usable Capacity",
 
@@ -339,7 +340,7 @@
     "storage-volume-not-protected": "This volume is not protected.",
     "storage-volumes-add": "Create Volumes",
     "storage-volumes-add-unmatched-compress-techs": "Unmatched Compress Technologies",
-    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, the following solutions are recommended before creating the volume.",
+    "storage-volumes-add-unmatched-compress-techs-message-header": "The volume to be created can be compressed by FMD drives. In order to prevent the I/O performance degradation, make sure the following conditions are satisfied before creating the volume.",
     "storage-volumes-add-unmatched-compress-techs-message-solution1": "Enable FMD Compression for all FMD drives in target Pool",
     "storage-volumes-add-unmatched-compress-techs-message-solution2": "Select 'No' for 'Capacity Saving' for Volume in this wizard",
     "storage-volumes-add-unmatched-compress-techs-message-footer": "Do you want to proceed?",
@@ -391,6 +392,7 @@
     "common-virtual-storage-machines": "Virtual Storage Machines",
     "common-virtual-storage-machine": "Virtual Storage Machine",
     "common-virtual-storage-machine-id": "Virtual Storage Machine ID",
+
     "create-virtual-storage-machine": "Create VSM",
     "add-physical-storage-systems": "Add Physical Storage Systems",
     "add-volumes-to-vsm": "Add Volumes to VSM",
@@ -398,14 +400,22 @@
     "storage-systems": "STORAGE SYSTEMS",
     "port-id": "PORT ID",
     "number-of-host-groups": "NUMBER OF HOST GROUPS",
+    "add-defined-vols-to-vsm": "Add Defined Volumes to VSM",
     "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
+    "virtual-storage-machine-delete-confirmation": "Delete Virtual Storage Machine Confirmation",
+    "virtual-storage-machine-delete-selected-content": "The selected {{getSelectedCount()}} Virtual Storage Machine will be deleted. Do you want to proceed?",
     "volume-pair-count": "GAD Pair Count",
     "physical-storage-systems": "Physical Storage Systems",
     "virtual-volume-id": "Virtual Volume Id",
     "quorum-Id": "Quorum Id",
     "open-gad-pairs": "Open GAD Pairs",
     "vsm-invalid-number": "Please input the serial number based on VSM model",
+    "physical-storage-system-summary-resource": "Resource",
+    "physical-storage-system-summary-defined": "Defined",
+    "physical-storage-system-summary-undefined": "Undefined",
+    "physical-storage-system-summary-info": "Additional Info",
+
 
     "gad-pairs": "GAD pairs",
     "gad-display-type": "GAD",
@@ -501,6 +511,7 @@
     "storage-volume-attach-valid-tooltip": "LUN",
     "storage-volume-attach-invalid-tooltip": "Enter a number between 0 and 2047. LUN must be unique.",
     "storage-volume-attach-different-protocol-servers": "Volumes cannot be attached to multiple servers at the same time if those servers use differing protocols.",
+    "storage-volume-attach-different-vsms": " The specified volumes belongs to multiple Virtual Storage Machines. Cannot attach these volumes at the same time",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-title": "CHAP Secret Overwrite Confirmation",
     "storage-volume-attach-confirm-force-overwrite-chap-user-name-message": "One or more of the specified CHAP user names [{{ chapUserNames }}] already exist on storage port {{ storagePort }} of the specified storage system {{ storageSystemId }}. The CHAP secret will be overwritten by the secret of the specified server. Are you sure you want to proceed?",
     "storage-volume-attach-no-storage-port-for-server-title": "No Compatible Storage Port for the Server",
@@ -592,6 +603,9 @@
     "storage-system-onboarding-prompt": "There is no storage system. Onboard the storage system by clicking the button below:",
     "storage-system-launch-hdvm": "Launch HDvM-SN",
     "storage-system-launch-hsae": "Launch Storage Advisor Embedded",
+    "storage-system-switch-access-point": "Switch GUM IP address to connect",
+    "storage-system-switch-access-point-confirm-title": "Storage System Initialization Confirm",
+    "storage-system-switch-access-point-confirm-message": "The current storage system will be initialized with GUM IP address {{gumIpAddress}}. Do you want to proceed?",
     "storage-system-launch-smu": "Launch HNAS SMU",
     "storage-system-detail-launch": "Go To Storage System Details",
     "storage-system-settings": "Initial Setup Wizard (Settings)",
@@ -1128,6 +1142,30 @@
     "data-reduction-savings-ratio": "Data Reduction",
     "capacity-efficiency-savings-ratio": "Total Efficiency",
 
+    "total-efficiency": "Total Efficiency",
+    "total-efficiency-details": "Total Efficiency Details",
+    "total-efficiency-total-data-reduction": "Data Reduction",
+
+    "total-efficiency-software-saving": "Software Compression and Deduplication",
+
+    "total-efficiency-software-total-savings-ratio": "Total Saving Ratio",
+    "total-efficiency-software-compression-ratio": "Compression Ratio",
+    "total-efficiency-software-deduplication-ratio": "Deduplication Ratio",
+    "total-efficiency-software-pattern-matching-ratio": "Pattern Matching Ratio",
+
+    "total-efficiency-fmd-saving": "FMD Compression",
+
+    "total-efficiency-fmd-total-savings-ratio": "Total Saving Ratio",
+    "total-efficiency-fmd-compression-ratio": "Compression Ratio",
+    "total-efficiency-fmd-pattern-matching-ratio": "Pattern Matching Ratio",
+
+    "total-efficiency-provisioning": "Provisioning Efficiency",
+    "total-efficiency-snapshot": "Snapshot Efficiency",
+    "total-efficiency-calculation-period": "Calculation Period (UTC)",
+    "total-efficiency-calculation-start-time": "Calculation Start Time (UTC)",
+    "total-efficiency-calculation-end-time": "Calculation End Time (UTC)",
+    "total-efficiency-calculation-in-progress": "Calculation in Progress",
+
     "shred-volumes": "Shred Volumes",
     "shred-volumes-wizard-title": "Shredding Algorithm",
     "shred-volumes-shredding-mode": "Shredding Mode",
@@ -1255,5 +1293,6 @@
     "external-volumes-unvirtualize-keep-zone-intact": "Keep Zone Intact",
 
     "false": "NO",
-    "true": "YES"
+    "true": "YES",
+    "close-button-label": "Close"
 }

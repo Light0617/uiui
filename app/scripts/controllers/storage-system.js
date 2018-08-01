@@ -134,7 +134,9 @@ angular.module('rainierApp')
                     filePoolsSummary = result;
                     var summaryModel = objectTransformService.transformToStorageSummaryModel($scope.dataModel, filePoolsSummary, dataProtection);
                     objectTransformService.transformTierSummary(tiers, tierSummary, summaryModel);
-                    objectTransformService.transformSavingsSummary(capacitySavings, summaryModel);
+                    objectTransformService.transformSavingsSummary(
+                        capacitySavings, summaryModel, $scope.dataModel.totalEfficiency);
+                    summaryModel.totalEfficiency = $scope.dataModel.totalEfficiency;
                     summaryModel.title = title;
                     $scope.summaryModel = summaryModel;
                 });
@@ -154,7 +156,9 @@ angular.module('rainierApp')
             else {
                 var summaryModel = objectTransformService.transformToStorageSummaryModel(result, false, dataProtection);
                 objectTransformService.transformTierSummary(tiers, tierSummary, summaryModel);
-                objectTransformService.transformSavingsSummary(capacitySavings, summaryModel);
+                objectTransformService.transformSavingsSummary(
+                    capacitySavings, summaryModel, $scope.dataModel.totalEfficiency);
+                summaryModel.totalEfficiency = $scope.dataModel.totalEfficiency;
                 summaryModel.title = title;
                 $scope.summaryModel = summaryModel;
             }

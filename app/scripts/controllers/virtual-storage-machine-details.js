@@ -26,8 +26,8 @@ angular.module('rainierApp')
 
         var storageSystemIds = function () {
             return _.map(
-                ShareDataService.virtualStorageMachine.physicalStorageSystems,
-                function(s) { return s.storageSystemId; }
+                ShareDataService.virtualStorageMachine.physicalStorageSystemIds,
+                function(s) { return s; }
             );
         };
 

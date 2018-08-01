@@ -58,10 +58,6 @@ angular.module('rainierApp')
                 });
             }
 
-            migrationTaskService.checkLicense(storageSystemId).then(function (result) {
-                $scope.volumeMigrationAvailable = result;
-            });
-
             $scope.protectCurrentVolume = function () {
                 ShareDataService.volumesList = [result];
 
@@ -96,7 +92,7 @@ angular.module('rainierApp')
             };
 
             $scope.isMigrateAvailable = function () {
-                return $scope.volumeMigrationAvailable && migrationTaskService.isMigrationAvailable($scope.model);
+                return migrationTaskService.isMigrationAvailable($scope.model);
             };
         });
 

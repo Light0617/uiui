@@ -13,7 +13,7 @@ angular.module('rainierApp')
                                                  versionService, replicationService, storageNavigatorSessionService,
                                                  constantService, commonConverterService, volumeService,
                                                  storageAdvisorEmbeddedSessionService, utilService,
-                                                 Restangular, $window) {
+                                                 Restangular, switchAccessPointService) {
 
         var transforms;
         var allocatedColor = '#DADBDF';
@@ -81,10 +81,13 @@ angular.module('rainierApp')
 
         var formatVolumeId = function (id) {
             if (utilService.isNullOrUndef(id)) {
-              return '';
+              return 'undefined';
             }
             if (typeof id === 'string' || id instanceof String) {
               id = parseInt(id);
+            }
+            if (_.isNaN(id) || id < 0) {
+                return '';
             }
             var hexId = ('00000' + id.toString(16).toUpperCase()).substr(-6);
             var formatted = hexId.match(/.{1,2}/g).join(':');
@@ -159,7 +162,7 @@ angular.module('rainierApp')
             }
         }
 
-        function transformStorageSystemSettings(item) {
+        function transformStorageSystemSettings(item, orchestratorService) {
             var result = [];
 
             var hasSvpIpAddress = !utilService.isNullOrUndef(item.svpIpAddress);
@@ -170,6 +173,9 @@ angular.module('rainierApp')
 
             if (constantService.isHM850Series(item.model)) {
                 result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
+                if (!hasSvpIpAddress) {
+                    result.push(switchAccessPointService.getLink(item, orchestratorService));
+                }
             }
 
             if (hasSvpIpAddress) {
@@ -248,8 +254,8 @@ angular.module('rainierApp')
 
             // note that property "virtualStorageMachineInformation" and "storageSystemId" are non-nullable
             if(item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
-                displayVirtualStorageSystemId = '(' + synchronousTranslateService.translate('virtual')  + ': ' +
-                    item.virtualStorageMachineInformation.storageSystemId + ')';
+                displayVirtualStorageSystemId = synchronousTranslateService.translate('virtual')  + ': ' +
+                    item.virtualStorageMachineInformation.storageSystemId ;
             }
             return displayVirtualStorageSystemId;
         }
@@ -269,9 +275,6 @@ angular.module('rainierApp')
             var displayVirtualVolumeId = null;
 
             // note that property "virtualStorageMachineInformation" is non-nullable
-            if(!item.virtualStorageMachineInformation.virtualVolumeId) {
-                item.virtualStorageMachineInformation.virtualVolumeId = 'N/A';
-            }
             if(item.volumeId !== item.virtualStorageMachineInformation.virtualVolumeId ||
                 item.storageSystemId !== item.virtualStorageMachineInformation.storageSystemId) {
                 var virtualVolumeIdWithHex = formatVolumeId(item.virtualStorageMachineInformation.virtualVolumeId);
@@ -279,7 +282,8 @@ angular.module('rainierApp')
                     displayVirtualVolumeId = '(' + synchronousTranslateService.translate('virtual') + ': ' +
                         virtualVolumeIdWithHex + ')';
                 } else {
-                    displayVirtualVolumeId = virtualVolumeIdWithHex;
+                    displayVirtualVolumeId = synchronousTranslateService.translate('virtual') + ': ' +
+                        virtualVolumeIdWithHex;
                 }
 
             }
@@ -521,6 +525,21 @@ angular.module('rainierApp')
                     ShareDataService.virtualStorageMachine = item;
                     $location.path(['virtual-storage-machines', item.virtualStorageMachineId].join('/'));
                 };
+                item.actions = {
+                    'delete': {
+                        icon: 'icon-delete',
+                        tooltip: 'action-tooltip-delete',
+                        type: 'confirm',
+                        confirmTitle: 'virtual-storage-machine-delete-confirmation',
+                        confirmMessage: 'virtual-storage-machine-delete-selected-content',
+                        enabled: function () {
+                            return true;
+                        },
+                        onClick: function (orchestratorService) {
+                            return orchestratorService.deleteVirtualStorageMachine(item.virtualStorageMachineId);
+                        }
+                    }
+                };
             },
             transformVSMStorageSystems: function (item) {
                 item.noSelection = false;
@@ -539,8 +558,9 @@ angular.module('rainierApp')
                 item.itemIcon = storageSystemIcon(item);
                 item.onClick = function () {
                     var path = $location.path();
-                    $location.path([path, 'physical-storage-system', item.storageSystemId].join('/'));
-                }
+
+                    $location.path([path, 'physical-storage-systems', item.storageSystemId].join('/'));
+                };
 
                 item.displayLinks = [
                     {
@@ -673,7 +693,7 @@ angular.module('rainierApp')
                     {
                         left: true,
                         title: item.label,
-                        details: [item.displayVolumeId, item.displayVirtualVolumeIdWithBrackets]
+                        details: [item.displayVolumeId, item.displayVirtualVolumeId]
                     },
                     {
                         left: false,
@@ -1631,15 +1651,68 @@ angular.module('rainierApp')
                 });
             },
 
-            transformSavingsSummary: function (capacitySavingsSummary, model) {
-                model.arrayDataVisualizationModel.savingsBreakdown.push({
-                    name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
-                    savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ? capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '
-                });
-                model.arrayDataVisualizationModel.savingsBreakdown.push({
-                    name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
-                    savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ? capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '
-                });
+            getTotalEfficiencyValue: function (model, suffixString) {
+                if (utilService.isNullOrUndef(model)) {
+                    return constantService.HYPHEN;
+                }
+                switch (model.status) {
+                    case constantService.CALCULATED:
+                        return model.value + suffixString;
+                    case constantService.CALCULATED_WITH_EXCEEDED:
+                        return '> ' + model.value + suffixString;
+                    default:
+                        return constantService.HYPHEN;
+                }
+            },
+
+            transformSavingsSummary: function (capacitySavingsSummary, model, totalEfficiency) {
+                if (utilService.isNullOrUndef(totalEfficiency)) {
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('data-reduction-savings-ratio'),
+                        savingsRatio: capacitySavingsSummary.dataReductionSavingsRate !== 0 ?
+                            capacitySavingsSummary.dataReductionSavingsRate + ' : 1' : ' - '
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('capacity-efficiency-savings-ratio'),
+                        savingsRatio: capacitySavingsSummary.capacityEfficiencyRate !== 0 ?
+                            capacitySavingsSummary.capacityEfficiencyRate + ' : 1' : ' - '
+                    });
+                } else {
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency'),
+                        savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.totalEfficiencyRate, ' : 1')
+                    });
+                    if (totalEfficiency.dataReductionEfficiency && totalEfficiency.dataReductionEfficiency.totalDataReductionRate) {
+                        model.arrayDataVisualizationModel.savingsBreakdown.push({
+                            name: synchronousTranslateService.translate('total-efficiency-total-data-reduction'),
+                            savingsRatio: this.getTotalEfficiencyValue(
+                                totalEfficiency.dataReductionEfficiency.totalDataReductionRate, ' : 1')
+                        });
+                    }
+                    if (totalEfficiency.provisioningEfficiencyPercentage) {
+                        model.arrayDataVisualizationModel.savingsBreakdown.push({
+                            name: synchronousTranslateService.translate('total-efficiency-provisioning'),
+                            savingsRatio: this.getTotalEfficiencyValue(
+                                totalEfficiency.provisioningEfficiencyPercentage, ' %')
+                        });
+                    }
+                    if (totalEfficiency.snapshotEfficiencyRate) {
+                        model.arrayDataVisualizationModel.savingsBreakdown.push({
+                            name: synchronousTranslateService.translate('total-efficiency-snapshot'),
+                            savingsRatio: this.getTotalEfficiencyValue(totalEfficiency.snapshotEfficiencyRate, ' : 1')
+                        });
+                    }
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-calculation-start-time'),
+                        savingsRatio: totalEfficiency.calculationStartTime ?
+                            totalEfficiency.calculationStartTime : constantService.HYPHEN
+                    });
+                    model.arrayDataVisualizationModel.savingsBreakdown.push({
+                        name: synchronousTranslateService.translate('total-efficiency-calculation-end-time'),
+                        savingsRatio: totalEfficiency.calculationEndTime ?
+                            totalEfficiency.calculationEndTime : constantService.HYPHEN
+                    });
+                }
             },
 
             transformStorageSystemsSummary: function (item) {
@@ -2088,16 +2161,19 @@ angular.module('rainierApp')
                             this.tiers = true;
                             this.savings = false;
                             this.protection = false;
+                            this.totalEfficiencyDetails = false;
                         },
                         showProtectionBreakDown: function () {
                             this.protection = true;
                             this.tiers = false;
                             this.savings = false;
+                            this.totalEfficiencyDetails = false;
                         },
                         showSavingsBreakDown: function () {
                             this.savings = true;
                             this.tiers = false;
                             this.protection = false;
+                            this.totalEfficiencyDetails = true;
                         },
                         switchToUnified: function () {
                             this.view = 'unified';
@@ -2115,6 +2191,7 @@ angular.module('rainierApp')
                         tiers: true,
                         protection: false,
                         savings: false,
+                        totalEfficiencyDetails: false,
                         view: 'block',
                         unified: item.unified,
                         total: {

@@ -89,6 +89,13 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
     var monitoringModes = ['PERIODICAL', 'CONTINUOUS', 'PERIODICAL_WITH_ACTIVE_FLASH', 'CONTINUOUS_WITH_ACTIVE_FLASH', 'NONE'];
 
     var generateMockStoragePool = function(v) {
+        if (mockUtils.trueOrFalse()) {
+            return generateMockStoragePoolWithTotalEfficiency(v);
+        }
+        return generateMockStoragePoolWithoutTotalEfficiency(v);
+    };
+
+    var generateMockStoragePoolWithoutTotalEfficiency = function(v) {
         var capacityInfo = mockUtils.getCapacityInformation(100, 150);
         var tiers = mockUtils.trueOrFalse() ? hdp : hdt;
         var fmcCompress = _.sample(['YES', 'NO', 'PARTIAL']);
@@ -148,6 +155,160 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             'dataReductionSavingsRate':2.1,
             'capacityEfficiencyRate':3.2
         };
+    };
+
+    var generateMockStoragePoolWithTotalEfficiency = function(v) {
+        return angular.extend(generateMockStoragePoolWithoutTotalEfficiency(v),
+            mockUtils.trueOrFalse() ? getIrregularCase() : {
+                'totalEfficiency': {
+                    'totalEfficiencyRate': {
+                        'status': 'CALCULATED_WITH_EXCEEDED',
+                        'value': 99999.99
+                    },
+                    'dataReductionEfficiency': {
+                        'totalDataReductionRate':  {
+                            'status': 'CALCULATED',
+                            'value': 99999.99
+                        },
+                        'softwareSavingEfficiency': {
+                            'totalSoftwareSavingRate':  {
+                                'status': 'CALCULATED',
+                                'value': 1.52
+                            },
+                            'compressionRate':  {
+                                'status': 'CALCULATED',
+                                'value': 1.15
+                            },
+                            'deduplicationRate':  {
+                                'status': 'CALCULATED',
+                                'value': 1.34
+                            },
+                            'patternMatchingRate':  {
+                                'status': 'CALCULATED',
+                                'value': 1.08
+                            }
+                        },
+                        'fmdSavingEfficiency': {
+                            'totalFmdSavingRate':  {
+                                'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
+                                'value': 2.21
+                            },
+                            'compressionRate':  {
+                                'status': 'CALCULATED',
+                                'value': 2.14
+                            },
+                            'patternMatchingRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            }
+                        }
+                    },
+                    'snapshotEfficiencyRate':  {
+                        'status': 'CALCULATED',
+                        'value': 10.37
+                    },
+                    'provisioningEfficiencyPercentage':  {
+                        'status': 'CALCULATED',
+                        'value': 170
+                    },
+                    'calculationStartTime': '2018-05-15T10:05:48',
+                    'calculationEndTime': '2018-05-15T10:38:37'
+                }
+            });
+    };
+
+    var getIrregularCase = function() {
+        return mockUtils.trueOrFalse() ?
+            {
+                'compressionDetails': null,
+                'fmcCompressed': false,
+                'fmcCompressionDetails': null,
+                'dataReductionSavingsRate': null,
+                'capacityEfficiencyRate': null,
+                'totalEfficiency': {
+                    'totalEfficiencyRate': {
+                        'status': 'CALCULATION_IN_PROGRESS',
+                        'value': null
+                    },
+                    'dataReductionEfficiency': {
+                        'totalDataReductionRate':  {
+                            'status': 'CALCULATION_IN_PROGRESS',
+                            'value': null
+                        },
+                        'softwareSavingEfficiency': {
+                            'totalSoftwareSavingRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            },
+                            'compressionRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            },
+                            'deduplicationRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            },
+                            'patternMatchingRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            }
+                        },
+                        'fmdSavingEfficiency': {
+                            'totalFmdSavingRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            },
+                            'compressionRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            },
+                            'patternMatchingRate':  {
+                                'status': 'CALCULATION_IN_PROGRESS',
+                                'value': null
+                            }
+                        }
+                    },
+                    'snapshotEfficiencyRate':  {
+                        'status': 'CALCULATION_IN_PROGRESS',
+                        'value': null
+                    },
+                    'provisioningEfficiencyPercentage':  {
+                        'status': 'CALCULATION_IN_PROGRESS',
+                        'value': null
+                    },
+                    'calculationStartTime': 'CALCULATION_IN_PROGRESS',
+                    'calculationEndTime': 'CALCULATION_IN_PROGRESS'
+                }
+            }
+            :
+            {
+                'compressionDetails': null,
+                'fmcCompressed': false,
+                'fmcCompressionDetails': null,
+                'dataReductionSavingsRate': null,
+                'capacityEfficiencyRate': null,
+                'totalEfficiency': {
+                    'totalEfficiencyRate': {
+                        'status': 'CALCULATED',
+                        'value': 20.8
+                    },
+                    'dataReductionEfficiency': {
+                        'totalDataReductionRate':  {
+                            'status': 'CALCULATED',
+                            'value': 1.84
+                        },
+                        'softwareSavingEfficiency': null,
+                        'fmdSavingEfficiency': null
+                    },
+                    'snapshotEfficiencyRate':  null,
+                    'provisioningEfficiencyPercentage': {
+                        'status': 'CALCULATED',
+                        'value': 170
+                    },
+                    'calculationStartTime': '2018-05-15T10:05:01',
+                    'calculationEndTime': '2018-05-15T10:38:00'
+                }
+            };
     };
 
     var handleGetRequest = function (urlResult){

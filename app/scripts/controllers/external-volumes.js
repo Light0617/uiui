@@ -116,8 +116,7 @@ angular.module('rainierApp')
                             });
                         });
                     }
-                },
-                volumeMigrationAvailable: false
+                }
             };
 
             $scope.filterModel = _.extend($scope.filterModel, {
@@ -181,8 +180,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.volumeMigrationAvailable &&
-                            migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems()) &&
+                        return migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems()) &&
                             dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300;
                     },
                     onClick: function () {
@@ -249,10 +247,6 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
 
             scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
-
-            return migrationTaskService.checkLicense(storageSystemId);
-        }).then(function (result) {
-            $scope.dataModel.volumeMigrationAvailable = result;
         });
 
         var updateResultTotalCounts = function(result) {

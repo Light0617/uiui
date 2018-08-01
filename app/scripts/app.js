@@ -661,6 +661,14 @@ angular
                 },
                 helpContext: ''
             })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/add-existing-volumes', {
+                templateUrl: 'views/add-defined-vols-to-vsm.html',
+                controller: 'AddDefinedVolsToVsmCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'add-defined-vols-to-vsm'
+                },
+                helpContext: 'R_VSM_INVENTORY'
+            })
             .when('/virtual-storage-machines/:virtualStorageMachineId/gad-pairs', {
                 templateUrl: 'views/virtual-storage-machine-gad-pairs.html',
                 controller: 'VirtualStorageMachineGadPairsCtrl',
@@ -672,6 +680,19 @@ angular
             .when('/virtual-storage-machines/:virtualStorageMachineId', {
                 templateUrl: 'views/virtual-storage-machine-details.html',
                 controller: 'VirtualStorageMachineDetailsCtrl',
+                helpContext: 'R_VSM_INVENTORY'
+            })
+            .when('/virtual-storage-machines', {
+                templateUrl: 'views/virtual-storage-machines.html',
+                controller: 'VirtualStorageMachinesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: 'R_VSM_INVENTORY'
+            })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/physical-storage-systems/:physicalStorageSystemId', {
+                templateUrl: 'views/physical-storage-system-in-vsm.html',
+                controller: 'PhysicalStorageSystemInVsmCtrl',
                 helpContext: 'R_VSM_INVENTORY'
             })
             .when('/fabric-switches/add', {

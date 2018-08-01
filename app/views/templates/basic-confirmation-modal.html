@@ -1,12 +1,13 @@
 <div class="confirmation">
     <div class="modal-header">
-        <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ confirmationTitle }}</h1>
+        <h1 class="modal-title"><span class="icon icon-warning warning-state"></span>{{ confirmationTitle | translate }}</h1>
     </div>
     <div class="modal-body">
-        <p>{{ confirmationMessage }}</p>
+        <p>{{ confirmationMessage | translate }}</p>
     </div>
     <div class="modal-footer btn-group-confirm">
-        <button ng-if="cancelButtonLabel" type="button" class="btn btn-default" ng-click="cancel()">{{ cancelButtonLabel }}</button>
-        <button type="button" class="btn btn-default active" ng-click="ok()">{{ okButtonLabel }}</button>
+        <button ng-if="cancelButtonLabel" type="button" class="btn btn-default" ng-click="cancel()">
+            {{ cancelButtonLabel | translate }}</button>
+        <button type="button" class="btn btn-default active" ng-click="ok()">{{ okButtonLabel | translate }}</button>
     </div>
 </div>
