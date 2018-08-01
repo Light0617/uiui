@@ -26,7 +26,7 @@ angular.module('rainierApp')
 
                     var validNumber = true;
 
-                    if(value === "") {
+                    if(value === '') {
                         validNumber = true;
                     }
 
