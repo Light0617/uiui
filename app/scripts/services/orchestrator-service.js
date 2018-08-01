@@ -23,6 +23,9 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            createvirtualStorageMachine: function (payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('virtual-storage-machines').post(payload));
+            },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {
                     var externalReplicationGroup = function (type) {

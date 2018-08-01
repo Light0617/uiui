@@ -16,8 +16,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp').factory('createVsmService', function (
-    $modal, synchronousTranslateService, $q
-) {
+    $modal, synchronousTranslateService, $q) {
 
     var RAID500_600_700 = {min: 1, max: 99999};
     var HM700 = {min: 200001, max: 299999};
