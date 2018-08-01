@@ -67,9 +67,6 @@ angular.module('rainierApp')
                 var hasFileUsageBar = false;
 
                 var dataModel = {
-                    validationForm: {
-                        serialNumber: ''
-                    },
                     sameModelSelection: false,
                     serialNumber: undefined,
                     selectedVirtualModel: undefined,
@@ -296,7 +293,7 @@ angular.module('rainierApp')
                 $scope.selected.addHostGroupsToVsm = $scope.dataModel.addedHostGroups.hostGroups;
             };
 
-            var createPaylaod = function () {
+            var createPayload = function () {
                 var physicalStorageSystems = [];
                 $scope.selected.addVolumesToVsm.forEach(function (vol) {
                     var hgs = _.filter($scope.selected.addHostGroupsToVsm, function (hg) {
@@ -330,7 +327,7 @@ angular.module('rainierApp')
                     },
                     submit: function () {
                         addHostGroupsToSelected();
-                        var payload = createPaylaod();
+                        var payload = createPayload();
                         orchestratorService.createVirtualStorageMachine(payload);
                     },
                     previous: function () {
@@ -344,5 +341,6 @@ angular.module('rainierApp')
         };
 
         initCommon();
+
     });
 
