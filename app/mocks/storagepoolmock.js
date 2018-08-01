@@ -165,12 +165,12 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED_WITH_EXCEEDED',
                         'value': 99999.99
                     },
-                    'dataReductionRate': {
+                    'dataReductionEfficiency': {
                         'totalDataReductionRate':  {
                             'status': 'CALCULATED',
                             'value': 99999.99
                         },
-                        'softwareSavingRate': {
+                        'softwareSavingEfficiency': {
                             'totalSoftwareSavingRate':  {
                                 'status': 'CALCULATED',
                                 'value': 1.52
@@ -188,7 +188,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                                 'value': 1.08
                             }
                         },
-                        'fmdSavingRate': {
+                        'fmdSavingEfficiency': {
                             'totalFmdSavingRate':  {
                                 'status': mockUtils.randomInArray(['CALCULATED', 'CALCULATION_IN_PROGRESS']),
                                 'value': 2.21
@@ -211,8 +211,8 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED',
                         'value': 170
                     },
-                    'calculationStartTime': '2018-05-15T10:05',
-                    'calculationEndTime': '2018-05-15T10:38'
+                    'calculationStartTime': '2018-05-15T10:05:48',
+                    'calculationEndTime': '2018-05-15T10:38:37'
                 }
             });
     };
@@ -221,6 +221,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
         return mockUtils.trueOrFalse() ?
             {
                 'compressionDetails': null,
+                'fmcCompressed': false,
                 'fmcCompressionDetails': null,
                 'dataReductionSavingsRate': null,
                 'capacityEfficiencyRate': null,
@@ -229,12 +230,12 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATION_IN_PROGRESS',
                         'value': null
                     },
-                    'dataReductionRate': {
+                    'dataReductionEfficiency': {
                         'totalDataReductionRate':  {
                             'status': 'CALCULATION_IN_PROGRESS',
                             'value': null
                         },
-                        'softwareSavingRate': {
+                        'softwareSavingEfficiency': {
                             'totalSoftwareSavingRate':  {
                                 'status': 'CALCULATION_IN_PROGRESS',
                                 'value': null
@@ -252,7 +253,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                                 'value': null
                             }
                         },
-                        'fmdSavingRate': {
+                        'fmdSavingEfficiency': {
                             'totalFmdSavingRate':  {
                                 'status': 'CALCULATION_IN_PROGRESS',
                                 'value': null
@@ -282,6 +283,7 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
             :
             {
                 'compressionDetails': null,
+                'fmcCompressed': false,
                 'fmcCompressionDetails': null,
                 'dataReductionSavingsRate': null,
                 'capacityEfficiencyRate': null,
@@ -290,21 +292,21 @@ rainierAppMock.factory('storagePoolMock', function(mockUtils) {
                         'status': 'CALCULATED',
                         'value': 20.8
                     },
-                    'dataReductionRate': {
+                    'dataReductionEfficiency': {
                         'totalDataReductionRate':  {
                             'status': 'CALCULATED',
                             'value': 1.84
                         },
-                        'softwareSavingRate': null,
-                        'fmdSavingRate': null
+                        'softwareSavingEfficiency': null,
+                        'fmdSavingEfficiency': null
                     },
                     'snapshotEfficiencyRate':  null,
                     'provisioningEfficiencyPercentage': {
                         'status': 'CALCULATED',
                         'value': 170
                     },
-                    'calculationStartTime': '2018-05-15T10:05',
-                    'calculationEndTime': '2018-05-15T10:38'
+                    'calculationStartTime': '2018-05-15T10:05:01',
+                    'calculationEndTime': '2018-05-15T10:38:00'
                 }
             };
     };

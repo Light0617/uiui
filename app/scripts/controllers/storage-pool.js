@@ -121,8 +121,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',
                         enabled: function () {
-                            return dataModel.volumeMigrationAvailable &&
-                                dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                            return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                 migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                         },
                         onClick: function () {
@@ -293,8 +292,7 @@ angular.module('rainierApp')
                         tooltip: 'action-tooltip-migrate-volumes',
                         type: 'link',
                         enabled: function () {
-                            return dataModel.volumeMigrationAvailable &&
-                                dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                            return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                                 migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                         },
                         onClick: function () {
@@ -390,10 +388,6 @@ angular.module('rainierApp')
                 };
 
                 dataModel.hideAddIcon = poolResult.type === 'HTI' || poolResult.label.indexOf('HSA-reserved-') === 0 || ddmEnabled;
-
-                migrationTaskService.checkLicense(storageSystemId).then(function (result) {
-                    dataModel.volumeMigrationAvailable = result;
-                });
 
                 $scope.filterModel = {
                     ddmEnabled: $scope.poolDataModel.ddmEnabled,
@@ -595,39 +589,39 @@ angular.module('rainierApp')
                     $scope.poolDataModel = result;
 
                     if (!utilService.isNullOrUndef(result.totalEfficiency) &&
-                        !utilService.isNullOrUndef(result.totalEfficiency.dataReductionRate)) {
+                        !utilService.isNullOrUndef(result.totalEfficiency.dataReductionEfficiency)) {
 
-                        var softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
+                        var softwareSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.softwareSavingEfficiency;
 
-                        if (softwareSavingRate) {
-                            softwareSavingRate.totalSoftwareSavingRate =
-                                totalEfficiencyService.getDisplayValue(softwareSavingRate.totalSoftwareSavingRate);
+                        if (softwareSavingEfficiency) {
+                            softwareSavingEfficiency.totalSoftwareSavingRate =
+                                totalEfficiencyService.getDisplayValue(softwareSavingEfficiency.totalSoftwareSavingRate);
 
-                            softwareSavingRate.compressionRate =
-                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.compressionRate);
+                            softwareSavingEfficiency.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.compressionRate);
 
-                            softwareSavingRate.deduplicationRate =
-                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.deduplicationRate);
+                            softwareSavingEfficiency.deduplicationRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.deduplicationRate);
 
-                            softwareSavingRate.patternMatchingRate =
-                                totalEfficiencyService.getBoxChartValue(softwareSavingRate.patternMatchingRate);
+                            softwareSavingEfficiency.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(softwareSavingEfficiency.patternMatchingRate);
 
-                            $scope.softwareSavingRate = result.totalEfficiency.dataReductionRate.softwareSavingRate;
+                            $scope.softwareSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.softwareSavingEfficiency;
                         }
 
-                        var fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
+                        var fmdSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.fmdSavingEfficiency;
 
-                        if (fmdSavingRate) {
-                            fmdSavingRate.totalFmdSavingRate =
-                                totalEfficiencyService.getDisplayValue(fmdSavingRate.totalFmdSavingRate);
+                        if (fmdSavingEfficiency) {
+                            fmdSavingEfficiency.totalFmdSavingRate =
+                                totalEfficiencyService.getDisplayValue(fmdSavingEfficiency.totalFmdSavingRate);
 
-                            fmdSavingRate.compressionRate =
-                                totalEfficiencyService.getBoxChartValue(fmdSavingRate.compressionRate);
+                            fmdSavingEfficiency.compressionRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.compressionRate);
 
-                            fmdSavingRate.patternMatchingRate =
-                                totalEfficiencyService.getBoxChartValue(fmdSavingRate.patternMatchingRate);
+                            fmdSavingEfficiency.patternMatchingRate =
+                                totalEfficiencyService.getBoxChartValue(fmdSavingEfficiency.patternMatchingRate);
 
-                            $scope.fmdSavingRate = result.totalEfficiency.dataReductionRate.fmdSavingRate;
+                            $scope.fmdSavingEfficiency = result.totalEfficiency.dataReductionEfficiency.fmdSavingEfficiency;
                         }
 
                         result.totalEfficiency.calculationStartTime =

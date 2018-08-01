@@ -1,0 +1,20 @@
+<div class="fieldset">
+    <div class="label-value-container">
+        <label class="label">VSM MODEL</label>
+        <label class="value">{{ dataModel.virtualStorageSystemModel }}</label>
+    </div>
+
+    <div class="label-value-container">
+        <label class="label">VSM SERIAL ID</label>
+        <label class="value">{{ dataModel.virtualStorageSystemId }}</label>
+    </div>
+
+    <div class="label-value-container">
+        <label class="label">{{'common-storage-system' | translate}}</label>
+        <select class="form-control"
+                ng-model="dataModel.selectedStorageSystem"
+                ng-options="id for id in dataModel.physicalStorageSystemIds"
+                ng-change="dataModel.changeSelectedStorageSystem()">
+        </select>
+    </div>
+</div>

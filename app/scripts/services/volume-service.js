@@ -97,7 +97,8 @@ angular.module('rainierApp')
 
         var getActions = function (dataModel, resourceTrackerService, orchestratorService, $modal, storageSystemId,
                                    storageSystemVolumeService, virtualizeVolumeService, utilService, paginationService,
-                                   migrationTaskService, virtualStorageMachineId) {
+                                   migrationTaskService, attachVolumeService, virtualStorageMachineId) {
+
             return [
                 {
                     icon: 'icon-delete',
@@ -131,8 +132,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-edit',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.onlyOneSelected() &&
-                            !hasGadVolume(dataModel.getSelectedItems()) &&
+                        return dataModel.onlyOneSelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
                             !hasShredding(dataModel.getSelectedItems());
                     },
                     onClick: function () {
@@ -150,7 +150,9 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             flags.push(item.isUnattached());
                         });
-                        if (flags.areAllItemsTrue()) {
+                        if (attachVolumeService.isMultipleVsm(dataModel.getSelectedItems())) {
+                            attachVolumeService.openAttachMultipleVsmErrorModal();
+                        } else if (flags.areAllItemsTrue()) {
                             ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                             $location.path(['storage-systems', storageSystemId, 'attach-volumes'].join('/'));
                         } else {
@@ -234,8 +236,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-restore-volumes',
                     type: 'link',
                     onClick: function () {
-                        volumeRestoreAction('restore', dataModel.getSelectedItems(),
-                            storageSystemId, storageSystemVolumeService);
+                        volumeRestoreAction('restore', dataModel.getSelectedItems(), storageSystemId, storageSystemVolumeService);
                     },
                     enabled: function () {
                         return dataModel.onlyOneSelected() && _.some(dataModel.getSelectedItems(),
@@ -264,8 +265,7 @@ angular.module('rainierApp')
                     tooltip: 'action-tooltip-migrate-volumes',
                     type: 'link',
                     enabled: function () {
-                        return dataModel.volumeMigrationAvailable &&
-                            dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
+                        return dataModel.getSelectedCount() > 0 && dataModel.getSelectedCount() <= 300 &&
                             migrationTaskService.isAllMigrationAvailable(dataModel.getSelectedItems());
                     },
                     onClick: function () {
@@ -286,10 +286,10 @@ angular.module('rainierApp')
 
                         var targetStorageSystemId = this.dialogSettings.itemAttribute.value;
 
-                        if (!utilService.isNullOrUndef(targetStorageSystemId)) {
+                        if(!utilService.isNullOrUndef(targetStorageSystemId)){
                             _.forEach(dataModel.getSelectedItems(), function (item) {
-                                var unprevirtualizePayload = {
-                                    targetStorageSystemId: targetStorageSystemId
+                                var unprevirtualizePayload  = {
+                                    targetStorageSystemId : targetStorageSystemId
                                 };
                                 orchestratorService.unprevirtualize(storageSystemId, item.volumeId, unprevirtualizePayload);
                             });
@@ -300,15 +300,14 @@ angular.module('rainierApp')
 
                         var dialogSettings = this.dialogSettings;
 
-                        getStorageSystems(paginationService, orchestratorService, storageSystemId)
-                            .then(function (result) {
-                                _.each(result, function (storageSystem) {
-                                    dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
-                                });
-                                dialogSettings.itemAttribute = {
-                                    value: dialogSettings.itemAttributes[0]
-                                };
-                            }).catch(function (e) {
+                        getStorageSystems(paginationService, orchestratorService, storageSystemId).then(function () {
+                            _.each(dataModel.storageSystems, function (storageSystem) {
+                                dialogSettings.itemAttributes.push(storageSystem.storageSystemId);
+                            });
+                            dialogSettings.itemAttribute = {
+                                value: dialogSettings.itemAttributes[0]
+                            };
+                        }).catch(function(e){
                             dialogSettings.content = e;
                         });
                     }

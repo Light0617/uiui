@@ -26,6 +26,12 @@ angular.module('rainierApp')
             removeDefinedVolumeFromVsm: function(virtualStorageMachineId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('remove-existing-volumes').post(payload));
             },
+            addDefinedVolumeToVsm: function(virtualStorageMachineId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('add-existing-volumes').post(payload));
+            },
+            deleteVirtualStorageMachine: function(virtualStorageMachineId) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).remove());
+            },
             replicationGroups: function(storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('replication-groups').get().then(function (result) {
                     var externalReplicationGroup = function (type) {
@@ -462,6 +468,9 @@ angular.module('rainierApp')
             },
             updateStorageSystem: function (storageSystemId, updateStorageSystemPayload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId).post(updateStorageSystemPayload));
+            },
+            switchAccessPoint: function (storageSystemId, switchAccessPointPayload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.all('storage-systems/' + storageSystemId + '/switch-access-point').post(switchAccessPointPayload));
             },
             migrationTasks: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('migration-tasks').get());

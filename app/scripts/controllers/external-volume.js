@@ -45,10 +45,6 @@ angular.module('rainierApp')
                 });
             }
 
-            migrationTaskService.checkLicense(storageSystemId).then(function (result) {
-                $scope.volumeMigrationAvailable = result;
-            });
-
             $scope.unvirtualize = function () {
                 var enabled = $scope.model.dialogSettings.switchEnabled.value;
                 var unvirtualizePayload = {
@@ -72,7 +68,7 @@ angular.module('rainierApp')
             };
 
             $scope.isMigrateAvailable = function () {
-                return $scope.volumeMigrationAvailable && migrationTaskService.isMigrationAvailable($scope.model);
+                return migrationTaskService.isMigrationAvailable($scope.model);
             };
 
             $scope.valueOrNA = function (value) {

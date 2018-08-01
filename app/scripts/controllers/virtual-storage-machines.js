@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('VirtualStorageMachinesCtrl', function ($scope, $timeout, $window, orchestratorService,
                                                         objectTransformService, synchronousTranslateService,
-                                                        scrollDataSourceBuilderService) {
+                                                        scrollDataSourceBuilderService, $location) {
 
 
         orchestratorService.virtualStorageMachines().then(function (result) {
@@ -73,13 +73,15 @@ angular.module('rainierApp')
                     icon: 'icon-delete',
                     tooltip :'action-tooltip-delete',
                     type: 'confirm',
-                    confirmTitle: 'storage-system-delete-confirmation',
-                    confirmMessage: 'storage-system-delete-selected-content',
+                    confirmTitle: 'virtual-storage-machine-delete-confirmation',
+                    confirmMessage: 'virtual-storage-machine-delete-selected-content',
                     enabled: function () {
                         return dataModel.anySelected();
                     },
                     onClick: function () {
-                        //TODO
+                        _.forEach(dataModel.getSelectedItems(), function (item) {
+                            item.actions.delete.onClick(orchestratorService);
+                        });
                     }
                 },
                 {
@@ -91,6 +93,19 @@ angular.module('rainierApp')
                     },
                     onClick: function () {
                         //TODO
+                    }
+                },
+                {
+                    icon: 'icon-add-volume',
+                    tooltip: 'action-tooltip-edit',
+                    type: 'link',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected();
+                    },
+                    onClick: function () {
+                        var selectedVsm = _.where(dataModel.displayList, 'selected');
+                        var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
+                        $location.path(['virtual-storage-machines', virtualStorageMachineId, 'add-existing-volumes'].join('/'));
                     }
                 }
             ];

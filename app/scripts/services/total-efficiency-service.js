@@ -29,6 +29,8 @@ angular.module('rainierApp')
                 switch (model.status) {
                     case constantService.CALCULATED:
                         return model.value;
+                    case constantService.CALCULATED_WITH_EXCEEDED:
+                        return '> ' + model.value;
                     case constantService.CALCULATION_IN_PROGRESS:
                         return synchronousTranslateService.translate('total-efficiency-calculation-in-progress');
                     default:
@@ -36,7 +38,16 @@ angular.module('rainierApp')
                 }
             },
             getBoxChartValue: function (model) {
-                return model.status === constantService.CALCULATED ? transformToBoxChartData(model.value) : null;
+                if (utilService.isNullOrUndef(model)) {
+                    return null;
+                }
+                switch (model.status) {
+                    case constantService.CALCULATED:
+                    case constantService.CALCULATED_WITH_EXCEEDED:
+                        return transformToBoxChartData(model.value);
+                    default:
+                        return null;
+                }
             },
             getPeriodValue: function (value) {
                 switch (value) {
