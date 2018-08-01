@@ -97,7 +97,7 @@ angular.module('rainierApp')
 
         var getActions = function (dataModel, resourceTrackerService, orchestratorService, $modal, storageSystemId,
                                    storageSystemVolumeService, virtualizeVolumeService, utilService, paginationService,
-                                   migrationTaskService, attachVolumeService, virtualStorageMachineId) {
+                                   migrationTaskService, attachVolumeService) {
 
             return [
                 {
@@ -326,26 +326,6 @@ angular.module('rainierApp')
                     onClick: function () {
                         ShareDataService.push('selectedVolumes', dataModel.getSelectedItems());
                         $location.path(['storage-systems', storageSystemId, 'volumes', 'shred-volumes'].join('/'));
-                    }
-                },
-                {
-                    icon: 'icon-delete',//TODO: change icon
-                    tooltip: 'action-tooltip-delete',
-                    type: 'confirm',
-
-                    confirmTitle: 'virtual-storage-machine-defined-vol-remove-confirmation',
-                    confirmMessage: 'virtual-storage-machine-defined-vol-remove-content',
-                    enabled: function () {
-                        return dataModel.anySelected() && !hasGadVolume(dataModel.getSelectedItems()) &&
-                            !hasShredding(dataModel.getSelectedItems());
-                    },
-                    onClick: function () {
-                        var payload = {
-                            volumeIds: _.map(dataModel.getSelectedItems(), function(v){
-                                return v.volumeId;
-                            })
-                        }
-                        orchestratorService.removeDefinedVolumeFromVsm(virtualStorageMachineId, payload);
                     }
                 }
             ];
