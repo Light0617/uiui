@@ -32,21 +32,6 @@ angular.module('rainierApp')
                                            $modal,
                                            createVsmService) {
 
-        /* UTILITIES */
-        var startSpinner = function () {
-            spinner(true);
-        };
-
-        var stopSpinner = function () {
-            spinner(false);
-        };
-
-        var spinner = function (enable) {
-            if ($scope.dataModel) {
-                $scope.dataModel.isWaiting = enable;
-            }
-        };
-
         /**
          * 0. Initial process for all pages
          */
