@@ -18,8 +18,7 @@ angular.module('rainierApp')
         var noVirtualizeKey = synchronousTranslateService.translate('no-virtualize');
 
         var isMyVSM = function (vsm) {
-            return _.chain(vsm.physicalStorageSystems)
-                .map(function(storage) { return storage.storageSystemId; })
+            return _.chain(vsm.physicalStorageSystemIds)
                 .include(storageSystemId)
                 .value();
         };
