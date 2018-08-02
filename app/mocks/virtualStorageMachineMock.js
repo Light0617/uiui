@@ -16,8 +16,8 @@ rainierAppMock.factory('virtualStorageMachineMock', function (mockUtils) {
         // var virtualStorageSystemId = '41000' + v;
         // var physicalStorageSystemId = '41000' + _.random(1, 20);
         return {
-            virtualStorageMachineId: '22006' +_.random(0, 9) + '-VSPG' + _.random(9, 10) + '00',
-            storageSystemId: '22006' +_.random(0, 9),
+            virtualStorageMachineId: '22006' + _.random(0, 9) + '-VSPG' + _.random(9, 10) + '00',
+            storageSystemId: '22006' + _.random(0, 9),
             model: 'VSP G' + _.random(9, 10) + '00',
             pairHACount: _.random(1, 50),
             physicalStorageSystemIds: ['220063', '220061']
