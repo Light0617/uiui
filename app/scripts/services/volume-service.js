@@ -67,6 +67,12 @@ angular.module('rainierApp')
             });
         };
 
+        var hasAttached = function(selectedVolumes) {
+            return _.some(selectedVolumes, function (vol) {
+                return vol.isAttached() || vol.isUnmanaged();
+            })
+        };
+
         var enableToShred = function (volume) {
             return volume.isUnattached() &&
                 (volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED) &&
@@ -337,6 +343,7 @@ angular.module('rainierApp')
             volumeUnprotectActions: volumeUnprotectActions,
             hasGadVolume: hasGadVolume,
             hasShredding: hasShredding,
+            hasAttached: hasAttached,
             enableToShred: enableToShred,
             detachFromTargetStorageDialogSettings: detachFromTargetStorageDialogSettings,
             getActions: getActions,
