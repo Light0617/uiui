@@ -180,7 +180,7 @@ angular.module('rainierApp')
          */
         var initAddVolumesToVsm = function () {
             var volumeModel = {
-                subTitle: 'Add Volumes From Each Storage Systems',
+                subTitle: 'Add Volumes From Each Storage System',
                 selectedItems: $scope.dataModel.getSelectedItems(),
                 storageSystemId: $scope.dataModel.getSelectedItems(),
                 numberOfVolumes: []
