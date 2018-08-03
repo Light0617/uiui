@@ -8,8 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('volumeService', function (replicationService, ShareDataService, $q,
-                                        $location, constantService) {
+    .factory('volumeService', function (replicationService, ShareDataService, $q, $location, constantService) {
 
         var getStorageSystems = function (paginationService, objectTransformService, storageSystemId) {
             return paginationService.getAllPromises(null, 'storage-systems', true, null,
