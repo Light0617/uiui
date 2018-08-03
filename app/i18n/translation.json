@@ -400,6 +400,8 @@
     "storage-systems": "STORAGE SYSTEMS",
     "port-id": "PORT ID",
     "number-of-host-groups": "NUMBER OF HOST GROUPS",
+    "select-storage-system": "Select the Storage System",
+    "add-host-group-from-each-storage-system": "Add Host Group From Each Storage System",
     "add-defined-vols-to-vsm": "Add Defined Volumes to VSM",
     "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",

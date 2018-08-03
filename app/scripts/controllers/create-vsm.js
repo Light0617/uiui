@@ -74,7 +74,6 @@ angular.module('rainierApp')
                     hasFileUsageBar: hasFileUsageBar,
                     displayList: result,
                     virtualModel: {},
-                    subTitle: 'Add Volume Ids From Each Storage Systems',
                     search: {
                         freeText: '',
                         freeCapacity: {
@@ -180,6 +179,7 @@ angular.module('rainierApp')
          */
         var initAddVolumesToVsm = function () {
             var volumeModel = {
+                subTitle: 'Add Volumes From Each Storage Systems',
                 selectedItems: $scope.dataModel.getSelectedItems(),
                 storageSystemId: $scope.dataModel.getSelectedItems(),
                 numberOfVolumes: []
@@ -208,7 +208,10 @@ angular.module('rainierApp')
                 return {
                     canGoNext: function () {
                         return volumeModel.numberOfVolumes.length ===  volumeModel.selectedItems.length &&
-                            !_.contains(volumeModel.numberOfVolumes, null);
+                            !_.contains(volumeModel.numberOfVolumes, null) &&
+                            _.every(volumeModel.numberOfVolumes, function (num) {
+                                return num >= 0 && num <=65000;
+                            });
                     },
                     next: function () {
                         addVolumesToSelected();
@@ -323,7 +326,8 @@ angular.module('rainierApp')
             var hostGroupFooter = function (dataModel) {
                 return {
                     canSubmit: function () {
-                        return !_.isUndefined($scope.dataModel.addedHostGroups);
+                        return !_.isUndefined($scope.dataModel.addedHostGroups)
+                            && $scope.dataModel.addedHostGroups.hostGroups.length > 0;
                     },
                     submit: function () {
                         addHostGroupsToSelected();

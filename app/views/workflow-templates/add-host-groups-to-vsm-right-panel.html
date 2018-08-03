@@ -1,6 +1,7 @@
+<h1>{{'add-host-group-from-each-storage-system' | translate}}</h1>
+
 <div class="add-resource-pattern">
     <div class="input-panel validation-scope">
-
 
         <fieldset class="fieldset label-value-container">
             <label for="storage-systems" class="label">{{'storage-systems' | translate}}</label>
@@ -36,14 +37,12 @@
             </div>
         </fieldset>
 
-
         <fieldset class="fieldset label-value-container">
             <label for="number-host-groups" class="label">{{'number-of-host-groups' | translate}}</label>
             <input id="number-host-groups" class="form-control" placeholder="eg. 100" type="number" min="0" max="256"
                    ng-model="dataModel.numberOfHostGroups"
                    ng-change="dataModel.updateAddedHostGroups()"/>
         </fieldset>
-
 
     </div>
     <div class="tile control-tile add-button-hack" ng-click="dataModel.addedHostGroups.add()">
@@ -54,6 +53,7 @@
             </svg>
         </div>
     </div>
+
 </div>
 
 <div class="work-panel">
