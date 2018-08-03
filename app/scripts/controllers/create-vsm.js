@@ -74,6 +74,7 @@ angular.module('rainierApp')
                     hasFileUsageBar: hasFileUsageBar,
                     displayList: result,
                     virtualModel: {},
+                    subTitle: 'Select the Storage System',
                     search: {
                         freeText: '',
                         freeCapacity: {
@@ -236,7 +237,7 @@ angular.module('rainierApp')
 
          var initAddHostGroupToVsm = function () {
             var hostGroupModel = {
-
+                subTitle: 'Add Host Group From Each Storage System',
                 setStorageSystems: function (ss) {
                     var getSelectedItems = $scope.dataModel.getSelectedItems();
                     var index = _.indexOf(getSelectedItems, ss);

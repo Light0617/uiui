@@ -23,6 +23,7 @@
         </wizard-advanced-stepper>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('addPhysicalStorageSystems')"
+            ng-title="dataModel.subTitle"
             class="virtualize-volume-wizard"
             left-panel-template="views/workflow-templates/add-physical-storage-systems-left-panel.html"
             right-panel-template="views/workflow-templates/add-physical-storage-systems-right-panel.html"
@@ -40,6 +41,7 @@
         </wizard-left-right-content>
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('addHostGroupsToVsm')"
+           ng-title="dataModel.subTitle"
            class="virtualize-volume-wizard"
            left-panel-template="views/workflow-templates/add-host-groups-to-vsm-left-panel.html"
            right-panel-template="views/workflow-templates/add-host-groups-to-vsm-right-panel.html"
