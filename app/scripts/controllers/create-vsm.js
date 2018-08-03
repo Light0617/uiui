@@ -327,8 +327,8 @@ angular.module('rainierApp')
             var hostGroupFooter = function (dataModel) {
                 return {
                     canSubmit: function () {
-                        return !_.isUndefined($scope.dataModel.addedHostGroups)
-                            && $scope.dataModel.addedHostGroups.hostGroups.length > 0;
+                        return !_.isUndefined($scope.dataModel.addedHostGroups) &&
+                            $scope.dataModel.addedHostGroups.hostGroups.length > 0;
                     },
                     submit: function () {
                         addHostGroupsToSelected();
