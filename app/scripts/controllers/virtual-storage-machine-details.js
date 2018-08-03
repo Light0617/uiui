@@ -17,11 +17,10 @@
  */
 angular.module('rainierApp')
     .controller('VirtualStorageMachineDetailsCtrl', function (
-        $scope, $routeParams, $location, $timeout, $window, objectTransformService,
-        paginationService, ShareDataService, queryService,
-        scrollDataSourceBuilderService, rainierQueryService,
-        synchronousTranslateService
+        $scope, $routeParams, $location, $timeout, $window, objectTransformService, paginationService, ShareDataService,
+        queryService, scrollDataSourceBuilderService, rainierQueryService, synchronousTranslateService, orchestratorService
     ) {
+        var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
         var openGadAction;
 
         var storageSystemIds = function () {
@@ -163,18 +162,15 @@ angular.module('rainierApp')
                             return dataModel.anySelected();
                         },
                         onClick: function () {
-                            //TODO
-                        }
-                    },
-                    {
-                        icon: 'icon-edit',
-                        tooltip: 'action-tooltip-edit',
-                        type: 'link',
-                        enabled: function () {
-                            return dataModel.onlyOneSelected();
-                        },
-                        onClick: function () {
-                            //TODO
+                            //TODO: test with real API
+                            var physicalStorageSystemId = _.map($scope.dataModel.displayList, function(item){
+                                if(item.selected === true){
+                                    return item.storageSystemId;
+                                }
+                            });
+                            _.each(physicalStorageSystemId, function(id){
+                                orchestratorService.deletePhysicalStorageSystemFromVsm(virtualStorageMachineId, id);
+                            });
                         }
                     }
                 ];
