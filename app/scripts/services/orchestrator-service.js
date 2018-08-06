@@ -23,6 +23,9 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            removeDefinedVolumeFromVsm: function(virtualStorageMachineId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('remove-existing-volumes').post(payload));
+            },
             addDefinedVolumeToVsm: function(virtualStorageMachineId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('add-existing-volumes').post(payload));
             },

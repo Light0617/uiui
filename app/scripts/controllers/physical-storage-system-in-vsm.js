@@ -114,8 +114,28 @@ angular.module('rainierApp')
 
         var setDataModel = function () {
             var actions = volumeService.getActions($scope.dataModel, resourceTrackerService, orchestratorService, $modal,
-                storageSystemId, storageSystemVolumeService, virtualizeVolumeService, utilService,
-                paginationService, migrationTaskService, attachVolumeService);
+                storageSystemId, storageSystemVolumeService, virtualizeVolumeService, utilService, paginationService,
+                migrationTaskService, attachVolumeService);
+
+            actions.push({
+                icon: 'icon-delete',//TODO: change icon
+                tooltip: 'action-tooltip-delete',
+                type: 'confirm',
+
+                confirmTitle: 'virtual-storage-machine-defined-vol-remove-confirmation',
+                confirmMessage: 'virtual-storage-machine-defined-vol-remove-content',
+                enabled: function () {
+                    return $scope.dataModel.anySelected() && !volumeService.hasAttached($scope.dataModel.getSelectedItems());
+                },
+                onClick: function () {
+                    var payload = {
+                        volumeIds: _.map($scope.dataModel.getSelectedItems(), function(v){
+                            return v.volumeId;
+                        })
+                    };
+                    orchestratorService.removeDefinedVolumeFromVsm(virtualStorageMachineId, payload);
+                }
+            });
 
             return _.extend($scope.dataModel, {
                 getActions: function () {
