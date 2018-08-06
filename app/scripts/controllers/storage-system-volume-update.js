@@ -9,14 +9,20 @@
  */
 angular.module('rainierApp')
     .controller('StorageSystemVolumeUpdateCtrl', function ($scope, $routeParams, orchestratorService, diskSizeService,
-                                                           volumeService, resourceTrackerService, createVolumeService) {
+                                                           volumeService, resourceTrackerService, createVolumeService,
+                                                           volumeCapabilitiesService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         var volumeId = $routeParams.volumeId;
+        var targetStorageSystem;
 
-        orchestratorService.volume(storageSystemId, volumeId).then(function (result) {
+        orchestratorService.storageSystem(storageSystemId).then(function (storageSystem) {
+            targetStorageSystem = storageSystem;
+            return orchestratorService.volume(storageSystemId, volumeId);
+        }).then(function (result) {
 
             var dataModel = result;
+            dataModel.storageSystem = targetStorageSystem;
             dataModel.belongsPoolType = result.type;
             var poolId = result.poolId;
             var updatedModel = angular.copy(dataModel);
@@ -60,7 +66,13 @@ angular.module('rainierApp')
                 if (dataModel.label === updatedModel.label) {
                     dataModel.labelIsValid = true;
                 } else {
-                    dataModel.labelIsValid = volumeService.validateCombinedLabel(updatedModel.label, null, 1);
+                    var validLabelInfo = volumeCapabilitiesService.getValidVolumeLabelInfo(
+                        dataModel.storageSystem.model,
+                        dataModel.storageSystem.firmwareVersion);
+
+                    dataModel.labelIsValid = volumeService.validateCombinedLabel(updatedModel.label, null, 1,
+                        validLabelInfo.pattern);
+                    dataModel.invalidVolLabelMessageKey = validLabelInfo.errMessageKey;
                 }
             };
             $scope.dataModel = dataModel;
