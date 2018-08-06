@@ -131,9 +131,7 @@ angular.module('rainierApp')
                 confirmTitle: 'virtual-storage-machine-defined-vol-remove-confirmation',
                 confirmMessage: 'virtual-storage-machine-defined-vol-remove-content',
                 enabled: function () {
-                    return $scope.dataModel.anySelected() && !volumeService.hasGadVolume($scope.dataModel.getSelectedItems()) &&
-                        !volumeService.hasShredding($scope.dataModel.getSelectedItems()) &&
-                        !volumeService.hasAttached($scope.dataModel.getSelectedItems());
+                    return $scope.dataModel.anySelected() && !volumeService.hasAttached($scope.dataModel.getSelectedItems());
                 },
                 onClick: function () {
                     var payload = {
