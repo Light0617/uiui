@@ -223,16 +223,8 @@ angular.module('rainierApp')
                     protected: false,
                     unprotected: false,
                     secondary: false,
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
                     utilization: {
                         min: 0,
                         max: 100

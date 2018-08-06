@@ -45,7 +45,7 @@ angular.module('rainierApp')
                 for (var i = 0; i < pgSummaryItems.length; i++) {
                     var tempRecord = {};
                     // Prepare DiskConfig
-                    var diskCap = diskSizeService.getDisplaySize(pgSummaryItems[i].size);
+                    var diskCap = diskSizeService.getDisplayPhysicalSize(pgSummaryItems[i].size);
                     var diskSpeed = diskSizeService.getDisplaySpeed(pgSummaryItems[i].speed);
                     if (_.isNull(diskSpeed) || _.isUndefined(diskSpeed)) {
                         tempRecord.diskConfig = (pgSummaryItems[i].diskType + ' ' + diskCap.size + diskCap.unit);
@@ -87,7 +87,7 @@ angular.module('rainierApp')
             for (var j = 0; j < item.length; j++) {
 
                 var diskType = item[j].diskSpec.type;
-                var diskCap = diskSizeService.getDisplaySize(item[j].diskSpec.capacityInBytes);
+                var diskCap = diskSizeService.getDisplayPhysicalSize(item[j].diskSpec.capacityInBytes);
                 var diskSpeed = item[j].diskSpec.speed;
 
                 var disk;
@@ -164,11 +164,7 @@ angular.module('rainierApp')
                     freeText: '',
                     encryption: null,
                     compression: null,
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    }
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION
                 },
                 sort: {
                     field: 'parityGroupId',

@@ -11,17 +11,20 @@
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
             <button type="button" class="btn btn-default" ng-model="filterModel.filter.size.unit"
-                    btn-radio="'GB'" ng-change="filterModel.sliderQuery('size', filterModel.filter.size.min, filterModel.filter.size.max, filterModel.filter.size.unit)">GB
+                    btn-radio="'GiB'" ng-change="filterModel.sliderQuery('size', filterModel.filter.size.min, filterModel.filter.size.max, filterModel.filter.size.unit)">
+                {{ 'common-gib' | translate }}
             </button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-default" ng-model="filterModel.filter.size.unit"
-                    btn-radio="'TB'" ng-change="filterModel.sliderQuery('size', filterModel.filter.size.min, filterModel.filter.size.max, filterModel.filter.size.unit)">TB
+                    btn-radio="'TiB'" ng-change="filterModel.sliderQuery('size', filterModel.filter.size.min, filterModel.filter.size.max, filterModel.filter.size.unit)">
+                {{ 'common-tib' | translate }}
             </button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-default" ng-model="filterModel.filter.size.unit"
-                    btn-radio="'PB'" ng-change="filterModel.sliderQuery('size', filterModel.filter.size.min, filterModel.filter.size.max, filterModel.filter.size.unit)">PB
+                    btn-radio="'PiB'" ng-change="filterModel.sliderQuery('size', filterModel.filter.size.min, filterModel.filter.size.max, filterModel.filter.size.unit)">
+                {{ 'common-pib' | translate }}
             </button>
         </div>
     </div>

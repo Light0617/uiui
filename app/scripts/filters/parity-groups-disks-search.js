@@ -15,8 +15,8 @@ angular.module('rainierApp')
                 return input;
             }
 
-            var totalMin = diskSizeService.createDisplaySize(search.totalCapacity.min, search.totalCapacity.unit);
-            var totalMax = diskSizeService.createDisplaySize(search.totalCapacity.max, search.totalCapacity.unit);
+            var totalMin = diskSizeService.createDisplayPhysicalSize(search.totalCapacity.min, search.totalCapacity.unit);
+            var totalMax = diskSizeService.createDisplayPhysicalSize(search.totalCapacity.max, search.totalCapacity.unit);
 
             var array = _.filter(input, function (item) {
 

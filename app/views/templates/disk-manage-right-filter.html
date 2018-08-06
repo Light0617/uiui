@@ -10,7 +10,8 @@
     <!--Control group: Total capacity of Parity Group Input-->
     <div class="control-group">
         <h3>{{ 'parity-group-disk-capacity' | translate}}<span class="read-only">
-                        {{model.search.totalCapacity.min}} - {{model.search.totalCapacity.max}} {{model.search.totalCapacity.unit}}</span>
+            {{model.search.totalCapacity.min}} - {{model.search.totalCapacity.max}} {{model.search.totalCapacity.unit}}
+        </span>
         </h3>
 
         <div id="parity-group-capacity-range" class="slider-range range-slider-control"
@@ -24,17 +25,17 @@
         <div class="btn-group btn-group-toggle btn-group-justified">
             <div class="btn-group">
                 <button type="button" class="btn btn-default" ng-model="model.search.totalCapacity.unit"
-                        btn-radio="'GB'">GB
+                        btn-radio="'GB'">{{ 'common-gb' | translate}}
                 </button>
             </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-default" ng-model="model.search.totalCapacity.unit"
-                        btn-radio="'TB'">TB
+                        btn-radio="'TB'">{{ 'common-tb' | translate}}
                 </button>
             </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-default" ng-model="model.search.totalCapacity.unit"
-                        btn-radio="'PB'">PB
+                        btn-radio="'PB'">{{ 'common-pb' | translate}}
                 </button>
             </div>
         </div>

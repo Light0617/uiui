@@ -8,8 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ParityGroupsAddCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService, diskSizeService, $location, synchronousTranslateService,
-                                                 objectTransformService, paginationService, resourceTrackerService) {
+    .controller('ParityGroupsAddCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
+                                                 diskSizeService, $location, synchronousTranslateService,
+                                                 objectTransformService, paginationService, resourceTrackerService,
+                                                 constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_DISKS_PATH = 'disks';
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
@@ -51,11 +53,7 @@ angular.module('rainierApp')
 
             $scope.dataModel.search = {
                 freeText: '',
-                totalCapacity: {
-                    min: 0,
-                    max: 1000,
-                    unit: 'PB'
-                },
+                totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
                 type: null,
                 speed: null,
                 purpose: null,
@@ -82,7 +80,7 @@ angular.module('rainierApp')
             };
 
             dataModel.getDiskType = function (item) {
-                var convertedDiskCapacity = diskSizeService.getDisplaySize(item.size);
+                var convertedDiskCapacity = diskSizeService.getDisplayPhysicalSize(item.size);
                 return item.diskType + ' ' + diskSizeService.getDisplaySpeed(item.speed) + ' ' + convertedDiskCapacity.size + convertedDiskCapacity.unit;
             };
 
@@ -193,7 +191,7 @@ angular.module('rainierApp')
                         purpose: disk.purpose,
                         parityGroupId: disk.parityGroupId,
                         selected: false,
-                        convertedDiskCapacity: diskSizeService.getDisplaySize(disk.capacityInBytes),
+                        convertedDiskCapacity: diskSizeService.getDisplayPhysicalSize(disk.capacityInBytes),
                         speedOnly: diskSizeService.getDisplaySpeedOnly(disk.speed),
                         speedUnitOnly: diskSizeService.getDisplaySpeedUnitOnly(disk.speed)
                     };

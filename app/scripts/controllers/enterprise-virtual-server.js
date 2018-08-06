@@ -8,8 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('EnterpriseVirtualServerCtrl', function ($scope, $routeParams, $timeout, $filter, diskSizeService, fileSystemService,
-                                                         orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location, linkLabelService) {
+    .controller('EnterpriseVirtualServerCtrl', function ($scope, $routeParams, $timeout, $filter, diskSizeService,
+                                                         fileSystemService, orchestratorService, objectTransformService,
+                                                         synchronousTranslateService, scrollDataSourceBuilderService,
+                                                         $location, linkLabelService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var evsId = $routeParams.evsId;
         var result;
@@ -60,16 +62,8 @@ angular.module('rainierApp')
                     showRelatedResourcesHeader: true,
                     search: {
                         freeText: '',
-                        freeCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        },
-                        totalCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        },
+                        freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                        totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
                         fileServer: null
                     },
                     fileServer: fileServer,

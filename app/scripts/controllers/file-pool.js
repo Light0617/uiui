@@ -9,8 +9,8 @@
  */
 angular.module('rainierApp')
     .controller('FilePoolCtrl', function ($scope, $routeParams, $timeout, $filter, diskSizeService, fileSystemService,
-                                            orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location,
-                                linkLabelService) {
+                                          orchestratorService, objectTransformService, synchronousTranslateService,
+                                          scrollDataSourceBuilderService, $location, linkLabelService, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolId = $routeParams.filePoolId;
         var result;
@@ -57,16 +57,8 @@ angular.module('rainierApp')
                 numOfFileSystems: fileSystems.length,
                 search: {
                     freeText: '',
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
                     fileServer: null
                 },
                 actionTitle: synchronousTranslateService.translate('file-systems-add'),
