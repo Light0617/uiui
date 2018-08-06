@@ -168,6 +168,11 @@ angular.module('rainierApp')
             CALCULATED: 'CALCULATED',
             CALCULATION_IN_PROGRESS: 'CALCULATION_IN_PROGRESS',
             CALCULATED_WITH_EXCEEDED: 'CALCULATED_WITH_EXCEEDED',
-            HYPHEN: '-'
+            HYPHEN: '-',
+            CAPACITY_FILTER_DEFAULT_CONDITION: {
+                min: 0,
+                max: 1000,
+                unit: 'PiB'
+            }
         };
     });

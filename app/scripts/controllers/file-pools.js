@@ -8,7 +8,9 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('FilePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService, $location) {
+    .controller('FilePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService,
+                                           objectTransformService, synchronousTranslateService,
+                                           scrollDataSourceBuilderService, $location, constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var filePoolSummary;
 
@@ -27,16 +29,8 @@ angular.module('rainierApp')
                 filePoolSummary: filePoolSummary,
                 search: {
                     freeText: '',
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
                     healthy: null
                 },
                 filePools: filePools,

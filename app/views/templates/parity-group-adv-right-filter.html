@@ -22,16 +22,16 @@
 
     <div class="btn-group btn-group-justified" data-toggle="buttons">
         <label class="btn btn-primary btn-light" ng-model="model.search.totalCapacity.unit"
-                    btn-radio="'GB'">
-            <input autocomplete="off" checked="" type="radio" />GB
+                    btn-radio="'GiB'">
+            <input autocomplete="off" checked="" type="radio" />{{ 'common-gib' | translate }}
         </label>
         <label class="btn btn-primary btn-light" ng-model="model.search.totalCapacity.unit"
-                    btn-radio="'TB'">
-            <input autocomplete="off" checked="" type="radio" />TB
+                    btn-radio="'TiB'">
+            <input autocomplete="off" checked="" type="radio" />{{ 'common-tib' | translate }}
         </label>
         <label class="btn btn-primary btn-light" ng-model="model.search.totalCapacity.unit"
-                    btn-radio="'PB'">
-            <input autocomplete="off" checked="" type="radio" />PB
+                    btn-radio="'PiB'">
+            <input autocomplete="off" checked="" type="radio" />{{ 'common-pib' | translate }}
         </label>
     </div>
 </div>

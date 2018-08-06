@@ -8,8 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('StorageSystemsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService, synchronousTranslateService, scrollDataSourceBuilderService,
-                                                $location, diskSizeService, paginationService, capacityAlertService, dpAlertService, jobsAlertService, hwAlertService) {
+    .controller('StorageSystemsCtrl', function ($scope, $timeout, orchestratorService, objectTransformService,
+                                                synchronousTranslateService, scrollDataSourceBuilderService,
+                                                $location, diskSizeService, paginationService, capacityAlertService,
+                                                dpAlertService, jobsAlertService, hwAlertService, constantService) {
 
         var dataProtection;
         var capacitySavings;
@@ -84,16 +86,8 @@ angular.module('rainierApp')
                 displayList: result.resources,
                 search: {
                     freeText: '',
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
                     hasMigrationTasks: null
                 },
                 sort: {

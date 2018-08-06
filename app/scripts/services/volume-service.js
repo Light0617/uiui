@@ -372,7 +372,7 @@ angular.module('rainierApp')
                 ];
             },
             getVolumeSizeUnits: function () {
-                return ['GB', 'TB', 'PB'];
+                return ['GiB', 'TiB', 'PiB'];
             }
         };
 
