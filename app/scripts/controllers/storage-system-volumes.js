@@ -84,8 +84,8 @@ angular.module('rainierApp')
                 gadActivePrimary: false,
                 gadActiveSecondary: false,
                 gadNotAvailable: false,
-                freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
-                totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                 utilization: {
                     min: 0,
                     max: 100

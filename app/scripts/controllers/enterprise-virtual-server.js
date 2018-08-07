@@ -62,8 +62,8 @@ angular.module('rainierApp')
                     showRelatedResourcesHeader: true,
                     search: {
                         freeText: '',
-                        freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
-                        totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                        freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                        totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                         fileServer: null
                     },
                     fileServer: fileServer,

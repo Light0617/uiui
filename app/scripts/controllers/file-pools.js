@@ -29,8 +29,8 @@ angular.module('rainierApp')
                 filePoolSummary: filePoolSummary,
                 search: {
                     freeText: '',
-                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
-                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                     healthy: null
                 },
                 filePools: filePools,

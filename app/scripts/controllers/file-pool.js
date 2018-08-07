@@ -57,8 +57,8 @@ angular.module('rainierApp')
                 numOfFileSystems: fileSystems.length,
                 search: {
                     freeText: '',
-                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
-                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                     fileServer: null
                 },
                 actionTitle: synchronousTranslateService.translate('file-systems-add'),

@@ -67,7 +67,7 @@ angular.module('rainierApp')
                 protected: false,
                 unprotected: false,
                 secondary: false,
-                size: constantService.CAPACITY_FILTER_DEFAULT_CONDITION
+                size: constantService.CAPACITY_FILTER_DEFAULT_CONDITION()
             }
         };
 

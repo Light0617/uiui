@@ -70,7 +70,7 @@ angular.module('rainierApp')
             $scope.filterModel = {
                 filter: {
                     freeText: '',
-                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION()
                 },
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);
