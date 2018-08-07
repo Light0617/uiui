@@ -22,7 +22,6 @@ angular.module('rainierApp')
                                            orchestratorService,
                                            objectTransformService,
                                            synchronousTranslateService,
-                                           scrollDataSourceBuilderServiceNew,
                                            scrollDataSourceBuilderService,
                                            $location,
                                            diskSizeService,
@@ -78,16 +77,9 @@ angular.module('rainierApp')
                     subTitle: 'Select the Storage System',
                     search: {
                         freeText: '',
-                        freeCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        },
-                        totalCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        }
+                        freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                        totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                        hasMigrationTasks: null
                     },
                     sort: {
                         field: 'storageSystemId',
@@ -124,16 +116,6 @@ angular.module('rainierApp')
                 scrollDataSourceBuilderService.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
 
                 _.extend($scope.dataModel, dataModel);
-
-                var updateResultTotalCounts = function (result) {
-                    $scope.dataModel.nextToken = result.nextToken;
-                    $scope.dataModel.cachedList = result.resources;
-                    $scope.dataModel.displayList = result.resources.slice(0, scrollDataSourceBuilderServiceNew.showedPageSize);
-                    $scope.dataModel.itemCounts = {
-                        filtered: $scope.dataModel.displayList.length,
-                        total: $scope.dataModel.total
-                    };
-                };
 
                 var addPhysicalStorageSystemsToSelected = function () {
                     $scope.selected.sameModelSelection = $scope.dataModel.sameModelSelection;
