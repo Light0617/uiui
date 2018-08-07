@@ -10,8 +10,7 @@
 angular.module('rainierApp')
     .controller('ParityGroupsAddCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
                                                  diskSizeService, $location, synchronousTranslateService,
-                                                 objectTransformService, paginationService, resourceTrackerService,
-                                                 constantService) {
+                                                 objectTransformService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_DISKS_PATH = 'disks';
         var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
