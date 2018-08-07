@@ -165,17 +165,6 @@ angular.module('rainierApp')
                         onClick: function () {
                             //TODO
                         }
-                    },
-                    {
-                        icon: 'icon-edit',
-                        tooltip: 'action-tooltip-edit',
-                        type: 'link',
-                        enabled: function () {
-                            return dataModel.onlyOneSelected();
-                        },
-                        onClick: function () {
-                            //TODO
-                        }
                     }
                 ];
                 $scope.dataModel.getActions = function () {

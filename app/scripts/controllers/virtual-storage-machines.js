@@ -85,17 +85,6 @@ angular.module('rainierApp')
                     }
                 },
                 {
-                    icon: 'icon-edit',
-                    tooltip: 'action-tooltip-edit',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.onlyOneSelected();
-                    },
-                    onClick: function () {
-                        //TODO
-                    }
-                },
-                {
                     icon: 'icon-add-volume',
                     tooltip: 'action-tooltip-edit',
                     type: 'link',
