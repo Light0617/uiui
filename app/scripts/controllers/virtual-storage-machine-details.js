@@ -54,6 +54,7 @@ angular.module('rainierApp')
         };
 
         var getResources = function () {
+            queryService.clearQueryMap();
             return paginationService.get(
                 null, getStorageSystemPath(), objectTransformService.transformVSMStorageSystems
             );
