@@ -53,7 +53,11 @@ angular.module('rainierApp')
 
             $scope.dataModel.search = {
                 freeText: '',
-                totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                totalCapacity: {
+                    min: 0,
+                    max: 1000,
+                    unit: 'TB'
+                },
                 type: null,
                 speed: null,
                 purpose: null,
