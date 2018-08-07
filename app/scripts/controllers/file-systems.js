@@ -8,8 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('FileSystemsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService,
-                                             scrollDataSourceBuilderService, $location, linkLabelService) {
+    .controller('FileSystemsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService,
+                                             objectTransformService, synchronousTranslateService,
+                                             scrollDataSourceBuilderService, $location, linkLabelService,
+                                             constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var evses;
         var filePools;
@@ -57,16 +59,8 @@ angular.module('rainierApp')
                     allItemsSelected: false,
                     search: {
                         freeText: '',
-                        freeCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        },
-                        totalCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        },
+                        freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                        totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                         fileServer: null
                     },
                     fileServer: fileServer,

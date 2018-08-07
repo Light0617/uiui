@@ -89,7 +89,7 @@ angular.module('rainierApp')
                         purpose: disk.purpose,
                         parityGroupId: disk.parityGroupId,
                         selected: false,
-                        convertedDiskCapacity: diskSizeService.getDisplaySize(disk.capacityInBytes),
+                        convertedDiskCapacity: diskSizeService.getDisplayPhysicalSize(disk.capacityInBytes),
                         speedOnly: diskSizeService.getDisplaySpeedOnly(disk.speed),
                         speedUnitOnly: diskSizeService.getDisplaySpeedUnitOnly(disk.speed)
                     };

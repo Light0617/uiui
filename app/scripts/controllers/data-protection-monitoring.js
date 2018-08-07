@@ -12,7 +12,7 @@ angular.module('rainierApp')
                                                           objectTransformService, synchronousTranslateService,
                                                           scrollDataSourceBuilderService, $location, ShareDataService,
                                                           monitoringService, inventorySettingsService, storageSystemVolumeService,
-                                                          replicationService) {
+                                                          replicationService, constantService) {
 
         var storageSystemId = $routeParams.storageSystemId;
         if(storageSystemId) {
@@ -232,16 +232,8 @@ angular.module('rainierApp')
                 hasDelete: true,
                 search: {
                     freeText: '',
-                    freeCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    },
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                     utilization: {
                         min: 0,
                         max: 100

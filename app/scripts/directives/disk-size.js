@@ -11,10 +11,18 @@ angular.module('rainierApp')
         function postLink(scope, element, attrs) {
 
             scope.builder = function(sizeObj) {
-                if (!sizeObj) {
-                    sizeObj = diskSizeService.createDisplaySize(0, 'GB');
-                } else if (!_.isPlainObject(scope.size)) {
-                    sizeObj = diskSizeService.getDisplaySize(scope.size);
+                if (attrs.physical) {
+                    if (!sizeObj) {
+                        sizeObj = diskSizeService.createDisplayPhysicalSize(0, 'GB');
+                    } else if (!_.isPlainObject(scope.size)) {
+                        sizeObj = diskSizeService.getDisplayPhysicalSize(scope.size);
+                    }
+                } else {
+                    if (!sizeObj) {
+                        sizeObj = diskSizeService.createDisplaySize(0, 'GiB');
+                    } else if (!_.isPlainObject(scope.size)) {
+                        sizeObj = diskSizeService.getDisplaySize(scope.size);
+                    }
                 }
 
                 var wrappedIn = attrs.wrappedIn;

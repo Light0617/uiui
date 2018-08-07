@@ -8,8 +8,10 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ExternalParityGroupsCtrl', function ($scope, $routeParams, $timeout, orchestratorService,  synchronousTranslateService, scrollDataSourceBuilderServiceNew, 
-                                                      objectTransformService, queryService, paginationService) {
+    .controller('ExternalParityGroupsCtrl', function ($scope, $routeParams, $timeout, orchestratorService,
+                                                      synchronousTranslateService, scrollDataSourceBuilderServiceNew,
+                                                      objectTransformService, queryService, paginationService,
+                                                      constantService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-external-parity-groups');
         var getExternalParityGroupPath = 'external-parity-groups';
@@ -68,11 +70,7 @@ angular.module('rainierApp')
             $scope.filterModel = {
                 filter: {
                     freeText: '',
-                    totalCapacity: {
-                        min: 0,
-                        max: 1000,
-                        unit: 'PB'
-                    }
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION()
                 },
                 filterQuery: function (key, value, type, arrayClearKey) {
                     var queryObject = new paginationService.QueryObject(key, type, value, arrayClearKey);

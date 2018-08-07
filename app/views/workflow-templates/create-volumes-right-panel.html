@@ -4,19 +4,19 @@
             <label for="label" class="label">{{'storage-volume-label' | translate}}</label>
             <input id="label" class="form-control" placeholder="Volume" type="text" maxlength="32"
                    ng-model="dataModel.createModel.volumesGroupsModel.template.label"
-                   ng-change="dataModel.validLabel(volumeGroup)"/>
+                   ng-change="dataModel.validLabel(dataModel.createModel.volumesGroupsModel.template)"/>
         </fieldset>
         <fieldset class="fieldset label-value-container">
             <label for="subscribed" class="label">{{'storage-volume-label-suffix' | translate}}</label>
             <input id="subscribed" class="form-control" placeholder="0" type="number" min="0"
                    ng-model="dataModel.createModel.volumesGroupsModel.template.suffix"
-                   ng-change="dataModel.validLabel(volumeGroup)"/>
+                   ng-change="dataModel.validLabel(dataModel.createModel.volumesGroupsModel.template)"/>
         </fieldset>
         <fieldset class="fieldset label-value-container">
             <label for="number-volumes" class="label">{{'storage-volume-number-of-volumes' | translate}}</label>
             <input id="number-volumes" class="form-control" placeholder="1" type="number" min="1"
                    ng-model="dataModel.createModel.volumesGroupsModel.template.noOfVolumes"
-                   ng-change="dataModel.validLabel(volumeGroup)"/>
+                   ng-change="dataModel.validLabel(dataModel.createModel.volumesGroupsModel.template)"/>
         </fieldset>
         <fieldset class="fieldset label-value-container">
             <label for="size" class="label">{{'storage-volume-size' | translate}}</label>

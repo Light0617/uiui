@@ -8,7 +8,8 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('ParityGroupsAddCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService, diskSizeService, $location, synchronousTranslateService,
+    .controller('ParityGroupsAddCtrl', function ($scope, $routeParams, $timeout, $window, orchestratorService,
+                                                 diskSizeService, $location, synchronousTranslateService,
                                                  objectTransformService, paginationService, resourceTrackerService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_DISKS_PATH = 'disks';
@@ -54,7 +55,7 @@ angular.module('rainierApp')
                 totalCapacity: {
                     min: 0,
                     max: 1000,
-                    unit: 'PB'
+                    unit: 'TB'
                 },
                 type: null,
                 speed: null,
@@ -82,7 +83,7 @@ angular.module('rainierApp')
             };
 
             dataModel.getDiskType = function (item) {
-                var convertedDiskCapacity = diskSizeService.getDisplaySize(item.size);
+                var convertedDiskCapacity = diskSizeService.getDisplayPhysicalSize(item.size);
                 return item.diskType + ' ' + diskSizeService.getDisplaySpeed(item.speed) + ' ' + convertedDiskCapacity.size + convertedDiskCapacity.unit;
             };
 
@@ -193,7 +194,7 @@ angular.module('rainierApp')
                         purpose: disk.purpose,
                         parityGroupId: disk.parityGroupId,
                         selected: false,
-                        convertedDiskCapacity: diskSizeService.getDisplaySize(disk.capacityInBytes),
+                        convertedDiskCapacity: diskSizeService.getDisplayPhysicalSize(disk.capacityInBytes),
                         speedOnly: diskSizeService.getDisplaySpeedOnly(disk.speed),
                         speedUnitOnly: diskSizeService.getDisplaySpeedUnitOnly(disk.speed)
                     };
