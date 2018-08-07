@@ -22,7 +22,7 @@ angular.module('rainierApp')
                                                         volumeService, constantService, storageSystemCapabilitiesService,
                                                         synchronousTranslateService, $location, $timeout,
                                                         editChapService, validatePortTypeService, $q, $modal,
-                                                        createVolumeService) {
+                                                        createVolumeService, volumeCapabilitiesService) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -43,8 +43,14 @@ angular.module('rainierApp')
             dataModel.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
             dataModel.decimalNumberRegexp = /^[^.]+$/;
             dataModel.validLabel = function(volumeGroup){
-                volumeGroup.labelIsValid = volumeService.validateCombinedLabel(volumeGroup.label, volumeGroup.suffix, volumeGroup.noOfVolumes);
+                var validLabelInfo = volumeCapabilitiesService.getValidVolumeLabelInfo(
+                    dataModel.selectedStorageSystem.model,
+                    dataModel.selectedStorageSystem.firmwareVersion);
 
+                volumeGroup.labelIsValid = volumeService.validateCombinedLabel(
+                    volumeGroup.label, volumeGroup.suffix, volumeGroup.noOfVolumes, validLabelInfo.pattern);
+
+                dataModel.invalidVolLabelMessageKey = validLabelInfo.errMessageKey;
             };
             dataModel.storagePorts = [];
             dataModel.process = function(resources){

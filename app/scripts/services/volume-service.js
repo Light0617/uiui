@@ -346,12 +346,11 @@ angular.module('rainierApp')
             enableToShred: enableToShred,
             detachFromTargetStorageDialogSettings: detachFromTargetStorageDialogSettings,
             getActions: getActions,
-            validateCombinedLabel: function (label, suffix, volumeCount) {
+            validateCombinedLabel: function (label, suffix, volumeCount, validVolumeLabelPattern) {
                 if (label === null && suffix === null) {
                     return true;
                 }
 
-                var simpleNameRegexp = /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+$)/;
                 var largestSuffix;
                 if (suffix === null) {
                     largestSuffix = '';
@@ -365,7 +364,7 @@ angular.module('rainierApp')
                 } else if (combinedLabel.length > 32) {
                     return false;
                 } else {
-                    return simpleNameRegexp.test(combinedLabel);
+                    return validVolumeLabelPattern.test(combinedLabel);
                 }
             },
             restorable: restorable,
