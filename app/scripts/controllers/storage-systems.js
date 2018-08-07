@@ -86,8 +86,8 @@ angular.module('rainierApp')
                 displayList: result.resources,
                 search: {
                     freeText: '',
-                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
-                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION,
+                    freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
                     hasMigrationTasks: null
                 },
                 sort: {

@@ -164,7 +164,7 @@ angular.module('rainierApp')
                     freeText: '',
                     encryption: null,
                     compression: null,
-                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION
+                    totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION()
                 },
                 sort: {
                     field: 'parityGroupId',
