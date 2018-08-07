@@ -9,7 +9,10 @@
                 <tr>
                     <th data-field="diskType" data-align="right" data-sortable="true">{{'parity-groups-summary-manage-disk-type' | translate}}<span class="caret" ng-show=""></span></th>
                     <th data-field="pgCount" data-align="center" data-sortable="true">{{'parity-groups-summary-manage-parity-groups' | translate}}<span class="caret" ng-show=""></span></th>
-                    <th data-field="totalCapacity" data-sortable="true">{{'parity-groups-summary-manage-total-capacity' | translate}}<span class="caret" ng-show=""></span></th>
+                    <th data-field="totalCapacity" data-sortable="true" title="{{ 'parity-groups-summary-manage-total-capacity-tooltip' | translate }}">
+                        {{'parity-groups-summary-manage-total-capacity' | translate}}
+                        <span class="caret" ng-show=""></span>
+                    </th>
                     <th data-field="numberOfAvailableDisks" data-sortable="true">{{'parity-groups-summary-available-disks' | translate}}</th>
                     <th data-field="availableSpareCount" data-sortable="true">{{'parity-groups-summary-manage-available-spares' | translate}}<span class="caret" ng-show=""></span>
                         <div class="btn-group icon-btn-group-toggle pull-right" ng-if="!dataModel.hideAddTile && dataModel.storageSystem.accessible">

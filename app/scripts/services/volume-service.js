@@ -8,8 +8,7 @@
  * Factory in the rainierApp.
  */
 angular.module('rainierApp')
-    .factory('volumeService', function (replicationService, ShareDataService, $q,
-                                        $location, constantService) {
+    .factory('volumeService', function (replicationService, ShareDataService, $q, $location, constantService) {
 
         var getStorageSystems = function (paginationService, objectTransformService, storageSystemId) {
             return paginationService.getAllPromises(null, 'storage-systems', true, null,
@@ -67,6 +66,12 @@ angular.module('rainierApp')
             });
         };
 
+        var hasAttached = function(selectedVolumes) {
+            return _.some(selectedVolumes, function (vol) {
+                return vol.isAttached() || vol.isUnmanaged();
+            })
+        };
+
         var enableToShred = function (volume) {
             return volume.isUnattached() &&
                 (volume.isNormal() || volume.status === constantService.volumeStatus.BLOCKED) &&
@@ -98,6 +103,7 @@ angular.module('rainierApp')
         var getActions = function (dataModel, resourceTrackerService, orchestratorService, $modal, storageSystemId,
                                    storageSystemVolumeService, virtualizeVolumeService, utilService, paginationService,
                                    migrationTaskService, attachVolumeService) {
+
             return [
                 {
                     icon: 'icon-delete',
@@ -336,15 +342,15 @@ angular.module('rainierApp')
             volumeUnprotectActions: volumeUnprotectActions,
             hasGadVolume: hasGadVolume,
             hasShredding: hasShredding,
+            hasAttached: hasAttached,
             enableToShred: enableToShred,
             detachFromTargetStorageDialogSettings: detachFromTargetStorageDialogSettings,
             getActions: getActions,
-            validateCombinedLabel: function (label, suffix, volumeCount) {
+            validateCombinedLabel: function (label, suffix, volumeCount, validVolumeLabelPattern) {
                 if (label === null && suffix === null) {
                     return true;
                 }
 
-                var simpleNameRegexp = /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+$)/;
                 var largestSuffix;
                 if (suffix === null) {
                     largestSuffix = '';
@@ -358,7 +364,7 @@ angular.module('rainierApp')
                 } else if (combinedLabel.length > 32) {
                     return false;
                 } else {
-                    return simpleNameRegexp.test(combinedLabel);
+                    return validVolumeLabelPattern.test(combinedLabel);
                 }
             },
             restorable: restorable,
@@ -373,7 +379,7 @@ angular.module('rainierApp')
                 ];
             },
             getVolumeSizeUnits: function () {
-                return ['GB', 'TB', 'PB'];
+                return ['GiB', 'TiB', 'PiB'];
             }
         };
 

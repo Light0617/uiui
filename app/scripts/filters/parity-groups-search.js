@@ -33,7 +33,7 @@ angular.module('rainierApp')
                 //diskType search filter
                 var diskType = item.diskSpec.type;
                 var diskSpeed = item.diskSpec.speed;
-                var diskSize = diskSizeService.getDisplaySize(item.diskSpec.capacityInBytes);
+                var diskSize = diskSizeService.getDisplayPhysicalSize(item.diskSpec.capacityInBytes);
 
                 var diskConfig;
                 if (diskSpeed !== '0k') {

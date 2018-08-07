@@ -11,15 +11,15 @@ angular.module('rainierApp')
     .controller('StorageSystemVolumesAddCtrl', function ($scope, $routeParams, $timeout, $window, $filter,
                                                          orchestratorService, diskSizeService, viewModelService,
                                                          volumeService, synchronousTranslateService, paginationService,
-                                                         objectTransformService, ShareDataService, createVolumeService) {
+                                                         objectTransformService, ShareDataService, createVolumeService,
+                                                         volumeCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
         var autoSelectedPoolId = ShareDataService.pop('autoSelectedPoolId');
         var noVirtualizeKey = synchronousTranslateService.translate('no-virtualize');
 
         var isMyVSM = function (vsm) {
-            return _.chain(vsm.physicalStorageSystems)
-                .map(function(storage) { return storage.storageSystemId; })
+            return _.chain(vsm.physicalStorageSystemIds)
                 .include(storageSystemId)
                 .value();
         };
@@ -97,10 +97,17 @@ angular.module('rainierApp')
             };
 
             $scope.dataModel.createModel = createModel;
+
+            var validLabelInfo = volumeCapabilitiesService.getValidVolumeLabelInfo(
+                $scope.dataModel.selectedStorageSystem.model,
+                $scope.dataModel.selectedStorageSystem.firmwareVersion);
+
             $scope.dataModel.validLabel = function(volumeGroup) {
-                volumeGroup.labelIsValid = volumeService.validateCombinedLabel(volumeGroup.label, volumeGroup.suffix, volumeGroup.noOfVolumes);
+                volumeGroup.labelIsValid = volumeService.validateCombinedLabel(
+                    volumeGroup.label, volumeGroup.suffix, volumeGroup.noOfVolumes, validLabelInfo.pattern);
             };
 
+            $scope.dataModel.invalidVolLabelMessageKey = validLabelInfo.errMessageKey;
         });
 
         var subscriptionUpdateModel = viewModelService.newSubscriptionUpdateModel();

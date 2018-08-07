@@ -3,7 +3,8 @@
     <h3>RAID Type<span class="read-only" type="text">{{ dataModel.search.raid || 'ALL'}}</span></h3>
 </div>
 <div class="btn-group-toggle" role="group">
-    <label class="btn btn-primary btn-block" ng-repeat="raid in dataModel.raidConfig" ng-model="dataModel.search.raid" btn-radio="'{{raid}}'" uncheckable> {{raid}}
+    <label class="btn btn-primary btn-block" ng-repeat="raid in dataModel.raidConfig" ng-model="dataModel.search.raid"
+           btn-radio="'{{raid}}'" uncheckable> {{raid}}
     </label>
 </div>
 <!--Control group: Disk type Input-->
@@ -13,27 +14,34 @@
     </h3>
 </div>
 <div class="btn-group-toggle" role="group">
-    <label class="btn btn-primary btn-block" ng-repeat="disk in dataModel.diskConfig" ng-model="dataModel.search.disk" btn-radio="'{{disk.conf}}'" uncheckable> {{disk.conf}}
+    <label class="btn btn-primary btn-block" ng-repeat="disk in dataModel.diskConfig" ng-model="dataModel.search.disk"
+           btn-radio="'{{disk.conf}}'" uncheckable> {{disk.conf}}
     </label>
 </div>
 <!--Control group: Total capacity of Parity Group Input-->
 <div class="control-group">
     <h3>{{'parity-group-total-capacity' | translate}}<span class="read-only">
-                        {{dataModel.search.totalCapacity.min}} - {{dataModel.search.totalCapacity.max}} {{dataModel.search.totalCapacity.unit}}</span>
+        {{dataModel.search.totalCapacity.min}} - {{dataModel.search.totalCapacity.max}} {{dataModel.search.totalCapacity.unit}}
+    </span>
     </h3>
-    <div id="parity-group-capacity-range" class="slider-range range-slider-control" two-knob-slider="" slider-min="dataModel.search.totalCapacity.min" slider-max="dataModel.search.totalCapacity.max" ng-model-min="dataModel.search.totalCapacity.min" ng-model-max="dataModel.search.totalCapacity.max">
+    <div id="parity-group-capacity-range" class="slider-range range-slider-control" two-knob-slider=""
+         slider-min="dataModel.search.totalCapacity.min" slider-max="dataModel.search.totalCapacity.max"
+         ng-model-min="dataModel.search.totalCapacity.min" ng-model-max="dataModel.search.totalCapacity.max">
     </div>
     <div class="btn-group btn-group-toggle btn-group-justified">
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'GB'">GB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'GiB'">
+                {{ 'common-gib' | translate }}
             </button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'TB'">TB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'TiB'">
+                {{ 'common-tib' | translate }}
             </button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'PB'">PB
+            <button type="button" class="btn btn-default" ng-model="dataModel.search.totalCapacity.unit" btn-radio="'PiB'">
+                {{ 'common-pib' | translate }}
             </button>
         </div>
     </div>

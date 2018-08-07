@@ -9,7 +9,8 @@
  */
 angular.module('rainierApp')
     .factory('diskSizeService', function () {
-        var units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        var units = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+        var unitsForPhysical = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
         var speed = 0;
         return {
             getDisplaySize: function (bytes) {
@@ -18,7 +19,7 @@ angular.module('rainierApp')
                     return {
                         size: 0,
                         value: 0,
-                        unit: 'GB'
+                        unit: 'GiB'
                     };
                 }
 
@@ -33,6 +34,27 @@ angular.module('rainierApp')
                 };
 
             },
+            getDisplayPhysicalSize: function (bytes) {
+                bytes = parseInt(bytes);
+                if (isNaN(bytes) || bytes === 0) {
+                    return {
+                        size: 0,
+                        value: 0,
+                        unit: 'GB'
+                    };
+                }
+
+
+                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1000)));
+                var updatedSize = (bytes / Math.pow(1000, i)).toFixed(2);
+                var unit = unitsForPhysical[i];
+                return {
+                    value: bytes,
+                    size: updatedSize,
+                    unit: unit
+                };
+
+            },
             createDisplaySize: function (size, unit) {
                 var i = _.findIndex(units, function (u) {
                     return u === unit;
@@ -40,6 +62,15 @@ angular.module('rainierApp')
 
                 var bytes = size * Math.pow(1024, i);
                 return this.getDisplaySize(bytes);
+            },
+
+            createDisplayPhysicalSize: function (size, unit) {
+                var i = _.findIndex(unitsForPhysical, function (u) {
+                    return u === unit;
+                });
+
+                var bytes = size * Math.pow(1000, i);
+                return this.getDisplayPhysicalSize(bytes);
             },
 
             getDisplaySpeed: function (rawSpeed) {

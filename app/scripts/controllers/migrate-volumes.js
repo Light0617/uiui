@@ -289,16 +289,8 @@ angular.module('rainierApp')
                 $scope.filterModel = {
                     filter: {
                         freeText: '',
-                        freeCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        },
-                        totalCapacity: {
-                            min: 0,
-                            max: 1000,
-                            unit: 'PB'
-                        }
+                        freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
+                        totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION()
                     },
                     poolTypeHtiDisabled: true,
                     ddmNotAvailable: true,
