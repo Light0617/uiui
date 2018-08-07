@@ -481,6 +481,7 @@
     "parity-groups-summary-manage-disk-type": "Disk Type",
     "parity-groups-summary-manage-parity-groups": "Parity Groups",
     "parity-groups-summary-manage-total-capacity": "Total Capacity",
+    "parity-groups-summary-manage-total-capacity-tooltip": "Total available capacity of Parity Groups to which the disk belongs",
     "parity-groups-summary-manage-available-spares": "Available Spares",
     "parity-groups-summary-available-disks": "Available Disks",
     "parity-group-add-invalid-tooltip": "Enter a number between 0 and ",
