@@ -23,14 +23,9 @@ angular.module('rainierApp')
 
                 function validateNumber(value) {
                     var range = $scope.dataModel.placeholder.split(' to ');
-
                     var validNumber = true;
 
-                    if(value === '') {
-                        validNumber = true;
-                    }
-
-                    else if(value >= Number(range[0]) && value <= Number(range[1])) {
+                    if(value === '' || (value >= Number(range[0]) && value <= Number(range[1]))) {
                         validNumber = true;
                     }
                     else {
@@ -38,7 +33,6 @@ angular.module('rainierApp')
                     }
 
                     ngModel.$setValidity('number', validNumber);
-
                     return value;
                 }
 

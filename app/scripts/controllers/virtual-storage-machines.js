@@ -117,7 +117,7 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
 
                 $scope.dataModel.addAction = function () {
-                    $location.path(['virtual-storage-machines', 'add'].join('/'));
+                    $location.path(['virtual-storage-machines/add']);
                 };
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');

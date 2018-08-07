@@ -23,6 +23,7 @@ angular.module('rainierApp')
                                            objectTransformService,
                                            synchronousTranslateService,
                                            scrollDataSourceBuilderServiceNew,
+                                           scrollDataSourceBuilderService,
                                            $location,
                                            diskSizeService,
                                            paginationService,
@@ -120,9 +121,9 @@ angular.module('rainierApp')
 
                 $scope.dataModel.VirtualModelCandidates = constantService.virtualModelOptions();
 
-                _.extend($scope.dataModel, dataModel);
+                scrollDataSourceBuilderService.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
 
-                scrollDataSourceBuilderServiceNew.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
+                _.extend($scope.dataModel, dataModel);
 
                 var updateResultTotalCounts = function (result) {
                     $scope.dataModel.nextToken = result.nextToken;

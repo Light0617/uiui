@@ -1,27 +1,25 @@
 <div class="fieldset">
-    <fieldset ng-disabled="!dataModel.getSelectedItems().length>0">
+    <fieldset ng-if="dataModel.getSelectedItems().length>0">
         <form name="dataModel.validationForm">
 
             <!-- Select same model/serial number of existing storage -->
-            <!--TODO: replace <br> with css or a existing class-->
             <div class="label-value-container">
-                <label class="label" for="same-model-selection">Intend to use the same model/serial <br>number of existing
-                    storage?</label>
+                <label class="label" for="same-model-selection">Intend to use the same model/serial number of<br>existing storage?</label>
             </div>
             <div id="same-model-selection" class="btn-group btn-group-justified" data-toggle="buttons">
                 <label class="btn btn-primary btn-dark" ng-model="dataModel.sameModelSelection"
                        btn-radio="true">
-                    <input autocomplete="off" checked="" type="radio"/>Yes
+                    <input autocomplete="off" checked="" type="radio"/>{{'select-yes' | translate}}
                 </label>
                 <label class="btn btn-primary btn-dark" ng-model="dataModel.sameModelSelection"
                        btn-radio="false">
-                    <input autocomplete="off" checked="" type="radio"/>No
+                    <input autocomplete="off" checked="" type="radio"/>{{'select-no' | translate}}
                 </label>
             </div>
 
             <!-- Virtual Model -->
             <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
-                <label class="label">Virtual Model</label>
+                <label class="label">{{'virtual-model' | translate}}</label>
                 <select class="form-control"
                         ng-model="dataModel.selectedVirtualModel"
                         ng-options="m for m in dataModel.VirtualModelCandidates"
@@ -31,7 +29,7 @@
 
             <!-- Virtual Serial Number -->
             <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
-                <label class="label">Virtual Serial Number</label>
+                <label class="label">{{'virtual-serial-number' | translate}}</label>
                 <input class="form-control"
                        name="serialNumber"
                        placeholder="{{'The range is between: '+ dataModel.placeholder}}"
@@ -44,7 +42,7 @@
 
             <!-- Storage System -->
             <div class="label-value-container" ng-if="dataModel.sameModelSelection">
-                <label class="label">Storage System</label>
+                <label class="label">{{'storage-system' | translate}}</label>
                 <select class="form-control"
                         ng-model="dataModel.useExistingStorage"
                         ng-options="m.storageSystemId for m in dataModel.getSelectedItems()"
