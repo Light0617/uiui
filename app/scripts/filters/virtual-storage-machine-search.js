@@ -16,11 +16,11 @@ angular.module('rainierApp')
             }
             var array = _.filter(input, function (item) {
                 var storageSystemId = item.storageSystemId.toString().indexOf(search.freeText) > -1;
-                var virtualStorageMachineId = item.virtualStorageMachineId !== null ?
+                var virtualStorageMachineId = item.virtualStorageMachineId === null ? false :
                     item.virtualStorageMachineId.toString().toLowerCase().indexOf(
-                        search.freeText.toString().toLowerCase()) > -1 : false;
-                var model = item.model !== null ? item.model.toString().toLowerCase().indexOf(
-                    search.freeText.toString().toLowerCase()) > -1 : false;
+                        search.freeText.toString().toLowerCase()) > -1;
+                var model = item.model === null ? false : item.model.toString().toLowerCase().indexOf(
+                    search.freeText.toString().toLowerCase()) > -1;
                 return storageSystemId || model || virtualStorageMachineId;
 
             });
