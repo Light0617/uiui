@@ -86,8 +86,8 @@ angular.module('rainierApp')
                                 $scope.dataModel.sort.reverse = false;
                             }
 
-                            paginationService.getQuery(GET_VOLUMES_IN_VSM_PATH, objectTransformService.transformVolume,
-                                storageSystemId).then(function (result) {
+                            paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume,
+                                physicalStorageSystemId).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });
