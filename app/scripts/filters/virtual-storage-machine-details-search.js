@@ -23,9 +23,11 @@ angular.module('rainierApp')
             }
             var array = _.filter(input, function (item) {
                 var id = item.storageSystemId === null ? false : (item.storageSystemId.toString().indexOf(search.freeText) > -1);
-                var name = item.storageSystemName === null ? false : (item.storageSystemName.toString().indexOf(search.freeText) > -1);
+                var name = item.storageSystemName !== null ? item.storageSystemName.toString().toLowerCase().indexOf(
+                    search.freeText.toString().toLowerCase()) > -1 : false;
                 var ip = item.svpIpAddress === null ? false : (item.svpIpAddress.toString().indexOf(search.freeText) > -1);
-                var model = item.model === null ? false : (item.model.toString().indexOf(search.freeText) > -1);
+                var model = item.model !== null ? item.model.toString().toLowerCase().indexOf(
+                    search.freeText.toString().toLowerCase()) > -1 : false;
                 return id || name || ip || model;
 
             });
