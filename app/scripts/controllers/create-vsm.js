@@ -128,11 +128,11 @@ angular.module('rainierApp')
                         canGoNext: function () {
                             var virtualSerialNumberCheck = _.isUndefined (dataModel.validationForm.$error.number) ?
                                 true : !dataModel.validationForm.$error.number;
-                            return (
+                            return(
                                 !_.isUndefined(dataModel.serialNumber) &&
                                 !_.isUndefined(dataModel.selectedVirtualModel) &&
-                                dataModel.getSelectedItems().length > 0) &&
-                                virtualSerialNumberCheck;
+                                dataModel.getSelectedItems().length > 0 &&
+                                virtualSerialNumberCheck);
                         },
                         next: function () {
                             addPhysicalStorageSystemsToSelected();
@@ -141,8 +141,12 @@ angular.module('rainierApp')
                                     _.map(dataModel.getSelectedItems(), function (selected) {
                                         return selected.storageSystemId;
                                     }), dataModel.serialNumber)
-                                    .then(initAddVolumesToVsm())
-                                    .then(dataModel.goNext)
+                                    .then(function () {
+                                        initAddVolumesToVsm();
+                                    })
+                                    .then(function () {
+                                        return dataModel.goNext();
+                                    })
                                     .catch(createVsmService.openErrorDialog);
                             }
                             else {
@@ -329,6 +333,5 @@ angular.module('rainierApp')
         };
 
         initCommon();
-
     });
 
