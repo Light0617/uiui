@@ -46,7 +46,7 @@ rainierAppMock.factory('physicalStorageSystemInVsmMock', function (mockUtils) {
         return {
             'definedVolumeCount': 22,
             'undefinedVolumeCount': 12,
-            'hostGroup': [
+            'hostGroups': [
                 {
                 'definedCount': 11,
                 'undefinedCount': 3,

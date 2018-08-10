@@ -678,6 +678,14 @@ angular
                 controller: 'PhysicalStorageSystemInVsmCtrl',
                 helpContext: 'R_VSM_INVENTORY'
             })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/physical-storage-systems/:physicalStorageSystemId/summary', {
+                templateUrl: 'views/inventory-templates/physical-storage-system-summary-table.html',
+                controller: 'PhysicalStorageSystemInVsmCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'physical-storage-system-summary'
+                },
+                helpContext: 'R_VSM_INVENTORY'
+            })
             .when('/fabric-switches/add', {
                 templateUrl: 'views/fabric-switch-add.html',
                 controller: 'FabricSwitchAddCtrl',

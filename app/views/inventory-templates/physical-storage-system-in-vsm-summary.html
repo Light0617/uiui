@@ -1,0 +1,25 @@
+<div class="summary-container-default stage flex-row" id="top-info" ng-if="summaryModel">
+    <!--display volume counts-->
+
+    <div class="half center-content">
+        <span class="icon icon-volume icon-xlg"></span>
+        <h1>{{'common-storage-system-volumes' | translate}}</h1>
+        </br>
+        <h2>{{'physical-storage-system-summary-defined' | translate}} : {{summaryModel.volume.defined}}</h2>
+        <h2>{{'physical-storage-system-summary-undefined' | translate}} : {{summaryModel.volume.undefined}}</h2>
+    </div>
+    <!--display host group counts-->
+    <div class="half center-content">
+        <span class="icon icon-share icon-xlg"></span>
+        <h1>{{'host-volume-list-host-group' | translate}}</h1>
+        </br>
+        <h2>{{'physical-storage-system-summary-port' | translate}} : {{summaryModel.hostGroup.length}}</h2>
+        <p>
+            <a href="#/virtual-storage-machines/{{summaryModel.virtualStorageMachineId}}/physical-storage-systems/{{summaryModel.physicalStorageSystemId}}/summary"
+               title="{{'physical-storage-system-detail' | translate}}">
+                View more details >
+            </a>
+        </p>
+    </div>
+
+</div>

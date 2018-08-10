@@ -29,6 +29,11 @@ angular.module('rainierApp')
             addDefinedVolumeToVsm: function(virtualStorageMachineId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('add-existing-volumes').post(payload));
             },
+            physicalStorageSystemSummaryInVsm: function(virtualStorageMachineId, physicalStorageSystemId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('physical-storage-systems', physicalStorageSystemId).one('summary').get().then(function (result) {
+                    return result;
+                }));
+            },
             deletePhysicalStorageSystemFromVsm: function(virtualStorageMachineId, physicalStorageSystemId){
                 return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines',
                     virtualStorageMachineId).one('physical-storage-systems', physicalStorageSystemId).remove());
