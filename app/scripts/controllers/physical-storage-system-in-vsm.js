@@ -85,8 +85,9 @@ angular.module('rainierApp')
                                 queryService.setSort(f, false);
                                 $scope.dataModel.sort.reverse = false;
                             }
-                            paginationService.getQuery(GET_VOLUMES_IN_VSM_PATH, objectTransformService.transformVolume,
-                                storageSystemId).then(function (result) {
+
+                            paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume,
+                                physicalStorageSystemId).then(function (result) {
                                 updateResultTotalCounts(result);
                             });
                         });
@@ -100,7 +101,6 @@ angular.module('rainierApp')
             return paginationService.get(null, GET_VOLUMES_IN_VSM_PATH, objectTransformService.transformVolume, true,
                 physicalStorageSystemId).then(function (result) {
                 paginationService.clearQuery();
-
                 setVsmFilter();
                 $scope.filterModel = setFilterModel();
                 $scope.dataModel = setDataModel();
@@ -189,7 +189,7 @@ angular.module('rainierApp')
                     queryObjects.push(new paginationService.QueryObject('label',
                         new paginationService.SearchType().STRING, value));
                     paginationService.setTextSearch(queryObjects);
-                    paginationService.getQuery(GET_VOLUMES_IN_VSM_PATH, objectTransformService.transformVolume,
+                    paginationService.getQuery(GET_VOLUMES_PATH, objectTransformService.transformVolume,
                         physicalStorageSystemId).then(function (result) {
                         updateResultTotalCounts(result);
                     });

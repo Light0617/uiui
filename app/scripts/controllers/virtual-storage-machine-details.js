@@ -39,7 +39,7 @@ angular.module('rainierApp')
                 $timeout(function () {
                     if ($scope.dataModel.sort.field === f) {
                         queryService.setSort(f, !$scope.dataModel.sort.reverse);
-                        $scope.dataModel.sort.reverse = true;
+                        $scope.dataModel.sort.reverse = !$scope.dataModel.sort.reverse;
                     } else {
                         $scope.dataModel.sort.field = f;
                         queryService.setSort(f, false);
@@ -53,6 +53,7 @@ angular.module('rainierApp')
         };
 
         var getResources = function () {
+            queryService.clearQueryMap();
             return paginationService.get(
                 null, getStorageSystemPath(), objectTransformService.transformVSMStorageSystems
             );
@@ -63,7 +64,7 @@ angular.module('rainierApp')
                 {
                     title: 'storage-systems-serial-number',
                     sizeClass: 'sixth',
-                    sortFiled: 'storageSystemId',
+                    sortField: 'storageSystemId',
                     getDisplayValue: function (item) {
                         return item.storageSystemId;
                     },

@@ -58,7 +58,7 @@ angular.module('rainierApp')
                     {
                         title: synchronousTranslateService.translate('storage-systems-model'),
                         sizeClass: 'sixth',
-                        sortField: 'productModel',
+                        sortField: 'model',
                         getDisplayValue: function (item) {
                             return item.model;
                         }
@@ -82,17 +82,6 @@ angular.module('rainierApp')
                         _.forEach(dataModel.getSelectedItems(), function (item) {
                             item.actions.delete.onClick(orchestratorService);
                         });
-                    }
-                },
-                {
-                    icon: 'icon-edit',
-                    tooltip: 'action-tooltip-edit',
-                    type: 'link',
-                    enabled: function () {
-                        return dataModel.onlyOneSelected();
-                    },
-                    onClick: function () {
-                        //TODO
                     }
                 },
                 {

@@ -69,7 +69,7 @@ angular.module('rainierApp')
         var hasAttached = function(selectedVolumes) {
             return _.some(selectedVolumes, function (vol) {
                 return vol.isAttached() || vol.isUnmanaged();
-            })
+            });
         };
 
         var enableToShred = function (volume) {
