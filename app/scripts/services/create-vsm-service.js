@@ -72,9 +72,40 @@ angular.module('rainierApp').factory('createVsmService', function (
         return $q.resolve(true);
     };
 
+    var createPayload = function (selected) {
+        var physicalStorageSystems = [];
+        selected.addVolumesToVsm.forEach(function (vol) {
+            var hgs = _.filter(selected.addHostGroupsToVsm, function (hg) {
+                return hg.storageSystemId === vol.storageSystemIds;
+            });
+
+            var hostGroups = [];
+
+            hgs.forEach(function (hg) {
+                hostGroups.push({
+                    portId: hg.storagePortId,
+                    number: hg.numberOfHostGroups
+                });
+            });
+
+            physicalStorageSystems.push({
+                storageSystemId: vol.storageSystemIds,
+                numberOfVolumes: vol.numberOfVolumes,
+                hostGroups: hostGroups
+            });
+        });
+        var payload = {
+            storageSystemId: selected.serialNumber,
+            model: selected.selectedVirtualModel,
+            physicalStorageSystems: physicalStorageSystems
+        };
+        return payload;
+    };
+
     return {
         vsmModelRange: vsmModelRange,
         openErrorDialog: openErrorDialog,
-        checkVirtualSerialNumber: checkVirtualSerialNumber
+        checkVirtualSerialNumber: checkVirtualSerialNumber,
+        createPayload: createPayload
     };
 });

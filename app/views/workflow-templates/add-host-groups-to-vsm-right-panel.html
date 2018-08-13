@@ -38,12 +38,11 @@
         <fieldset class="fieldset label-value-container">
             <label for="number-host-groups" class="label">{{'number-of-host-groups' | translate}}</label>
             <input id="number-host-groups" class="form-control" placeholder="eg. 100" type="number" min="0" max="256"
-                   ng-model="dataModel.numberOfHostGroups"
-                   ng-change="dataModel.updateAddedHostGroups()"/>
+                   ng-model="dataModel.numberOfHostGroups"/>
         </fieldset>
 
     </div>
-    <div class="tile control-tile add-button-hack" ng-click="dataModel.addedHostGroups.add()">
+    <div class="tile control-tile add-button-hack" ng-click="dataModel.add()">
         <div class="tile-button add-resource">
             <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
                 <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 ">

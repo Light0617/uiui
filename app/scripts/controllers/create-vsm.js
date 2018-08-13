@@ -40,10 +40,12 @@ angular.module('rainierApp')
                                                                     'addVolumesToVsm',
                                                                     'addHostGroupsToVsm']);
             $scope.selected = {
+                displayList: [],
                 sameModelSelection: false,
                 serialNumber: undefined,
                 selectedVirtualModel: undefined,
                 useExistingStorage: undefined,
+                numberOfVolumes: [],
                 addVolumesToVsm: [],
                 addHostGroupsToVsm: []
             };
@@ -57,7 +59,7 @@ angular.module('rainierApp')
         var initAddPhysicalStorageSystemView = function () {
             var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
 
-            paginationService.getAllPromises(null,
+            return paginationService.getAllPromises(null,
                                              GET_STORAGE_SYSTEM_PATH,
                                              true,
                                              null,
@@ -66,7 +68,7 @@ angular.module('rainierApp')
                 var storageSystems = result;
                 var hasFileUsageBar = false;
 
-                var dataModel = {
+                var storageModel = {
                     sameModelSelection: false,
                     serialNumber: undefined,
                     selectedVirtualModel: undefined,
@@ -115,9 +117,10 @@ angular.module('rainierApp')
 
                 scrollDataSourceBuilderService.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
 
-                _.extend($scope.dataModel, dataModel);
+                _.extend($scope.dataModel, storageModel);
 
                 var addPhysicalStorageSystemsToSelected = function () {
+                    $scope.selected.displayList = $scope.dataModel.displayList;
                     $scope.selected.sameModelSelection = $scope.dataModel.sameModelSelection;
                     $scope.selected.selectedVirtualModel = $scope.dataModel.selectedVirtualModel;
                     $scope.selected.serialNumber = $scope.dataModel.serialNumber;
@@ -156,7 +159,6 @@ angular.module('rainierApp')
                         }
                     };
                 };
-
                 $scope.footModel = storageFooter($scope.dataModel);
             });
 
@@ -176,9 +178,10 @@ angular.module('rainierApp')
             _.extend($scope.dataModel, volumeModel);
 
             var addVolumesToSelected = function () {
-                _.each(volumeModel.numberOfVolumes, function (val, i) {
+                $scope.selected.numberOfVolumes = $scope.dataModel.numberOfVolumes;
+                _.each($scope.dataModel.numberOfVolumes, function (val, i) {
                     var element = {
-                        storageSystemIds: volumeModel.storageSystemId[i].storageSystemId,
+                        storageSystemIds: $scope.dataModel.storageSystemId[i].storageSystemId,
                         numberOfVolumes: val
                     };
                     $scope.selected.addVolumesToVsm.push(element);
@@ -192,12 +195,19 @@ angular.module('rainierApp')
                     });
             };
 
+            var recoverAddPhysicalStorageSystemView = function () {
+                _.extend($scope.dataModel.displayList, $scope.selected.displayList);
+                $scope.dataModel.selectedVirtualModel = $scope.selected.selectedVirtualModel;
+                $scope.dataModel.serialNumber = $scope.selected.serialNumber;
+                return true;
+            };
+
             var volumeFooter = function (dataModel) {
                 return {
                     canGoNext: function () {
-                        return volumeModel.numberOfVolumes.length ===  volumeModel.selectedItems.length &&
-                            !_.contains(volumeModel.numberOfVolumes, null) &&
-                            _.every(volumeModel.numberOfVolumes, function (num) {
+                        return $scope.dataModel.numberOfVolumes.length ===  $scope.dataModel.selectedItems.length &&
+                            !_.contains($scope.dataModel.numberOfVolumes, null) &&
+                            _.every($scope.dataModel.numberOfVolumes, function (num) {
                                 return num >= 0 && num <=65000;
                             });
                     },
@@ -208,12 +218,14 @@ angular.module('rainierApp')
                         dataModel.goNext();
                     },
                     previous: function () {
-                        initAddPhysicalStorageSystemView();
-                        dataModel.goBack();
+                        initAddPhysicalStorageSystemView()
+                            .then(recoverAddPhysicalStorageSystemView)
+                            .then(function () {
+                                return dataModel.goBack();
+                            });
                     }
                 };
             };
-
             $scope.footModel = volumeFooter($scope.dataModel);
         };
 
@@ -225,6 +237,20 @@ angular.module('rainierApp')
          var initAddHostGroupToVsm = function () {
             var hostGroupModel = {
                 subTitle: 'Add Host Group From Each Storage System',
+                hostGroups: [],
+                add: function () {
+                    var storageSystemId = $scope.dataModel.getSelectedItems()[0].storageSystemId;
+                    var storagePortId = $scope.dataModel.getPorts[0].storagePortId;
+                    var numberOfHostGroups = $scope.dataModel.numberOfHostGroups;
+                    $scope.dataModel.hostGroups.push({
+                        storageSystemId: storageSystemId,
+                        storagePortId: storagePortId,
+                        numberOfHostGroups: numberOfHostGroups
+                    });
+                },
+                remove: function (index) {
+                    $scope.dataModel.hostGroups.splice(index, 1);
+                },
                 setStorageSystems: function (ss) {
                     var getSelectedItems = $scope.dataModel.getSelectedItems();
                     var index = _.indexOf(getSelectedItems, ss);
@@ -234,13 +260,10 @@ angular.module('rainierApp')
                     $scope.dataModel.getSelectedItems = function () {
                         return getSelectedItems;
                     };
-
                     orchestratorService.storagePorts(ss.storageSystemId).then(function (result) {
                         $scope.dataModel.getPorts = result.resources;
                     });
-
                 },
-
                 setStoragePort: function (sp) {
                     var getPorts = $scope.dataModel.getPorts;
                     var index = _.indexOf(getPorts, sp);
@@ -248,82 +271,33 @@ angular.module('rainierApp')
                     getPorts.splice(index, 1);
                     getPorts.unshift(selectedPort);
                     $scope.dataModel.getPorts = getPorts;
-                },
-
-                updateAddedHostGroups: function () {
-                    var addedHostGroups = {
-                        hostGroups: [],
-                        add: function () {
-                            var storageSystemId = $scope.dataModel.getSelectedItems()[0].storageSystemId;
-                            var storagePortId = $scope.dataModel.getPorts[0].storagePortId;
-                            var numberOfHostGroups = $scope.dataModel.numberOfHostGroups;
-                            addedHostGroups.hostGroups.push({
-                                storageSystemId: storageSystemId,
-                                storagePortId: storagePortId,
-                                numberOfHostGroups: numberOfHostGroups
-                            });
-                        },
-                        remove: function (index) {
-                            $scope.dataModel.addedHostGroups.hostGroups.splice(index, 1);
-                        }
-                    };
-                    if(_.isUndefined($scope.dataModel.addedHostGroups)) {
-                        $scope.dataModel.addedHostGroups = addedHostGroups;
-                    }
-                    else {
-                        var curHGs = $scope.dataModel.addedHostGroups.hostGroups;
-                        $scope.dataModel.addedHostGroups.hostGroups = curHGs.concat(addedHostGroups.hostGroups);
-                    }
-                },
-
+                }
             };
 
             _.extend($scope.dataModel, hostGroupModel);
 
             var addHostGroupsToSelected = function () {
-                $scope.selected.addHostGroupsToVsm = $scope.dataModel.addedHostGroups.hostGroups;
+                $scope.selected.addHostGroupsToVsm = $scope.dataModel.hostGroups;
             };
 
-            var createPayload = function () {
-                var physicalStorageSystems = [];
-                $scope.selected.addVolumesToVsm.forEach(function (vol) {
-                    var hgs = _.filter($scope.selected.addHostGroupsToVsm, function (hg) {
-                        return hg.storageSystemId === vol.storageSystemIds;
-                    });
-
-                    hgs.forEach(function (hg) {
-                        physicalStorageSystems.push({
-                            storageSystemId: vol.storageSystemIds,
-                            numberOfVolumes: vol.numberOfVolumes,
-                            hostGroups: [{
-                                portId: hg.storagePortId,
-                                number: hg.numberOfHostGroups
-                            }]
-                        });
-                    });
-
-                });
-                var payload = {
-                    storageSystemId: $scope.selected.serialNumber,
-                    model: $scope.selected.selectedVirtualModel,
-                    physicalStorageSystems: physicalStorageSystems
-                };
-                return payload;
+            var recoverAddVolumesToVsm = function () {
+                $scope.dataModel.numberOfVolumes = $scope.selected.numberOfVolumes;
+                $scope.selected.addVolumesToVsm = [];
             };
 
             var hostGroupFooter = function (dataModel) {
                 return {
                     canSubmit: function () {
-                        return !_.isUndefined($scope.dataModel.addedHostGroups) &&
-                            $scope.dataModel.addedHostGroups.hostGroups.length > 0;
+                        return $scope.dataModel.hostGroups.length > 0;
                     },
                     submit: function () {
                         addHostGroupsToSelected();
-                        var payload = createPayload();
+                        var payload = createVsmService.createPayload($scope.selected);
                         orchestratorService.createVirtualStorageMachine(payload);
                     },
                     previous: function () {
                         initAddVolumesToVsm();
+                        recoverAddVolumesToVsm();
                         dataModel.goBack();
                     }
                 };

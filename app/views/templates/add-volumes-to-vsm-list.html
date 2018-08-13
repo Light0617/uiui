@@ -17,7 +17,7 @@
     </div>
 
     <!--data-->
-    <div class="tile row row-tile active" ng-repeat="hostGroup in dataModel.addedHostGroups.hostGroups">
+    <div class="tile row row-tile active" ng-repeat="hostGroup in dataModel.hostGroups">
 
         <!--storage system-->
         <div class="col-lg-3 col-md-3 col-sm-3 cell control">
@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-lg-3 col-md-3 col-sm-3 cell control">
-            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="dataModel.addedHostGroups.remove($index)"></button>
+            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="dataModel.remove($index)"></button>
         </div>
 
     </div>
