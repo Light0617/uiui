@@ -22,7 +22,7 @@ angular.module('rainierApp')
         scrollDataSourceBuilderService, rainierQueryService, scrollDataSourceBuilderServiceNew,
         synchronousTranslateService, orchestratorService, replicationService, inventorySettingsService,
         resourceTrackerService, volumeService, virtualizeVolumeService, utilService, $modal, $q,
-        storageSystemVolumeService, attachVolumeService) {
+        storageSystemVolumeService, attachVolumeService, externalVolumesAddService) {
 
         var physicalStorageSystemId = $routeParams.physicalStorageSystemId;
         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
@@ -233,6 +233,8 @@ angular.module('rainierApp')
                     summaryModel.title = '';
 
                     $scope.summaryModel = summaryModel;
+            }).catch(function (e) {
+                externalVolumesAddService.openErrorDialog(e);
             });
         };
 
