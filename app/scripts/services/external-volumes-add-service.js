@@ -18,7 +18,7 @@
 angular.module('rainierApp').factory('externalVolumesAddService', function (
     $q, $modal, $window, synchronousTranslateService, storagePortsService, storageSystemCapabilitiesService,
     paginationService, orchestratorService, objectTransformService, scrollDataSourceBuilderServiceNew,
-    constantService, attachVolumeService, queryService, utilService
+    constantService, attachVolumeService, queryService, utilService, errorHandlerService
 ) {
 
     /**
@@ -42,24 +42,7 @@ angular.module('rainierApp').factory('externalVolumesAddService', function (
         } else if (!_.isString(messageKey) && messageKey.data && messageKey.data.message) {
             messageKey = messageKey.data.message;
         }
-        var modalInstance = $modal.open({
-            templateUrl: 'views/templates/error-modal.html',
-            windowClass: 'modal fade confirmation',
-            backdropClass: 'modal-backdrop',
-            controller: function ($scope) {
-                $scope.error = {
-                    title: synchronousTranslateService.translate('error-message-title'),
-                    message: synchronousTranslateService.translate(messageKey)
-                };
-                $scope.cancel = function () {
-                    modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
-                };
-
-                modalInstance.result.finally(function () {
-                    modalInstance.dismiss(synchronousTranslateService.translate('common-label-cancel'));
-                });
-            }
-        });
+        errorHandlerService.openErrorDialog(messageKey);
     };
 
     var openConfirmationDialog = function (message) {
