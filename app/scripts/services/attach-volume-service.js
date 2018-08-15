@@ -16,6 +16,7 @@ angular.module('rainierApp')
         var idCoordinates = {};
         var endPointServerIdMap = {};
         var hostModeOptionAutoSelect = 999;
+        var noVsmId = synchronousTranslateService.translate('nothing-selected');
 
         function setPortCoordinates(storagePorts, idCoordinates) {
             _.each(storagePorts, function(port, i){
@@ -276,7 +277,8 @@ angular.module('rainierApp')
                 hostModeOptions: hostModeOptions,
                 volumes: volumes,
                 enableZoning: dataModel.attachModel.enableZoning,
-                enableLunUnification: dataModel.attachModel.enableLunUnification
+                enableLunUnification: dataModel.attachModel.enableLunUnification,
+                virtualStorageMachineId: dataModel.vsm === noVsmId ? undefined : dataModel.vsm
             };
 
             if (dataModel.attachModel.hostMode !== autoSelect) {
@@ -596,6 +598,7 @@ angular.module('rainierApp')
             setPortCoordiantes: setPortCoordinates,
             setSourcePortCoordinates: setSourcePortCoordinates,
             openAttachMultipleVsmErrorModal: openAttachMultipleVsmErrorModal,
-            isMultipleVsm: isMultipleVsm
+            isMultipleVsm: isMultipleVsm,
+            noVsmId: noVsmId
         };
     });
