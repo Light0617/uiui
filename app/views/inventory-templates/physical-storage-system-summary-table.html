@@ -1,0 +1,34 @@
+<common-page-header></common-page-header>
+<application-stage>
+    <page-title>
+
+    </page-title>
+    <div class="summary-container-default" id="top-info" ng-if="dataModel">
+        <div class="table-responsive two-thirds">
+            <h2>Host Group Detail</h2>
+
+            <table class="table table-bordered" data-sort-name="totalCapacity">
+                <thead>
+                <tr>
+                    <th data-field="defined" data-align="center" data-sortable="true">
+                        {{'physical-storage-system-summary-defined' | translate}}<span class="caret" ng-show=""></span>
+                    </th>
+                    <th data-field="undefined" data-sortable="true">
+                        {{'physical-storage-system-summary-undefined' | translate}}<span class="caret" ng-show=""></span>
+                    </th>
+                    <th data-field="info" data-sortable="true">
+                        {{'host-volume-list-port' | translate}}<span class="caret" ng-show=""></span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in summaryModel.hostGroup">
+                    <td>{{item.defined}}</td>
+                    <td>{{item.undefined}}</td>
+                    <td>{{item.port}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</application-stage>

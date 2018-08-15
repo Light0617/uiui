@@ -22,7 +22,7 @@ angular.module('rainierApp')
         scrollDataSourceBuilderService, rainierQueryService, scrollDataSourceBuilderServiceNew,
         synchronousTranslateService, orchestratorService, replicationService, inventorySettingsService,
         resourceTrackerService, volumeService, virtualizeVolumeService, utilService, $modal, $q,
-        storageSystemVolumeService, attachVolumeService) {
+        storageSystemVolumeService, attachVolumeService, externalVolumesAddService) {
 
         var physicalStorageSystemId = $routeParams.physicalStorageSystemId;
         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
@@ -207,7 +207,39 @@ angular.module('rainierApp')
             };
         };
 
+        var getPhysicalStorageSystemSummary = function () {
+            return orchestratorService.physicalStorageSystemSummaryInVsm(virtualStorageMachineId,
+                physicalStorageSystemId).then(function(result){
+                    var summaryModel = {
+                        volume : {
+                            defined: result.definedVolumeCount,
+                            undefined: result.undefinedVolumeCount
+                        },
+                        hostGroup : []
+                    };
+
+                    _.each(result.hostGroups, function(h){
+                        var item = {
+                            defined: h.definedCount,
+                            undefined: h.undefinedCount,
+                            port: h.storagePortId
+                        };
+                        summaryModel.hostGroup.push(item);
+                    });
+
+                    summaryModel.virtualStorageMachineId = virtualStorageMachineId;
+                    summaryModel.physicalStorageSystemId = physicalStorageSystemId;
+
+                    summaryModel.title = '';
+
+                    $scope.summaryModel = summaryModel;
+            }).catch(function (e) {
+                externalVolumesAddService.openErrorDialog(e);
+            });
+        };
+
         initModels();
         getVolumeInventory();
+        getPhysicalStorageSystemSummary();
 
     });
