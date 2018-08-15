@@ -33,7 +33,7 @@ describe('Service: objectTransformService tests', function () {
         });
 
         it('returns empty value if the undefined value specified.', function () {
-            expect(objectTransformService.transformVolumeId()).toBe('');
+            expect(objectTransformService.transformVolumeId()).toBe('undefined');
         });
 
         it('returns empty value if the specified value is not able to parse as int.', function () {

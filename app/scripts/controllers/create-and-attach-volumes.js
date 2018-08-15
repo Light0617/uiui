@@ -16,13 +16,15 @@
  * Controller of the rainierApp
  */
 angular.module('rainierApp')
-    .controller('CreateAndAttachVolumesCtrl', function ($scope, orchestratorService, viewModelService, ShareDataService,
-                                                        paginationService, queryService, objectTransformService,
-                                                        cronStringConverterService, attachVolumeService, replicationService,
-                                                        volumeService, constantService, storageSystemCapabilitiesService,
-                                                        synchronousTranslateService, $location, $timeout,
-                                                        editChapService, validatePortTypeService, $q, $modal,
-                                                        createVolumeService, volumeCapabilitiesService) {
+    .controller('CreateAndAttachVolumesCtrl', function (
+        $scope, orchestratorService, viewModelService, ShareDataService,
+        paginationService, queryService, objectTransformService,
+        cronStringConverterService, attachVolumeService, replicationService,
+        volumeService, constantService, storageSystemCapabilitiesService,
+        synchronousTranslateService, $location, $timeout,
+        editChapService, validatePortTypeService, $q, $modal,
+        createVolumeService, volumeCapabilitiesService, errorHandlerService
+    ) {
 
         var selectedServers = ShareDataService.pop('selectedServers');
         var getPortsPath = 'storage-ports';
@@ -31,17 +33,49 @@ angular.module('rainierApp')
             $location.path('hosts');
         }
 
-        paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
-            var dataModel = viewModelService.newWizardViewModel(['create', 'attach', 'paths', 'protect']);
-            dataModel.storageSystems = [];
-            _.forEach(result, function (storageSystem) {
-                if (storageSystem.accessible) {
-                    dataModel.storageSystems.push(storageSystem);
-                }
+        var getVsmsAndUpdateDataModel = function (dataModel) {
+            return paginationService.getAllPromises(
+                null, 'virtual-storage-machines', true, null,
+                objectTransformService.transformVirtualStorageMachine
+            ).then(function (result) {
+                dataModel.vsms = result;
+                dataModel.virtualStorageMachineIds = [];
+                dataModel.vsm = undefined;
+                return $q.resolve(dataModel);
             });
-            selectInitialStorageSystem(dataModel.storageSystems.concat(), dataModel);
-            dataModel.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
-            dataModel.decimalNumberRegexp = /^[^.]+$/;
+        };
+
+        var getVsmCandidates = function (vsms, selectedStorageSystemId) {
+            var result = _.filter(vsms, function (vsm) {
+                return _.contains(vsm.physicalStorageSystemIds, selectedStorageSystemId);
+            });
+            result.unshift({virtualStorageMachineId: attachVolumeService.noVsmId});
+            return _.map(result, function(vsm) { return vsm.virtualStorageMachineId; });
+        };
+
+        var updateVsmSelection = function (dataModel) {
+            dataModel.virtualStorageMachineIds = getVsmCandidates(dataModel.vsms, dataModel.selectedStorageSystem.storageSystemId);
+            dataModel.vsm = dataModel.virtualStorageMachineIds[0];
+        };
+
+        var selectInitialStorageSystem = function (dataModel) {
+            var storageSystems = dataModel.storageSystems;
+            return getStorageSystemInfo(storageSystems[0], dataModel).then(function (storageSystem) {
+                dataModel.selectedStorageSystem = storageSystem;
+                updateVsmSelection(dataModel);
+                initComplete(dataModel);
+            }, function () {
+                if (storageSystems.length > 1) {
+                    selectInitialStorageSystem(storageSystems.slice(1), dataModel);
+                } else {
+                    initComplete(dataModel);
+                }
+            }).then(function() {
+                return $q.resolve(dataModel);
+            });
+        };
+
+        var initValidLabelFn = function (dataModel) {
             dataModel.validLabel = function(volumeGroup){
                 var validLabelInfo = volumeCapabilitiesService.getValidVolumeLabelInfo(
                     dataModel.selectedStorageSystem.model,
@@ -52,6 +86,19 @@ angular.module('rainierApp')
 
                 dataModel.invalidVolLabelMessageKey = validLabelInfo.errMessageKey;
             };
+            return $q.resolve(dataModel);
+        };
+
+        paginationService.getAllPromises(null, 'storage-systems', true, null, objectTransformService.transformStorageSystem).then(function (result) {
+            var dataModel = viewModelService.newWizardViewModel(['create', 'attach', 'paths', 'protect']);
+            dataModel.storageSystems = [];
+            _.forEach(result, function (storageSystem) {
+                if (storageSystem.accessible) {
+                    dataModel.storageSystems.push(storageSystem);
+                }
+            });
+            dataModel.copyGroupNameRegexp = /^[a-zA-Z0-9_][a-zA-Z0-9-_]*$/;
+            dataModel.decimalNumberRegexp = /^[^.]+$/;
             dataModel.storagePorts = [];
             dataModel.process = function(resources){
                 // Only support for fibre port for now
@@ -66,20 +113,12 @@ angular.module('rainierApp')
                 dataModel.storagePorts = resources;
             };
             dataModel.canSubmit = true;
-        });
-
-        var selectInitialStorageSystem = function (storageSystems, dataModel) {
-            getStorageSystemInfo(storageSystems[0], dataModel).then(function (storageSystem) {
-                dataModel.selectedStorageSystem = storageSystem;
-                initComplete(dataModel);
-            }, function () {
-                if (storageSystems.length > 1) {
-                    selectInitialStorageSystem(storageSystems.slice(1), dataModel);
-                } else {
-                    initComplete(dataModel);
-                }
-            });
-        };
+            return $q.resolve(dataModel);
+        })
+            .then(getVsmsAndUpdateDataModel)
+            .then(selectInitialStorageSystem)
+            .then(initValidLabelFn)
+            .catch(errorHandlerService.openErrorDialog);
 
         var initComplete = function (dataModel) {
             $scope.dataModel = dataModel;
@@ -153,6 +192,8 @@ angular.module('rainierApp')
             if (!selected) {
                 return;
             }
+
+            updateVsmSelection($scope.dataModel);
 
             getStorageSystemInfo(selected, $scope.dataModel).then(null, function () {
                 $scope.dataModel.storagePools = [];

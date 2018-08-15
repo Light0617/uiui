@@ -4,6 +4,7 @@
     "common-last-refresh": "Last Refresh",
     "header-name": "Name",
     "common-information": "Information",
+    "nothing-selected": "Nothing Selected",
 
     "id": "ID",
 
@@ -52,6 +53,7 @@
     "inventoryview-placeholder-search": "Search ",
 
     "common-list-header-details": "Details",
+    "common-api-fetch-error": "Failed to get data.",
 
     "tooltip-configure-parity-groups": "Open the Parity Groups page in Storage Navigator",
     "tooltip-configure-storage-pools": "Open the Pools page in Storage Navigator",
