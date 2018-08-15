@@ -48,7 +48,7 @@ angular.module('rainierApp')
             $scope.dataModel = dataModel;
             return orchestratorService.virtualStorageMachines();
         }).then(function (vsms) {
-            if(virtualStorageMachineId == null) {
+            if(virtualStorageMachineId === null) {
                 $scope.dataModel.virtualStorageMachineIds = _.chain(vsms.resources)
                     .filter(function (vsm) {
                         return vsm.storageSystemId !== storageSystemId;
