@@ -41,7 +41,7 @@ angular.module('rainierApp')
                 selectedStorageSystem: storageSystem,
                 storageSystemSelectable: selectable,
                 autoSelectedPoolId: autoSelectedPoolId,
-                vsm: noVirtualizeKey,
+                vsm: _.isUndefined(virtualStorageMachineId) || _.isNull(virtualStorageMachineId) ? noVirtualizeKey : virtualStorageMachineId,
                 virtualStorageMachineId: virtualStorageMachineId
             };
 
