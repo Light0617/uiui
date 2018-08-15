@@ -142,6 +142,9 @@ angular.module('rainierApp')
 
             if (options.canAdd) {
                 dataModel.addAction = function () {
+                    if(options.inVsm) {
+                        ShareDataService.push('virtualStorageMachineId', dataModel.virtualStorageMachineId);
+                    }
                     $location.path(['storage-systems', dataModel.storageSystemId, 'volumes', 'add'].join('/'));
                 };
                 dataModel.addPoolDetailsClickAction = function(storagePoolId) {

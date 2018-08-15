@@ -15,13 +15,19 @@
         <p class="value">{{item[0].percentage}}% ({{item[0].capacity.size}} {{item[0].capacity.unit}})</p>
     </div>
 
-    <div class="label-value-container" ng-if="dataModel.virtualStorageMachineIds.length > 1">
+    <div class="label-value-container" ng-if="dataModel.virtualStorageMachineIds.length > 1 &&
+    dataModel.virtualStorageMachineId == null">
         <label class="label">{{ 'common-virtual-storage-machine' | translate }}</label>
         <select class="form-control"
                 ng-model="dataModel.vsm"
                 ng-options="id for id in dataModel.virtualStorageMachineIds"
         >
         </select>
+    </div>
+
+    <div class="label-value-container" ng-if="dataModel.virtualStorageMachineId">
+        <p class="label">{{ 'common-virtual-storage-machine' | translate }}</p>
+        <p class="value">{{dataModel.virtualStorageMachineId}}</p>
     </div>
 
     <div class="data-viz-container">
