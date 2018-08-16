@@ -67,6 +67,7 @@ angular.module('rainierApp')
                 title: title,
                 view: 'tile',
                 storageSystemId: physicalStorageSystemId,
+                virtualStorageMachineId: virtualStorageMachineId,
                 nextToken: '',
                 total: '',
                 currentPageCount: 0,
@@ -107,7 +108,7 @@ angular.module('rainierApp')
 
                 updateResultTotalCounts(result);
 
-                inventorySettingsService.setVolumesGridSettings($scope.dataModel);
+                inventorySettingsService.setVolumesGridSettings($scope.dataModel, {inVsm: true});
                 scrollDataSourceBuilderServiceNew.setupDataLoader($scope, result.resources, 'storageSystemVolumesSearch');
             });
         };

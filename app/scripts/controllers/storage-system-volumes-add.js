@@ -17,6 +17,7 @@ angular.module('rainierApp')
         var GET_STORAGE_SYSTEMS_PATH = 'storage-systems';
         var autoSelectedPoolId = ShareDataService.pop('autoSelectedPoolId');
         var noVirtualizeKey = synchronousTranslateService.translate('no-virtualize');
+        var virtualStorageMachineId = ShareDataService.pop('virtualStorageMachineId');
 
         var isMyVSM = function (vsm) {
             return _.chain(vsm.physicalStorageSystemIds)
@@ -40,18 +41,25 @@ angular.module('rainierApp')
                 selectedStorageSystem: storageSystem,
                 storageSystemSelectable: selectable,
                 autoSelectedPoolId: autoSelectedPoolId,
-                vsm: noVirtualizeKey
+                vsm: _.isUndefined(virtualStorageMachineId) || _.isNull(virtualStorageMachineId) ? noVirtualizeKey : virtualStorageMachineId,
+                virtualStorageMachineId: virtualStorageMachineId
             };
 
             $scope.dataModel = dataModel;
             return orchestratorService.virtualStorageMachines();
         }).then(function (vsms) {
-            $scope.dataModel.virtualStorageMachineIds = _.chain(vsms.resources)
-                .filter(function(vsm) { return vsm.storageSystemId !== storageSystemId; })
-                .filter(isMyVSM)
-                .map(function(vsm) { return vsm.virtualStorageMachineId; })
-                .value();
-            $scope.dataModel.virtualStorageMachineIds.unshift(noVirtualizeKey);
+            if(_.isUndefined(virtualStorageMachineId) || _.isNull(virtualStorageMachineId)) {
+                $scope.dataModel.virtualStorageMachineIds = _.chain(vsms.resources)
+                    .filter(function (vsm) {
+                        return vsm.storageSystemId !== storageSystemId;
+                    })
+                    .filter(isMyVSM)
+                    .map(function (vsm) {
+                        return vsm.virtualStorageMachineId;
+                    })
+                    .value();
+                $scope.dataModel.virtualStorageMachineIds.unshift(noVirtualizeKey);
+            }
         });
 
         $scope.$watch('dataModel.selectedStorageSystem', function (selectedStorageSystem) {
