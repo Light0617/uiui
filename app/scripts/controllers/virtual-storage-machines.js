@@ -25,6 +25,7 @@ angular.module('rainierApp')
 
             var dataModel = {
                 title: 'Virtual storage machines',
+                onlyOperation: false,
                 view: 'tile',
                 total: virtualStorageMachines.length,
 
@@ -102,8 +103,11 @@ angular.module('rainierApp')
             dataModel.getActions = function () {
                 return actions;
             };
-
             $scope.dataModel = dataModel;
+
+                $scope.dataModel.addAction = function () {
+                    $location.path(['virtual-storage-machines/add']);
+                };
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');
         }

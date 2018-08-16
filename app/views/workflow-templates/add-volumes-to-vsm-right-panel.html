@@ -1,0 +1,21 @@
+<div class="tile-view list-view">
+    <div class="tile row row-tile column-headers">
+        <div class="col-md-6 col-sm-6 col-xs-6 cell"><p>{{'storage-system-id' | translate}}</p></div>
+        <div class="col-md-6 col-sm-6 col-xs-6 cell"><p>{{'number-of-volumes' | translate}}</p></div>
+
+    </div>
+    <form name="validationForm.rightPanel" novalidate>
+        <div class="tile row row-tile removable disabled" ng-repeat="ss in dataModel.selectedItems">
+
+            <div class="col-md-6 col-sm-6 col-xs-6 cell control">
+                <input type="text" disabled="true" class="form-control" ng-model="ss.storageSystemId">
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6 cell control validation-form">
+                <input type="number" min="0" ng-max="65000"
+                       class="form-valid" ng-model="dataModel.numberOfVolumes[$index]" placeholder="eg. 100" >
+            </div>
+
+        </div>
+    </form>
+</div>

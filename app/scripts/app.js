@@ -644,6 +644,23 @@ angular
                 },
                 helpContext: 'C_CREATE_PARITY_GROUPS'
             })
+            .when('/virtual-storage-machines', {
+                templateUrl: 'views/virtual-storage-machines.html',
+                controller: 'VirtualStorageMachinesCtrl',
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: 'R_VSM_INVENTORY'
+            })
+            .when('/virtual-storage-machines/add',{
+                templateUrl: 'views/create-vsm.html',
+                controller: 'CreateVsmCtrl',
+                // TODO: add info for labelKey, helpContext
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: ''
+            })
             .when('/virtual-storage-machines/:virtualStorageMachineId/add-existing-volumes', {
                 templateUrl: 'views/add-defined-vols-to-vsm.html',
                 controller: 'AddDefinedVolsToVsmCtrl',

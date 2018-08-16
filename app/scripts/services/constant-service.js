@@ -48,6 +48,9 @@ angular.module('rainierApp')
             hostModeOptions: function () {
                 return [999, 2, 6, 7, 12, 13, 14, 15, 22, 23, 25, 33, 39, 40, 41, 43, 49, 50, 51, 54, 60, 63, 67, 68, 71, 72, 73, 78, 80, 81, 82, 83, 96, 97, 100, 102];
             },
+            virtualModelOptions: function () {
+              return ['VSP_F900','VSP_G900','VSP_F700','VSP_G700','VSP_F370','VSP_G370','VSP_F350','VSP_G350','VSP_F400_F600_AND_VSP_G400_G600','VSP_G200','HUS_VM','VSP_F1500_AND_VSP_G1000_G1500','VSP','USP_VM','USP_V','NSC','USP'];
+            },
             isR800Series: isR800SeriesFunc,
             isRaidSeries: isRaidSeriesFunc,
             previrtualizeJobStatus: previrtualizeJobStatus,

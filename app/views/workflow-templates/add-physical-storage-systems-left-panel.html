@@ -1,0 +1,55 @@
+<div class="fieldset">
+    <fieldset>
+        <form name="dataModel.validationForm">
+            <div ng-if="dataModel.getSelectedItems().length>0">
+                <!-- Select same model/serial number of existing storage -->
+                <div class="label-value-container">
+                    <label class="label" for="same-model-selection">Intend to use the same model/serial number of<br>existing storage?</label>
+                </div>
+                <div id="same-model-selection" class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary btn-dark" ng-model="dataModel.sameModelSelection"
+                           btn-radio="true">
+                        <input autocomplete="off" checked="" type="radio"/>{{'select-yes' | translate}}
+                    </label>
+                    <label class="btn btn-primary btn-dark" ng-model="dataModel.sameModelSelection"
+                           btn-radio="false">
+                        <input autocomplete="off" checked="" type="radio"/>{{'select-no' | translate}}
+                    </label>
+                </div>
+
+                <!-- Virtual Model -->
+                <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
+                    <label class="label">{{'virtual-model' | translate}}</label>
+                    <select class="form-control"
+                            ng-model="dataModel.selectedVirtualModel"
+                            ng-options="m for m in dataModel.VirtualModelCandidates"
+                            ng-change="dataModel.updateSelectedVirtualModel()">
+                    </select>
+                </div>
+
+                <!-- Virtual Serial Number -->
+                <div class="label-value-container" ng-if="!dataModel.sameModelSelection">
+                    <label class="label">{{'virtual-serial-number' | translate}}</label>
+                    <input class="form-control"
+                           name="serialNumber"
+                           placeholder="{{'The range is between: '+ dataModel.placeholder}}"
+                           ng-model="dataModel.serialNumber"
+                           validate-serial-number required>
+                    </input>
+                    <p ng-show="dataModel.validationForm.$error.number"
+                       class="validation-text">{{'vsm-invalid-number' | translate }}</p>
+                </div>
+
+                <!-- Storage System -->
+                <div class="label-value-container" ng-if="dataModel.sameModelSelection">
+                    <label class="label">{{'storage-system' | translate}}</label>
+                    <select class="form-control"
+                            ng-model="dataModel.useExistingStorage"
+                            ng-options="m.storageSystemId for m in dataModel.getSelectedItems()"
+                            ng-change="dataModel.updateSelectedStorageSystem()">
+                    </select>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+</div>
