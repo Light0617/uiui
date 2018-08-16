@@ -96,7 +96,7 @@ angular.module('rainierApp')
 
                 if (componentType === 'disk') {
                     _.forEach(alerts, function (alert) {
-                        alert.diskSpec.capacity = diskSizeService.getDisplaySize(alert.diskSpec.capacity);
+                        alert.diskSpec.capacity = diskSizeService.getDisplayPhysicalSize(alert.diskSpec.capacity);
                     });
                 }
 
