@@ -400,6 +400,7 @@
     "add-physical-storage-systems": "Add Physical Storage Systems",
     "add-volumes-to-vsm": "Add Volumes to VSM",
     "add-host-groups-to-vsm": "Add Host Groups to VSM",
+    "same-serial-number-error-message": "The serial number can`t be the same as one of the selected storage system ids",
     "storage-systems": "STORAGE SYSTEMS",
     "port-id": "PORT ID",
     "number-of-host-groups": "NUMBER OF HOST GROUPS",
