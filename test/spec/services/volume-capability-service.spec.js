@@ -22,7 +22,7 @@ describe('Service: volumeCapabilitiesService tests', function () {
     describe('getValidVolumeLabelInfo', function () {
         it('returns new label pattern when HM850 SVOS 8.3.', function () {
             expect(volumeCapabilitiesService.getValidVolumeLabelInfo('VSP G350', '88-03-00-20/00'))
-                .toBe({
+                .toEqual({
                     pattern: /^[ a-zA-Z0-9_.@\-\\!#$%&'()+,/:=\[\]^`{}~]+$/,
                     errMessageKey: 'invalid-volume-label-for-hm850-svos8.3'
                 });
@@ -30,7 +30,7 @@ describe('Service: volumeCapabilitiesService tests', function () {
 
         it('returns old label pattern when HM850 SVOS 8.2.', function () {
             expect(volumeCapabilitiesService.getValidVolumeLabelInfo('VSP G350', '88-02-00-20/00'))
-                .toBe({
+                .toEqual({
                     pattern: /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+$)/,
                     errMessageKey: 'invalid-volume-label'
                 });
@@ -38,7 +38,7 @@ describe('Service: volumeCapabilitiesService tests', function () {
 
         it('returns old lable pattern when HM800.', function () {
             expect(volumeCapabilitiesService.getValidVolumeLabelInfo('VSP G700', '83-05-20-20/00'))
-                .toBe({
+                .toEqual({
                     pattern: /^[a-zA-Z0-9_.@]([a-zA-Z0-9-_.@]*$|[ a-zA-Z0-9-_.@]*[a-zA-Z0-9-_.@]+$)/,
                     errMessageKey: 'invalid-volume-label'
                 });
