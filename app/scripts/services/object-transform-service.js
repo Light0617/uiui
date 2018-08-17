@@ -172,7 +172,7 @@ angular.module('rainierApp')
             }
 
             if (constantService.isHM850Series(item.model)) {
-                result.push(storageAdvisorEmbeddedSessionService.getLaunchUrl(item.storageSystemId));
+                result.push(storageAdvisorEmbeddedSessionService.getHsaeLaunchAction(item.storageSystemId));
                 if (!hasSvpIpAddress) {
                     result.push(switchAccessPointService.getLink(item, orchestratorService));
                 }

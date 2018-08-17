@@ -264,7 +264,7 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
-            storageAdvisorEmbeddedUrl: function (storageSystemId) {
+            storageAdvisorEmbeddedAccessResource: function (storageSystemId) {
                 return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('storage-systems', storageSystemId).one('storage-advisor-emb-resource')
                     .get().then(function (result) {
                         return result;
