@@ -656,8 +656,11 @@
     "resource-tracker-error-message": "One or more requested resources are being worked on by currently running Jobs. Do you want to proceed?",
 
     "hsae-session-modal-error": "Storage Advisor Embedded is not accessible. Please verify network connectivity.",
-    "hsae-session-html-error": "Storage Advisor Embedded is not accessible. Please close this page and verify network connectivity.",
     "hsae-session-loading": "Loading Storage Advisor Embedded...",
+    "hsae-session-authenticate-error-for-modal": "Failed to authenticate the username and password of the storage system. Please verify and update username and password of the storage system.",
+    "hsae-session-authenticate-error-for-html": "Failed to authenticate the username and password of the storage system. Please close this page and verify and update username and password of the storage system.",
+    "hsae-session-unexpected-error-for-modal": "Storage Advisor Embedded is not accessible. Please verify network connectivity.",
+    "hsae-session-unexpected-error-for-html": "Storage Advisor Embedded is not accessible. Please close this page and verify network connectivity.",
 
     "host-filter-provisioned": "Provisioned",
     "host-filter-not-provisioned": "Not Provisioned",

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('rainierApp')
-    .factory('storageAdvisorEmbeddedSessionService', function ($window, $modal, synchronousTranslateService, modalDialogService) {
+    .factory('storageAdvisorEmbeddedSessionService', function ($window, $modal, synchronousTranslateService,
+                                                               modalDialogService, utilService) {
         return {
-            getLaunchUrl: function (storageSystemId) {
+            getHsaeLaunchAction: function (storageSystemId) {
                 return {
                     type: 'link',
                     title :'storage-system-launch-hsae',
@@ -11,14 +12,24 @@ angular.module('rainierApp')
                         // Open a new tab with empty url
                         var redirectWindow = $window.open('', '_blank');
                         redirectWindow.document.write(synchronousTranslateService.translate('hsae-session-loading'));
-                        orchestratorService.storageAdvisorEmbeddedUrl(storageSystemId).then(function(result){
-                            // Update the url of the opened tab with storage navigator session url
-                            var url = result.launchServletUrl;
-                            redirectWindow.location.href = url;
-                        }, function () {
-                            // Currently always show network error.
-                            redirectWindow.document.body.innerText = synchronousTranslateService.translate('hsae-session-html-error');
-                            modalDialogService.showDialog('', 'hsae-session-modal-error', 'warning');
+
+                        orchestratorService.storageAdvisorEmbeddedAccessResource(storageSystemId).then(function(result){
+                            redirectWindow.location.href = result.launchServletUrl;
+                            if (!utilService.isNullOrUndef(result.username) && !utilService.isNullOrUndef(result.token)) {
+                                redirectWindow.name =
+                                    '{"username": "' + result.username + '", "token": "' + result.token  + '"}';
+                            }
+                        }, function (error) {
+                            if (error.status === 403) {
+                                redirectWindow.document.body.innerText = synchronousTranslateService.translate(
+                                    'hsae-session-authenticate-error-for-html');
+                                modalDialogService.showDialog('',
+                                    'hsae-session-authenticate-error-for-modal', 'warning');
+                            } else {
+                                redirectWindow.document.body.innerText = synchronousTranslateService.translate(
+                                    'hsae-session-unexpected-error-for-html');
+                                modalDialogService.showDialog('', 'hsae-session-unexpected-error-for-modal', 'warning');
+                            }
                         });
                     }
                 };
