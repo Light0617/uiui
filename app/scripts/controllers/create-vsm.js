@@ -39,7 +39,7 @@ angular.module('rainierApp')
             $scope.dataModel = viewModelService.newWizardViewModel(['addPhysicalStorageSystems',
                                                                     'addVolumesToVsm',
                                                                     'addHostGroupsToVsm']);
-            $scope.selected = {
+            $scope.dataModel.selected = {
                 displayList: [],
                 sameModelSelection: false,
                 serialNumber: undefined,
@@ -49,7 +49,6 @@ angular.module('rainierApp')
                 addVolumesToVsm: [],
                 addHostGroupsToVsm: []
             };
-
             initAddPhysicalStorageSystemView();
         };
 
@@ -70,20 +69,13 @@ angular.module('rainierApp')
                 scrollDataSourceBuilderService.setupDataLoader($scope, storageSystems, 'storageSystemSearch');
                 _.extend($scope.dataModel, storageModel);
 
-                var addPhysicalStorageSystemsToSelected = function () {
-                    $scope.selected.displayList = $scope.dataModel.displayList;
-                    $scope.selected.sameModelSelection = $scope.dataModel.sameModelSelection;
-                    $scope.selected.selectedVirtualModel = $scope.dataModel.selectedVirtualModel;
-                    $scope.selected.serialNumber = $scope.dataModel.serialNumber;
-                };
-
                 var storageFooter = function (dataModel) {
                     return {
                         canGoNext: function () {
                             return createVsmService.storageFooterCanGoNext(dataModel);
                         },
                         next: function () {
-                            addPhysicalStorageSystemsToSelected();
+                            createVsmService.addPhysicalStorageSystemsToSelected($scope.dataModel);
                             if(!dataModel.sameModelSelection) {
                                 createVsmService.checkVirtualSerialNumber(_.map(dataModel.getSelectedItems(),
                                                                                 function (selected) {
@@ -112,12 +104,7 @@ angular.module('rainierApp')
          * 2. Add Volumes to VSM
          */
         var initAddVolumesToVsm = function () {
-            var volumeModel = {
-                subTitle: 'Add Volumes From Each Storage System',
-                selectedItems: $scope.dataModel.getSelectedItems(),
-                storageSystemId: $scope.dataModel.getSelectedItems(),
-                numberOfVolumes: []
-            };
+            var volumeModel = createVsmService.setupVolumeModel($scope.dataModel);
             _.extend($scope.dataModel, volumeModel);
 
             var setupGetPorts = function () {
@@ -127,24 +114,6 @@ angular.module('rainierApp')
                     });
             };
 
-            var addVolumesToSelected = function () {
-                $scope.selected.numberOfVolumes = $scope.dataModel.numberOfVolumes;
-                _.each($scope.dataModel.numberOfVolumes, function (val, i) {
-                    var element = {
-                        storageSystemIds: $scope.dataModel.storageSystemId[i].storageSystemId,
-                        numberOfVolumes: val
-                    };
-                    $scope.selected.addVolumesToVsm.push(element);
-                });
-            };
-
-            var recoverAddPhysicalStorageSystemView = function () {
-                _.extend($scope.dataModel.displayList, $scope.selected.displayList);
-                $scope.dataModel.selectedVirtualModel = $scope.selected.selectedVirtualModel;
-                $scope.dataModel.serialNumber = $scope.selected.serialNumber;
-                return true;
-            };
-
             var volumeFooter = function (dataModel) {
                 return {
                     canGoNext: function () {
@@ -152,7 +121,7 @@ angular.module('rainierApp')
                     },
                     next: function () {
                         try {
-                            addVolumesToSelected();
+                            createVsmService.addVolumesToSelected($scope.dataModel);
                             setupGetPorts();
                             initAddHostGroupToVsm();
                             dataModel.goNext();
@@ -162,7 +131,7 @@ angular.module('rainierApp')
                     },
                     previous: function () {
                         initAddPhysicalStorageSystemView()
-                            .then(recoverAddPhysicalStorageSystemView)
+                            .then(createVsmService.recoverAddPhysicalStorageSystemView($scope.dataModel))
                             .then(dataModel.goBack)
                             .catch(createVsmService.openErrorDialog);
                     }
@@ -174,19 +143,9 @@ angular.module('rainierApp')
         /**
          * 3. Add Host Groups to VSM
          */
-
          var initAddHostGroupToVsm = function () {
             var hostGroupModel = createVsmService.setupHostGroupModel($scope.dataModel);
             _.extend($scope.dataModel, hostGroupModel);
-
-            var addHostGroupsToSelected = function () {
-                $scope.selected.addHostGroupsToVsm = $scope.dataModel.hostGroups;
-            };
-
-            var recoverAddVolumesToVsm = function () {
-                $scope.dataModel.numberOfVolumes = $scope.selected.numberOfVolumes;
-                $scope.selected.addVolumesToVsm = [];
-            };
 
             var hostGroupFooter = function (dataModel) {
                 return {
@@ -194,15 +153,15 @@ angular.module('rainierApp')
                         return $scope.dataModel.hostGroups.length > 0;
                     },
                     submit: function () {
-                        addHostGroupsToSelected();
-                        var payload = createVsmService.createPayload($scope.selected);
+                        createVsmService.addHostGroupsToSelected($scope.dataModel);
+                        var payload = createVsmService.createPayload($scope.dataModel.selected);
                         console.log('the payload is :', payload);
                         orchestratorService.createVirtualStorageMachine(payload);
                     },
                     previous: function () {
                         try {
                             initAddVolumesToVsm();
-                            recoverAddVolumesToVsm();
+                            createVsmService.recoverAddVolumesToVsm($scope.dataModel);
                             dataModel.goBack();
                         } catch (e) {
                             createVsmService.openErrorDialog();

@@ -142,9 +142,26 @@ angular.module('rainierApp')
                 virtualSerialNumberCheck);
         };
 
+        var addPhysicalStorageSystemsToSelected = function (dataModel) {
+            dataModel.selected.displayList = dataModel.displayList;
+            dataModel.selected.sameModelSelection = dataModel.sameModelSelection;
+            dataModel.selected.selectedVirtualModel = dataModel.selectedVirtualModel;
+            dataModel.selected.serialNumber = dataModel.serialNumber;
+        };
+
         /**
          * 2. Add Volumes to VSM
          */
+        var setupVolumeModel = function (dataModel) {
+            var volumeModel = {
+                subTitle: 'Add Volumes From Each Storage System',
+                selectedItems: dataModel.getSelectedItems(),
+                storageSystemId: dataModel.getSelectedItems(),
+                numberOfVolumes: []
+            };
+            return volumeModel;
+        };
+
         var volumeFooterCanGoNext = function (dataModel) {
             return dataModel.numberOfVolumes.length ===  dataModel.selectedItems.length &&
                 !_.contains(dataModel.numberOfVolumes, null) &&
@@ -153,6 +170,23 @@ angular.module('rainierApp')
                 });
         };
 
+        var addVolumesToSelected = function (dataModel) {
+            dataModel.selected.numberOfVolumes = dataModel.numberOfVolumes;
+            _.each(dataModel.numberOfVolumes, function (val, i) {
+                var element = {
+                    storageSystemIds: dataModel.storageSystemId[i].storageSystemId,
+                    numberOfVolumes: val
+                };
+                dataModel.selected.addVolumesToVsm.push(element);
+            });
+        };
+
+        var recoverAddPhysicalStorageSystemView = function (dataModel) {
+            _.extend(dataModel.displayList, dataModel.selected.displayList);
+            dataModel.selectedVirtualModel = dataModel.selected.selectedVirtualModel;
+            dataModel.serialNumber = dataModel.selected.serialNumber;
+            return true;
+        };
         /**
          * 3. Add Host Groups to VSM
          */
@@ -229,6 +263,15 @@ angular.module('rainierApp')
             return payload;
         };
 
+        var addHostGroupsToSelected = function (dataModel) {
+            dataModel.selected.addHostGroupsToVsm = dataModel.hostGroups;
+        };
+
+        var recoverAddVolumesToVsm = function (dataModel) {
+            dataModel.numberOfVolumes = dataModel.selected.numberOfVolumes;
+            dataModel.selected.addVolumesToVsm = [];
+        };
+
 
         return {
             /**
@@ -242,15 +285,21 @@ angular.module('rainierApp')
             checkVirtualSerialNumber: checkVirtualSerialNumber,
             setupStorageModel: setupStorageModel,
             storageFooterCanGoNext: storageFooterCanGoNext,
+            addPhysicalStorageSystemsToSelected: addPhysicalStorageSystemsToSelected,
             /**
              * 2. Add Volumes to VSM
              */
+            setupVolumeModel: setupVolumeModel,
             volumeFooterCanGoNext: volumeFooterCanGoNext,
+            addVolumesToSelected: addVolumesToSelected,
+            recoverAddPhysicalStorageSystemView: recoverAddPhysicalStorageSystemView,
             /**
              * 3. Add Host Groups to VSM
              */
             setupHostGroupModel: setupHostGroupModel,
-            createPayload: createPayload
+            createPayload: createPayload,
+            addHostGroupsToSelected: addHostGroupsToSelected,
+            recoverAddVolumesToVsm: recoverAddVolumesToVsm
 
         };
     });
