@@ -695,6 +695,15 @@ angular
                 controller: 'PhysicalStorageSystemInVsmCtrl',
                 helpContext: 'R_VSM_INVENTORY'
             })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/add-undefined-resources', {
+                templateUrl: 'views/add-undefined-resources-to-vsm.html',
+                controller: 'AddUndefinedResourcesToVsmCtrl',
+                // TODO: add info for labelKey, helpContext
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: ''
+            })
             .when('/virtual-storage-machines/:virtualStorageMachineId/physical-storage-systems/:physicalStorageSystemId/summary', {
                 templateUrl: 'views/inventory-templates/physical-storage-system-summary-table.html',
                 controller: 'PhysicalStorageSystemInVsmCtrl',
@@ -1060,10 +1069,10 @@ angular
         $locationProvider.html5Mode(false);
 
     }).run(function ($location, authService) {
-        if (!authService.getUser().authenticated) {
-            $location.path('/login');
-        }
-    })
+    if (!authService.getUser().authenticated) {
+        $location.path('/login');
+    }
+})
     .constant('rainerColorRange', [
         '#FAA300',
         '#F9D169',
