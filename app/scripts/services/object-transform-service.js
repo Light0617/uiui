@@ -1645,7 +1645,7 @@ angular.module('rainierApp')
                         model.arrayDataVisualizationModel.tierBreakdown.push({
                             name: tier.tier,
                             percent: 0,
-                            toolTip: '0 GB Used / 0 GB Total'
+                            toolTip: '0 GiB Used / 0 GiB Total'
                         });
                     }
                 });
