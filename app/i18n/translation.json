@@ -409,7 +409,6 @@
     "number-of-host-groups": "NUMBER OF HOST GROUPS",
     "storage-system-id": "STORAGE SYSTEM ID",
     "number-of-volumes": "NUMBER OF VOLUMES",
-    "add-defined-vols-to-vsm": "Add Defined Volumes to VSM",
     "no-virtualize": "No Virtualize",
     "virtual-storage-system-id": "Virtual Storage System Id",
     "virtual-storage-machine-defined-vol-remove-confirmation": "Remove defined volume from VSM confirmation",

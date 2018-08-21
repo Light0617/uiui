@@ -149,7 +149,6 @@ angular.module('rainierApp')
                         addUndefinedResourcesService.addHostGroupsToSelected($scope.dataModel);
                         var payload = addUndefinedResourcesService.createPayload($scope.dataModel);
                         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
-                        console.log('The payload is: ', payload);
                         orchestratorService.addUndefinedResources(virtualStorageMachineId, payload);
                     },
                     previous: function () {

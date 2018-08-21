@@ -98,7 +98,7 @@ angular.module('rainierApp')
                             onClick: function () {
                                 var selectedVsm = _.where(dataModel.displayList, 'selected');
                                 var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
-                                $location.path(['virtual-storage-machines', virtualStorageMachineId, 'add-existing-volumes'].join('/'));
+                                $location.path(['virtual-storage-machines', virtualStorageMachineId, 'move-existing-volumes'].join('/'));
                             }
                         },
                         {

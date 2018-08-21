@@ -661,11 +661,11 @@ angular
                 },
                 helpContext: ''
             })
-            .when('/virtual-storage-machines/:virtualStorageMachineId/add-existing-volumes', {
-                templateUrl: 'views/add-defined-vols-to-vsm.html',
-                controller: 'AddDefinedVolsToVsmCtrl',
+            .when('/virtual-storage-machines/:virtualStorageMachineId/move-existing-volumes', {
+                templateUrl: 'views/move-existing-vols-to-vsm.html',
+                controller: 'MoveExistingVolsToVsmCtrl',
                 breadcrumbOptions: {
-                    labelKey: 'add-defined-vols-to-vsm'
+                    labelKey: 'move-volumes-to-a-VSM'
                 },
                 helpContext: 'R_VSM_INVENTORY'
             })
