@@ -585,7 +585,7 @@
     "parity-group-basic-additional-spares": "Additional Spares Needed",
     "parity-group-basic-raid-type": "RAID Type",
     "parity-group-basic-parity-groups": "Parity Groups",
-    "parity-group-basic-usable-capacity": "Usable Capacity",
+    "parity-group-basic-usable-capacity": "Total Capacity",
     "parity-group-basic-encryption": "Encryption",
     "parity-group-advanced-disk-type": "Disk Type",
     "parity-group-advanced-disk-speed": "Disk Speed",
