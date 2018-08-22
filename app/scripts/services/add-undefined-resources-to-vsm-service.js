@@ -93,7 +93,7 @@ angular.module('rainierApp')
         var setupVolumeModel = function (dataModel) {
             var volumeModel = {
                 subTitle: 'Add Volumes From Each Storage System',
-                volumes: [],
+                volumes: dataModel.selected.addVolumesToVsm,
                 add: function () {
                     var storageSystemId = dataModel.getSelectedItems()[0].storageSystemId;
                     var numberOfVolumes = dataModel.numberOfVolumes;
