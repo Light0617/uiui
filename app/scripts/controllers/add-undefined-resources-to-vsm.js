@@ -41,6 +41,7 @@ angular.module('rainierApp')
                 'addHostGroupsToVsm']);
             $scope.dataModel.selected = {
                 displayList: [],
+                storageSystem:[],
                 addVolumesToVsm: [],
                 addHostGroupsToVsm: []
             };
@@ -138,14 +139,15 @@ angular.module('rainierApp')
             $scope.dataModel.summaryModel = {};
             var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
 
-            _.each($scope.dataModel.selected.displayList, function (ss) {
-                addUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
-                    ss.storageSystemId).then(function (result) {
-                    $scope.dataModel.summaryModel[ss.storageSystemId] = result;
-                })
-            })
+            var promise_queue = _.map($scope.dataModel.selected.storageSystem, function (ss) {
+                    return addUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
+                            ss.storageSystemId).then(function (result) {
+                                $scope.dataModel.summaryModel[ss.storageSystemId] = result;
+                                return result;
+                            });
+            });
 
-            return $q.resolve(true);
+            return $q.all(promise_queue);
         }
 
         /**

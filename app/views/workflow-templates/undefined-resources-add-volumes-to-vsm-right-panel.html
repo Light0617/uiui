@@ -6,13 +6,18 @@
             <div class="dropdown">
                 <button id="storage-systems" class="btn btn-block dropdown-toggle" type="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{dataModel.getSelectedItems()[0].storageSystemId}}
+                    {{dataModel.getSelectedItems()[0].storageSystemId}} (defined:
+                    {{dataModel.summaryModel[dataModel.selected.storageSystem[0].storageSystemId].volume.defined}}  undefined:
+                    {{dataModel.summaryModel[dataModel.selected.storageSystem[0].storageSystemId].volume.undefined}})
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="storage-systems">
                     <li ng-repeat="ss in dataModel.getSelectedItems()">
                         <a ng-click="dataModel.setStorageSystems(ss)">
-                            {{ss.storageSystemId}}</a>
+                            {{ss.storageSystemId}} (defined:
+                            {{dataModel.summaryModel[ss.storageSystemId].volume.defined}}  undefined:
+                            {{dataModel.summaryModel[ss.storageSystemId].volume.undefined}})
+                        </a>
                     </li>
                 </ul>
             </div>

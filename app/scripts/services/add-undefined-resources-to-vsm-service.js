@@ -82,6 +82,9 @@ angular.module('rainierApp')
 
         var addPhysicalStorageSystemsToSelected = function (dataModel) {
             dataModel.selected.displayList = dataModel.displayList;
+            dataModel.selected.storageSystem = _.filter(dataModel.displayList, function(item){
+                return item.selected === true;
+            });
         };
         /**
          * 2. Add Volumes to VSM
