@@ -82,9 +82,10 @@ angular.module('rainierApp')
 
         var addPhysicalStorageSystemsToSelected = function (dataModel) {
             dataModel.selected.displayList = dataModel.displayList;
-            dataModel.selected.storageSystem = _.filter(dataModel.displayList, function(item){
+            dataModel.selected.storageSystems = _.filter(dataModel.displayList, function(item){
                 return item.selected === true;
             });
+            dataModel.selected.storageSystem = dataModel.selected.storageSystems[0];
         };
         /**
          * 2. Add Volumes to VSM
@@ -113,6 +114,7 @@ angular.module('rainierApp')
                     dataModel.getSelectedItems = function () {
                         return getSelectedItems;
                     };
+                    dataModel.selected.storageSystem = ss;
                 }
             };
             return volumeModel;
@@ -137,16 +139,15 @@ angular.module('rainierApp')
                         defined: result.definedVolumeCount,
                         undefined: result.undefinedVolumeCount
                     },
-                    hostGroup : []
+                    hostGroup : {}
                 };
 
                 _.each(result.hostGroups, function(h){
                     var item = {
                         defined: h.definedCount,
                         undefined: h.undefinedCount,
-                        port: h.storagePortId
                     };
-                    summaryModel.hostGroup.push(item);
+                    summaryModel.hostGroup[h.storagePortId] = item;
                 });
 
                 summaryModel.virtualStorageMachineId = virtualStorageMachineId;
@@ -155,8 +156,14 @@ angular.module('rainierApp')
                 summaryModel.title = '';
 
                 return summaryModel;
-            }).catch(function (e) {
-                openErrorDialog(e);
+            }).catch(function () {
+                return {
+                    volume : {
+                        defined: 0,
+                        undefined: 0
+                    },
+                    hostGroup : {}
+                };
             });
         };
 
