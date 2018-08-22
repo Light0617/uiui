@@ -125,6 +125,38 @@ angular.module('rainierApp')
                 dataModel.selected.addVolumesToVsm.push(element);
             });
         };
+
+        var getPhysicalStorageSystemSummary = function (virtualStorageMachineId, physicalStorageSystemId) {
+            return orchestratorService.physicalStorageSystemSummaryInVsm(virtualStorageMachineId,
+                physicalStorageSystemId).then(function(result){
+                var summaryModel = {
+                    volume : {
+                        defined: result.definedVolumeCount,
+                        undefined: result.undefinedVolumeCount
+                    },
+                    hostGroup : []
+                };
+
+                _.each(result.hostGroups, function(h){
+                    var item = {
+                        defined: h.definedCount,
+                        undefined: h.undefinedCount,
+                        port: h.storagePortId
+                    };
+                    summaryModel.hostGroup.push(item);
+                });
+
+                summaryModel.virtualStorageMachineId = virtualStorageMachineId;
+                summaryModel.physicalStorageSystemId = physicalStorageSystemId;
+
+                summaryModel.title = '';
+
+                return summaryModel;
+            }).catch(function (e) {
+                openErrorDialog(e);
+            });
+        };
+
         /**
          * 3. Add Host Groups to VSM
          */
@@ -209,6 +241,7 @@ angular.module('rainierApp')
              * 0. Common
              */
             openErrorDialog: openErrorDialog,
+            getPhysicalStorageSystemSummary: getPhysicalStorageSystemSummary,
             /**
              * 1. Add Physical Storage Systems
              */

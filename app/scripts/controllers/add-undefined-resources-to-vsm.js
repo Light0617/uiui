@@ -29,7 +29,8 @@ angular.module('rainierApp')
                                                             constantService,
                                                             viewModelService,
                                                             $routeParams,
-                                                            addUndefinedResourcesService) {
+                                                            addUndefinedResourcesService,
+                                                            $q) {
         /**
          * 0. Initial process for all pages
          */
@@ -74,13 +75,11 @@ angular.module('rainierApp')
                             return dataModel.getSelectedItems().length > 0;
                         },
                         next: function () {
-                            try{
-                                addUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
-                                initAddVolumesToVsm();
-                                dataModel.goNext();
-                            } catch (e) {
-                                addUndefinedResourcesService.openErrorDialog();
-                            }
+                            addUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
+                            getPhysicalStorageSystemSummary()
+                                .then(initAddVolumesToVsm)
+                                .then($scope.dataModel.goNext)
+                                .catch(addUndefinedResourcesService.openErrorDialog);
                         }
                     };
                 };
@@ -131,7 +130,23 @@ angular.module('rainierApp')
                 };
             };
             $scope.footModel = volumeFooter($scope.dataModel);
+
+            return $q.resolve(true);
         };
+
+        var getPhysicalStorageSystemSummary = function(){
+            $scope.dataModel.summaryModel = {};
+            var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
+
+            _.each($scope.dataModel.selected.displayList, function (ss) {
+                addUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
+                    ss.storageSystemId).then(function (result) {
+                    $scope.dataModel.summaryModel[ss.storageSystemId] = result;
+                })
+            })
+
+            return $q.resolve(true);
+        }
 
         /**
          * 3. Add Host Groups to VSM
