@@ -43,6 +43,7 @@ angular.module('rainierApp')
                 displayList: [],
                 storageSystems:[],
                 storageSystem: null,
+                port: null,
                 addVolumesToVsm: [],
                 addHostGroupsToVsm: []
             };
@@ -100,6 +101,7 @@ angular.module('rainierApp')
                 return orchestratorService.storagePorts($scope.dataModel.getSelectedItems()[0].storageSystemId)
                     .then(function (result) {
                         $scope.dataModel.getPorts = result.resources;
+                        $scope.dataModel.selected.port = $scope.dataModel.getPorts[0];
                     });
             };
 
@@ -183,5 +185,6 @@ angular.module('rainierApp')
             };
             $scope.footModel = hostGroupFooter($scope.dataModel);
         };
+
         initCommon();
     });

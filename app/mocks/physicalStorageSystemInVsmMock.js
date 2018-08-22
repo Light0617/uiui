@@ -48,14 +48,14 @@ rainierAppMock.factory('physicalStorageSystemInVsmMock', function (mockUtils) {
             'undefinedVolumeCount': 12,
             'hostGroups': [
                 {
-                'definedCount': 11,
-                'undefinedCount': 3,
-                'storagePortId': 'CL3-A'
+                    'definedCount': 11,
+                    'undefinedCount': 3,
+                    'storagePortId': 'CL0-B'
                 },
                 {
                     'definedCount': 10,
                     'undefinedCount': 4,
-                    'storagePortId': 'CL7-B'
+                    'storagePortId': 'CL0-A'
                 },
                 {
                     'definedCount': 11,

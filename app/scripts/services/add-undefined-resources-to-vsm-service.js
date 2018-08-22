@@ -106,14 +106,6 @@ angular.module('rainierApp')
                     dataModel.volumes.splice(index, 1);
                 },
                 setStorageSystems: function (ss) {
-                    var getSelectedItems = dataModel.getSelectedItems();
-                    var index = _.indexOf(getSelectedItems, ss);
-                    var selectedStorageSystem = getSelectedItems[index];
-                    getSelectedItems.splice(index, 1);
-                    getSelectedItems.unshift(selectedStorageSystem);
-                    dataModel.getSelectedItems = function () {
-                        return getSelectedItems;
-                    };
                     dataModel.selected.storageSystem = ss;
                 }
             };
@@ -122,6 +114,8 @@ angular.module('rainierApp')
 
         var addVolumesToSelected = function (dataModel) {
             dataModel.selected.addVolumesToVsm = dataModel.volumes;
+            dataModel.selected.storageSystem = dataModel.selected.storageSystems[0];
+
             _.each(dataModel.numberOfVolumes, function (val, i) {
                 var element = {
                     storageSystemId: dataModel.storageSystemId[i].storageSystemId,
@@ -139,7 +133,7 @@ angular.module('rainierApp')
                         defined: result.definedVolumeCount,
                         undefined: result.undefinedVolumeCount
                     },
-                    hostGroup : {}
+                    hostGroups : {}
                 };
 
                 _.each(result.hostGroups, function(h){
@@ -147,7 +141,7 @@ angular.module('rainierApp')
                         defined: h.definedCount,
                         undefined: h.undefinedCount,
                     };
-                    summaryModel.hostGroup[h.storagePortId] = item;
+                    summaryModel.hostGroups[h.storagePortId] = item;
                 });
 
                 summaryModel.virtualStorageMachineId = virtualStorageMachineId;
@@ -162,7 +156,7 @@ angular.module('rainierApp')
                         defined: 0,
                         undefined: 0
                     },
-                    hostGroup : {}
+                    hostGroups : {}
                 };
             });
         };
@@ -188,27 +182,16 @@ angular.module('rainierApp')
                     dataModel.hostGroups.splice(index, 1);
                 },
                 setStorageSystems: function (ss) {
-                    var getSelectedItems = dataModel.getSelectedItems();
-                    var index = _.indexOf(getSelectedItems, ss);
-                    var selectedStorageSystem = getSelectedItems[index];
-                    getSelectedItems.splice(index, 1);
-                    getSelectedItems.unshift(selectedStorageSystem);
-                    dataModel.getSelectedItems = function () {
-                        return getSelectedItems;
-                    };
-
                     orchestratorService.storagePorts(ss.storageSystemId).then(function (result) {
                         dataModel.getPorts = result.resources;
+                        dataModel.selected.port = dataModel.getPorts[0];
                     });
+
+                    dataModel.selected.storageSystem = ss;
 
                 },
                 setStoragePort: function (sp) {
-                    var getPorts = dataModel.getPorts;
-                    var index = _.indexOf(getPorts, sp);
-                    var selectedPort = getPorts[index];
-                    getPorts.splice(index, 1);
-                    getPorts.unshift(selectedPort);
-                    dataModel.getPorts = getPorts;
+                    dataModel.selected.port = sp;
                 }
             };
             return hostGroupModel;
