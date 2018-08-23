@@ -188,9 +188,9 @@ angular.module('rainierApp')
 
         $scope.tabModel = tabModel();
 
-        storagePortsService.storageSystemModel().then(function (result) {
-            $scope.storageSystemModel = result;
-            return storagePortsService.initSummary(hwAlertService);
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            $scope.storageSystemModel = result.model;
+            return storagePortsService.initSummary(hwAlertService, result);
         }).then(function (result) {
             $scope.summaryModel = result;
             var fibre = _.find(result.chartData, function (e) {

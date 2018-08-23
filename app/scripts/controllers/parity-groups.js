@@ -10,7 +10,7 @@
 angular.module('rainierApp')
     .controller('ParityGroupsCtrl', function ($q, $scope, $routeParams, $timeout, orchestratorService,
                                               objectTransformService, synchronousTranslateService, diskSizeService,
-                                              scrollDataSourceBuilderService, storageNavigatorSessionService, $location,
+                                              scrollDataSourceBuilderService, storageNavigatorLaunchActionService, $location,
                                               paginationService, hwAlertService, constantService, parityGroupService,
                                               resourceTrackerService, storageSystemCapabilitiesService) {
         var storageSystemId = $routeParams.storageSystemId;
@@ -18,23 +18,7 @@ angular.module('rainierApp')
         var getParityGroupsPath = 'parity-groups';
         var storageSystem;
 
-        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.PARITY_GROUPS);
-        sn2Action.icon = 'icon-storage-navigator-settings';
-        sn2Action.tooltip = 'tooltip-configure-parity-groups';
-        sn2Action.enabled = function () {
-            return true;
-        };
-
-        var actions = {
-            'SN2': sn2Action
-        };
-
-        $scope.summaryModel = {
-            getActions: function () {
-                return _.map(actions);
-            }
-        };
-
+        $scope.summaryModel = {};
 
         orchestratorService.parityGroupSummary(storageSystemId).then(function(result){
             var pgSumWithConfCountCap = [];
@@ -147,6 +131,14 @@ angular.module('rainierApp')
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             $scope.storageSystemModel = result.model;
             storageSystem = result;
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                storageSystem,
+                constantService.sessionScope.PARITY_GROUPS,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-parity-groups');
+            $scope.summaryModel.getActions = function () {
+                return _.map(summaryModelActions);
+            };
             return paginationService.getAllPromises(null, getParityGroupsPath, true, storageSystemId, objectTransformService.transformParityGroup);
         }).then(function(result) {
             var parityGroups = result;

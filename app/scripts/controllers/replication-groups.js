@@ -14,25 +14,23 @@ angular.module('rainierApp')
                                                    dataProtectionSettingsService, replicationGroupsService,
                                                    scrollDataSourceBuilderServiceNew, ReplicationGroupSInitialResult,
                                                    queryService, paginationService, dpAlertService,
-                                                   storageNavigatorSessionService, constantService, replicationService) {
+                                                   storageNavigatorLaunchActionService, constantService,
+                                                   replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
 
-        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.LOCAL_REPLICATION_GROUPS);
-        sn2Action.icon = 'icon-storage-navigator-settings';
-        sn2Action.tooltip = 'tooltip-configure-replication-groups';
-        sn2Action.enabled = function () {
-            return true;
-        };
+        $scope.summaryModel = {};
 
-        var actions = {
-            'SN2': sn2Action
-        };
-
-        $scope.summaryModel={
-            getActions: function () {
-                return _.map(actions);
-            }
-        };
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                result,
+                constantService.sessionScope.LOCAL_REPLICATION_GROUPS,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-replication-groups');
+            $scope.summaryModel.getActions = function () {
+                return _.map(summaryModelActions);
+            };
+            return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
+        });
 
         orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId).then(function (result) {
             var summaryModel = objectTransformService.transformToBreakdownSummary(result);

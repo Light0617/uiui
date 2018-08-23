@@ -13,7 +13,7 @@ angular.module('rainierApp')
         objectTransformService, orchestratorService, volumeService,
         scrollDataSourceBuilderServiceNew, ShareDataService,
         inventorySettingsService, paginationService, queryService,
-        storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
+        storageSystemVolumeService, dpAlertService, storageNavigatorLaunchActionService,
         constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService,
         migrationTaskService, synchronousTranslateService
     ) {
@@ -33,22 +33,19 @@ angular.module('rainierApp')
             }
         };
 
-        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
-        sn2Action.icon = 'icon-storage-navigator-settings';
-        sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
-        sn2Action.enabled = function () {
-            return true;
-        };
+        $scope.summaryModel = {};
 
-        var actions = {
-            'SN2': sn2Action
-        };
-
-        $scope.summaryModel={
-            getActions: function () {
-                return _.map(actions);
-            },
-        };
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                result,
+                constantService.sessionScope.VOLUMES,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-storage-system-volumes');
+            $scope.summaryModel.getActions = function () {
+                return _.map(summaryModelActions);
+            };
+            return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
+        });
 
         $scope.filterModel = {
             filter: {
