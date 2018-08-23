@@ -1,0 +1,38 @@
+<div class="tile-view list-view">
+
+    <!--header-->
+    <div class="tile row row-tile column-headers">
+        <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs cell">
+            <p title="{{'storage-systems' | translate}}">{{'storage-systems' | translate}}</p>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs cell">
+            <p title="{{'number-of-volumes' | translate}}">{{'number-of-volumes' | translate}}</p>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs cell">
+            <p>&nbsp;</p>
+        </div>
+    </div>
+
+    <!--data-->
+    <div class="tile row row-tile active" ng-repeat="volume in dataModel.volumes">
+
+        <!--storage system-->
+        <div class="col-lg-4 col-md-4 col-sm-4 cell control">
+            <input class="form-control"
+                   ng-model="volume.storageSystemId"
+                   disabled="true">
+            </input>
+        </div>
+
+        <!--number of volumes-->
+        <div class="col-lg-4 col-md-4 col-sm-4 cell control">
+            <input type="number" class="form-control" placeholder="1"  min="0"
+                   ng-model="volume.numberOfVolumes" ng-change="dataModel.validLabel(volumeGroup)">
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 cell control">
+            <button class="btn icon-btn icon-sm icon-delete-item" ng-click="dataModel.remove($index)"></button>
+        </div>
+
+    </div>
+</div>

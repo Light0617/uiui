@@ -20,7 +20,7 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
     var port = function (index) {
         var v = index;
         if (v && v !== 0) {
-            v = _.random(1, 255);
+            v = _.random(1, 10);
         }
         return {
             isVsmPort: _.sample([true, false]),
@@ -127,7 +127,7 @@ rainierAppMock.factory('storagePortsMock', function (mockUtils) {
         return mockUtils.response.ok(mockUtils.singlePageCollectionResponse(storagePorts, 'storagePorts'));
     };
 
-    var storagePorts = _.map(_.range(0, 50), function (index) {
+    var storagePorts = _.map(_.range(1, 50), function (index) {
         var iscsi = _.sample([true, false]);
         if (iscsi) {
             return iscsiPort(index);

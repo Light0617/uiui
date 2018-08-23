@@ -28,7 +28,6 @@ angular.module('rainierApp')
                 onlyOperation: false,
                 view: 'tile',
                 total: virtualStorageMachines.length,
-
                 search: {
                     freeText: ''
                 },
@@ -88,15 +87,30 @@ angular.module('rainierApp')
                 {
                     icon: 'icon-add-volume',
                     tooltip: 'action-tooltip-edit',
-                    type: 'link',
+                    type: 'dropdown',
                     enabled: function () {
                         return dataModel.onlyOneSelected();
                     },
-                    onClick: function () {
-                        var selectedVsm = _.where(dataModel.displayList, 'selected');
-                        var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
-                        $location.path(['virtual-storage-machines', virtualStorageMachineId, 'add-existing-volumes'].join('/'));
-                    }
+                    items: [
+                        {
+                            type: 'link',
+                            title: 'move-volumes-to-a-VSM',
+                            onClick: function () {
+                                var selectedVsm = _.where(dataModel.displayList, 'selected');
+                                var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
+                                $location.path(['virtual-storage-machines', virtualStorageMachineId, 'move-existing-volumes'].join('/'));
+                            }
+                        },
+                        {
+                            type: 'link',
+                            title: 'add-resources-to-a-VSM',
+                            onClick: function () {
+                                var selectedVsm = _.where(dataModel.displayList, 'selected');
+                                var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
+                                $location.path(['virtual-storage-machines', virtualStorageMachineId, 'add-undefined-resources'].join('/'));
+                            }
+                        }
+                    ]
                 }
             ];
 
@@ -105,9 +119,9 @@ angular.module('rainierApp')
             };
             $scope.dataModel = dataModel;
 
-                $scope.dataModel.addAction = function () {
-                    $location.path(['virtual-storage-machines/add']);
-                };
+            $scope.dataModel.addAction = function () {
+                $location.path(['virtual-storage-machines/add']);
+            };
 
             scrollDataSourceBuilderService.setupDataLoader($scope, virtualStorageMachines, 'virtualStorageMachineSearch');
         }

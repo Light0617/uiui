@@ -15,7 +15,7 @@
  * # AddDefinedVolsToVsmCtrl
  * Controller of the rainierApp
  */
-angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
+angular.module('rainierApp').controller('MoveExistingVolsToVsmCtrl', function (
     $scope, $modal, $routeParams, ShareDataService, orchestratorService, constantService,
     scrollDataSourceBuilderServiceNew, viewModelService, synchronousTranslateService, paginationService, queryService,
     objectTransformService, attachVolumeService, replicationService, externalVolumesAddService){
@@ -40,7 +40,7 @@ angular.module('rainierApp').controller('AddDefinedVolsToVsmCtrl', function (
 
     var initView = function () {
         var dataModel = {
-            title: 'Add Defined Volumes to VSM',
+            title: 'move-volumes-to-a-VSM',
             view: 'tile',
             total: 0,
             virtualStorageSystemId: virtualStorageMachineId,

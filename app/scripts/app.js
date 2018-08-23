@@ -661,11 +661,11 @@ angular
                 },
                 helpContext: ''
             })
-            .when('/virtual-storage-machines/:virtualStorageMachineId/add-existing-volumes', {
-                templateUrl: 'views/add-defined-vols-to-vsm.html',
-                controller: 'AddDefinedVolsToVsmCtrl',
+            .when('/virtual-storage-machines/:virtualStorageMachineId/move-existing-volumes', {
+                templateUrl: 'views/move-existing-vols-to-vsm.html',
+                controller: 'MoveExistingVolsToVsmCtrl',
                 breadcrumbOptions: {
-                    labelKey: 'add-defined-vols-to-vsm'
+                    labelKey: 'move-volumes-to-a-VSM'
                 },
                 helpContext: 'R_VSM_INVENTORY'
             })
@@ -694,6 +694,15 @@ angular
                 templateUrl: 'views/physical-storage-system-in-vsm.html',
                 controller: 'PhysicalStorageSystemInVsmCtrl',
                 helpContext: 'R_VSM_INVENTORY'
+            })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/add-undefined-resources', {
+                templateUrl: 'views/add-undefined-resources-to-vsm.html',
+                controller: 'AddUndefinedResourcesToVsmCtrl',
+                // TODO: add info for labelKey, helpContext
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: ''
             })
             .when('/virtual-storage-machines/:virtualStorageMachineId/physical-storage-systems/:physicalStorageSystemId/summary', {
                 templateUrl: 'views/inventory-templates/physical-storage-system-summary-table.html',
@@ -1060,10 +1069,10 @@ angular
         $locationProvider.html5Mode(false);
 
     }).run(function ($location, authService) {
-        if (!authService.getUser().authenticated) {
-            $location.path('/login');
-        }
-    })
+    if (!authService.getUser().authenticated) {
+        $location.path('/login');
+    }
+})
     .constant('rainerColorRange', [
         '#FAA300',
         '#F9D169',
