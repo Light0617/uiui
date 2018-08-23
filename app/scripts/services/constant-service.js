@@ -175,7 +175,7 @@ angular.module('rainierApp')
             CAPACITY_FILTER_DEFAULT_CONDITION: function () {
                 return angular.copy({
                     min: 0,
-                    max: 1000,
+                    max: 1024,
                     unit: 'PiB'
                 });
             }
