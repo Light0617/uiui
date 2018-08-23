@@ -12,7 +12,8 @@ angular.module('rainierApp')
                                                       objectTransformService, orchestratorService, volumeService,
                                                       scrollDataSourceBuilderServiceNew, ShareDataService,
                                                       inventorySettingsService, paginationService, queryService,
-                                                      storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
+                                                      storageSystemVolumeService, dpAlertService,
+                                                      storageNavigatorLaunchActionService,
                                                       constantService, resourceTrackerService, replicationService, attachVolumeService,
                                                       gadVolumeTypeSearchService, migrationTaskService, virtualizeVolumeService, $q, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
@@ -63,42 +64,30 @@ angular.module('rainierApp')
         };
 
         var createSummaryModelActions = function(storageSystem) {
-            var interruptShreddingAction = {
-                icon: 'icon-cancel-volume-shredding',// TODO Change icon
-                title :'interrupt-shredding',
-                tooltip: 'interrupt-shredding',
-                type: 'confirm',
-                confirmTitle: 'interrupt-shredding-confirmation-title',
-                confirmMessage: 'interrupt-shredding-confirmation-message',
-                enabled: function () {
-                    return true;
-                },
-                onClick: function (orchestratorService) {
-                    var payload = {
-                        storageSystemId: storageSystemId
-                    };
-                    orchestratorService.interruptShreddings(payload);
-                }
-            };
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                storageSystem,
+                constantService.sessionScope.VOLUMES,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-storage-system-volumes');
 
-            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
-            if (isSvpLess) {
-                return {
-                    'interrupt-shredding': interruptShreddingAction
+            summaryModelActions['interrupt-shredding'] = {
+                    icon: 'icon-cancel-volume-shredding',// TODO Change icon
+                    title :'interrupt-shredding',
+                    tooltip: 'interrupt-shredding',
+                    type: 'confirm',
+                    confirmTitle: 'interrupt-shredding-confirmation-title',
+                    confirmMessage: 'interrupt-shredding-confirmation-message',
+                    enabled: function () {
+                        return true;
+                    },
+                    onClick: function (orchestratorService) {
+                        var payload = {
+                            storageSystemId: storageSystemId
+                        };
+                        orchestratorService.interruptShreddings(payload);
+                    }
                 };
-            }
-
-            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
-            sn2Action.icon = 'icon-storage-navigator-settings';
-            sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
-            sn2Action.enabled = function () {
-                return true;
-            };
-
-            return {
-                'SN2': sn2Action,
-                'interrupt-shredding': interruptShreddingAction
-            };
+            return summaryModelActions;
         };
 
         orchestratorService.storageSystem(storageSystemId).then(function (result) {

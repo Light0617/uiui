@@ -14,31 +14,18 @@ angular.module('rainierApp')
                                                    dataProtectionSettingsService, replicationGroupsService,
                                                    scrollDataSourceBuilderServiceNew, ReplicationGroupSInitialResult,
                                                    queryService, paginationService, dpAlertService,
-                                                   storageNavigatorSessionService, constantService, replicationService,
-                                                   utilService) {
+                                                   storageNavigatorLaunchActionService, constantService,
+                                                   replicationService) {
         var storageSystemId = $routeParams.storageSystemId;
 
         $scope.summaryModel = {};
 
-        var createSnLaunchAction = function(storageSystem) {
-            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
-            if (isSvpLess) {
-                return {};
-            }
-
-            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.LOCAL_REPLICATION_GROUPS);
-            sn2Action.icon = 'icon-storage-navigator-settings';
-            sn2Action.tooltip = 'tooltip-configure-replication-groups';
-            sn2Action.enabled = function () {
-                return true;
-            };
-            return {
-                'SN2': sn2Action
-            };
-        };
-
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            var summaryModelActions = createSnLaunchAction(result);
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                result,
+                constantService.sessionScope.LOCAL_REPLICATION_GROUPS,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-replication-groups');
             $scope.summaryModel.getActions = function () {
                 return _.map(summaryModelActions);
             };

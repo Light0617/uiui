@@ -13,9 +13,9 @@ angular.module('rainierApp')
         objectTransformService, orchestratorService, volumeService,
         scrollDataSourceBuilderServiceNew, ShareDataService,
         inventorySettingsService, paginationService, queryService,
-        storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
+        storageSystemVolumeService, dpAlertService, storageNavigatorLaunchActionService,
         constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService,
-        migrationTaskService, synchronousTranslateService, utilService
+        migrationTaskService, synchronousTranslateService
     ) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_EXTERNAL_VOLUMES_PATH = 'external-volumes';
@@ -35,25 +35,12 @@ angular.module('rainierApp')
 
         $scope.summaryModel = {};
 
-        var createSnLaunchAction = function(storageSystem) {
-            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
-            if (isSvpLess) {
-                return {};
-            }
-
-            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
-            sn2Action.icon = 'icon-storage-navigator-settings';
-            sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
-            sn2Action.enabled = function () {
-                return true;
-            };
-            return {
-                'SN2': sn2Action
-            };
-        };
-
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
-            var summaryModelActions = createSnLaunchAction(result);
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                result,
+                constantService.sessionScope.VOLUMES,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-storage-system-volumes');
             $scope.summaryModel.getActions = function () {
                 return _.map(summaryModelActions);
             };

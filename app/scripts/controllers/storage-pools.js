@@ -10,8 +10,8 @@
 angular.module('rainierApp')
     .controller('StoragePoolsCtrl', function ($scope, $routeParams, $timeout, $filter, orchestratorService, objectTransformService, synchronousTranslateService,
                                               scrollDataSourceBuilderServiceNew, $location, paginationService, queryService, capacityAlertService,
-                                              storageNavigatorSessionService, constantService, resourceTrackerService,
-                                              inventorySettingsService, utilService) {
+                                              storageNavigatorLaunchActionService, constantService, resourceTrackerService,
+                                              inventorySettingsService) {
         var storageSystemId = $routeParams.storageSystemId;
         var getStoragePoolsPath = 'storage-pools';
 
@@ -35,27 +35,14 @@ angular.module('rainierApp')
             dataModel.usageGraphs = values[2];
         });
 
-        var createSnLaunchAction = function(storageSystem) {
-            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
-            if (isSvpLess) {
-                return {};
-            }
-
-            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.POOLS);
-            sn2Action.icon = 'icon-storage-navigator-settings';
-            sn2Action.tooltip = 'tooltip-configure-storage-pools';
-            sn2Action.enabled = function () {
-                return true;
-            };
-            return {
-                'SN2': sn2Action
-            };
-        };
-
         orchestratorService.storageSystem(storageSystemId).then(function (storageSystem) {
-            var sn2LaunchAction = createSnLaunchAction(storageSystem);
+            var summaryModelActions = storageNavigatorLaunchActionService.createNavigatorLaunchAction(
+                storageSystem,
+                constantService.sessionScope.POOLS,
+                'icon-storage-navigator-settings',
+                'tooltip-configure-storage-pools');
             $scope.summaryModel.getActions = function () {
-                return _.map(sn2LaunchAction);
+                return _.map(summaryModelActions);
             };
             paginationService.get(null, getStoragePoolsPath, objectTransformService.transformPool, true, storageSystemId).then(function (result) {
                 var storagePools = result.resources;
