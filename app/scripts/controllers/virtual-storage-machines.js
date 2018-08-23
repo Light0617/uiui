@@ -111,6 +111,25 @@ angular.module('rainierApp')
                             }
                         }
                     ]
+                },
+                {
+                    icon: 'icon-add-volume',
+                    tooltip: 'action-tooltip-edit',
+                    type: 'dropdown',
+                    enabled: function () {
+                        return dataModel.onlyOneSelected();
+                    },
+                    items: [
+                        {
+                            type: 'link',
+                            title: 'remove-resources-to-a-VSM',
+                            onClick: function () {
+                                var selectedVsm = _.where(dataModel.displayList, 'selected');
+                                var virtualStorageMachineId = selectedVsm[0].virtualStorageMachineId;
+                                $location.path(['virtual-storage-machines', virtualStorageMachineId, 'remove-undefined-resources'].join('/'));
+                            }
+                        }
+                    ]
                 }
             ];
 

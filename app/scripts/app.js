@@ -704,6 +704,15 @@ angular
                 },
                 helpContext: ''
             })
+            .when('/virtual-storage-machines/:virtualStorageMachineId/remove-undefined-resources', {
+                templateUrl: 'views/remove-undefined-resources-to-vsm.html',
+                controller: 'RemoveUndefinedResourcesToVsmCtrl',
+                // TODO: add info for labelKey, helpContext
+                breadcrumbOptions: {
+                    labelKey: 'common-virtual-storage-machines'
+                },
+                helpContext: ''
+            })
             .when('/virtual-storage-machines/:virtualStorageMachineId/physical-storage-systems/:physicalStorageSystemId/summary', {
                 templateUrl: 'views/inventory-templates/physical-storage-system-summary-table.html',
                 controller: 'PhysicalStorageSystemInVsmCtrl',
