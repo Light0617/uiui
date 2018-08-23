@@ -15,8 +15,8 @@ angular.module('rainierApp')
                     synchronousTranslateService.translate('file-systems-database')];
             },
             getUnits: function () {
-                return [synchronousTranslateService.translate('common-gb'),
-                    synchronousTranslateService.translate('common-tb')];
+                return [synchronousTranslateService.translate('common-gib'),
+                    synchronousTranslateService.translate('common-tib')];
             },
             getFormatInKiloBytes: function (format) {
                 if(format === synchronousTranslateService.translate('file-systems-database')){
