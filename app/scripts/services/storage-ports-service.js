@@ -29,7 +29,8 @@ angular.module('rainierApp')
         constantService,
         queryService,
         storageSystemCapabilitiesService,
-        scrollDataSourceBuilderServiceNew
+        scrollDataSourceBuilderServiceNew,
+        utilService
     ) {
         var getStoragePortsPath = 'storage-ports';
         var idKey = 'storagePortId';
@@ -65,7 +66,15 @@ angular.module('rainierApp')
             return $routeParams.storageSystemId;
         };
 
-        var initSummaryActions = function () {
+        var initSummaryActions = function (storageSystem) {
+            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
+            if (isSvpLess) {
+                summaryActions = function () {
+                    return [];
+                };
+                return;
+            }
+
             var sn2Action = storageNavigatorSessionService
                 .getNavigatorSessionAction(storageSystemId(), constantService.sessionScope.PORTS);
             sn2Action.icon = 'icon-storage-navigator-settings';
@@ -127,8 +136,8 @@ angular.module('rainierApp')
             return result;
         };
 
-        var initSummary = function (hwAlertService) {
-            initSummaryActions();
+        var initSummary = function (hwAlertService, storageSystem) {
+            initSummaryActions(storageSystem);
 
             return paginationService
                 .get(null, getStoragePortsPath, objectTransformService.transformPort, true, storageSystemId())

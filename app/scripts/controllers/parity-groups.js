@@ -12,29 +12,13 @@ angular.module('rainierApp')
                                               objectTransformService, synchronousTranslateService, diskSizeService,
                                               scrollDataSourceBuilderService, storageNavigatorSessionService, $location,
                                               paginationService, hwAlertService, constantService, parityGroupService,
-                                              resourceTrackerService, storageSystemCapabilitiesService) {
+                                              resourceTrackerService, storageSystemCapabilitiesService, utilService) {
         var storageSystemId = $routeParams.storageSystemId;
         var title = synchronousTranslateService.translate('common-parity-groups');
         var getParityGroupsPath = 'parity-groups';
         var storageSystem;
 
-        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.PARITY_GROUPS);
-        sn2Action.icon = 'icon-storage-navigator-settings';
-        sn2Action.tooltip = 'tooltip-configure-parity-groups';
-        sn2Action.enabled = function () {
-            return true;
-        };
-
-        var actions = {
-            'SN2': sn2Action
-        };
-
-        $scope.summaryModel = {
-            getActions: function () {
-                return _.map(actions);
-            }
-        };
-
+        $scope.summaryModel = {};
 
         orchestratorService.parityGroupSummary(storageSystemId).then(function(result){
             var pgSumWithConfCountCap = [];
@@ -144,9 +128,30 @@ angular.module('rainierApp')
             }
         };
 
+        var createSnLaunchAction = function(storageSystem) {
+            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
+            if (isSvpLess) {
+                return {};
+            }
+
+            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.PARITY_GROUPS);
+            sn2Action.icon = 'icon-storage-navigator-settings';
+            sn2Action.tooltip = 'tooltip-configure-parity-groups';
+            sn2Action.enabled = function () {
+                return true;
+            };
+            return {
+                'SN2': sn2Action
+            };
+        };
+
         orchestratorService.storageSystem(storageSystemId).then(function (result) {
             $scope.storageSystemModel = result.model;
             storageSystem = result;
+            var sn2LaunchAction = createSnLaunchAction(storageSystem);
+            $scope.summaryModel.getActions = function () {
+                return _.map(sn2LaunchAction);
+            };
             return paginationService.getAllPromises(null, getParityGroupsPath, true, storageSystemId, objectTransformService.transformParityGroup);
         }).then(function(result) {
             var parityGroups = result;

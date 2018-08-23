@@ -15,7 +15,7 @@ angular.module('rainierApp')
         inventorySettingsService, paginationService, queryService,
         storageSystemVolumeService, dpAlertService, storageNavigatorSessionService,
         constantService, resourceTrackerService, replicationService, gadVolumeTypeSearchService,
-        migrationTaskService, synchronousTranslateService
+        migrationTaskService, synchronousTranslateService, utilService
     ) {
         var storageSystemId = $routeParams.storageSystemId;
         var GET_EXTERNAL_VOLUMES_PATH = 'external-volumes';
@@ -33,22 +33,32 @@ angular.module('rainierApp')
             }
         };
 
-        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
-        sn2Action.icon = 'icon-storage-navigator-settings';
-        sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
-        sn2Action.enabled = function () {
-            return true;
+        $scope.summaryModel = {};
+
+        var createSnLaunchAction = function(storageSystem) {
+            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
+            if (isSvpLess) {
+                return {};
+            }
+
+            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.VOLUMES);
+            sn2Action.icon = 'icon-storage-navigator-settings';
+            sn2Action.tooltip = 'tooltip-configure-storage-system-volumes';
+            sn2Action.enabled = function () {
+                return true;
+            };
+            return {
+                'SN2': sn2Action
+            };
         };
 
-        var actions = {
-            'SN2': sn2Action
-        };
-
-        $scope.summaryModel={
-            getActions: function () {
-                return _.map(actions);
-            },
-        };
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            var summaryModelActions = createSnLaunchAction(result);
+            $scope.summaryModel.getActions = function () {
+                return _.map(summaryModelActions);
+            };
+            return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
+        });
 
         $scope.filterModel = {
             filter: {

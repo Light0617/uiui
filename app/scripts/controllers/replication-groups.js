@@ -14,25 +14,36 @@ angular.module('rainierApp')
                                                    dataProtectionSettingsService, replicationGroupsService,
                                                    scrollDataSourceBuilderServiceNew, ReplicationGroupSInitialResult,
                                                    queryService, paginationService, dpAlertService,
-                                                   storageNavigatorSessionService, constantService, replicationService) {
+                                                   storageNavigatorSessionService, constantService, replicationService,
+                                                   utilService) {
         var storageSystemId = $routeParams.storageSystemId;
 
-        var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.LOCAL_REPLICATION_GROUPS);
-        sn2Action.icon = 'icon-storage-navigator-settings';
-        sn2Action.tooltip = 'tooltip-configure-replication-groups';
-        sn2Action.enabled = function () {
-            return true;
-        };
+        $scope.summaryModel = {};
 
-        var actions = {
-            'SN2': sn2Action
-        };
-
-        $scope.summaryModel={
-            getActions: function () {
-                return _.map(actions);
+        var createSnLaunchAction = function(storageSystem) {
+            var isSvpLess = utilService.isNullOrUndef(storageSystem.svpIpAddress);
+            if (isSvpLess) {
+                return {};
             }
+
+            var sn2Action = storageNavigatorSessionService.getNavigatorSessionAction(storageSystemId, constantService.sessionScope.LOCAL_REPLICATION_GROUPS);
+            sn2Action.icon = 'icon-storage-navigator-settings';
+            sn2Action.tooltip = 'tooltip-configure-replication-groups';
+            sn2Action.enabled = function () {
+                return true;
+            };
+            return {
+                'SN2': sn2Action
+            };
         };
+
+        orchestratorService.storageSystem(storageSystemId).then(function (result) {
+            var summaryModelActions = createSnLaunchAction(result);
+            $scope.summaryModel.getActions = function () {
+                return _.map(summaryModelActions);
+            };
+            return orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId);
+        });
 
         orchestratorService.dataProtectionSummaryForStorageSystem(storageSystemId).then(function (result) {
             var summaryModel = objectTransformService.transformToBreakdownSummary(result);
