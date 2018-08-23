@@ -4,7 +4,7 @@
 <wizard-page>
     <!--Wizard header-->
     <!--TODO: icon class should be modified-->
-    <wizard-header ng-title="'remove-undefined-resources-to-vsm' | translate" icon-class="icon-vsm">
+    <wizard-header ng-title="'remove-undefined-resources-from-vsm' | translate" icon-class="icon-vsm">
     </wizard-header>
 
     <wizard-body>
@@ -14,14 +14,14 @@
                                             step-active="dataModel.isStepActive('removePhysicalStorageSystems')">
             </wizard-advanced-stepper-button>
 
-            <wizard-advanced-stepper-button ng-title="'remove-volumes-to-vsm' | translate"
-                                            step-completed="dataModel.isStepCompleted('removeVolumesToVsm')"
-                                            step-active="dataModel.isStepActive('removeVolumesToVsm')">
+            <wizard-advanced-stepper-button ng-title="'remove-volumes-from-vsm' | translate"
+                                            step-completed="dataModel.isStepCompleted('removeVolumesFromVsm')"
+                                            step-active="dataModel.isStepActive('removeVolumesFromVsm')">
             </wizard-advanced-stepper-button>
 
-            <wizard-advanced-stepper-button ng-title="'remove-host-groups-to-vsm' | translate"
-                                            step-completed="dataModel.isStepCompleted('removeHostGroupsToVsm')"
-                                            step-active="dataModel.isStepActive('removeHostGroupsToVsm')">
+            <wizard-advanced-stepper-button ng-title="'remove-host-groups-from-vsm' | translate"
+                                            step-completed="dataModel.isStepCompleted('removeHostGroupsFromVsm')"
+                                            step-active="dataModel.isStepActive('removeHostGroupsFromVsm')">
             </wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
 
@@ -34,20 +34,20 @@
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('removeVolumesToVsm')"
+        <wizard-left-right-content ng-if="dataModel.isStepActive('removeVolumesFromVsm')"
                                    ng-title="dataModel.subTitle"
                                    class="virtualize-volume-wizard"
-                                   left-panel-template="views/workflow-templates/undefined-resources-add-volumes-to-vsm-left-panel.html"
-                                   right-panel-template="views/workflow-templates/undefined-resources-add-volumes-to-vsm-right-panel.html"
+                                   left-panel-template="views/workflow-templates/undefined-resources-remove-volumes-from-vsm-left-panel.html"
+                                   right-panel-template="views/workflow-templates/undefined-resources-remove-volumes-from-vsm-right-panel.html"
                                    ng-model="dataModel"
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
 
-        <wizard-left-right-content ng-if="dataModel.isStepActive('removeHostGroupsToVsm')"
+        <wizard-left-right-content ng-if="dataModel.isStepActive('removeHostGroupsFromVsm')"
                                    ng-title="dataModel.subTitle"
                                    class="virtualize-volume-wizard"
-                                   left-panel-template="views/workflow-templates/undefined-resources-add-host-groups-to-vsm-left-panel.html"
-                                   right-panel-template="views/workflow-templates/undefined-resources-add-host-groups-to-vsm-right-panel.html"
+                                   left-panel-template="views/workflow-templates/undefined-resources-remove-host-groups-from-vsm-left-panel.html"
+                                   right-panel-template="views/workflow-templates/undefined-resources-remove-host-groups-from-vsm-right-panel.html"
                                    ng-model="dataModel"
                                    page-name="create-and-attach-volumes">
         </wizard-left-right-content>
@@ -58,11 +58,11 @@
                    ng-model="footModel">
     </wizard-footer>
 
-    <wizard-footer ng-if="dataModel.isStepActive('removeVolumesToVsm')"
+    <wizard-footer ng-if="dataModel.isStepActive('removeVolumesFromVsm')"
                    ng-model="footModel">
     </wizard-footer>
 
-    <wizard-footer ng-if="dataModel.isStepActive('removeHostGroupsToVsm')"
+    <wizard-footer ng-if="dataModel.isStepActive('removeHostGroupsFromVsm')"
                    ng-model="footModel">
     </wizard-footer>
 

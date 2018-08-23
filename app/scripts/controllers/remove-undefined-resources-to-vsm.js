@@ -29,7 +29,7 @@ angular.module('rainierApp')
                                                             constantService,
                                                             viewModelService,
                                                             $routeParams,
-                                                            addUndefinedResourcesService,
+                                                            removeUndefinedResourcesService,
                                                             $q) {
         /**
          * 0. Initial process for all pages
@@ -37,23 +37,23 @@ angular.module('rainierApp')
 
         var initCommon = function () {
             $scope.dataModel = viewModelService.newWizardViewModel(['removePhysicalStorageSystems',
-                'removeVolumesToVsm',
-                'removeHostGroupsToVsm']);
+                'removeVolumesFromVsm',
+                'removeHostGroupsFromVsm']);
             $scope.dataModel.selected = {
                 displayList: [],
                 storageSystems:[],
                 storageSystem: null,
                 port: null,
-                addVolumesToVsm: [],
+                removeVolumesFromVsm: [],
                 addHostGroupsToVsm: []
             };
-            initAddPhysicalStorageSystemView();
+            initRemovePhysicalStorageSystemView();
         };
 
         /**
-         * 1. Add Physical Storage Systems
+         * 1. Remove Physical Storage Systems
          */
-        var initAddPhysicalStorageSystemView = function () {
+        var initRemovePhysicalStorageSystemView = function () {
             var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
 
             return paginationService.getAllPromises(null,
@@ -65,7 +65,7 @@ angular.module('rainierApp')
                 var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
                 var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
                 var virtualStorageSystemModel = virtualStorageMachineIdList[1];
-                var storageModel = addUndefinedResourcesService.setupStorageModel($scope.dataModel,
+                var storageModel = removeUndefinedResourcesService.setupStorageModel($scope.dataModel,
                     result,
                     virtualStorageMachineId,
                     virtualStorageSystemModel);
@@ -78,11 +78,11 @@ angular.module('rainierApp')
                             return dataModel.getSelectedItems().length > 0;
                         },
                         next: function () {
-                            addUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
+                            removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
                             getPhysicalStorageSystemSummary()
-                                .then(initRemoveVolumesToVsm)
+                                .then(initRemoveVolumesFromVsm)
                                 .then($scope.dataModel.goNext)
-                                .catch(addUndefinedResourcesService.openErrorDialog);
+                                .catch(removeUndefinedResourcesService.openErrorDialog);
                         }
                     };
                 };
@@ -91,10 +91,14 @@ angular.module('rainierApp')
         };
 
         /**
-         * 2. Remove Volumes to VSM
+         * 2. Remove Volumes from VSM
          */
-        var initRemoveVolumesToVsm = function () {
-            var volumeModel = addUndefinedResourcesService.setupVolumeModel($scope.dataModel);
+        var initRemoveVolumesFromVsm = function () {
+            var output = '';
+            for (var property in $scope.dataModel) {
+                output += property + ': ' + $scope.dataModel[property]+'; ';
+            }
+            var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel);
             _.extend($scope.dataModel, volumeModel);
 
             var setupGetPorts = function () {
@@ -105,7 +109,7 @@ angular.module('rainierApp')
                     });
             };
 
-            var recoverAddPhysicalStorageSystemView = function () {
+            var recoverRemovePhysicalStorageSystemView = function () {
                 _.extend($scope.dataModel.displayList, $scope.dataModel.selected.displayList);
                 return true;
             };
@@ -117,19 +121,19 @@ angular.module('rainierApp')
                     },
                     next: function () {
                         try {
-                            addUndefinedResourcesService.addVolumesToSelected($scope.dataModel);
+                            removeUndefinedResourcesService.removeVolumesFromSelected($scope.dataModel);
                             dataModel.goNext();
                             initRemoveHostGroupToVsm();
                             setupGetPorts();
                         } catch (e) {
-                            addUndefinedResourcesService.openErrorDialog();
+                            removeUndefinedResourcesService.openErrorDialog();
                         }
                     },
                     previous: function () {
-                        initAddPhysicalStorageSystemView()
-                            .then(recoverAddPhysicalStorageSystemView)
+                        initRemovePhysicalStorageSystemView()
+                            .then(recoverRemovePhysicalStorageSystemView)
                             .then(dataModel.goBack)
-                            .catch(addUndefinedResourcesService.openErrorDialog);
+                            .catch(removeUndefinedResourcesService.openErrorDialog);
                     }
                 };
             };
@@ -143,7 +147,7 @@ angular.module('rainierApp')
             var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
 
             var promise_queue = _.map($scope.dataModel.selected.storageSystems, function (ss) {
-                return addUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
+                return removeUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
                     ss.storageSystemId).then(function (result) {
                     $scope.dataModel.summaryModel[ss.storageSystemId] = result;
                     return result;
@@ -156,10 +160,10 @@ angular.module('rainierApp')
         }
 
         /**
-         * 3. Add Host Groups to VSM
+         * 3. Remove Host Groups to VSM
          */
         var initRemoveHostGroupToVsm = function () {
-            var hostGroupModel = addUndefinedResourcesService.setupHostGroupModel($scope.dataModel);
+            var hostGroupModel = removeUndefinedResourcesService.setupHostGroupModel($scope.dataModel);
             _.extend($scope.dataModel, hostGroupModel);
 
             var hostGroupFooter = function (dataModel) {
@@ -168,17 +172,17 @@ angular.module('rainierApp')
                         return true;
                     },
                     submit: function () {
-                        addUndefinedResourcesService.addHostGroupsToSelected($scope.dataModel);
-                        var payload = addUndefinedResourcesService.createPayload($scope.dataModel);
+                        removeUndefinedResourcesService.addHostGroupsToSelected($scope.dataModel);
+                        var payload = removeUndefinedResourcesService.createPayload($scope.dataModel);
                         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
                         orchestratorService.addUndefinedResources(virtualStorageMachineId, payload);
                     },
                     previous: function () {
                         try{
-                            initRemoveVolumesToVsm();
+                            initRemoveVolumesFromVsm();
                             dataModel.goBack();
                         } catch (e) {
-                            addUndefinedResourcesService.openErrorDialog();
+                            removeUndefinedResourcesService.openErrorDialog();
                         }
                     }
                 };

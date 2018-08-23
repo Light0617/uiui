@@ -1,0 +1,74 @@
+<div class="add-resource-pattern">
+    <div class="input-panel validation-scope">
+
+        <fieldset class="fieldset label-value-container">
+            <label for="storage-systems" class="label">{{'storage-systems' | translate}}</label>
+            <div class="dropdown">
+                <button id="storage-systems" class="btn btn-block dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{dataModel.selected.storageSystem.storageSystemId}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="storage-systems">
+                    <li ng-repeat="ss in dataModel.selected.storageSystems">
+                        <a ng-click="dataModel.setStorageSystems(ss)">
+                            {{ss.storageSystemId}}</a>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset label-value-container">
+            <label for="port-id" class="label">{{'port-id' | translate}}</label>
+            <div class="dropdown">
+                <button id="port-id" class="btn btn-block dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{dataModel.selected.port.storagePortId}} (defined:
+                    {{dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                    .hostGroups[dataModel.selected.port.storagePortId]
+                    ? dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                    .hostGroups[dataModel.selected.port.storagePortId].defined : 0}} undefined:
+                    {{dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                    .hostGroups[dataModel.selected.port.storagePortId]
+                    ? dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                    .hostGroups[dataModel.selected.port.storagePortId].undefined : 0}})
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="pool-type">
+                    <li ng-repeat="sp in dataModel.getPorts">
+                        <a ng-click="dataModel.setStoragePort(sp)">
+                            {{sp.storagePortId}}  (defined:
+                            {{dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                            .hostGroups[sp.storagePortId]
+                            ? dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                            .hostGroups[sp.storagePortId].defined : 0}} undefined:
+                            {{dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                            .hostGroups[sp.storagePortId]
+                            ? dataModel.summaryModel[dataModel.selected.storageSystem.storageSystemId]
+                            .hostGroups[sp.storagePortId].undefined : 0}})</a>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset label-value-container">
+            <label for="number-host-groups" class="label">{{'number-of-host-groups' | translate}}</label>
+            <input id="number-host-groups" class="form-control" placeholder="eg. 100" type="number" min="0" max="256"
+                   ng-model="dataModel.numberOfHostGroups"/>
+        </fieldset>
+
+    </div>
+    <div class="tile control-tile add-button-hack" ng-click="dataModel.add()">
+        <div class="tile-button add-resource">
+            <svg class="resource-icon" version="1.1" x="0px" y="0px" viewBox="0 0 70 70" transform="scale(1, 1)" xml:space="preserve">
+                <polygon class="add-lg" points="70,32 38,32 38,0 32,0 32,32 0,32 0,38 32,38 32,70 38,70 38,38 70,38 ">
+                </polygon>
+            </svg>
+        </div>
+    </div>
+
+</div>
+
+<div class="work-panel">
+    <div class="scroll-wizard-container" ng-include="'views/templates/undefined-add-host-groups-to-vsm-list.html'"></div>
+</div>
