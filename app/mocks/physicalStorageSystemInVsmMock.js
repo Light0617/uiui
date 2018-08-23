@@ -50,12 +50,12 @@ rainierAppMock.factory('physicalStorageSystemInVsmMock', function (mockUtils) {
                 {
                     'definedCount': 11,
                     'undefinedCount': 3,
-                    'storagePortId': 'CL0-B'
+                    'storagePortId': 'CL2-B'
                 },
                 {
                     'definedCount': 10,
                     'undefinedCount': 4,
-                    'storagePortId': 'CL0-A'
+                    'storagePortId': 'CL1-A'
                 },
                 {
                     'definedCount': 11,
