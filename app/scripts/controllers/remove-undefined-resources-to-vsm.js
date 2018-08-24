@@ -41,6 +41,7 @@ angular.module('rainierApp')
                 'removeHostGroupsFromVsm']);
             $scope.dataModel.selected = {
                 displayList: [],
+                storageSystemsIds: [],
                 storageSystems:[],
                 storageSystem: null,
                 port: null,
@@ -55,7 +56,7 @@ angular.module('rainierApp')
          */
         var initRemovePhysicalStorageSystemView = function () {
             var GET_STORAGE_SYSTEM_PATH = 'storage-systems';
-
+            //alert(ShareDataService.virtualStorageMachine.physicalStorageSystemIds);
             return paginationService.getAllPromises(null,
                 GET_STORAGE_SYSTEM_PATH,
                 true,
@@ -94,10 +95,6 @@ angular.module('rainierApp')
          * 2. Remove Volumes from VSM
          */
         var initRemoveVolumesFromVsm = function () {
-            var output = '';
-            for (var property in $scope.dataModel) {
-                output += property + ': ' + $scope.dataModel[property]+'; ';
-            }
             var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel);
             _.extend($scope.dataModel, volumeModel);
 
