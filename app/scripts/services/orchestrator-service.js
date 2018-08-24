@@ -23,6 +23,11 @@ angular.module('rainierApp')
                     return result;
                 }));
             },
+            virtualStorageMachine: function(virtualStorageMachineId) {
+                return apiResponseHandlerService._apiGetResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).get().then(function (result) {
+                    return result;
+                }));
+            },
             createVirtualStorageMachine: function (payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('virtual-storage-machines').post(payload));
             },
