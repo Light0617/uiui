@@ -183,7 +183,6 @@ angular.module('rainierApp')
                 },
                 setStorageSystems: function (ss) {
                     orchestratorService.storagePorts(ss.storageSystemId).then(function (result) {
-                        alert('lol=' + JSON.stringify(result));
                         dataModel.getPorts = result.resources;
                         dataModel.selected.port = dataModel.getPorts[0];
                     });

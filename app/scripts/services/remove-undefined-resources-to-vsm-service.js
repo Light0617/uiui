@@ -133,7 +133,7 @@ angular.module('rainierApp')
                 hostGroups: [],
                 add: function () {
                     var storageSystemId = dataModel.selected.storageSystems[0].storageSystemId;
-                    var storagePortId = dataModel.getPorts[0].storagePortId;
+                    var storagePortId = dataModel.selected.port.storagePortId;
                     var numberOfHostGroups = dataModel.numberOfHostGroups;
                     dataModel.hostGroups.push({
                         storageSystemId: storageSystemId,
@@ -162,6 +162,7 @@ angular.module('rainierApp')
 
         var addHostGroupsToSelected = function (dataModel) {
             dataModel.selected.removeHostGroupsFromVsm = dataModel.hostGroups;
+            alert(JSON.stringify(dataModel.selected.removeHostGroupsFromVsm));
         };
 
         var createPayload = function (dataModel) {

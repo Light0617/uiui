@@ -31,6 +31,9 @@ angular.module('rainierApp')
             createVirtualStorageMachine: function (payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('virtual-storage-machines').post(payload));
             },
+            removeUndefinedResources: function(virtualStorageMachineId, payload) {
+                return apiResponseHandlerService._apiResponseHandler(Restangular.one('virtual-storage-machines', virtualStorageMachineId).one('remove-undefined-resources').post(payload));
+            },
             addUndefinedResources: function (virtualStorageMachineId, payload) {
                 return apiResponseHandlerService._apiResponseHandler(Restangular.all('virtual-storage-machines/' + virtualStorageMachineId + '/add-undefined-resources').post(payload));
             },

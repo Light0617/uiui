@@ -181,6 +181,7 @@ angular.module('rainierApp')
                         var payload = removeUndefinedResourcesService.createPayload($scope.dataModel);
                         var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
                         orchestratorService.addUndefinedResources(virtualStorageMachineId, payload);
+                        //orchestratorService.removeUndefinedResources(virtualStorageMachineId, payload);
                     },
                     previous: function () {
                         try{
