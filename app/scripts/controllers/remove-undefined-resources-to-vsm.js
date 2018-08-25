@@ -104,7 +104,7 @@ angular.module('rainierApp')
 
         /**
          * 2. Remove Volumes from VSM
-         */g
+         */
         var initRemoveVolumesFromVsm = function () {
             alert('initRemoveVolumesFromVsm 1');
             var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel);
