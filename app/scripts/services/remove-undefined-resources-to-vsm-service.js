@@ -46,47 +46,9 @@ angular.module('rainierApp')
                 }
             });
         };
-        /**
-         * 1. Remove Physical Storage Systems
-         */
-        // var setupStorageModel = function (dataModel, storageSystems, virtualStorageMachineId, virtualStorageSystemModel) {
-        //     var storageModel = {
-        //         view: 'tile',
-        //         hasFileUsageBar: false,
-        //         displayList: storageSystems,
-        //         subTitle: 'Select the Storage System',
-        //         virtualStorageSystemId: virtualStorageMachineId,
-        //         virtualStorageSystemModel: virtualStorageSystemModel,
-        //         search: {
-        //             freeText: '',
-        //             freeCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
-        //             totalCapacity: constantService.CAPACITY_FILTER_DEFAULT_CONDITION(),
-        //         },
-        //         sort: {
-        //             field: 'storageSystemId',
-        //             reverse: false,
-        //             setSort: function (f) {
-        //                 $timeout(function () {
-        //                     if (dataModel.sort.field === f) {
-        //                         dataModel.sort.reverse = !dataModel.sort.reverse;
-        //                     } else {
-        //                         dataModel.sort.field = f;
-        //                         dataModel.sort.reverse = false;
-        //                     }
-        //                 });
-        //             }
-        //         }
-        //     };
-        //     return storageModel;
-        // };
 
-        // var addPhysicalStorageSystemsToSelected = function (dataModel) {
-        //     dataModel.selected.displayList = dataModel.displayList;
-        //     alert('add =' + dataModel.displayList);
-        //     dataModel.selected.storageSystem = dataModel.selected.storageSystems[0];
-        // };
         /**
-         * 2. Remove Volumes to VSM
+         * 1. Remove Volumes to VSM
          */
         var setupVolumeModel = function (dataModel) {
             var volumeModel = {
@@ -103,8 +65,8 @@ angular.module('rainierApp')
                 remove: function (index) {
                     dataModel.volumes.splice(index, 1);
                 },
-                setStorageSystems: function (ss) {
-                    dataModel.selected.storageSystem = ss;
+                setStorageSystems: function (storageSystem) {
+                    dataModel.selected.storageSystem = storageSystem;
                 }
             };
             return volumeModel;
@@ -160,7 +122,7 @@ angular.module('rainierApp')
         };
 
         /**
-         * 3. Add Host Groups to VSM
+         * 2. Add Host Groups to VSM
          */
         var setupHostGroupModel = function (dataModel) {
             var hostGroupModel = {
@@ -234,17 +196,12 @@ angular.module('rainierApp')
             openErrorDialog: openErrorDialog,
             getPhysicalStorageSystemSummary: getPhysicalStorageSystemSummary,
             /**
-             * 1. Add Physical Storage Systems
-             */
-            //setupStorageModel: setupStorageModel,
-            //addPhysicalStorageSystemsToSelected: addPhysicalStorageSystemsToSelected,
-            /**
-             * 2. Remove Volumes from VSM
+             * 1. Remove Volumes from VSM
              */
             setupVolumeModel: setupVolumeModel,
             removeVolumesFromSelected: removeVolumesFromSelected,
             /**
-             * 3. Remove Host Groups from VSM
+             * 2. Remove Host Groups from VSM
              */
             setupHostGroupModel: setupHostGroupModel,
             addHostGroupsToSelected: addHostGroupsToSelected,

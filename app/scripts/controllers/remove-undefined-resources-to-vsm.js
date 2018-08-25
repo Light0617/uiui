@@ -54,7 +54,7 @@ angular.module('rainierApp')
 
         var getPhysicalStorageSystemIds = function () {
             //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
-            alert('kpkp');
+            alert('qooo');
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
                 .then(function (result) {
                     //alert(JSON.stringify(result));
@@ -76,29 +76,20 @@ angular.module('rainierApp')
         };
 
         /**
-         * 1. Remove Physical Storage Systems
+         * 0. init2, the helper method for initRemovePhysicalStorageSystemView
          */
         var init2 = function () {
-            //var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
-            //var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
-            // var virtualStorageSystemModel = virtualStorageMachineIdList[1];
-            // var storageModel = removeUndefinedResourcesService.setupStorageModel($scope.dataModel,
-            //         $scope.dataModel.selected.storageSystems,
-            //         virtualStorageMachineId,
-            //         virtualStorageSystemModel);
-            // _.extend($scope.dataModel, storageModel);
-
-            // removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
-            // $scope.dataModel.selected.displayList = $scope.dataModel.displayList;
-            // alert('add =' + $scope.dataModel.displayList);
             $scope.dataModel.selected.storageSystem = $scope.dataModel.selected.storageSystems[0];
-            //alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.selected.storageSystems));
             alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
             getPhysicalStorageSystemSummary()
                 .then(initRemoveVolumesFromVsm)
                 .then($scope.dataModel.goNext)
                 .catch(removeUndefinedResourcesService.openErrorDialog);
         };
+
+        /**
+         * 0. initRemovePhysicalStorageSystemView to init for initRemoveVolumesFromVsm
+         */
 
         var initRemovePhysicalStorageSystemView = function () {
             getPhysicalStorageSystemIds()
@@ -107,7 +98,7 @@ angular.module('rainierApp')
         };
 
         /**
-         * 2. Remove Volumes from VSM
+         * 1. Remove Volumes from VSM
          */
         var initRemoveVolumesFromVsm = function () {
             var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel);
@@ -175,7 +166,7 @@ angular.module('rainierApp')
         };
 
         /**
-         * 3. Remove Host Groups to VSM
+         * 2. Remove Host Groups to VSM
          */
         var initRemoveHostGroupToVsm = function () {
             var hostGroupModel = removeUndefinedResourcesService.setupHostGroupModel($scope.dataModel);
