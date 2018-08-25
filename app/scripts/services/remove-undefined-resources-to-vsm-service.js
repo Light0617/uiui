@@ -83,7 +83,6 @@ angular.module('rainierApp')
         var addPhysicalStorageSystemsToSelected = function (dataModel) {
             dataModel.selected.displayList = dataModel.displayList;
             alert('add =' + dataModel.selected.storageSystemIds);
-            dataModel.selected.storageSystems = dataModel.storageSystems;
             dataModel.selected.storageSystem = dataModel.selected.storageSystems[0];
         };
         /**

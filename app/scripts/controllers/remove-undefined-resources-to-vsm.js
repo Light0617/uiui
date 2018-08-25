@@ -49,14 +49,12 @@ angular.module('rainierApp')
                 removeVolumesFromVsm: [],
                 addHostGroupsToVsm: []
             };
-            $scope.dataModel.storageSystemIds = [];
-            $scope.dataModel.storageSystems = [];
             initRemovePhysicalStorageSystemView();
         };
 
         var getPhysicalStorageSystemIds = function () {
             //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
-            alert("zyzyz");
+            alert("zyyyiii");
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
                 .then(function (result) {
                     //alert(JSON.stringify(result));
@@ -66,7 +64,7 @@ angular.module('rainierApp')
                         return orchestratorService.storageSystem(storageSystemId)
                             .then(function (result) {
                                 //alert('xxxxx=' +  JSON.stringify(result));
-                                $scope.dataModel.storageSystems.push(result);
+                                $scope.dataModel.selected.storageSystems.push(result);
                                 return result;
                         }).catch(function(e){
                             return new Error('error=' + e);
@@ -85,13 +83,13 @@ angular.module('rainierApp')
             var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
             var virtualStorageSystemModel = virtualStorageMachineIdList[1];
             var storageModel = removeUndefinedResourcesService.setupStorageModel($scope.dataModel,
-                    $scope.dataModel.storageSystems,
+                    $scope.dataModel.selected.storageSystems,
                     virtualStorageMachineId,
                     virtualStorageSystemModel);
             _.extend($scope.dataModel, storageModel);
 
             removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
-            //alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.storageSystems));
+            //alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.selected.storageSystems));
             alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
             getPhysicalStorageSystemSummary()
                 .then(initRemoveVolumesFromVsm)
