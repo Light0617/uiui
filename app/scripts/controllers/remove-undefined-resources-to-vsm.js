@@ -56,11 +56,12 @@ angular.module('rainierApp')
         var getPhysicalStorageSystemIds = function () {
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
                 .then(function (result) {
-                    $scope.dataModel.storageSystemIds = result.resources[0].physicalStorageSystemIds;
-
-                    var promiseQueue = _.map(result.resources[0].physicalStorageSystemIds, function (storageSystemId) {
+                    //$scope.dataModel.storageSystemIds = result.resource[0].physicalStorageSystemIds;
+                    $scope.dataModel.storageSystemIds = result.physicalStorageSystemIds;
+                    var promiseQueue = _.map($scope.dataModel.storageSystemIds, function (storageSystemId) {
                         return orchestratorService.storageSystem(storageSystemId)
                             .then(function (result) {
+                                alert('xxxxx=' +  JSON.stringify(result));
                                 $scope.dataModel.storageSystems.push(result);
                                 return result;
                         }).catch(function(e){
@@ -86,17 +87,17 @@ angular.module('rainierApp')
             _.extend($scope.dataModel, storageModel);
 
             removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
-            alert('init2=' +  JSON.stringify($scope.dataModel.selected.storageSystem));
+            alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.storageSystems));
+            alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
             getPhysicalStorageSystemSummary()
                 .then(initRemoveVolumesFromVsm)
                 .then($scope.dataModel.goNext)
                 .catch(removeUndefinedResourcesService.openErrorDialog);
             alert('init2 finish');
-            alert(JSON.stringify($scope.dataModel.storageSystemIds[0]));
         };
 
         var initRemovePhysicalStorageSystemView = function () {
-            alert('a aaaa PhysicalStorageSystemView');
+            alert('a kkk PhysicalStorageSystemView');
             getPhysicalStorageSystemIds()
                 .then(init2)
                 .catch(removeUndefinedResourcesService.openErrorDialog);
