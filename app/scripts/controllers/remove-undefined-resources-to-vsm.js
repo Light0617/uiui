@@ -54,6 +54,7 @@ angular.module('rainierApp')
         };
 
         var getPhysicalStorageSystemIds = function () {
+            //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
                 .then(function (result) {
                     //$scope.dataModel.storageSystemIds = result.resource[0].physicalStorageSystemIds;
