@@ -43,6 +43,7 @@ angular.module('rainierApp')
             $scope.dataModel.selected = {
                 displayList: [],
                 storageSystems:[],
+                storageSystemIds : [],
                 storageSystem: null,
                 port: null,
                 removeVolumesFromVsm: [],
@@ -55,14 +56,16 @@ angular.module('rainierApp')
 
         var getPhysicalStorageSystemIds = function () {
             //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
+            alert("zyzyz");
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
                 .then(function (result) {
-                    //$scope.dataModel.storageSystemIds = result.resource[0].physicalStorageSystemIds;
-                    $scope.dataModel.storageSystemIds = result.physicalStorageSystemIds;
-                    var promiseQueue = _.map($scope.dataModel.storageSystemIds, function (storageSystemId) {
+                    //alert(JSON.stringify(result));
+                    $scope.dataModel.selected.storageSystemIds = result.resources[0].physicalStorageSystemIds; //mock
+                    //$scope.dataModel.selected.storageSystemIds = result.physicalStorageSystemIds; //real
+                    var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (storageSystemId) {
                         return orchestratorService.storageSystem(storageSystemId)
                             .then(function (result) {
-                                alert('xxxxx=' +  JSON.stringify(result));
+                                //alert('xxxxx=' +  JSON.stringify(result));
                                 $scope.dataModel.storageSystems.push(result);
                                 return result;
                         }).catch(function(e){
@@ -88,17 +91,15 @@ angular.module('rainierApp')
             _.extend($scope.dataModel, storageModel);
 
             removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
-            alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.storageSystems));
+            //alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.storageSystems));
             alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
             getPhysicalStorageSystemSummary()
                 .then(initRemoveVolumesFromVsm)
                 .then($scope.dataModel.goNext)
                 .catch(removeUndefinedResourcesService.openErrorDialog);
-            alert('init2 finish');
         };
 
         var initRemovePhysicalStorageSystemView = function () {
-            alert('a kkk PhysicalStorageSystemView');
             getPhysicalStorageSystemIds()
                 .then(init2)
                 .catch(removeUndefinedResourcesService.openErrorDialog);
@@ -108,13 +109,12 @@ angular.module('rainierApp')
          * 2. Remove Volumes from VSM
          */
         var initRemoveVolumesFromVsm = function () {
-            alert('initRemoveVolumesFromVsm 1');
             var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel);
             _.extend($scope.dataModel, volumeModel);
 
             var setupGetPorts = function () {
                 alert($scope.dataModel.getSelectedItems());
-                return orchestratorService.storagePorts($scope.dataModel.storageSystemIds[0])
+                return orchestratorService.storagePorts($scope.dataModel.selected.storageSystemIds[0])
                     .then(function (result) {
                         $scope.dataModel.getPorts = result.resources;
                         $scope.dataModel.selected.port = $scope.dataModel.getPorts[0];
@@ -157,10 +157,14 @@ angular.module('rainierApp')
         var getPhysicalStorageSystemSummary = function(){
             $scope.dataModel.summaryModel = {};
             var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
+            alert("yopy");
+            alert($scope.dataModel.selected.storageSystemIds);
 
             var promise_queue = _.map($scope.dataModel.selected.storageSystemIds, function (id) {
                 return removeUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
                     id).then(function (result) {
+                        alert("id=" + id);
+                        alert(JSON.stringify(result));
                     $scope.dataModel.summaryModel[id] = result;
                     return result;
                 }).catch(function(e){

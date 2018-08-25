@@ -9,6 +9,8 @@ Please refer to the readme in ui/shasta
 
 http://git.mcp.com/ui/shasta
 
+Run `gem install compass`
+
 ## Build & development
 
 Run `grunt` for building.
