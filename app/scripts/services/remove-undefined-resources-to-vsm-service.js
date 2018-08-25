@@ -132,12 +132,7 @@ angular.module('rainierApp')
                 subTitle: 'Remove Host Group From Each Storage System',
                 hostGroups: [],
                 add: function () {
-                    alert("add");
-                    alert(JSON.stringify(dataModel));
-                    alert(JSON.stringify(dataModel.getSelectedItems()[0]));
-                    alert(JSON.stringify(dataModel.getPorts[0]));
-                    alert(JSON.stringify(dataModel.numberOfHostGroups));
-                    var storageSystemId = dataModel.getSelectedItems()[0].storageSystemId;
+                    var storageSystemId = dataModel.selected.storageSystems[0].storageSystemId;
                     var storagePortId = dataModel.getPorts[0].storagePortId;
                     var numberOfHostGroups = dataModel.numberOfHostGroups;
                     dataModel.hostGroups.push({

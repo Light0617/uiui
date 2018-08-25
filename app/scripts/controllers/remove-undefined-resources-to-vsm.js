@@ -18,19 +18,10 @@
 
 angular.module('rainierApp')
     .controller('RemoveUndefinedResourcesToVsmCtrl', function ($scope,
-                                                            $timeout,
                                                             orchestratorService,
-                                                            objectTransformService,
-                                                            synchronousTranslateService,
-                                                            scrollDataSourceBuilderService,
-                                                            $location,
-                                                            diskSizeService,
-                                                            paginationService,
-                                                            constantService,
                                                             viewModelService,
                                                             $routeParams,
                                                             removeUndefinedResourcesService,
-                                                            ShareDataService,
                                                             $q) {
         /**
          * 0. Initial process for all pages
@@ -60,9 +51,9 @@ angular.module('rainierApp')
          */
 
         var initRemoveVolumesFromVsm = function () {
-            setPhysicalStorageSystemsAndIds()
-                .then(showPhysicalStorageSystemOnSelect)
-                .then(showPhysicalStorageSystemOnOption)
+            getPhysicalStorageSystemsAndIds()
+                .then(setFirstPhysicalStorageSystem)
+                .then(getPhysicalStorageSystemSummary)
                 .then(setupRemoveVolumesFromVsm)
                 .then($scope.dataModel.goNext)
                 .catch(removeUndefinedResourcesService.openErrorDialog);
@@ -71,7 +62,7 @@ angular.module('rainierApp')
         /**
          * 1-1. setPhysicalStorageSystemsAndIds
          */
-        var setPhysicalStorageSystemsAndIds = function () {
+        var getPhysicalStorageSystemsAndIds = function () {
             //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
             // alert('qooo');
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
@@ -79,14 +70,14 @@ angular.module('rainierApp')
                     //alert(JSON.stringify(result));
                     $scope.dataModel.selected.storageSystemIds = result.resources[0].physicalStorageSystemIds; //mock
                     //$scope.dataModel.selected.storageSystemIds = result.physicalStorageSystemIds; //real
-                    return setPhysicalStorageSystems();
+                    return getPhysicalStorageSystems();
                 }).catch(removeUndefinedResourcesService.openErrorDialog);
         };
 
         /**
          * 1-1-2. setPhysicalStorageSystems
          */
-        var setPhysicalStorageSystems = function() {
+        var getPhysicalStorageSystems = function() {
             var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (storageSystemId) {
                 return orchestratorService.storageSystem(storageSystemId)
                     .then(function (result) {
@@ -101,18 +92,18 @@ angular.module('rainierApp')
         };
 
         /**
-         * 1-2. showPhysicalStorageSystemOnSelect
+         * 1-2. setFirstPhysicalStorageSystem
          */
-        var showPhysicalStorageSystemOnSelect = function () {
+        var setFirstPhysicalStorageSystem = function () {
             $scope.dataModel.selected.storageSystem = $scope.dataModel.selected.storageSystems[0];
             //alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
         };
 
         /**
-         * 1-3. showPhysicalStorageSystemOnOption 
+         * 1-3. getPhysicalStorageSystemSummary 
          */
 
-        var showPhysicalStorageSystemOnOption = function(){
+        var getPhysicalStorageSystemSummary = function(){
             $scope.dataModel.summaryModel = {};
 
             var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (id) {
@@ -144,7 +135,7 @@ angular.module('rainierApp')
             _.extend($scope.dataModel, volumeModel);
 
             var setupGetPorts = function () {
-                return orchestratorService.storagePorts($scope.dataModel.selected.storageSystemIds[0])
+                return orchestratorService.storagePorts($scope.dataModel.selected.storageSystems[0].storageSystemId)
                     .then(function (result) {
                         $scope.dataModel.getPorts = result.resources;
                         $scope.dataModel.selected.port = $scope.dataModel.getPorts[0];
@@ -193,7 +184,6 @@ angular.module('rainierApp')
                     },
                     previous: function () {
                         try{
-                            //initRemoveVolumesFromVsm();
                             setupRemoveVolumesFromVsm();
                             dataModel.goBack();
                         } catch (e) {
