@@ -9,10 +9,6 @@
 
     <wizard-body>
         <wizard-advanced-stepper>
-            <!--<wizard-advanced-stepper-button ng-title="'remove-physical-storage-systems' | translate"-->
-                                            <!--step-completed="dataModel.isStepCompleted('removePhysicalStorageSystems')"-->
-                                            <!--step-active="dataModel.isStepActive('removePhysicalStorageSystems')">-->
-            <!--</wizard-advanced-stepper-button>-->
 
             <wizard-advanced-stepper-button ng-title="'remove-volumes-from-vsm' | translate"
                                             step-completed="dataModel.isStepCompleted('removeVolumesFromVsm')"
@@ -24,15 +20,6 @@
                                             step-active="dataModel.isStepActive('removeHostGroupsFromVsm')">
             </wizard-advanced-stepper-button>
         </wizard-advanced-stepper>
-
-        <!--<wizard-left-right-content ng-if="dataModel.isStepActive('removePhysicalStorageSystems')"-->
-                                   <!--ng-title="dataModel.subTitle"-->
-                                   <!--class="virtualize-volume-wizard"-->
-                                   <!--left-panel-template="views/workflow-templates/undefined-resources-add-physical-storage-systems-left-panel.html"-->
-                                   <!--right-panel-template="views/workflow-templates/undefined-resources-add-physical-storage-systems-right-panel.html"-->
-                                   <!--ng-model="dataModel"-->
-                                   <!--page-name="create-and-attach-volumes">-->
-        <!--</wizard-left-right-content>-->
 
         <wizard-left-right-content ng-if="dataModel.isStepActive('removeVolumesFromVsm')"
                                    ng-title="dataModel.subTitle"
@@ -53,10 +40,6 @@
         </wizard-left-right-content>
     </wizard-body>
 
-
-    <!--<wizard-footer ng-if="dataModel.isStepActive('removePhysicalStorageSystems')"-->
-                   <!--ng-model="footModel">-->
-    <!--</wizard-footer>-->
 
     <wizard-footer ng-if="dataModel.isStepActive('removeVolumesFromVsm')"
                    ng-model="footModel">

@@ -165,10 +165,13 @@ angular.module('rainierApp')
          * 3. Add Host Groups to VSM
          */
         var setupHostGroupModel = function (dataModel) {
+            alert('scope.displayList=' + JSON.stringify(dataModel.displayList));
             var hostGroupModel = {
                 subTitle: 'Add Host Group From Each Storage System',
                 hostGroups: [],
                 add: function () {
+                    alert("add");
+                    alert(JSON.stringify(dataModel.getSelectedItems()[0]));
                     var storageSystemId = dataModel.getSelectedItems()[0].storageSystemId;
                     var storagePortId = dataModel.getPorts[0].storagePortId;
                     var numberOfHostGroups = dataModel.numberOfHostGroups;
@@ -183,6 +186,7 @@ angular.module('rainierApp')
                 },
                 setStorageSystems: function (ss) {
                     orchestratorService.storagePorts(ss.storageSystemId).then(function (result) {
+                        alert('lol=' + JSON.stringify(result));
                         dataModel.getPorts = result.resources;
                         dataModel.selected.port = dataModel.getPorts[0];
                     });

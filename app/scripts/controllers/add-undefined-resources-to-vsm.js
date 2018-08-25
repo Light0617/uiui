@@ -143,10 +143,8 @@ angular.module('rainierApp')
             var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
 
             var promise_queue = _.map($scope.dataModel.selected.storageSystems, function (ss) {
-                alert(JSON.stringify(ss));
                     return addUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
                             ss.storageSystemId).then(function (result) {
-                                alert(JSON.stringify(result));
                                 $scope.dataModel.summaryModel[ss.storageSystemId] = result;
                                 return result;
                             }).catch(function(e){

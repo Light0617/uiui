@@ -47,75 +47,108 @@ angular.module('rainierApp')
                 storageSystem: null,
                 port: null,
                 removeVolumesFromVsm: [],
-                addHostGroupsToVsm: []
+                removeHostGroupsFromVsm: []
             };
-            initRemovePhysicalStorageSystemView();
-        };
-
-        var getPhysicalStorageSystemIds = function () {
-            //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
-            alert('qooo');
-            return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
-                .then(function (result) {
-                    //alert(JSON.stringify(result));
-                    $scope.dataModel.selected.storageSystemIds = result.resources[0].physicalStorageSystemIds; //mock
-                    //$scope.dataModel.selected.storageSystemIds = result.physicalStorageSystemIds; //real
-                    var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (storageSystemId) {
-                        return orchestratorService.storageSystem(storageSystemId)
-                            .then(function (result) {
-                                //alert('xxxxx=' +  JSON.stringify(result));
-                                $scope.dataModel.selected.storageSystems.push(result);
-                                return result;
-                        }).catch(function(e){
-                            return new Error('error=' + e);
-                        });
-                    });
-
-                    return $q.all(promiseQueue);
-            });
-        };
-
-        /**
-         * 0. init2, the helper method for initRemovePhysicalStorageSystemView
-         */
-        var init2 = function () {
-            $scope.dataModel.selected.storageSystem = $scope.dataModel.selected.storageSystems[0];
-            alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
-            getPhysicalStorageSystemSummary()
-                .then(initRemoveVolumesFromVsm)
-                .then($scope.dataModel.goNext)
-                .catch(removeUndefinedResourcesService.openErrorDialog);
-        };
-
-        /**
-         * 0. initRemovePhysicalStorageSystemView to init for initRemoveVolumesFromVsm
-         */
-
-        var initRemovePhysicalStorageSystemView = function () {
-            getPhysicalStorageSystemIds()
-                .then(init2)
-                .catch(removeUndefinedResourcesService.openErrorDialog);
+            $scope.dataModel.displayList = [];
+            $scope.dataModel.virtualStorageSystemModel = null;
+            $scope.dataModel.virtualStorageSystemId = null;
+            initRemoveVolumesFromVsm();
         };
 
         /**
          * 1. Remove Volumes from VSM
          */
+
         var initRemoveVolumesFromVsm = function () {
-            var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel);
+            setPhysicalStorageSystemsAndIds()
+                .then(showPhysicalStorageSystemOnSelect)
+                .then(showPhysicalStorageSystemOnOption)
+                .then(setupRemoveVolumesFromVsm)
+                .then($scope.dataModel.goNext)
+                .catch(removeUndefinedResourcesService.openErrorDialog);
+        };
+
+        /**
+         * 1-1. setPhysicalStorageSystemsAndIds
+         */
+        var setPhysicalStorageSystemsAndIds = function () {
+            //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
+            // alert('qooo');
+            return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
+                .then(function (result) {
+                    //alert(JSON.stringify(result));
+                    $scope.dataModel.selected.storageSystemIds = result.resources[0].physicalStorageSystemIds; //mock
+                    //$scope.dataModel.selected.storageSystemIds = result.physicalStorageSystemIds; //real
+                    return setPhysicalStorageSystems();
+                }).catch(removeUndefinedResourcesService.openErrorDialog);
+        };
+
+        /**
+         * 1-1-2. setPhysicalStorageSystems
+         */
+        var setPhysicalStorageSystems = function() {
+            var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (storageSystemId) {
+                return orchestratorService.storageSystem(storageSystemId)
+                    .then(function (result) {
+                        $scope.dataModel.selected.storageSystems.push(result);
+                        $scope.dataModel.selected.displayList.push(result);
+                        $scope.dataModel.displayList.push(result);
+                        return result;
+                    }).catch(removeUndefinedResourcesService.openErrorDialog);
+            });
+
+            return $q.all(promiseQueue);
+        };
+
+        /**
+         * 1-2. showPhysicalStorageSystemOnSelect
+         */
+        var showPhysicalStorageSystemOnSelect = function () {
+            $scope.dataModel.selected.storageSystem = $scope.dataModel.selected.storageSystems[0];
+            //alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
+        };
+
+        /**
+         * 1-3. showPhysicalStorageSystemOnOption 
+         */
+
+        var showPhysicalStorageSystemOnOption = function(){
+            $scope.dataModel.summaryModel = {};
+
+            var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (id) {
+                return removeUndefinedResourcesService.getPhysicalStorageSystemSummary($routeParams.virtualStorageMachineId,
+                    id)
+                    .then(function (result) {
+                        //alert('id=' + id);
+                        //alert(JSON.stringify(result.volume));
+                        if(+result.volume.undefined > 0){
+                            $scope.dataModel.summaryModel[id] = result;
+                        }
+                        return result;
+                    }).catch(function(e){
+                        $scope.dataModel.summaryModel[id] = e;
+                    });
+            });
+
+            return $q.all(promiseQueue);
+        };
+
+        /**
+         * 1-4. setupRemoveVolumesFromVsm 
+         */
+        var setupRemoveVolumesFromVsm = function () {
+            var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
+            var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
+            var virtualStorageSystemModel = virtualStorageMachineIdList[1];
+            var volumeModel = removeUndefinedResourcesService.setupVolumeModel($scope.dataModel, virtualStorageMachineId, virtualStorageSystemModel);
             _.extend($scope.dataModel, volumeModel);
 
             var setupGetPorts = function () {
-                alert($scope.dataModel.getSelectedItems());
                 return orchestratorService.storagePorts($scope.dataModel.selected.storageSystemIds[0])
                     .then(function (result) {
                         $scope.dataModel.getPorts = result.resources;
                         $scope.dataModel.selected.port = $scope.dataModel.getPorts[0];
                     });
-            };
-
-            var recoverRemovePhysicalStorageSystemView = function () {
-                _.extend($scope.dataModel.displayList, $scope.dataModel.selected.displayList);
-                return true;
             };
 
             var volumeFooter = function (dataModel) {
@@ -132,37 +165,12 @@ angular.module('rainierApp')
                         } catch (e) {
                             removeUndefinedResourcesService.openErrorDialog();
                         }
-                    },
-                    previous: function () {
-                        initRemovePhysicalStorageSystemView()
-                            .then(recoverRemovePhysicalStorageSystemView)
-                            .then(dataModel.goBack)
-                            .catch(removeUndefinedResourcesService.openErrorDialog);
                     }
                 };
             };
             $scope.footModel = volumeFooter($scope.dataModel);
 
             return $q.resolve(true);
-        };
-
-        var getPhysicalStorageSystemSummary = function(){
-            $scope.dataModel.summaryModel = {};
-            var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
-
-            var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (id) {
-                return removeUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
-                    id).then(function (result) {
-                        alert('id=' + id);
-                        alert(JSON.stringify(result));
-                    $scope.dataModel.summaryModel[id] = result;
-                    return result;
-                }).catch(function(e){
-                    $scope.dataModel.summaryModel[id] = e;
-                });
-            });
-
-            return $q.all(promiseQueue);
         };
 
         /**
@@ -185,7 +193,8 @@ angular.module('rainierApp')
                     },
                     previous: function () {
                         try{
-                            initRemoveVolumesFromVsm();
+                            //initRemoveVolumesFromVsm();
+                            setupRemoveVolumesFromVsm();
                             dataModel.goBack();
                         } catch (e) {
                             removeUndefinedResourcesService.openErrorDialog();

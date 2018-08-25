@@ -48,12 +48,15 @@ angular.module('rainierApp')
         };
 
         /**
-         * 1. Remove Volumes to VSM
+         * 1. Remove Volumes from VSM
          */
-        var setupVolumeModel = function (dataModel) {
+        var setupVolumeModel = function (dataModel, virtualStorageMachineId, virtualStorageSystemModel) {
             var volumeModel = {
                 subTitle: 'Remove Volumes From Each Storage System',
+                displayList: dataModel.selected.storageSystems,
                 volumes: dataModel.selected.removeVolumesFromVsm,
+                virtualStorageSystemId: virtualStorageMachineId,
+                virtualStorageSystemModel: virtualStorageSystemModel,
                 add: function () {
                     var storageSystemId = dataModel.selected.storageSystemIds[0];
                     var numberOfVolumes = dataModel.numberOfVolumes;
@@ -122,13 +125,18 @@ angular.module('rainierApp')
         };
 
         /**
-         * 2. Add Host Groups to VSM
+         * 2. Remove Host Groups from VSM
          */
         var setupHostGroupModel = function (dataModel) {
             var hostGroupModel = {
                 subTitle: 'Remove Host Group From Each Storage System',
                 hostGroups: [],
                 add: function () {
+                    alert("add");
+                    alert(JSON.stringify(dataModel));
+                    alert(JSON.stringify(dataModel.getSelectedItems()[0]));
+                    alert(JSON.stringify(dataModel.getPorts[0]));
+                    alert(JSON.stringify(dataModel.numberOfHostGroups));
                     var storageSystemId = dataModel.getSelectedItems()[0].storageSystemId;
                     var storagePortId = dataModel.getPorts[0].storagePortId;
                     var numberOfHostGroups = dataModel.numberOfHostGroups;
@@ -158,13 +166,13 @@ angular.module('rainierApp')
         };
 
         var addHostGroupsToSelected = function (dataModel) {
-            dataModel.selected.addHostGroupsToVsm = dataModel.hostGroups;
+            dataModel.selected.removeHostGroupsFromVsm = dataModel.hostGroups;
         };
 
         var createPayload = function (dataModel) {
             var physicalStorageSystems = [];
             dataModel.selected.removeVolumesFromVsm.forEach(function (vol) {
-                var hgs = _.filter(dataModel.selected.addHostGroupsToVsm, function (hg) {
+                var hgs = _.filter(dataModel.selected.removeHostGroupsFromVsm, function (hg) {
                     return hg.storageSystemId === vol.storageSystemId;
                 });
 
