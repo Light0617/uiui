@@ -82,10 +82,7 @@ angular.module('rainierApp')
 
         var addPhysicalStorageSystemsToSelected = function (dataModel) {
             dataModel.selected.displayList = dataModel.displayList;
-            alert(dataModel.storageSystemIds + "=YOYO");
-            // dataModel.selected.storageSystems = _.filter(dataModel.displayList, function(item){
-            //     return item.selected === true;
-            // });
+            alert('add =' + dataModel.storageSystemIds);
             dataModel.selected.storageSystems = dataModel.storageSystems;
             dataModel.selected.storageSystem = dataModel.selected.storageSystems[0];
         };
@@ -97,7 +94,7 @@ angular.module('rainierApp')
                 subTitle: 'Remove Volumes From Each Storage System',
                 volumes: dataModel.selected.removeVolumesFromVsm,
                 add: function () {
-                    var storageSystemId = dataModel.getSelectedItems()[0].storageSystemId;
+                    var storageSystemId = dataModel.storageSystemIds[0];
                     var numberOfVolumes = dataModel.numberOfVolumes;
                     dataModel.volumes.push({
                         storageSystemId: storageSystemId,
