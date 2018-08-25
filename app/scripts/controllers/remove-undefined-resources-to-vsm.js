@@ -54,7 +54,7 @@ angular.module('rainierApp')
 
         var getPhysicalStorageSystemIds = function () {
             //grunt serve --proxy-host=172.17.91.220 --proxy-use-https=true --allow-remote
-            alert("zyyyiii");
+            alert('kpkp');
             return orchestratorService.virtualStorageMachine($routeParams.virtualStorageMachineId)
                 .then(function (result) {
                     //alert(JSON.stringify(result));
@@ -79,16 +79,19 @@ angular.module('rainierApp')
          * 1. Remove Physical Storage Systems
          */
         var init2 = function () {
-            var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
-            var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
-            var virtualStorageSystemModel = virtualStorageMachineIdList[1];
-            var storageModel = removeUndefinedResourcesService.setupStorageModel($scope.dataModel,
-                    $scope.dataModel.selected.storageSystems,
-                    virtualStorageMachineId,
-                    virtualStorageSystemModel);
-            _.extend($scope.dataModel, storageModel);
+            //var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
+            //var virtualStorageMachineIdList = virtualStorageMachineId.split('-');
+            // var virtualStorageSystemModel = virtualStorageMachineIdList[1];
+            // var storageModel = removeUndefinedResourcesService.setupStorageModel($scope.dataModel,
+            //         $scope.dataModel.selected.storageSystems,
+            //         virtualStorageMachineId,
+            //         virtualStorageSystemModel);
+            // _.extend($scope.dataModel, storageModel);
 
-            removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
+            // removeUndefinedResourcesService.addPhysicalStorageSystemsToSelected($scope.dataModel);
+            // $scope.dataModel.selected.displayList = $scope.dataModel.displayList;
+            // alert('add =' + $scope.dataModel.displayList);
+            $scope.dataModel.selected.storageSystem = $scope.dataModel.selected.storageSystems[0];
             //alert('storageSystems=\n' +  JSON.stringify($scope.dataModel.selected.storageSystems));
             alert('selected storageSystem=\n' +  JSON.stringify($scope.dataModel.selected.storageSystem));
             getPhysicalStorageSystemSummary()
@@ -155,13 +158,11 @@ angular.module('rainierApp')
         var getPhysicalStorageSystemSummary = function(){
             $scope.dataModel.summaryModel = {};
             var virtualStorageMachineId = $routeParams.virtualStorageMachineId;
-            alert("yopy");
-            alert($scope.dataModel.selected.storageSystemIds);
 
-            var promise_queue = _.map($scope.dataModel.selected.storageSystemIds, function (id) {
+            var promiseQueue = _.map($scope.dataModel.selected.storageSystemIds, function (id) {
                 return removeUndefinedResourcesService.getPhysicalStorageSystemSummary(virtualStorageMachineId,
                     id).then(function (result) {
-                        alert("id=" + id);
+                        alert('id=' + id);
                         alert(JSON.stringify(result));
                     $scope.dataModel.summaryModel[id] = result;
                     return result;
@@ -170,7 +171,7 @@ angular.module('rainierApp')
                 });
             });
 
-            return $q.all(promise_queue);
+            return $q.all(promiseQueue);
         };
 
         /**

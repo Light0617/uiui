@@ -155,7 +155,7 @@ angular.module('rainierApp')
             });
 
             return $q.all(promise_queue);
-        }
+        };
 
         /**
          * 3. Add Host Groups to VSM
